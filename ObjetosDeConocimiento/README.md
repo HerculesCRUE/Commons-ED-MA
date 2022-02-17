@@ -7,7 +7,7 @@
 |Versión|1.2|
 |Módulo|Documentación|
 |Tipo|Especificación|
-|Cambios de la Versión|Movido al espa|
+|Cambios de la Versión|Movido al espacio común de ED y MA|
 
 # Hércules ED. Objetos de conocimiento
 
@@ -23,6 +23,8 @@ La [Red de Ontologías Hércules (ROH)](https://github.com/HerculesCRUE/ROH) es 
 El presente documento enumera los objetos de conocimiento que aplicaremos en el desarrollo de ED y MA, enlazando cada uno de ellos con su definición y documentación.
 
 Como resultado de la definición de los objetos de conocimiento, que responden a las necesidades del editor del Curriculum Vitae Normalizado (CVN) en Hércules ED y a la expresión de la información de investigación en los interfaces de MA, podrían detectarse cambios en el modelo de referencia, lo que se reflejaría en ROH en una nuueva versión.
+
+Estos componentes son comunes a los proyectos [Hércules ED](https://github.com/HerculesCRUE/HerculesED) y [Hércules MA].
 
 Inventario de objetos de conocimiento
 =====================================
