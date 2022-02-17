@@ -1,2 +1,15 @@
-# Commons-ED-MA
-Proyecto que contiene componentes o diseños compartidos en los proyectos Hércules ED y MA
+![](Docs/media/CabeceraDocumentosMD.png)
+
+# Hércules Commons ED y MA
+
+[Introducción](#introducción)
+
+[Inventario de objetos de conocimiento](#inventario-de-objetos-de-conocimiento)
+
+Introducción
+============
+Este repositorio contiene componentes o diseños compartidos en los proyectos proyectos [Hércules ED](https://github.com/HerculesCRUE/HerculesED) y [Hércules MA].
+
+Los componentes comunes son:
+* [PlantillasHTML](PlantillasHTML). Contiene las maquetas HTML con las que se han desarrollado los interfaces de los proyectos ED y MA, que comparten diseños comunes.
+* [ObjetosDeConocimiento](ObjetosDeConocimiento). objetos de conocimiento que se utilizan en el desarrollo de los proyectos ED y MA.
