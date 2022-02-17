@@ -1,0 +1,39 @@
+<config>
+    <ConfiguracionGeneral>
+        <namespace>activitymodality</namespace>
+        <idiomasOnto>
+            <idiomaOnto>es</idiomaOnto>
+        </idiomasOnto>
+        <TituloDoc EntidadID="http://w3id.org/roh/ActivityModality">http://purl.org/dc/elements/1.1/title</TituloDoc>
+		<MultiIdioma></MultiIdioma>
+        <HtmlNuevo>true</HtmlNuevo>
+    </ConfiguracionGeneral>
+    <EspefPropiedad>
+        <Propiedad  ID="http://purl.org/dc/elements/1.1/title" EntidadID="http://w3id.org/roh/ActivityModality">
+            <AtrNombre>http://purl.org/dc/elements/1.1/title</AtrNombre>
+            <AtrNombreLectura>http://purl.org/dc/elements/1.1/title</AtrNombreLectura>
+			<MultiIdioma></MultiIdioma>
+        </Propiedad>
+        <Propiedad  ID="http://purl.org/dc/elements/1.1/identifier" EntidadID="http://w3id.org/roh/ActivityModality">
+            <AtrNombre>http://purl.org/dc/elements/1.1/identifier</AtrNombre>
+            <AtrNombreLectura>http://purl.org/dc/elements/1.1/identifier</AtrNombreLectura>
+			<MultiIdioma>false</MultiIdioma>
+        </Propiedad>
+    </EspefPropiedad>
+    <EspefEntidad>
+        <Entidad  ID="http://w3id.org/roh/ActivityModality">
+            <AtrNombre>http://w3id.org/roh/ActivityModality</AtrNombre>
+            <AtrNombreLectura>http://w3id.org/roh/ActivityModality</AtrNombreLectura>
+            <OrdenEntidad>
+                <Grupo class="formtheme02">
+                    <Grupo class="fieldset">
+                        <Grupo Tipo="fieldset" class="mediumLabels">
+                            <NameProp>http://purl.org/dc/elements/1.1/title</NameProp> 
+                            <NameProp>http://purl.org/dc/elements/1.1/identifier</NameProp>
+                        </Grupo>
+                    </Grupo>
+                </Grupo>
+            </OrdenEntidad>
+        </Entidad>
+    </EspefEntidad>
+</config>

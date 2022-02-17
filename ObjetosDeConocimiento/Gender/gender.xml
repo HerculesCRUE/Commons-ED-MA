@@ -1,0 +1,39 @@
+<config>
+    <ConfiguracionGeneral>
+        <namespace>gender</namespace>
+        <idiomasOnto>
+            <idiomaOnto>es</idiomaOnto>
+        </idiomasOnto>
+        <TituloDoc EntidadID="http://w3id.org/roh/Gender">http://purl.org/dc/elements/1.1/title</TituloDoc>
+		<MultiIdioma></MultiIdioma>
+        <HtmlNuevo>true</HtmlNuevo>
+    </ConfiguracionGeneral>
+    <EspefPropiedad>
+        <Propiedad  ID="http://purl.org/dc/elements/1.1/title" EntidadID="http://w3id.org/roh/Gender">
+            <AtrNombre>Tipo de género</AtrNombre>
+            <AtrNombreLectura>Tipo de género</AtrNombreLectura>
+			<MultiIdioma></MultiIdioma>
+        </Propiedad>
+        <Propiedad  ID="http://purl.org/dc/elements/1.1/identifier" EntidadID="http://w3id.org/roh/Gender">
+            <AtrNombre>Identificador del tipo de género</AtrNombre>
+            <AtrNombreLectura>Identificador del tipo de género</AtrNombreLectura>
+			<MultiIdioma>false</MultiIdioma>
+        </Propiedad>
+    </EspefPropiedad>
+    <EspefEntidad>
+        <Entidad  ID="http://w3id.org/roh/Gender">
+            <AtrNombre>Tipo de género</AtrNombre>
+            <AtrNombreLectura>Tipo de género</AtrNombreLectura>
+            <OrdenEntidad>
+                <Grupo class="formtheme02">
+                    <Grupo class="fieldset">
+                        <Grupo Tipo="fieldset" class="mediumLabels">
+                            <NameProp>http://purl.org/dc/elements/1.1/title</NameProp> 
+                            <NameProp>http://purl.org/dc/elements/1.1/identifier</NameProp>
+                        </Grupo>
+                    </Grupo>
+                </Grupo>
+            </OrdenEntidad>
+        </Entidad>
+    </EspefEntidad>
+</config>

@@ -1,0 +1,274 @@
+<config>
+    <ConfiguracionGeneral>
+        <namespace>society</namespace>
+        <idiomasOnto>
+            <idiomaOnto>es</idiomaOnto>
+        </idiomasOnto>
+        <ocultarTituloDescpImgDoc></ocultarTituloDescpImgDoc>
+        <TituloDoc EntidadID="http://w3id.org/roh/Society">http://w3id.org/roh/title</TituloDoc>
+        <DescripcionDoc EntidadID="http://w3id.org/roh/Society">http://w3id.org/roh/title</DescripcionDoc>
+        <HtmlNuevo>true</HtmlNuevo>
+		<CategorizacionTesauroGnossObligatoria>false</CategorizacionTesauroGnossObligatoria>
+    </ConfiguracionGeneral>
+    <EspefPropiedad>
+        <Propiedad  ID="http://w3id.org/roh/categoryNode" EntidadID="http://w3id.org/roh/CategoryPath">
+            <AtrNombre>categoryNode</AtrNombre>
+            <AtrNombreLectura>categoryNode</AtrNombreLectura>
+			<SeleccionEntidad>
+				<TipoSeleccion>Tesauro</TipoSeleccion>
+				<Grafo>taxonomy.owl</Grafo>				
+				<UrlPropiedad>um</UrlPropiedad>                
+			</SeleccionEntidad>
+        </Propiedad>
+		
+		
+		<Propiedad  ID="http://w3id.org/roh/affiliatedOrganizationType" EntidadID="http://w3id.org/roh/Society">
+            <AtrNombre>http://w3id.org/roh/affiliatedOrganizationType</AtrNombre>
+            <AtrNombreLectura>http://w3id.org/roh/affiliatedOrganizationType</AtrNombreLectura>
+			<SeleccionEntidad>
+                <TipoSeleccion>Autocompletar</TipoSeleccion>
+                <Grafo>organizationtype.owl</Grafo>
+                <UrlTipoEntSolicitada>http://w3id.org/roh/OrganizationType</UrlTipoEntSolicitada>              
+                <PropsEntEdicion>
+                    <NameProp>http://purl.org/dc/elements/1.1/title</NameProp>
+                </PropsEntEdicion>
+                <PropsEntLectura>
+                    <Propiedad ID="http://purl.org/dc/elements/1.1/title" EntidadID="http://w3id.org/roh/OrganizationType">
+                        <AtrNombreLectura></AtrNombreLectura>
+                    </Propiedad>
+                </PropsEntLectura>
+            </SeleccionEntidad>
+        </Propiedad>
+		<Propiedad  ID="http://w3id.org/roh/affiliatedOrganizationHasCountryName" EntidadID="http://w3id.org/roh/Society">
+            <AtrNombre>http://w3id.org/roh/affiliatedOrganizationHasCountryName</AtrNombre>
+            <AtrNombreLectura>http://w3id.org/roh/affiliatedOrganizationHasCountryName</AtrNombreLectura>
+			<SeleccionEntidad>
+                <TipoSeleccion>Autocompletar</TipoSeleccion>
+                <Grafo>feature.owl</Grafo>
+                <UrlTipoEntSolicitada>http://www.geonames.org/ontology#Feature</UrlTipoEntSolicitada>              
+                <PropsEntEdicion>
+                    <NameProp>http://www.geonames.org/ontology#name</NameProp>
+                </PropsEntEdicion>
+                <PropsEntLectura>
+                    <Propiedad ID="http://www.geonames.org/ontology#name" EntidadID="http://www.geonames.org/ontology#Feature">
+                        <AtrNombreLectura></AtrNombreLectura>
+                    </Propiedad>
+                </PropsEntLectura>
+			</SeleccionEntidad>
+        </Propiedad>
+		<Propiedad  ID="http://w3id.org/roh/affiliatedOrganizationHasRegion" EntidadID="http://w3id.org/roh/Society">
+            <AtrNombre>http://w3id.org/roh/affiliatedOrganizationHasRegion</AtrNombre>
+            <AtrNombreLectura>http://w3id.org/roh/affiliatedOrganizationHasRegion</AtrNombreLectura>
+			<SeleccionEntidad>
+                <TipoSeleccion>Autocompletar</TipoSeleccion>
+                <Grafo>feature.owl</Grafo>
+                <UrlTipoEntSolicitada>http://www.geonames.org/ontology#Feature</UrlTipoEntSolicitada>              
+                <PropsEntEdicion>
+                    <NameProp>http://www.geonames.org/ontology#name</NameProp>
+                </PropsEntEdicion>
+                <PropsEntLectura>
+                    <Propiedad ID="http://www.geonames.org/ontology#name" EntidadID="http://www.geonames.org/ontology#Feature">
+                        <AtrNombreLectura></AtrNombreLectura>
+                    </Propiedad>
+                </PropsEntLectura>
+			</SeleccionEntidad>
+        </Propiedad>
+		
+		
+        <Propiedad  ID="https://www.w3.org/2006/vcard/ns#hasRegion" EntidadID="http://w3id.org/roh/Society">
+            <AtrNombre>hasRegion</AtrNombre>
+            <AtrNombreLectura>hasRegion</AtrNombreLectura>
+			<SeleccionEntidad>
+                <TipoSeleccion>Combo</TipoSeleccion>
+                <Grafo>feature.owl</Grafo>
+                <UrlTipoEntSolicitada>http://www.geonames.org/ontology#Feature</UrlTipoEntSolicitada>              
+                <PropsEntEdicion>
+                    <NameProp>http://www.geonames.org/ontology#name</NameProp>
+                </PropsEntEdicion>
+                <PropsEntLectura>
+                    <Propiedad ID="http://www.geonames.org/ontology#name" EntidadID="http://www.geonames.org/ontology#Feature">
+                        <AtrNombreLectura></AtrNombreLectura>
+                    </Propiedad>
+                </PropsEntLectura>
+            </SeleccionEntidad>
+        </Propiedad>
+        <Propiedad  ID="http://vivoweb.org/ontology/core#affiliatedOrganization" EntidadID="http://w3id.org/roh/Society">
+            <AtrNombre>affiliatedOrganization</AtrNombre>
+            <AtrNombreLectura>affiliatedOrganization</AtrNombreLectura>
+			<SeleccionEntidad>
+                <TipoSeleccion>Combo</TipoSeleccion>
+                <Grafo>organization.owl</Grafo>
+                <UrlTipoEntSolicitada>http://xmlns.com/foaf/0.1/Organization</UrlTipoEntSolicitada>              
+                <PropsEntEdicion>
+                    <NameProp>http://w3id.org/roh/title</NameProp>
+                </PropsEntEdicion>
+                <PropsEntLectura>
+                    <Propiedad ID="http://w3id.org/roh/title" EntidadID="http://xmlns.com/foaf/0.1/Organization">
+                        <AtrNombreLectura></AtrNombreLectura>
+                    </Propiedad>
+                </PropsEntLectura>
+            </SeleccionEntidad>
+        </Propiedad>
+        <Propiedad  ID="http://vivoweb.org/ontology/core#freeTextKeywords" EntidadID="http://w3id.org/roh/Society">
+            <AtrNombre>freeTextKeywords</AtrNombre>
+            <AtrNombreLectura>freeTextKeywords</AtrNombreLectura>
+        </Propiedad>
+        <Propiedad  ID="http://w3id.org/roh/participates" EntidadID="http://w3id.org/roh/Society">
+            <AtrNombre>participates</AtrNombre>
+            <AtrNombreLectura>participates</AtrNombreLectura>
+			<SeleccionEntidad>
+                <TipoSeleccion>Combo</TipoSeleccion>
+                <Grafo>organization.owl</Grafo>
+                <UrlTipoEntSolicitada>http://xmlns.com/foaf/0.1/Organization</UrlTipoEntSolicitada>              
+                <PropsEntEdicion>
+                    <NameProp>http://w3id.org/roh/title</NameProp>
+                </PropsEntEdicion>
+                <PropsEntLectura>
+                    <Propiedad ID="http://w3id.org/roh/title" EntidadID="http://xmlns.com/foaf/0.1/Organization">
+                        <AtrNombreLectura></AtrNombreLectura>
+                    </Propiedad>
+                </PropsEntLectura>
+            </SeleccionEntidad>
+        </Propiedad>
+        <Propiedad  ID="https://www.w3.org/2006/vcard/ns#hasCountryName" EntidadID="http://w3id.org/roh/Society">
+            <AtrNombre>hasCountryName</AtrNombre>
+            <AtrNombreLectura>hasCountryName</AtrNombreLectura>
+			<SeleccionEntidad>
+                <TipoSeleccion>Combo</TipoSeleccion>
+                <Grafo>feature.owl</Grafo>
+                <UrlTipoEntSolicitada>http://www.geonames.org/ontology#Feature</UrlTipoEntSolicitada>              
+                <PropsEntEdicion>
+                    <NameProp>http://www.geonames.org/ontology#name</NameProp>
+                </PropsEntEdicion>
+                <PropsEntLectura>
+                    <Propiedad ID="http://www.geonames.org/ontology#name" EntidadID="http://www.geonames.org/ontology#Feature">
+                        <AtrNombreLectura></AtrNombreLectura>
+                    </Propiedad>
+                </PropsEntLectura>
+            </SeleccionEntidad>
+        </Propiedad>
+        <Propiedad  ID="http://vivoweb.org/ontology/core#geographicFocus" EntidadID="http://w3id.org/roh/Society">
+            <AtrNombre>geographicFocus</AtrNombre>
+            <AtrNombreLectura>geographicFocus</AtrNombreLectura>
+			<SeleccionEntidad>
+                <TipoSeleccion>Autocompletar</TipoSeleccion>
+                <Grafo>geographicregion.owl</Grafo>
+                <UrlTipoEntSolicitada>http://w3id.org/roh/GeographicRegion</UrlTipoEntSolicitada>              
+                <PropsEntEdicion>
+                    <NameProp>http://purl.org/dc/elements/1.1/title</NameProp>
+                </PropsEntEdicion>
+                <PropsEntLectura>
+                    <Propiedad ID="http://purl.org/dc/elements/1.1/title" EntidadID="http://w3id.org/roh/GeographicRegion">
+                        <AtrNombreLectura></AtrNombreLectura>
+                    </Propiedad>
+                </PropsEntLectura>
+            </SeleccionEntidad>
+        </Propiedad>
+        <Propiedad  ID="https://www.w3.org/2006/vcard/ns#locality" EntidadID="http://w3id.org/roh/Society">
+            <AtrNombre>locality</AtrNombre>
+            <AtrNombreLectura>locality</AtrNombreLectura>
+        </Propiedad>
+        <Propiedad  ID="http://w3id.org/roh/crisIdentifier" EntidadID="http://w3id.org/roh/Society">
+            <AtrNombre>crisIdentifier</AtrNombre>
+            <AtrNombreLectura>crisIdentifier</AtrNombreLectura>
+        </Propiedad>
+        <Propiedad  ID="http://vivoweb.org/ontology/core#end" EntidadID="http://w3id.org/roh/Society">
+            <AtrNombre>end</AtrNombre>
+            <AtrNombreLectura>end</AtrNombreLectura>
+        </Propiedad>
+        <Propiedad  ID="http://w3id.org/roh/professionalCategory" EntidadID="http://w3id.org/roh/Society">
+            <AtrNombre>professionalCategory</AtrNombre>
+            <AtrNombreLectura>professionalCategory</AtrNombreLectura>
+        </Propiedad>
+        <Propiedad  ID="http://w3id.org/roh/geographicFocusOther" EntidadID="http://w3id.org/roh/Society">
+            <AtrNombre>geographicFocusOther</AtrNombre>
+            <AtrNombreLectura>geographicFocusOther</AtrNombreLectura>
+        </Propiedad>
+        <Propiedad  ID="http://vivoweb.org/ontology/core#start" EntidadID="http://w3id.org/roh/Society">
+            <AtrNombre>start</AtrNombre>
+            <AtrNombreLectura>start</AtrNombreLectura>
+        </Propiedad>
+        <Propiedad  ID="http://w3id.org/roh/members" EntidadID="http://w3id.org/roh/Society">
+            <AtrNombre>members</AtrNombre>
+            <AtrNombreLectura>members</AtrNombreLectura>
+        </Propiedad>
+        <Propiedad  ID="http://w3id.org/roh/title" EntidadID="http://w3id.org/roh/Society">
+            <AtrNombre>title</AtrNombre>
+            <AtrNombreLectura>title</AtrNombreLectura>
+        </Propiedad>
+    </EspefPropiedad>
+    <EspefEntidad>
+        <Entidad  ID="http://w3id.org/roh/CategoryPath">
+            <AtrNombre>http://w3id.org/roh/CategoryPath</AtrNombre>
+            <AtrNombreLectura>http://w3id.org/roh/CategoryPath</AtrNombreLectura>
+            <OrdenEntidad>
+                <Grupo class="formtheme02">
+                    <Grupo class="fieldset">
+                        <Grupo Tipo="fieldset" class="mediumLabels">
+                            <NameProp>http://w3id.org/roh/categoryNode</NameProp>
+                        </Grupo>
+                    </Grupo>
+                </Grupo>
+            </OrdenEntidad>
+            <OrdenEntidadLectura>
+                <Grupo classLectura="group content semanticView">
+                    <Grupo classLectura="group group_info">
+                        <AtrNombreGrupo>Propiedades</AtrNombreGrupo>
+                        <Grupo classLectura="contentGroup">
+                            <NameProp>http://w3id.org/roh/categoryNode</NameProp>
+                        </Grupo>
+                    </Grupo>
+                </Grupo>
+            </OrdenEntidadLectura>
+        </Entidad>
+        <Entidad  ID="http://w3id.org/roh/Society">
+            <AtrNombre>http://w3id.org/roh/Society</AtrNombre>
+            <AtrNombreLectura>http://w3id.org/roh/Society</AtrNombreLectura>
+            <OrdenEntidad>
+                <Grupo class="formtheme02">
+                    <Grupo class="fieldset">
+                        <Grupo Tipo="fieldset" class="mediumLabels">
+                            <NameProp>https://www.w3.org/2006/vcard/ns#hasRegion</NameProp> 
+                            <NameProp>http://vivoweb.org/ontology/core#affiliatedOrganization</NameProp> 
+                            <NameProp>http://vivoweb.org/ontology/core#freeTextKeywords</NameProp> 
+                            <NameProp>http://w3id.org/roh/participates</NameProp> 
+                            <NameProp>https://www.w3.org/2006/vcard/ns#hasCountryName</NameProp> 
+                            <NameProp>http://vivoweb.org/ontology/core#geographicFocus</NameProp> 
+                            <NameProp>https://www.w3.org/2006/vcard/ns#locality</NameProp> 
+                            <NameProp>http://w3id.org/roh/crisIdentifier</NameProp> 
+                            <NameProp>http://vivoweb.org/ontology/core#end</NameProp> 
+                            <NameProp>http://w3id.org/roh/professionalCategory</NameProp> 
+                            <NameProp>http://w3id.org/roh/geographicFocusOther</NameProp> 
+                            <NameProp>http://vivoweb.org/ontology/core#start</NameProp> 
+                            <NameProp>http://w3id.org/roh/members</NameProp> 
+                            <NameProp>http://w3id.org/roh/title</NameProp>
+                        </Grupo>
+                    </Grupo>
+                </Grupo>
+            </OrdenEntidad>
+            <OrdenEntidadLectura>
+                <Grupo classLectura="group content semanticView">
+                    <Grupo classLectura="group group_info">
+                        <AtrNombreGrupo>Propiedades</AtrNombreGrupo>
+                        <Grupo classLectura="contentGroup">
+                            <NameProp>https://www.w3.org/2006/vcard/ns#hasRegion</NameProp> 
+                            <NameProp>http://vivoweb.org/ontology/core#affiliatedOrganization</NameProp> 
+                            <NameProp>http://vivoweb.org/ontology/core#freeTextKeywords</NameProp> 
+                            <NameProp>http://w3id.org/roh/participates</NameProp> 
+                            <NameProp>https://www.w3.org/2006/vcard/ns#hasCountryName</NameProp> 
+                            <NameProp>http://vivoweb.org/ontology/core#geographicFocus</NameProp> 
+                            <NameProp>https://www.w3.org/2006/vcard/ns#locality</NameProp> 
+                            <NameProp>http://w3id.org/roh/crisIdentifier</NameProp> 
+                            <NameProp>http://vivoweb.org/ontology/core#end</NameProp> 
+                            <NameProp>http://w3id.org/roh/professionalCategory</NameProp> 
+                            <NameProp>http://w3id.org/roh/geographicFocusOther</NameProp> 
+                            <NameProp>http://vivoweb.org/ontology/core#start</NameProp> 
+                            <NameProp>http://w3id.org/roh/members</NameProp> 
+                            <NameProp>http://w3id.org/roh/title</NameProp>
+                        </Grupo>
+                    </Grupo>
+                </Grupo>
+            </OrdenEntidadLectura>
+        </Entidad>
+    </EspefEntidad>
+</config>

@@ -1,0 +1,263 @@
+<config>
+    <ConfiguracionGeneral>
+        <namespace>technologicalresult</namespace>
+        <idiomasOnto>
+            <idiomaOnto>es</idiomaOnto>
+        </idiomasOnto>
+        <ocultarTituloDescpImgDoc></ocultarTituloDescpImgDoc>
+        <TituloDoc EntidadID="http://w3id.org/roh/TechnologicalResult">http://vivoweb.org/ontology/core#description</TituloDoc>
+        <DescripcionDoc EntidadID="http://w3id.org/roh/TechnologicalResult">http://vivoweb.org/ontology/core#description</DescripcionDoc>
+        <HtmlNuevo>true</HtmlNuevo>
+		<CategorizacionTesauroGnossObligatoria>false</CategorizacionTesauroGnossObligatoria>
+    </ConfiguracionGeneral>
+    <EspefPropiedad>
+        <Propiedad  ID="http://w3id.org/roh/categoryNode" EntidadID="http://w3id.org/roh/CategoryPath">
+            <AtrNombre>http://w3id.org/roh/categoryNode</AtrNombre>
+            <AtrNombreLectura>http://w3id.org/roh/categoryNode</AtrNombreLectura>
+			<SeleccionEntidad>
+				<TipoSeleccion>Tesauro</TipoSeleccion>
+				<Grafo>taxonomy.owl</Grafo>				
+				<UrlPropiedad>um</UrlPropiedad>                
+			</SeleccionEntidad>
+        </Propiedad>
+        <Propiedad  ID="http://w3id.org/roh/participates" EntidadID="http://w3id.org/roh/TechnologicalResult">
+            <AtrNombre>http://w3id.org/roh/participates</AtrNombre>
+            <AtrNombreLectura>http://w3id.org/roh/participates</AtrNombreLectura>
+			<SeleccionEntidad>
+                <TipoSeleccion>Combo</TipoSeleccion>
+                <Grafo>organization.owl</Grafo>
+                <UrlTipoEntSolicitada>http://xmlns.com/foaf/0.1/Organization</UrlTipoEntSolicitada>              
+                <PropsEntEdicion>
+                    <NameProp>http://w3id.org/roh/title</NameProp>
+                </PropsEntEdicion>
+                <PropsEntLectura>
+                    <Propiedad ID="http://w3id.org/roh/title" EntidadID="http://xmlns.com/foaf/0.1/Organization">
+                        <AtrNombreLectura></AtrNombreLectura>
+                    </Propiedad>
+                </PropsEntLectura>
+            </SeleccionEntidad>
+        </Propiedad>
+        <Propiedad  ID="http://vivoweb.org/ontology/core#geographicFocus" EntidadID="http://w3id.org/roh/TechnologicalResult">
+            <AtrNombre>http://vivoweb.org/ontology/core#geographicFocus</AtrNombre>
+            <AtrNombreLectura>http://vivoweb.org/ontology/core#geographicFocus</AtrNombreLectura>
+			<SeleccionEntidad>
+                <TipoSeleccion>Autocompletar</TipoSeleccion>
+                <Grafo>geographicregion.owl</Grafo>
+                <UrlTipoEntSolicitada>http://vivoweb.org/ontology/core#GeographicRegion</UrlTipoEntSolicitada>              
+                <PropsEntEdicion>
+                    <NameProp>http://purl.org/dc/elements/1.1/title</NameProp>
+                </PropsEntEdicion>
+                <PropsEntLectura>
+                    <Propiedad ID="http://purl.org/dc/elements/1.1/title" EntidadID="http://vivoweb.org/ontology/core#GeographicRegion">
+                        <AtrNombreLectura></AtrNombreLectura>
+                    </Propiedad>
+                </PropsEntLectura>
+            </SeleccionEntidad>
+        </Propiedad>
+        <Propiedad  ID="http://w3id.org/roh/targetOrganizations" EntidadID="http://w3id.org/roh/TechnologicalResult">
+            <AtrNombre>http://w3id.org/roh/targetOrganizations</AtrNombre>
+            <AtrNombreLectura>http://w3id.org/roh/targetOrganizations</AtrNombreLectura>
+			<SeleccionEntidad>
+                <TipoSeleccion>Combo</TipoSeleccion>
+                <Grafo>organization.owl</Grafo>
+                <UrlTipoEntSolicitada>http://xmlns.com/foaf/0.1/Organization</UrlTipoEntSolicitada>              
+                <PropsEntEdicion>
+                    <NameProp>http://w3id.org/roh/title</NameProp>
+                </PropsEntEdicion>
+                <PropsEntLectura>
+                    <Propiedad ID="http://w3id.org/roh/title" EntidadID="http://xmlns.com/foaf/0.1/Organization">
+                        <AtrNombreLectura></AtrNombreLectura>
+                    </Propiedad>
+                </PropsEntLectura>
+            </SeleccionEntidad>
+        </Propiedad>
+        <Propiedad  ID="http://w3id.org/roh/principalInvestigator" EntidadID="http://w3id.org/roh/TechnologicalResult">
+            <AtrNombre>http://w3id.org/roh/principalInvestigator</AtrNombre>
+            <AtrNombreLectura>http://w3id.org/roh/principalInvestigator</AtrNombreLectura>
+        </Propiedad>
+        <Propiedad  ID="http://w3id.org/roh/coprincipalInvestigator" EntidadID="http://w3id.org/roh/TechnologicalResult">
+            <AtrNombre>http://w3id.org/roh/coprincipalInvestigator</AtrNombre>
+            <AtrNombreLectura>http://w3id.org/roh/coprincipalInvestigator</AtrNombreLectura>
+        </Propiedad>
+        <Propiedad  ID="http://w3id.org/roh/hasKnowledgeArea" EntidadID="http://w3id.org/roh/TechnologicalResult">
+            <AtrNombre>http://w3id.org/roh/hasKnowledgeArea</AtrNombre>
+            <AtrNombreLectura>http://w3id.org/roh/hasKnowledgeArea</AtrNombreLectura>
+        </Propiedad>
+        <Propiedad  ID="http://w3id.org/roh/relevantResults" EntidadID="http://w3id.org/roh/TechnologicalResult">
+            <AtrNombre>http://w3id.org/roh/relevantResults</AtrNombre>
+            <AtrNombreLectura>http://w3id.org/roh/relevantResults</AtrNombreLectura>
+        </Propiedad>
+        <Propiedad  ID="http://w3id.org/roh/newTechniques" EntidadID="http://w3id.org/roh/TechnologicalResult">
+            <AtrNombre>http://w3id.org/roh/newTechniques</AtrNombre>
+            <AtrNombreLectura>http://w3id.org/roh/newTechniques</AtrNombreLectura>
+        </Propiedad>
+        <Propiedad  ID="http://w3id.org/roh/spinoffCompanies" EntidadID="http://w3id.org/roh/TechnologicalResult">
+            <AtrNombre>http://w3id.org/roh/spinoffCompanies</AtrNombre>
+            <AtrNombreLectura>http://w3id.org/roh/spinoffCompanies</AtrNombreLectura>
+        </Propiedad>
+        <Propiedad  ID="http://w3id.org/roh/activityResults" EntidadID="http://w3id.org/roh/TechnologicalResult">
+            <AtrNombre>http://w3id.org/roh/activityResults</AtrNombre>
+            <AtrNombreLectura>http://w3id.org/roh/activityResults</AtrNombreLectura>
+        </Propiedad>
+        <Propiedad  ID="http://w3id.org/roh/standardisation" EntidadID="http://w3id.org/roh/TechnologicalResult">
+            <AtrNombre>http://w3id.org/roh/standardisation</AtrNombre>
+            <AtrNombreLectura>http://w3id.org/roh/standardisation</AtrNombreLectura>
+        </Propiedad>
+        <Propiedad  ID="http://w3id.org/roh/durationMonths" EntidadID="http://w3id.org/roh/TechnologicalResult">
+            <AtrNombre>http://w3id.org/roh/durationMonths</AtrNombre>
+            <AtrNombreLectura>http://w3id.org/roh/durationMonths</AtrNombreLectura>
+        </Propiedad>
+        <Propiedad  ID="http://w3id.org/roh/durationDays" EntidadID="http://w3id.org/roh/TechnologicalResult">
+            <AtrNombre>http://w3id.org/roh/durationDays</AtrNombre>
+            <AtrNombreLectura>http://w3id.org/roh/durationDays</AtrNombreLectura>
+        </Propiedad>
+        <Propiedad  ID="http://vivoweb.org/ontology/core#start" EntidadID="http://w3id.org/roh/TechnologicalResult">
+            <AtrNombre>http://vivoweb.org/ontology/core#start</AtrNombre>
+            <AtrNombreLectura>http://vivoweb.org/ontology/core#start</AtrNombreLectura>
+        </Propiedad>
+        <Propiedad  ID="http://w3id.org/roh/collaborationAgreements" EntidadID="http://w3id.org/roh/TechnologicalResult">
+            <AtrNombre>http://w3id.org/roh/collaborationAgreements</AtrNombre>
+            <AtrNombreLectura>http://w3id.org/roh/collaborationAgreements</AtrNombreLectura>
+        </Propiedad>
+        <Propiedad  ID="http://vivoweb.org/ontology/core#freeTextKeywords" EntidadID="http://w3id.org/roh/TechnologicalResult">
+            <AtrNombre>http://vivoweb.org/ontology/core#freeTextKeywords</AtrNombre>
+            <AtrNombreLectura>http://vivoweb.org/ontology/core#freeTextKeywords</AtrNombreLectura>
+        </Propiedad>
+        <Propiedad  ID="http://w3id.org/roh/durationYears" EntidadID="http://w3id.org/roh/TechnologicalResult">
+            <AtrNombre>http://w3id.org/roh/durationYears</AtrNombre>
+            <AtrNombreLectura>http://w3id.org/roh/durationYears</AtrNombreLectura>
+        </Propiedad>
+        <Propiedad  ID="http://w3id.org/roh/crisIdentifier" EntidadID="http://w3id.org/roh/TechnologicalResult">
+            <AtrNombre>http://w3id.org/roh/crisIdentifier</AtrNombre>
+            <AtrNombreLectura>http://w3id.org/roh/crisIdentifier</AtrNombreLectura>
+        </Propiedad>
+        <Propiedad  ID="http://vivoweb.org/ontology/core#description" EntidadID="http://w3id.org/roh/TechnologicalResult">
+            <AtrNombre>http://vivoweb.org/ontology/core#description</AtrNombre>
+            <AtrNombreLectura>http://vivoweb.org/ontology/core#description</AtrNombreLectura>
+        </Propiedad>
+        <Propiedad  ID="http://w3id.org/roh/roleOf" EntidadID="http://purl.obolibrary.org/obo/BFO_0000023">
+            <AtrNombre>http://w3id.org/roh/roleOf</AtrNombre>
+            <AtrNombreLectura>http://w3id.org/roh/roleOf</AtrNombreLectura>
+			<SeleccionEntidad>
+                <TipoSeleccion>Combo</TipoSeleccion>
+                <Grafo>person.owl</Grafo>
+                <UrlTipoEntSolicitada>http://xmlns.com/foaf/0.1/Person</UrlTipoEntSolicitada>              
+                <PropsEntEdicion>
+                    <NameProp>http://xmlns.com/foaf/0.1/name</NameProp>
+                </PropsEntEdicion>
+                <PropsEntLectura>
+                    <Propiedad ID="http://xmlns.com/foaf/0.1/name" EntidadID="http://xmlns.com/foaf/0.1/Person">
+                        <AtrNombreLectura></AtrNombreLectura>
+                    </Propiedad>
+                </PropsEntLectura>
+            </SeleccionEntidad>
+        </Propiedad>
+    </EspefPropiedad>
+    <EspefEntidad>
+        <Entidad  ID="http://w3id.org/roh/CategoryPath">
+            <AtrNombre>http://w3id.org/roh/CategoryPath</AtrNombre>
+            <AtrNombreLectura>http://w3id.org/roh/CategoryPath</AtrNombreLectura>
+            <OrdenEntidad>
+                <Grupo class="formtheme02">
+                    <Grupo class="fieldset">
+                        <Grupo Tipo="fieldset" class="mediumLabels">
+                            <NameProp>http://w3id.org/roh/categoryNode</NameProp>
+                        </Grupo>
+                    </Grupo>
+                </Grupo>
+            </OrdenEntidad>
+            <OrdenEntidadLectura>
+                <Grupo classLectura="group content semanticView">
+                    <Grupo classLectura="group group_info">
+                        <AtrNombreGrupo>Propiedades</AtrNombreGrupo>
+                        <Grupo classLectura="contentGroup">
+                            <NameProp>http://w3id.org/roh/categoryNode</NameProp>
+                        </Grupo>
+                    </Grupo>
+                </Grupo>
+            </OrdenEntidadLectura>
+        </Entidad>
+        <Entidad  ID="http://w3id.org/roh/TechnologicalResult">
+            <AtrNombre>http://w3id.org/roh/TechnologicalResult</AtrNombre>
+            <AtrNombreLectura>http://w3id.org/roh/TechnologicalResult</AtrNombreLectura>
+            <OrdenEntidad>
+                <Grupo class="formtheme02">
+                    <Grupo class="fieldset">
+                        <Grupo Tipo="fieldset" class="mediumLabels">
+                            <NameProp>http://w3id.org/roh/participates</NameProp> 
+                            <NameProp>http://vivoweb.org/ontology/core#geographicFocus</NameProp> 
+                            <NameProp>http://w3id.org/roh/targetOrganizations</NameProp> 
+                            <NameProp>http://w3id.org/roh/principalInvestigator</NameProp> 
+                            <NameProp>http://w3id.org/roh/coprincipalInvestigator</NameProp> 
+                            <NameProp>http://w3id.org/roh/hasKnowledgeArea</NameProp> 
+                            <NameProp>http://w3id.org/roh/relevantResults</NameProp> 
+                            <NameProp>http://w3id.org/roh/newTechniques</NameProp> 
+                            <NameProp>http://w3id.org/roh/spinoffCompanies</NameProp> 
+                            <NameProp>http://w3id.org/roh/activityResults</NameProp> 
+                            <NameProp>http://w3id.org/roh/standardisation</NameProp> 
+                            <NameProp>http://w3id.org/roh/durationMonths</NameProp> 
+                            <NameProp>http://w3id.org/roh/durationDays</NameProp> 
+                            <NameProp>http://vivoweb.org/ontology/core#start</NameProp> 
+                            <NameProp>http://w3id.org/roh/collaborationAgreements</NameProp> 
+                            <NameProp>http://vivoweb.org/ontology/core#freeTextKeywords</NameProp> 
+                            <NameProp>http://w3id.org/roh/durationYears</NameProp> 
+                            <NameProp>http://w3id.org/roh/crisIdentifier</NameProp> 
+                            <NameProp>http://vivoweb.org/ontology/core#description</NameProp>
+                        </Grupo>
+                    </Grupo>
+                </Grupo>
+            </OrdenEntidad>
+            <OrdenEntidadLectura>
+                <Grupo classLectura="group content semanticView">
+                    <Grupo classLectura="group group_info">
+                        <AtrNombreGrupo>Propiedades</AtrNombreGrupo>
+                        <Grupo classLectura="contentGroup">
+                            <NameProp>http://w3id.org/roh/participates</NameProp> 
+                            <NameProp>http://vivoweb.org/ontology/core#geographicFocus</NameProp> 
+                            <NameProp>http://w3id.org/roh/targetOrganizations</NameProp> 
+                            <NameProp>http://w3id.org/roh/principalInvestigator</NameProp> 
+                            <NameProp>http://w3id.org/roh/coprincipalInvestigator</NameProp> 
+                            <NameProp>http://w3id.org/roh/hasKnowledgeArea</NameProp> 
+                            <NameProp>http://w3id.org/roh/relevantResults</NameProp> 
+                            <NameProp>http://w3id.org/roh/newTechniques</NameProp> 
+                            <NameProp>http://w3id.org/roh/spinoffCompanies</NameProp> 
+                            <NameProp>http://w3id.org/roh/activityResults</NameProp> 
+                            <NameProp>http://w3id.org/roh/standardisation</NameProp> 
+                            <NameProp>http://w3id.org/roh/durationMonths</NameProp> 
+                            <NameProp>http://w3id.org/roh/durationDays</NameProp> 
+                            <NameProp>http://vivoweb.org/ontology/core#start</NameProp> 
+                            <NameProp>http://w3id.org/roh/collaborationAgreements</NameProp> 
+                            <NameProp>http://vivoweb.org/ontology/core#freeTextKeywords</NameProp> 
+                            <NameProp>http://w3id.org/roh/durationYears</NameProp> 
+                            <NameProp>http://w3id.org/roh/crisIdentifier</NameProp> 
+                            <NameProp>http://vivoweb.org/ontology/core#description</NameProp>
+                        </Grupo>
+                    </Grupo>
+                </Grupo>
+            </OrdenEntidadLectura>
+        </Entidad>
+        <Entidad  ID="http://purl.obolibrary.org/obo/BFO_0000023">
+            <AtrNombre>http://purl.obolibrary.org/obo/BFO_0000023</AtrNombre>
+            <AtrNombreLectura>http://purl.obolibrary.org/obo/BFO_0000023</AtrNombreLectura>
+            <OrdenEntidad>
+                <Grupo class="formtheme02">
+                    <Grupo class="fieldset">
+                        <Grupo Tipo="fieldset" class="mediumLabels">
+                            <NameProp>http://w3id.org/roh/roleOf</NameProp>
+                        </Grupo>
+                    </Grupo>
+                </Grupo>
+            </OrdenEntidad>
+            <OrdenEntidadLectura>
+                <Grupo classLectura="group content semanticView">
+                    <Grupo classLectura="group group_info">
+                        <AtrNombreGrupo>Propiedades</AtrNombreGrupo>
+                        <Grupo classLectura="contentGroup">
+                            <NameProp>http://w3id.org/roh/roleOf</NameProp>
+                        </Grupo>
+                    </Grupo>
+                </Grupo>
+            </OrdenEntidadLectura>
+        </Entidad>
+    </EspefEntidad>
+</config>

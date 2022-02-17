@@ -1,0 +1,68 @@
+<config>
+    <ConfiguracionGeneral>
+        <namespace>feature</namespace>
+        <idiomasOnto>
+            <idiomaOnto>es</idiomaOnto>
+        </idiomasOnto>
+        <TituloDoc EntidadID="http://www.geonames.org/ontology#Feature">http://www.geonames.org/ontology#name</TituloDoc>
+		<MultiIdioma></MultiIdioma>
+        <HtmlNuevo>true</HtmlNuevo>
+    </ConfiguracionGeneral>
+    <EspefPropiedad>
+        <Propiedad  ID="http://www.geonames.org/ontology#parentFeature" EntidadID="http://www.geonames.org/ontology#Feature">
+            <AtrNombre>Rasgo padre</AtrNombre>
+            <AtrNombreLectura>Rasgo padre</AtrNombreLectura>
+			<SeleccionEntidad>
+                <TipoSeleccion>Autocompletar</TipoSeleccion>
+                <Grafo>feature.owl</Grafo>
+                <UrlTipoEntSolicitada>http://www.geonames.org/ontology#Feature</UrlTipoEntSolicitada>              
+                <PropsEntEdicion>
+                    <NameProp>http://www.geonames.org/ontology#name</NameProp>
+                </PropsEntEdicion>
+                <PropsEntLectura>
+                    <Propiedad ID="http://www.geonames.org/ontology#name" EntidadID="http://www.geonames.org/ontology#Feature">
+                        <AtrNombreLectura></AtrNombreLectura>
+                    </Propiedad>
+                </PropsEntLectura>
+            </SeleccionEntidad>
+        </Propiedad>
+        <Propiedad  ID="http://purl.org/dc/elements/1.1/identifier" EntidadID="http://www.geonames.org/ontology#Feature">
+            <AtrNombre>Identificador</AtrNombre>
+            <AtrNombreLectura>Identificador</AtrNombreLectura>
+			<MultiIdioma>false</MultiIdioma>
+        </Propiedad>
+        <Propiedad  ID="http://www.geonames.org/ontology#name" EntidadID="http://www.geonames.org/ontology#Feature">
+            <AtrNombre>Nombre</AtrNombre>
+            <AtrNombreLectura>Nombre</AtrNombreLectura>
+			<MultiIdioma></MultiIdioma>
+        </Propiedad>
+        <Propiedad  ID="http://www.geonames.org/ontology#featureCode" EntidadID="http://www.geonames.org/ontology#Feature">
+            <AtrNombre>Código de rasgo</AtrNombre>
+            <AtrNombreLectura>Código de rasgo</AtrNombreLectura>
+			<MultiIdioma>false</MultiIdioma>
+			<ValoresCombo>
+                <ValorCombo>PCLD</ValorCombo>
+                <ValorCombo>ADM1</ValorCombo>
+                <ValorCombo>ADM2</ValorCombo>
+            </ValoresCombo>
+        </Propiedad>
+    </EspefPropiedad>
+    <EspefEntidad>
+        <Entidad  ID="http://www.geonames.org/ontology#Feature">
+            <AtrNombre>Rasgo</AtrNombre>
+            <AtrNombreLectura>Rasgo</AtrNombreLectura>
+            <OrdenEntidad>
+                <Grupo class="formtheme02">
+                    <Grupo class="fieldset">
+                        <Grupo Tipo="fieldset" class="mediumLabels">
+							<NameProp>http://www.geonames.org/ontology#name</NameProp> 
+                            <NameProp>http://purl.org/dc/elements/1.1/identifier</NameProp> 
+                            <NameProp>http://www.geonames.org/ontology#featureCode</NameProp>
+							<NameProp>http://www.geonames.org/ontology#parentFeature</NameProp>
+                        </Grupo>
+                    </Grupo>
+                </Grupo>
+            </OrdenEntidad>
+        </Entidad>
+    </EspefEntidad>
+</config>

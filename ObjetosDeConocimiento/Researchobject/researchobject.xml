@@ -1,0 +1,347 @@
+<config>
+    <ConfiguracionGeneral>
+        <namespace>researchobject</namespace>
+        <idiomasOnto>
+            <idiomaOnto>es</idiomaOnto>
+        </idiomasOnto>
+        <ocultarTituloDescpImgDoc></ocultarTituloDescpImgDoc>
+        <TituloDoc EntidadID="http://w3id.org/roh/ResearchObject">http://w3id.org/roh/title</TituloDoc>
+        <DescripcionDoc EntidadID="http://w3id.org/roh/ResearchObject">http://w3id.org/roh/title</DescripcionDoc>
+        <HtmlNuevo>true</HtmlNuevo>
+		<CategorizacionTesauroGnossObligatoria>false</CategorizacionTesauroGnossObligatoria>
+    </ConfiguracionGeneral>
+    <EspefPropiedad>
+        <Propiedad  ID="http://w3id.org/roh/categoryNode" EntidadID="http://w3id.org/roh/CategoryPath">
+            <AtrNombre>http://w3id.org/roh/categoryNode</AtrNombre>
+            <AtrNombreLectura>http://w3id.org/roh/categoryNode</AtrNombreLectura>
+			<SeleccionEntidad>
+				<TipoSeleccion>Tesauro</TipoSeleccion>
+				<Grafo>taxonomy.owl</Grafo>				
+				<UrlPropiedad>um</UrlPropiedad>                
+			</SeleccionEntidad>
+        </Propiedad>
+        <Propiedad  ID="https://www.w3.org/2006/vcard/ns#hasLanguage" EntidadID="http://w3id.org/roh/ResearchObject">
+            <AtrNombre>https://www.w3.org/2006/vcard/ns#hasLanguage</AtrNombre>
+            <AtrNombreLectura>https://www.w3.org/2006/vcard/ns#hasLanguage</AtrNombreLectura>
+        </Propiedad>
+        <Propiedad  ID="http://purl.org/ontology/bibo/authorList" EntidadID="http://w3id.org/roh/ResearchObject">
+            <AtrNombre>http://purl.org/ontology/bibo/authorList</AtrNombre>
+            <AtrNombreLectura>http://purl.org/ontology/bibo/authorList</AtrNombreLectura>
+        </Propiedad>
+		<Propiedad  ID="http://w3id.org/roh/isPublic" EntidadID="http://w3id.org/roh/ResearchObject">
+            <AtrNombre>http://w3id.org/roh/isPublic</AtrNombre>
+            <AtrNombreLectura>http://w3id.org/roh/isPublic</AtrNombreLectura>
+        </Propiedad>
+        <Propiedad  ID="http://w3id.org/roh/project" EntidadID="http://w3id.org/roh/ResearchObject">
+            <AtrNombre>http://w3id.org/roh/project</AtrNombre>
+            <AtrNombreLectura>http://w3id.org/roh/project</AtrNombreLectura>
+			<SeleccionEntidad>
+                <TipoSeleccion>Autocompletar</TipoSeleccion>
+                <Grafo>project.owl</Grafo>
+                <UrlTipoEntSolicitada>http://vivoweb.org/ontology/core#Project</UrlTipoEntSolicitada>              
+                <PropsEntEdicion>
+                    <NameProp>http://w3id.org/roh/title</NameProp>
+                </PropsEntEdicion>
+                <PropsEntLectura>
+                    <Propiedad ID="http://w3id.org/roh/title" EntidadID="http://vivoweb.org/ontology/core#Project">
+                        <AtrNombreLectura></AtrNombreLectura>
+                    </Propiedad>
+                </PropsEntLectura>
+            </SeleccionEntidad>
+        </Propiedad>        
+        <Propiedad  ID="http://purl.org/ontology/bibo/abstract" EntidadID="http://w3id.org/roh/ResearchObject">
+            <AtrNombre>http://purl.org/ontology/bibo/abstract</AtrNombre>
+            <AtrNombreLectura>http://purl.org/ontology/bibo/abstract</AtrNombreLectura>
+        </Propiedad>
+		<Propiedad  ID="http://purl.org/ontology/bibo/doi" EntidadID="http://w3id.org/roh/ResearchObject">
+            <AtrNombre>http://purl.org/ontology/bibo/doi</AtrNombre>
+            <AtrNombreLectura>http://purl.org/ontology/bibo/doi</AtrNombreLectura>
+        </Propiedad>
+        
+        <Propiedad  ID="http://purl.org/dc/terms/issued" EntidadID="http://w3id.org/roh/ResearchObject">
+            <AtrNombre>http://purl.org/dc/terms/issued</AtrNombre>
+            <AtrNombreLectura>http://purl.org/dc/terms/issued</AtrNombreLectura>
+        </Propiedad>
+		<Propiedad  ID="http://vivoweb.org/ontology/core#freeTextKeyword" EntidadID="http://w3id.org/roh/ResearchObject">
+            <AtrNombre>http://vivoweb.org/ontology/core#freeTextKeyword</AtrNombre>
+            <AtrNombreLectura>http://vivoweb.org/ontology/core#freeTextKeyword</AtrNombreLectura>
+        </Propiedad>
+		<Propiedad  ID="http://w3id.org/roh/externalKeywords" EntidadID="http://w3id.org/roh/ResearchObject">
+            <AtrNombre>http://w3id.org/roh/externalKeywords</AtrNombre>
+            <AtrNombreLectura>http://w3id.org/roh/externalKeywords</AtrNombreLectura>
+        </Propiedad>
+		<Propiedad  ID="http://w3id.org/roh/enrichedKeywords" EntidadID="http://w3id.org/roh/ResearchObject">
+            <AtrNombre>http://w3id.org/roh/enrichedKeywords</AtrNombre>
+            <AtrNombreLectura>http://w3id.org/roh/enrichedKeywords</AtrNombreLectura>
+        </Propiedad>
+		<Propiedad  ID="http://w3id.org/roh/userKeywords" EntidadID="http://w3id.org/roh/ResearchObject">
+            <AtrNombre>http://w3id.org/roh/userKeywords</AtrNombre>
+            <AtrNombreLectura>http://w3id.org/roh/userKeywords</AtrNombreLectura>
+        </Propiedad>
+		<Propiedad  ID="http://w3id.org/roh/suggestedKeywords" EntidadID="http://w3id.org/roh/ResearchObject">
+            <AtrNombre>http://w3id.org/roh/suggestedKeywords</AtrNombre>
+            <AtrNombreLectura>http://w3id.org/roh/suggestedKeywords</AtrNombreLectura>
+        </Propiedad>
+		<Propiedad  ID="http://w3id.org/roh/hasKnowledgeArea" EntidadID="http://w3id.org/roh/ResearchObject">
+            <AtrNombre>http://w3id.org/roh/hasKnowledgeArea</AtrNombre>
+            <AtrNombreLectura>http://w3id.org/roh/hasKnowledgeArea</AtrNombreLectura>
+        </Propiedad>
+		<Propiedad  ID="http://w3id.org/roh/externalKnowledgeArea" EntidadID="http://w3id.org/roh/ResearchObject">
+            <AtrNombre>http://w3id.org/roh/externalKnowledgeArea</AtrNombre>
+            <AtrNombreLectura>http://w3id.org/roh/externalKnowledgeArea</AtrNombreLectura>
+        </Propiedad>
+		<Propiedad  ID="http://w3id.org/roh/enrichedKnowledgeArea" EntidadID="http://w3id.org/roh/ResearchObject">
+            <AtrNombre>http://w3id.org/roh/enrichedKnowledgeArea</AtrNombre>
+            <AtrNombreLectura>http://w3id.org/roh/enrichedKnowledgeArea</AtrNombreLectura>
+        </Propiedad>
+		<Propiedad  ID="http://w3id.org/roh/userKnowledgeArea" EntidadID="http://w3id.org/roh/ResearchObject">
+            <AtrNombre>http://w3id.org/roh/userKnowledgeArea</AtrNombre>
+            <AtrNombreLectura>http://w3id.org/roh/userKnowledgeArea</AtrNombreLectura>
+        </Propiedad>
+		<Propiedad  ID="http://w3id.org/roh/suggestedKnowledgeArea" EntidadID="http://w3id.org/roh/ResearchObject">
+            <AtrNombre>http://w3id.org/roh/suggestedKnowledgeArea</AtrNombre>
+            <AtrNombreLectura>http://w3id.org/roh/suggestedKnowledgeArea</AtrNombreLectura>
+        </Propiedad>
+        <Propiedad  ID="https://www.w3.org/2006/vcard/ns#url" EntidadID="http://w3id.org/roh/ResearchObject">
+            <AtrNombre>https://www.w3.org/2006/vcard/ns#url</AtrNombre>
+            <AtrNombreLectura>https://www.w3.org/2006/vcard/ns#url</AtrNombreLectura>
+        </Propiedad>
+        <Propiedad  ID="http://w3id.org/roh/isValidated" EntidadID="http://w3id.org/roh/ResearchObject">
+            <AtrNombre>http://w3id.org/roh/isValidated</AtrNombre>
+            <AtrNombreLectura>http://w3id.org/roh/isValidated</AtrNombreLectura>
+        </Propiedad>
+        <Propiedad  ID="http://w3id.org/roh/title" EntidadID="http://w3id.org/roh/ResearchObject">
+            <AtrNombre>http://w3id.org/roh/title</AtrNombre>
+            <AtrNombreLectura>http://w3id.org/roh/title</AtrNombreLectura>
+        </Propiedad>
+		<Propiedad  ID="http://w3id.org/roh/citationLoadedCount" EntidadID="http://w3id.org/roh/ResearchObject">
+            <AtrNombre>http://w3id.org/roh/citationLoadedCount</AtrNombre>
+            <AtrNombreLectura>http://w3id.org/roh/citationLoadedCount</AtrNombreLectura>
+        </Propiedad>
+        <Propiedad  ID="http://xmlns.com/foaf/0.1/nick" EntidadID="http://purl.obolibrary.org/obo/BFO_0000023">
+            <AtrNombre>http://xmlns.com/foaf/0.1/nick</AtrNombre>
+            <AtrNombreLectura>http://xmlns.com/foaf/0.1/nick</AtrNombreLectura>
+        </Propiedad>
+		
+		
+		<Propiedad  ID="http://purl.org/dc/elements/1.1/type" EntidadID="http://w3id.org/roh/ResearchObject">
+            <AtrNombre>http://purl.org/dc/elements/1.1/type</AtrNombre>
+            <AtrNombreLectura>http://purl.org/dc/elements/1.1/type</AtrNombreLectura>
+			<SeleccionEntidad>
+                <TipoSeleccion>Autocompletar</TipoSeleccion>
+                <Grafo>researchobjecttype.owl</Grafo>
+                <UrlTipoEntSolicitada>http://w3id.org/roh/ResearchObjectType</UrlTipoEntSolicitada>              
+                <PropsEntEdicion>
+                    <NameProp>http://purl.org/dc/elements/1.1/title</NameProp>
+                </PropsEntEdicion>
+                <PropsEntLectura>
+                    <Propiedad ID="http://purl.org/dc/elements/1.1/title" EntidadID="http://w3id.org/roh/ResearchObjectType">
+                        <AtrNombreLectura></AtrNombreLectura>
+                    </Propiedad>
+                </PropsEntLectura>
+            </SeleccionEntidad>
+        </Propiedad>		
+        <Propiedad  ID="http://www.w3.org/1999/02/22-rdf-syntax-ns#member" EntidadID="http://purl.obolibrary.org/obo/BFO_0000023">
+            <AtrNombre>http://www.w3.org/1999/02/22-rdf-syntax-ns#member</AtrNombre>
+            <AtrNombreLectura>http://www.w3.org/1999/02/22-rdf-syntax-ns#member</AtrNombreLectura>
+			<SeleccionEntidad>
+				<LinkARecurso IrAComunidad="true" PropiedadID="http://xmlns.com/foaf/0.1/name"></LinkARecurso>
+                <TipoSeleccion>Autocompletar</TipoSeleccion>
+                <Grafo>person.owl</Grafo>
+                <UrlTipoEntSolicitada>http://xmlns.com/foaf/0.1/Person</UrlTipoEntSolicitada>              
+                <PropsEntEdicion>
+                    <NameProp>http://xmlns.com/foaf/0.1/name</NameProp>
+                </PropsEntEdicion>
+                <PropsEntLectura>
+                    <Propiedad ID="http://xmlns.com/foaf/0.1/name" EntidadID="http://xmlns.com/foaf/0.1/Person">
+                        <AtrNombreLectura></AtrNombreLectura>
+                    </Propiedad>
+					<Propiedad ID="http://w3id.org/roh/gnossUser" EntidadID="http://xmlns.com/foaf/0.1/Person">
+                        <AtrNombreLectura></AtrNombreLectura>
+                    </Propiedad>
+					<Propiedad ID="http://w3id.org/roh/cvOf" EntidadID="http://xmlns.com/foaf/0.1/Person">
+                        <AtrNombreLectura></AtrNombreLectura>
+						<SeleccionEntidad>
+							<TipoSeleccion>Autocompletar</TipoSeleccion>
+							<NuevaPestanya>false</NuevaPestanya>
+							<LinkARecurso IrAComunidad="true"></LinkARecurso>
+							<Grafo>curriculumvitae.owl</Grafo>
+							<UrlTipoEntSolicitada>http://w3id.org/roh/CV</UrlTipoEntSolicitada>
+							<PropsEntLectura>
+								<Propiedad ID="http://xmlns.com/foaf/0.1/name" EntidadID="http://w3id.org/roh/CV">
+								<AtrNombreLectura></AtrNombreLectura>
+							</Propiedad>		
+							</PropsEntLectura>
+							<Reciproca></Reciproca>
+						</SeleccionEntidad>	
+                    </Propiedad>
+					<Propiedad  ID="http://w3id.org/roh/hasRole" EntidadID="http://xmlns.com/foaf/0.1/Person">
+						<AtrNombre xml:lang="es">Organización:</AtrNombre>
+						<AtrNombreLectura xml:lang="es"></AtrNombreLectura>
+						<SeleccionEntidad>
+							<TipoSeleccion>Autocompletar</TipoSeleccion>
+							<NuevaPestanya>false</NuevaPestanya>
+							<LinkARecurso IrAComunidad="true"></LinkARecurso>
+							<Grafo>organization.owl</Grafo>
+							<UrlTipoEntSolicitada>http://xmlns.com/foaf/0.1/Organization</UrlTipoEntSolicitada>
+							<PropsEntEdicion>
+								<NameProp>http://w3id.org/roh/title</NameProp>
+							</PropsEntEdicion>
+							<PropsEntLectura>
+								<Propiedad ID="http://w3id.org/roh/title" EntidadID="http://xmlns.com/foaf/0.1/Organization">
+								<AtrNombreLectura></AtrNombreLectura>
+							</Propiedad>		
+							</PropsEntLectura>
+						</SeleccionEntidad>	
+					</Propiedad>
+                </PropsEntLectura>
+            </SeleccionEntidad>
+        </Propiedad>
+		<Propiedad  ID="http://www.w3.org/1999/02/22-rdf-syntax-ns#member" EntidadID="http://w3id.org/roh/Annotation">
+            <AtrNombre>http://www.w3.org/1999/02/22-rdf-syntax-ns#member</AtrNombre>
+            <AtrNombreLectura>http://www.w3.org/1999/02/22-rdf-syntax-ns#member</AtrNombreLectura>
+			<SeleccionEntidad>
+				<LinkARecurso IrAComunidad="true" PropiedadID="http://xmlns.com/foaf/0.1/name"></LinkARecurso>
+                <TipoSeleccion>Autocompletar</TipoSeleccion>
+                <Grafo>person.owl</Grafo>
+                <UrlTipoEntSolicitada>http://xmlns.com/foaf/0.1/Person</UrlTipoEntSolicitada>              
+                <PropsEntEdicion>
+                    <NameProp>http://xmlns.com/foaf/0.1/name</NameProp>
+                </PropsEntEdicion>
+                <PropsEntLectura>
+                    <Propiedad ID="http://xmlns.com/foaf/0.1/name" EntidadID="http://xmlns.com/foaf/0.1/Person">
+                        <AtrNombreLectura></AtrNombreLectura>
+                    </Propiedad>
+                </PropsEntLectura>
+            </SeleccionEntidad>
+        </Propiedad>		
+        <Propiedad  ID="http://www.w3.org/1999/02/22-rdf-syntax-ns#comment" EntidadID="http://purl.obolibrary.org/obo/BFO_0000023">
+            <AtrNombre>http://www.w3.org/1999/02/22-rdf-syntax-ns#comment</AtrNombre>
+            <AtrNombreLectura>http://www.w3.org/1999/02/22-rdf-syntax-ns#comment</AtrNombreLectura>
+        </Propiedad>
+    </EspefPropiedad>
+    <EspefEntidad>        
+        <Entidad  ID="http://w3id.org/roh/CategoryPath">
+            <AtrNombre>http://w3id.org/roh/CategoryPath</AtrNombre>
+            <AtrNombreLectura>http://w3id.org/roh/CategoryPath</AtrNombreLectura>
+            <OrdenEntidad>
+                <Grupo class="formtheme02">
+                    <Grupo class="fieldset">
+                        <Grupo Tipo="fieldset" class="mediumLabels">
+                            <NameProp>http://w3id.org/roh/categoryNode</NameProp>
+                        </Grupo>
+                    </Grupo>
+                </Grupo>
+            </OrdenEntidad>
+            <OrdenEntidadLectura>
+                <Grupo classLectura="contentGroup contenidoPrincipal">
+                    <Grupo classLectura="group title">
+                        <Grupo Tipo="titulo">
+                            <NameProp>http://w3id.org/roh/categoryNode</NameProp>
+                        </Grupo>
+                        <Grupo Tipo="subtitulo">
+                            <NameProp>http://w3id.org/roh/categoryNode</NameProp>
+                        </Grupo>
+                    </Grupo>
+                </Grupo>
+                <Grupo classLectura="group content semanticView">
+                    <Grupo classLectura="group group_info">
+                        <AtrNombreGrupo>Propiedades</AtrNombreGrupo>
+                        <Grupo classLectura="contentGroup">
+                            <NameProp>http://w3id.org/roh/categoryNode</NameProp>
+                        </Grupo>
+                    </Grupo>
+                </Grupo>
+            </OrdenEntidadLectura>
+        </Entidad>
+        
+        <Entidad  ID="http://w3id.org/roh/ResearchObject">
+            <AtrNombre>http://w3id.org/roh/ResearchObject</AtrNombre>
+            <AtrNombreLectura>http://w3id.org/roh/ResearchObject</AtrNombreLectura>
+            <OrdenEntidad>
+                <Grupo class="formtheme02">
+                    <Grupo class="fieldset">
+                        <Grupo Tipo="fieldset" class="mediumLabels">
+                            <NameProp>https://www.w3.org/2006/vcard/ns#hasLanguage</NameProp> 
+                            <NameProp>http://purl.org/ontology/bibo/authorList</NameProp> 
+                            <NameProp>http://w3id.org/roh/project</NameProp> 
+                            <NameProp>http://w3id.org/roh/hasKnowledgeArea</NameProp> 
+                            <NameProp>http://purl.org/ontology/bibo/abstract</NameProp> 
+                            <NameProp>http://vivoweb.org/ontology/core#freeTextKeyword</NameProp> 
+                            <NameProp>http://purl.org/dc/terms/issued</NameProp> 
+                            <NameProp>https://www.w3.org/2006/vcard/ns#url</NameProp> 
+                            <NameProp>http://w3id.org/roh/isValidated</NameProp> 
+                            <NameProp>http://w3id.org/roh/title</NameProp>
+							<NameProp>http://w3id.org/roh/isPublic</NameProp>
+							<NameProp>http://purl.org/ontology/bibo/doi</NameProp>
+							<NameProp>http://w3id.org/roh/externalKeywords</NameProp>
+							<NameProp>http://w3id.org/roh/enrichedKeywords</NameProp>
+							<NameProp>http://w3id.org/roh/userKeywords</NameProp>
+							<NameProp>http://w3id.org/roh/suggestedKeywords</NameProp>
+							<NameProp>http://w3id.org/roh/externalKnowledgeArea</NameProp>
+							<NameProp>http://w3id.org/roh/enrichedKnowledgeArea</NameProp>
+							<NameProp>http://w3id.org/roh/userKnowledgeArea</NameProp>
+							<NameProp>http://w3id.org/roh/suggestedKnowledgeArea</NameProp>
+                        </Grupo>
+                    </Grupo>
+                </Grupo>
+            </OrdenEntidad>
+            <OrdenEntidadLectura>
+                <Grupo classLectura="group content semanticView">
+                    <Grupo classLectura="group group_info">
+                        <AtrNombreGrupo>Propiedades</AtrNombreGrupo>
+                        <Grupo classLectura="contentGroup">
+                            <NameProp>https://www.w3.org/2006/vcard/ns#hasLanguage</NameProp> 
+                            <NameProp>http://purl.org/ontology/bibo/authorList</NameProp> 
+                            <NameProp>http://w3id.org/roh/project</NameProp> 
+                            <NameProp>http://w3id.org/roh/hasKnowledgeArea</NameProp> 
+                            <NameProp>http://purl.org/ontology/bibo/abstract</NameProp> 
+                            <NameProp>http://vivoweb.org/ontology/core#freeTextKeyword</NameProp> 
+                            <NameProp>http://purl.org/dc/terms/issued</NameProp> 
+                            <NameProp>https://www.w3.org/2006/vcard/ns#url</NameProp> 
+                            <NameProp>http://w3id.org/roh/isValidated</NameProp> 
+                            <NameProp>http://w3id.org/roh/title</NameProp>
+							<NameProp>http://w3id.org/roh/isPublic</NameProp>
+							<NameProp>http://purl.org/ontology/bibo/doi</NameProp>
+							<NameProp>http://w3id.org/roh/externalKeywords</NameProp>
+							<NameProp>http://w3id.org/roh/enrichedKeywords</NameProp>
+							<NameProp>http://w3id.org/roh/userKeywords</NameProp>
+							<NameProp>http://w3id.org/roh/suggestedKeywords</NameProp>
+							<NameProp>http://w3id.org/roh/externalKnowledgeArea</NameProp>
+							<NameProp>http://w3id.org/roh/enrichedKnowledgeArea</NameProp>
+							<NameProp>http://w3id.org/roh/userKnowledgeArea</NameProp>
+							<NameProp>http://w3id.org/roh/suggestedKnowledgeArea</NameProp>
+                        </Grupo>
+                    </Grupo>
+                </Grupo>
+            </OrdenEntidadLectura>
+        </Entidad>
+        <Entidad  ID="http://purl.obolibrary.org/obo/BFO_0000023">
+            <AtrNombre>http://purl.obolibrary.org/obo/BFO_0000023</AtrNombre>
+            <AtrNombreLectura>http://purl.obolibrary.org/obo/BFO_0000023</AtrNombreLectura>
+            <OrdenEntidad>
+                <Grupo class="formtheme02">
+                    <Grupo class="fieldset">
+                        <Grupo Tipo="fieldset" class="mediumLabels">
+                            <NameProp>http://xmlns.com/foaf/0.1/nick</NameProp> 
+                            <NameProp>http://www.w3.org/1999/02/22-rdf-syntax-ns#member</NameProp> 
+                            <NameProp>http://www.w3.org/1999/02/22-rdf-syntax-ns#comment</NameProp>
+                        </Grupo>
+                    </Grupo>
+                </Grupo>
+            </OrdenEntidad>
+            <OrdenEntidadLectura>
+                <Grupo classLectura="group content semanticView">
+                    <Grupo classLectura="group group_info">
+                        <AtrNombreGrupo>Propiedades</AtrNombreGrupo>
+                        <Grupo classLectura="contentGroup">
+                            <NameProp>http://xmlns.com/foaf/0.1/nick</NameProp> 
+                            <NameProp>http://www.w3.org/1999/02/22-rdf-syntax-ns#member</NameProp> 
+                            <NameProp>http://www.w3.org/1999/02/22-rdf-syntax-ns#comment</NameProp>
+                        </Grupo>
+                    </Grupo>
+                </Grupo>
+            </OrdenEntidadLectura>
+        </Entidad>
+    </EspefEntidad>
+</config>

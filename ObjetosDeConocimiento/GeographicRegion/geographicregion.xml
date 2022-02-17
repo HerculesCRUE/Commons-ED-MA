@@ -1,0 +1,41 @@
+<config>
+    <ConfiguracionGeneral>
+        <namespace>geographicregion</namespace>
+        <idiomasOnto>
+            <idiomaOnto>es</idiomaOnto>
+        </idiomasOnto>
+        <TituloDoc EntidadID="http://vivoweb.org/ontology/core#GeographicRegion">http://purl.org/dc/elements/1.1/title</TituloDoc>
+		<MultiIdioma></MultiIdioma>
+        <HtmlNuevo>true</HtmlNuevo>
+    </ConfiguracionGeneral>
+    <EspefPropiedad>
+        <Propiedad  ID="http://purl.org/dc/elements/1.1/title" EntidadID="http://vivoweb.org/ontology/core#GeographicRegion">
+            <AtrNombre>Ámbito geográfico</AtrNombre>
+            <AtrNombreLectura>Ámbito geográfico</AtrNombreLectura>
+			<MultiIdioma></MultiIdioma>
+        </Propiedad>
+    </EspefPropiedad>
+	<EspefPropiedad>
+        <Propiedad  ID="http://purl.org/dc/elements/1.1/identifier" EntidadID="http://vivoweb.org/ontology/core#GeographicRegion">
+            <AtrNombre>Identificador del ámbito geográfico</AtrNombre>
+            <AtrNombreLectura>Identificador del ámbito geográfico</AtrNombreLectura>
+			<MultiIdioma>false</MultiIdioma>
+        </Propiedad>
+    </EspefPropiedad>
+    <EspefEntidad>
+        <Entidad  ID="http://vivoweb.org/ontology/core#GeographicRegion">
+            <AtrNombre>Ámbito geográfico</AtrNombre>
+            <AtrNombreLectura>Ámbito geográfico</AtrNombreLectura>
+            <OrdenEntidad>
+                <Grupo class="formtheme02">
+                    <Grupo class="fieldset">
+                        <Grupo Tipo="fieldset" class="mediumLabels">
+                            <NameProp>http://purl.org/dc/elements/1.1/title</NameProp>
+							<NameProp>http://purl.org/dc/elements/1.1/identifier</NameProp>
+                        </Grupo>
+                    </Grupo>
+                </Grupo>
+            </OrdenEntidad>
+        </Entidad>
+    </EspefEntidad>
+</config>

@@ -1,0 +1,39 @@
+<config>
+    <ConfiguracionGeneral>
+        <namespace>publicationtype</namespace>
+        <idiomasOnto>
+            <idiomaOnto>es</idiomaOnto>
+        </idiomasOnto>
+        <TituloDoc EntidadID="http://w3id.org/roh/PublicationType">http://purl.org/dc/elements/1.1/title</TituloDoc>
+		<MultiIdioma></MultiIdioma>
+        <HtmlNuevo>true</HtmlNuevo>
+    </ConfiguracionGeneral>
+    <EspefPropiedad>
+        <Propiedad  ID="http://purl.org/dc/elements/1.1/title" EntidadID="http://w3id.org/roh/PublicationType">
+            <AtrNombre>Tipo de publicación</AtrNombre>
+            <AtrNombreLectura>Tipo de publicación</AtrNombreLectura>
+			<MultiIdioma></MultiIdioma>
+        </Propiedad>
+        <Propiedad  ID="http://purl.org/dc/elements/1.1/identifier" EntidadID="http://w3id.org/roh/PublicationType">
+            <AtrNombre>Identificador del tipo de publicación</AtrNombre>
+            <AtrNombreLectura>Identificador del tipo de publicación</AtrNombreLectura>
+			<MultiIdioma>false</MultiIdioma>
+        </Propiedad>
+    </EspefPropiedad>
+    <EspefEntidad>
+        <Entidad  ID="http://w3id.org/roh/PublicationType">
+            <AtrNombre>Tipo de publicación</AtrNombre>
+            <AtrNombreLectura>Tipo de publicación</AtrNombreLectura>
+            <OrdenEntidad>
+                <Grupo class="formtheme02">
+                    <Grupo class="fieldset">
+                        <Grupo Tipo="fieldset" class="mediumLabels">
+                            <NameProp>http://purl.org/dc/elements/1.1/title</NameProp> 
+                            <NameProp>http://purl.org/dc/elements/1.1/identifier</NameProp>
+                        </Grupo>
+                    </Grupo>
+                </Grupo>
+            </OrdenEntidad>
+        </Entidad>
+    </EspefEntidad>
+</config>

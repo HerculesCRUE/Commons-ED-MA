@@ -1,0 +1,374 @@
+<config>
+    <ConfiguracionGeneral>
+        <namespace>patent</namespace>
+        <idiomasOnto>
+            <idiomaOnto>es</idiomaOnto>
+        </idiomasOnto>
+        <ocultarTituloDescpImgDoc></ocultarTituloDescpImgDoc>
+        <TituloDoc EntidadID="http://purl.org/ontology/bibo/Patent">http://w3id.org/roh/title</TituloDoc>
+        <DescripcionDoc EntidadID="http://purl.org/ontology/bibo/Patent">http://w3id.org/roh/title</DescripcionDoc>
+        <HtmlNuevo>true</HtmlNuevo>
+		<CategorizacionTesauroGnossObligatoria>false</CategorizacionTesauroGnossObligatoria>
+    </ConfiguracionGeneral>
+    <EspefPropiedad>
+		<Propiedad  ID="http://xmlns.com/foaf/0.1/nick" EntidadID="http://purl.obolibrary.org/obo/BFO_0000023">
+            <AtrNombre>http://xmlns.com/foaf/0.1/nick</AtrNombre>
+            <AtrNombreLectura>http://xmlns.com/foaf/0.1/nick</AtrNombreLectura>
+        </Propiedad>
+        <Propiedad  ID="http://www.w3.org/1999/02/22-rdf-syntax-ns#member" EntidadID="http://purl.obolibrary.org/obo/BFO_0000023">
+            <AtrNombre>http://www.w3.org/1999/02/22-rdf-syntax-ns#member</AtrNombre>
+            <AtrNombreLectura>http://www.w3.org/1999/02/22-rdf-syntax-ns#member</AtrNombreLectura>
+			<SeleccionEntidad>
+                <TipoSeleccion>Autocompletar</TipoSeleccion>
+                <Grafo>person.owl</Grafo>
+                <UrlTipoEntSolicitada>http://xmlns.com/foaf/0.1/Person</UrlTipoEntSolicitada>              
+                <PropsEntEdicion>
+                    <NameProp>http://xmlns.com/foaf/0.1/name</NameProp>
+                </PropsEntEdicion>
+                <PropsEntLectura>
+                    <Propiedad ID="http://xmlns.com/foaf/0.1/name" EntidadID="http://xmlns.com/foaf/0.1/Person">
+                        <AtrNombreLectura></AtrNombreLectura>
+                    </Propiedad>
+                </PropsEntLectura>
+            </SeleccionEntidad>
+        </Propiedad>
+        <Propiedad  ID="http://www.w3.org/1999/02/22-rdf-syntax-ns#comment" EntidadID="http://purl.obolibrary.org/obo/BFO_0000023">
+            <AtrNombre>http://www.w3.org/1999/02/22-rdf-syntax-ns#comment</AtrNombre>
+            <AtrNombreLectura>http://www.w3.org/1999/02/22-rdf-syntax-ns#comment</AtrNombreLectura>
+        </Propiedad>
+        <Propiedad  ID="http://w3id.org/roh/ownerOrganization" EntidadID="http://purl.org/ontology/bibo/Patent">
+            <AtrNombre>Entidad titular de derechos</AtrNombre>
+            <AtrNombreLectura>Entidad titular de derechos</AtrNombreLectura>
+			<SeleccionEntidad>
+                <TipoSeleccion>Autocompletar</TipoSeleccion>
+                <Grafo>organization.owl</Grafo>
+                <UrlTipoEntSolicitada>http://xmlns.com/foaf/0.1/Organization</UrlTipoEntSolicitada>              
+                <PropsEntEdicion>
+                    <NameProp>http://w3id.org/roh/title</NameProp>
+                </PropsEntEdicion>
+                <PropsEntLectura>
+                    <Propiedad ID="http://w3id.org/roh/title" EntidadID="http://xmlns.com/foaf/0.1/Organization">
+                        <AtrNombreLectura></AtrNombreLectura>
+                    </Propiedad>
+                </PropsEntLectura>
+            </SeleccionEntidad>
+        </Propiedad>
+        <Propiedad  ID="https://www.w3.org/2006/vcard/ns#hasAddress" EntidadID="http://purl.org/ontology/bibo/Patent">
+            <AtrNombre>Lugar de inscripción</AtrNombre>
+            <AtrNombreLectura>Lugar de inscripción</AtrNombreLectura>
+        </Propiedad>
+		<Propiedad  ID="http://w3id.org/roh/operatingCompanies" EntidadID="http://purl.org/ontology/bibo/Patent">
+            <AtrNombre>http://w3id.org/roh/operatingCompanies</AtrNombre>
+            <AtrNombreLectura>http://w3id.org/roh/operatingCompanies</AtrNombreLectura>
+			<SeleccionEntidad>
+                <TipoSeleccion>Autocompletar</TipoSeleccion>
+                <Grafo>organization.owl</Grafo>
+                <UrlTipoEntSolicitada>http://xmlns.com/foaf/0.1/Organization</UrlTipoEntSolicitada>              
+                <PropsEntEdicion>
+                    <NameProp>http://w3id.org/roh/title</NameProp>
+                </PropsEntEdicion>
+                <PropsEntLectura>
+                    <Propiedad ID="http://w3id.org/roh/title" EntidadID="http://xmlns.com/foaf/0.1/Organization">
+                        <AtrNombreLectura></AtrNombreLectura>
+                    </Propiedad>
+                </PropsEntLectura>
+            </SeleccionEntidad>
+        </Propiedad>
+        <Propiedad  ID="http://w3id.org/roh/industrialPropertyType" EntidadID="http://purl.org/ontology/bibo/Patent">
+            <AtrNombre>Tipo de propiedad industrial</AtrNombre>
+            <AtrNombreLectura>Tipo de propiedad industrial</AtrNombreLectura>
+			<SeleccionEntidad>
+                <TipoSeleccion>Combo</TipoSeleccion>
+                <Grafo>industrialpropertytype.owl</Grafo>
+                <UrlTipoEntSolicitada>http://w3id.org/roh/IndustrialPropertyType</UrlTipoEntSolicitada>              
+                <PropsEntEdicion>
+                    <NameProp>http://purl.org/dc/elements/1.1/title</NameProp>
+                </PropsEntEdicion>
+                <PropsEntLectura>
+                    <Propiedad ID="http://purl.org/dc/elements/1.1/title" EntidadID="http://w3id.org/roh/IndustrialPropertyType">
+                        <AtrNombreLectura></AtrNombreLectura>
+                    </Propiedad>
+                </PropsEntLectura>
+            </SeleccionEntidad>
+        </Propiedad>
+        <Propiedad  ID="http://w3id.org/roh/operatingCountries" EntidadID="http://purl.org/ontology/bibo/Patent">
+            <AtrNombre>Países de explotación</AtrNombre>
+            <AtrNombreLectura>Países de explotación</AtrNombreLectura>
+        </Propiedad>
+        <Propiedad  ID="http://w3id.org/roh/patentInventor" EntidadID="http://purl.org/ontology/bibo/Patent">
+            <AtrNombre>Inventores de patente</AtrNombre>
+            <AtrNombreLectura>Inventores de patente</AtrNombreLectura>
+        </Propiedad>
+        <Propiedad  ID="http://w3id.org/roh/spanishPatent" EntidadID="http://purl.org/ontology/bibo/Patent">
+            <AtrNombre>Patente española</AtrNombre>
+            <AtrNombreLectura>Patente española</AtrNombreLectura>
+        </Propiedad>
+        <Propiedad  ID="http://w3id.org/roh/relevantResults" EntidadID="http://purl.org/ontology/bibo/Patent">
+            <AtrNombre>Resultados relevantes</AtrNombre>
+            <AtrNombreLectura>Resultados relevantes</AtrNombreLectura>
+        </Propiedad>
+        <Propiedad  ID="http://w3id.org/roh/applicationNumber" EntidadID="http://purl.org/ontology/bibo/Patent">
+            <AtrNombre>Nº de solicitud</AtrNombre>
+            <AtrNombreLectura>Nº de solicitud</AtrNombreLectura>
+        </Propiedad>
+        <Propiedad  ID="http://w3id.org/roh/knowHow" EntidadID="http://purl.org/ontology/bibo/Patent">
+            <AtrNombre>Modalidad de know-how</AtrNombre>
+            <AtrNombreLectura>Modalidad de know-how</AtrNombreLectura>
+        </Propiedad>
+        <Propiedad  ID="http://w3id.org/roh/results" EntidadID="http://purl.org/ontology/bibo/Patent">
+            <AtrNombre>Resultado</AtrNombre>
+            <AtrNombreLectura>Resultado</AtrNombreLectura>
+        </Propiedad>
+        <Propiedad  ID="http://w3id.org/roh/patentNumber" EntidadID="http://purl.org/ontology/bibo/Patent">
+            <AtrNombre>Nº de patente</AtrNombre>
+            <AtrNombreLectura>Nº de patente</AtrNombreLectura>
+        </Propiedad>
+        <Propiedad  ID="http://w3id.org/roh/industrialPropertyTypeOther" EntidadID="http://purl.org/ontology/bibo/Patent">
+            <AtrNombre>Tipo de propiedad industrial, otros</AtrNombre>
+            <AtrNombreLectura>Tipo de propiedad industrial, otros</AtrNombreLectura>
+        </Propiedad>
+        <Propiedad  ID="http://w3id.org/roh/title" EntidadID="http://purl.org/ontology/bibo/Patent">
+            <AtrNombre>Título propiedad industrial registrada</AtrNombre>
+            <AtrNombreLectura>Título propiedad industrial registrada</AtrNombreLectura>
+        </Propiedad>
+        <Propiedad  ID="http://w3id.org/roh/exclusiveUse" EntidadID="http://purl.org/ontology/bibo/Patent">
+            <AtrNombre>Explotación en exclusiva</AtrNombre>
+            <AtrNombreLectura>Explotación en exclusiva</AtrNombreLectura>
+        </Propiedad>
+        <Propiedad  ID="http://w3id.org/roh/relatedRights" EntidadID="http://purl.org/ontology/bibo/Patent">
+            <AtrNombre>Derechos conexos</AtrNombre>
+            <AtrNombreLectura>Derechos conexos</AtrNombreLectura>
+        </Propiedad>
+        <Propiedad  ID="http://w3id.org/roh/products" EntidadID="http://purl.org/ontology/bibo/Patent">
+            <AtrNombre>Productos</AtrNombre>
+            <AtrNombreLectura>Productos</AtrNombreLectura>
+        </Propiedad>
+        <Propiedad  ID="http://w3id.org/roh/referenceCode" EntidadID="http://purl.org/ontology/bibo/Patent">
+            <AtrNombre>Cód. de referencia/registro</AtrNombre>
+            <AtrNombreLectura>Cód. de referencia/registro</AtrNombreLectura>
+        </Propiedad>
+        <Propiedad  ID="http://vivoweb.org/ontology/core#dateFiled" EntidadID="http://purl.org/ontology/bibo/Patent">
+            <AtrNombre>Fecha de registro</AtrNombre>
+            <AtrNombreLectura>Fecha de registro</AtrNombreLectura>
+        </Propiedad>
+        <Propiedad  ID="http://w3id.org/roh/europeanPatent" EntidadID="http://purl.org/ontology/bibo/Patent">
+            <AtrNombre>Patente europea</AtrNombre>
+            <AtrNombreLectura>Patente europea</AtrNombreLectura>
+        </Propiedad>
+        <Propiedad  ID="http://w3id.org/roh/authorsRights" EntidadID="http://purl.org/ontology/bibo/Patent">
+            <AtrNombre>Derechos de autor</AtrNombre>
+            <AtrNombreLectura>Derechos de autor</AtrNombreLectura>
+        </Propiedad>
+        <Propiedad  ID="http://vivoweb.org/ontology/core#dateIssued" EntidadID="http://purl.org/ontology/bibo/Patent">
+            <AtrNombre>Fecha de concesión</AtrNombre>
+            <AtrNombreLectura>Fecha de concesión</AtrNombreLectura>
+        </Propiedad>
+        <Propiedad  ID="http://w3id.org/roh/tradeSecret" EntidadID="http://purl.org/ontology/bibo/Patent">
+            <AtrNombre>Secreto empresarial</AtrNombre>
+            <AtrNombreLectura>Secreto empresarial</AtrNombreLectura>
+        </Propiedad>
+        <Propiedad  ID="http://w3id.org/roh/qualityDescription" EntidadID="http://purl.org/ontology/bibo/Patent">
+            <AtrNombre>Descripción de cualidades</AtrNombre>
+            <AtrNombreLectura>Descripción de cualidades</AtrNombreLectura>
+        </Propiedad>
+        <Propiedad  ID="http://vivoweb.org/ontology/core#freeTextKeywords" EntidadID="http://purl.org/ontology/bibo/Patent">
+            <AtrNombre>Palabras clave</AtrNombre>
+            <AtrNombreLectura>Palabras clave</AtrNombreLectura>
+        </Propiedad>
+        <Propiedad  ID="http://w3id.org/roh/innovativeEnterprise" EntidadID="http://purl.org/ontology/bibo/Patent">
+            <AtrNombre>Generada empresa innovadora</AtrNombre>
+            <AtrNombreLectura>Generada empresa innovadora</AtrNombreLectura>
+        </Propiedad>
+        <Propiedad  ID="http://w3id.org/roh/internationalPatent" EntidadID="http://purl.org/ontology/bibo/Patent">
+            <AtrNombre>Patente internacional no UE</AtrNombre>
+            <AtrNombreLectura>Patente internacional no UE</AtrNombreLectura>
+        </Propiedad>
+        <Propiedad  ID="http://w3id.org/roh/crisIdentifier" EntidadID="http://purl.org/ontology/bibo/Patent">
+            <AtrNombre>Identificador</AtrNombre>
+            <AtrNombreLectura>Identificador</AtrNombreLectura>
+        </Propiedad>
+        <Propiedad  ID="http://w3id.org/roh/licenses" EntidadID="http://purl.org/ontology/bibo/Patent">
+            <AtrNombre>Licencias</AtrNombre>
+            <AtrNombreLectura>Licencias</AtrNombreLectura>
+        </Propiedad>
+        <Propiedad  ID="http://w3id.org/roh/pctPatent" EntidadID="http://purl.org/ontology/bibo/Patent">
+            <AtrNombre>Patente PCT</AtrNombre>
+            <AtrNombreLectura>Patente PCT</AtrNombreLectura>
+        </Propiedad>
+        <Propiedad  ID="https://www.w3.org/2006/vcard/ns#hasRegion" EntidadID="https://www.w3.org/2006/vcard/ns#Address">
+            <AtrNombre>C. Autón./Reg.</AtrNombre>
+            <AtrNombreLectura>C. Autón./Reg.</AtrNombreLectura>
+			<SeleccionEntidad>
+                <TipoSeleccion>Autocompletar</TipoSeleccion>
+                <Grafo>feature.owl</Grafo>
+                <UrlTipoEntSolicitada>http://www.geonames.org/ontology#Feature</UrlTipoEntSolicitada>              
+                <PropsEntEdicion>
+                    <NameProp>http://www.geonames.org/ontology#name</NameProp>
+                </PropsEntEdicion>
+                <PropsEntLectura>
+                    <Propiedad ID="http://www.geonames.org/ontology#name" EntidadID="http://www.geonames.org/ontology#Feature">
+                        <AtrNombreLectura></AtrNombreLectura>
+                    </Propiedad>
+                </PropsEntLectura>
+            </SeleccionEntidad>
+        </Propiedad>
+        <Propiedad  ID="https://www.w3.org/2006/vcard/ns#hasCountryName" EntidadID="https://www.w3.org/2006/vcard/ns#Address">
+            <AtrNombre>País</AtrNombre>
+            <AtrNombreLectura>País</AtrNombreLectura>
+			<SeleccionEntidad>
+                <TipoSeleccion>Autocompletar</TipoSeleccion>
+                <Grafo>feature.owl</Grafo>
+                <UrlTipoEntSolicitada>http://www.geonames.org/ontology#Feature</UrlTipoEntSolicitada>              
+                <PropsEntEdicion>
+                    <NameProp>http://www.geonames.org/ontology#name</NameProp>
+                </PropsEntEdicion>
+                <PropsEntLectura>
+                    <Propiedad ID="http://www.geonames.org/ontology#name" EntidadID="http://www.geonames.org/ontology#Feature">
+                        <AtrNombreLectura></AtrNombreLectura>
+                    </Propiedad>
+                </PropsEntLectura>
+            </SeleccionEntidad>
+        </Propiedad>
+        <Propiedad  ID="https://www.w3.org/2006/vcard/ns#locality" EntidadID="https://www.w3.org/2006/vcard/ns#Address">
+            <AtrNombre>Ciudad</AtrNombre>
+            <AtrNombreLectura>Ciudad</AtrNombreLectura>
+        </Propiedad>
+    </EspefPropiedad>
+    <EspefEntidad>
+		<Entidad  ID="http://purl.obolibrary.org/obo/BFO_0000023">
+            <AtrNombre>http://purl.obolibrary.org/obo/BFO_0000023</AtrNombre>
+            <AtrNombreLectura>http://purl.obolibrary.org/obo/BFO_0000023</AtrNombreLectura>
+            <OrdenEntidad>
+                <Grupo class="formtheme02">
+                    <Grupo class="fieldset">
+                        <Grupo Tipo="fieldset" class="mediumLabels">
+                            <NameProp>http://xmlns.com/foaf/0.1/nick</NameProp> 
+                            <NameProp>http://www.w3.org/1999/02/22-rdf-syntax-ns#member</NameProp> 
+                            <NameProp>http://www.w3.org/1999/02/22-rdf-syntax-ns#comment</NameProp>
+                        </Grupo>
+                    </Grupo>
+                </Grupo>
+            </OrdenEntidad>
+            <OrdenEntidadLectura>
+                <Grupo classLectura="group content semanticView">
+                    <Grupo classLectura="group group_info">
+                        <AtrNombreGrupo>Propiedades</AtrNombreGrupo>
+                        <Grupo classLectura="contentGroup">
+                            <NameProp>http://xmlns.com/foaf/0.1/nick</NameProp> 
+                            <NameProp>http://www.w3.org/1999/02/22-rdf-syntax-ns#member</NameProp> 
+                            <NameProp>http://www.w3.org/1999/02/22-rdf-syntax-ns#comment</NameProp>
+                        </Grupo>
+                    </Grupo>
+                </Grupo>
+            </OrdenEntidadLectura>
+        </Entidad>
+        <Entidad  ID="http://purl.org/ontology/bibo/Patent">
+            <AtrNombre>http://purl.org/ontology/bibo/Patent</AtrNombre>
+            <AtrNombreLectura>http://purl.org/ontology/bibo/Patent</AtrNombreLectura>
+            <OrdenEntidad>
+                <Grupo class="formtheme02">
+                    <Grupo class="fieldset">
+                        <Grupo Tipo="fieldset" class="mediumLabels">
+                            <NameProp>http://w3id.org/roh/ownerOrganization</NameProp> 
+                            <NameProp>https://www.w3.org/2006/vcard/ns#hasAddress</NameProp> 
+                            <NameProp>http://w3id.org/roh/operatingCompanies</NameProp> 
+                            <NameProp>http://w3id.org/roh/industrialPropertyType</NameProp> 
+                            <NameProp>http://w3id.org/roh/operatingCountries</NameProp> 
+                            <NameProp>http://w3id.org/roh/patentInventor</NameProp> 
+                            <NameProp>http://w3id.org/roh/spanishPatent</NameProp> 
+                            <NameProp>http://w3id.org/roh/relevantResults</NameProp> 
+                            <NameProp>http://w3id.org/roh/applicationNumber</NameProp> 
+                            <NameProp>http://w3id.org/roh/knowHow</NameProp> 
+                            <NameProp>http://w3id.org/roh/results</NameProp> 
+                            <NameProp>http://w3id.org/roh/patentNumber</NameProp> 
+                            <NameProp>http://w3id.org/roh/industrialPropertyTypeOther</NameProp> 
+                            <NameProp>http://w3id.org/roh/title</NameProp> 
+                            <NameProp>http://w3id.org/roh/exclusiveUse</NameProp> 
+                            <NameProp>http://w3id.org/roh/relatedRights</NameProp> 
+                            <NameProp>http://w3id.org/roh/products</NameProp> 
+                            <NameProp>http://w3id.org/roh/referenceCode</NameProp> 
+                            <NameProp>http://vivoweb.org/ontology/core#dateFiled</NameProp> 
+                            <NameProp>http://w3id.org/roh/europeanPatent</NameProp> 
+                            <NameProp>http://w3id.org/roh/authorsRights</NameProp> 
+                            <NameProp>http://vivoweb.org/ontology/core#dateIssued</NameProp> 
+                            <NameProp>http://w3id.org/roh/tradeSecret</NameProp> 
+                            <NameProp>http://w3id.org/roh/qualityDescription</NameProp> 
+                            <NameProp>http://w3id.org/roh/innovativeEnterprise</NameProp> 
+                            <NameProp>http://vivoweb.org/ontology/core#freeTextKeywords</NameProp> 
+                            <NameProp>http://w3id.org/roh/internationalPatent</NameProp> 
+                            <NameProp>http://w3id.org/roh/crisIdentifier</NameProp> 
+                            <NameProp>http://w3id.org/roh/licenses</NameProp> 
+                            <NameProp>http://w3id.org/roh/pctPatent</NameProp>
+                        </Grupo>
+                    </Grupo>
+                </Grupo>
+            </OrdenEntidad>
+            <OrdenEntidadLectura>
+                <Grupo classLectura="group content semanticView">
+                    <Grupo classLectura="group group_info">
+                        <AtrNombreGrupo>Propiedades</AtrNombreGrupo>
+                        <Grupo classLectura="contentGroup">
+                            <NameProp>http://w3id.org/roh/ownerOrganization</NameProp> 
+                            <NameProp>https://www.w3.org/2006/vcard/ns#hasAddress</NameProp> 
+                            <NameProp>http://w3id.org/roh/operatingCompanies</NameProp> 
+                            <NameProp>http://w3id.org/roh/industrialPropertyType</NameProp> 
+                            <NameProp>http://w3id.org/roh/operatingCountries</NameProp> 
+                            <NameProp>http://w3id.org/roh/patentInventor</NameProp> 
+                            <NameProp>http://w3id.org/roh/spanishPatent</NameProp> 
+                            <NameProp>http://w3id.org/roh/relevantResults</NameProp> 
+                            <NameProp>http://w3id.org/roh/applicationNumber</NameProp> 
+                            <NameProp>http://w3id.org/roh/knowHow</NameProp> 
+                            <NameProp>http://w3id.org/roh/results</NameProp> 
+                            <NameProp>http://w3id.org/roh/patentNumber</NameProp> 
+                            <NameProp>http://w3id.org/roh/industrialPropertyTypeOther</NameProp> 
+                            <NameProp>http://w3id.org/roh/title</NameProp> 
+                            <NameProp>http://w3id.org/roh/exclusiveUse</NameProp> 
+                            <NameProp>http://w3id.org/roh/relatedRights</NameProp> 
+                            <NameProp>http://w3id.org/roh/products</NameProp> 
+                            <NameProp>http://w3id.org/roh/referenceCode</NameProp> 
+                            <NameProp>http://vivoweb.org/ontology/core#dateFiled</NameProp> 
+                            <NameProp>http://w3id.org/roh/europeanPatent</NameProp> 
+                            <NameProp>http://w3id.org/roh/authorsRights</NameProp> 
+                            <NameProp>http://vivoweb.org/ontology/core#dateIssued</NameProp> 
+                            <NameProp>http://w3id.org/roh/tradeSecret</NameProp> 
+                            <NameProp>http://w3id.org/roh/qualityDescription</NameProp> 
+                            <NameProp>http://w3id.org/roh/innovativeEnterprise</NameProp> 
+                            <NameProp>http://vivoweb.org/ontology/core#freeTextKeywords</NameProp> 
+                            <NameProp>http://w3id.org/roh/internationalPatent</NameProp> 
+                            <NameProp>http://w3id.org/roh/crisIdentifier</NameProp> 
+                            <NameProp>http://w3id.org/roh/licenses</NameProp> 
+                            <NameProp>http://w3id.org/roh/pctPatent</NameProp>
+                        </Grupo>
+                    </Grupo>
+                </Grupo>
+            </OrdenEntidadLectura>
+        </Entidad>
+        <Entidad  ID="https://www.w3.org/2006/vcard/ns#Address">
+            <AtrNombre>https://www.w3.org/2006/vcard/ns#Address</AtrNombre>
+            <AtrNombreLectura>https://www.w3.org/2006/vcard/ns#Address</AtrNombreLectura>
+            <OrdenEntidad>
+                <Grupo class="formtheme02">
+                    <Grupo class="fieldset">
+                        <Grupo Tipo="fieldset" class="mediumLabels">
+                            <NameProp>https://www.w3.org/2006/vcard/ns#hasRegion</NameProp> 
+                            <NameProp>https://www.w3.org/2006/vcard/ns#hasCountryName</NameProp> 
+                            <NameProp>https://www.w3.org/2006/vcard/ns#locality</NameProp>
+                        </Grupo>
+                    </Grupo>
+                </Grupo>
+            </OrdenEntidad>
+            <OrdenEntidadLectura>
+                <Grupo classLectura="group content semanticView">
+                    <Grupo classLectura="group group_info">
+                        <AtrNombreGrupo>Propiedades</AtrNombreGrupo>
+                        <Grupo classLectura="contentGroup">
+                            <NameProp>https://www.w3.org/2006/vcard/ns#hasRegion</NameProp> 
+                            <NameProp>https://www.w3.org/2006/vcard/ns#hasCountryName</NameProp> 
+                            <NameProp>https://www.w3.org/2006/vcard/ns#locality</NameProp>
+                        </Grupo>
+                    </Grupo>
+                </Grupo>
+            </OrdenEntidadLectura>
+        </Entidad>
+    </EspefEntidad>
+</config>
