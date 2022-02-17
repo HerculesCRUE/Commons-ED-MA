@@ -3,7 +3,7 @@
 | Fecha         | 17/02/2021                                                   |
 | ------------- | ------------------------------------------------------------ |
 |Título|Plantillas HTML| 
-|Descripción|Relación de objetos de conocimiento empleados en el modelo semántico de Hércules ED y MA|
+|Descripción|Relación de plantillas (maquetas) HTML preparadas para Hércules ED y MA|
 |Versión|1|
 |Módulo|Documentación|
 |Tipo|Diseño|
