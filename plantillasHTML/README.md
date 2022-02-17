@@ -29,6 +29,6 @@ Despliegue
 ==========
 Copiar todos los ficheros en una carpeta del servidor. El acceso a las páginas sería del siguiente modo:
 
-`http://servidor/carpeta/homeHercules.php
+`http://servidor/carpeta/homeHercules.php`
 
 
