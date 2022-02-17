@@ -2,12 +2,6 @@
 
 # Hércules Commons ED y MA
 
-[Introducción](#introducción)
-
-[Inventario de objetos de conocimiento](#inventario-de-objetos-de-conocimiento)
-
-Introducción
-============
 Este repositorio contiene componentes o diseños compartidos en los proyectos proyectos [Hércules ED](https://github.com/HerculesCRUE/HerculesED) y [Hércules MA].
 
 Los componentes comunes son:
