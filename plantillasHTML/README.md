@@ -13,12 +13,22 @@
 
 [Introducción](#introducción)
 
-[Instalación y visualización](#instalación-y-visualización)
+[Requerimientos](#requerimientos)
+
+[Despliegue](#despliegue)
 
 Introducción
 ============
 Esta carpeta contiene las plantillas HTML desarrolladas para los proyectos [Hércules ED](https://github.com/HerculesCRUE/HerculesED) y [Hércules MA](https://github.com/HerculesCRUE/HerculesMA).
 
-Instalación y visualización
+Requerimientos
 ================
-Para visualizar el resultado de estas plantillas hay que:
+Instalar un servidor web (p.e. Apache) que pueda ejecutar PHP.
+
+Despliegue
+==========
+Copiar todos los ficheros en una carpeta del servidor. El acceso a las páginas sería del siguiente modo:
+
+`http://servidor/carpeta/homeHercules.php
+
+
