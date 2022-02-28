@@ -597,6 +597,42 @@
             <AtrNombre>http://www.w3.org/1999/02/22-rdf-syntax-ns#comment</AtrNombre>
             <AtrNombreLectura>http://www.w3.org/1999/02/22-rdf-syntax-ns#comment</AtrNombreLectura>
         </Propiedad>
+		
+		
+		<Propiedad  ID="http://w3id.org/roh/i_doc_references" EntidadID="http://purl.org/ontology/bibo/Document">
+            <AtrNombre>http://w3id.org/roh/i_doc_references</AtrNombre>
+            <AtrNombreLectura>http://w3id.org/roh/i_doc_references</AtrNombreLectura>
+			<SeleccionEntidad>
+				<LinkARecurso IrAComunidad="true" PropiedadID="http://w3id.org/roh/title"></LinkARecurso>
+				<TipoSeleccion>Autocompletar</TipoSeleccion>
+				<NuevaPestanya>false</NuevaPestanya>				
+				<Grafo>document.owl</Grafo>
+				<UrlTipoEntSolicitada>http://purl.org/ontology/bibo/Document</UrlTipoEntSolicitada>
+				<PropsEntEdicion>
+					<NameProp>http://w3id.org/roh/title</NameProp>
+				</PropsEntEdicion>
+				<PropsEntLectura>
+					<Propiedad ID="http://w3id.org/roh/title" EntidadID="http://purl.org/ontology/bibo/Document">
+						<AtrNombreLectura></AtrNombreLectura>
+					</Propiedad>										
+					<Propiedad ID="http://purl.org/ontology/bibo/doi" EntidadID="http://purl.org/ontology/bibo/Document">
+						<AtrNombreLectura></AtrNombreLectura>
+					</Propiedad>
+				</PropsEntLectura>
+				<Reciproca></Reciproca>
+				<ConsultaReciproca><![CDATA[ SELECT ?s 
+				FROM <http://gnoss.com/document.owl> 
+				WHERE 
+				{
+				   ?s a <http://purl.org/ontology/bibo/Document>.
+				   ?s <http://purl.org/ontology/bibo/doi> ?doi.
+				   ?docActual <http://w3id.org/roh/references> ?reference.
+				   ?reference <http://purl.org/ontology/bibo/doi> ?doi.
+				   filter(?docActual = @EntidadID@)				  
+				} ]]></ConsultaReciproca>
+			</SeleccionEntidad>	
+        </Propiedad>
+		
     </EspefPropiedad>
     <EspefEntidad>
         <Entidad  ID="http://xmlns.com/foaf/0.1/Document">
