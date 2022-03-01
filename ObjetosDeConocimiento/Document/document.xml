@@ -516,23 +516,6 @@
             <AtrNombre>http://w3id.org/roh/citationLoadedCount</AtrNombre>
             <AtrNombreLectura>http://w3id.org/roh/citationLoadedCount</AtrNombreLectura>
         </Propiedad>
-		<Propiedad  ID="http://purl.org/ontology/bibo/cites" EntidadID="http://purl.org/ontology/bibo/Document">
-            <AtrNombre>http://purl.org/ontology/bibo/cites</AtrNombre>
-            <AtrNombreLectura>http://purl.org/ontology/bibo/cites</AtrNombreLectura>
-			<SeleccionEntidad>
-                <TipoSeleccion>Autocompletar</TipoSeleccion>
-                <Grafo>document.owl</Grafo>
-                <UrlTipoEntSolicitada>http://purl.org/ontology/bibo/Document</UrlTipoEntSolicitada>              
-                <PropsEntEdicion>
-                    <NameProp>http://w3id.org/roh/title</NameProp>
-                </PropsEntEdicion>
-                <PropsEntLectura>
-                    <Propiedad ID="http://w3id.org/roh/title" EntidadID="http://purl.org/ontology/bibo/Document">
-                        <AtrNombreLectura></AtrNombreLectura>
-                    </Propiedad>
-                </PropsEntLectura>
-            </SeleccionEntidad>
-        </Propiedad>
         <Propiedad  ID="http://xmlns.com/foaf/0.1/nick" EntidadID="http://purl.obolibrary.org/obo/BFO_0000023">
             <AtrNombre>http://xmlns.com/foaf/0.1/nick</AtrNombre>
             <AtrNombreLectura>http://xmlns.com/foaf/0.1/nick</AtrNombreLectura>
@@ -807,7 +790,6 @@
 							<NameProp>http://w3id.org/roh/publicAuthorList</NameProp>
 							<NameProp>http://w3id.org/roh/userJournal</NameProp>
 							<NameProp>http://w3id.org/roh/typeOthers</NameProp>
-							<NameProp>http://purl.org/ontology/bibo/cites</NameProp>
 							<NameProp>http://w3id.org/roh/isPublic</NameProp>
 							<NameProp>http://w3id.org/roh/citationCount</NameProp>
 							<NameProp>http://w3id.org/roh/referencesLoadedCount</NameProp>
@@ -873,7 +855,6 @@
 							<NameProp>http://w3id.org/roh/publicAuthorList</NameProp>
 							<NameProp>http://w3id.org/roh/userJournal</NameProp>
 							<NameProp>http://w3id.org/roh/typeOthers</NameProp>
-							<NameProp>http://purl.org/ontology/bibo/cites</NameProp>
 							<NameProp>http://w3id.org/roh/isPublic</NameProp>
 							<NameProp>http://w3id.org/roh/citationCount</NameProp>
 							<NameProp>http://w3id.org/roh/referencesLoadedCount</NameProp>
