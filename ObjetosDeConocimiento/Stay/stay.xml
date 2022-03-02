@@ -131,8 +131,7 @@
                     </Propiedad>
                 </PropsEntLectura>
             </SeleccionEntidad>
-        </Propiedad>
-		
+        </Propiedad>		
         <Propiedad  ID="http://w3id.org/roh/fundedBy" EntidadID="http://w3id.org/roh/Stay">
             <AtrNombre>fundedBy</AtrNombre>
             <AtrNombreLectura>fundedBy</AtrNombreLectura>
@@ -150,14 +149,6 @@
                 </PropsEntLectura>
             </SeleccionEntidad>
         </Propiedad>
-        <Propiedad  ID="http://vivoweb.org/ontology/core#freeTextKeywords" EntidadID="http://w3id.org/roh/Stay">
-            <AtrNombre>freeTextKeywords</AtrNombre>
-            <AtrNombreLectura>freeTextKeywords</AtrNombreLectura>
-        </Propiedad>
-        <Propiedad  ID="http://w3id.org/roh/hasKnowledgeArea" EntidadID="http://w3id.org/roh/Stay">
-            <AtrNombre>hasKnowledgeArea</AtrNombre>
-            <AtrNombreLectura>hasKnowledgeArea</AtrNombreLectura>
-        </Propiedad>
         <Propiedad  ID="http://w3id.org/roh/goals" EntidadID="http://w3id.org/roh/Stay">
             <AtrNombre>goals</AtrNombre>
             <AtrNombreLectura>goals</AtrNombreLectura>
@@ -174,54 +165,6 @@
                     </Propiedad>
                 </PropsEntLectura>
             </SeleccionEntidad>
-        </Propiedad>
-        <Propiedad  ID="http://w3id.org/roh/relevantResults" EntidadID="http://w3id.org/roh/Stay">
-            <AtrNombre>relevantResults</AtrNombre>
-            <AtrNombreLectura>relevantResults</AtrNombreLectura>
-        </Propiedad>
-        <Propiedad  ID="http://w3id.org/roh/durationMonths" EntidadID="http://w3id.org/roh/Stay">
-            <AtrNombre>durationMonths</AtrNombre>
-            <AtrNombreLectura>durationMonths</AtrNombreLectura>
-        </Propiedad>
-        <Propiedad  ID="http://w3id.org/roh/programme" EntidadID="http://w3id.org/roh/Stay">
-            <AtrNombre>programme</AtrNombre>
-            <AtrNombreLectura>programme</AtrNombreLectura>
-        </Propiedad>
-        <Propiedad  ID="http://w3id.org/roh/crisIdentifier" EntidadID="http://w3id.org/roh/Stay">
-            <AtrNombre>crisIdentifier</AtrNombre>
-            <AtrNombreLectura>crisIdentifier</AtrNombreLectura>
-        </Propiedad>
-        <Propiedad  ID="http://vivoweb.org/ontology/core#end" EntidadID="http://w3id.org/roh/Stay">
-            <AtrNombre>end</AtrNombre>
-            <AtrNombreLectura>end</AtrNombreLectura>
-        </Propiedad>
-        <Propiedad  ID="http://w3id.org/roh/performedTasks" EntidadID="http://w3id.org/roh/Stay">
-            <AtrNombre>performedTasks</AtrNombre>
-            <AtrNombreLectura>performedTasks</AtrNombreLectura>
-        </Propiedad>
-        <Propiedad  ID="http://w3id.org/roh/durationDays" EntidadID="http://w3id.org/roh/Stay">
-            <AtrNombre>durationDays</AtrNombre>
-            <AtrNombreLectura>durationDays</AtrNombreLectura>
-        </Propiedad>
-        <Propiedad  ID="http://w3id.org/roh/durationYears" EntidadID="http://w3id.org/roh/Stay">
-            <AtrNombre>durationYears</AtrNombre>
-            <AtrNombreLectura>durationYears</AtrNombreLectura>
-        </Propiedad>
-		<Propiedad  ID="http://w3id.org/roh/skillsDeveloped" EntidadID="http://w3id.org/roh/Stay">
-            <AtrNombre>skillsDeveloped</AtrNombre>
-            <AtrNombreLectura>skillsDeveloped</AtrNombreLectura>
-        </Propiedad>
-        <Propiedad  ID="http://w3id.org/roh/goalsOther" EntidadID="http://w3id.org/roh/Stay">
-            <AtrNombre>goalsOther</AtrNombre>
-            <AtrNombreLectura>goalsOther</AtrNombreLectura>
-        </Propiedad>        
-        <Propiedad  ID="http://vivoweb.org/ontology/core#start" EntidadID="http://w3id.org/roh/Stay">
-            <AtrNombre>start</AtrNombre>
-            <AtrNombreLectura>start</AtrNombreLectura>
-        </Propiedad>
-        <Propiedad  ID="http://w3id.org/roh/title" EntidadID="http://w3id.org/roh/Stay">
-            <AtrNombre>title</AtrNombre>
-            <AtrNombreLectura>title</AtrNombreLectura>
         </Propiedad>
         <Propiedad  ID="http://w3id.org/roh/categoryNode" EntidadID="http://w3id.org/roh/CategoryPath">
             <AtrNombre>categoryNode</AtrNombre>
@@ -242,83 +185,5 @@
         </Propiedad>
     </EspefPropiedad>
     <EspefEntidad>
-        <Entidad  ID="http://w3id.org/roh/Stay">
-            <AtrNombre>http://w3id.org/roh/Stay</AtrNombre>
-            <AtrNombreLectura>http://w3id.org/roh/Stay</AtrNombreLectura>
-            <OrdenEntidad>
-                <Grupo class="formtheme02">
-                    <Grupo class="fieldset">
-                        <Grupo Tipo="fieldset" class="mediumLabels">
-                            <NameProp>http://w3id.org/roh/entity</NameProp> 
-                            <NameProp>http://w3id.org/roh/fundedBy</NameProp> 
-                            <NameProp>http://vivoweb.org/ontology/core#freeTextKeywords</NameProp> 
-                            <NameProp>http://w3id.org/roh/hasKnowledgeArea</NameProp> 
-                            <NameProp>http://w3id.org/roh/goals</NameProp> 
-                            <NameProp>http://w3id.org/roh/relevantResults</NameProp> 
-                            <NameProp>http://w3id.org/roh/durationMonths</NameProp> 
-                            <NameProp>http://w3id.org/roh/programme</NameProp> 
-                            <NameProp>http://w3id.org/roh/crisIdentifier</NameProp> 
-                            <NameProp>http://vivoweb.org/ontology/core#end</NameProp> 
-                            <NameProp>http://w3id.org/roh/performedTasks</NameProp> 
-                            <NameProp>http://w3id.org/roh/durationDays</NameProp> 
-                            <NameProp>http://w3id.org/roh/durationYears</NameProp> 
-                            <NameProp>http://w3id.org/roh/goalsOther</NameProp> 
-                            <NameProp>http://w3id.org/roh/skillsDeveloped</NameProp> 
-                            <NameProp>http://vivoweb.org/ontology/core#start</NameProp> 
-                            <NameProp>http://w3id.org/roh/title</NameProp>
-                        </Grupo>
-                    </Grupo>
-                </Grupo>
-            </OrdenEntidad>
-            <OrdenEntidadLectura>
-                <Grupo classLectura="group content semanticView">
-                    <Grupo classLectura="group group_info">
-                        <AtrNombreGrupo>Propiedades</AtrNombreGrupo>
-                        <Grupo classLectura="contentGroup">
-                            <NameProp>http://w3id.org/roh/entity</NameProp> 
-                            <NameProp>http://w3id.org/roh/fundedBy</NameProp> 
-                            <NameProp>http://vivoweb.org/ontology/core#freeTextKeywords</NameProp> 
-                            <NameProp>http://w3id.org/roh/hasKnowledgeArea</NameProp> 
-                            <NameProp>http://w3id.org/roh/goals</NameProp> 
-                            <NameProp>http://w3id.org/roh/relevantResults</NameProp> 
-                            <NameProp>http://w3id.org/roh/durationMonths</NameProp> 
-                            <NameProp>http://w3id.org/roh/programme</NameProp> 
-                            <NameProp>http://w3id.org/roh/crisIdentifier</NameProp> 
-                            <NameProp>http://vivoweb.org/ontology/core#end</NameProp> 
-                            <NameProp>http://w3id.org/roh/performedTasks</NameProp> 
-                            <NameProp>http://w3id.org/roh/durationDays</NameProp> 
-                            <NameProp>http://w3id.org/roh/durationYears</NameProp> 
-                            <NameProp>http://w3id.org/roh/goalsOther</NameProp> 
-                            <NameProp>http://w3id.org/roh/skillsDeveloped</NameProp> 
-                            <NameProp>http://vivoweb.org/ontology/core#start</NameProp> 
-                            <NameProp>http://w3id.org/roh/title</NameProp>
-                        </Grupo>
-                    </Grupo>
-                </Grupo>
-            </OrdenEntidadLectura>
-        </Entidad>
-        <Entidad  ID="http://w3id.org/roh/CategoryPath">
-            <AtrNombre>http://w3id.org/roh/CategoryPath</AtrNombre>
-            <AtrNombreLectura>http://w3id.org/roh/CategoryPath</AtrNombreLectura>
-            <OrdenEntidad>
-                <Grupo class="formtheme02">
-                    <Grupo class="fieldset">
-                        <Grupo Tipo="fieldset" class="mediumLabels">
-                            <NameProp>http://w3id.org/roh/categoryNode</NameProp>
-                        </Grupo>
-                    </Grupo>
-                </Grupo>
-            </OrdenEntidad>
-            <OrdenEntidadLectura>
-                <Grupo classLectura="group content semanticView">
-                    <Grupo classLectura="group group_info">
-                        <AtrNombreGrupo>Propiedades</AtrNombreGrupo>
-                        <Grupo classLectura="contentGroup">
-                            <NameProp>http://w3id.org/roh/categoryNode</NameProp>
-                        </Grupo>
-                    </Grupo>
-                </Grupo>
-            </OrdenEntidadLectura>
-        </Entidad>
     </EspefEntidad>
 </config>
