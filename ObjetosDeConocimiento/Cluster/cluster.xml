@@ -63,4 +63,6 @@
             </SeleccionEntidad>
         </Propiedad>        
     </EspefPropiedad>
+	<EspefEntidad>
+	</EspefEntidad>
 </config>
