@@ -1,212 +1,107 @@
 <?xml version="1.0"?>
-<rdf:RDF xmlns="http://www.owl-ontologies.com/Ontology1627556398.owl"
-     xml:base="http://www.owl-ontologies.com/Ontology1627556398.owl"
-     xmlns:dc="http://purl.org/dc/elements/1.1/"
-     xmlns:dct="http://purl.org/dc/terms/"
-     xmlns:obo="http://purl.obolibrary.org/obo/"
-     xmlns:owl="http://www.w3.org/2002/07/owl#"
-     xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
-     xmlns:roh="http://w3id.org/roh/"
-     xmlns:xml="http://www.w3.org/XML/1998/namespace"
-     xmlns:xsd="http://www.w3.org/2001/XMLSchema#"
-     xmlns:foaf="http://xmlns.com/foaf/0.1/"
-     xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
-     xmlns:vivo="http://vivoweb.org/ontology/core#">
-    <owl:Ontology rdf:about="http://www.owl-ontologies.com/Ontology1627556398.owl"/>
-    
-
-
-    <!-- 
-    ///////////////////////////////////////////////////////////////////////////////////////
-    //
-    // Datatypes
-    //
-    ///////////////////////////////////////////////////////////////////////////////////////
-     -->
-
-    
-
-
-    <!-- http://www.w3.org/2001/XMLSchema#date -->
-
-    <rdfs:Datatype rdf:about="http://www.w3.org/2001/XMLSchema#date"/>
-    
-
-
-    <!-- 
-    ///////////////////////////////////////////////////////////////////////////////////////
-    //
-    // Object Properties
-    //
-    ///////////////////////////////////////////////////////////////////////////////////////
-     -->
-
-    
-
-
-    <!-- http://w3id.org/roh/categoryNode -->
-
-    <owl:ObjectProperty rdf:about="http://w3id.org/roh/categoryNode">
-        <rdfs:domain rdf:resource="http://w3id.org/roh/CategoryPath"/>
-    </owl:ObjectProperty>
-    
-
-
-    <!-- http://w3id.org/roh/clusterPerfil -->
-
-    <owl:ObjectProperty rdf:about="http://w3id.org/roh/clusterPerfil">
-        <rdfs:domain rdf:resource="http://vivoweb.org/ontology/core#Cluster"/>
-        <rdfs:range rdf:resource="http://w3id.org/roh/ClusterPerfil"/>
-    </owl:ObjectProperty>
-    
-
-
-    <!-- http://w3id.org/roh/hasKnowledgeArea -->
-
-    <owl:ObjectProperty rdf:about="http://w3id.org/roh/hasKnowledgeArea">
-        <rdfs:domain rdf:resource="http://vivoweb.org/ontology/core#Cluster"/>
-        <rdfs:domain rdf:resource="http://w3id.org/roh/ClusterPerfil"/>
-        <rdfs:range rdf:resource="http://w3id.org/roh/CategoryPath"/>
-    </owl:ObjectProperty>
-    
-
-
-    <!-- http://www.w3.org/1999/02/22-rdf-syntax-ns#member -->
-
-    <owl:ObjectProperty rdf:about="http://www.w3.org/1999/02/22-rdf-syntax-ns#member">
-        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
-        <rdfs:domain rdf:resource="http://vivoweb.org/ontology/core#Cluster"/>
-        <rdfs:domain rdf:resource="http://w3id.org/roh/ClusterPerfil"/>
-    </owl:ObjectProperty>
-    
-
-
-    <!-- 
-    ///////////////////////////////////////////////////////////////////////////////////////
-    //
-    // Data properties
-    //
-    ///////////////////////////////////////////////////////////////////////////////////////
-     -->
-
-    
-
-
-    <!-- http://purl.org/dc/terms/issued -->
-
-    <owl:DatatypeProperty rdf:about="http://purl.org/dc/terms/issued">
-        <rdfs:domain rdf:resource="http://vivoweb.org/ontology/core#Cluster"/>
-        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#date"/>
-    </owl:DatatypeProperty>
-    
-
-
-    <!-- http://vivoweb.org/ontology/core#description -->
-
-    <owl:DatatypeProperty rdf:about="http://vivoweb.org/ontology/core#description">
-        <rdfs:domain rdf:resource="http://vivoweb.org/ontology/core#Cluster"/>
-        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
-    </owl:DatatypeProperty>
-    
-
-
-    <!-- http://vivoweb.org/ontology/core#freeTextKeyword -->
-
-    <owl:DatatypeProperty rdf:about="http://vivoweb.org/ontology/core#freeTextKeyword">
-        <rdfs:domain rdf:resource="http://w3id.org/roh/ClusterPerfil"/>
-        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
-    </owl:DatatypeProperty>
-    
-
-
-    <!-- http://w3id.org/roh/title -->
-
-    <owl:DatatypeProperty rdf:about="http://w3id.org/roh/title">
-        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
-        <rdfs:domain>
-            <owl:Class>
-                <owl:unionOf rdf:parseType="Collection">
-                    <rdf:Description rdf:about="http://vivoweb.org/ontology/core#Cluster"/>
-                    <rdf:Description rdf:about="http://w3id.org/roh/ClusterPerfil"/>
-                </owl:unionOf>
-            </owl:Class>
-        </rdfs:domain>
-        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
-    </owl:DatatypeProperty>
-    
-
-
-    <!-- 
-    ///////////////////////////////////////////////////////////////////////////////////////
-    //
-    // Classes
-    //
-    ///////////////////////////////////////////////////////////////////////////////////////
-     -->
-
-    
-
-
-    <!-- http://vivoweb.org/ontology/core#Cluster -->
-
-    <owl:Class rdf:about="http://vivoweb.org/ontology/core#Cluster">
-        <rdfs:subClassOf rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
-        <rdfs:subClassOf>
-            <owl:Restriction>
-                <owl:onProperty rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#member"/>
-                <owl:cardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">1</owl:cardinality>
-            </owl:Restriction>
-        </rdfs:subClassOf>
-        <rdfs:subClassOf>
-            <owl:Restriction>
-                <owl:onProperty rdf:resource="http://purl.org/dc/terms/issued"/>
-                <owl:cardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">1</owl:cardinality>
-            </owl:Restriction>
-        </rdfs:subClassOf>
-        <rdfs:subClassOf>
-            <owl:Restriction>
-                <owl:onProperty rdf:resource="http://w3id.org/roh/title"/>
-                <owl:cardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">1</owl:cardinality>
-            </owl:Restriction>
-        </rdfs:subClassOf>
-        <rdfs:subClassOf>
-            <owl:Restriction>
-                <owl:onProperty rdf:resource="http://vivoweb.org/ontology/core#description"/>
-                <owl:maxCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">1</owl:maxCardinality>
-            </owl:Restriction>
-        </rdfs:subClassOf>
-    </owl:Class>
-    
-
-
-    <!-- http://w3id.org/roh/CategoryPath -->
-
-    <owl:Class rdf:about="http://w3id.org/roh/CategoryPath">
-        <rdfs:subClassOf rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
-        <rdfs:subClassOf>
-            <owl:Restriction>
-                <owl:onProperty rdf:resource="http://w3id.org/roh/categoryNode"/>
-                <owl:minCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">1</owl:minCardinality>
-            </owl:Restriction>
-        </rdfs:subClassOf>
-    </owl:Class>
-    
-
-
-    <!-- http://w3id.org/roh/ClusterPerfil -->
-
-    <owl:Class rdf:about="http://w3id.org/roh/ClusterPerfil">
-        <rdfs:subClassOf rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
-        <rdfs:subClassOf>
-            <owl:Restriction>
-                <owl:onProperty rdf:resource="http://w3id.org/roh/title"/>
-                <owl:cardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">1</owl:cardinality>
-            </owl:Restriction>
-        </rdfs:subClassOf>
-    </owl:Class>
+<rdf:RDF
+    xmlns:roh="http://w3id.org/roh/"
+    xmlns:foaf="http://xmlns.com/foaf/0.1/"
+    xmlns:vivo="http://vivoweb.org/ontology/core#"
+    xmlns:dct="http://purl.org/dc/terms/"
+    xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+    xmlns:xsd="http://www.w3.org/2001/XMLSchema#"
+    xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+    xmlns:owl="http://www.w3.org/2002/07/owl#"
+    xmlns:obo="http://purl.obolibrary.org/obo/"
+    xmlns:dc="http://purl.org/dc/elements/1.1/"
+    xmlns="http://www.owl-ontologies.com/Ontology1627556398.owl#"
+  xml:base="http://www.owl-ontologies.com/Ontology1627556398.owl">
+  <owl:Ontology rdf:about=""/>
+  <rdfs:Datatype rdf:about="http://www.w3.org/2001/XMLSchema#date"/>
+  <owl:Class rdf:about="http://w3id.org/roh/CategoryPath">
+    <rdfs:subClassOf>
+      <owl:Restriction>
+        <owl:onProperty>
+          <owl:ObjectProperty rdf:about="http://w3id.org/roh/categoryNode"/>
+        </owl:onProperty>
+        <owl:minCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger"
+        >1</owl:minCardinality>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+    <rdfs:subClassOf rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
+  </owl:Class>
+  <owl:Class rdf:about="http://w3id.org/roh/Cluster">
+    <rdfs:subClassOf>
+      <owl:Restriction>
+        <owl:cardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#int"
+        >1</owl:cardinality>
+        <owl:onProperty>
+          <owl:ObjectProperty rdf:about="http://www.w3.org/1999/02/22-rdf-syntax-ns#member"/>
+        </owl:onProperty>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+    <rdfs:subClassOf>
+      <owl:Restriction>
+        <owl:maxCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger"
+        >1</owl:maxCardinality>
+        <owl:onProperty>
+          <owl:DatatypeProperty rdf:about="http://vivoweb.org/ontology/core#description"/>
+        </owl:onProperty>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+    <rdfs:subClassOf rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
+  </owl:Class>
+  <owl:Class rdf:about="http://w3id.org/roh/ClusterPerfil"/>
+  <owl:ObjectProperty rdf:about="http://www.w3.org/1999/02/22-rdf-syntax-ns#member">
+    <rdfs:domain>
+      <owl:Class>
+        <owl:unionOf rdf:parseType="Collection">
+          <owl:Class rdf:about="http://w3id.org/roh/Cluster"/>
+          <owl:Class rdf:about="http://w3id.org/roh/ClusterPerfil"/>
+        </owl:unionOf>
+      </owl:Class>
+    </rdfs:domain>
+  </owl:ObjectProperty>
+  <owl:ObjectProperty rdf:about="http://w3id.org/roh/clusterPerfil">
+    <rdfs:domain rdf:resource="http://w3id.org/roh/Cluster"/>
+    <rdfs:range rdf:resource="http://w3id.org/roh/ClusterPerfil"/>
+  </owl:ObjectProperty>
+  <owl:ObjectProperty rdf:ID="ObjectProperty_1"/>
+  <owl:ObjectProperty rdf:about="http://w3id.org/roh/categoryNode">
+    <rdfs:domain rdf:resource="http://w3id.org/roh/CategoryPath"/>
+  </owl:ObjectProperty>
+  <owl:ObjectProperty rdf:about="http://w3id.org/roh/hasKnowledgeArea">
+    <rdfs:range rdf:resource="http://w3id.org/roh/CategoryPath"/>
+    <rdfs:domain>
+      <owl:Class>
+        <owl:unionOf rdf:parseType="Collection">
+          <owl:Class rdf:about="http://w3id.org/roh/Cluster"/>
+          <owl:Class rdf:about="http://w3id.org/roh/ClusterPerfil"/>
+        </owl:unionOf>
+      </owl:Class>
+    </rdfs:domain>
+  </owl:ObjectProperty>
+  <owl:DatatypeProperty rdf:about="http://vivoweb.org/ontology/core#description">
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+    <rdfs:domain rdf:resource="http://w3id.org/roh/Cluster"/>
+  </owl:DatatypeProperty>
+  <owl:DatatypeProperty rdf:about="http://vivoweb.org/ontology/core#freeTextKeyword">
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+    <rdfs:domain rdf:resource="http://w3id.org/roh/ClusterPerfil"/>
+  </owl:DatatypeProperty>
+  <owl:FunctionalProperty rdf:about="http://purl.org/dc/terms/issued">
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#date"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#DatatypeProperty"/>
+    <rdfs:domain rdf:resource="http://w3id.org/roh/Cluster"/>
+  </owl:FunctionalProperty>
+  <owl:FunctionalProperty rdf:about="http://w3id.org/roh/title">
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+    <rdfs:domain>
+      <owl:Class>
+        <owl:unionOf rdf:parseType="Collection">
+          <owl:Class rdf:about="http://w3id.org/roh/Cluster"/>
+          <owl:Class rdf:about="http://w3id.org/roh/ClusterPerfil"/>
+        </owl:unionOf>
+      </owl:Class>
+    </rdfs:domain>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#DatatypeProperty"/>
+  </owl:FunctionalProperty>
 </rdf:RDF>
 
-
-
-<!-- Generated by the OWL API (version 4.5.9.2019-02-01T07:24:44Z) https://github.com/owlcs/owlapi -->
-
+<!-- Created with Protege (with OWL Plugin 3.3.1, Build 430)  http://protege.stanford.edu -->
