@@ -5,8 +5,8 @@
             <idiomaOnto>es</idiomaOnto>
         </idiomasOnto>
         <ocultarTituloDescpImgDoc></ocultarTituloDescpImgDoc>
-        <TituloDoc EntidadID="http://vivoweb.org/ontology/core#Position">http://w3id.org/roh/title</TituloDoc>
-        <DescripcionDoc EntidadID="http://vivoweb.org/ontology/core#Position">http://w3id.org/roh/title</DescripcionDoc>
+        <TituloDoc EntidadID="http://vivoweb.org/ontology/core#Position">http://w3id.org/roh/employerOrganizationTitle</TituloDoc>
+        <DescripcionDoc EntidadID="http://vivoweb.org/ontology/core#Position">http://w3id.org/roh/employerOrganizationTitle</DescripcionDoc>
         <HtmlNuevo>true</HtmlNuevo>
 		<CategorizacionTesauroGnossObligatoria>false</CategorizacionTesauroGnossObligatoria>
     </ConfiguracionGeneral>
@@ -139,5 +139,7 @@
                 </PropsEntLectura>
 			</SeleccionEntidad>
         </Propiedad>
-    </EspefPropiedad>    
+    </EspefPropiedad> 
+	<EspefEntidad>
+	</EspefEntidad>	
 </config>
