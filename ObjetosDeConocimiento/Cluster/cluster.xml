@@ -5,17 +5,13 @@
             <idiomaOnto>es</idiomaOnto>
         </idiomasOnto>
         <ocultarTituloDescpImgDoc></ocultarTituloDescpImgDoc>
-        <TituloDoc EntidadID="http://vivoweb.org/ontology/core#Cluster">http://w3id.org/roh/title</TituloDoc>
-        <DescripcionDoc EntidadID="http://vivoweb.org/ontology/core#Cluster">http://w3id.org/roh/title</DescripcionDoc>
+        <TituloDoc EntidadID="http://w3id.org/roh/Cluster">http://w3id.org/roh/title</TituloDoc>
+        <DescripcionDoc EntidadID="http://w3id.org/roh/Cluster">http://w3id.org/roh/title</DescripcionDoc>
         <HtmlNuevo>true</HtmlNuevo>
         <CategorizacionTesauroGnossObligatoria>false</CategorizacionTesauroGnossObligatoria>
     </ConfiguracionGeneral>
     <EspefPropiedad>
-        <Propiedad  ID="http://w3id.org/roh/hasKnowledgeArea" EntidadID="http://vivoweb.org/ontology/core#Cluster">
-            <AtrNombre>http://w3id.org/roh/hasKnowledgeArea</AtrNombre>
-            <AtrNombreLectura>http://w3id.org/roh/hasKnowledgeArea</AtrNombreLectura>
-        </Propiedad>
-        <Propiedad  ID="http://www.w3.org/1999/02/22-rdf-syntax-ns#member" EntidadID="http://vivoweb.org/ontology/core#Cluster">
+        <Propiedad  ID="http://www.w3.org/1999/02/22-rdf-syntax-ns#member" EntidadID="http://w3id.org/roh/Cluster">
             <AtrNombre>http://www.w3.org/1999/02/22-rdf-syntax-ns#member</AtrNombre>
             <AtrNombreLectura>http://www.w3.org/1999/02/22-rdf-syntax-ns#member</AtrNombreLectura>
             <SeleccionEntidad>
@@ -32,13 +28,22 @@
                 </PropsEntLectura>
             </SeleccionEntidad>
         </Propiedad>
-        <Propiedad  ID="http://purl.org/dc/terms/issued" EntidadID="http://vivoweb.org/ontology/core#Cluster">
-            <AtrNombre>http://purl.org/dc/terms/issued</AtrNombre>
-            <AtrNombreLectura>http://purl.org/dc/terms/issued</AtrNombreLectura>
-        </Propiedad>
-        <Propiedad  ID="http://vivoweb.org/ontology/core#description" EntidadID="http://vivoweb.org/ontology/core#Cluster">
-            <AtrNombre>http://vivoweb.org/ontology/core#description</AtrNombre>
-            <AtrNombreLectura>http://vivoweb.org/ontology/core#description</AtrNombreLectura>
+		<Propiedad  ID="http://www.w3.org/1999/02/22-rdf-syntax-ns#member" EntidadID="http://w3id.org/roh/ClusterPerfil">
+            <AtrNombre>http://www.w3.org/1999/02/22-rdf-syntax-ns#member</AtrNombre>
+            <AtrNombreLectura>http://www.w3.org/1999/02/22-rdf-syntax-ns#member</AtrNombreLectura>
+            <SeleccionEntidad>
+                <TipoSeleccion>Autocompletar</TipoSeleccion>
+                <Grafo>person.owl</Grafo>
+                <UrlTipoEntSolicitada>http://xmlns.com/foaf/0.1/Person</UrlTipoEntSolicitada>              
+                <PropsEntEdicion>
+                    <NameProp>http://xmlns.com/foaf/0.1/name</NameProp>
+                </PropsEntEdicion>
+                <PropsEntLectura>
+                    <Propiedad ID="http://xmlns.com/foaf/0.1/name" EntidadID="http://xmlns.com/foaf/0.1/Person">
+                        <AtrNombreLectura></AtrNombreLectura>
+                    </Propiedad>
+                </PropsEntLectura>
+            </SeleccionEntidad>
         </Propiedad>
         <Propiedad  ID="http://w3id.org/roh/categoryNode" EntidadID="http://w3id.org/roh/CategoryPath">
             <AtrNombre>http://w3id.org/roh/categoryNode</AtrNombre>
@@ -56,112 +61,6 @@
                     </Propiedad>
                 </PropsEntLectura>
             </SeleccionEntidad>
-        </Propiedad>
-        <Propiedad  ID="http://w3id.org/roh/hasKnowledgeArea" EntidadID="http://w3id.org/roh/ClusterPerfil">
-            <AtrNombre>http://w3id.org/roh/hasKnowledgeArea</AtrNombre>
-            <AtrNombreLectura>http://w3id.org/roh/hasKnowledgeArea</AtrNombreLectura>
-        </Propiedad>
-        <Propiedad  ID="http://www.w3.org/1999/02/22-rdf-syntax-ns#member" EntidadID="http://w3id.org/roh/ClusterPerfil">
-            <AtrNombre>http://www.w3.org/1999/02/22-rdf-syntax-ns#member</AtrNombre>
-            <AtrNombreLectura>http://www.w3.org/1999/02/22-rdf-syntax-ns#member</AtrNombreLectura>
-            <SeleccionEntidad>
-                <TipoSeleccion>Autocompletar</TipoSeleccion>
-                <Grafo>person.owl</Grafo>
-                <UrlTipoEntSolicitada>http://xmlns.com/foaf/0.1/Person</UrlTipoEntSolicitada>              
-                <PropsEntEdicion>
-                    <NameProp>http://xmlns.com/foaf/0.1/name</NameProp>
-                </PropsEntEdicion>
-                <PropsEntLectura>
-                    <Propiedad ID="http://xmlns.com/foaf/0.1/name" EntidadID="http://xmlns.com/foaf/0.1/Person">
-                        <AtrNombreLectura></AtrNombreLectura>
-                    </Propiedad>
-                </PropsEntLectura>
-            </SeleccionEntidad>
-        </Propiedad>
-        <Propiedad  ID="http://vivoweb.org/ontology/core#freeTextKeyword" EntidadID="http://w3id.org/roh/ClusterPerfil">
-            <AtrNombre>http://vivoweb.org/ontology/core#freeTextKeyword</AtrNombre>
-            <AtrNombreLectura>http://vivoweb.org/ontology/core#freeTextKeyword</AtrNombreLectura>
-        </Propiedad>
+        </Propiedad>        
     </EspefPropiedad>
-    <EspefEntidad>
-        <Entidad  ID="http://vivoweb.org/ontology/core#Cluster">
-            <AtrNombre>http://vivoweb.org/ontology/core#Cluster</AtrNombre>
-            <AtrNombreLectura>http://vivoweb.org/ontology/core#Cluster</AtrNombreLectura>
-            <OrdenEntidad>
-                <Grupo class="formtheme02">
-                    <Grupo class="fieldset">
-                        <Grupo Tipo="fieldset" class="mediumLabels">
-                            <NameProp>http://w3id.org/roh/hasKnowledgeArea</NameProp> 
-                            <NameProp>http://www.w3.org/1999/02/22-rdf-syntax-ns#member</NameProp> 
-                            <NameProp>http://purl.org/dc/terms/issued</NameProp> 
-                            <NameProp>http://vivoweb.org/ontology/core#description</NameProp>
-                        </Grupo>
-                    </Grupo>
-                </Grupo>
-            </OrdenEntidad>
-            <OrdenEntidadLectura>
-                <Grupo classLectura="group content semanticView">
-                    <Grupo classLectura="group group_info">
-                        <AtrNombreGrupo>Propiedades</AtrNombreGrupo>
-                        <Grupo classLectura="contentGroup">
-                            <NameProp>http://w3id.org/roh/hasKnowledgeArea</NameProp> 
-                            <NameProp>http://www.w3.org/1999/02/22-rdf-syntax-ns#member</NameProp> 
-                            <NameProp>http://purl.org/dc/terms/issued</NameProp> 
-                            <NameProp>http://vivoweb.org/ontology/core#description</NameProp>
-                        </Grupo>
-                    </Grupo>
-                </Grupo>
-            </OrdenEntidadLectura>
-        </Entidad>
-        <Entidad  ID="http://w3id.org/roh/CategoryPath">
-            <AtrNombre>http://w3id.org/roh/CategoryPath</AtrNombre>
-            <AtrNombreLectura>http://w3id.org/roh/CategoryPath</AtrNombreLectura>
-            <OrdenEntidad>
-                <Grupo class="formtheme02">
-                    <Grupo class="fieldset">
-                        <Grupo Tipo="fieldset" class="mediumLabels">
-                            <NameProp>http://w3id.org/roh/categoryNode</NameProp>
-                        </Grupo>
-                    </Grupo>
-                </Grupo>
-            </OrdenEntidad>
-            <OrdenEntidadLectura>
-                <Grupo classLectura="group content semanticView">
-                    <Grupo classLectura="group group_info">
-                        <AtrNombreGrupo>Propiedades</AtrNombreGrupo>
-                        <Grupo classLectura="contentGroup">
-                            <NameProp>http://w3id.org/roh/categoryNode</NameProp>
-                        </Grupo>
-                    </Grupo>
-                </Grupo>
-            </OrdenEntidadLectura>
-        </Entidad>
-        <Entidad  ID="http://w3id.org/roh/ClusterPerfil">
-            <AtrNombre>http://w3id.org/roh/ClusterPerfil</AtrNombre>
-            <AtrNombreLectura>http://w3id.org/roh/ClusterPerfil</AtrNombreLectura>
-            <OrdenEntidad>
-                <Grupo class="formtheme02">
-                    <Grupo class="fieldset">
-                        <Grupo Tipo="fieldset" class="mediumLabels">
-                            <NameProp>http://w3id.org/roh/hasKnowledgeArea</NameProp> 
-                            <NameProp>http://www.w3.org/1999/02/22-rdf-syntax-ns#member</NameProp> 
-                            <NameProp>http://vivoweb.org/ontology/core#freeTextKeyword</NameProp>
-                        </Grupo>
-                    </Grupo>
-                </Grupo>
-            </OrdenEntidad>
-            <OrdenEntidadLectura>
-                <Grupo classLectura="group content semanticView">
-                    <Grupo classLectura="group group_info">
-                        <AtrNombreGrupo>Propiedades</AtrNombreGrupo>
-                        <Grupo classLectura="contentGroup">
-                            <NameProp>http://w3id.org/roh/hasKnowledgeArea</NameProp> 
-                            <NameProp>http://www.w3.org/1999/02/22-rdf-syntax-ns#member</NameProp> 
-                            <NameProp>http://vivoweb.org/ontology/core#freeTextKeyword</NameProp>
-                        </Grupo>
-                    </Grupo>
-                </Grupo>
-            </OrdenEntidadLectura>
-        </Entidad>
-    </EspefEntidad>
 </config>
