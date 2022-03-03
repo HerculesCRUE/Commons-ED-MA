@@ -1,0 +1,25 @@
+<config>
+    <ConfiguracionGeneral>
+        <namespace>hindexsource</namespace>
+        <idiomasOnto>
+            <idiomaOnto>es</idiomaOnto>
+        </idiomasOnto>
+        <TituloDoc EntidadID="http://w3id.org/roh/HIndexSource">http://purl.org/dc/elements/1.1/title</TituloDoc>
+		<MultiIdioma></MultiIdioma>
+        <HtmlNuevo>true</HtmlNuevo>
+    </ConfiguracionGeneral>
+    <EspefPropiedad>
+        <Propiedad  ID="http://purl.org/dc/elements/1.1/title" EntidadID="http://w3id.org/roh/HIndexSource">
+            <AtrNombre>Nombre de la fuente</AtrNombre>
+            <AtrNombreLectura>Nombre de la fuente</AtrNombreLectura>
+			<MultiIdioma></MultiIdioma>
+        </Propiedad>
+        <Propiedad  ID="http://purl.org/dc/elements/1.1/identifier" EntidadID="http://w3id.org/roh/HIndexSource">
+            <AtrNombre>Identificador de la fuente</AtrNombre>
+            <AtrNombreLectura>Identificador de la fuente</AtrNombreLectura>
+			<MultiIdioma>false</MultiIdioma>
+        </Propiedad>
+    </EspefPropiedad>
+    <EspefEntidad>
+    </EspefEntidad>
+</config>
