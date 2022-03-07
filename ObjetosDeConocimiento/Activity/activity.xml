@@ -87,9 +87,7 @@
                     </Propiedad>
                 </PropsEntLectura>
             </SeleccionEntidad>
-        </Propiedad>
-		
-		
+        </Propiedad>		
 		<Propiedad  ID="http://w3id.org/roh/promotedByHasRegion" EntidadID="http://w3id.org/roh/Activity">
             <AtrNombre>http://w3id.org/roh/promotedByHasRegion</AtrNombre>
             <AtrNombreLectura>http://w3id.org/roh/promotedByHasRegion</AtrNombreLectura>
@@ -123,9 +121,7 @@
                     </Propiedad>
                 </PropsEntLectura>
             </SeleccionEntidad>
-        </Propiedad>
-		
-		
+        </Propiedad>		
         <Propiedad  ID="http://w3id.org/roh/conductedBy" EntidadID="http://w3id.org/roh/Activity">
             <AtrNombre>http://w3id.org/roh/conductedBy</AtrNombre>
             <AtrNombreLectura>http://w3id.org/roh/conductedBy</AtrNombreLectura>
@@ -193,10 +189,6 @@
                     </Propiedad>
                 </PropsEntLectura>
             </SeleccionEntidad>
-        </Propiedad>
-        <Propiedad  ID="http://w3id.org/roh/hasKnowledgeArea" EntidadID="http://w3id.org/roh/Activity">
-            <AtrNombre>http://w3id.org/roh/hasKnowledgeArea</AtrNombre>
-            <AtrNombreLectura>http://w3id.org/roh/hasKnowledgeArea</AtrNombreLectura>
         </Propiedad>
         <Propiedad  ID="http://w3id.org/roh/managementType" EntidadID="http://w3id.org/roh/Activity">
             <AtrNombre>http://w3id.org/roh/managementType</AtrNombre>
@@ -283,45 +275,6 @@
                 </PropsEntLectura>
             </SeleccionEntidad>
         </Propiedad>
-		<Propiedad  ID="http://w3id.org/roh/activityModalityOther" EntidadID="http://w3id.org/roh/Activity">
-            <AtrNombre>http://w3id.org/roh/activityModalityOther</AtrNombre>
-            <AtrNombreLectura>http://w3id.org/roh/activityModalityOther</AtrNombreLectura>
-		</Propiedad>
-        <Propiedad  ID="http://w3id.org/roh/crisIdentifier" EntidadID="http://w3id.org/roh/Activity">
-            <AtrNombre>http://w3id.org/roh/crisIdentifier</AtrNombre>
-            <AtrNombreLectura>http://w3id.org/roh/crisIdentifier</AtrNombreLectura>
-        </Propiedad>
-        <Propiedad  ID="http://w3id.org/roh/geographicFocusOther" EntidadID="http://w3id.org/roh/Activity">
-            <AtrNombre>http://w3id.org/roh/geographicFocusOther</AtrNombre>
-            <AtrNombreLectura>http://w3id.org/roh/geographicFocusOther</AtrNombreLectura>
-        </Propiedad>
-        <Propiedad  ID="http://w3id.org/roh/attendants" EntidadID="http://w3id.org/roh/Activity">
-            <AtrNombre>http://w3id.org/roh/attendants</AtrNombre>
-            <AtrNombreLectura>http://w3id.org/roh/attendants</AtrNombreLectura>
-        </Propiedad>
-        <Propiedad  ID="http://w3id.org/roh/averageAnnualBudget" EntidadID="http://w3id.org/roh/Activity">
-            <AtrNombre>http://w3id.org/roh/averageAnnualBudget</AtrNombre>
-            <AtrNombreLectura>http://w3id.org/roh/averageAnnualBudget</AtrNombreLectura>
-        </Propiedad>
-        <Propiedad  ID="http://purl.org/dc/elements/1.1/type" EntidadID="http://w3id.org/roh/Activity">
-            <AtrNombre>http://purl.org/dc/elements/1.1/type</AtrNombre>
-            <AtrNombreLectura>http://purl.org/dc/elements/1.1/type</AtrNombreLectura>
-        </Propiedad>
-        <Propiedad  ID="https://www.w3.org/2006/vcard/ns#locality" EntidadID="http://w3id.org/roh/Activity">
-            <AtrNombre>https://www.w3.org/2006/vcard/ns#locality</AtrNombre>
-            <AtrNombreLectura>https://www.w3.org/2006/vcard/ns#locality</AtrNombreLectura>
-        </Propiedad>
-        <Propiedad  ID="http://w3id.org/roh/classificationCVN" EntidadID="http://w3id.org/roh/Activity">
-            <AtrNombre>http://w3id.org/roh/classificationCVN</AtrNombre>
-            <AtrNombreLectura>http://w3id.org/roh/classificationCVN</AtrNombreLectura>
-        </Propiedad>
-        <Propiedad  ID="http://w3id.org/roh/title" EntidadID="http://w3id.org/roh/Activity">
-            <AtrNombre>http://w3id.org/roh/title</AtrNombre>
-            <AtrNombreLectura>http://w3id.org/roh/title</AtrNombreLectura>
-        </Propiedad>
-		
-		
-		
 		<Propiedad  ID="http://w3id.org/roh/representedEntityHasRegion" EntidadID="http://w3id.org/roh/Activity">
             <AtrNombre>http://w3id.org/roh/representedEntityHasRegion</AtrNombre>
             <AtrNombreLectura>http://w3id.org/roh/representedEntityHasRegion</AtrNombreLectura>
@@ -390,88 +343,92 @@
                 </PropsEntLectura>
             </SeleccionEntidad>
         </Propiedad>
-		
+		<Propiedad  ID="http://w3id.org/roh/eventType" EntidadID="http://w3id.org/roh/Activity">
+            <AtrNombre>http://w3id.org/roh/eventType</AtrNombre>
+            <AtrNombreLectura>http://w3id.org/roh/eventType</AtrNombreLectura>
+			<SeleccionEntidad>
+                <TipoSeleccion>Autocompletar</TipoSeleccion>
+                <Grafo>eventtype.owl</Grafo>
+                <UrlTipoEntSolicitada>http://w3id.org/roh/EventType</UrlTipoEntSolicitada>
+				<PropsEntEdicion>
+                    <NameProp>http://purl.org/dc/elements/1.1/title</NameProp>
+                </PropsEntEdicion>
+                <PropsEntLectura>
+                    <Propiedad ID="http://purl.org/dc/elements/1.1/title" EntidadID="http://w3id.org/roh/EventType">
+                        <AtrNombreLectura></AtrNombreLectura>
+                    </Propiedad>
+                </PropsEntLectura>
+            </SeleccionEntidad>
+        </Propiedad>
+		<Propiedad  ID="http://w3id.org/roh/eventInscriptionType" EntidadID="http://w3id.org/roh/Activity">
+            <AtrNombre>http://w3id.org/roh/eventInscriptionType</AtrNombre>
+            <AtrNombreLectura>http://w3id.org/roh/eventInscriptionType</AtrNombreLectura>
+			<SeleccionEntidad>
+                <TipoSeleccion>Autocompletar</TipoSeleccion>
+                <Grafo>eventinscriptiontype.owl</Grafo>
+                <UrlTipoEntSolicitada>http://w3id.org/roh/EventInscriptionType</UrlTipoEntSolicitada>
+				<PropsEntEdicion>
+                    <NameProp>http://purl.org/dc/elements/1.1/title</NameProp>
+                </PropsEntEdicion>
+                <PropsEntLectura>
+                    <Propiedad ID="http://purl.org/dc/elements/1.1/title" EntidadID="http://w3id.org/roh/EventInscriptionType">
+                        <AtrNombreLectura></AtrNombreLectura>
+                    </Propiedad>
+                </PropsEntLectura>
+            </SeleccionEntidad>
+        </Propiedad>
+		<Propiedad  ID="http://w3id.org/roh/publicationType" EntidadID="http://w3id.org/roh/Activity">
+            <AtrNombre>http://w3id.org/roh/publicationType</AtrNombre>
+            <AtrNombreLectura>http://w3id.org/roh/publicationType</AtrNombreLectura>
+			<SeleccionEntidad>
+                <TipoSeleccion>Autocompletar</TipoSeleccion>
+                <Grafo>publicationtype.owl</Grafo>
+                <UrlTipoEntSolicitada>http://w3id.org/roh/PublicationType</UrlTipoEntSolicitada>
+				<PropsEntEdicion>
+                    <NameProp>http://purl.org/dc/elements/1.1/title</NameProp>
+                </PropsEntEdicion>
+                <PropsEntLectura>
+                    <Propiedad ID="http://purl.org/dc/elements/1.1/title" EntidadID="http://w3id.org/roh/PublicationType">
+                        <AtrNombreLectura></AtrNombreLectura>
+                    </Propiedad>
+                </PropsEntLectura>
+            </SeleccionEntidad>
+        </Propiedad>
+		<Propiedad  ID="http://w3id.org/roh/publicationHasRegion" EntidadID="http://w3id.org/roh/Activity">
+            <AtrNombre>http://w3id.org/roh/publicationHasRegion</AtrNombre>
+            <AtrNombreLectura>http://w3id.org/roh/publicationHasRegion</AtrNombreLectura>
+			<SeleccionEntidad>
+                <TipoSeleccion>Combo</TipoSeleccion>
+                <Grafo>feature.owl</Grafo>
+                <UrlTipoEntSolicitada>http://www.geonames.org/ontology#Feature</UrlTipoEntSolicitada>              
+                <PropsEntEdicion>
+                    <NameProp>http://www.geonames.org/ontology#name</NameProp>
+                </PropsEntEdicion>
+                <PropsEntLectura>
+                    <Propiedad ID="http://www.geonames.org/ontology#name" EntidadID="http://www.geonames.org/ontology#Feature">
+                        <AtrNombreLectura></AtrNombreLectura>
+                    </Propiedad>
+                </PropsEntLectura>
+            </SeleccionEntidad>
+        </Propiedad>
+		<Propiedad  ID="http://w3id.org/roh/publicationHasCountryName" EntidadID="http://w3id.org/roh/Activity">
+            <AtrNombre>http://w3id.org/roh/publicationHasCountryName</AtrNombre>
+            <AtrNombreLectura>http://w3id.org/roh/publicationHasCountryName</AtrNombreLectura>
+			<SeleccionEntidad>
+                <TipoSeleccion>Combo</TipoSeleccion>
+                <Grafo>feature.owl</Grafo>
+                <UrlTipoEntSolicitada>http://www.geonames.org/ontology#Feature</UrlTipoEntSolicitada>              
+                <PropsEntEdicion>
+                    <NameProp>http://www.geonames.org/ontology#name</NameProp>
+                </PropsEntEdicion>
+                <PropsEntLectura>
+                    <Propiedad ID="http://www.geonames.org/ontology#name" EntidadID="http://www.geonames.org/ontology#Feature">
+                        <AtrNombreLectura></AtrNombreLectura>
+                    </Propiedad>
+                </PropsEntLectura>
+            </SeleccionEntidad>
+        </Propiedad>
     </EspefPropiedad>
     <EspefEntidad>
-        <Entidad  ID="http://w3id.org/roh/CategoryPath">
-            <AtrNombre>http://w3id.org/roh/CategoryPath</AtrNombre>
-            <AtrNombreLectura>http://w3id.org/roh/CategoryPath</AtrNombreLectura>
-            <OrdenEntidad>
-                <Grupo class="formtheme02">
-                    <Grupo class="fieldset">
-                        <Grupo Tipo="fieldset" class="mediumLabels">
-                            <NameProp>http://w3id.org/roh/categoryNode</NameProp>
-                        </Grupo>
-                    </Grupo>
-                </Grupo>
-            </OrdenEntidad>
-            <OrdenEntidadLectura>
-                <Grupo classLectura="group content semanticView">
-                    <Grupo classLectura="group group_info">
-                        <AtrNombreGrupo>Propiedades</AtrNombreGrupo>
-                        <Grupo classLectura="contentGroup">
-                            <NameProp>http://w3id.org/roh/categoryNode</NameProp>
-                        </Grupo>
-                    </Grupo>
-                </Grupo>
-            </OrdenEntidadLectura>
-        </Entidad>
-        <Entidad  ID="http://w3id.org/roh/Activity">
-            <AtrNombre>http://w3id.org/roh/Activity</AtrNombre>
-            <AtrNombreLectura>http://w3id.org/roh/Activity</AtrNombreLectura>
-            <OrdenEntidad>
-                <Grupo class="formtheme02">
-                    <Grupo class="fieldset">
-                        <Grupo Tipo="fieldset" class="mediumLabels">
-                            <NameProp>http://w3id.org/roh/promotedBy</NameProp> 
-                            <NameProp>https://www.w3.org/2006/vcard/ns#hasRegion</NameProp> 
-                            <NameProp>http://w3id.org/roh/conductedBy</NameProp> 
-                            <NameProp>http://vivoweb.org/ontology/core#geographicFocus</NameProp> 
-                            <NameProp>https://www.w3.org/2006/vcard/ns#hasCountryName</NameProp> 
-                            <NameProp>http://w3id.org/roh/targetGroupProfile</NameProp> 
-                            <NameProp>http://w3id.org/roh/hasKnowledgeArea</NameProp> 
-                            <NameProp>http://w3id.org/roh/managementType</NameProp> 
-                            <NameProp>http://w3id.org/roh/crisIdentifier</NameProp> 
-                            <NameProp>http://w3id.org/roh/geographicFocusOther</NameProp> 
-                            <NameProp>http://w3id.org/roh/attendants</NameProp> 
-                            <NameProp>http://w3id.org/roh/averageAnnualBudget</NameProp> 
-                            <NameProp>http://purl.org/dc/elements/1.1/type</NameProp> 
-                            <NameProp>https://www.w3.org/2006/vcard/ns#locality</NameProp> 
-                            <NameProp>http://w3id.org/roh/classificationCVN</NameProp> 
-                            <NameProp>http://w3id.org/roh/title</NameProp>
-							<NameProp>http://w3id.org/roh/activityModality</NameProp>
-							<NameProp>http://w3id.org/roh/activityModalityOther</NameProp>
-                        </Grupo>
-                    </Grupo>
-                </Grupo>
-            </OrdenEntidad>
-            <OrdenEntidadLectura>
-                <Grupo classLectura="group content semanticView">
-                    <Grupo classLectura="group group_info">
-                        <AtrNombreGrupo>Propiedades</AtrNombreGrupo>
-                        <Grupo classLectura="contentGroup">
-                            <NameProp>http://w3id.org/roh/promotedBy</NameProp> 
-                            <NameProp>https://www.w3.org/2006/vcard/ns#hasRegion</NameProp> 
-                            <NameProp>http://w3id.org/roh/conductedBy</NameProp> 
-                            <NameProp>http://vivoweb.org/ontology/core#geographicFocus</NameProp> 
-                            <NameProp>https://www.w3.org/2006/vcard/ns#hasCountryName</NameProp> 
-                            <NameProp>http://w3id.org/roh/targetGroupProfile</NameProp> 
-                            <NameProp>http://w3id.org/roh/hasKnowledgeArea</NameProp> 
-                            <NameProp>http://w3id.org/roh/managementType</NameProp> 
-                            <NameProp>http://w3id.org/roh/crisIdentifier</NameProp> 
-                            <NameProp>http://w3id.org/roh/geographicFocusOther</NameProp> 
-                            <NameProp>http://w3id.org/roh/attendants</NameProp> 
-                            <NameProp>http://w3id.org/roh/averageAnnualBudget</NameProp> 
-                            <NameProp>http://purl.org/dc/elements/1.1/type</NameProp> 
-                            <NameProp>https://www.w3.org/2006/vcard/ns#locality</NameProp> 
-                            <NameProp>http://w3id.org/roh/classificationCVN</NameProp> 
-                            <NameProp>http://w3id.org/roh/title</NameProp>
-							<NameProp>http://w3id.org/roh/activityModality</NameProp>
-							<NameProp>http://w3id.org/roh/activityModalityOther</NameProp>
-                        </Grupo>
-                    </Grupo>
-                </Grupo>
-            </OrdenEntidadLectura>
-        </Entidad>
     </EspefEntidad>
 </config>
