@@ -154,6 +154,21 @@
                 </PropsEntLectura>
             </SeleccionEntidad>
         </Propiedad>
+		<Propiedad  ID="http://w3id.org/roh/formationType" EntidadID="http://vivoweb.org/ontology/core#AcademicDegree">
+			<SeleccionEntidad>
+                <TipoSeleccion>Autocompletar</TipoSeleccion>
+                <Grafo>prizetype.owl</Grafo>
+                <UrlTipoEntSolicitada>http://w3id.org/roh/FormationType</UrlTipoEntSolicitada>
+				<PropsEntEdicion>
+                    <NameProp>http://purl.org/dc/elements/1.1/title</NameProp>
+                </PropsEntEdicion>
+                <PropsEntLectura>
+                    <Propiedad ID="http://purl.org/dc/elements/1.1/title" EntidadID="FormationType">
+                        <AtrNombreLectura></AtrNombreLectura>
+                    </Propiedad>
+                </PropsEntLectura>
+            </SeleccionEntidad>
+        </Propiedad>
     </EspefPropiedad>
     <EspefEntidad>
     </EspefEntidad>
