@@ -943,7 +943,7 @@
                 </PropsEntLectura>
             </SeleccionEntidad>
         </Propiedad>
-		<Propiedad  ID="http://vivoweb.org/ontology/core#relatedBy" EntidadID="http://w3id.org/roh/RelatedGraduates">
+		<Propiedad  ID="http://vivoweb.org/ontology/core#relatedBy" EntidadID="http://w3id.org/roh/RelatedPostGraduates">
             <AtrNombre>http://vivoweb.org/ontology/core#relatedBy</AtrNombre>
             <AtrNombreLectura>http://vivoweb.org/ontology/core#relatedBy</AtrNombreLectura>
 			<SeleccionEntidad>
