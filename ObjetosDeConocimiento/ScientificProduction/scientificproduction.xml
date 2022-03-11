@@ -11,7 +11,7 @@
 		<CategorizacionTesauroGnossObligatoria>false</CategorizacionTesauroGnossObligatoria>
     </ConfiguracionGeneral>
     <EspefPropiedad>        
-        <Propiedad  ID="http://w3id.org/roh/relationshipType" EntidadID="http://w3id.org/roh/ScientificProduction">
+        <Propiedad  ID="http://w3id.org/roh/h-indexSource" EntidadID="http://w3id.org/roh/ScientificProduction">
 			<SeleccionEntidad>
                 <TipoSeleccion>Autocompletar</TipoSeleccion>
                 <Grafo>hindexsource.owl</Grafo>
