@@ -62,10 +62,6 @@
                 </PropsEntLectura>
             </SeleccionEntidad>
         </Propiedad>
-        <Propiedad  ID="http://vivoweb.org/ontology/core#freeTextKeywords" EntidadID="http://vivoweb.org/ontology/core#Grant">
-            <AtrNombre>freeTextKeywords</AtrNombre>
-            <AtrNombreLectura>freeTextKeywords</AtrNombreLectura>
-        </Propiedad>
         <Propiedad  ID="http://w3id.org/roh/awardingEntity" EntidadID="http://vivoweb.org/ontology/core#Grant">
 			<AtrNombre>awardingEntity</AtrNombre>
             <AtrNombreLectura>awardingEntity</AtrNombreLectura>
@@ -83,46 +79,6 @@
                 </PropsEntLectura>
             </SeleccionEntidad>
         </Propiedad>
-        <Propiedad  ID="http://w3id.org/roh/durationMonths" EntidadID="http://vivoweb.org/ontology/core#Grant">
-            <AtrNombre>durationMonths</AtrNombre>
-            <AtrNombreLectura>durationMonths</AtrNombreLectura>
-        </Propiedad>
-        <Propiedad  ID="http://w3id.org/roh/crisIdentifier" EntidadID="http://vivoweb.org/ontology/core#Grant">
-            <AtrNombre>crisIdentifier</AtrNombre>
-            <AtrNombreLectura>crisIdentifier</AtrNombreLectura>
-        </Propiedad>
-        <Propiedad  ID="http://vivoweb.org/ontology/core#end" EntidadID="http://vivoweb.org/ontology/core#Grant">
-            <AtrNombre>end</AtrNombre>
-            <AtrNombreLectura>end</AtrNombreLectura>
-        </Propiedad>
-        <Propiedad  ID="http://w3id.org/roh/durationDays" EntidadID="http://vivoweb.org/ontology/core#Grant">
-            <AtrNombre>durationDays</AtrNombre>
-            <AtrNombreLectura>durationDays</AtrNombreLectura>
-        </Propiedad>
-        <Propiedad  ID="http://w3id.org/roh/monetaryAmount" EntidadID="http://vivoweb.org/ontology/core#Grant">
-            <AtrNombre>monetaryAmount</AtrNombre>
-            <AtrNombreLectura>monetaryAmount</AtrNombreLectura>
-        </Propiedad>
-        <Propiedad  ID="http://w3id.org/roh/conferralDate" EntidadID="http://vivoweb.org/ontology/core#Grant">
-            <AtrNombre>conferralDate</AtrNombre>
-            <AtrNombreLectura>conferralDate</AtrNombreLectura>
-        </Propiedad>
-        <Propiedad  ID="http://w3id.org/roh/durationYears" EntidadID="http://vivoweb.org/ontology/core#Grant">
-            <AtrNombre>durationYears</AtrNombre>
-            <AtrNombreLectura>durationYears</AtrNombreLectura>
-        </Propiedad>
-        <Propiedad  ID="http://w3id.org/roh/aimsOther" EntidadID="http://vivoweb.org/ontology/core#Grant">
-            <AtrNombre>aimsOther</AtrNombre>
-            <AtrNombreLectura>aimsOther</AtrNombreLectura>
-        </Propiedad>
-        <Propiedad  ID="http://vivoweb.org/ontology/core#start" EntidadID="http://vivoweb.org/ontology/core#Grant">
-            <AtrNombre>start</AtrNombre>
-            <AtrNombreLectura>start</AtrNombreLectura>
-        </Propiedad>
-        <Propiedad  ID="http://w3id.org/roh/title" EntidadID="http://vivoweb.org/ontology/core#Grant">
-            <AtrNombre>title</AtrNombre>
-            <AtrNombreLectura>title</AtrNombreLectura>
-        </Propiedad>
         <Propiedad  ID="http://w3id.org/roh/categoryNode" EntidadID="http://w3id.org/roh/CategoryPath">
             <AtrNombre>categoryNode</AtrNombre>
             <AtrNombreLectura>categoryNode</AtrNombreLectura>
@@ -131,10 +87,7 @@
 				<Grafo>taxonomy.owl</Grafo>				
 				<UrlPropiedad>um</UrlPropiedad>                
 			</SeleccionEntidad>
-        </Propiedad>
-		
-		
-		
+        </Propiedad>		
 		 <Propiedad  ID="https://www.w3.org/2006/vcard/ns#hasCountryName" EntidadID="http://vivoweb.org/ontology/core#Grant">
             <AtrNombre>hasCountryName</AtrNombre>
             <AtrNombreLectura>hasCountryName</AtrNombreLectura>
@@ -172,77 +125,5 @@
 		
     </EspefPropiedad>
     <EspefEntidad>
-        <Entidad  ID="http://vivoweb.org/ontology/core#Grant">
-            <AtrNombre>http://vivoweb.org/ontology/core#Grant</AtrNombre>
-            <AtrNombreLectura>http://vivoweb.org/ontology/core#Grant</AtrNombreLectura>
-            <OrdenEntidad>
-                <Grupo class="formtheme02">
-                    <Grupo class="fieldset">
-                        <Grupo Tipo="fieldset" class="mediumLabels">
-                            <NameProp>http://w3id.org/roh/entity</NameProp> 
-                            <NameProp>http://w3id.org/roh/aims</NameProp> 
-                            <NameProp>http://vivoweb.org/ontology/core#freeTextKeywords</NameProp> 
-                            <NameProp>http://w3id.org/roh/awardingEntity</NameProp> 
-                            <NameProp>http://w3id.org/roh/durationMonths</NameProp> 
-                            <NameProp>http://w3id.org/roh/crisIdentifier</NameProp> 
-                            <NameProp>http://vivoweb.org/ontology/core#end</NameProp> 
-                            <NameProp>http://w3id.org/roh/durationDays</NameProp> 
-                            <NameProp>http://w3id.org/roh/monetaryAmount</NameProp> 
-                            <NameProp>http://w3id.org/roh/conferralDate</NameProp> 
-                            <NameProp>http://w3id.org/roh/durationYears</NameProp> 
-                            <NameProp>http://w3id.org/roh/aimsOther</NameProp> 
-                            <NameProp>http://vivoweb.org/ontology/core#start</NameProp> 
-                            <NameProp>http://w3id.org/roh/title</NameProp>
-                        </Grupo>
-                    </Grupo>
-                </Grupo>
-            </OrdenEntidad>
-            <OrdenEntidadLectura>
-                <Grupo classLectura="group content semanticView">
-                    <Grupo classLectura="group group_info">
-                        <AtrNombreGrupo>Propiedades</AtrNombreGrupo>
-                        <Grupo classLectura="contentGroup">
-                            <NameProp>http://w3id.org/roh/entity</NameProp> 
-                            <NameProp>http://w3id.org/roh/aims</NameProp> 
-                            <NameProp>http://vivoweb.org/ontology/core#freeTextKeywords</NameProp> 
-                            <NameProp>http://w3id.org/roh/awardingEntity</NameProp> 
-                            <NameProp>http://w3id.org/roh/durationMonths</NameProp> 
-                            <NameProp>http://w3id.org/roh/crisIdentifier</NameProp> 
-                            <NameProp>http://vivoweb.org/ontology/core#end</NameProp> 
-                            <NameProp>http://w3id.org/roh/durationDays</NameProp> 
-                            <NameProp>http://w3id.org/roh/monetaryAmount</NameProp> 
-                            <NameProp>http://w3id.org/roh/conferralDate</NameProp> 
-                            <NameProp>http://w3id.org/roh/durationYears</NameProp> 
-                            <NameProp>http://w3id.org/roh/aimsOther</NameProp> 
-                            <NameProp>http://vivoweb.org/ontology/core#start</NameProp> 
-                            <NameProp>http://w3id.org/roh/title</NameProp>
-                        </Grupo>
-                    </Grupo>
-                </Grupo>
-            </OrdenEntidadLectura>
-        </Entidad>
-        <Entidad  ID="http://w3id.org/roh/CategoryPath">
-            <AtrNombre>http://w3id.org/roh/CategoryPath</AtrNombre>
-            <AtrNombreLectura>http://w3id.org/roh/CategoryPath</AtrNombreLectura>
-            <OrdenEntidad>
-                <Grupo class="formtheme02">
-                    <Grupo class="fieldset">
-                        <Grupo Tipo="fieldset" class="mediumLabels">
-                            <NameProp>http://w3id.org/roh/categoryNode</NameProp>
-                        </Grupo>
-                    </Grupo>
-                </Grupo>
-            </OrdenEntidad>
-            <OrdenEntidadLectura>
-                <Grupo classLectura="group content semanticView">
-                    <Grupo classLectura="group group_info">
-                        <AtrNombreGrupo>Propiedades</AtrNombreGrupo>
-                        <Grupo classLectura="contentGroup">
-                            <NameProp>http://w3id.org/roh/categoryNode</NameProp>
-                        </Grupo>
-                    </Grupo>
-                </Grupo>
-            </OrdenEntidadLectura>
-        </Entidad>
     </EspefEntidad>
 </config>

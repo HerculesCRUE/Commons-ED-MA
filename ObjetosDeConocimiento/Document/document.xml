@@ -262,23 +262,6 @@
             <AtrNombre>http://purl.org/ontology/bibo/presentedAt</AtrNombre>
             <AtrNombreLectura>http://purl.org/ontology/bibo/presentedAt</AtrNombreLectura>
         </Propiedad>
-        <Propiedad  ID="http://w3id.org/roh/correspondingAuthor" EntidadID="http://purl.org/ontology/bibo/Document">
-            <AtrNombre>http://w3id.org/roh/correspondingAuthor</AtrNombre>
-            <AtrNombreLectura>http://w3id.org/roh/correspondingAuthor</AtrNombreLectura>
-			<SeleccionEntidad>
-                <TipoSeleccion>Autocompletar</TipoSeleccion>
-                <Grafo>person.owl</Grafo>
-                <UrlTipoEntSolicitada>http://xmlns.com/foaf/0.1/Person</UrlTipoEntSolicitada>              
-                <PropsEntEdicion>
-                    <NameProp>http://xmlns.com/foaf/0.1/name</NameProp>
-                </PropsEntEdicion>
-                <PropsEntLectura>
-                    <Propiedad ID="http://xmlns.com/foaf/0.1/name" EntidadID="http://xmlns.com/foaf/0.1/Person">
-                        <AtrNombreLectura></AtrNombreLectura>
-                    </Propiedad>
-                </PropsEntLectura>
-            </SeleccionEntidad>
-        </Propiedad>
 		<Propiedad  ID="http://w3id.org/roh/publicAuthorList" EntidadID="http://purl.org/ontology/bibo/Document">
             <AtrNombre>http://w3id.org/roh/publicAuthorList</AtrNombre>
             <AtrNombreLectura>http://w3id.org/roh/publicAuthorList</AtrNombreLectura>

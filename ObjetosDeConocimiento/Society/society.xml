@@ -19,9 +19,7 @@
 				<Grafo>taxonomy.owl</Grafo>				
 				<UrlPropiedad>um</UrlPropiedad>                
 			</SeleccionEntidad>
-        </Propiedad>
-		
-		
+        </Propiedad>		
 		<Propiedad  ID="http://w3id.org/roh/affiliatedOrganizationType" EntidadID="http://w3id.org/roh/Society">
             <AtrNombre>http://w3id.org/roh/affiliatedOrganizationType</AtrNombre>
             <AtrNombreLectura>http://w3id.org/roh/affiliatedOrganizationType</AtrNombreLectura>
@@ -72,9 +70,7 @@
                     </Propiedad>
                 </PropsEntLectura>
 			</SeleccionEntidad>
-        </Propiedad>
-		
-		
+        </Propiedad>		
         <Propiedad  ID="https://www.w3.org/2006/vcard/ns#hasRegion" EntidadID="http://w3id.org/roh/Society">
             <AtrNombre>hasRegion</AtrNombre>
             <AtrNombreLectura>hasRegion</AtrNombreLectura>
@@ -108,10 +104,6 @@
                     </Propiedad>
                 </PropsEntLectura>
             </SeleccionEntidad>
-        </Propiedad>
-        <Propiedad  ID="http://vivoweb.org/ontology/core#freeTextKeywords" EntidadID="http://w3id.org/roh/Society">
-            <AtrNombre>freeTextKeywords</AtrNombre>
-            <AtrNombreLectura>freeTextKeywords</AtrNombreLectura>
         </Propiedad>
         <Propiedad  ID="http://w3id.org/roh/participates" EntidadID="http://w3id.org/roh/Society">
             <AtrNombre>participates</AtrNombre>
@@ -164,111 +156,7 @@
                 </PropsEntLectura>
             </SeleccionEntidad>
         </Propiedad>
-        <Propiedad  ID="https://www.w3.org/2006/vcard/ns#locality" EntidadID="http://w3id.org/roh/Society">
-            <AtrNombre>locality</AtrNombre>
-            <AtrNombreLectura>locality</AtrNombreLectura>
-        </Propiedad>
-        <Propiedad  ID="http://w3id.org/roh/crisIdentifier" EntidadID="http://w3id.org/roh/Society">
-            <AtrNombre>crisIdentifier</AtrNombre>
-            <AtrNombreLectura>crisIdentifier</AtrNombreLectura>
-        </Propiedad>
-        <Propiedad  ID="http://vivoweb.org/ontology/core#end" EntidadID="http://w3id.org/roh/Society">
-            <AtrNombre>end</AtrNombre>
-            <AtrNombreLectura>end</AtrNombreLectura>
-        </Propiedad>
-        <Propiedad  ID="http://w3id.org/roh/professionalCategory" EntidadID="http://w3id.org/roh/Society">
-            <AtrNombre>professionalCategory</AtrNombre>
-            <AtrNombreLectura>professionalCategory</AtrNombreLectura>
-        </Propiedad>
-        <Propiedad  ID="http://w3id.org/roh/geographicFocusOther" EntidadID="http://w3id.org/roh/Society">
-            <AtrNombre>geographicFocusOther</AtrNombre>
-            <AtrNombreLectura>geographicFocusOther</AtrNombreLectura>
-        </Propiedad>
-        <Propiedad  ID="http://vivoweb.org/ontology/core#start" EntidadID="http://w3id.org/roh/Society">
-            <AtrNombre>start</AtrNombre>
-            <AtrNombreLectura>start</AtrNombreLectura>
-        </Propiedad>
-        <Propiedad  ID="http://w3id.org/roh/members" EntidadID="http://w3id.org/roh/Society">
-            <AtrNombre>members</AtrNombre>
-            <AtrNombreLectura>members</AtrNombreLectura>
-        </Propiedad>
-        <Propiedad  ID="http://w3id.org/roh/title" EntidadID="http://w3id.org/roh/Society">
-            <AtrNombre>title</AtrNombre>
-            <AtrNombreLectura>title</AtrNombreLectura>
-        </Propiedad>
     </EspefPropiedad>
     <EspefEntidad>
-        <Entidad  ID="http://w3id.org/roh/CategoryPath">
-            <AtrNombre>http://w3id.org/roh/CategoryPath</AtrNombre>
-            <AtrNombreLectura>http://w3id.org/roh/CategoryPath</AtrNombreLectura>
-            <OrdenEntidad>
-                <Grupo class="formtheme02">
-                    <Grupo class="fieldset">
-                        <Grupo Tipo="fieldset" class="mediumLabels">
-                            <NameProp>http://w3id.org/roh/categoryNode</NameProp>
-                        </Grupo>
-                    </Grupo>
-                </Grupo>
-            </OrdenEntidad>
-            <OrdenEntidadLectura>
-                <Grupo classLectura="group content semanticView">
-                    <Grupo classLectura="group group_info">
-                        <AtrNombreGrupo>Propiedades</AtrNombreGrupo>
-                        <Grupo classLectura="contentGroup">
-                            <NameProp>http://w3id.org/roh/categoryNode</NameProp>
-                        </Grupo>
-                    </Grupo>
-                </Grupo>
-            </OrdenEntidadLectura>
-        </Entidad>
-        <Entidad  ID="http://w3id.org/roh/Society">
-            <AtrNombre>http://w3id.org/roh/Society</AtrNombre>
-            <AtrNombreLectura>http://w3id.org/roh/Society</AtrNombreLectura>
-            <OrdenEntidad>
-                <Grupo class="formtheme02">
-                    <Grupo class="fieldset">
-                        <Grupo Tipo="fieldset" class="mediumLabels">
-                            <NameProp>https://www.w3.org/2006/vcard/ns#hasRegion</NameProp> 
-                            <NameProp>http://vivoweb.org/ontology/core#affiliatedOrganization</NameProp> 
-                            <NameProp>http://vivoweb.org/ontology/core#freeTextKeywords</NameProp> 
-                            <NameProp>http://w3id.org/roh/participates</NameProp> 
-                            <NameProp>https://www.w3.org/2006/vcard/ns#hasCountryName</NameProp> 
-                            <NameProp>http://vivoweb.org/ontology/core#geographicFocus</NameProp> 
-                            <NameProp>https://www.w3.org/2006/vcard/ns#locality</NameProp> 
-                            <NameProp>http://w3id.org/roh/crisIdentifier</NameProp> 
-                            <NameProp>http://vivoweb.org/ontology/core#end</NameProp> 
-                            <NameProp>http://w3id.org/roh/professionalCategory</NameProp> 
-                            <NameProp>http://w3id.org/roh/geographicFocusOther</NameProp> 
-                            <NameProp>http://vivoweb.org/ontology/core#start</NameProp> 
-                            <NameProp>http://w3id.org/roh/members</NameProp> 
-                            <NameProp>http://w3id.org/roh/title</NameProp>
-                        </Grupo>
-                    </Grupo>
-                </Grupo>
-            </OrdenEntidad>
-            <OrdenEntidadLectura>
-                <Grupo classLectura="group content semanticView">
-                    <Grupo classLectura="group group_info">
-                        <AtrNombreGrupo>Propiedades</AtrNombreGrupo>
-                        <Grupo classLectura="contentGroup">
-                            <NameProp>https://www.w3.org/2006/vcard/ns#hasRegion</NameProp> 
-                            <NameProp>http://vivoweb.org/ontology/core#affiliatedOrganization</NameProp> 
-                            <NameProp>http://vivoweb.org/ontology/core#freeTextKeywords</NameProp> 
-                            <NameProp>http://w3id.org/roh/participates</NameProp> 
-                            <NameProp>https://www.w3.org/2006/vcard/ns#hasCountryName</NameProp> 
-                            <NameProp>http://vivoweb.org/ontology/core#geographicFocus</NameProp> 
-                            <NameProp>https://www.w3.org/2006/vcard/ns#locality</NameProp> 
-                            <NameProp>http://w3id.org/roh/crisIdentifier</NameProp> 
-                            <NameProp>http://vivoweb.org/ontology/core#end</NameProp> 
-                            <NameProp>http://w3id.org/roh/professionalCategory</NameProp> 
-                            <NameProp>http://w3id.org/roh/geographicFocusOther</NameProp> 
-                            <NameProp>http://vivoweb.org/ontology/core#start</NameProp> 
-                            <NameProp>http://w3id.org/roh/members</NameProp> 
-                            <NameProp>http://w3id.org/roh/title</NameProp>
-                        </Grupo>
-                    </Grupo>
-                </Grupo>
-            </OrdenEntidadLectura>
-        </Entidad>
     </EspefEntidad>
 </config>
