@@ -169,6 +169,21 @@
                 </PropsEntLectura>
             </SeleccionEntidad>
         </Propiedad>
+		<Propiedad  ID="http://w3id.org/roh/postgradeDegree" EntidadID="http://vivoweb.org/ontology/core#AcademicDegree">
+			<SeleccionEntidad>
+                <TipoSeleccion>Autocompletar</TipoSeleccion>
+                <Grafo>postgradedegree.owl</Grafo>
+                <UrlTipoEntSolicitada>http://w3id.org/roh/PostgradeDegree</UrlTipoEntSolicitada>
+				<PropsEntEdicion>
+                    <NameProp>http://purl.org/dc/elements/1.1/title</NameProp>
+                </PropsEntEdicion>
+                <PropsEntLectura>
+                    <Propiedad ID="http://purl.org/dc/elements/1.1/title" EntidadID="PostgradeDegree">
+                        <AtrNombreLectura></AtrNombreLectura>
+                    </Propiedad>
+                </PropsEntLectura>
+            </SeleccionEntidad>
+        </Propiedad>
     </EspefPropiedad>
     <EspefEntidad>
     </EspefEntidad>
