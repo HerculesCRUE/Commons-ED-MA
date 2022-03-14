@@ -937,7 +937,7 @@
                     <NameProp>http://w3id.org/roh/title</NameProp>
                 </PropsEntEdicion>
                 <PropsEntLectura>
-                    <Propiedad ID="http://w3id.org/roh/h-index" EntidadID="http://vivoweb.org/ontology/core#AcademicDegree">
+                    <Propiedad ID="http://w3id.org/roh/title" EntidadID="http://vivoweb.org/ontology/core#AcademicDegree">
                         <AtrNombreLectura></AtrNombreLectura>
                     </Propiedad>
                 </PropsEntLectura>
@@ -954,7 +954,7 @@
                     <NameProp>http://w3id.org/roh/title</NameProp>
                 </PropsEntEdicion>
                 <PropsEntLectura>
-                    <Propiedad ID="http://w3id.org/roh/h-index" EntidadID="http://vivoweb.org/ontology/core#AcademicDegree">
+                    <Propiedad ID="http://w3id.org/roh/title" EntidadID="http://vivoweb.org/ontology/core#AcademicDegree">
                         <AtrNombreLectura></AtrNombreLectura>
                     </Propiedad>
                 </PropsEntLectura>
@@ -971,7 +971,7 @@
                     <NameProp>http://w3id.org/roh/title</NameProp>
                 </PropsEntEdicion>
                 <PropsEntLectura>
-                    <Propiedad ID="http://w3id.org/roh/h-index" EntidadID="http://vivoweb.org/ontology/core#AcademicDegree">
+                    <Propiedad ID="http://w3id.org/roh/title" EntidadID="http://vivoweb.org/ontology/core#AcademicDegree">
                         <AtrNombreLectura></AtrNombreLectura>
                     </Propiedad>
                 </PropsEntLectura>
@@ -988,7 +988,24 @@
                     <NameProp>http://w3id.org/roh/title</NameProp>
                 </PropsEntEdicion>
                 <PropsEntLectura>
-                    <Propiedad ID="http://w3id.org/roh/h-index" EntidadID="http://vivoweb.org/ontology/core#AcademicDegree">
+                    <Propiedad ID="http://w3id.org/roh/title" EntidadID="http://vivoweb.org/ontology/core#AcademicDegree">
+                        <AtrNombreLectura></AtrNombreLectura>
+                    </Propiedad>
+                </PropsEntLectura>
+            </SeleccionEntidad>
+        </Propiedad>
+		<Propiedad  ID="http://vivoweb.org/ontology/core#relatedBy" EntidadID="http://w3id.org/roh/RelatedLanguageSkills">
+            <AtrNombre>http://vivoweb.org/ontology/core#relatedBy</AtrNombre>
+            <AtrNombreLectura>http://vivoweb.org/ontology/core#relatedBy</AtrNombreLectura>
+			<SeleccionEntidad>
+                <TipoSeleccion>Autocompletar</TipoSeleccion>
+                <Grafo>languagecertificate.owl</Grafo>
+                <UrlTipoEntSolicitada>http://w3id.org/roh/LanguageCertificate</UrlTipoEntSolicitada>              
+                <PropsEntEdicion>
+                    <NameProp>http://w3id.org/roh/languageOfTheCertificate</NameProp>
+                </PropsEntEdicion>
+                <PropsEntLectura>
+                    <Propiedad ID="http://w3id.org/roh/languageOfTheCertificate" EntidadID="LanguageCertificate">
                         <AtrNombreLectura></AtrNombreLectura>
                     </Propiedad>
                 </PropsEntLectura>
