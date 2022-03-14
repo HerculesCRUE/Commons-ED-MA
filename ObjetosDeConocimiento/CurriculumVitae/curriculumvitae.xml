@@ -1005,7 +1005,24 @@
                     <NameProp>http://w3id.org/roh/languageOfTheCertificate</NameProp>
                 </PropsEntEdicion>
                 <PropsEntLectura>
-                    <Propiedad ID="http://w3id.org/roh/languageOfTheCertificate" EntidadID="LanguageCertificate">
+                    <Propiedad ID="http://w3id.org/roh/languageOfTheCertificate" EntidadID="http://w3id.org/roh/LanguageCertificate">
+                        <AtrNombreLectura></AtrNombreLectura>
+                    </Propiedad>
+                </PropsEntLectura>
+            </SeleccionEntidad>
+        </Propiedad>
+		<Propiedad  ID="http://vivoweb.org/ontology/core#relatedBy" EntidadID="http://w3id.org/roh/RelatedAcademicTutorials">
+            <AtrNombre>http://vivoweb.org/ontology/core#relatedBy</AtrNombre>
+            <AtrNombreLectura>http://vivoweb.org/ontology/core#relatedBy</AtrNombreLectura>
+			<SeleccionEntidad>
+                <TipoSeleccion>Autocompletar</TipoSeleccion>
+                <Grafo>tutorship.owl</Grafo>
+                <UrlTipoEntSolicitada>http://w3id.org/roh/TutorShip</UrlTipoEntSolicitada>              
+                <PropsEntEdicion>
+                    <NameProp>http://w3id.org/roh/tutorshipProgramType</NameProp>
+                </PropsEntEdicion>
+                <PropsEntLectura>
+                    <Propiedad ID="http://w3id.org/roh/tutorshipProgramType" EntidadID="http://w3id.org/roh/TutorShip">
                         <AtrNombreLectura></AtrNombreLectura>
                     </Propiedad>
                 </PropsEntLectura>
