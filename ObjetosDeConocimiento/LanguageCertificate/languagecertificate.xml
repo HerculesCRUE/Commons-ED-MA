@@ -1,0 +1,107 @@
+<config>
+    <ConfiguracionGeneral>
+        <namespace>languagecertificate</namespace>
+        <idiomasOnto>
+            <idiomaOnto>es</idiomaOnto>
+        </idiomasOnto>
+        <ocultarTituloDescpImgDoc></ocultarTituloDescpImgDoc>
+        <TituloDoc EntidadID="http://w3id.org/roh/LanguageCertificate">http://w3id.org/roh/languageOfTheCertificate</TituloDoc>
+        <DescripcionDoc EntidadID="http://w3id.org/roh/LanguageCertificate">http://w3id.org/roh/languageOfTheCertificate</DescripcionDoc>
+        <HtmlNuevo>true</HtmlNuevo>
+		<CategorizacionTesauroGnossObligatoria>false</CategorizacionTesauroGnossObligatoria>
+    </ConfiguracionGeneral>
+    <EspefPropiedad>	
+		<Propiedad  ID="http://w3id.org/roh/languageOfTheCertificate" EntidadID="http://w3id.org/roh/LanguageCertificate">
+			<SeleccionEntidad>
+                <TipoSeleccion>Autocompletar</TipoSeleccion>
+                <Grafo>language.owl</Grafo>
+                <UrlTipoEntSolicitada>http://w3id.org/roh/Language</UrlTipoEntSolicitada>
+				<PropsEntEdicion>
+                    <NameProp>http://purl.org/dc/elements/1.1/title</NameProp>
+                </PropsEntEdicion>
+                <PropsEntLectura>
+                    <Propiedad ID="http://purl.org/dc/elements/1.1/title" EntidadID="http://w3id.org/roh/Language">
+                        <AtrNombreLectura></AtrNombreLectura>
+                    </Propiedad>
+                </PropsEntLectura>
+            </SeleccionEntidad>
+        </Propiedad>
+		<Propiedad  ID="http://w3id.org/roh/listeningSkill" EntidadID="http://w3id.org/roh/LanguageLevel">
+			<SeleccionEntidad>
+                <TipoSeleccion>Autocompletar</TipoSeleccion>
+                <Grafo>languagelevel.owl</Grafo>
+                <UrlTipoEntSolicitada>http://w3id.org/roh/LanguageLevel</UrlTipoEntSolicitada>
+				<PropsEntEdicion>
+                    <NameProp>http://purl.org/dc/elements/1.1/title</NameProp>
+                </PropsEntEdicion>
+                <PropsEntLectura>
+                    <Propiedad ID="http://purl.org/dc/elements/1.1/title" EntidadID="http://w3id.org/roh/LanguageLevel">
+                        <AtrNombreLectura></AtrNombreLectura>
+                    </Propiedad>
+                </PropsEntLectura>
+            </SeleccionEntidad>
+        </Propiedad>
+		<Propiedad  ID="http://w3id.org/roh/readingSkill" EntidadID="http://w3id.org/roh/LanguageLevel">
+			<SeleccionEntidad>
+                <TipoSeleccion>Autocompletar</TipoSeleccion>
+                <Grafo>languagelevel.owl</Grafo>
+                <UrlTipoEntSolicitada>http://w3id.org/roh/LanguageLevel</UrlTipoEntSolicitada>
+				<PropsEntEdicion>
+                    <NameProp>http://purl.org/dc/elements/1.1/title</NameProp>
+                </PropsEntEdicion>
+                <PropsEntLectura>
+                    <Propiedad ID="http://purl.org/dc/elements/1.1/title" EntidadID="http://w3id.org/roh/LanguageLevel">
+                        <AtrNombreLectura></AtrNombreLectura>
+                    </Propiedad>
+                </PropsEntLectura>
+            </SeleccionEntidad>
+        </Propiedad>
+		<Propiedad  ID="http://w3id.org/roh/spokingInteractionSkill" EntidadID="http://w3id.org/roh/LanguageLevel">
+			<SeleccionEntidad>
+                <TipoSeleccion>Autocompletar</TipoSeleccion>
+                <Grafo>languagelevel.owl</Grafo>
+                <UrlTipoEntSolicitada>http://w3id.org/roh/LanguageLevel</UrlTipoEntSolicitada>
+				<PropsEntEdicion>
+                    <NameProp>http://purl.org/dc/elements/1.1/title</NameProp>
+                </PropsEntEdicion>
+                <PropsEntLectura>
+                    <Propiedad ID="http://purl.org/dc/elements/1.1/title" EntidadID="http://w3id.org/roh/LanguageLevel">
+                        <AtrNombreLectura></AtrNombreLectura>
+                    </Propiedad>
+                </PropsEntLectura>
+            </SeleccionEntidad>
+        </Propiedad>
+		<Propiedad  ID="http://w3id.org/roh/speakingSkill" EntidadID="http://w3id.org/roh/LanguageLevel">
+			<SeleccionEntidad>
+                <TipoSeleccion>Autocompletar</TipoSeleccion>
+                <Grafo>languagelevel.owl</Grafo>
+                <UrlTipoEntSolicitada>http://w3id.org/roh/LanguageLevel</UrlTipoEntSolicitada>
+				<PropsEntEdicion>
+                    <NameProp>http://purl.org/dc/elements/1.1/title</NameProp>
+                </PropsEntEdicion>
+                <PropsEntLectura>
+                    <Propiedad ID="http://purl.org/dc/elements/1.1/title" EntidadID="http://w3id.org/roh/LanguageLevel">
+                        <AtrNombreLectura></AtrNombreLectura>
+                    </Propiedad>
+                </PropsEntLectura>
+            </SeleccionEntidad>
+        </Propiedad>
+		<Propiedad  ID="http://w3id.org/roh/writingSkill" EntidadID="http://w3id.org/roh/LanguageLevel">
+			<SeleccionEntidad>
+                <TipoSeleccion>Autocompletar</TipoSeleccion>
+                <Grafo>languagelevel.owl</Grafo>
+                <UrlTipoEntSolicitada>http://w3id.org/roh/LanguageLevel</UrlTipoEntSolicitada>
+				<PropsEntEdicion>
+                    <NameProp>http://purl.org/dc/elements/1.1/title</NameProp>
+                </PropsEntEdicion>
+                <PropsEntLectura>
+                    <Propiedad ID="http://purl.org/dc/elements/1.1/title" EntidadID="http://w3id.org/roh/LanguageLevel">
+                        <AtrNombreLectura></AtrNombreLectura>
+                    </Propiedad>
+                </PropsEntLectura>
+            </SeleccionEntidad>
+        </Propiedad>
+    </EspefPropiedad>
+    <EspefEntidad>
+    </EspefEntidad>
+</config>
