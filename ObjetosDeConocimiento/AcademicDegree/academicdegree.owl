@@ -15,7 +15,55 @@
     xmlns:dc="http://purl.org/dc/elements/1.1/"
   xml:base="http://www.owl-ontologies.com/Ontology1628062419.owl">
   <owl:Ontology rdf:about=""/>
+  <owl:Class rdf:about="http://xmlns.com/foaf/0.1/Person">
+    <rdfs:subClassOf>
+      <owl:Restriction>
+        <owl:maxCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#int"
+        >1</owl:maxCardinality>
+        <owl:onProperty>
+          <owl:DatatypeProperty rdf:about="http://w3id.org/roh/secondFamilyName"/>
+        </owl:onProperty>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+    <rdfs:subClassOf>
+      <owl:Restriction>
+        <owl:maxCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#int"
+        >1</owl:maxCardinality>
+        <owl:onProperty>
+          <owl:DatatypeProperty rdf:about="http://xmlns.com/foaf/0.1/nick"/>
+        </owl:onProperty>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+    <rdfs:subClassOf>
+      <owl:Restriction>
+        <owl:maxCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#int"
+        >1</owl:maxCardinality>
+        <owl:onProperty>
+          <owl:DatatypeProperty rdf:about="http://xmlns.com/foaf/0.1/familyName"/>
+        </owl:onProperty>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+    <rdfs:subClassOf rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
+  </owl:Class>
   <owl:Class rdf:about="http://vivoweb.org/ontology/core#AcademicDegree">
+    <rdfs:subClassOf>
+      <owl:Restriction>
+        <owl:onProperty>
+          <owl:DatatypeProperty rdf:about="http://w3id.org/roh/europeanDoctorateDate"/>
+        </owl:onProperty>
+        <owl:maxCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#int"
+        >1</owl:maxCardinality>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+    <rdfs:subClassOf>
+      <owl:Restriction>
+        <owl:onProperty>
+          <owl:DatatypeProperty rdf:about="http://w3id.org/roh/directorNick"/>
+        </owl:onProperty>
+        <owl:maxCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#int"
+        >1</owl:maxCardinality>
+      </owl:Restriction>
+    </rdfs:subClassOf>
     <rdfs:subClassOf>
       <owl:Restriction>
         <owl:onProperty>
@@ -29,6 +77,15 @@
       <owl:Restriction>
         <owl:onProperty>
           <owl:DatatypeProperty rdf:about="http://purl.org/dc/terms/issued"/>
+        </owl:onProperty>
+        <owl:maxCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#int"
+        >1</owl:maxCardinality>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+    <rdfs:subClassOf>
+      <owl:Restriction>
+        <owl:onProperty>
+          <owl:DatatypeProperty rdf:about="http://w3id.org/roh/deaDate"/>
         </owl:onProperty>
         <owl:maxCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#int"
         >1</owl:maxCardinality>
@@ -106,11 +163,29 @@
         >1</owl:maxCardinality>
       </owl:Restriction>
     </rdfs:subClassOf>
+    <rdfs:subClassOf>
+      <owl:Restriction>
+        <owl:maxCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#int"
+        >1</owl:maxCardinality>
+        <owl:onProperty>
+          <owl:DatatypeProperty rdf:about="http://w3id.org/roh/directorName"/>
+        </owl:onProperty>
+      </owl:Restriction>
+    </rdfs:subClassOf>
     <rdfs:subClassOf rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
     <rdfs:subClassOf>
       <owl:Restriction>
         <owl:onProperty>
           <owl:DatatypeProperty rdf:about="http://w3id.org/roh/durationHours"/>
+        </owl:onProperty>
+        <owl:maxCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#int"
+        >1</owl:maxCardinality>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+    <rdfs:subClassOf>
+      <owl:Restriction>
+        <owl:onProperty>
+          <owl:ObjectProperty rdf:about="http://w3id.org/roh/doctoralProgram"/>
         </owl:onProperty>
         <owl:maxCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#int"
         >1</owl:maxCardinality>
@@ -181,6 +256,15 @@
     </rdfs:subClassOf>
     <rdfs:subClassOf>
       <owl:Restriction>
+        <owl:maxCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#int"
+        >1</owl:maxCardinality>
+        <owl:onProperty>
+          <owl:DatatypeProperty rdf:about="http://w3id.org/roh/directorFirstSurname"/>
+        </owl:onProperty>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+    <rdfs:subClassOf>
+      <owl:Restriction>
         <owl:onProperty>
           <owl:DatatypeProperty rdf:about="http://w3id.org/roh/qualification"/>
         </owl:onProperty>
@@ -209,10 +293,28 @@
     <rdfs:subClassOf>
       <owl:Restriction>
         <owl:onProperty>
+          <owl:DatatypeProperty rdf:about="http://w3id.org/roh/europeanDoctorate"/>
+        </owl:onProperty>
+        <owl:maxCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#int"
+        >1</owl:maxCardinality>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+    <rdfs:subClassOf>
+      <owl:Restriction>
+        <owl:onProperty>
           <owl:ObjectProperty rdf:about="http://w3id.org/roh/prize"/>
         </owl:onProperty>
         <owl:maxCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#int"
         >1</owl:maxCardinality>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+    <rdfs:subClassOf>
+      <owl:Restriction>
+        <owl:maxCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#int"
+        >1</owl:maxCardinality>
+        <owl:onProperty>
+          <owl:DatatypeProperty rdf:about="http://w3id.org/roh/thesisTitle"/>
+        </owl:onProperty>
       </owl:Restriction>
     </rdfs:subClassOf>
     <rdfs:subClassOf>
@@ -263,6 +365,15 @@
     <rdfs:subClassOf>
       <owl:Restriction>
         <owl:onProperty>
+          <owl:DatatypeProperty rdf:about="http://w3id.org/roh/deaEntityTitle"/>
+        </owl:onProperty>
+        <owl:maxCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#int"
+        >1</owl:maxCardinality>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+    <rdfs:subClassOf>
+      <owl:Restriction>
+        <owl:onProperty>
           <owl:DatatypeProperty rdf:about="http://w3id.org/roh/approvedDate"/>
         </owl:onProperty>
         <owl:maxCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#int"
@@ -281,6 +392,15 @@
     <rdfs:subClassOf>
       <owl:Restriction>
         <owl:onProperty>
+          <owl:DatatypeProperty rdf:about="http://w3id.org/roh/qualityMention"/>
+        </owl:onProperty>
+        <owl:maxCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#int"
+        >1</owl:maxCardinality>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+    <rdfs:subClassOf>
+      <owl:Restriction>
+        <owl:onProperty>
           <owl:DatatypeProperty rdf:about="http://w3id.org/roh/fundingProgram"/>
         </owl:onProperty>
         <owl:maxCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#int"
@@ -291,6 +411,24 @@
       <owl:Restriction>
         <owl:onProperty>
           <owl:DatatypeProperty rdf:about="http://w3id.org/roh/approvedDegree"/>
+        </owl:onProperty>
+        <owl:maxCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#int"
+        >1</owl:maxCardinality>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+    <rdfs:subClassOf>
+      <owl:Restriction>
+        <owl:maxCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#int"
+        >1</owl:maxCardinality>
+        <owl:onProperty>
+          <owl:DatatypeProperty rdf:about="http://w3id.org/roh/directorSecondSurname"/>
+        </owl:onProperty>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+    <rdfs:subClassOf>
+      <owl:Restriction>
+        <owl:onProperty>
+          <owl:DatatypeProperty rdf:about="http://w3id.org/roh/doctorExtraordinaryAwardDate"/>
         </owl:onProperty>
         <owl:maxCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#int"
         >1</owl:maxCardinality>
@@ -321,6 +459,15 @@
         <owl:onProperty>
           <owl:ObjectProperty rdf:about="http://w3id.org/roh/postgradeDegree"/>
         </owl:onProperty>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+    <rdfs:subClassOf>
+      <owl:Restriction>
+        <owl:onProperty>
+          <owl:ObjectProperty rdf:about="http://w3id.org/roh/deaEntity"/>
+        </owl:onProperty>
+        <owl:maxCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#int"
+        >1</owl:maxCardinality>
       </owl:Restriction>
     </rdfs:subClassOf>
     <rdfs:subClassOf>
@@ -377,8 +524,20 @@
         </owl:onProperty>
       </owl:Restriction>
     </rdfs:subClassOf>
+    <rdfs:subClassOf>
+      <owl:Restriction>
+        <owl:maxCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#int"
+        >1</owl:maxCardinality>
+        <owl:onProperty>
+          <owl:DatatypeProperty rdf:about="http://w3id.org/roh/doctorExtraordinaryAward"/>
+        </owl:onProperty>
+      </owl:Restriction>
+    </rdfs:subClassOf>
   </owl:Class>
   <owl:ObjectProperty rdf:about="http://w3id.org/roh/foreignDegreeType">
+    <rdfs:domain rdf:resource="http://vivoweb.org/ontology/core#AcademicDegree"/>
+  </owl:ObjectProperty>
+  <owl:ObjectProperty rdf:about="http://w3id.org/roh/doctoralProgram">
     <rdfs:domain rdf:resource="http://vivoweb.org/ontology/core#AcademicDegree"/>
   </owl:ObjectProperty>
   <owl:ObjectProperty rdf:about="http://w3id.org/roh/mark">
@@ -393,10 +552,10 @@
   <owl:ObjectProperty rdf:about="http://w3id.org/roh/formationType">
     <rdfs:domain rdf:resource="http://vivoweb.org/ontology/core#AcademicDegree"/>
   </owl:ObjectProperty>
-  <owl:ObjectProperty rdf:about="http://w3id.org/roh/prize">
+  <owl:ObjectProperty rdf:about="http://w3id.org/roh/degreeType">
     <rdfs:domain rdf:resource="http://vivoweb.org/ontology/core#AcademicDegree"/>
   </owl:ObjectProperty>
-  <owl:ObjectProperty rdf:about="http://w3id.org/roh/degreeType">
+  <owl:ObjectProperty rdf:about="http://w3id.org/roh/prize">
     <rdfs:domain rdf:resource="http://vivoweb.org/ontology/core#AcademicDegree"/>
   </owl:ObjectProperty>
   <owl:ObjectProperty rdf:about="http://w3id.org/roh/stayGoal">
@@ -405,19 +564,42 @@
   <owl:ObjectProperty rdf:about="http://w3id.org/roh/postgradeDegree">
     <rdfs:domain rdf:resource="http://vivoweb.org/ontology/core#AcademicDegree"/>
   </owl:ObjectProperty>
-  <owl:ObjectProperty rdf:about="http://w3id.org/roh/formationActivityType">
+  <owl:ObjectProperty rdf:about="http://w3id.org/roh/codirector">
+    <rdfs:domain rdf:resource="http://vivoweb.org/ontology/core#AcademicDegree"/>
+    <rdfs:range rdf:resource="http://xmlns.com/foaf/0.1/Person"/>
+  </owl:ObjectProperty>
+  <owl:ObjectProperty rdf:about="http://w3id.org/roh/conductedBy">
     <rdfs:domain rdf:resource="http://vivoweb.org/ontology/core#AcademicDegree"/>
   </owl:ObjectProperty>
   <owl:ObjectProperty rdf:about="https://www.w3.org/2006/vcard/ns#hasRegion">
     <rdfs:domain rdf:resource="http://vivoweb.org/ontology/core#AcademicDegree"/>
   </owl:ObjectProperty>
-  <owl:ObjectProperty rdf:about="http://w3id.org/roh/conductedBy">
+  <owl:ObjectProperty rdf:about="http://w3id.org/roh/formationActivityType">
+    <rdfs:domain rdf:resource="http://vivoweb.org/ontology/core#AcademicDegree"/>
+  </owl:ObjectProperty>
+  <owl:ObjectProperty rdf:about="http://w3id.org/roh/deaEntity">
     <rdfs:domain rdf:resource="http://vivoweb.org/ontology/core#AcademicDegree"/>
   </owl:ObjectProperty>
   <owl:ObjectProperty rdf:about="http://w3id.org/roh/universityDegreeType">
     <rdfs:domain rdf:resource="http://vivoweb.org/ontology/core#AcademicDegree"/>
   </owl:ObjectProperty>
+  <owl:DatatypeProperty rdf:about="http://w3id.org/roh/thesisTitle">
+    <rdfs:domain rdf:resource="http://vivoweb.org/ontology/core#AcademicDegree"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+  </owl:DatatypeProperty>
   <owl:DatatypeProperty rdf:about="http://w3id.org/roh/trainerSecondSurname">
+    <rdfs:domain rdf:resource="http://vivoweb.org/ontology/core#AcademicDegree"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+  </owl:DatatypeProperty>
+  <owl:DatatypeProperty rdf:about="http://w3id.org/roh/directorNick">
+    <rdfs:domain rdf:resource="http://vivoweb.org/ontology/core#AcademicDegree"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+  </owl:DatatypeProperty>
+  <owl:DatatypeProperty rdf:about="http://w3id.org/roh/doctorExtraordinaryAwardDate">
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#date"/>
+    <rdfs:domain rdf:resource="http://vivoweb.org/ontology/core#AcademicDegree"/>
+  </owl:DatatypeProperty>
+  <owl:DatatypeProperty rdf:about="http://w3id.org/roh/directorSecondSurname">
     <rdfs:domain rdf:resource="http://vivoweb.org/ontology/core#AcademicDegree"/>
     <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
   </owl:DatatypeProperty>
@@ -437,9 +619,17 @@
     <rdfs:domain rdf:resource="http://vivoweb.org/ontology/core#AcademicDegree"/>
     <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
   </owl:DatatypeProperty>
+  <owl:DatatypeProperty rdf:about="http://w3id.org/roh/europeanDoctorateDate">
+    <rdfs:domain rdf:resource="http://vivoweb.org/ontology/core#AcademicDegree"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#date"/>
+  </owl:DatatypeProperty>
   <owl:DatatypeProperty rdf:about="http://w3id.org/roh/goals">
     <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
     <rdfs:domain rdf:resource="http://vivoweb.org/ontology/core#AcademicDegree"/>
+  </owl:DatatypeProperty>
+  <owl:DatatypeProperty rdf:about="http://w3id.org/roh/directorName">
+    <rdfs:domain rdf:resource="http://vivoweb.org/ontology/core#AcademicDegree"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
   </owl:DatatypeProperty>
   <owl:DatatypeProperty rdf:about="http://w3id.org/roh/trainerName">
     <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
@@ -457,9 +647,21 @@
     <rdfs:domain rdf:resource="http://vivoweb.org/ontology/core#AcademicDegree"/>
     <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
   </owl:DatatypeProperty>
+  <owl:DatatypeProperty rdf:about="http://w3id.org/roh/europeanDoctorate">
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#boolean"/>
+    <rdfs:domain rdf:resource="http://vivoweb.org/ontology/core#AcademicDegree"/>
+  </owl:DatatypeProperty>
   <owl:DatatypeProperty rdf:about="http://w3id.org/roh/conductedByTitle">
     <rdfs:domain rdf:resource="http://vivoweb.org/ontology/core#AcademicDegree"/>
     <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+  </owl:DatatypeProperty>
+  <owl:DatatypeProperty rdf:about="http://xmlns.com/foaf/0.1/familyName">
+    <rdfs:domain rdf:resource="http://xmlns.com/foaf/0.1/Person"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+  </owl:DatatypeProperty>
+  <owl:DatatypeProperty rdf:about="http://w3id.org/roh/secondFamilyName">
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+    <rdfs:domain rdf:resource="http://xmlns.com/foaf/0.1/Person"/>
   </owl:DatatypeProperty>
   <owl:DatatypeProperty rdf:about="http://w3id.org/roh/approvedDate">
     <rdfs:domain rdf:resource="http://vivoweb.org/ontology/core#AcademicDegree"/>
@@ -476,6 +678,10 @@
   <owl:DatatypeProperty rdf:about="http://w3id.org/roh/universityDegreeTypeOther">
     <rdfs:domain rdf:resource="http://vivoweb.org/ontology/core#AcademicDegree"/>
     <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+  </owl:DatatypeProperty>
+  <owl:DatatypeProperty rdf:about="http://w3id.org/roh/deaDate">
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#date"/>
+    <rdfs:domain rdf:resource="http://vivoweb.org/ontology/core#AcademicDegree"/>
   </owl:DatatypeProperty>
   <owl:DatatypeProperty rdf:about="http://w3id.org/roh/durationMonths">
     <rdfs:domain rdf:resource="http://vivoweb.org/ontology/core#AcademicDegree"/>
@@ -501,6 +707,14 @@
     <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#date"/>
     <rdfs:domain rdf:resource="http://vivoweb.org/ontology/core#AcademicDegree"/>
   </owl:DatatypeProperty>
+  <owl:DatatypeProperty rdf:about="http://w3id.org/roh/doctorExtraordinaryAward">
+    <rdfs:domain rdf:resource="http://vivoweb.org/ontology/core#AcademicDegree"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#boolean"/>
+  </owl:DatatypeProperty>
+  <owl:DatatypeProperty rdf:about="http://w3id.org/roh/directorFirstSurname">
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+    <rdfs:domain rdf:resource="http://vivoweb.org/ontology/core#AcademicDegree"/>
+  </owl:DatatypeProperty>
   <owl:DatatypeProperty rdf:about="http://w3id.org/roh/crisIdentifier">
     <rdfs:domain rdf:resource="http://vivoweb.org/ontology/core#AcademicDegree"/>
     <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
@@ -512,6 +726,18 @@
   <owl:DatatypeProperty rdf:about="http://w3id.org/roh/center">
     <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
     <rdfs:domain rdf:resource="http://vivoweb.org/ontology/core#AcademicDegree"/>
+  </owl:DatatypeProperty>
+  <owl:DatatypeProperty rdf:about="http://w3id.org/roh/qualityMention">
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#boolean"/>
+    <rdfs:domain rdf:resource="http://vivoweb.org/ontology/core#AcademicDegree"/>
+  </owl:DatatypeProperty>
+  <owl:DatatypeProperty rdf:about="http://w3id.org/roh/deaEntityTitle">
+    <rdfs:domain rdf:resource="http://vivoweb.org/ontology/core#AcademicDegree"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+  </owl:DatatypeProperty>
+  <owl:DatatypeProperty rdf:about="http://xmlns.com/foaf/0.1/nick">
+    <rdfs:domain rdf:resource="http://xmlns.com/foaf/0.1/Person"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
   </owl:DatatypeProperty>
   <owl:DatatypeProperty rdf:about="http://w3id.org/roh/durationHours">
     <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#int"/>
@@ -525,6 +751,11 @@
     <rdfs:domain rdf:resource="http://vivoweb.org/ontology/core#AcademicDegree"/>
     <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
   </owl:DatatypeProperty>
+  <owl:FunctionalProperty rdf:about="http://xmlns.com/foaf/0.1/firstName">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#DatatypeProperty"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+    <rdfs:domain rdf:resource="http://xmlns.com/foaf/0.1/Person"/>
+  </owl:FunctionalProperty>
   <owl:FunctionalProperty rdf:about="http://w3id.org/roh/title">
     <rdfs:domain rdf:resource="http://vivoweb.org/ontology/core#AcademicDegree"/>
     <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
