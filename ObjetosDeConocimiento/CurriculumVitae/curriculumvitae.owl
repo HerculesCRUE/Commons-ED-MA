@@ -42,18 +42,20 @@
     </rdfs:subClassOf>
   </owl:Class>
   <owl:Class rdf:about="http://w3id.org/roh/RelatedOtherCollaboration"/>
+  <owl:Class rdf:about="http://w3id.org/roh/RelatedThesisDirections"/>
   <owl:Class rdf:about="http://w3id.org/roh/RelatedCommittee"/>
   <owl:Class rdf:about="http://w3id.org/roh/RelatedScientificProduction"/>
   <owl:Class rdf:about="http://w3id.org/roh/RelatedCouncil"/>
   <owl:Class rdf:about="http://w3id.org/roh/RelatedPrize"/>
   <owl:Class rdf:about="http://w3id.org/roh/ProfessionalSituation"/>
-  <owl:Class rdf:about="http://w3id.org/roh/RelatedResearchEvaluation"/>
+  <owl:Class rdf:about="http://w3id.org/roh/RelatedOtherActivities"/>
   <owl:Class rdf:about="http://w3id.org/roh/RelatedActivityManagement"/>
+  <owl:Class rdf:about="http://w3id.org/roh/RelatedResearchEvaluation"/>
+  <owl:Class rdf:about="http://w3id.org/roh/RelatedTeachingInnovationAwardsReceived"/>
   <owl:Class rdf:about="http://w3id.org/roh/RelatedStay"/>
+  <owl:Class rdf:about="http://w3id.org/roh/RelatedEducationalOrPedagogicalPublications"/>
   <owl:Class rdf:about="http://w3id.org/roh/RelatedLanguageSkills"/>
   <owl:Class rdf:about="http://w3id.org/roh/RelatedDoctorates"/>
-  <owl:Class rdf:about="http://w3id.org/roh/RelatedPreviousPositions"/>
-  <owl:Class rdf:about="http://w3id.org/roh/RelatedSpecialisedTrainings"/>
   <owl:Class rdf:about="http://w3id.org/roh/PersonalData">
     <rdfs:subClassOf>
       <owl:Restriction>
@@ -228,6 +230,8 @@
       </owl:Restriction>
     </rdfs:subClassOf>
   </owl:Class>
+  <owl:Class rdf:about="http://w3id.org/roh/RelatedPreviousPositions"/>
+  <owl:Class rdf:about="http://w3id.org/roh/RelatedSpecialisedTrainings"/>
   <owl:Class rdf:about="http://w3id.org/roh/Qualifications"/>
   <owl:Class rdf:about="http://w3id.org/roh/RelatedTechnologicalResult">
     <rdfs:subClassOf rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
@@ -420,27 +424,7 @@
   </owl:Class>
   <owl:Class rdf:about="http://w3id.org/roh/MultilangProperties"/>
   <owl:Class rdf:about="http://w3id.org/roh/GeneralQualityIndicator"/>
-  <owl:Class rdf:about="https://www.w3.org/2006/vcard/ns#TelephoneType">
-    <rdfs:subClassOf rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
-    <rdfs:subClassOf>
-      <owl:Restriction>
-        <owl:maxCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#int"
-        >1</owl:maxCardinality>
-        <owl:onProperty>
-          <owl:DatatypeProperty rdf:about="http://w3id.org/roh/hasInternationalCode"/>
-        </owl:onProperty>
-      </owl:Restriction>
-    </rdfs:subClassOf>
-    <rdfs:subClassOf>
-      <owl:Restriction>
-        <owl:maxCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#int"
-        >1</owl:maxCardinality>
-        <owl:onProperty>
-          <owl:DatatypeProperty rdf:about="http://w3id.org/roh/hasExtension"/>
-        </owl:onProperty>
-      </owl:Restriction>
-    </rdfs:subClassOf>
-  </owl:Class>
+  <owl:Class rdf:about="http://w3id.org/roh/RelatedUniversitaryCoursesAndSeminars"/>
   <owl:Class rdf:about="http://w3id.org/roh/RelatedScientificPublicationCV">
     <rdfs:subClassOf rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
     <rdfs:subClassOf>
@@ -480,8 +464,32 @@
       </owl:Restriction>
     </rdfs:subClassOf>
   </owl:Class>
+  <owl:Class rdf:about="https://www.w3.org/2006/vcard/ns#TelephoneType">
+    <rdfs:subClassOf rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
+    <rdfs:subClassOf>
+      <owl:Restriction>
+        <owl:maxCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#int"
+        >1</owl:maxCardinality>
+        <owl:onProperty>
+          <owl:DatatypeProperty rdf:about="http://w3id.org/roh/hasInternationalCode"/>
+        </owl:onProperty>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+    <rdfs:subClassOf>
+      <owl:Restriction>
+        <owl:maxCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#int"
+        >1</owl:maxCardinality>
+        <owl:onProperty>
+          <owl:DatatypeProperty rdf:about="http://w3id.org/roh/hasExtension"/>
+        </owl:onProperty>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+  </owl:Class>
   <owl:Class rdf:about="http://w3id.org/roh/RelatedCurrentProfessionalSituation"/>
+  <owl:Class rdf:about="http://w3id.org/roh/RelatedImpartedAcademicTrainings"/>
   <owl:Class rdf:about="http://w3id.org/roh/RelatedFirstSecondCycles"/>
+  <owl:Class rdf:about="http://w3id.org/roh/RelatedParticipationInCongress"/>
+  <owl:Class rdf:about="http://w3id.org/roh/RelatedMostRelevantContributions"/>
   <owl:Class rdf:about="http://w3id.org/roh/ResearchObjects"/>
   <owl:Class rdf:about="http://w3id.org/roh/RelatedCompetitiveProject">
     <rdfs:subClassOf rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
@@ -714,8 +722,22 @@
       </owl:Restriction>
     </rdfs:subClassOf>
   </owl:Class>
-  <owl:Class rdf:about="http://w3id.org/roh/CV"/>
+  <owl:Class rdf:about="http://w3id.org/roh/RelatedParticipationInTeachingInnovationProjects"/>
   <owl:Class rdf:about="http://w3id.org/roh/RelatedOtherDisseminationActivity"/>
+  <owl:Class rdf:about="http://w3id.org/roh/RelatedAcademicTutorials"/>
+  <owl:Class rdf:about="http://w3id.org/roh/CV"/>
+  <owl:Class rdf:about="http://w3id.org/roh/FreeTextSummary">
+    <rdfs:subClassOf>
+      <owl:Restriction>
+        <owl:onProperty>
+          <owl:ObjectProperty rdf:about="http://w3id.org/roh/freeTextSummaryValues"/>
+        </owl:onProperty>
+        <owl:maxCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#int"
+        >1</owl:maxCardinality>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+    <rdfs:subClassOf rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
+  </owl:Class>
   <owl:Class rdf:about="http://w3id.org/roh/RelatedWorkSubmittedConferencesCV">
     <rdfs:subClassOf rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
     <rdfs:subClassOf>
@@ -755,18 +777,6 @@
       </owl:Restriction>
     </rdfs:subClassOf>
   </owl:Class>
-  <owl:Class rdf:about="http://w3id.org/roh/FreeTextSummary">
-    <rdfs:subClassOf>
-      <owl:Restriction>
-        <owl:onProperty>
-          <owl:ObjectProperty rdf:about="http://w3id.org/roh/freeTextSummaryValues"/>
-        </owl:onProperty>
-        <owl:maxCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#int"
-        >1</owl:maxCardinality>
-      </owl:Restriction>
-    </rdfs:subClassOf>
-    <rdfs:subClassOf rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
-  </owl:Class>
   <owl:ObjectProperty rdf:about="http://w3id.org/roh/otherDistinctions">
     <rdfs:domain rdf:resource="http://w3id.org/roh/ScientificActivity"/>
     <rdfs:range rdf:resource="http://w3id.org/roh/RelatedOtherDistinction"/>
@@ -791,7 +801,15 @@
     <rdfs:range rdf:resource="http://w3id.org/roh/RelatedLanguageSkills"/>
   </owl:ObjectProperty>
   <owl:ObjectProperty rdf:about="http://w3id.org/roh/accessSystem"/>
+  <owl:ObjectProperty rdf:about="http://w3id.org/roh/otherActivities">
+    <rdfs:domain rdf:resource="http://w3id.org/roh/TeachingExperience"/>
+    <rdfs:range rdf:resource="http://w3id.org/roh/RelatedOtherActivities"/>
+  </owl:ObjectProperty>
   <owl:ObjectProperty rdf:about="http://w3id.org/roh/relatedObtainedRecognition"/>
+  <owl:ObjectProperty rdf:about="http://w3id.org/roh/mostRelevantContributions">
+    <rdfs:range rdf:resource="http://w3id.org/roh/RelatedMostRelevantContributions"/>
+    <rdfs:domain rdf:resource="http://w3id.org/roh/TeachingExperience"/>
+  </owl:ObjectProperty>
   <owl:ObjectProperty rdf:about="http://w3id.org/roh/contributionGrade">
     <rdfs:domain rdf:resource="http://w3id.org/roh/RelatedScientificPublicationCV"/>
   </owl:ObjectProperty>
@@ -815,15 +833,23 @@
     <rdfs:range rdf:resource="http://w3id.org/roh/RelatedWorkSubmittedConferencesCV"/>
     <rdfs:domain rdf:resource="http://w3id.org/roh/RelatedWorkSubmittedConferences"/>
   </owl:ObjectProperty>
+  <owl:ObjectProperty rdf:about="http://w3id.org/roh/academicTutorials">
+    <rdfs:range rdf:resource="http://w3id.org/roh/RelatedAcademicTutorials"/>
+    <rdfs:domain rdf:resource="http://w3id.org/roh/TeachingExperience"/>
+  </owl:ObjectProperty>
   <owl:ObjectProperty rdf:about="http://w3id.org/roh/relatedResearchEvaluationCV"/>
   <owl:ObjectProperty rdf:about="http://w3id.org/roh/relatedForumCV"/>
+  <owl:ObjectProperty rdf:about="http://w3id.org/roh/scientificProduction">
+    <rdfs:domain rdf:resource="http://w3id.org/roh/ScientificActivity"/>
+    <rdfs:range rdf:resource="http://w3id.org/roh/RelatedScientificProduction"/>
+  </owl:ObjectProperty>
   <owl:ObjectProperty rdf:about="http://w3id.org/roh/multilangProperties">
     <rdfs:range rdf:resource="http://w3id.org/roh/MultilangProperties"/>
     <rdfs:domain rdf:resource="http://w3id.org/roh/CV"/>
   </owl:ObjectProperty>
-  <owl:ObjectProperty rdf:about="http://w3id.org/roh/scientificProduction">
-    <rdfs:domain rdf:resource="http://w3id.org/roh/ScientificActivity"/>
-    <rdfs:range rdf:resource="http://w3id.org/roh/RelatedScientificProduction"/>
+  <owl:ObjectProperty rdf:about="http://w3id.org/roh/participationInCongress">
+    <rdfs:range rdf:resource="http://w3id.org/roh/RelatedParticipationInCongress"/>
+    <rdfs:domain rdf:resource="http://w3id.org/roh/TeachingExperience"/>
   </owl:ObjectProperty>
   <owl:ObjectProperty rdf:about="http://w3id.org/roh/dedication">
     <rdfs:domain>
@@ -866,10 +892,10 @@
     <rdfs:domain rdf:resource="http://w3id.org/roh/ScientificActivity"/>
     <rdfs:range rdf:resource="http://w3id.org/roh/RelatedForum"/>
   </owl:ObjectProperty>
+  <owl:ObjectProperty rdf:about="http://w3id.org/roh/represents"/>
   <owl:ObjectProperty rdf:about="http://w3id.org/roh/hasProvince">
     <rdfs:domain rdf:resource="https://www.w3.org/2006/vcard/ns#Address"/>
   </owl:ObjectProperty>
-  <owl:ObjectProperty rdf:about="http://w3id.org/roh/represents"/>
   <owl:ObjectProperty rdf:about="http://w3id.org/roh/gnossUser"/>
   <owl:ObjectProperty rdf:about="http://w3id.org/roh/researchActivityPeriods">
     <rdfs:range rdf:resource="http://w3id.org/roh/RelatedResearchActivityPeriod"/>
@@ -881,6 +907,10 @@
   <owl:ObjectProperty rdf:about="http://w3id.org/roh/scientificPublications">
     <rdfs:domain rdf:resource="http://w3id.org/roh/ScientificActivity"/>
     <rdfs:range rdf:resource="http://w3id.org/roh/RelatedScientificPublication"/>
+  </owl:ObjectProperty>
+  <owl:ObjectProperty rdf:about="http://w3id.org/roh/educationalOrPedagogicalPublications">
+    <rdfs:domain rdf:resource="http://w3id.org/roh/TeachingExperience"/>
+    <rdfs:range rdf:resource="http://w3id.org/roh/RelatedEducationalOrPedagogicalPublications"/>
   </owl:ObjectProperty>
   <owl:ObjectProperty rdf:about="http://w3id.org/roh/contributionGradeProject">
     <rdfs:domain>
@@ -926,9 +956,17 @@
     <rdfs:domain rdf:resource="http://w3id.org/roh/ScientificActivity"/>
     <rdfs:range rdf:resource="http://w3id.org/roh/RelatedActivityOrganization"/>
   </owl:ObjectProperty>
+  <owl:ObjectProperty rdf:about="http://w3id.org/roh/teachingInnovationAwardsReceived">
+    <rdfs:range rdf:resource="http://w3id.org/roh/RelatedTeachingInnovationAwardsReceived"/>
+    <rdfs:domain rdf:resource="http://w3id.org/roh/TeachingExperience"/>
+  </owl:ObjectProperty>
   <owl:ObjectProperty rdf:about="http://w3id.org/roh/birthplace">
     <rdfs:range rdf:resource="https://www.w3.org/2006/vcard/ns#Address"/>
     <rdfs:domain rdf:resource="http://w3id.org/roh/PersonalData"/>
+  </owl:ObjectProperty>
+  <owl:ObjectProperty rdf:about="http://w3id.org/roh/participationInTeachingInnovationProjects">
+    <rdfs:domain rdf:resource="http://w3id.org/roh/TeachingExperience"/>
+    <rdfs:range rdf:resource="http://w3id.org/roh/RelatedParticipationInTeachingInnovationProjects"/>
   </owl:ObjectProperty>
   <owl:ObjectProperty rdf:about="http://w3id.org/roh/technologicalResults">
     <rdfs:range rdf:resource="http://w3id.org/roh/RelatedTechnologicalResult"/>
@@ -937,6 +975,10 @@
   <owl:ObjectProperty rdf:about="http://w3id.org/roh/otherIds">
     <rdfs:domain rdf:resource="http://w3id.org/roh/PersonalData"/>
     <rdfs:range rdf:resource="http://xmlns.com/foaf/0.1/Document"/>
+  </owl:ObjectProperty>
+  <owl:ObjectProperty rdf:about="http://w3id.org/roh/universitaryCoursesAndSeminars">
+    <rdfs:range rdf:resource="http://w3id.org/roh/RelatedUniversitaryCoursesAndSeminars"/>
+    <rdfs:domain rdf:resource="http://w3id.org/roh/TeachingExperience"/>
   </owl:ObjectProperty>
   <owl:ObjectProperty rdf:about="https://www.w3.org/2006/vcard/ns#address">
     <rdfs:domain rdf:resource="http://w3id.org/roh/PersonalData"/>
@@ -974,6 +1016,10 @@
     <rdfs:range rdf:resource="http://w3id.org/roh/RelatedNonCompetitiveProject"/>
     <rdfs:domain rdf:resource="http://w3id.org/roh/ScientificExperience"/>
   </owl:ObjectProperty>
+  <owl:ObjectProperty rdf:about="http://w3id.org/roh/impartedAcademicTrainings">
+    <rdfs:range rdf:resource="http://w3id.org/roh/RelatedImpartedAcademicTrainings"/>
+    <rdfs:domain rdf:resource="http://w3id.org/roh/TeachingExperience"/>
+  </owl:ObjectProperty>
   <owl:ObjectProperty rdf:about="http://w3id.org/roh/relatedNonCompetitiveProjectCV">
     <rdfs:range rdf:resource="http://w3id.org/roh/RelatedNonCompetitiveProjectCV"/>
     <rdfs:domain rdf:resource="http://w3id.org/roh/RelatedNonCompetitiveProject"/>
@@ -1002,6 +1048,10 @@
         </owl:unionOf>
       </owl:Class>
     </rdfs:domain>
+  </owl:ObjectProperty>
+  <owl:ObjectProperty rdf:about="http://w3id.org/roh/thesisDirections">
+    <rdfs:range rdf:resource="http://w3id.org/roh/RelatedThesisDirections"/>
+    <rdfs:domain rdf:resource="http://w3id.org/roh/TeachingExperience"/>
   </owl:ObjectProperty>
   <owl:ObjectProperty rdf:about="http://w3id.org/roh/relatedScientificPublicationCV">
     <rdfs:domain rdf:resource="http://w3id.org/roh/RelatedScientificPublication"/>
@@ -1319,6 +1369,16 @@
           <owl:Class rdf:about="http://w3id.org/roh/RelatedPostGraduates"/>
           <owl:Class rdf:about="http://w3id.org/roh/RelatedSpecialisedTrainings"/>
           <owl:Class rdf:about="http://w3id.org/roh/RelatedCoursesAndSeminars"/>
+          <owl:Class rdf:about="http://w3id.org/roh/RelatedMostRelevantContributions"/>
+          <owl:Class rdf:about="http://w3id.org/roh/RelatedOtherActivities"/>
+          <owl:Class rdf:about="http://w3id.org/roh/RelatedTeachingInnovationAwardsReceived"/>
+          <owl:Class rdf:about="http://w3id.org/roh/RelatedParticipationInCongress"/>
+          <owl:Class rdf:about="http://w3id.org/roh/RelatedParticipationInTeachingInnovationProjects"/>
+          <owl:Class rdf:about="http://w3id.org/roh/RelatedEducationalOrPedagogicalPublications"/>
+          <owl:Class rdf:about="http://w3id.org/roh/RelatedUniversitaryCoursesAndSeminars"/>
+          <owl:Class rdf:about="http://w3id.org/roh/RelatedAcademicTutorials"/>
+          <owl:Class rdf:about="http://w3id.org/roh/RelatedImpartedAcademicTrainings"/>
+          <owl:Class rdf:about="http://w3id.org/roh/RelatedThesisDirections"/>
         </owl:unionOf>
       </owl:Class>
     </rdfs:domain>
@@ -1452,6 +1512,16 @@
           <owl:Class rdf:about="http://w3id.org/roh/RelatedPostGraduates"/>
           <owl:Class rdf:about="http://w3id.org/roh/RelatedSpecialisedTrainings"/>
           <owl:Class rdf:about="http://w3id.org/roh/RelatedCoursesAndSeminars"/>
+          <owl:Class rdf:about="http://w3id.org/roh/RelatedMostRelevantContributions"/>
+          <owl:Class rdf:about="http://w3id.org/roh/RelatedOtherActivities"/>
+          <owl:Class rdf:about="http://w3id.org/roh/RelatedTeachingInnovationAwardsReceived"/>
+          <owl:Class rdf:about="http://w3id.org/roh/RelatedParticipationInCongress"/>
+          <owl:Class rdf:about="http://w3id.org/roh/RelatedParticipationInTeachingInnovationProjects"/>
+          <owl:Class rdf:about="http://w3id.org/roh/RelatedEducationalOrPedagogicalPublications"/>
+          <owl:Class rdf:about="http://w3id.org/roh/RelatedUniversitaryCoursesAndSeminars"/>
+          <owl:Class rdf:about="http://w3id.org/roh/RelatedAcademicTutorials"/>
+          <owl:Class rdf:about="http://w3id.org/roh/RelatedImpartedAcademicTrainings"/>
+          <owl:Class rdf:about="http://w3id.org/roh/RelatedThesisDirections"/>
         </owl:unionOf>
       </owl:Class>
     </rdfs:domain>
