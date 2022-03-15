@@ -33,4 +33,5 @@ Una instancia de vivo:Grant se asocia con las siguientes entidades a través de 
 
 
 ![](../../Docs/media/ObjetosDeConocimiento/Grant.png)
+
 *Figura 1. Diagrama ontológico para la entidad vivo:Grant*
