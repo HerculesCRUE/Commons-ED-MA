@@ -13,4 +13,4 @@
 
 ![](../../Docs/media/ObjetosDeConocimiento/Department.png)
 
-*Figura 1. Diagrama ontológico para la entidad eroh:Department*
+*Figura 1. Diagrama ontológico para la entidad vivo:Department*
