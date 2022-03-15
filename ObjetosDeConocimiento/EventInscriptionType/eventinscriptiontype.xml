@@ -10,29 +10,10 @@
     </ConfiguracionGeneral>
     <EspefPropiedad>
         <Propiedad  ID="http://purl.org/dc/elements/1.1/title" EntidadID="http://w3id.org/roh/EventInscriptionType">
-            <AtrNombre>Tipo de inscripción en un evento</AtrNombre>
-            <AtrNombreLectura>Tipo de inscripción en un evento</AtrNombreLectura>
         </Propiedad>
         <Propiedad  ID="http://purl.org/dc/elements/1.1/identifier" EntidadID="http://w3id.org/roh/EventInscriptionType">
-            <AtrNombre>Identificador del tipo de inscripción en un evento</AtrNombre>
-            <AtrNombreLectura>Identificador del tipo de inscripción en un evento</AtrNombreLectura>
 			<MultiIdioma>false</MultiIdioma>
         </Propiedad>
     </EspefPropiedad>
-    <EspefEntidad>
-        <Entidad  ID="http://w3id.org/roh/EventInscriptionType">
-            <AtrNombre>Tipo de inscripción en un evento</AtrNombre>
-            <AtrNombreLectura>Tipo de inscripción en un evento</AtrNombreLectura>
-            <OrdenEntidad>
-                <Grupo class="formtheme02">
-                    <Grupo class="fieldset">
-                        <Grupo Tipo="fieldset" class="mediumLabels">
-                            <NameProp>http://purl.org/dc/elements/1.1/title</NameProp> 
-                            <NameProp>http://purl.org/dc/elements/1.1/identifier</NameProp>
-                        </Grupo>
-                    </Grupo>
-                </Grupo>
-            </OrdenEntidad>
-        </Entidad>
-    </EspefEntidad>
+    <EspefEntidad></EspefEntidad>
 </config>

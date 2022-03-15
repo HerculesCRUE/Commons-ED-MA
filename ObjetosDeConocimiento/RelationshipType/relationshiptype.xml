@@ -1,18 +1,18 @@
 <config>
     <ConfiguracionGeneral>
-        <namespace>grantaim</namespace>
+        <namespace>relationshiptype</namespace>
         <idiomasOnto>
             <idiomaOnto>es</idiomaOnto>
         </idiomasOnto>
-        <TituloDoc EntidadID="http://w3id.org/roh/GrantAim">http://purl.org/dc/elements/1.1/title</TituloDoc>
+        <TituloDoc EntidadID="http://w3id.org/roh/RelationshipType">http://purl.org/dc/elements/1.1/title</TituloDoc>
 		<MultiIdioma></MultiIdioma>
         <HtmlNuevo>true</HtmlNuevo>
     </ConfiguracionGeneral>
     <EspefPropiedad>
-        <Propiedad  ID="http://purl.org/dc/elements/1.1/identifier" EntidadID="http://w3id.org/roh/GrantAim">
+        <Propiedad  ID="http://purl.org/dc/elements/1.1/identifier" EntidadID="http://w3id.org/roh/RelationshipType">
 			<MultiIdioma>false</MultiIdioma>
         </Propiedad>
-        <Propiedad  ID="http://purl.org/dc/elements/1.1/title" EntidadID="http://w3id.org/roh/GrantAim">
+        <Propiedad  ID="http://purl.org/dc/elements/1.1/title" EntidadID="http://w3id.org/roh/RelationshipType">
 			<MultiIdioma></MultiIdioma>
         </Propiedad>
     </EspefPropiedad>

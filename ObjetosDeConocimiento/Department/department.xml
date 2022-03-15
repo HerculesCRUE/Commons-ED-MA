@@ -10,30 +10,11 @@
     </ConfiguracionGeneral>
     <EspefPropiedad>
         <Propiedad  ID="http://purl.org/dc/elements/1.1/title" EntidadID="http://vivoweb.org/ontology/core#Department">
-            <AtrNombre>http://purl.org/dc/elements/1.1/title</AtrNombre>
-            <AtrNombreLectura>http://purl.org/dc/elements/1.1/title</AtrNombreLectura>
 			<MultiIdioma>false</MultiIdioma>
         </Propiedad>
         <Propiedad  ID="http://purl.org/dc/elements/1.1/identifier" EntidadID="http://vivoweb.org/ontology/core#Department">
-            <AtrNombre>http://purl.org/dc/elements/1.1/identifier</AtrNombre>
-            <AtrNombreLectura>http://purl.org/dc/elements/1.1/identifier</AtrNombreLectura>
 			<MultiIdioma>false</MultiIdioma>
         </Propiedad>
     </EspefPropiedad>
-    <EspefEntidad>
-        <Entidad  ID="http://vivoweb.org/ontology/core#Department">
-            <AtrNombre>http://vivoweb.org/ontology/core#Department</AtrNombre>
-            <AtrNombreLectura>http://vivoweb.org/ontology/core#Department</AtrNombreLectura>
-            <OrdenEntidad>
-                <Grupo class="formtheme02">
-                    <Grupo class="fieldset">
-                        <Grupo Tipo="fieldset" class="mediumLabels">
-                            <NameProp>http://purl.org/dc/elements/1.1/title</NameProp> 
-                            <NameProp>http://purl.org/dc/elements/1.1/identifier</NameProp>
-                        </Grupo>
-                    </Grupo>
-                </Grupo>
-            </OrdenEntidad>
-        </Entidad>
-    </EspefEntidad>
+    <EspefEntidad></EspefEntidad>
 </config>
