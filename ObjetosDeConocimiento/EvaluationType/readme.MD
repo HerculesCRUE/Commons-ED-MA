@@ -12,4 +12,5 @@
 # Hércules ED. Objeto de conocimiento EvaluationType
 
 ![](../../Docs/media/ObjetosDeConocimiento/EvaluationType.png)
+
 *Figura 1. Diagrama ontológico para la entidad eroh:EvaluationType*
