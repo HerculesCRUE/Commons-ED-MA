@@ -11,6 +11,10 @@
 
 # Hércules ED. Objeto de conocimiento Department
 
+La entidad vivo:Departament (ver Figura 1) representa los departamentos en el Curriculum Vitae en la plataforma Hércules.
+
+A continuación se listan todas aquellas propiedades contenidas en vivo:Departament que extienden la ontología fundamental ROH con el fin de ajustarse a las necesidades de Hércules EDMA:
+
 ![](../../Docs/media/ObjetosDeConocimiento/Department.png)
 
 *Figura 1. Diagrama ontológico para la entidad vivo:Department*
