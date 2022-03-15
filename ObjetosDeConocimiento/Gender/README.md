@@ -11,7 +11,9 @@
 
 # Hércules ED. Objeto de conocimiento Gender
 
-La entidad eroh:Gender (ver Figura 1) representa el tipo de sexo en el Curriculum Vitae en la plataforma Hércules.
+La entidad eroh:Gender (ver Figura 1) representa el tipo de sexo en el Curriculum Vitae en la plataforma Hércules. Dispone de las opciones:
+- Hombre
+- Mujer
 
 A continuación se listan todas aquellas propiedades contenidas en eroh:Gender que extienden la ontología fundamental ROH con el fin de ajustarse a las necesidades de Hércules EDMA:
 
