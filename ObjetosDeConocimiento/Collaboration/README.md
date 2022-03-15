@@ -34,4 +34,5 @@ Una instancia de eroh:Collaboration se asocia con las siguientes entidades a tra
 
 
 ![](../../Docs/media/ObjetosDeConocimiento/Collaboration.png)
+
 *Figura 1. Diagrama ontológico para la entidad eroh:Collaboration*
