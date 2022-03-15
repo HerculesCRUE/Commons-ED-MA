@@ -26,7 +26,7 @@
                 </PropsEntLectura>
             </SeleccionEntidad>
         </Propiedad>
-		<Propiedad  ID="http://w3id.org/roh/listeningSkill" EntidadID="http://w3id.org/roh/LanguageLevel">
+		<Propiedad  ID="http://w3id.org/roh/listeningSkill" EntidadID="http://w3id.org/roh/LanguageCertificate">
 			<SeleccionEntidad>
                 <TipoSeleccion>Autocompletar</TipoSeleccion>
                 <Grafo>languagelevel.owl</Grafo>
@@ -41,7 +41,7 @@
                 </PropsEntLectura>
             </SeleccionEntidad>
         </Propiedad>
-		<Propiedad  ID="http://w3id.org/roh/readingSkill" EntidadID="http://w3id.org/roh/LanguageLevel">
+		<Propiedad  ID="http://w3id.org/roh/readingSkill" EntidadID="http://w3id.org/roh/LanguageCertificate">
 			<SeleccionEntidad>
                 <TipoSeleccion>Autocompletar</TipoSeleccion>
                 <Grafo>languagelevel.owl</Grafo>
@@ -56,7 +56,7 @@
                 </PropsEntLectura>
             </SeleccionEntidad>
         </Propiedad>
-		<Propiedad  ID="http://w3id.org/roh/spokingInteractionSkill" EntidadID="http://w3id.org/roh/LanguageLevel">
+		<Propiedad  ID="http://w3id.org/roh/spokingInteractionSkill" EntidadID="http://w3id.org/roh/LanguageCertificate">
 			<SeleccionEntidad>
                 <TipoSeleccion>Autocompletar</TipoSeleccion>
                 <Grafo>languagelevel.owl</Grafo>
@@ -71,7 +71,7 @@
                 </PropsEntLectura>
             </SeleccionEntidad>
         </Propiedad>
-		<Propiedad  ID="http://w3id.org/roh/speakingSkill" EntidadID="http://w3id.org/roh/LanguageLevel">
+		<Propiedad  ID="http://w3id.org/roh/speakingSkill" EntidadID="http://w3id.org/roh/LanguageCertificate">
 			<SeleccionEntidad>
                 <TipoSeleccion>Autocompletar</TipoSeleccion>
                 <Grafo>languagelevel.owl</Grafo>
@@ -86,7 +86,7 @@
                 </PropsEntLectura>
             </SeleccionEntidad>
         </Propiedad>
-		<Propiedad  ID="http://w3id.org/roh/writingSkill" EntidadID="http://w3id.org/roh/LanguageLevel">
+		<Propiedad  ID="http://w3id.org/roh/writingSkill" EntidadID="http://w3id.org/roh/LanguageCertificate">
 			<SeleccionEntidad>
                 <TipoSeleccion>Autocompletar</TipoSeleccion>
                 <Grafo>languagelevel.owl</Grafo>
