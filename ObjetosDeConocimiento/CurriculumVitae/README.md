@@ -90,3 +90,9 @@ En las siguientes figuras se muestra el resto de diagramas correspondientes al o
 ![](../../Docs/media/ObjetosDeConocimiento/ScientificExperience.png)
 
 *Figura 5. Diagrama ontológico de las entidades relativas a experiencia científica para el objeto de conocimiento CurriculumVitae*
+
+![](../../Docs/media/ObjetosDeConocimiento/ProfessionalSituation.png)
+![](../../Docs/media/ObjetosDeConocimiento/Qualifications.png)
+![](../../Docs/media/ObjetosDeConocimiento/TeachingExperience.png)
+![](../../Docs/media/ObjetosDeConocimiento/FreeTextSummary.png)
+![](../../Docs/media/ObjetosDeConocimiento/CV-ResearchObjects.png)
