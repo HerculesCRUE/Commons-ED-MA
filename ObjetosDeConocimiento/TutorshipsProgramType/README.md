@@ -11,6 +11,6 @@
 
 # Hércules ED. Objeto de conocimiento TutorshipsProgramType
 
-![](../../Docs/media/ObjetosDeConocimiento/EvaluationType.png)
+![](../../Docs/media/ObjetosDeConocimiento/TutorshipsProgramType.png)
 
 *Figura 1. Diagrama ontológico para la entidad eroh:TutorshipsProgramType*
