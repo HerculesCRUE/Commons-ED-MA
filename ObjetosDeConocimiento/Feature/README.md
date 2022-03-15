@@ -13,4 +13,4 @@
 
 ![](../../Docs/media/ObjetosDeConocimiento/Feature.png)
 
-*Figura 1. Diagrama ontológico para la entidad eroh:Feature*
+*Figura 1. Diagrama ontológico para la entidad gn:Feature*
