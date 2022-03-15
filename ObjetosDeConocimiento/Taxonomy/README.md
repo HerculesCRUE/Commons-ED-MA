@@ -13,4 +13,4 @@
 
 ![](../../Docs/media/ObjetosDeConocimiento/Taxonomy.png)
 
-*Figura 1. Diagrama ontológico para la entidad eroh:Taxonomy*
+*Figura 1. Diagrama ontológico para la entidad Taxonomy*
