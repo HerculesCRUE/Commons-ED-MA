@@ -46,4 +46,5 @@ Una instancia de foaf:Group se asocia con las siguientes entidades a través de 
 
 
 ![](../../Docs/media/ObjetosDeConocimiento/Group.png)
+
 *Figura 1. Diagrama ontológico para la entidad foaf:Group*
