@@ -31,4 +31,5 @@ Una instancia de eroh:Network se asocia, a su vez, con las siguientes entidades 
 
 
 ![](../../Docs/media/ObjetosDeConocimiento/Network.png)
+
 *Figura 1. Diagrama ontológico para la entidad eroh:Network*
