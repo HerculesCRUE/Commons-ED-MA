@@ -1,0 +1,20 @@
+<config>
+    <ConfiguracionGeneral>
+        <namespace>modalityteachingtype</namespace>
+        <idiomasOnto>
+            <idiomaOnto>es</idiomaOnto>
+        </idiomasOnto>
+        <TituloDoc EntidadID="http://w3id.org/roh/ModalityTeachingType">http://purl.org/dc/elements/1.1/title</TituloDoc>
+		<MultiIdioma></MultiIdioma>
+        <HtmlNuevo>true</HtmlNuevo>
+    </ConfiguracionGeneral>
+    <EspefPropiedad>
+        <Propiedad  ID="http://purl.org/dc/elements/1.1/title" EntidadID="http://w3id.org/roh/ModalityTeachingType">
+        </Propiedad>
+        <Propiedad  ID="http://purl.org/dc/elements/1.1/identifier" EntidadID="http://w3id.org/roh/ModalityTeachingType">
+			<MultiIdioma>false</MultiIdioma>
+        </Propiedad>
+    </EspefPropiedad>
+    <EspefEntidad>
+    </EspefEntidad>
+</config>
