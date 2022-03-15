@@ -15,4 +15,5 @@ La entidad bibo:Document (ver Figura 1) representa las publicaciones llevadas a 
 
 
 ![](../../Docs/media/ObjetosDeConocimiento/Document.png)
+
 *Figura 1. Diagrama ontológico para la entidad bibo:Document*
