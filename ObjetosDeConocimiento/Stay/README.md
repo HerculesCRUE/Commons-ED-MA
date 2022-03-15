@@ -35,4 +35,5 @@ Una instancia de eroh:Stay se asocia con las siguientes entidades a través de p
 
 
 ![](../../Docs/media/ObjetosDeConocimiento/Stay.png)
+
 *Figura 1. Diagrama ontológico para la entidad eroh:Stay*

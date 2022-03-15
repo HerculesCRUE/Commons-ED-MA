@@ -38,4 +38,5 @@ Una instancia de roh:Activity se asocia con las siguientes entidades a través d
 
 
 ![](../../Docs/media/ObjetosDeConocimiento/Activity.png)
+
 *Figura 1. Diagrama ontológico para la entidad roh:Activity*

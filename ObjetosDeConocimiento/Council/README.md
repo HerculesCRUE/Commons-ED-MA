@@ -34,4 +34,5 @@ Una instancia de eroh:Council se asocia con las siguientes entidades a través d
 
 
 ![](../../Docs/media/ObjetosDeConocimiento/Council.png)
+
 *Figura 1. Diagrama ontológico para la entidad eroh:Council*
