@@ -39,4 +39,5 @@ Una instancia de eroh:TechnologicalResult se asocia, a su vez, con las siguiente
 
 
 ![](../../Docs/media/ObjetosDeConocimiento/TechnologicalResult.png)
+
 *Figura 1. Diagrama ontológico para la entidad eroh:TechnologicalResult*

@@ -32,4 +32,5 @@ Una instancia de eroh:SupervisedArtisticProject se asocia con las siguientes ent
 
 
 ![](../../Docs/media/ObjetosDeConocimiento/SupervisedArtisticProject.png)
+
 *Figura 1. Diagrama ontológico para la entidad eroh:SupervisedArtisticProject*

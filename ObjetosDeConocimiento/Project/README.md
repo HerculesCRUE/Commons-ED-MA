@@ -46,4 +46,5 @@ A continuación se listan todas aquellas propiedades contenidas en vivo:Project 
 
 
 ![](../../Docs/media/ObjetosDeConocimiento/Project.png)
+
 *Figura 1. Diagrama ontológico para la entidad vivo:Project*
