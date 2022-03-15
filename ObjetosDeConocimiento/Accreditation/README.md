@@ -28,4 +28,5 @@ Una instancia de eroh:Accreditation se asocia con las siguientes entidades a tra
 
 
 ![](../../Docs/media/ObjetosDeConocimiento/Accreditation.png)
+
 *Figura 1. Diagrama ontológico para la entidad eroh:Accreditation*
