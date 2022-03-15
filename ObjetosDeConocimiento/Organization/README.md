@@ -25,4 +25,5 @@ Una instancia de foaf:Organization se asocia con las siguientes entidades a trav
 
 
 ![](../../Docs/media/ObjetosDeConocimiento/Organization.png)
+
 *Figura 1. Diagrama ontológico para la entidad foaf:Organization*
