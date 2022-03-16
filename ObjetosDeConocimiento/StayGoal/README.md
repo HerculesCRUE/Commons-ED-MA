@@ -11,6 +11,18 @@
 
 # Hércules ED. Objeto de conocimiento StayGoal
 
+La entidad eroh:StayGoal (ver Figura 1) representa el tipo de objetivo de la estancia en el Curriculum Vitae en la plataforma Hércules. Dispone de varias opciones:
+- Contratado/a
+- Doctorado/a
+- Invitado/a
+- Posdoctoral
+- Otros
+
+A continuación se listan todas aquellas propiedades contenidas en eroh:StayGoal que extienden la ontología fundamental ROH con el fin de ajustarse a las necesidades de Hércules EDMA:
+
+- dc:title
+- dc:identifier
+
 ![](../../Docs/media/ObjetosDeConocimiento/StayGoal.png)
 
 *Figura 1. Diagrama ontológico para la entidad eroh:StayGoal*
