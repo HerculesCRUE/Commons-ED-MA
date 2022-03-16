@@ -11,6 +11,23 @@
 
 # Hércules ED. Objeto de conocimiento ParticipationTypeDocument
 
+La entidad eroh:ParticipationTypeDocument (ver Figura 1) representa el tipo de participación en el Curriculum Vitae en la plataforma Hércules. Dispone de varias opciones:
+- Organizativo - Presidente Comité
+- Organizativo - Comité científico y organizador
+- Organizativo - Otros
+- Participativo - Plenaria 
+- Participativo - Ponencia invitada/Keynote
+- Participativo - Ponencia oral (comunicación oral)
+- Participativo - Póster
+- Comité organizador
+- Comité científico
+- Participativo - Otros
+
+A continuación se listan todas aquellas propiedades contenidas en eroh:ParticipationTypeDocument que extienden la ontología fundamental ROH con el fin de ajustarse a las necesidades de Hércules EDMA:
+
+- dc:title
+- dc:identifier
+
 ![](../../Docs/media/ObjetosDeConocimiento/ParticipationTypeDocument.png)
 
 *Figura 1. Diagrama ontológico para la entidad eroh:ParticipationTypeDocument*
