@@ -11,6 +11,17 @@
 
 # Hércules ED. Objeto de conocimiento DocumentFormat
 
+La entidad eroh:DocumentFormat (ver Figura 1) representa el tipo de soporte en el Curriculum Vitae en la plataforma Hércules. Dispone de varias opciones:
+- Catálogo de obra artística
+- Documento o Informa científico-técnico
+- Libro
+- Revista
+
+A continuación se listan todas aquellas propiedades contenidas en eroh:DocumentFormat que extienden la ontología fundamental ROH con el fin de ajustarse a las necesidades de Hércules EDMA:
+
+- dc:title
+- dc:identifier
+
 ![](../../Docs/media/ObjetosDeConocimiento/DocumentFormat.png)
 
 *Figura 1. Diagrama ontológico para la entidad eroh:DocumentFormat*
