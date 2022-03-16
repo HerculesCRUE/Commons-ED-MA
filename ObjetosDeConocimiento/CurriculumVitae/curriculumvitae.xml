@@ -1096,6 +1096,40 @@
                 </PropsEntLectura>
             </SeleccionEntidad>
         </Propiedad>
+		<Propiedad  ID="http://vivoweb.org/ontology/core#relatedBy" EntidadID="http://w3id.org/roh/RelatedImpartedAcademicTrainings">
+            <AtrNombre>http://vivoweb.org/ontology/core#relatedBy</AtrNombre>
+            <AtrNombreLectura>http://vivoweb.org/ontology/core#relatedBy</AtrNombreLectura>
+			<SeleccionEntidad>
+                <TipoSeleccion>Autocompletar</TipoSeleccion>
+                <Grafo>impartedacademictraining.owl</Grafo>
+                <UrlTipoEntSolicitada>http://w3id.org/roh/ImpartedAcademicTraining</UrlTipoEntSolicitada>              
+                <PropsEntEdicion>
+                    <NameProp>http://w3id.org/roh/title</NameProp>
+                </PropsEntEdicion>
+                <PropsEntLectura>
+                    <Propiedad ID="http://w3id.org/roh/title" EntidadID="http://w3id.org/roh/ImpartedAcademicTraining">
+                        <AtrNombreLectura></AtrNombreLectura>
+                    </Propiedad>
+                </PropsEntLectura>
+            </SeleccionEntidad>
+        </Propiedad>
+		<Propiedad  ID="http://vivoweb.org/ontology/core#relatedBy" EntidadID="http://w3id.org/roh/RelatedImpartedCoursesSeminars">
+            <AtrNombre>http://vivoweb.org/ontology/core#relatedBy</AtrNombre>
+            <AtrNombreLectura>http://vivoweb.org/ontology/core#relatedBy</AtrNombreLectura>
+			<SeleccionEntidad>
+                <TipoSeleccion>Autocompletar</TipoSeleccion>
+                <Grafo>impartedcoursesseminars.owl</Grafo>
+                <UrlTipoEntSolicitada>http://w3id.org/roh/ImpartedCoursesSeminars</UrlTipoEntSolicitada>              
+                <PropsEntEdicion>
+                    <NameProp>http://w3id.org/roh/title</NameProp>
+                </PropsEntEdicion>
+                <PropsEntLectura>
+                    <Propiedad ID="http://w3id.org/roh/title" EntidadID="http://w3id.org/roh/ImpartedCoursesSeminars">
+                        <AtrNombreLectura></AtrNombreLectura>
+                    </Propiedad>
+                </PropsEntLectura>
+            </SeleccionEntidad>
+        </Propiedad>
 
 
 		
