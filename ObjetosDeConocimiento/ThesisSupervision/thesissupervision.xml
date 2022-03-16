@@ -1,0 +1,107 @@
+<config>
+    <ConfiguracionGeneral>
+        <namespace>thesissupervision</namespace>
+        <idiomasOnto>
+            <idiomaOnto>es</idiomaOnto>
+        </idiomasOnto>
+        <ocultarTituloDescpImgDoc></ocultarTituloDescpImgDoc>
+        <TituloDoc EntidadID="http://w3id.org/roh/ThesisSupervision">http://w3id.org/roh/title</TituloDoc>
+        <DescripcionDoc EntidadID="http://w3id.org/roh/ThesisSupervision">http://w3id.org/roh/title</DescripcionDoc>
+        <HtmlNuevo>true</HtmlNuevo>
+		<CategorizacionTesauroGnossObligatoria>false</CategorizacionTesauroGnossObligatoria>
+    </ConfiguracionGeneral>
+    <EspefPropiedad>	
+		<Propiedad  ID="http://w3id.org/roh/projectCharacterType" EntidadID="http://w3id.org/roh/ThesisSupervision">
+			<SeleccionEntidad>
+                <TipoSeleccion>Autocompletar</TipoSeleccion>
+                <Grafo>projectcharactertype.owl</Grafo>
+                <UrlTipoEntSolicitada>http://w3id.org/roh/ProjectCharacterType</UrlTipoEntSolicitada>
+				<PropsEntEdicion>
+                    <NameProp>http://purl.org/dc/elements/1.1/title</NameProp>
+                </PropsEntEdicion>
+                <PropsEntLectura>
+                    <Propiedad ID="http://purl.org/dc/elements/1.1/title" EntidadID="http://w3id.org/roh/ProjectCharacterType">
+                        <AtrNombreLectura></AtrNombreLectura>
+                    </Propiedad>
+                </PropsEntLectura>
+            </SeleccionEntidad>
+        </Propiedad>
+		<Propiedad  ID="https://www.w3.org/2006/vcard/ns#hasCountryName" EntidadID="http://w3id.org/roh/ThesisSupervision">
+            <AtrNombre>https://www.w3.org/2006/vcard/ns#hasCountryName</AtrNombre>
+            <AtrNombreLectura>https://www.w3.org/2006/vcard/ns#hasCountryName</AtrNombreLectura>
+			<SeleccionEntidad>
+                <TipoSeleccion>Combo</TipoSeleccion>
+                <Grafo>feature.owl</Grafo>
+                <UrlTipoEntSolicitada>http://www.geonames.org/ontology#Feature</UrlTipoEntSolicitada>              
+                <PropsEntEdicion>
+                    <NameProp>http://www.geonames.org/ontology#name</NameProp>
+                </PropsEntEdicion>
+                <PropsEntLectura>
+                    <Propiedad ID="http://www.geonames.org/ontology#name" EntidadID="http://www.geonames.org/ontology#Feature">
+                        <AtrNombreLectura></AtrNombreLectura>
+                    </Propiedad>
+                </PropsEntLectura>
+            </SeleccionEntidad>
+        </Propiedad>
+		<Propiedad  ID="https://www.w3.org/2006/vcard/ns#hasRegion" EntidadID="http://w3id.org/roh/ThesisSupervision">
+            <AtrNombre>https://www.w3.org/2006/vcard/ns#hasRegion</AtrNombre>
+            <AtrNombreLectura>https://www.w3.org/2006/vcard/ns#hasRegion</AtrNombreLectura>
+			<SeleccionEntidad>
+                <TipoSeleccion>Combo</TipoSeleccion>
+                <Grafo>feature.owl</Grafo>
+                <UrlTipoEntSolicitada>http://www.geonames.org/ontology#Feature</UrlTipoEntSolicitada>              
+                <PropsEntEdicion>
+                    <NameProp>http://www.geonames.org/ontology#name</NameProp>
+                </PropsEntEdicion>
+                <PropsEntLectura>
+                    <Propiedad ID="http://www.geonames.org/ontology#name" EntidadID="http://www.geonames.org/ontology#Feature">
+                        <AtrNombreLectura></AtrNombreLectura>
+                    </Propiedad>
+                </PropsEntLectura>
+            </SeleccionEntidad>
+        </Propiedad>
+		<Propiedad  ID="http://w3id.org/roh/promotedBy" EntidadID="http://w3id.org/roh/ThesisSupervision">
+			<SeleccionEntidad>
+                <TipoSeleccion>Autocompletar</TipoSeleccion>
+                <Grafo>organization.owl</Grafo>
+                <UrlTipoEntSolicitada>http://xmlns.com/foaf/0.1/Organization</UrlTipoEntSolicitada>              
+                <PropsEntEdicion>
+                    <NameProp>http://w3id.org/roh/title</NameProp>
+                </PropsEntEdicion>
+                <PropsEntLectura>
+                    <Propiedad ID="http://w3id.org/roh/title" EntidadID="http://xmlns.com/foaf/0.1/Organization">
+                        <AtrNombreLectura></AtrNombreLectura>
+                    </Propiedad>
+                </PropsEntLectura>
+            </SeleccionEntidad>
+        </Propiedad>		
+		<Propiedad  ID="http://w3id.org/roh/promotedByType" EntidadID="http://vivoweb.org/ontology/core#AcademicDegree">
+            <AtrNombre>http://w3id.org/roh/promotedByType</AtrNombre>
+            <AtrNombreLectura>http://w3id.org/roh/promotedByType</AtrNombreLectura>
+			<SeleccionEntidad>
+                <TipoSeleccion>Autocompletar</TipoSeleccion>
+                <Grafo>organizationtype.owl</Grafo>
+                <UrlTipoEntSolicitada>http://w3id.org/roh/OrganizationType</UrlTipoEntSolicitada>              
+                <PropsEntEdicion>
+                    <NameProp>http://purl.org/dc/elements/1.1/title</NameProp>
+                </PropsEntEdicion>
+                <PropsEntLectura>
+                    <Propiedad ID="http://purl.org/dc/elements/1.1/title" EntidadID="http://w3id.org/roh/OrganizationType">
+                        <AtrNombreLectura></AtrNombreLectura>
+                    </Propiedad>
+                </PropsEntLectura>
+            </SeleccionEntidad>
+        </Propiedad>
+		<Propiedad  ID="http://w3id.org/roh/categoryNode" EntidadID="http://w3id.org/roh/CategoryPath">
+            <AtrNombre>http://w3id.org/roh/categoryNode</AtrNombre>
+            <AtrNombreLectura>http://w3id.org/roh/categoryNode</AtrNombreLectura>
+			<SeleccionEntidad>
+				<TipoSeleccion>Tesauro</TipoSeleccion>
+				<Grafo>taxonomy.owl</Grafo>				
+				<UrlPropiedad>um</UrlPropiedad>                
+			</SeleccionEntidad>
+        </Propiedad>		
+    </EspefPropiedad>
+    <EspefEntidad>
+    </EspefEntidad>
+</config>
