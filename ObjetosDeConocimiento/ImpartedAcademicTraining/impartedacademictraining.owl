@@ -1,0 +1,641 @@
+<?xml version="1.0"?>
+<rdf:RDF
+    xmlns:roh="http://w3id.org/roh/"
+    xmlns:foaf="http://xmlns.com/foaf/0.1/"
+    xmlns:vivo="http://vivoweb.org/ontology/core#"
+    xmlns="http://www.owl-ontologies.com/Ontology1627625538.owl#"
+    xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+    xmlns:xsd="http://www.w3.org/2001/XMLSchema#"
+    xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+    xmlns:owl="http://www.w3.org/2002/07/owl#"
+    xmlns:obo="http://purl.obolibrary.org/obo/"
+    xmlns:vcard="https://www.w3.org/2006/vcard/ns#"
+    xmlns:dc="http://purl.org/dc/elements/1.1/"
+  xml:base="http://www.owl-ontologies.com/Ontology1627625538.owl">
+  <owl:Ontology rdf:about=""/>
+  <owl:Class rdf:about="http://w3id.org/roh/ImpartedAcademicTraining">
+    <rdfs:subClassOf>
+      <owl:Restriction>
+        <owl:maxCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#int"
+        >1</owl:maxCardinality>
+        <owl:onProperty>
+          <owl:DatatypeProperty rdf:about="http://w3id.org/roh/crisIdentifier"/>
+        </owl:onProperty>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+    <rdfs:subClassOf>
+      <owl:Restriction>
+        <owl:onProperty>
+          <owl:DatatypeProperty rdf:about="http://w3id.org/roh/courseTypeOther"/>
+        </owl:onProperty>
+        <owl:maxCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#int"
+        >1</owl:maxCardinality>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+    <rdfs:subClassOf>
+      <owl:Restriction>
+        <owl:maxCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#int"
+        >1</owl:maxCardinality>
+        <owl:onProperty>
+          <owl:DatatypeProperty rdf:about="http://w3id.org/roh/professionalCategory"/>
+        </owl:onProperty>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+    <rdfs:subClassOf>
+      <owl:Restriction>
+        <owl:maxCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#int"
+        >1</owl:maxCardinality>
+        <owl:onProperty>
+          <owl:DatatypeProperty rdf:about="http://w3id.org/roh/financedByTypeOther"/>
+        </owl:onProperty>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+    <rdfs:subClassOf>
+      <owl:Restriction>
+        <owl:maxCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#int"
+        >1</owl:maxCardinality>
+        <owl:onProperty>
+          <owl:ObjectProperty rdf:about="http://w3id.org/roh/promotedByType"/>
+        </owl:onProperty>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+    <rdfs:subClassOf>
+      <owl:Restriction>
+        <owl:maxCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#int"
+        >1</owl:maxCardinality>
+        <owl:onProperty>
+          <owl:DatatypeProperty rdf:about="http://w3id.org/roh/programTypeOther"/>
+        </owl:onProperty>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+    <rdfs:subClassOf>
+      <owl:Restriction>
+        <owl:maxCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#int"
+        >1</owl:maxCardinality>
+        <owl:onProperty>
+          <owl:DatatypeProperty rdf:about="http://w3id.org/roh/teaches"/>
+        </owl:onProperty>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+    <rdfs:subClassOf>
+      <owl:Restriction>
+        <owl:onProperty>
+          <owl:ObjectProperty rdf:about="http://w3id.org/roh/evaluatedByHasCountryName"/>
+        </owl:onProperty>
+        <owl:maxCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#int"
+        >1</owl:maxCardinality>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+    <rdfs:subClassOf>
+      <owl:Restriction>
+        <owl:onProperty>
+          <owl:ObjectProperty rdf:about="http://w3id.org/roh/programType"/>
+        </owl:onProperty>
+        <owl:maxCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#int"
+        >1</owl:maxCardinality>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+    <rdfs:subClassOf>
+      <owl:Restriction>
+        <owl:maxCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#int"
+        >1</owl:maxCardinality>
+        <owl:onProperty>
+          <owl:ObjectProperty rdf:about="http://w3id.org/roh/evaluationType"/>
+        </owl:onProperty>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+    <rdfs:subClassOf>
+      <owl:Restriction>
+        <owl:onProperty>
+          <owl:ObjectProperty rdf:about="http://w3id.org/roh/financedByHasCountryName"/>
+        </owl:onProperty>
+        <owl:maxCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#int"
+        >1</owl:maxCardinality>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+    <rdfs:subClassOf>
+      <owl:Restriction>
+        <owl:onProperty>
+          <owl:DatatypeProperty rdf:about="http://w3id.org/roh/promotedByTypeOther"/>
+        </owl:onProperty>
+        <owl:maxCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#int"
+        >1</owl:maxCardinality>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+    <rdfs:subClassOf>
+      <owl:Restriction>
+        <owl:onProperty>
+          <owl:DatatypeProperty rdf:about="http://w3id.org/roh/qualification"/>
+        </owl:onProperty>
+        <owl:maxCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#int"
+        >1</owl:maxCardinality>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+    <rdfs:subClassOf>
+      <owl:Restriction>
+        <owl:maxCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#int"
+        >1</owl:maxCardinality>
+        <owl:onProperty>
+          <owl:DatatypeProperty rdf:about="http://w3id.org/roh/department"/>
+        </owl:onProperty>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+    <rdfs:subClassOf>
+      <owl:Restriction>
+        <owl:onProperty>
+          <owl:ObjectProperty rdf:about="http://w3id.org/roh/callType"/>
+        </owl:onProperty>
+        <owl:maxCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#int"
+        >1</owl:maxCardinality>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+    <rdfs:subClassOf>
+      <owl:Restriction>
+        <owl:maxCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#int"
+        >1</owl:maxCardinality>
+        <owl:onProperty>
+          <owl:ObjectProperty rdf:about="http://w3id.org/roh/modalityTeachingType"/>
+        </owl:onProperty>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+    <rdfs:subClassOf>
+      <owl:Restriction>
+        <owl:onProperty>
+          <owl:DatatypeProperty rdf:about="http://vivoweb.org/ontology/core#end"/>
+        </owl:onProperty>
+        <owl:maxCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#int"
+        >1</owl:maxCardinality>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+    <rdfs:subClassOf>
+      <owl:Restriction>
+        <owl:maxCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#int"
+        >1</owl:maxCardinality>
+        <owl:onProperty>
+          <owl:DatatypeProperty rdf:about="http://w3id.org/roh/frequency"/>
+        </owl:onProperty>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+    <rdfs:subClassOf>
+      <owl:Restriction>
+        <owl:onProperty>
+          <owl:DatatypeProperty rdf:about="http://w3id.org/roh/evaluatedByLocality"/>
+        </owl:onProperty>
+        <owl:maxCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#int"
+        >1</owl:maxCardinality>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+    <rdfs:subClassOf>
+      <owl:Restriction>
+        <owl:onProperty>
+          <owl:DatatypeProperty rdf:about="http://w3id.org/roh/course"/>
+        </owl:onProperty>
+        <owl:maxCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#int"
+        >1</owl:maxCardinality>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+    <rdfs:subClassOf>
+      <owl:Restriction>
+        <owl:onProperty>
+          <owl:DatatypeProperty rdf:about="http://w3id.org/roh/maxQualification"/>
+        </owl:onProperty>
+        <owl:maxCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#int"
+        >1</owl:maxCardinality>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+    <rdfs:subClassOf>
+      <owl:Restriction>
+        <owl:onProperty>
+          <owl:DatatypeProperty rdf:about="http://w3id.org/roh/callTypeOther"/>
+        </owl:onProperty>
+        <owl:maxCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#int"
+        >1</owl:maxCardinality>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+    <rdfs:subClassOf>
+      <owl:Restriction>
+        <owl:maxCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#int"
+        >1</owl:maxCardinality>
+        <owl:onProperty>
+          <owl:DatatypeProperty rdf:about="http://w3id.org/roh/financedByLocality"/>
+        </owl:onProperty>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+    <rdfs:subClassOf>
+      <owl:Restriction>
+        <owl:onProperty>
+          <owl:DatatypeProperty rdf:about="https://www.w3.org/2006/vcard/ns#locality"/>
+        </owl:onProperty>
+        <owl:maxCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#int"
+        >1</owl:maxCardinality>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+    <rdfs:subClassOf>
+      <owl:Restriction>
+        <owl:onProperty>
+          <owl:DatatypeProperty rdf:about="http://w3id.org/roh/evaluationTypeOther"/>
+        </owl:onProperty>
+        <owl:maxCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#int"
+        >1</owl:maxCardinality>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+    <rdfs:subClassOf>
+      <owl:Restriction>
+        <owl:onProperty>
+          <owl:DatatypeProperty rdf:about="http://w3id.org/roh/modalityTeachingTypeOther"/>
+        </owl:onProperty>
+        <owl:maxCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#int"
+        >1</owl:maxCardinality>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+    <rdfs:subClassOf>
+      <owl:Restriction>
+        <owl:onProperty>
+          <owl:DatatypeProperty rdf:about="http://vivoweb.org/ontology/core#start"/>
+        </owl:onProperty>
+        <owl:maxCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#int"
+        >1</owl:maxCardinality>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+    <rdfs:subClassOf>
+      <owl:Restriction>
+        <owl:onProperty>
+          <owl:DatatypeProperty rdf:about="http://w3id.org/roh/evaluatedByTitle"/>
+        </owl:onProperty>
+        <owl:maxCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#int"
+        >1</owl:maxCardinality>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+    <rdfs:subClassOf>
+      <owl:Restriction>
+        <owl:onProperty>
+          <owl:DatatypeProperty rdf:about="http://w3id.org/roh/numberECTSHours"/>
+        </owl:onProperty>
+        <owl:maxCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#int"
+        >1</owl:maxCardinality>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+    <rdfs:subClassOf>
+      <owl:Restriction>
+        <owl:onProperty>
+          <owl:DatatypeProperty rdf:about="http://w3id.org/roh/financedByTitle"/>
+        </owl:onProperty>
+        <owl:maxCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#int"
+        >1</owl:maxCardinality>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+    <rdfs:subClassOf>
+      <owl:Restriction>
+        <owl:onProperty>
+          <owl:DatatypeProperty rdf:about="http://w3id.org/roh/competencies"/>
+        </owl:onProperty>
+        <owl:maxCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#int"
+        >1</owl:maxCardinality>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+    <rdfs:subClassOf>
+      <owl:Restriction>
+        <owl:maxCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#int"
+        >1</owl:maxCardinality>
+        <owl:onProperty>
+          <owl:ObjectProperty rdf:about="http://w3id.org/roh/evaluatedByHasRegion"/>
+        </owl:onProperty>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+    <rdfs:subClassOf>
+      <owl:Restriction>
+        <owl:maxCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#int"
+        >1</owl:maxCardinality>
+        <owl:onProperty>
+          <owl:DatatypeProperty rdf:about="http://w3id.org/roh/geographicFocusOther"/>
+        </owl:onProperty>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+    <rdfs:subClassOf>
+      <owl:Restriction>
+        <owl:onProperty>
+          <owl:ObjectProperty rdf:about="http://w3id.org/roh/courseType"/>
+        </owl:onProperty>
+        <owl:maxCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#int"
+        >1</owl:maxCardinality>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+    <rdfs:subClassOf>
+      <owl:Restriction>
+        <owl:maxCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#int"
+        >1</owl:maxCardinality>
+        <owl:onProperty>
+          <owl:ObjectProperty rdf:about="http://w3id.org/roh/financedByHasRegion"/>
+        </owl:onProperty>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+    <rdfs:subClassOf>
+      <owl:Restriction>
+        <owl:maxCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#int"
+        >1</owl:maxCardinality>
+        <owl:onProperty>
+          <owl:ObjectProperty rdf:about="https://www.w3.org/2006/vcard/ns#hasLanguage"/>
+        </owl:onProperty>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+    <rdfs:subClassOf>
+      <owl:Restriction>
+        <owl:onProperty>
+          <owl:DatatypeProperty rdf:about="http://w3id.org/roh/promotedByTitle"/>
+        </owl:onProperty>
+        <owl:maxCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#int"
+        >1</owl:maxCardinality>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+    <rdfs:subClassOf>
+      <owl:Restriction>
+        <owl:maxCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#int"
+        >1</owl:maxCardinality>
+        <owl:onProperty>
+          <owl:ObjectProperty rdf:about="https://www.w3.org/2006/vcard/ns#hasRegion"/>
+        </owl:onProperty>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+    <rdfs:subClassOf>
+      <owl:Restriction>
+        <owl:onProperty>
+          <owl:ObjectProperty rdf:about="http://w3id.org/roh/evaluatedByType"/>
+        </owl:onProperty>
+        <owl:maxCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#int"
+        >1</owl:maxCardinality>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+    <rdfs:subClassOf>
+      <owl:Restriction>
+        <owl:maxCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#int"
+        >1</owl:maxCardinality>
+        <owl:onProperty>
+          <owl:ObjectProperty rdf:about="http://w3id.org/roh/hoursCreditsECTSType"/>
+        </owl:onProperty>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+    <rdfs:subClassOf>
+      <owl:Restriction>
+        <owl:maxCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#int"
+        >1</owl:maxCardinality>
+        <owl:onProperty>
+          <owl:ObjectProperty rdf:about="http://w3id.org/roh/promotedBy"/>
+        </owl:onProperty>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+    <rdfs:subClassOf>
+      <owl:Restriction>
+        <owl:onProperty>
+          <owl:ObjectProperty rdf:about="http://w3id.org/roh/financedByType"/>
+        </owl:onProperty>
+        <owl:maxCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#int"
+        >1</owl:maxCardinality>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+    <rdfs:subClassOf rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
+    <rdfs:subClassOf>
+      <owl:Restriction>
+        <owl:onProperty>
+          <owl:ObjectProperty rdf:about="http://w3id.org/roh/teachingType"/>
+        </owl:onProperty>
+        <owl:maxCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#int"
+        >1</owl:maxCardinality>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+    <rdfs:subClassOf>
+      <owl:Restriction>
+        <owl:onProperty>
+          <owl:ObjectProperty rdf:about="http://w3id.org/roh/financedBy"/>
+        </owl:onProperty>
+        <owl:maxCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#int"
+        >1</owl:maxCardinality>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+    <rdfs:subClassOf>
+      <owl:Restriction>
+        <owl:maxCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#int"
+        >1</owl:maxCardinality>
+        <owl:onProperty>
+          <owl:ObjectProperty rdf:about="http://w3id.org/roh/degreeType"/>
+        </owl:onProperty>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+    <rdfs:subClassOf>
+      <owl:Restriction>
+        <owl:maxCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#int"
+        >1</owl:maxCardinality>
+        <owl:onProperty>
+          <owl:ObjectProperty rdf:about="http://vivoweb.org/ontology/core#geographicFocus"/>
+        </owl:onProperty>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+    <rdfs:subClassOf>
+      <owl:Restriction>
+        <owl:onProperty>
+          <owl:ObjectProperty rdf:about="https://www.w3.org/2006/vcard/ns#hasCountryName"/>
+        </owl:onProperty>
+        <owl:maxCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#int"
+        >1</owl:maxCardinality>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+    <rdfs:subClassOf>
+      <owl:Restriction>
+        <owl:maxCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#int"
+        >1</owl:maxCardinality>
+        <owl:onProperty>
+          <owl:DatatypeProperty rdf:about="http://w3id.org/roh/evaluatedByTypeOther"/>
+        </owl:onProperty>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+    <rdfs:subClassOf>
+      <owl:Restriction>
+        <owl:maxCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#int"
+        >1</owl:maxCardinality>
+        <owl:onProperty>
+          <owl:ObjectProperty rdf:about="http://w3id.org/roh/evaluatedBy"/>
+        </owl:onProperty>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+  </owl:Class>
+  <owl:ObjectProperty rdf:about="http://w3id.org/roh/promotedBy">
+    <rdfs:domain rdf:resource="http://w3id.org/roh/ImpartedAcademicTraining"/>
+  </owl:ObjectProperty>
+  <owl:ObjectProperty rdf:about="http://w3id.org/roh/financedBy">
+    <rdfs:domain rdf:resource="http://w3id.org/roh/ImpartedAcademicTraining"/>
+  </owl:ObjectProperty>
+  <owl:ObjectProperty rdf:about="https://www.w3.org/2006/vcard/ns#hasCountryName">
+    <rdfs:domain rdf:resource="http://w3id.org/roh/ImpartedAcademicTraining"/>
+  </owl:ObjectProperty>
+  <owl:ObjectProperty rdf:about="http://w3id.org/roh/financedByHasRegion">
+    <rdfs:domain rdf:resource="http://w3id.org/roh/ImpartedAcademicTraining"/>
+  </owl:ObjectProperty>
+  <owl:ObjectProperty rdf:about="http://w3id.org/roh/financedByHasCountryName">
+    <rdfs:domain rdf:resource="http://w3id.org/roh/ImpartedAcademicTraining"/>
+  </owl:ObjectProperty>
+  <owl:ObjectProperty rdf:about="http://w3id.org/roh/modalityTeachingType">
+    <rdfs:domain rdf:resource="http://w3id.org/roh/ImpartedAcademicTraining"/>
+  </owl:ObjectProperty>
+  <owl:ObjectProperty rdf:about="https://www.w3.org/2006/vcard/ns#hasLanguage">
+    <rdfs:domain rdf:resource="http://w3id.org/roh/ImpartedAcademicTraining"/>
+  </owl:ObjectProperty>
+  <owl:ObjectProperty rdf:about="http://w3id.org/roh/degreeType">
+    <rdfs:domain rdf:resource="http://w3id.org/roh/ImpartedAcademicTraining"/>
+  </owl:ObjectProperty>
+  <owl:ObjectProperty rdf:about="http://w3id.org/roh/evaluatedBy">
+    <rdfs:domain rdf:resource="http://w3id.org/roh/ImpartedAcademicTraining"/>
+  </owl:ObjectProperty>
+  <owl:ObjectProperty rdf:about="http://w3id.org/roh/promotedByType">
+    <rdfs:domain rdf:resource="http://w3id.org/roh/ImpartedAcademicTraining"/>
+  </owl:ObjectProperty>
+  <owl:ObjectProperty rdf:about="http://w3id.org/roh/evaluatedByHasCountryName">
+    <rdfs:domain rdf:resource="http://w3id.org/roh/ImpartedAcademicTraining"/>
+  </owl:ObjectProperty>
+  <owl:ObjectProperty rdf:about="http://w3id.org/roh/evaluatedByType">
+    <rdfs:domain rdf:resource="http://w3id.org/roh/ImpartedAcademicTraining"/>
+  </owl:ObjectProperty>
+  <owl:ObjectProperty rdf:about="http://w3id.org/roh/evaluatedByHasRegion">
+    <rdfs:domain rdf:resource="http://w3id.org/roh/ImpartedAcademicTraining"/>
+  </owl:ObjectProperty>
+  <owl:ObjectProperty rdf:about="https://www.w3.org/2006/vcard/ns#hasRegion">
+    <rdfs:domain rdf:resource="http://w3id.org/roh/ImpartedAcademicTraining"/>
+  </owl:ObjectProperty>
+  <owl:ObjectProperty rdf:about="http://vivoweb.org/ontology/core#geographicFocus">
+    <rdfs:domain rdf:resource="http://w3id.org/roh/ImpartedAcademicTraining"/>
+  </owl:ObjectProperty>
+  <owl:ObjectProperty rdf:about="http://w3id.org/roh/courseType">
+    <rdfs:domain rdf:resource="http://w3id.org/roh/ImpartedAcademicTraining"/>
+  </owl:ObjectProperty>
+  <owl:ObjectProperty rdf:about="http://w3id.org/roh/callType">
+    <rdfs:domain rdf:resource="http://w3id.org/roh/ImpartedAcademicTraining"/>
+  </owl:ObjectProperty>
+  <owl:ObjectProperty rdf:about="http://w3id.org/roh/hoursCreditsECTSType">
+    <rdfs:domain rdf:resource="http://w3id.org/roh/ImpartedAcademicTraining"/>
+  </owl:ObjectProperty>
+  <owl:ObjectProperty rdf:about="http://w3id.org/roh/programType">
+    <rdfs:domain rdf:resource="http://w3id.org/roh/ImpartedAcademicTraining"/>
+  </owl:ObjectProperty>
+  <owl:ObjectProperty rdf:about="http://w3id.org/roh/financedByType">
+    <rdfs:domain rdf:resource="http://w3id.org/roh/ImpartedAcademicTraining"/>
+  </owl:ObjectProperty>
+  <owl:ObjectProperty rdf:about="http://w3id.org/roh/teachingType">
+    <rdfs:domain rdf:resource="http://w3id.org/roh/ImpartedAcademicTraining"/>
+  </owl:ObjectProperty>
+  <owl:ObjectProperty rdf:about="http://w3id.org/roh/evaluationType">
+    <rdfs:domain rdf:resource="http://w3id.org/roh/ImpartedAcademicTraining"/>
+  </owl:ObjectProperty>
+  <owl:DatatypeProperty rdf:about="http://w3id.org/roh/maxQualification">
+    <rdfs:domain rdf:resource="http://w3id.org/roh/ImpartedAcademicTraining"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+  </owl:DatatypeProperty>
+  <owl:DatatypeProperty rdf:about="http://w3id.org/roh/geographicFocusOther">
+    <rdfs:domain rdf:resource="http://w3id.org/roh/ImpartedAcademicTraining"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+  </owl:DatatypeProperty>
+  <owl:DatatypeProperty rdf:about="http://vivoweb.org/ontology/core#start">
+    <rdfs:domain rdf:resource="http://w3id.org/roh/ImpartedAcademicTraining"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#date"/>
+  </owl:DatatypeProperty>
+  <owl:DatatypeProperty rdf:about="http://w3id.org/roh/frequency">
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#float"/>
+    <rdfs:domain rdf:resource="http://w3id.org/roh/ImpartedAcademicTraining"/>
+  </owl:DatatypeProperty>
+  <owl:DatatypeProperty rdf:about="https://www.w3.org/2006/vcard/ns#locality">
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+    <rdfs:domain rdf:resource="http://w3id.org/roh/ImpartedAcademicTraining"/>
+  </owl:DatatypeProperty>
+  <owl:DatatypeProperty rdf:about="http://w3id.org/roh/competencies">
+    <rdfs:domain rdf:resource="http://w3id.org/roh/ImpartedAcademicTraining"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+  </owl:DatatypeProperty>
+  <owl:DatatypeProperty rdf:about="http://w3id.org/roh/promotedByTitle">
+    <rdfs:domain rdf:resource="http://w3id.org/roh/ImpartedAcademicTraining"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+  </owl:DatatypeProperty>
+  <owl:DatatypeProperty rdf:about="http://w3id.org/roh/financedByLocality">
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+    <rdfs:domain rdf:resource="http://w3id.org/roh/ImpartedAcademicTraining"/>
+  </owl:DatatypeProperty>
+  <owl:DatatypeProperty rdf:about="http://w3id.org/roh/callTypeOther">
+    <rdfs:domain rdf:resource="http://w3id.org/roh/ImpartedAcademicTraining"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+  </owl:DatatypeProperty>
+  <owl:DatatypeProperty rdf:about="http://w3id.org/roh/modalityTeachingTypeOther">
+    <rdfs:domain rdf:resource="http://w3id.org/roh/ImpartedAcademicTraining"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+  </owl:DatatypeProperty>
+  <owl:DatatypeProperty rdf:about="http://w3id.org/roh/evaluatedByTypeOther">
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+    <rdfs:domain rdf:resource="http://w3id.org/roh/ImpartedAcademicTraining"/>
+  </owl:DatatypeProperty>
+  <owl:DatatypeProperty rdf:about="http://w3id.org/roh/financedByTitle">
+    <rdfs:domain rdf:resource="http://w3id.org/roh/ImpartedAcademicTraining"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+  </owl:DatatypeProperty>
+  <owl:DatatypeProperty rdf:about="http://w3id.org/roh/teaches">
+    <rdfs:domain rdf:resource="http://w3id.org/roh/ImpartedAcademicTraining"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+  </owl:DatatypeProperty>
+  <owl:DatatypeProperty rdf:about="http://w3id.org/roh/qualification">
+    <rdfs:domain rdf:resource="http://w3id.org/roh/ImpartedAcademicTraining"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+  </owl:DatatypeProperty>
+  <owl:DatatypeProperty rdf:about="http://w3id.org/roh/numberECTSHours">
+    <rdfs:domain rdf:resource="http://w3id.org/roh/ImpartedAcademicTraining"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#float"/>
+  </owl:DatatypeProperty>
+  <owl:DatatypeProperty rdf:about="http://w3id.org/roh/professionalCategory">
+    <rdfs:domain rdf:resource="http://w3id.org/roh/ImpartedAcademicTraining"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+  </owl:DatatypeProperty>
+  <owl:DatatypeProperty rdf:about="http://w3id.org/roh/courseTypeOther">
+    <rdfs:domain rdf:resource="http://w3id.org/roh/ImpartedAcademicTraining"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+  </owl:DatatypeProperty>
+  <owl:DatatypeProperty rdf:about="http://w3id.org/roh/evaluationTypeOther">
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+    <rdfs:domain rdf:resource="http://w3id.org/roh/ImpartedAcademicTraining"/>
+  </owl:DatatypeProperty>
+  <owl:DatatypeProperty rdf:about="http://w3id.org/roh/evaluatedByTitle">
+    <rdfs:domain rdf:resource="http://w3id.org/roh/ImpartedAcademicTraining"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+  </owl:DatatypeProperty>
+  <owl:DatatypeProperty rdf:about="http://w3id.org/roh/promotedByTypeOther">
+    <rdfs:domain rdf:resource="http://w3id.org/roh/ImpartedAcademicTraining"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#int"/>
+  </owl:DatatypeProperty>
+  <owl:DatatypeProperty rdf:about="http://w3id.org/roh/evaluatedByLocality">
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+    <rdfs:domain rdf:resource="http://w3id.org/roh/ImpartedAcademicTraining"/>
+  </owl:DatatypeProperty>
+  <owl:DatatypeProperty rdf:about="http://w3id.org/roh/financedByTypeOther">
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+    <rdfs:domain rdf:resource="http://w3id.org/roh/ImpartedAcademicTraining"/>
+  </owl:DatatypeProperty>
+  <owl:DatatypeProperty rdf:about="http://w3id.org/roh/course">
+    <rdfs:domain rdf:resource="http://w3id.org/roh/ImpartedAcademicTraining"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+  </owl:DatatypeProperty>
+  <owl:DatatypeProperty rdf:about="http://w3id.org/roh/crisIdentifier">
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+    <rdfs:domain rdf:resource="http://w3id.org/roh/ImpartedAcademicTraining"/>
+  </owl:DatatypeProperty>
+  <owl:DatatypeProperty rdf:about="http://vivoweb.org/ontology/core#end">
+    <rdfs:domain rdf:resource="http://w3id.org/roh/ImpartedAcademicTraining"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#date"/>
+  </owl:DatatypeProperty>
+  <owl:DatatypeProperty rdf:about="http://w3id.org/roh/programTypeOther">
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+    <rdfs:domain rdf:resource="http://w3id.org/roh/ImpartedAcademicTraining"/>
+  </owl:DatatypeProperty>
+  <owl:DatatypeProperty rdf:about="http://w3id.org/roh/department">
+    <rdfs:domain rdf:resource="http://w3id.org/roh/ImpartedAcademicTraining"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+  </owl:DatatypeProperty>
+  <owl:FunctionalProperty rdf:about="http://w3id.org/roh/title">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#DatatypeProperty"/>
+    <rdfs:domain rdf:resource="http://w3id.org/roh/ImpartedAcademicTraining"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+  </owl:FunctionalProperty>
+</rdf:RDF>
+
+<!-- Created with Protege (with OWL Plugin 3.3.1, Build 430)  http://protege.stanford.edu -->
