@@ -11,6 +11,21 @@
 
 # Hércules ED. Objeto de conocimiento ContractModality
 
+La entidad eroh:ContractModality (ver Figura 1) representa el tipo de la modalidad de contrato en el Curriculum Vitae en la plataforma Hércules. Dispone de varias opciones:
+- Becario/a (pre o posdotoral, otros)
+- Contrato laboral indefinido
+- Contrato laboral temporal
+- Emérito/a
+- Estatuario/a
+- Funcionario/a
+- Interino/a
+- Otros
+
+A continuación se listan todas aquellas propiedades contenidas en eroh:ContractModality que extienden la ontología fundamental ROH con el fin de ajustarse a las necesidades de Hércules EDMA:
+
+- dc:title
+- dc:identifier
+
 ![](../../Docs/media/ObjetosDeConocimiento/ContractModality.png)
 
 *Figura 1. Diagrama ontológico para la entidad eroh:ContractModality*
