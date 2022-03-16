@@ -11,6 +11,18 @@
 
 # Hércules ED. Objeto de conocimiento ParticipationTypeActivity
 
+La entidad eroh:ParticipationTypeActivity (ver Figura 1) representa el tipo de modo de participación en el Curriculum Vitae en la plataforma Hércules. Dispone de varias opciones:
+- Comisario/a de exposición
+- Organizador
+- Presidente
+- Secretario/a
+- Otros
+
+A continuación se listan todas aquellas propiedades contenidas en eroh:ParticipationTypeActivity que extienden la ontología fundamental ROH con el fin de ajustarse a las necesidades de Hércules EDMA:
+
+- dc:title
+- dc:identifier
+
 ![](../../Docs/media/ObjetosDeConocimiento/ParticipationTypeActivity.png)
 
 *Figura 1. Diagrama ontológico para la entidad eroh:ParticipationTypeActivity*
