@@ -1079,6 +1079,23 @@
                 </PropsEntLectura>
             </SeleccionEntidad>
         </Propiedad>
+		<Propiedad  ID="http://vivoweb.org/ontology/core#relatedBy" EntidadID="http://w3id.org/roh/RelatedThesisSupervisions">
+            <AtrNombre>http://vivoweb.org/ontology/core#relatedBy</AtrNombre>
+            <AtrNombreLectura>http://vivoweb.org/ontology/core#relatedBy</AtrNombreLectura>
+			<SeleccionEntidad>
+                <TipoSeleccion>Autocompletar</TipoSeleccion>
+                <Grafo>thesissupervision.owl</Grafo>
+                <UrlTipoEntSolicitada>http://w3id.org/roh/ThesisSupervision</UrlTipoEntSolicitada>              
+                <PropsEntEdicion>
+                    <NameProp>http://w3id.org/roh/title</NameProp>
+                </PropsEntEdicion>
+                <PropsEntLectura>
+                    <Propiedad ID="http://w3id.org/roh/title" EntidadID="http://w3id.org/roh/ThesisSupervision">
+                        <AtrNombreLectura></AtrNombreLectura>
+                    </Propiedad>
+                </PropsEntLectura>
+            </SeleccionEntidad>
+        </Propiedad>
 
 
 		
