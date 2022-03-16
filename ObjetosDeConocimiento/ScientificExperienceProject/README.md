@@ -11,6 +11,14 @@
 
 # Hércules ED. Objeto de conocimiento ScientificExperienceProject
 
+La entidad eroh:ScientificExperienceProject (ver Figura 1) representa el tipo de los proyectos de experiencia científica en el Curriculum Vitae en la plataforma Hércules. 
+
+A continuación se listan todas aquellas propiedades contenidas en eroh:ScientificExperienceProject que extienden la ontología fundamental ROH con el fin de ajustarse a las necesidades de Hércules EDMA:
+
+- dc:title
+- dc:identifier
+- bibo:abstract
+
 ![](../../Docs/media/ObjetosDeConocimiento/ScientificExperienceProject.png)
 
 *Figura 1. Diagrama ontológico para la entidad eroh:ScientificExperienceProject*
