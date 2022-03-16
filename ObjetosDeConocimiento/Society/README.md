@@ -30,4 +30,5 @@ Una instancia de eroh:Society se asocia, a su vez, con las siguientes entidades 
 
 
 ![](../../Docs/media/ObjetosDeConocimiento/Society.png)
+
 *Figura 1. Diagrama ontológico para la entidad eroh:Society*

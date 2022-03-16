@@ -23,4 +23,5 @@ Una instancia de eroh:Committee se asocia con las siguientes entidades a través
 
 
 ![](../../Docs/media/ObjetosDeConocimiento/Committee.png)
+
 *Figura 1. Diagrama ontológico para la entidad eroh:Committee*

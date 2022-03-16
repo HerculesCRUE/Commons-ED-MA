@@ -10,30 +10,11 @@
     </ConfiguracionGeneral>
     <EspefPropiedad>
         <Propiedad  ID="http://purl.org/dc/elements/1.1/title" EntidadID="http://w3id.org/roh/DedicationRegime">
-            <AtrNombre>Régimen de dedicación</AtrNombre>
-            <AtrNombreLectura>Régimen de dedicación</AtrNombreLectura>
 			<MultiIdioma></MultiIdioma>
         </Propiedad>
         <Propiedad  ID="http://purl.org/dc/elements/1.1/identifier" EntidadID="http://w3id.org/roh/DedicationRegime">
-            <AtrNombre>Identificador del régimen de dedicación</AtrNombre>
-            <AtrNombreLectura>Identificador del régimen de dedicación</AtrNombreLectura>
 			<MultiIdioma>false</MultiIdioma>
         </Propiedad>
     </EspefPropiedad>
-    <EspefEntidad>
-        <Entidad  ID="http://w3id.org/roh/DedicationRegime">
-            <AtrNombre>Régimen de dedicación</AtrNombre>
-            <AtrNombreLectura>Régimen de dedicación</AtrNombreLectura>
-            <OrdenEntidad>
-                <Grupo class="formtheme02">
-                    <Grupo class="fieldset">
-                        <Grupo Tipo="fieldset" class="mediumLabels">
-                            <NameProp>http://purl.org/dc/elements/1.1/title</NameProp> 
-                            <NameProp>http://purl.org/dc/elements/1.1/identifier</NameProp>
-                        </Grupo>
-                    </Grupo>
-                </Grupo>
-            </OrdenEntidad>
-        </Entidad>
-    </EspefEntidad>
+    <EspefEntidad></EspefEntidad>
 </config>

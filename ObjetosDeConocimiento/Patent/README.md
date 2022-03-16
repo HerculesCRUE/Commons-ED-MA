@@ -49,4 +49,5 @@ Una instancia de bibo:Patent se asocia, a su vez, con las siguientes entidades a
 
 
 ![](../../Docs/media/ObjetosDeConocimiento/Patent.png)
+
 *Figura 1. Diagrama ontológico para la entidad bibo:Patent*

@@ -31,4 +31,5 @@ A su vez, la entidad auxiliar eroh:ImpactIndex se relaciona con estas otras dos 
 
 
 ![](../../Docs/media/ObjetosDeConocimiento/MainDocument.png)
+
 *Figura 1. Diagrama ontológico para la entidad eroh:MainDocument*

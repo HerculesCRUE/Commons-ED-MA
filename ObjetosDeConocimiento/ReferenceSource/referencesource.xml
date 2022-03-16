@@ -10,30 +10,11 @@
     </ConfiguracionGeneral>
     <EspefPropiedad>
         <Propiedad  ID="http://purl.org/dc/elements/1.1/title" EntidadID="http://purl.org/ontology/bibo/ReferenceSource">
-            <AtrNombre>Fuente de referencia</AtrNombre>
-            <AtrNombreLectura>Fuente de referencia</AtrNombreLectura>
 			<MultiIdioma></MultiIdioma>
         </Propiedad>
         <Propiedad  ID="http://purl.org/dc/elements/1.1/identifier" EntidadID="http://purl.org/ontology/bibo/ReferenceSource">
-            <AtrNombre>Identificador de la fuente de referencia</AtrNombre>
-            <AtrNombreLectura>http://purl.org/dc/elements/1.1/identifier</AtrNombreLectura>
 			<MultiIdioma>false</MultiIdioma>
         </Propiedad>
     </EspefPropiedad>
-    <EspefEntidad>
-        <Entidad  ID="http://purl.org/ontology/bibo/ReferenceSource">
-            <AtrNombre>Fuente de referencia</AtrNombre>
-            <AtrNombreLectura>Fuente de referencia</AtrNombreLectura>
-            <OrdenEntidad>
-                <Grupo class="formtheme02">
-                    <Grupo class="fieldset">
-                        <Grupo Tipo="fieldset" class="mediumLabels">
-                            <NameProp>http://purl.org/dc/elements/1.1/title</NameProp> 
-                            <NameProp>http://purl.org/dc/elements/1.1/identifier</NameProp>
-                        </Grupo>
-                    </Grupo>
-                </Grupo>
-            </OrdenEntidad>
-        </Entidad>
-    </EspefEntidad>
+    <EspefEntidad></EspefEntidad>
 </config>

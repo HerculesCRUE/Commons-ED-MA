@@ -10,30 +10,11 @@
     </ConfiguracionGeneral>
     <EspefPropiedad>
         <Propiedad  ID="http://purl.org/dc/elements/1.1/title" EntidadID="http://w3id.org/roh/ContributionGradeDocument">
-            <AtrNombre>Grado de contribución en una publicación</AtrNombre>
-            <AtrNombreLectura>Grado de contribución en una publicación</AtrNombreLectura>
 			<MultiIdioma></MultiIdioma>
         </Propiedad>
         <Propiedad  ID="http://purl.org/dc/elements/1.1/identifier" EntidadID="http://w3id.org/roh/ContributionGradeDocument">
-            <AtrNombre>Identificador del grado de contribución en una publicación</AtrNombre>
-            <AtrNombreLectura>Identificador del grado de contribución en una publicación</AtrNombreLectura>
 			<MultiIdioma>false</MultiIdioma>
         </Propiedad>
     </EspefPropiedad>
-    <EspefEntidad>
-        <Entidad  ID="http://w3id.org/roh/ContributionGradeDocument">
-            <AtrNombre>Grado de contribución en una publicación</AtrNombre>
-            <AtrNombreLectura>Grado de contribución en una publicación</AtrNombreLectura>
-            <OrdenEntidad>
-                <Grupo class="formtheme02">
-                    <Grupo class="fieldset">
-                        <Grupo Tipo="fieldset" class="mediumLabels">
-                            <NameProp>http://purl.org/dc/elements/1.1/title</NameProp> 
-                            <NameProp>http://purl.org/dc/elements/1.1/identifier</NameProp>
-                        </Grupo>
-                    </Grupo>
-                </Grupo>
-            </OrdenEntidad>
-        </Entidad>
-    </EspefEntidad>
+    <EspefEntidad></EspefEntidad>
 </config>

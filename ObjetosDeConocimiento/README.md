@@ -24,7 +24,7 @@ El presente documento enumera los objetos de conocimiento que aplicaremos en el 
 
 Como resultado de la definición de los objetos de conocimiento, que responden a las necesidades del editor del Curriculum Vitae Normalizado (CVN) en Hércules ED y a la expresión de la información de investigación en los interfaces de MA, podrían detectarse cambios en el modelo de referencia, lo que se reflejaría en ROH en una nuueva versión.
 
-Estos componentes son comunes a los proyectos [Hércules ED](https://github.com/HerculesCRUE/HerculesED) y [Hércules MA].
+Estos componentes son comunes a los proyectos [Hércules ED](https://github.com/HerculesCRUE/HerculesED) y [Hércules MA](https://github.com/HerculesCRUE/HerculesMA).
 
 Inventario de objetos de conocimiento
 =====================================

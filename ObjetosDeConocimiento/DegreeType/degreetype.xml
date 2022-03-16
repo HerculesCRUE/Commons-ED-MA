@@ -10,15 +10,10 @@
     </ConfiguracionGeneral>
     <EspefPropiedad>
         <Propiedad  ID="http://purl.org/dc/elements/1.1/title" EntidadID="http://w3id.org/roh/DegreeType">
-            <AtrNombre>Tipo de inscripción en un evento</AtrNombre>
-            <AtrNombreLectura>Tipo de inscripción en un evento</AtrNombreLectura>
         </Propiedad>
         <Propiedad  ID="http://purl.org/dc/elements/1.1/identifier" EntidadID="http://w3id.org/roh/DegreeType">
-            <AtrNombre>Identificador del tipo de inscripción en un evento</AtrNombre>
-            <AtrNombreLectura>Identificador del tipo de inscripción en un evento</AtrNombreLectura>
 			<MultiIdioma>false</MultiIdioma>
         </Propiedad>
     </EspefPropiedad>
-    <EspefEntidad>
-    </EspefEntidad>
+    <EspefEntidad></EspefEntidad>
 </config>

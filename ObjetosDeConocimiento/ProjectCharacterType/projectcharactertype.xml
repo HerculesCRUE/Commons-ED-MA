@@ -15,6 +15,5 @@
 			<MultiIdioma>false</MultiIdioma>
         </Propiedad>
     </EspefPropiedad>
-    <EspefEntidad>
-    </EspefEntidad>
+    <EspefEntidad></EspefEntidad>
 </config>
