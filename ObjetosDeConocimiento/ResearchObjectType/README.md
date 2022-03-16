@@ -11,6 +11,13 @@
 
 # Hércules ED. Objeto de conocimiento ResearchObjectType
 
+La entidad eroh:ResearchObjectType (ver Figura 1) representa el tipo de los research objects en el Curriculum Vitae en la plataforma Hércules. 
+
+A continuación se listan todas aquellas propiedades contenidas en eroh:ResearchObjectType que extienden la ontología fundamental ROH con el fin de ajustarse a las necesidades de Hércules EDMA:
+
+- dc:title
+- dc:identifier
+
 ![](../../Docs/media/ObjetosDeConocimiento/ResearchObjectType.png)
 
 *Figura 1. Diagrama ontológico para la entidad eroh:ResearchObjectType*
