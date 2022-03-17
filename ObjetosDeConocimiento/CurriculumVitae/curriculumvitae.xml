@@ -12,9 +12,7 @@
     </ConfiguracionGeneral>
     <EspefPropiedad>
         <Propiedad  ID="http://vivoweb.org/ontology/core#relatedBy" EntidadID="http://w3id.org/roh/RelatedNetwork">
-            <AtrNombre>http://vivoweb.org/ontology/core#relatedBy</AtrNombre>
-            <AtrNombreLectura>http://vivoweb.org/ontology/core#relatedBy</AtrNombreLectura>
-			<SeleccionEntidad>
+                        			<SeleccionEntidad>
                 <TipoSeleccion>Autocompletar</TipoSeleccion>
                 <Grafo>network.owl</Grafo>
                 <UrlTipoEntSolicitada>http://w3id.org/roh/Network</UrlTipoEntSolicitada>              
@@ -29,9 +27,7 @@
             </SeleccionEntidad>
         </Propiedad>
         <Propiedad  ID="http://vivoweb.org/ontology/core#relatedBy" EntidadID="http://w3id.org/roh/RelatedOtherDistinction">
-            <AtrNombre>http://vivoweb.org/ontology/core#relatedBy</AtrNombre>
-            <AtrNombreLectura>http://vivoweb.org/ontology/core#relatedBy</AtrNombreLectura>
-			<SeleccionEntidad>
+                        			<SeleccionEntidad>
                 <TipoSeleccion>Autocompletar</TipoSeleccion>
                 <Grafo>accreditation.owl</Grafo>
                 <UrlTipoEntSolicitada>http://w3id.org/roh/Accreditation</UrlTipoEntSolicitada>              
@@ -46,9 +42,7 @@
             </SeleccionEntidad>
         </Propiedad>
         <Propiedad  ID="http://vivoweb.org/ontology/core#relatedBy" EntidadID="http://w3id.org/roh/RelatedWorkSubmittedConferences">
-            <AtrNombre>http://vivoweb.org/ontology/core#relatedBy</AtrNombre>
-            <AtrNombreLectura>http://vivoweb.org/ontology/core#relatedBy</AtrNombreLectura>
-			<SeleccionEntidad>
+                        			<SeleccionEntidad>
                 <TipoSeleccion>Autocompletar</TipoSeleccion>
                 <Grafo>document.owl</Grafo>
                 <UrlTipoEntSolicitada>http://purl.org/ontology/bibo/Document</UrlTipoEntSolicitada>              
@@ -63,9 +57,7 @@
             </SeleccionEntidad>
         </Propiedad>
         <Propiedad  ID="http://vivoweb.org/ontology/core#relatedBy" EntidadID="http://w3id.org/roh/RelatedOtherCollaboration">
-            <AtrNombre>http://vivoweb.org/ontology/core#relatedBy</AtrNombre>
-            <AtrNombreLectura>http://vivoweb.org/ontology/core#relatedBy</AtrNombreLectura>
-			<SeleccionEntidad>
+                        			<SeleccionEntidad>
                 <TipoSeleccion>Autocompletar</TipoSeleccion>
                 <Grafo>collaboration.owl</Grafo>
                 <UrlTipoEntSolicitada>http://w3id.org/roh/Collaboration</UrlTipoEntSolicitada>              
@@ -80,9 +72,7 @@
             </SeleccionEntidad>
         </Propiedad>
         <Propiedad  ID="http://vivoweb.org/ontology/core#relatedBy" EntidadID="http://w3id.org/roh/RelatedCommittee">
-            <AtrNombre>http://vivoweb.org/ontology/core#relatedBy</AtrNombre>
-            <AtrNombreLectura>http://vivoweb.org/ontology/core#relatedBy</AtrNombreLectura>
-			<SeleccionEntidad>
+                        			<SeleccionEntidad>
                 <TipoSeleccion>Autocompletar</TipoSeleccion>
                 <Grafo>committee.owl</Grafo>
                 <UrlTipoEntSolicitada>http://w3id.org/roh/Committee</UrlTipoEntSolicitada>              
@@ -131,9 +121,7 @@
             </SeleccionEntidad>
         </Propiedad>
         <Propiedad  ID="http://vivoweb.org/ontology/core#relatedBy" EntidadID="http://w3id.org/roh/RelatedCouncil">
-            <AtrNombre>http://vivoweb.org/ontology/core#relatedBy</AtrNombre>
-            <AtrNombreLectura>http://vivoweb.org/ontology/core#relatedBy</AtrNombreLectura>
-			<SeleccionEntidad>
+                        			<SeleccionEntidad>
                 <TipoSeleccion>Autocompletar</TipoSeleccion>
                 <Grafo>council.owl</Grafo>
                 <UrlTipoEntSolicitada>http://w3id.org/roh/Council</UrlTipoEntSolicitada>              
@@ -148,9 +136,7 @@
             </SeleccionEntidad>
         </Propiedad>
         <Propiedad  ID="http://vivoweb.org/ontology/core#relatedBy" EntidadID="http://w3id.org/roh/RelatedPrize">
-            <AtrNombre>http://vivoweb.org/ontology/core#relatedBy</AtrNombre>
-            <AtrNombreLectura>http://vivoweb.org/ontology/core#relatedBy</AtrNombreLectura>
-			<SeleccionEntidad>
+                        			<SeleccionEntidad>
                 <TipoSeleccion>Autocompletar</TipoSeleccion>
                 <Grafo>accreditation.owl</Grafo>
                 <UrlTipoEntSolicitada>http://w3id.org/roh/Accreditation</UrlTipoEntSolicitada>              
@@ -165,9 +151,7 @@
             </SeleccionEntidad>
         </Propiedad>
         <Propiedad  ID="http://vivoweb.org/ontology/core#relatedBy" EntidadID="http://w3id.org/roh/RelatedResearchEvaluation">
-            <AtrNombre>http://vivoweb.org/ontology/core#relatedBy</AtrNombre>
-            <AtrNombreLectura>http://vivoweb.org/ontology/core#relatedBy</AtrNombreLectura>
-			<SeleccionEntidad>
+                        			<SeleccionEntidad>
                 <TipoSeleccion>Autocompletar</TipoSeleccion>
                 <Grafo>activity.owl</Grafo>
                 <UrlTipoEntSolicitada>http://w3id.org/roh/Activity</UrlTipoEntSolicitada>              
@@ -182,9 +166,7 @@
             </SeleccionEntidad>
         </Propiedad>
         <Propiedad  ID="http://vivoweb.org/ontology/core#relatedBy" EntidadID="http://w3id.org/roh/RelatedActivityManagement">
-            <AtrNombre>http://vivoweb.org/ontology/core#relatedBy</AtrNombre>
-            <AtrNombreLectura>http://vivoweb.org/ontology/core#relatedBy</AtrNombreLectura>
-			<SeleccionEntidad>
+                        			<SeleccionEntidad>
                 <TipoSeleccion>Autocompletar</TipoSeleccion>
                 <Grafo>activity.owl</Grafo>
                 <UrlTipoEntSolicitada>http://w3id.org/roh/Activity</UrlTipoEntSolicitada>              
@@ -199,9 +181,7 @@
             </SeleccionEntidad>
         </Propiedad>
         <Propiedad  ID="http://vivoweb.org/ontology/core#relatedBy" EntidadID="http://w3id.org/roh/RelatedStay">
-            <AtrNombre>http://vivoweb.org/ontology/core#relatedBy</AtrNombre>
-            <AtrNombreLectura>http://vivoweb.org/ontology/core#relatedBy</AtrNombreLectura>
-			<SeleccionEntidad>
+                        			<SeleccionEntidad>
                 <TipoSeleccion>Autocompletar</TipoSeleccion>
                 <Grafo>stay.owl</Grafo>
                 <UrlTipoEntSolicitada>http://w3id.org/roh/Stay</UrlTipoEntSolicitada>              
@@ -250,9 +230,7 @@
             </SeleccionEntidad>
         </Propiedad>
         <Propiedad  ID="http://vivoweb.org/ontology/core#relatedBy" EntidadID="http://w3id.org/roh/RelatedTechnologicalResult">
-            <AtrNombre>http://vivoweb.org/ontology/core#relatedBy</AtrNombre>
-            <AtrNombreLectura>http://vivoweb.org/ontology/core#relatedBy</AtrNombreLectura>
-			<SeleccionEntidad>
+                        			<SeleccionEntidad>
                 <TipoSeleccion>Autocompletar</TipoSeleccion>
                 <Grafo>technologicalresult.owl</Grafo>
                 <UrlTipoEntSolicitada>http://w3id.org/roh/TechnologicalResult</UrlTipoEntSolicitada>              
@@ -293,9 +271,7 @@
 			</SeleccionEntidad>
         </Propiedad>
         <Propiedad  ID="http://vivoweb.org/ontology/core#relatedBy" EntidadID="http://w3id.org/roh/RelatedSupervisedArtisticProject">
-            <AtrNombre>http://vivoweb.org/ontology/core#relatedBy</AtrNombre>
-            <AtrNombreLectura>http://vivoweb.org/ontology/core#relatedBy</AtrNombreLectura>
-			<SeleccionEntidad>
+                        			<SeleccionEntidad>
                 <TipoSeleccion>Autocompletar</TipoSeleccion>
                 <Grafo>supervisedartisticproject.owl</Grafo>
                 <UrlTipoEntSolicitada>http://w3id.org/roh/SupervisedArtisticProject</UrlTipoEntSolicitada>              
@@ -310,9 +286,7 @@
             </SeleccionEntidad>
         </Propiedad>        
         <Propiedad  ID="http://vivoweb.org/ontology/core#relatedBy" EntidadID="http://w3id.org/roh/RelatedObtainedRecognition">
-            <AtrNombre>http://vivoweb.org/ontology/core#relatedBy</AtrNombre>
-            <AtrNombreLectura>http://vivoweb.org/ontology/core#relatedBy</AtrNombreLectura>
-			<SeleccionEntidad>
+                        			<SeleccionEntidad>
                 <TipoSeleccion>Autocompletar</TipoSeleccion>
                 <Grafo>accreditation.owl</Grafo>
                 <UrlTipoEntSolicitada>http://w3id.org/roh/Accreditation</UrlTipoEntSolicitada>              
@@ -327,9 +301,7 @@
             </SeleccionEntidad>
         </Propiedad>
         <Propiedad  ID="http://vivoweb.org/ontology/core#relatedBy" EntidadID="http://w3id.org/roh/RelatedResearchActivityPeriod">
-            <AtrNombre>http://vivoweb.org/ontology/core#relatedBy</AtrNombre>
-            <AtrNombreLectura>http://vivoweb.org/ontology/core#relatedBy</AtrNombreLectura>
-			<SeleccionEntidad>
+                        			<SeleccionEntidad>
                 <TipoSeleccion>Autocompletar</TipoSeleccion>
                 <Grafo>accreditation.owl</Grafo>
                 <UrlTipoEntSolicitada>http://w3id.org/roh/Accreditation</UrlTipoEntSolicitada>              
@@ -378,9 +350,7 @@
             </SeleccionEntidad>
         </Propiedad>
         <Propiedad  ID="http://vivoweb.org/ontology/core#relatedBy" EntidadID="http://w3id.org/roh/RelatedOtherAchievement">
-            <AtrNombre>http://vivoweb.org/ontology/core#relatedBy</AtrNombre>
-            <AtrNombreLectura>http://vivoweb.org/ontology/core#relatedBy</AtrNombreLectura>
-			<SeleccionEntidad>
+                        			<SeleccionEntidad>
                 <TipoSeleccion>Autocompletar</TipoSeleccion>
                 <Grafo>accreditation.owl</Grafo>
                 <UrlTipoEntSolicitada>http://w3id.org/roh/Accreditation</UrlTipoEntSolicitada>              
@@ -446,9 +416,7 @@
             </SeleccionEntidad>
         </Propiedad>
         <Propiedad  ID="http://vivoweb.org/ontology/core#relatedBy" EntidadID="http://w3id.org/roh/RelatedGroup">
-            <AtrNombre>http://vivoweb.org/ontology/core#relatedBy</AtrNombre>
-            <AtrNombreLectura>http://vivoweb.org/ontology/core#relatedBy</AtrNombreLectura>
-			<SeleccionEntidad>
+                        			<SeleccionEntidad>
                 <TipoSeleccion>Autocompletar</TipoSeleccion>
                 <Grafo>group.owl</Grafo>
                 <UrlTipoEntSolicitada>http://xmlns.com/foaf/0.1/Group</UrlTipoEntSolicitada>              
@@ -463,9 +431,7 @@
             </SeleccionEntidad>
         </Propiedad>
 		<Propiedad  ID="http://vivoweb.org/ontology/core#relatedBy" EntidadID="http://w3id.org/roh/RelatedResearchObject">
-            <AtrNombre>http://vivoweb.org/ontology/core#relatedBy</AtrNombre>
-            <AtrNombreLectura>http://vivoweb.org/ontology/core#relatedBy</AtrNombreLectura>
-			<SeleccionEntidad>
+                        			<SeleccionEntidad>
                 <TipoSeleccion>Autocompletar</TipoSeleccion>
                 <Grafo>researchobject.owl</Grafo>
                 <UrlTipoEntSolicitada>http://w3id.org/roh/ResearchObject</UrlTipoEntSolicitada>              
@@ -480,9 +446,7 @@
             </SeleccionEntidad>
         </Propiedad>
         <Propiedad  ID="http://vivoweb.org/ontology/core#relatedBy" EntidadID="http://w3id.org/roh/RelatedForum">
-            <AtrNombre>http://vivoweb.org/ontology/core#relatedBy</AtrNombre>
-            <AtrNombreLectura>http://vivoweb.org/ontology/core#relatedBy</AtrNombreLectura>
-			<SeleccionEntidad>
+                        			<SeleccionEntidad>
                 <TipoSeleccion>Autocompletar</TipoSeleccion>
                 <Grafo>activity.owl</Grafo>
                 <UrlTipoEntSolicitada>http://w3id.org/roh/Activity</UrlTipoEntSolicitada>              
@@ -497,9 +461,7 @@
             </SeleccionEntidad>
         </Propiedad>
         <Propiedad  ID="http://vivoweb.org/ontology/core#relatedBy" EntidadID="http://w3id.org/roh/RelatedGrant">
-            <AtrNombre>http://vivoweb.org/ontology/core#relatedBy</AtrNombre>
-            <AtrNombreLectura>http://vivoweb.org/ontology/core#relatedBy</AtrNombreLectura>
-			<SeleccionEntidad>
+                        			<SeleccionEntidad>
                 <TipoSeleccion>Autocompletar</TipoSeleccion>
                 <Grafo>grant.owl</Grafo>
                 <UrlTipoEntSolicitada>http://vivoweb.org/ontology/core#Grant</UrlTipoEntSolicitada>              
@@ -514,9 +476,7 @@
             </SeleccionEntidad>
         </Propiedad>
         <Propiedad  ID="http://vivoweb.org/ontology/core#relatedBy" EntidadID="http://w3id.org/roh/RelatedNonCompetitiveProject">
-            <AtrNombre>http://vivoweb.org/ontology/core#relatedBy</AtrNombre>
-            <AtrNombreLectura>http://vivoweb.org/ontology/core#relatedBy</AtrNombreLectura>
-			<SeleccionEntidad>
+                        			<SeleccionEntidad>
                 <TipoSeleccion>Autocompletar</TipoSeleccion>
                 <Grafo>project.owl</Grafo>
                 <UrlTipoEntSolicitada>http://vivoweb.org/ontology/core#Project</UrlTipoEntSolicitada>              
@@ -531,9 +491,7 @@
             </SeleccionEntidad>
         </Propiedad>
         <Propiedad  ID="http://vivoweb.org/ontology/core#relatedBy" EntidadID="http://w3id.org/roh/RelatedActivityOrganization">
-            <AtrNombre>http://vivoweb.org/ontology/core#relatedBy</AtrNombre>
-            <AtrNombreLectura>http://vivoweb.org/ontology/core#relatedBy</AtrNombreLectura>
-			<SeleccionEntidad>
+                        			<SeleccionEntidad>
                 <TipoSeleccion>Autocompletar</TipoSeleccion>
                 <Grafo>activity.owl</Grafo>
                 <UrlTipoEntSolicitada>http://w3id.org/roh/Activity</UrlTipoEntSolicitada>              
@@ -548,9 +506,7 @@
             </SeleccionEntidad>
         </Propiedad>
         <Propiedad  ID="http://vivoweb.org/ontology/core#relatedBy" EntidadID="http://w3id.org/roh/RelatedSociety">
-            <AtrNombre>http://vivoweb.org/ontology/core#relatedBy</AtrNombre>
-            <AtrNombreLectura>http://vivoweb.org/ontology/core#relatedBy</AtrNombreLectura>
-			<SeleccionEntidad>
+                        			<SeleccionEntidad>
                 <TipoSeleccion>Autocompletar</TipoSeleccion>
                 <Grafo>society.owl</Grafo>
                 <UrlTipoEntSolicitada>http://w3id.org/roh/Society</UrlTipoEntSolicitada>              
@@ -565,9 +521,7 @@
             </SeleccionEntidad>
         </Propiedad>
         <Propiedad  ID="http://vivoweb.org/ontology/core#relatedBy" EntidadID="http://w3id.org/roh/RelatedWorkSubmittedSeminars">
-            <AtrNombre>http://vivoweb.org/ontology/core#relatedBy</AtrNombre>
-            <AtrNombreLectura>http://vivoweb.org/ontology/core#relatedBy</AtrNombreLectura>
-			<SeleccionEntidad>
+                        			<SeleccionEntidad>
                 <TipoSeleccion>Autocompletar</TipoSeleccion>
                 <Grafo>document.owl</Grafo>
                 <UrlTipoEntSolicitada>http://purl.org/ontology/bibo/Document</UrlTipoEntSolicitada>              
@@ -599,9 +553,7 @@
             </SeleccionEntidad>
         </Propiedad>
         <Propiedad  ID="http://vivoweb.org/ontology/core#relatedBy" EntidadID="http://w3id.org/roh/RelatedCompetitiveProject">
-            <AtrNombre>http://vivoweb.org/ontology/core#relatedBy</AtrNombre>
-            <AtrNombreLectura>http://vivoweb.org/ontology/core#relatedBy</AtrNombreLectura>
-			<SeleccionEntidad>
+                        			<SeleccionEntidad>
                 <TipoSeleccion>Autocompletar</TipoSeleccion>
                 <Grafo>project.owl</Grafo>
                 <UrlTipoEntSolicitada>http://vivoweb.org/ontology/core#Project</UrlTipoEntSolicitada>              
@@ -616,9 +568,7 @@
             </SeleccionEntidad>
         </Propiedad>
         <Propiedad  ID="http://vivoweb.org/ontology/core#relatedBy" EntidadID="http://w3id.org/roh/RelatedScientificPublication">
-            <AtrNombre>http://vivoweb.org/ontology/core#relatedBy</AtrNombre>
-            <AtrNombreLectura>http://vivoweb.org/ontology/core#relatedBy</AtrNombreLectura>
-			<SeleccionEntidad>
+                        			<SeleccionEntidad>
                 <TipoSeleccion>Autocompletar</TipoSeleccion>
                 <Grafo>document.owl</Grafo>
                 <UrlTipoEntSolicitada>http://purl.org/ontology/bibo/Document</UrlTipoEntSolicitada>              
@@ -701,9 +651,7 @@
             </SeleccionEntidad>
         </Propiedad>
         <Propiedad  ID="http://vivoweb.org/ontology/core#relatedBy" EntidadID="http://w3id.org/roh/RelatedPatent">
-            <AtrNombre>http://vivoweb.org/ontology/core#relatedBy</AtrNombre>
-            <AtrNombreLectura>http://vivoweb.org/ontology/core#relatedBy</AtrNombreLectura>
-			<SeleccionEntidad>
+                        			<SeleccionEntidad>
                 <TipoSeleccion>Autocompletar</TipoSeleccion>
                 <Grafo>patent.owl</Grafo>
                 <UrlTipoEntSolicitada>http://purl.org/ontology/bibo/Patent</UrlTipoEntSolicitada>              
@@ -718,9 +666,7 @@
             </SeleccionEntidad>
         </Propiedad>
         <Propiedad  ID="http://vivoweb.org/ontology/core#relatedBy" EntidadID="http://w3id.org/roh/RelatedOtherDisseminationActivity">
-            <AtrNombre>http://vivoweb.org/ontology/core#relatedBy</AtrNombre>
-            <AtrNombreLectura>http://vivoweb.org/ontology/core#relatedBy</AtrNombreLectura>
-			<SeleccionEntidad>
+                        			<SeleccionEntidad>
                 <TipoSeleccion>Autocompletar</TipoSeleccion>
                 <Grafo>activity.owl</Grafo>
                 <UrlTipoEntSolicitada>http://w3id.org/roh/Activity</UrlTipoEntSolicitada>              
@@ -857,9 +803,7 @@
             </SeleccionEntidad>
         </Propiedad>
         <Propiedad  ID="http://vivoweb.org/ontology/core#relatedBy" EntidadID="http://w3id.org/roh/RelatedCurrentProfessionalSituation">
-            <AtrNombre>http://vivoweb.org/ontology/core#relatedBy</AtrNombre>
-            <AtrNombreLectura>http://vivoweb.org/ontology/core#relatedBy</AtrNombreLectura>
-			<SeleccionEntidad>
+                        			<SeleccionEntidad>
                 <TipoSeleccion>Autocompletar</TipoSeleccion>
                 <Grafo>position.owl</Grafo>
                 <UrlTipoEntSolicitada>http://vivoweb.org/ontology/core#Position</UrlTipoEntSolicitada>              
@@ -874,9 +818,7 @@
             </SeleccionEntidad>
         </Propiedad>
 		<Propiedad  ID="http://vivoweb.org/ontology/core#relatedBy" EntidadID="http://w3id.org/roh/RelatedPreviousPositions">
-            <AtrNombre>http://vivoweb.org/ontology/core#relatedBy</AtrNombre>
-            <AtrNombreLectura>http://vivoweb.org/ontology/core#relatedBy</AtrNombreLectura>
-			<SeleccionEntidad>
+                        			<SeleccionEntidad>
                 <TipoSeleccion>Autocompletar</TipoSeleccion>
                 <Grafo>position.owl</Grafo>
                 <UrlTipoEntSolicitada>http://vivoweb.org/ontology/core#Position</UrlTipoEntSolicitada>              
@@ -891,9 +833,7 @@
             </SeleccionEntidad>
         </Propiedad>
 		<Propiedad  ID="http://vivoweb.org/ontology/core#relatedBy" EntidadID="http://w3id.org/roh/RelatedScientificProduction">
-            <AtrNombre>http://vivoweb.org/ontology/core#relatedBy</AtrNombre>
-            <AtrNombreLectura>http://vivoweb.org/ontology/core#relatedBy</AtrNombreLectura>
-			<SeleccionEntidad>
+                        			<SeleccionEntidad>
                 <TipoSeleccion>Autocompletar</TipoSeleccion>
                 <Grafo>scientificproduction.owl</Grafo>
                 <UrlTipoEntSolicitada>http://w3id.org/roh/ScientificProduction</UrlTipoEntSolicitada>              
@@ -910,9 +850,7 @@
 
 
 		<Propiedad  ID="http://vivoweb.org/ontology/core#relatedBy" EntidadID="http://w3id.org/roh/RelatedFirstSecondCycles">
-            <AtrNombre>http://vivoweb.org/ontology/core#relatedBy</AtrNombre>
-            <AtrNombreLectura>http://vivoweb.org/ontology/core#relatedBy</AtrNombreLectura>
-			<SeleccionEntidad>
+                        			<SeleccionEntidad>
                 <TipoSeleccion>Autocompletar</TipoSeleccion>
                 <Grafo>academicdegree.owl</Grafo>
                 <UrlTipoEntSolicitada>http://vivoweb.org/ontology/core#AcademicDegree</UrlTipoEntSolicitada>              
@@ -927,9 +865,7 @@
             </SeleccionEntidad>
         </Propiedad>
 		<Propiedad  ID="http://vivoweb.org/ontology/core#relatedBy" EntidadID="http://w3id.org/roh/RelatedDoctorates">
-            <AtrNombre>http://vivoweb.org/ontology/core#relatedBy</AtrNombre>
-            <AtrNombreLectura>http://vivoweb.org/ontology/core#relatedBy</AtrNombreLectura>
-			<SeleccionEntidad>
+                        			<SeleccionEntidad>
                 <TipoSeleccion>Autocompletar</TipoSeleccion>
                 <Grafo>academicdegree.owl</Grafo>
                 <UrlTipoEntSolicitada>http://vivoweb.org/ontology/core#AcademicDegree</UrlTipoEntSolicitada>              
@@ -944,9 +880,7 @@
             </SeleccionEntidad>
         </Propiedad>
 		<Propiedad  ID="http://vivoweb.org/ontology/core#relatedBy" EntidadID="http://w3id.org/roh/RelatedPostGraduates">
-            <AtrNombre>http://vivoweb.org/ontology/core#relatedBy</AtrNombre>
-            <AtrNombreLectura>http://vivoweb.org/ontology/core#relatedBy</AtrNombreLectura>
-			<SeleccionEntidad>
+                        			<SeleccionEntidad>
                 <TipoSeleccion>Autocompletar</TipoSeleccion>
                 <Grafo>academicdegree.owl</Grafo>
                 <UrlTipoEntSolicitada>http://vivoweb.org/ontology/core#AcademicDegree</UrlTipoEntSolicitada>              
@@ -961,9 +895,7 @@
             </SeleccionEntidad>
         </Propiedad>
 		<Propiedad  ID="http://vivoweb.org/ontology/core#relatedBy" EntidadID="http://w3id.org/roh/RelatedSpecialisedTrainings">
-            <AtrNombre>http://vivoweb.org/ontology/core#relatedBy</AtrNombre>
-            <AtrNombreLectura>http://vivoweb.org/ontology/core#relatedBy</AtrNombreLectura>
-			<SeleccionEntidad>
+                        			<SeleccionEntidad>
                 <TipoSeleccion>Autocompletar</TipoSeleccion>
                 <Grafo>academicdegree.owl</Grafo>
                 <UrlTipoEntSolicitada>http://vivoweb.org/ontology/core#AcademicDegree</UrlTipoEntSolicitada>              
@@ -978,9 +910,7 @@
             </SeleccionEntidad>
         </Propiedad>
 		<Propiedad  ID="http://vivoweb.org/ontology/core#relatedBy" EntidadID="http://w3id.org/roh/RelatedCoursesAndSeminars">
-            <AtrNombre>http://vivoweb.org/ontology/core#relatedBy</AtrNombre>
-            <AtrNombreLectura>http://vivoweb.org/ontology/core#relatedBy</AtrNombreLectura>
-			<SeleccionEntidad>
+                        			<SeleccionEntidad>
                 <TipoSeleccion>Autocompletar</TipoSeleccion>
                 <Grafo>academicdegree.owl</Grafo>
                 <UrlTipoEntSolicitada>http://vivoweb.org/ontology/core#AcademicDegree</UrlTipoEntSolicitada>              
@@ -995,9 +925,7 @@
             </SeleccionEntidad>
         </Propiedad>
 		<Propiedad  ID="http://vivoweb.org/ontology/core#relatedBy" EntidadID="http://w3id.org/roh/RelatedLanguageSkills">
-            <AtrNombre>http://vivoweb.org/ontology/core#relatedBy</AtrNombre>
-            <AtrNombreLectura>http://vivoweb.org/ontology/core#relatedBy</AtrNombreLectura>
-			<SeleccionEntidad>
+                        			<SeleccionEntidad>
                 <TipoSeleccion>Autocompletar</TipoSeleccion>
                 <Grafo>languagecertificate.owl</Grafo>
                 <UrlTipoEntSolicitada>http://w3id.org/roh/LanguageCertificate</UrlTipoEntSolicitada>              
@@ -1012,9 +940,7 @@
             </SeleccionEntidad>
         </Propiedad>
 		<Propiedad  ID="http://vivoweb.org/ontology/core#relatedBy" EntidadID="http://w3id.org/roh/RelatedAcademicTutorials">
-            <AtrNombre>http://vivoweb.org/ontology/core#relatedBy</AtrNombre>
-            <AtrNombreLectura>http://vivoweb.org/ontology/core#relatedBy</AtrNombreLectura>
-			<SeleccionEntidad>
+                        			<SeleccionEntidad>
                 <TipoSeleccion>Autocompletar</TipoSeleccion>
                 <Grafo>tutorship.owl</Grafo>
                 <UrlTipoEntSolicitada>http://w3id.org/roh/TutorShip</UrlTipoEntSolicitada>              
@@ -1029,9 +955,7 @@
             </SeleccionEntidad>
         </Propiedad>
 		<Propiedad  ID="http://vivoweb.org/ontology/core#relatedBy" EntidadID="http://w3id.org/roh/RelatedOtherActivities">
-            <AtrNombre>http://vivoweb.org/ontology/core#relatedBy</AtrNombre>
-            <AtrNombreLectura>http://vivoweb.org/ontology/core#relatedBy</AtrNombreLectura>
-			<SeleccionEntidad>
+                        			<SeleccionEntidad>
                 <TipoSeleccion>Autocompletar</TipoSeleccion>
                 <Grafo>activity.owl</Grafo>
                 <UrlTipoEntSolicitada>http://w3id.org/roh/Activity</UrlTipoEntSolicitada>              
@@ -1046,9 +970,7 @@
             </SeleccionEntidad>
         </Propiedad>
 		<Propiedad  ID="http://vivoweb.org/ontology/core#relatedBy" EntidadID="http://w3id.org/roh/RelatedMostRelevantContributions">
-            <AtrNombre>http://vivoweb.org/ontology/core#relatedBy</AtrNombre>
-            <AtrNombreLectura>http://vivoweb.org/ontology/core#relatedBy</AtrNombreLectura>
-			<SeleccionEntidad>
+                        			<SeleccionEntidad>
                 <TipoSeleccion>Autocompletar</TipoSeleccion>
                 <Grafo>activity.owl</Grafo>
                 <UrlTipoEntSolicitada>http://w3id.org/roh/Activity</UrlTipoEntSolicitada>              
@@ -1063,9 +985,7 @@
             </SeleccionEntidad>
         </Propiedad>
 		<Propiedad  ID="http://vivoweb.org/ontology/core#relatedBy" EntidadID="http://w3id.org/roh/RelatedTeachingInnovationAwardsReceived">
-            <AtrNombre>http://vivoweb.org/ontology/core#relatedBy</AtrNombre>
-            <AtrNombreLectura>http://vivoweb.org/ontology/core#relatedBy</AtrNombreLectura>
-			<SeleccionEntidad>
+                        			<SeleccionEntidad>
                 <TipoSeleccion>Autocompletar</TipoSeleccion>
                 <Grafo>accreditation.owl</Grafo>
                 <UrlTipoEntSolicitada>http://w3id.org/roh/Accreditation</UrlTipoEntSolicitada>              
@@ -1080,9 +1000,7 @@
             </SeleccionEntidad>
         </Propiedad>
 		<Propiedad  ID="http://vivoweb.org/ontology/core#relatedBy" EntidadID="http://w3id.org/roh/RelatedThesisSupervisions">
-            <AtrNombre>http://vivoweb.org/ontology/core#relatedBy</AtrNombre>
-            <AtrNombreLectura>http://vivoweb.org/ontology/core#relatedBy</AtrNombreLectura>
-			<SeleccionEntidad>
+                        			<SeleccionEntidad>
                 <TipoSeleccion>Autocompletar</TipoSeleccion>
                 <Grafo>thesissupervision.owl</Grafo>
                 <UrlTipoEntSolicitada>http://w3id.org/roh/ThesisSupervision</UrlTipoEntSolicitada>              
@@ -1097,9 +1015,7 @@
             </SeleccionEntidad>
         </Propiedad>
 		<Propiedad  ID="http://vivoweb.org/ontology/core#relatedBy" EntidadID="http://w3id.org/roh/RelatedImpartedAcademicTrainings">
-            <AtrNombre>http://vivoweb.org/ontology/core#relatedBy</AtrNombre>
-            <AtrNombreLectura>http://vivoweb.org/ontology/core#relatedBy</AtrNombreLectura>
-			<SeleccionEntidad>
+                        			<SeleccionEntidad>
                 <TipoSeleccion>Autocompletar</TipoSeleccion>
                 <Grafo>impartedacademictraining.owl</Grafo>
                 <UrlTipoEntSolicitada>http://w3id.org/roh/ImpartedAcademicTraining</UrlTipoEntSolicitada>              
@@ -1114,8 +1030,6 @@
             </SeleccionEntidad>
         </Propiedad>
 		<Propiedad  ID="http://vivoweb.org/ontology/core#relatedBy" EntidadID="http://w3id.org/roh/RelatedImpartedCoursesSeminars">
-            <AtrNombre>http://vivoweb.org/ontology/core#relatedBy</AtrNombre>
-            <AtrNombreLectura>http://vivoweb.org/ontology/core#relatedBy</AtrNombreLectura>
 			<SeleccionEntidad>
                 <TipoSeleccion>Autocompletar</TipoSeleccion>
                 <Grafo>impartedcoursesseminars.owl</Grafo>
@@ -1130,6 +1044,22 @@
                 </PropsEntLectura>
             </SeleccionEntidad>
         </Propiedad>
+		<Propiedad  ID="http://vivoweb.org/ontology/core#relatedBy" EntidadID="http://w3id.org/roh/RelatedTeachingPublications">
+			<SeleccionEntidad>
+                <TipoSeleccion>Autocompletar</TipoSeleccion>
+                <Grafo>teachingpublication.owl</Grafo>
+                <UrlTipoEntSolicitada>http://w3id.org/roh/TeachingPublication</UrlTipoEntSolicitada>              
+                <PropsEntEdicion>
+                    <NameProp>http://w3id.org/roh/title</NameProp>
+                </PropsEntEdicion>
+                <PropsEntLectura>
+                    <Propiedad ID="http://w3id.org/roh/title" EntidadID="http://w3id.org/roh/TeachingPublication">
+                        <AtrNombreLectura></AtrNombreLectura>
+                    </Propiedad>
+                </PropsEntLectura>
+            </SeleccionEntidad>
+        </Propiedad>
+
 
 
 		
