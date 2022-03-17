@@ -16,8 +16,10 @@ Se han añadido varias propiedades que extienden la ontología fundamental con e
 
 Las propiedades extendidas son las siguientes:
 
+- eroh:dateField
 - eroh:applicationNumber
 - eroh:operatingCountries
+- eroh:ownerOrganizationTitle
 - eroh:operatingCompanies
 - eroh:industrialPropertyType
 - eroh:industrialPropertyTypeOther
@@ -38,14 +40,6 @@ Las propiedades extendidas son las siguientes:
 - eroh:innovativeEnterprise
 - eroh:results
 - eroh:products
-
-Una instancia de bibo:Patent se asocia, a su vez, con las siguientes entidades a través de propiedades de objeto:
-
-- obo:BFO_0000023, que contiene el listado de inventores, autores u obtentores relacionados con la patente.
-- gn:Feature, que vincula la patente con el país (vcard:hasCountryName) y la región (vcard:hasRegion) de radicación.
-- vcard:Address, que localiza los países y regiones donde se ha extendido o formalizado la explotación de la patente.
-- foaf:Organization, que representa la organización poseedora de los derechos de patente (roh:ownerOrganization), así como todas aquellas que poseen los derechos para su explotación (eroh:operatingCompanies).
-- eroh:IndustrialPropertyType, que señala el tipo de patente.
 
 
 ![](../../Docs/media/ObjetosDeConocimiento/Patent.png)
