@@ -17,25 +17,30 @@ Se han añadido varias propiedades que extienden la ontología fundamental con e
 Las propiedades extendidas son las siguientes:
 
 - eroh:participates
-- eroh:principalInvestigator
-- eroh:coprincipalInvestigator
+- eroh:principalInvestigatorNick
+- eroh:principalInvestigatorFirstName
+- eroh:principalInvestigatorFamilyName
+- eroh:principalInvestigatorSecondFamilyName
+- eroh:coprincipalInvestigatorNick
+- eroh:coprincipalInvestigatorFirstName
+- eroh:coprincipalInvestigatorFamilyName
+- eroh:coprincipalInvestigatorSecondFamilyName
+- eroh:contributionGrade
 - eroh:durationYears
 - eroh:durationMonths
 - eroh:durationDays
+- eroh:unescoPrimary
+- eroh:unescoSecondary
+- eroh:unescoTertiary
 - eroh:newTechniques
 - eroh:spinoffCompanies
 - eroh:activityResults
-- eroh:standardisation
+- eroh:homologation
+- eroh:technologicalExpert
 - eroh:collaborationAgreements
+- eroh:geographicFocusOther
 - eroh:targetOrganizations
 - eroh:relevantResults
-
-Una instancia de eroh:TechnologicalResult se asocia, a su vez, con las siguientes entidades a través de propiedades de objeto:
-
-- foaf:Organization, que referencia las distintas organizaciones que han colaborado en la actividad experta y/o de transferencia (eroh:participates), además de aquellas organizaciones destinatarias de dicha actividad (eroh:targetOrganizations).
-- obo:BFO_0000023, contiene tanto al investigador principal o responsable del equipo en el que se ha realizado la actividad tecnológica (eroh:principalInvestigator), como al investigador corresponsable (eroh:coprincipalInvestigator).
-- roh:CategoryPath, que representa mediante un esquema jerárquico el tesauro con las áreas temáticas descriptoras de la actividad.
-- vivo:GeographicRegion, representa el ámbito geográfico de la actividad experta.
 
 
 ![](../../Docs/media/ObjetosDeConocimiento/TechnologicalResult.png)
