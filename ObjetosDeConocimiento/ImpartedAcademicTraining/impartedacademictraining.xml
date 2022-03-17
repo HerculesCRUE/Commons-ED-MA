@@ -329,13 +329,13 @@
 		<Propiedad  ID="http://vivoweb.org/ontology/core#geographicFocus" EntidadID="http://w3id.org/roh/ImpartedAcademicTraining">
 			<SeleccionEntidad>
                 <TipoSeleccion>Autocompletar</TipoSeleccion>
-                <Grafo>geographicfocus.owl</Grafo>
-                <UrlTipoEntSolicitada>http://vivoweb.org/ontology/core#GeographicRegion</UrlTipoEntSolicitada>              
+                <Grafo>eventgeographicfocus.owl</Grafo>
+                <UrlTipoEntSolicitada>http://w3id.org/roh/EventGeographicFocus</UrlTipoEntSolicitada>              
                 <PropsEntEdicion>
                     <NameProp>http://purl.org/dc/elements/1.1/title</NameProp>
                 </PropsEntEdicion>
                 <PropsEntLectura>
-                    <Propiedad ID="http://purl.org/dc/elements/1.1/title" EntidadID="http://vivoweb.org/ontology/core#GeographicRegion">
+                    <Propiedad ID="http://purl.org/dc/elements/1.1/title" EntidadID="http://w3id.org/roh/EventGeographicFocus">
                         <AtrNombreLectura></AtrNombreLectura>
                     </Propiedad>
                 </PropsEntLectura>
