@@ -16,20 +16,17 @@ Se han añadido ciertas propiedades que extienden la ontología fundamental con 
 
 Las propiedades extendidas son las siguientes:
 
+- eroh:exhibition
+- eroh:publicationTitle
 - eroh:others
 - eroh:exhibitingForum
 - eroh:monographic
 - eroh:catalogue
-- eroh:cataloguing
+- eroh:commissar
+- eroh:cataloging
 - eroh:award
-- eroh:publicationTitle
-- eroh:collective
 
 Una instancia de eroh:SupervisedArtisticProject se asocia con las siguientes entidades a través de propiedades de objeto:
-
-- obo:BFO_0000023, que vincula la obra artística con su autor o autores.
-- gn:Feature, que relaciona la exposición con el país (vcard:hasCountryName) y la región (vcard:hasRegion) donde tiene lugar.
-
 
 ![](../../Docs/media/ObjetosDeConocimiento/SupervisedArtisticProject.png)
 
