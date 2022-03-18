@@ -19,7 +19,7 @@ Las propiedades extendidas son las siguientes:
 - eroh:exhibition
 - eroh:publicationTitle
 - eroh:others
-- eroh:exhibitingForum
+- eroh:exhibitionForum
 - eroh:monographic
 - eroh:catalogue
 - eroh:commissar
