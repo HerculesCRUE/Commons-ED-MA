@@ -5,8 +5,8 @@
             <idiomaOnto>es</idiomaOnto>
         </idiomasOnto>
         <ocultarTituloDescpImgDoc></ocultarTituloDescpImgDoc>
-        <TituloDoc EntidadID="http://w3id.org/roh/LanguageCertificate">http://w3id.org/roh/languageOfTheCertificate</TituloDoc>
-        <DescripcionDoc EntidadID="http://w3id.org/roh/LanguageCertificate">http://w3id.org/roh/languageOfTheCertificate</DescripcionDoc>
+        <TituloDoc EntidadID="http://w3id.org/roh/LanguageCertificate">http://w3id.org/roh/crisIdentifier</TituloDoc>
+        <DescripcionDoc EntidadID="http://w3id.org/roh/LanguageCertificate">http://w3id.org/roh/crisIdentifier</DescripcionDoc>
         <HtmlNuevo>true</HtmlNuevo>
 		<CategorizacionTesauroGnossObligatoria>false</CategorizacionTesauroGnossObligatoria>
     </ConfiguracionGeneral>
