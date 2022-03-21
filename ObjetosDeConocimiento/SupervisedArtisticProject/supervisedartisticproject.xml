@@ -5,8 +5,8 @@
             <idiomaOnto>es</idiomaOnto>
         </idiomasOnto>
         <ocultarTituloDescpImgDoc></ocultarTituloDescpImgDoc>
-        <TituloDoc EntidadID="http://w3id.org/roh/SupervisedArtisticProject">http://vivoweb.org/ontology/core#description</TituloDoc>
-        <DescripcionDoc EntidadID="http://w3id.org/roh/SupervisedArtisticProject">http://vivoweb.org/ontology/core#description</DescripcionDoc>
+        <TituloDoc EntidadID="http://w3id.org/roh/SupervisedArtisticProject">http://w3id.org/roh/title</TituloDoc>
+        <DescripcionDoc EntidadID="http://w3id.org/roh/SupervisedArtisticProject">http://w3id.org/roh/title</DescripcionDoc>
         <HtmlNuevo>true</HtmlNuevo>
 		<CategorizacionTesauroGnossObligatoria>false</CategorizacionTesauroGnossObligatoria>
     </ConfiguracionGeneral>
