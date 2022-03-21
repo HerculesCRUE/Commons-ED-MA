@@ -75,7 +75,7 @@
                 </PropsEntLectura>
             </SeleccionEntidad>
         </Propiedad>		
-		<Propiedad  ID="http://w3id.org/roh/promotedByType" EntidadID="http://vivoweb.org/ontology/core#AcademicDegree">
+		<Propiedad  ID="http://w3id.org/roh/promotedByType" EntidadID="http://w3id.org/roh/ThesisSupervision">
             <AtrNombre>http://w3id.org/roh/promotedByType</AtrNombre>
             <AtrNombreLectura>http://w3id.org/roh/promotedByType</AtrNombreLectura>
 			<SeleccionEntidad>
