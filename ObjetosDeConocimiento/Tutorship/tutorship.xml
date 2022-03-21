@@ -5,8 +5,8 @@
             <idiomaOnto>es</idiomaOnto>
         </idiomasOnto>
         <ocultarTituloDescpImgDoc></ocultarTituloDescpImgDoc>
-        <TituloDoc EntidadID="http://w3id.org/roh/Tutorship">http://w3id.org/roh/tutorshipProgramType</TituloDoc>
-        <DescripcionDoc EntidadID="http://w3id.org/roh/Tutorship">http://w3id.org/roh/tutorshipProgramType</DescripcionDoc>
+        <TituloDoc EntidadID="http://w3id.org/roh/Tutorship">http://w3id.org/roh/tutorshipProgramTypeOther</TituloDoc>
+        <DescripcionDoc EntidadID="http://w3id.org/roh/Tutorship">http://w3id.org/roh/tutorshipProgramTypeOther</DescripcionDoc>
         <HtmlNuevo>true</HtmlNuevo>
 		<CategorizacionTesauroGnossObligatoria>false</CategorizacionTesauroGnossObligatoria>
     </ConfiguracionGeneral>
