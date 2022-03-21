@@ -330,12 +330,12 @@
 			<SeleccionEntidad>
                 <TipoSeleccion>Autocompletar</TipoSeleccion>
                 <Grafo>eventgeographicfocus.owl</Grafo>
-                <UrlTipoEntSolicitada>http://w3id.org/roh/EventGeographicFocus</UrlTipoEntSolicitada>              
+                <UrlTipoEntSolicitada>http://w3id.org/roh/EventGeographicRegion</UrlTipoEntSolicitada>              
                 <PropsEntEdicion>
                     <NameProp>http://purl.org/dc/elements/1.1/title</NameProp>
                 </PropsEntEdicion>
                 <PropsEntLectura>
-                    <Propiedad ID="http://purl.org/dc/elements/1.1/title" EntidadID="http://w3id.org/roh/EventGeographicFocus">
+                    <Propiedad ID="http://purl.org/dc/elements/1.1/title" EntidadID="http://w3id.org/roh/EventGeographicRegion">
                         <AtrNombreLectura></AtrNombreLectura>
                     </Propiedad>
                 </PropsEntLectura>
