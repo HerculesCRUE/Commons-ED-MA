@@ -943,12 +943,12 @@
                         			<SeleccionEntidad>
                 <TipoSeleccion>Autocompletar</TipoSeleccion>
                 <Grafo>tutorship.owl</Grafo>
-                <UrlTipoEntSolicitada>http://w3id.org/roh/TutorShip</UrlTipoEntSolicitada>              
+                <UrlTipoEntSolicitada>http://w3id.org/roh/Tutorship</UrlTipoEntSolicitada>              
                 <PropsEntEdicion>
                     <NameProp>http://w3id.org/roh/tutorshipProgramType</NameProp>
                 </PropsEntEdicion>
                 <PropsEntLectura>
-                    <Propiedad ID="http://w3id.org/roh/tutorshipProgramType" EntidadID="http://w3id.org/roh/TutorShip">
+                    <Propiedad ID="http://w3id.org/roh/tutorshipProgramType" EntidadID="http://w3id.org/roh/Tutorship">
                         <AtrNombreLectura></AtrNombreLectura>
                     </Propiedad>
                 </PropsEntLectura>
@@ -1089,7 +1089,6 @@
                 </PropsEntLectura>
             </SeleccionEntidad>
         </Propiedad>
-
 
 
 		
