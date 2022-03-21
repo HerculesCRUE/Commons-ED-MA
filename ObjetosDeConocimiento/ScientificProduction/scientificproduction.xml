@@ -5,8 +5,8 @@
             <idiomaOnto>es</idiomaOnto>
         </idiomasOnto>
         <ocultarTituloDescpImgDoc></ocultarTituloDescpImgDoc>
-        <TituloDoc EntidadID="http://w3id.org/roh/ScientificProduction">http://w3id.org/roh/h-index</TituloDoc>
-        <DescripcionDoc EntidadID="http://w3id.org/roh/ScientificProduction">http://w3id.org/roh/h-index</DescripcionDoc>
+        <TituloDoc EntidadID="http://w3id.org/roh/ScientificProduction">http://w3id.org/roh/crisIdentifier</TituloDoc>
+        <DescripcionDoc EntidadID="http://w3id.org/roh/ScientificProduction">http://w3id.org/roh/crisIdentifier</DescripcionDoc>
         <HtmlNuevo>true</HtmlNuevo>		
 		<CategorizacionTesauroGnossObligatoria>false</CategorizacionTesauroGnossObligatoria>
     </ConfiguracionGeneral>
