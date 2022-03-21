@@ -149,13 +149,13 @@
 		<Propiedad  ID="http://w3id.org/roh/publicationType" EntidadID="http://w3id.org/roh/TeachingCongress">
 			<SeleccionEntidad>
                 <TipoSeleccion>Autocompletar</TipoSeleccion>
-                <Grafo>publicationtypedocument.owl</Grafo>
-                <UrlTipoEntSolicitada>http://w3id.org/roh/PublicationTypeDocument</UrlTipoEntSolicitada>              
+                <Grafo>publicationtype.owl</Grafo>
+                <UrlTipoEntSolicitada>http://w3id.org/roh/PublicationType</UrlTipoEntSolicitada>              
                 <PropsEntEdicion>
                     <NameProp>http://purl.org/dc/elements/1.1/title</NameProp>
                 </PropsEntEdicion>
                 <PropsEntLectura>
-                    <Propiedad ID="http://purl.org/dc/elements/1.1/title" EntidadID="http://w3id.org/roh/PublicationTypeDocument">
+                    <Propiedad ID="http://purl.org/dc/elements/1.1/title" EntidadID="http://w3id.org/roh/PublicationType">
                         <AtrNombreLectura></AtrNombreLectura>
                     </Propiedad>
                 </PropsEntLectura>
