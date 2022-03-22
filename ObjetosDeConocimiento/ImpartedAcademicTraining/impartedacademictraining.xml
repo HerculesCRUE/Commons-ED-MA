@@ -329,7 +329,7 @@
 		<Propiedad  ID="http://vivoweb.org/ontology/core#geographicFocus" EntidadID="http://w3id.org/roh/ImpartedAcademicTraining">
 			<SeleccionEntidad>
                 <TipoSeleccion>Autocompletar</TipoSeleccion>
-                <Grafo>eventgeographicfocus.owl</Grafo>
+                <Grafo>eventgeographicregion.owl</Grafo>
                 <UrlTipoEntSolicitada>http://w3id.org/roh/EventGeographicRegion</UrlTipoEntSolicitada>              
                 <PropsEntEdicion>
                     <NameProp>http://purl.org/dc/elements/1.1/title</NameProp>
