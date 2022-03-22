@@ -156,8 +156,6 @@
             </SeleccionEntidad>
         </Propiedad>
         <Propiedad  ID="https://www.w3.org/2006/vcard/ns#hasCountryName" EntidadID="http://purl.org/ontology/bibo/Document">
-            <AtrNombre>https://www.w3.org/2006/vcard/ns#hasCountryName</AtrNombre>
-            <AtrNombreLectura>https://www.w3.org/2006/vcard/ns#hasCountryName</AtrNombreLectura>
 			<SeleccionEntidad>
                 <TipoSeleccion>Autocompletar</TipoSeleccion>
                 <Grafo>feature.owl</Grafo>
@@ -173,8 +171,6 @@
             </SeleccionEntidad>
         </Propiedad>
 		<Propiedad  ID="https://www.w3.org/2006/vcard/ns#hasRegion" EntidadID="http://purl.org/ontology/bibo/Document">
-            <AtrNombre>https://www.w3.org/2006/vcard/ns#hasRegion</AtrNombre>
-            <AtrNombreLectura>https://www.w3.org/2006/vcard/ns#hasRegion</AtrNombreLectura>
 			<SeleccionEntidad>
                 <TipoSeleccion>Autocompletar</TipoSeleccion>
                 <Grafo>feature.owl</Grafo>
