@@ -119,7 +119,7 @@
 		<Propiedad  ID="http://vivoweb.org/ontology/core#geographicFocus" EntidadID="http://w3id.org/roh/TeachingProject">
 			<SeleccionEntidad>
                 <TipoSeleccion>Autocompletar</TipoSeleccion>
-                <Grafo>geographicfocus.owl</Grafo>
+                <Grafo>geographicregion.owl</Grafo>
                 <UrlTipoEntSolicitada>http://vivoweb.org/ontology/core#GeographicRegion</UrlTipoEntSolicitada>              
                 <PropsEntEdicion>
                     <NameProp>http://purl.org/dc/elements/1.1/title</NameProp>
