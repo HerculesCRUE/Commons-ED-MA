@@ -599,40 +599,6 @@
                 </PropsEntLectura>
             </SeleccionEntidad>
         </Propiedad>
-        <Propiedad  ID="http://w3id.org/roh/dedication" EntidadID="http://w3id.org/roh/RelatedNonCompetitiveProjectCV">
-            <AtrNombre>http://w3id.org/roh/dedication</AtrNombre>
-            <AtrNombreLectura>http://w3id.org/roh/dedication</AtrNombreLectura>
-			<SeleccionEntidad>
-                <TipoSeleccion>Combo</TipoSeleccion>
-                <Grafo>dedicationregime.owl</Grafo>
-                <UrlTipoEntSolicitada>http://w3id.org/roh/DedicationRegime</UrlTipoEntSolicitada>              
-                <PropsEntEdicion>
-                    <NameProp>http://purl.org/dc/elements/1.1/title</NameProp>
-                </PropsEntEdicion>
-                <PropsEntLectura>
-                    <Propiedad ID="http://purl.org/dc/elements/1.1/title" EntidadID="http://w3id.org/roh/DedicationRegime">
-                        <AtrNombreLectura></AtrNombreLectura>
-                    </Propiedad>
-                </PropsEntLectura>
-            </SeleccionEntidad>
-        </Propiedad>
-        <Propiedad  ID="http://w3id.org/roh/participationType" EntidadID="http://w3id.org/roh/RelatedNonCompetitiveProjectCV">
-            <AtrNombre>http://w3id.org/roh/participationType</AtrNombre>
-            <AtrNombreLectura>http://w3id.org/roh/participationType</AtrNombreLectura>
-			<SeleccionEntidad>
-                <TipoSeleccion>Combo</TipoSeleccion>
-                <Grafo>participationtypeproject.owl</Grafo>
-                <UrlTipoEntSolicitada>http://w3id.org/roh/ParticipationTypeProject</UrlTipoEntSolicitada>              
-                <PropsEntEdicion>
-                    <NameProp>http://purl.org/dc/elements/1.1/title</NameProp>
-                </PropsEntEdicion>
-                <PropsEntLectura>
-                    <Propiedad ID="http://purl.org/dc/elements/1.1/title" EntidadID="http://w3id.org/roh/ParticipationTypeProject">
-                        <AtrNombreLectura></AtrNombreLectura>
-                    </Propiedad>
-                </PropsEntLectura>
-            </SeleccionEntidad>
-        </Propiedad>
         <Propiedad  ID="http://w3id.org/roh/contributionGradeProject" EntidadID="http://w3id.org/roh/RelatedNonCompetitiveProjectCV">
             <AtrNombre>http://w3id.org/roh/contributionGradeProject</AtrNombre>
             <AtrNombreLectura>http://w3id.org/roh/contributionGradeProject</AtrNombreLectura>
