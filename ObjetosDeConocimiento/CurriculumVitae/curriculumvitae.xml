@@ -196,8 +196,6 @@
             </SeleccionEntidad>
         </Propiedad>
         <Propiedad  ID="http://xmlns.com/foaf/0.1/gender" EntidadID="http://w3id.org/roh/PersonalData">
-            <AtrNombre>http://xmlns.com/foaf/0.1/gender</AtrNombre>
-            <AtrNombreLectura>http://xmlns.com/foaf/0.1/gender</AtrNombreLectura>
 			<SeleccionEntidad>
                 <TipoSeleccion>Combo</TipoSeleccion>
                 <Grafo>gender.owl</Grafo>
@@ -213,8 +211,6 @@
             </SeleccionEntidad>
         </Propiedad>
         <Propiedad  ID="http://www.schema.org/nationality" EntidadID="http://w3id.org/roh/PersonalData">
-            <AtrNombre>http://www.schema.org/nationality</AtrNombre>
-            <AtrNombreLectura>http://www.schema.org/nationality</AtrNombreLectura>
 			<SeleccionEntidad>
                 <TipoSeleccion>Autocompletar</TipoSeleccion>
                 <Grafo>feature.owl</Grafo>
@@ -245,8 +241,6 @@
             </SeleccionEntidad>
         </Propiedad>
         <Propiedad  ID="http://w3id.org/roh/contributionGradeProject" EntidadID="http://w3id.org/roh/RelatedSupervisedArtisticProjectCV">
-            <AtrNombre>http://w3id.org/roh/contributionGradeProject</AtrNombre>
-            <AtrNombreLectura>http://w3id.org/roh/contributionGradeProject</AtrNombreLectura>
 			<SeleccionEntidad>
                 <TipoSeleccion>Autocompletar</TipoSeleccion>
                 <Grafo>contributiongradeproject.owl</Grafo>
@@ -262,8 +256,6 @@
             </SeleccionEntidad>
         </Propiedad>
         <Propiedad  ID="http://w3id.org/roh/categoryNode" EntidadID="http://w3id.org/roh/CategoryPath">
-            <AtrNombre>http://w3id.org/roh/categoryNode</AtrNombre>
-            <AtrNombreLectura>http://w3id.org/roh/categoryNode</AtrNombreLectura>
 			<SeleccionEntidad>
 				<TipoSeleccion>Tesauro</TipoSeleccion>
 				<Grafo>taxonomy.owl</Grafo>				
@@ -316,8 +308,6 @@
             </SeleccionEntidad>
         </Propiedad>
         <Propiedad  ID="http://w3id.org/roh/represents" EntidadID="http://w3id.org/roh/RelatedForumCV">
-            <AtrNombre>http://w3id.org/roh/represents</AtrNombre>
-            <AtrNombreLectura>http://w3id.org/roh/represents</AtrNombreLectura>
 			<SeleccionEntidad>
                 <TipoSeleccion>Autocompletar</TipoSeleccion>
                 <Grafo>organization.owl</Grafo>
@@ -333,8 +323,6 @@
             </SeleccionEntidad>
         </Propiedad>
         <Propiedad  ID="http://vivoweb.org/ontology/core#start" EntidadID="http://w3id.org/roh/RelatedForumCV">
-            <AtrNombre>http://vivoweb.org/ontology/core#start</AtrNombre>
-            <AtrNombreLectura>http://vivoweb.org/ontology/core#start</AtrNombreLectura>
 			<SeleccionEntidad>
                 <TipoSeleccion>Autocompletar</TipoSeleccion>
                 <Grafo>activity.owl</Grafo>
@@ -365,8 +353,6 @@
             </SeleccionEntidad>
         </Propiedad>
         <Propiedad  ID="https://www.w3.org/2006/vcard/ns#hasCountryName" EntidadID="https://www.w3.org/2006/vcard/ns#Address">
-            <AtrNombre>https://www.w3.org/2006/vcard/ns#hasCountryName</AtrNombre>
-            <AtrNombreLectura>https://www.w3.org/2006/vcard/ns#hasCountryName</AtrNombreLectura>
 			<SeleccionEntidad>
                 <TipoSeleccion>Combo</TipoSeleccion>
                 <Grafo>feature.owl</Grafo>
@@ -381,9 +367,7 @@
                 </PropsEntLectura>
             </SeleccionEntidad>
         </Propiedad>
-        <Propiedad  ID="http://w3id.org/roh/hasProvince" EntidadID="https://www.w3.org/2006/vcard/ns#Address">
-            <AtrNombre>http://w3id.org/roh/hasProvince</AtrNombre>
-            <AtrNombreLectura>http://w3id.org/roh/hasProvince</AtrNombreLectura>
+        <Propiedad  ID="http://w3id.org/roh/hasProvince" EntidadID="https://www.w3.org/2006/vcard/ns#Address">      
 			<SeleccionEntidad>
                 <TipoSeleccion>Combo</TipoSeleccion>
                 <Grafo>feature.owl</Grafo>
@@ -399,8 +383,6 @@
             </SeleccionEntidad>
         </Propiedad>
         <Propiedad  ID="https://www.w3.org/2006/vcard/ns#hasRegion" EntidadID="https://www.w3.org/2006/vcard/ns#Address">
-            <AtrNombre>https://www.w3.org/2006/vcard/ns#hasRegion</AtrNombre>
-            <AtrNombreLectura>https://www.w3.org/2006/vcard/ns#hasRegion</AtrNombreLectura>
 			<SeleccionEntidad>
                 <TipoSeleccion>Combo</TipoSeleccion>
                 <Grafo>feature.owl</Grafo>
@@ -421,7 +403,7 @@
                 <Grafo>group.owl</Grafo>
                 <UrlTipoEntSolicitada>http://xmlns.com/foaf/0.1/Group</UrlTipoEntSolicitada>              
                 <PropsEntEdicion>
-                    <NameProp>http://vivoweb.org/ontology/core#name</NameProp>
+                    <NameProp>http://w3id.org/roh/title</NameProp>
                 </PropsEntEdicion>
                 <PropsEntLectura>
                     <Propiedad ID="http://w3id.org/roh/title" EntidadID="http://xmlns.com/foaf/0.1/Group">
@@ -481,10 +463,10 @@
                 <Grafo>project.owl</Grafo>
                 <UrlTipoEntSolicitada>http://vivoweb.org/ontology/core#Project</UrlTipoEntSolicitada>              
                 <PropsEntEdicion>
-                    <NameProp>http://vivoweb.org/ontology/core#name</NameProp>
+                    <NameProp>http://w3id.org/roh/title</NameProp>
                 </PropsEntEdicion>
                 <PropsEntLectura>
-                    <Propiedad ID="http://vivoweb.org/ontology/core#name" EntidadID="http://vivoweb.org/ontology/core#Project">
+                    <Propiedad ID="http://w3id.org/roh/title" EntidadID="http://vivoweb.org/ontology/core#Project">
                         <AtrNombreLectura></AtrNombreLectura>
                     </Propiedad>
                 </PropsEntLectura>
@@ -536,8 +518,6 @@
             </SeleccionEntidad>
         </Propiedad>
         <Propiedad  ID="http://w3id.org/roh/contributionGrade" EntidadID="http://w3id.org/roh/RelatedScientificPublicationCV">
-            <AtrNombre>http://w3id.org/roh/contributionGrade</AtrNombre>
-            <AtrNombreLectura>http://w3id.org/roh/contributionGrade</AtrNombreLectura>
 			<SeleccionEntidad>
                 <TipoSeleccion>Combo</TipoSeleccion>
                 <Grafo>contributiongradedocument.owl</Grafo>
@@ -583,8 +563,6 @@
             </SeleccionEntidad>
         </Propiedad>
         <Propiedad  ID="http://w3id.org/roh/inscriptionType" EntidadID="http://w3id.org/roh/RelatedWorkSubmittedSeminarsCV">
-            <AtrNombre>http://w3id.org/roh/inscriptionType</AtrNombre>
-            <AtrNombreLectura>http://w3id.org/roh/inscriptionType</AtrNombreLectura>
 			<SeleccionEntidad>
                 <TipoSeleccion>Combo</TipoSeleccion>
                 <Grafo>eventinscriptiontype.owl</Grafo>
@@ -600,8 +578,6 @@
             </SeleccionEntidad>
         </Propiedad>
         <Propiedad  ID="http://w3id.org/roh/contributionGradeProject" EntidadID="http://w3id.org/roh/RelatedNonCompetitiveProjectCV">
-            <AtrNombre>http://w3id.org/roh/contributionGradeProject</AtrNombre>
-            <AtrNombreLectura>http://w3id.org/roh/contributionGradeProject</AtrNombreLectura>
 			<SeleccionEntidad>
                 <TipoSeleccion>Autocompletar</TipoSeleccion>
                 <Grafo>contributiongradeproject.owl</Grafo>
@@ -647,8 +623,6 @@
             </SeleccionEntidad>
         </Propiedad>
         <Propiedad  ID="http://w3id.org/roh/contributionGradeProject" EntidadID="http://w3id.org/roh/RelatedTechnologicalResultCV">
-            <AtrNombre>http://w3id.org/roh/contributionGradeProject</AtrNombre>
-            <AtrNombreLectura>http://w3id.org/roh/contributionGradeProject</AtrNombreLectura>
 			<SeleccionEntidad>
                 <TipoSeleccion>Autocompletar</TipoSeleccion>
                 <Grafo>contributiongradeproject.owl</Grafo>
@@ -664,8 +638,6 @@
             </SeleccionEntidad>
         </Propiedad>
         <Propiedad  ID="http://w3id.org/roh/dedication" EntidadID="http://w3id.org/roh/RelatedCompetitiveProjectCV">
-            <AtrNombre>http://w3id.org/roh/dedication</AtrNombre>
-            <AtrNombreLectura>http://w3id.org/roh/dedication</AtrNombreLectura>
 			<SeleccionEntidad>
                 <TipoSeleccion>Combo</TipoSeleccion>
                 <Grafo>dedicationregime.owl</Grafo>
@@ -681,8 +653,6 @@
             </SeleccionEntidad>
         </Propiedad>
         <Propiedad  ID="http://w3id.org/roh/participationType" EntidadID="http://w3id.org/roh/RelatedCompetitiveProjectCV">
-            <AtrNombre>http://w3id.org/roh/participationType</AtrNombre>
-            <AtrNombreLectura>http://w3id.org/roh/participationType</AtrNombreLectura>
 			<SeleccionEntidad>
                 <TipoSeleccion>Combo</TipoSeleccion>
                 <Grafo>participationtypeproject.owl</Grafo>
@@ -698,8 +668,6 @@
             </SeleccionEntidad>
         </Propiedad>
         <Propiedad  ID="http://w3id.org/roh/contributionGradeProject" EntidadID="http://w3id.org/roh/RelatedCompetitiveProjectCV">
-            <AtrNombre>http://w3id.org/roh/contributionGradeProject</AtrNombre>
-            <AtrNombreLectura>http://w3id.org/roh/contributionGradeProject</AtrNombreLectura>
 			<SeleccionEntidad>
                 <TipoSeleccion>Autocompletar</TipoSeleccion>
                 <Grafo>contributiongradeproject.owl</Grafo>
@@ -715,8 +683,6 @@
             </SeleccionEntidad>
         </Propiedad>
         <Propiedad  ID="http://w3id.org/roh/cvOf" EntidadID="http://w3id.org/roh/CV">
-            <AtrNombre>http://w3id.org/roh/cvOf</AtrNombre>
-            <AtrNombreLectura>http://w3id.org/roh/cvOf</AtrNombreLectura>
 			<SeleccionEntidad>
                 <TipoSeleccion>Autocompletar</TipoSeleccion>
                 <Grafo>person.owl</Grafo>
@@ -735,8 +701,6 @@
             </SeleccionEntidad>
         </Propiedad>
         <Propiedad  ID="http://w3id.org/roh/participationType" EntidadID="http://w3id.org/roh/RelatedWorkSubmittedConferencesCV">
-            <AtrNombre>http://w3id.org/roh/participationType</AtrNombre>
-            <AtrNombreLectura>http://w3id.org/roh/participationType</AtrNombreLectura>
 			<SeleccionEntidad>
                 <TipoSeleccion>Combo</TipoSeleccion>
                 <Grafo>participationtypedocument.owl</Grafo>
@@ -752,8 +716,6 @@
             </SeleccionEntidad>
         </Propiedad>
         <Propiedad  ID="http://w3id.org/roh/inscriptionType" EntidadID="http://w3id.org/roh/RelatedWorkSubmittedConferencesCV">
-            <AtrNombre>http://w3id.org/roh/inscriptionType</AtrNombre>
-            <AtrNombreLectura>http://w3id.org/roh/inscriptionType</AtrNombreLectura>
 			<SeleccionEntidad>
                 <TipoSeleccion>Autocompletar</TipoSeleccion>
                 <Grafo>eventinscriptiontype.owl</Grafo>
@@ -1050,6 +1012,22 @@
                 </PropsEntEdicion>
                 <PropsEntLectura>
                     <Propiedad ID="http://w3id.org/roh/title" EntidadID="http://w3id.org/roh/TeachingCongress">
+                        <AtrNombreLectura></AtrNombreLectura>
+                    </Propiedad>
+                </PropsEntLectura>
+            </SeleccionEntidad>
+        </Propiedad>
+		
+		<Propiedad  ID="http://w3id.org/roh/collaborationType" EntidadID="http://w3id.org/roh/RelatedGroupCV">
+			<SeleccionEntidad>
+                <TipoSeleccion>Autocompletar</TipoSeleccion>
+                <Grafo>colaborationtypegroup.owl</Grafo>
+                <UrlTipoEntSolicitada>http://w3id.org/roh/ColaboratoinTypeGroup</UrlTipoEntSolicitada>              
+                <PropsEntEdicion>
+                    <NameProp>http://purl.org/dc/elements/1.1/title</NameProp>
+                </PropsEntEdicion>
+                <PropsEntLectura>
+                    <Propiedad ID="http://purl.org/dc/elements/1.1/title" EntidadID="http://w3id.org/roh/ColaboratoinTypeGroup">
                         <AtrNombreLectura></AtrNombreLectura>
                     </Propiedad>
                 </PropsEntLectura>
