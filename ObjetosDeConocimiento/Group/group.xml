@@ -100,7 +100,7 @@
                 </PropsEntLectura>
             </SeleccionEntidad>
         </Propiedad>
-		<Propiedad  ID="http://www.w3.org/1999/02/22-rdf-syntax-ns#member" EntidadID="http://xmlns.com/foaf/0.1/Person">
+		<Propiedad  ID="http://www.w3.org/1999/02/22-rdf-syntax-ns#member" EntidadID="http://w3id.org/roh/PersonAux">
             <AtrNombre>Persona</AtrNombre>
             <AtrNombreLectura>Persona</AtrNombreLectura>
 			<SeleccionEntidad>
