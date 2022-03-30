@@ -131,7 +131,22 @@
                 </PropsEntLectura>
             </SeleccionEntidad>
         </Propiedad>
-		<Propiedad  ID="http://w3id.org/roh/organization" EntidadID="http://w3id.org/roh/Organization">
+		<Propiedad  ID="http://w3id.org/roh/isProducedBy" EntidadID="http://vivoweb.org/ontology/core#Project">
+			<SeleccionEntidad>
+                <TipoSeleccion>Autocompletar</TipoSeleccion>
+                <Grafo>group.owl</Grafo>
+                <UrlTipoEntSolicitada>http://xmlns.com/foaf/0.1/Group</UrlTipoEntSolicitada>              
+                <PropsEntEdicion>
+                    <NameProp>http://w3id.org/roh/title</NameProp>
+                </PropsEntEdicion>
+                <PropsEntLectura>
+                    <Propiedad ID="http://w3id.org/roh/title" EntidadID="http://xmlns.com/foaf/0.1/Group">
+                        <AtrNombreLectura></AtrNombreLectura>
+                    </Propiedad>
+                </PropsEntLectura>
+            </SeleccionEntidad>
+        </Propiedad>
+		<Propiedad  ID="http://w3id.org/roh/organization" EntidadID="http://w3id.org/roh/OrganizationAux">
 			<SeleccionEntidad>
                 <TipoSeleccion>Autocompletar</TipoSeleccion>
                 <Grafo>organization.owl</Grafo>
@@ -146,7 +161,7 @@
                 </PropsEntLectura>
             </SeleccionEntidad>
         </Propiedad>
-		<Propiedad  ID="http://w3id.org/roh/organizationType" EntidadID="http://w3id.org/roh/Organization">
+		<Propiedad  ID="http://w3id.org/roh/organizationType" EntidadID="http://w3id.org/roh/OrganizationAux">
 			<SeleccionEntidad>
                 <TipoSeleccion>Autocompletar</TipoSeleccion>
                 <Grafo>organizationtype.owl</Grafo>
@@ -161,7 +176,7 @@
                 </PropsEntLectura>
             </SeleccionEntidad>
         </Propiedad>
-		<Propiedad  ID="https://www.w3.org/2006/vcard/ns#hasCountryName" EntidadID="http://w3id.org/roh/Organization">
+		<Propiedad  ID="https://www.w3.org/2006/vcard/ns#hasCountryName" EntidadID="http://w3id.org/roh/OrganizationAux">
 			<SeleccionEntidad>
                 <TipoSeleccion>Autocompletar</TipoSeleccion>
                 <Grafo>feature.owl</Grafo>
@@ -176,7 +191,7 @@
                 </PropsEntLectura>
             </SeleccionEntidad>
         </Propiedad>
-		<Propiedad  ID="https://www.w3.org/2006/vcard/ns#hasRegion" EntidadID="http://w3id.org/roh/Organization">
+		<Propiedad  ID="https://www.w3.org/2006/vcard/ns#hasRegion" EntidadID="http://w3id.org/roh/OrganizationAux">
 			<SeleccionEntidad>
                 <TipoSeleccion>Autocompletar</TipoSeleccion>
                 <Grafo>feature.owl</Grafo>
@@ -206,7 +221,7 @@
                 </PropsEntLectura>
             </SeleccionEntidad>
         </Propiedad>
-		<Propiedad  ID="http://www.w3.org/1999/02/22-rdf-syntax-ns#member" EntidadID="http://xmlns.com/foaf/0.1/Person">
+		<Propiedad  ID="http://www.w3.org/1999/02/22-rdf-syntax-ns#member" EntidadID="http://w3id.org/roh/PersonAux">
 			<SeleccionEntidad>
                 <TipoSeleccion>Autocompletar</TipoSeleccion>
                 <Grafo>person.owl</Grafo>
