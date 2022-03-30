@@ -12,8 +12,6 @@
     </ConfiguracionGeneral>
     <EspefPropiedad>
         <Propiedad  ID="http://vivoweb.org/ontology/core#geographicFocus" EntidadID="http://w3id.org/roh/Accreditation">
-            <AtrNombre>http://vivoweb.org/ontology/core#geographicFocus</AtrNombre>
-            <AtrNombreLectura>http://vivoweb.org/ontology/core#geographicFocus</AtrNombreLectura>
 			<SeleccionEntidad>
                 <TipoSeleccion>Autocompletar</TipoSeleccion>
                 <Grafo>geographicregion.owl</Grafo>
@@ -29,8 +27,6 @@
             </SeleccionEntidad>
         </Propiedad>
         <Propiedad  ID="http://w3id.org/roh/accreditationIssuedBy" EntidadID="http://w3id.org/roh/Accreditation">
-            <AtrNombre>http://w3id.org/roh/accreditationIssuedBy</AtrNombre>
-            <AtrNombreLectura>http://w3id.org/roh/accreditationIssuedBy</AtrNombreLectura>
 			<SeleccionEntidad>
                 <TipoSeleccion>Autocompletar</TipoSeleccion>
                 <Grafo>organization.owl</Grafo>
@@ -45,41 +41,7 @@
                 </PropsEntLectura>
             </SeleccionEntidad>
         </Propiedad>
-        <Propiedad  ID="http://w3id.org/roh/recognitionLinked" EntidadID="http://w3id.org/roh/Accreditation">
-            <AtrNombre>http://w3id.org/roh/recognitionLinked</AtrNombre>
-            <AtrNombreLectura>http://w3id.org/roh/recognitionLinked</AtrNombreLectura>
-        </Propiedad>
-        <Propiedad  ID="http://w3id.org/roh/receptionDate" EntidadID="http://w3id.org/roh/Accreditation">
-            <AtrNombre>http://w3id.org/roh/receptionDate</AtrNombre>
-            <AtrNombreLectura>http://w3id.org/roh/receptionDate</AtrNombreLectura>
-        </Propiedad>
-        <Propiedad  ID="http://w3id.org/roh/recognizedPeriods" EntidadID="http://w3id.org/roh/Accreditation">
-            <AtrNombre>http://w3id.org/roh/recognizedPeriods</AtrNombre>
-            <AtrNombreLectura>http://w3id.org/roh/recognizedPeriods</AtrNombreLectura>
-        </Propiedad>
-        <Propiedad  ID="http://w3id.org/roh/crisIdentifier" EntidadID="http://w3id.org/roh/Accreditation">
-            <AtrNombre>http://w3id.org/roh/crisIdentifier</AtrNombre>
-            <AtrNombreLectura>http://w3id.org/roh/crisIdentifier</AtrNombreLectura>
-        </Propiedad>
-        <Propiedad  ID="http://w3id.org/roh/geographicFocusOther" EntidadID="http://w3id.org/roh/Accreditation">
-            <AtrNombre>http://w3id.org/roh/geographicFocusOther</AtrNombre>
-            <AtrNombreLectura>http://w3id.org/roh/geographicFocusOther</AtrNombreLectura>
-        </Propiedad>
-        <Propiedad  ID="http://w3id.org/roh/dateIssued" EntidadID="http://w3id.org/roh/Accreditation">
-            <AtrNombre>http://w3id.org/roh/dateIssued</AtrNombre>
-            <AtrNombreLectura>http://w3id.org/roh/dateIssued</AtrNombreLectura>
-        </Propiedad>
-        <Propiedad  ID="http://w3id.org/roh/classificationCVN" EntidadID="http://w3id.org/roh/Accreditation">
-            <AtrNombre>http://w3id.org/roh/classificationCVN</AtrNombre>
-            <AtrNombreLectura>http://w3id.org/roh/classificationCVN</AtrNombreLectura>
-        </Propiedad>
-        <Propiedad  ID="http://w3id.org/roh/title" EntidadID="http://w3id.org/roh/Accreditation">
-            <AtrNombre>http://w3id.org/roh/title</AtrNombre>
-            <AtrNombreLectura>http://w3id.org/roh/title</AtrNombreLectura>
-        </Propiedad>
 		<Propiedad  ID="https://www.w3.org/2006/vcard/ns#hasCountryName" EntidadID="http://w3id.org/roh/Accreditation">
-            <AtrNombre>https://www.w3.org/2006/vcard/ns#hasCountryName</AtrNombre>
-            <AtrNombreLectura>https://www.w3.org/2006/vcard/ns#hasCountryName</AtrNombreLectura>
 			<SeleccionEntidad>
                 <TipoSeleccion>Autocompletar</TipoSeleccion>
                 <Grafo>feature.owl</Grafo>
@@ -95,8 +57,6 @@
             </SeleccionEntidad>
         </Propiedad>
         <Propiedad  ID="https://www.w3.org/2006/vcard/ns#hasRegion" EntidadID="http://w3id.org/roh/Accreditation">
-            <AtrNombre>https://www.w3.org/2006/vcard/ns#hasRegion</AtrNombre>
-            <AtrNombreLectura>https://www.w3.org/2006/vcard/ns#hasRegion</AtrNombreLectura>
 			<SeleccionEntidad>
                 <TipoSeleccion>Autocompletar</TipoSeleccion>
                 <Grafo>feature.owl</Grafo>
@@ -112,8 +72,6 @@
             </SeleccionEntidad>
         </Propiedad>
 		<Propiedad  ID="http://w3id.org/roh/organizationType" EntidadID="http://w3id.org/roh/Accreditation">
-            <AtrNombre>http://w3id.org/roh/organizationType</AtrNombre>
-            <AtrNombreLectura>http://w3id.org/roh/organizationType</AtrNombreLectura>
 			<SeleccionEntidad>
                 <TipoSeleccion>Autocompletar</TipoSeleccion>
                 <Grafo>organizationtype.owl</Grafo>
@@ -130,46 +88,5 @@
         </Propiedad>
     </EspefPropiedad>
     <EspefEntidad>
-        <Entidad  ID="http://w3id.org/roh/Accreditation">
-            <AtrNombre>http://w3id.org/roh/Accreditation</AtrNombre>
-            <AtrNombreLectura>http://w3id.org/roh/Accreditation</AtrNombreLectura>
-            <OrdenEntidad>
-                <Grupo class="formtheme02">
-                    <Grupo class="fieldset">
-                        <Grupo Tipo="fieldset" class="mediumLabels">
-                            <NameProp>http://vivoweb.org/ontology/core#geographicFocus</NameProp> 
-                            <NameProp>http://w3id.org/roh/accreditationIssuedBy</NameProp> 
-                            <NameProp>http://w3id.org/roh/recognitionLinked</NameProp> 
-                            <NameProp>http://w3id.org/roh/receptionDate</NameProp> 
-                            <NameProp>http://w3id.org/roh/recognizedPeriods</NameProp> 
-                            <NameProp>http://w3id.org/roh/crisIdentifier</NameProp> 
-                            <NameProp>http://w3id.org/roh/geographicFocusOther</NameProp> 
-                            <NameProp>http://w3id.org/roh/dateIssued</NameProp> 
-                            <NameProp>http://w3id.org/roh/classificationCVN</NameProp> 
-                            <NameProp>http://w3id.org/roh/title</NameProp>
-                        </Grupo>
-                    </Grupo>
-                </Grupo>
-            </OrdenEntidad>
-            <OrdenEntidadLectura>
-                <Grupo classLectura="group content semanticView">
-                    <Grupo classLectura="group group_info">
-                        <AtrNombreGrupo>Propiedades</AtrNombreGrupo>
-                        <Grupo classLectura="contentGroup">
-                            <NameProp>http://vivoweb.org/ontology/core#geographicFocus</NameProp> 
-                            <NameProp>http://w3id.org/roh/accreditationIssuedBy</NameProp> 
-                            <NameProp>http://w3id.org/roh/recognitionLinked</NameProp> 
-                            <NameProp>http://w3id.org/roh/receptionDate</NameProp> 
-                            <NameProp>http://w3id.org/roh/recognizedPeriods</NameProp> 
-                            <NameProp>http://w3id.org/roh/crisIdentifier</NameProp> 
-                            <NameProp>http://w3id.org/roh/geographicFocusOther</NameProp> 
-                            <NameProp>http://w3id.org/roh/dateIssued</NameProp> 
-                            <NameProp>http://w3id.org/roh/classificationCVN</NameProp> 
-                            <NameProp>http://w3id.org/roh/title</NameProp>
-                        </Grupo>
-                    </Grupo>
-                </Grupo>
-            </OrdenEntidadLectura>
-        </Entidad>
     </EspefEntidad>
 </config>
