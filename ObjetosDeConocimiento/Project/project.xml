@@ -245,6 +245,24 @@
 				<UrlPropiedad>um</UrlPropiedad>                
 			</SeleccionEntidad>
         </Propiedad>
+		<Propiedad  ID="http://w3id.org/roh/members" EntidadID="http://vivoweb.org/ontology/core#Project">
+            <AtrNombre>Persona</AtrNombre>
+            <AtrNombreLectura>Persona</AtrNombreLectura>
+			<SeleccionEntidad>
+				<LinkARecurso IrAComunidad="true" PropiedadID="http://xmlns.com/foaf/0.1/name"></LinkARecurso>
+                <TipoSeleccion>Autocompletar</TipoSeleccion>
+                <Grafo>person.owl</Grafo>
+                <UrlTipoEntSolicitada>http://xmlns.com/foaf/0.1/Person</UrlTipoEntSolicitada>              
+                <PropsEntEdicion>
+                    <NameProp>http://xmlns.com/foaf/0.1/name</NameProp>
+                </PropsEntEdicion>
+                <PropsEntLectura>
+                    <Propiedad ID="http://xmlns.com/foaf/0.1/name" EntidadID="http://xmlns.com/foaf/0.1/Person">
+                        <AtrNombreLectura></AtrNombreLectura>
+                    </Propiedad>
+                </PropsEntLectura>
+            </SeleccionEntidad>
+        </Propiedad>
 	
     </EspefPropiedad>
     <EspefEntidad>
