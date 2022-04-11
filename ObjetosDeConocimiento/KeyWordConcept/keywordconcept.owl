@@ -4,6 +4,7 @@
     xmlns="http://www.owl-ontologies.com/Ontology1627625327.owl#"
     xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
     xmlns:xsd="http://www.w3.org/2001/XMLSchema#"
+    xmlns:skos="http://www.w3.org/2008/05/skos#"
     xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
     xmlns:owl="http://www.w3.org/2002/07/owl#"
     xmlns:dc="http://purl.org/dc/elements/1.1/"
@@ -11,6 +12,12 @@
   <owl:Ontology rdf:about=""/>
   <owl:Class rdf:about="http://w3id.org/roh/KeyWordConcept"/>
   <owl:ObjectProperty rdf:about="http://w3id.org/roh/broaders">
+    <rdfs:domain rdf:resource="http://w3id.org/roh/KeyWordConcept"/>
+  </owl:ObjectProperty>
+  <owl:ObjectProperty rdf:about="http://www.w3.org/2008/05/skos#closeMatch">
+    <rdfs:domain rdf:resource="http://w3id.org/roh/KeyWordConcept"/>
+  </owl:ObjectProperty>
+  <owl:ObjectProperty rdf:about="http://www.w3.org/2008/05/skos#exactMatch">
     <rdfs:domain rdf:resource="http://w3id.org/roh/KeyWordConcept"/>
   </owl:ObjectProperty>
   <owl:ObjectProperty rdf:about="http://w3id.org/roh/relatedTo">
@@ -24,12 +31,12 @@
   </owl:ObjectProperty>
   <owl:FunctionalProperty rdf:about="http://w3id.org/roh/url">
     <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#DatatypeProperty"/>
-    <rdfs:domain rdf:resource="http://w3id.org/roh/KeyWordConcept"/>
     <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+    <rdfs:domain rdf:resource="http://w3id.org/roh/KeyWordConcept"/>
   </owl:FunctionalProperty>
   <owl:FunctionalProperty rdf:about="http://w3id.org/roh/type">
-    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#DatatypeProperty"/>
     <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#DatatypeProperty"/>
     <rdfs:domain rdf:resource="http://w3id.org/roh/KeyWordConcept"/>
   </owl:FunctionalProperty>
   <owl:FunctionalProperty rdf:about="http://w3id.org/roh/title">
