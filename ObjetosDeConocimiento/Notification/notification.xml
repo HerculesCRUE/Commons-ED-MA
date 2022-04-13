@@ -1,0 +1,54 @@
+<config>
+    <ConfiguracionGeneral>
+        <namespace>notification</namespace>
+        <idiomasOnto>
+            <idiomaOnto>es</idiomaOnto>
+		</idiomasOnto>
+        <TituloDoc EntidadID="http://w3id.org/roh/Notification">http://w3id.org/roh/owner</TituloDoc>
+        <HtmlNuevo>true</HtmlNuevo>
+	</ConfiguracionGeneral>
+    <EspefPropiedad>
+		<Propiedad  ID="http://w3id.org/roh/type" EntidadID="http://w3id.org/roh/Notification">
+			<ValoresCombo>
+				<ValorCombo>create</ValorCombo>
+				<ValorCombo>delete</ValorCombo>
+				<ValorCombo>edit</ValorCombo>
+			</ValoresCombo>
+		</Propiedad>	
+        <Propiedad  ID="http://w3id.org/roh/owner" EntidadID="http://w3id.org/roh/Notification">
+			<SeleccionEntidad>
+				<LinkARecurso IrAComunidad="true" PropiedadID="http://xmlns.com/foaf/0.1/name"></LinkARecurso>
+                <TipoSeleccion>Autocompletar</TipoSeleccion>
+                <Grafo>person.owl</Grafo>
+                <UrlTipoEntSolicitada>http://xmlns.com/foaf/0.1/Person</UrlTipoEntSolicitada>              
+                <PropsEntEdicion>
+                    <NameProp>http://xmlns.com/foaf/0.1/name</NameProp>
+                </PropsEntEdicion>
+                <PropsEntLectura>
+                    <Propiedad ID="http://xmlns.com/foaf/0.1/name" EntidadID="http://xmlns.com/foaf/0.1/Person">
+                        <AtrNombreLectura></AtrNombreLectura>
+                    </Propiedad>
+                </PropsEntLectura>
+            </SeleccionEntidad>
+        </Propiedad>
+		<Propiedad  ID="http://w3id.org/roh/trigger" EntidadID="http://w3id.org/roh/Notification">
+			<SeleccionEntidad>
+				<LinkARecurso IrAComunidad="true" PropiedadID="http://xmlns.com/foaf/0.1/name"></LinkARecurso>
+                <TipoSeleccion>Autocompletar</TipoSeleccion>
+                <Grafo>person.owl</Grafo>
+                <UrlTipoEntSolicitada>http://xmlns.com/foaf/0.1/Person</UrlTipoEntSolicitada>              
+                <PropsEntEdicion>
+                    <NameProp>http://xmlns.com/foaf/0.1/name</NameProp>
+                </PropsEntEdicion>
+                <PropsEntLectura>
+                    <Propiedad ID="http://xmlns.com/foaf/0.1/name" EntidadID="http://xmlns.com/foaf/0.1/Person">
+                        <AtrNombreLectura></AtrNombreLectura>
+                    </Propiedad>
+                </PropsEntLectura>
+            </SeleccionEntidad>
+        </Propiedad>
+	</EspefPropiedad>
+    <EspefEntidad>
+        
+	</EspefEntidad>
+</config>
