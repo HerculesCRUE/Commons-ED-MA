@@ -28,26 +28,6 @@
                 </PropsEntLectura>
             </SeleccionEntidad>
         </Propiedad>
-        <Propiedad  ID="http://w3id.org/roh/title" EntidadID="http://w3id.org/roh/MainDocument">
-            <AtrNombre>Título de la publicación principal</AtrNombre>
-            <AtrNombreLectura>Título de la publicación principal</AtrNombreLectura>
-        </Propiedad>
-        <Propiedad  ID="http://purl.org/ontology/bibo/isbn" EntidadID="http://w3id.org/roh/MainDocument">
-            <AtrNombre>ISBN</AtrNombre>
-            <AtrNombreLectura>ISBN</AtrNombreLectura>
-        </Propiedad>
-        <Propiedad  ID="http://purl.org/ontology/bibo/editor" EntidadID="http://w3id.org/roh/MainDocument">
-            <AtrNombre>Editorial</AtrNombre>
-            <AtrNombreLectura>Editorial</AtrNombreLectura>
-        </Propiedad>
-        <Propiedad  ID="http://purl.org/ontology/bibo/issn" EntidadID="http://w3id.org/roh/MainDocument">
-            <AtrNombre>ISSN</AtrNombre>
-            <AtrNombreLectura>ISSN</AtrNombreLectura>
-        </Propiedad>
-		<Propiedad  ID="http://purl.org/ontology/bibo/eissn" EntidadID="http://w3id.org/roh/MainDocument">
-            <AtrNombre>e-ISSN</AtrNombre>
-            <AtrNombreLectura>e-ISSN</AtrNombreLectura>
-        </Propiedad>
 		<Propiedad  ID="http://w3id.org/roh/impactIndexCategory" EntidadID="http://w3id.org/roh/ImpactCategory">
             <AtrNombre>Categoría del índice de impacto</AtrNombre>
             <AtrNombreLectura>Categoría del índice de impacto</AtrNombreLectura>
@@ -64,30 +44,6 @@
                     </Propiedad>
                 </PropsEntLectura>
             </SeleccionEntidad>
-        </Propiedad>
-		<Propiedad  ID="http://w3id.org/roh/impactIndexInYear" EntidadID="http://w3id.org/roh/ImpactIndex">
-            <AtrNombre>Índice de impacto en año de publicación</AtrNombre>
-            <AtrNombreLectura>Índice de impacto en año de publicación</AtrNombreLectura>
-        </Propiedad>
-        <Propiedad  ID="http://w3id.org/roh/impactSourceOther" EntidadID="http://w3id.org/roh/ImpactIndex">
-            <AtrNombre>Fuente de impacto, otros</AtrNombre>
-            <AtrNombreLectura>Fuente de impacto, otros</AtrNombreLectura>
-        </Propiedad>
-        <Propiedad  ID="http://w3id.org/roh/journalNumberInCat" EntidadID="http://w3id.org/roh/ImpactCategory">
-            <AtrNombre>Número de revistas en la categoría</AtrNombre>
-            <AtrNombreLectura>Número de revistas en la categoría</AtrNombreLectura>
-        </Propiedad>
-        <Propiedad  ID="http://w3id.org/roh/publicationPosition" EntidadID="http://w3id.org/roh/ImpactCategory">
-            <AtrNombre>Posición de publicación</AtrNombre>
-            <AtrNombreLectura>Posición de publicación</AtrNombreLectura>
-        </Propiedad>
-        <Propiedad  ID="http://w3id.org/roh/quartile" EntidadID="http://w3id.org/roh/ImpactCategory">
-            <AtrNombre>Cuartil</AtrNombre>
-            <AtrNombreLectura>Cuartil</AtrNombreLectura>
-        </Propiedad>
-		<Propiedad  ID="http://w3id.org/roh/year" EntidadID="http://w3id.org/roh/ImpactIndex">
-            <AtrNombre>Año del índice de impacto</AtrNombre>
-            <AtrNombreLectura>Año del índice de impacto</AtrNombreLectura>
         </Propiedad>
         <Propiedad  ID="http://w3id.org/roh/impactSource" EntidadID="http://w3id.org/roh/ImpactIndex">
             <AtrNombre>Fuente de impacto</AtrNombre>
@@ -107,78 +63,6 @@
             </SeleccionEntidad>
         </Propiedad>
     </EspefPropiedad>
-    <EspefEntidad>
-        <Entidad  ID="http://w3id.org/roh/MainDocument">
-            <AtrNombre>http://w3id.org/roh/MainDocument</AtrNombre>
-            <AtrNombreLectura>http://w3id.org/roh/MainDocument</AtrNombreLectura>
-            <OrdenEntidad>
-                <Grupo class="formtheme02">
-                    <Grupo class="fieldset">
-                        <Grupo Tipo="fieldset" class="mediumLabels">
-                            <NameProp>http://w3id.org/roh/format</NameProp> 
-                            <NameProp>http://w3id.org/roh/title</NameProp> 
-                            <NameProp>http://purl.org/ontology/bibo/isbn</NameProp> 
-                            <NameProp>http://purl.org/ontology/bibo/editor</NameProp> 
-                            <NameProp>http://purl.org/ontology/bibo/issn</NameProp>
-							<NameProp>http://purl.org/ontology/bibo/eissn</NameProp>
-							<NameProp>http://w3id.org/roh/impactIndex</NameProp> 
-                        </Grupo>
-                    </Grupo>
-                </Grupo>
-            </OrdenEntidad>
-            <OrdenEntidadLectura>
-                <Grupo classLectura="group content semanticView">
-                    <Grupo classLectura="group group_info">
-                        <AtrNombreGrupo>Propiedades</AtrNombreGrupo>
-                        <Grupo classLectura="contentGroup">
-                            <NameProp>http://w3id.org/roh/format</NameProp> 
-                            <NameProp>http://w3id.org/roh/title</NameProp> 
-                            <NameProp>http://purl.org/ontology/bibo/isbn</NameProp> 
-                            <NameProp>http://purl.org/ontology/bibo/editor</NameProp> 
-                            <NameProp>http://purl.org/ontology/bibo/issn</NameProp>
-							<NameProp>http://purl.org/ontology/bibo/eissn</NameProp>
-							<NameProp>http://w3id.org/roh/impactIndex</NameProp> 							
-                        </Grupo>
-                    </Grupo>
-                </Grupo>
-            </OrdenEntidadLectura>
-        </Entidad>
-		<Entidad  ID="http://w3id.org/roh/ImpactIndex">
-            <AtrNombre>http://w3id.org/roh/ImpactIndex</AtrNombre>
-            <AtrNombreLectura>http://w3id.org/roh/ImpactIndex</AtrNombreLectura>
-            <OrdenEntidad>
-                <Grupo class="formtheme02">
-                    <Grupo class="fieldset">
-                        <Grupo Tipo="fieldset" class="mediumLabels">
-                            <NameProp>http://w3id.org/roh/impactCategory</NameProp> 
-                            <NameProp>http://w3id.org/roh/impactIndexInYear</NameProp> 
-                            <NameProp>http://w3id.org/roh/impactSourceOther</NameProp> 
-                            <NameProp>http://w3id.org/roh/journalNumberInCat</NameProp> 
-                            <NameProp>http://w3id.org/roh/publicationPosition</NameProp> 
-                            <NameProp>http://w3id.org/roh/quartile</NameProp> 
-                            <NameProp>http://w3id.org/roh/impactSource</NameProp>
-							<NameProp>http://w3id.org/roh/year</NameProp>
-                        </Grupo>
-                    </Grupo>
-                </Grupo>
-            </OrdenEntidad>
-            <OrdenEntidadLectura>
-                <Grupo classLectura="group content semanticView">
-                    <Grupo classLectura="group group_info">
-                        <AtrNombreGrupo>Propiedades</AtrNombreGrupo>
-                        <Grupo classLectura="contentGroup">
-                            <NameProp>http://w3id.org/roh/impactCategory</NameProp> 
-                            <NameProp>http://w3id.org/roh/impactIndexInYear</NameProp> 
-                            <NameProp>http://w3id.org/roh/impactSourceOther</NameProp> 
-                            <NameProp>http://w3id.org/roh/journalNumberInCat</NameProp> 
-                            <NameProp>http://w3id.org/roh/publicationPosition</NameProp> 
-                            <NameProp>http://w3id.org/roh/quartile</NameProp> 
-                            <NameProp>http://w3id.org/roh/impactSource</NameProp>
-							<NameProp>http://w3id.org/roh/year</NameProp>
-                        </Grupo>
-                    </Grupo>
-                </Grupo>
-            </OrdenEntidadLectura>
-        </Entidad>
+    <EspefEntidad>        
     </EspefEntidad>
 </config>
