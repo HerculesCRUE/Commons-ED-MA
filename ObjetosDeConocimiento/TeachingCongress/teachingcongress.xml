@@ -191,6 +191,21 @@
                 </PropsEntLectura>
             </SeleccionEntidad>
         </Propiedad>
+				<Propiedad  ID="http://w3id.org/roh/owner" EntidadID="http://w3id.org/roh/TeachingCongress">
+			<SeleccionEntidad>
+                <TipoSeleccion>Autocompletar</TipoSeleccion>
+                <Grafo>person.owl</Grafo>
+                <UrlTipoEntSolicitada>http://xmlns.com/foaf/0.1/Person</UrlTipoEntSolicitada>              
+                <PropsEntEdicion>
+                    <NameProp>http://w3id.org/roh/title</NameProp>
+                </PropsEntEdicion>
+                <PropsEntLectura>
+                    <Propiedad ID="http://xmlns.com/foaf/0.1/name" EntidadID="http://xmlns.com/foaf/0.1/Person">
+                        <AtrNombreLectura></AtrNombreLectura>
+                    </Propiedad>
+                </PropsEntLectura>
+            </SeleccionEntidad>
+        </Propiedad>
 					
     </EspefPropiedad>
     <EspefEntidad>

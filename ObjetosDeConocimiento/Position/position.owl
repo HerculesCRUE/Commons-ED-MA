@@ -15,7 +15,7 @@
     <rdfs:subClassOf>
       <owl:Restriction>
         <owl:onProperty>
-          <owl:DatatypeProperty rdf:about="http://w3id.org/roh/durationMonths"/>
+          <owl:ObjectProperty rdf:about="https://www.w3.org/2006/vcard/ns#hasTelephone"/>
         </owl:onProperty>
         <owl:maxCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#int"
         >1</owl:maxCardinality>
@@ -24,25 +24,7 @@
     <rdfs:subClassOf>
       <owl:Restriction>
         <owl:onProperty>
-          <owl:DatatypeProperty rdf:about="http://vivoweb.org/ontology/core#end"/>
-        </owl:onProperty>
-        <owl:maxCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#int"
-        >1</owl:maxCardinality>
-      </owl:Restriction>
-    </rdfs:subClassOf>
-    <rdfs:subClassOf>
-      <owl:Restriction>
-        <owl:onProperty>
-          <owl:DatatypeProperty rdf:about="http://w3id.org/roh/scopeManagementActivityOther"/>
-        </owl:onProperty>
-        <owl:maxCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#int"
-        >1</owl:maxCardinality>
-      </owl:Restriction>
-    </rdfs:subClassOf>
-    <rdfs:subClassOf>
-      <owl:Restriction>
-        <owl:onProperty>
-          <owl:ObjectProperty rdf:about="http://w3id.org/roh/employerOrganization"/>
+          <owl:DatatypeProperty rdf:about="http://w3id.org/roh/teachingManagement"/>
         </owl:onProperty>
         <owl:maxCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#int"
         >1</owl:maxCardinality>
@@ -57,25 +39,6 @@
         >1</owl:maxCardinality>
       </owl:Restriction>
     </rdfs:subClassOf>
-    <rdfs:subClassOf rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
-    <rdfs:subClassOf>
-      <owl:Restriction>
-        <owl:onProperty>
-          <owl:ObjectProperty rdf:about="http://w3id.org/roh/hasFax"/>
-        </owl:onProperty>
-        <owl:maxCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#int"
-        >1</owl:maxCardinality>
-      </owl:Restriction>
-    </rdfs:subClassOf>
-    <rdfs:subClassOf>
-      <owl:Restriction>
-        <owl:maxCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#int"
-        >1</owl:maxCardinality>
-        <owl:onProperty>
-          <owl:DatatypeProperty rdf:about="http://w3id.org/roh/contractModalityOther"/>
-        </owl:onProperty>
-      </owl:Restriction>
-    </rdfs:subClassOf>
     <rdfs:subClassOf>
       <owl:Restriction>
         <owl:onProperty>
@@ -88,16 +51,7 @@
     <rdfs:subClassOf>
       <owl:Restriction>
         <owl:onProperty>
-          <owl:ObjectProperty rdf:about="http://w3id.org/roh/scopeManagementActivity"/>
-        </owl:onProperty>
-        <owl:maxCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#int"
-        >1</owl:maxCardinality>
-      </owl:Restriction>
-    </rdfs:subClassOf>
-    <rdfs:subClassOf>
-      <owl:Restriction>
-        <owl:onProperty>
-          <owl:DatatypeProperty rdf:about="http://w3id.org/roh/durationDays"/>
+          <owl:DatatypeProperty rdf:about="http://w3id.org/roh/durationMonths"/>
         </owl:onProperty>
         <owl:maxCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#int"
         >1</owl:maxCardinality>
@@ -108,28 +62,11 @@
         <owl:maxCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#int"
         >1</owl:maxCardinality>
         <owl:onProperty>
-          <owl:ObjectProperty rdf:about="http://w3id.org/roh/contractModality"/>
+          <owl:ObjectProperty rdf:about="http://w3id.org/roh/owner"/>
         </owl:onProperty>
       </owl:Restriction>
     </rdfs:subClassOf>
-    <rdfs:subClassOf>
-      <owl:Restriction>
-        <owl:onProperty>
-          <owl:DatatypeProperty rdf:about="https://www.w3.org/2006/vcard/ns#locality"/>
-        </owl:onProperty>
-        <owl:maxCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#int"
-        >1</owl:maxCardinality>
-      </owl:Restriction>
-    </rdfs:subClassOf>
-    <rdfs:subClassOf>
-      <owl:Restriction>
-        <owl:onProperty>
-          <owl:ObjectProperty rdf:about="http://w3id.org/roh/dedication"/>
-        </owl:onProperty>
-        <owl:maxCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#int"
-        >1</owl:maxCardinality>
-      </owl:Restriction>
-    </rdfs:subClassOf>
+    <rdfs:subClassOf rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
     <rdfs:subClassOf>
       <owl:Restriction>
         <owl:onProperty>
@@ -137,6 +74,24 @@
         </owl:onProperty>
         <owl:maxCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#int"
         >1</owl:maxCardinality>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+    <rdfs:subClassOf>
+      <owl:Restriction>
+        <owl:maxCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#int"
+        >1</owl:maxCardinality>
+        <owl:onProperty>
+          <owl:ObjectProperty rdf:about="http://w3id.org/roh/scopeManagementActivity"/>
+        </owl:onProperty>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+    <rdfs:subClassOf>
+      <owl:Restriction>
+        <owl:maxCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#int"
+        >1</owl:maxCardinality>
+        <owl:onProperty>
+          <owl:DatatypeProperty rdf:about="http://w3id.org/roh/cvnCode"/>
+        </owl:onProperty>
       </owl:Restriction>
     </rdfs:subClassOf>
     <rdfs:subClassOf>
@@ -151,43 +106,7 @@
     <rdfs:subClassOf>
       <owl:Restriction>
         <owl:onProperty>
-          <owl:DatatypeProperty rdf:about="http://purl.org/ontology/bibo/abstract"/>
-        </owl:onProperty>
-        <owl:maxCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#int"
-        >1</owl:maxCardinality>
-      </owl:Restriction>
-    </rdfs:subClassOf>
-    <rdfs:subClassOf>
-      <owl:Restriction>
-        <owl:onProperty>
-          <owl:ObjectProperty rdf:about="http://w3id.org/roh/employerOrganizationType"/>
-        </owl:onProperty>
-        <owl:maxCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#int"
-        >1</owl:maxCardinality>
-      </owl:Restriction>
-    </rdfs:subClassOf>
-    <rdfs:subClassOf>
-      <owl:Restriction>
-        <owl:onProperty>
           <owl:DatatypeProperty rdf:about="http://w3id.org/roh/employerOrganizationTypeOther"/>
-        </owl:onProperty>
-        <owl:maxCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#int"
-        >1</owl:maxCardinality>
-      </owl:Restriction>
-    </rdfs:subClassOf>
-    <rdfs:subClassOf>
-      <owl:Restriction>
-        <owl:maxCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#int"
-        >1</owl:maxCardinality>
-        <owl:onProperty>
-          <owl:DatatypeProperty rdf:about="http://w3id.org/roh/concreteFunctions"/>
-        </owl:onProperty>
-      </owl:Restriction>
-    </rdfs:subClassOf>
-    <rdfs:subClassOf>
-      <owl:Restriction>
-        <owl:onProperty>
-          <owl:ObjectProperty rdf:about="https://www.w3.org/2006/vcard/ns#hasTelephone"/>
         </owl:onProperty>
         <owl:maxCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#int"
         >1</owl:maxCardinality>
@@ -207,7 +126,106 @@
         <owl:maxCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#int"
         >1</owl:maxCardinality>
         <owl:onProperty>
+          <owl:DatatypeProperty rdf:about="http://w3id.org/roh/scopeManagementActivityOther"/>
+        </owl:onProperty>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+    <rdfs:subClassOf>
+      <owl:Restriction>
+        <owl:onProperty>
+          <owl:ObjectProperty rdf:about="http://w3id.org/roh/hasFax"/>
+        </owl:onProperty>
+        <owl:maxCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#int"
+        >1</owl:maxCardinality>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+    <rdfs:subClassOf>
+      <owl:Restriction>
+        <owl:onProperty>
+          <owl:DatatypeProperty rdf:about="http://vivoweb.org/ontology/core#end"/>
+        </owl:onProperty>
+        <owl:maxCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#int"
+        >1</owl:maxCardinality>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+    <rdfs:subClassOf>
+      <owl:Restriction>
+        <owl:onProperty>
+          <owl:DatatypeProperty rdf:about="http://w3id.org/roh/concreteFunctions"/>
+        </owl:onProperty>
+        <owl:maxCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#int"
+        >1</owl:maxCardinality>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+    <rdfs:subClassOf>
+      <owl:Restriction>
+        <owl:onProperty>
+          <owl:DatatypeProperty rdf:about="https://www.w3.org/2006/vcard/ns#locality"/>
+        </owl:onProperty>
+        <owl:maxCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#int"
+        >1</owl:maxCardinality>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+    <rdfs:subClassOf>
+      <owl:Restriction>
+        <owl:onProperty>
+          <owl:ObjectProperty rdf:about="http://w3id.org/roh/contractModality"/>
+        </owl:onProperty>
+        <owl:maxCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#int"
+        >1</owl:maxCardinality>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+    <rdfs:subClassOf>
+      <owl:Restriction>
+        <owl:onProperty>
+          <owl:DatatypeProperty rdf:about="http://w3id.org/roh/durationDays"/>
+        </owl:onProperty>
+        <owl:maxCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#int"
+        >1</owl:maxCardinality>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+    <rdfs:subClassOf>
+      <owl:Restriction>
+        <owl:onProperty>
+          <owl:DatatypeProperty rdf:about="http://w3id.org/roh/durationYears"/>
+        </owl:onProperty>
+        <owl:maxCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#int"
+        >1</owl:maxCardinality>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+    <rdfs:subClassOf>
+      <owl:Restriction>
+        <owl:maxCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#int"
+        >1</owl:maxCardinality>
+        <owl:onProperty>
+          <owl:DatatypeProperty rdf:about="http://w3id.org/roh/contractModalityOther"/>
+        </owl:onProperty>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+    <rdfs:subClassOf>
+      <owl:Restriction>
+        <owl:onProperty>
           <owl:DatatypeProperty rdf:about="http://w3id.org/roh/employerOrganizationTitle"/>
+        </owl:onProperty>
+        <owl:maxCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#int"
+        >1</owl:maxCardinality>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+    <rdfs:subClassOf>
+      <owl:Restriction>
+        <owl:onProperty>
+          <owl:DatatypeProperty rdf:about="http://purl.org/ontology/bibo/abstract"/>
+        </owl:onProperty>
+        <owl:maxCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#int"
+        >1</owl:maxCardinality>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+    <rdfs:subClassOf>
+      <owl:Restriction>
+        <owl:maxCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#int"
+        >1</owl:maxCardinality>
+        <owl:onProperty>
+          <owl:ObjectProperty rdf:about="http://w3id.org/roh/dedication"/>
         </owl:onProperty>
       </owl:Restriction>
     </rdfs:subClassOf>
@@ -216,14 +234,14 @@
         <owl:maxCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#int"
         >1</owl:maxCardinality>
         <owl:onProperty>
-          <owl:DatatypeProperty rdf:about="http://w3id.org/roh/durationYears"/>
+          <owl:ObjectProperty rdf:about="http://w3id.org/roh/employerOrganization"/>
         </owl:onProperty>
       </owl:Restriction>
     </rdfs:subClassOf>
     <rdfs:subClassOf>
       <owl:Restriction>
         <owl:onProperty>
-          <owl:DatatypeProperty rdf:about="http://w3id.org/roh/teachingManagement"/>
+          <owl:ObjectProperty rdf:about="http://w3id.org/roh/employerOrganizationType"/>
         </owl:onProperty>
         <owl:maxCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#int"
         >1</owl:maxCardinality>
@@ -231,6 +249,7 @@
     </rdfs:subClassOf>
   </owl:Class>
   <owl:Class rdf:about="http://w3id.org/roh/CategoryPath">
+    <rdfs:subClassOf rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
     <rdfs:subClassOf>
       <owl:Restriction>
         <owl:onProperty>
@@ -240,18 +259,9 @@
         >1</owl:minCardinality>
       </owl:Restriction>
     </rdfs:subClassOf>
-    <rdfs:subClassOf rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
   </owl:Class>
   <owl:Class rdf:about="https://www.w3.org/2006/vcard/ns#TelephoneType">
-    <rdfs:subClassOf>
-      <owl:Restriction>
-        <owl:onProperty>
-          <owl:DatatypeProperty rdf:about="http://w3id.org/roh/hasExtension"/>
-        </owl:onProperty>
-        <owl:maxCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#int"
-        >1</owl:maxCardinality>
-      </owl:Restriction>
-    </rdfs:subClassOf>
+    <rdfs:subClassOf rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
     <rdfs:subClassOf>
       <owl:Restriction>
         <owl:onProperty>
@@ -261,7 +271,15 @@
         >1</owl:maxCardinality>
       </owl:Restriction>
     </rdfs:subClassOf>
-    <rdfs:subClassOf rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
+    <rdfs:subClassOf>
+      <owl:Restriction>
+        <owl:onProperty>
+          <owl:DatatypeProperty rdf:about="http://w3id.org/roh/hasExtension"/>
+        </owl:onProperty>
+        <owl:maxCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#int"
+        >1</owl:maxCardinality>
+      </owl:Restriction>
+    </rdfs:subClassOf>
   </owl:Class>
   <owl:ObjectProperty rdf:about="https://www.w3.org/2006/vcard/ns#hasCountryName">
     <rdfs:domain rdf:resource="http://vivoweb.org/ontology/core#Position"/>
@@ -294,6 +312,9 @@
     <rdfs:range rdf:resource="http://w3id.org/roh/CategoryPath"/>
     <rdfs:domain rdf:resource="http://vivoweb.org/ontology/core#Position"/>
   </owl:ObjectProperty>
+  <owl:ObjectProperty rdf:about="http://w3id.org/roh/owner">
+    <rdfs:domain rdf:resource="http://vivoweb.org/ontology/core#Position"/>
+  </owl:ObjectProperty>
   <owl:ObjectProperty rdf:about="https://www.w3.org/2006/vcard/ns#hasRegion">
     <rdfs:domain rdf:resource="http://vivoweb.org/ontology/core#Position"/>
   </owl:ObjectProperty>
@@ -304,20 +325,20 @@
     <rdfs:domain rdf:resource="http://vivoweb.org/ontology/core#Position"/>
   </owl:ObjectProperty>
   <owl:ObjectProperty rdf:about="https://www.w3.org/2006/vcard/ns#hasTelephone">
-    <rdfs:range rdf:resource="https://www.w3.org/2006/vcard/ns#TelephoneType"/>
     <rdfs:domain rdf:resource="http://vivoweb.org/ontology/core#Position"/>
+    <rdfs:range rdf:resource="https://www.w3.org/2006/vcard/ns#TelephoneType"/>
   </owl:ObjectProperty>
   <owl:ObjectProperty rdf:about="http://vivoweb.org/ontology/core#freeTextKeyword">
-    <rdfs:range rdf:resource="http://w3id.org/roh/CategoryPath"/>
     <rdfs:domain rdf:resource="http://vivoweb.org/ontology/core#Position"/>
+    <rdfs:range rdf:resource="http://w3id.org/roh/CategoryPath"/>
   </owl:ObjectProperty>
   <owl:DatatypeProperty rdf:about="http://w3id.org/roh/hasExtension">
     <rdfs:domain rdf:resource="https://www.w3.org/2006/vcard/ns#TelephoneType"/>
     <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
   </owl:DatatypeProperty>
   <owl:DatatypeProperty rdf:about="http://w3id.org/roh/professionalCategory">
-    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
     <rdfs:domain rdf:resource="http://vivoweb.org/ontology/core#Position"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
   </owl:DatatypeProperty>
   <owl:DatatypeProperty rdf:about="http://w3id.org/roh/contractModalityOther">
     <rdfs:domain rdf:resource="http://vivoweb.org/ontology/core#Position"/>
@@ -328,12 +349,12 @@
     <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
   </owl:DatatypeProperty>
   <owl:DatatypeProperty rdf:about="http://w3id.org/roh/teachingManagement">
-    <rdfs:domain rdf:resource="http://vivoweb.org/ontology/core#Position"/>
     <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#boolean"/>
+    <rdfs:domain rdf:resource="http://vivoweb.org/ontology/core#Position"/>
   </owl:DatatypeProperty>
   <owl:DatatypeProperty rdf:about="http://w3id.org/roh/employerOrganizationTitle">
-    <rdfs:domain rdf:resource="http://vivoweb.org/ontology/core#Position"/>
     <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+    <rdfs:domain rdf:resource="http://vivoweb.org/ontology/core#Position"/>
   </owl:DatatypeProperty>
   <owl:DatatypeProperty rdf:about="http://w3id.org/roh/employerOrganizationTypeOther">
     <rdfs:domain rdf:resource="http://vivoweb.org/ontology/core#Position"/>
@@ -344,8 +365,8 @@
     <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
   </owl:DatatypeProperty>
   <owl:DatatypeProperty rdf:about="http://vivoweb.org/ontology/core#start">
-    <rdfs:domain rdf:resource="http://vivoweb.org/ontology/core#Position"/>
     <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#date"/>
+    <rdfs:domain rdf:resource="http://vivoweb.org/ontology/core#Position"/>
   </owl:DatatypeProperty>
   <owl:DatatypeProperty rdf:about="http://w3id.org/roh/scopeManagementActivityOther">
     <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
@@ -357,45 +378,49 @@
     <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
   </owl:DatatypeProperty>
   <owl:DatatypeProperty rdf:about="https://www.w3.org/2006/vcard/ns#locality">
-    <rdfs:domain rdf:resource="http://vivoweb.org/ontology/core#Position"/>
     <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+    <rdfs:domain rdf:resource="http://vivoweb.org/ontology/core#Position"/>
   </owl:DatatypeProperty>
   <owl:DatatypeProperty rdf:about="http://w3id.org/roh/durationYears">
-    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
     <rdfs:domain rdf:resource="http://vivoweb.org/ontology/core#Position"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
   </owl:DatatypeProperty>
   <owl:DatatypeProperty rdf:about="http://w3id.org/roh/concreteFunctions">
-    <rdfs:domain rdf:resource="http://vivoweb.org/ontology/core#Position"/>
     <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+    <rdfs:domain rdf:resource="http://vivoweb.org/ontology/core#Position"/>
   </owl:DatatypeProperty>
   <owl:DatatypeProperty rdf:about="https://www.w3.org/2006/vcard/ns#email">
-    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
     <rdfs:domain rdf:resource="http://vivoweb.org/ontology/core#Position"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
   </owl:DatatypeProperty>
   <owl:DatatypeProperty rdf:about="http://w3id.org/roh/crisIdentifier">
-    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
     <rdfs:domain rdf:resource="http://vivoweb.org/ontology/core#Position"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
   </owl:DatatypeProperty>
   <owl:DatatypeProperty rdf:about="http://vivoweb.org/ontology/core#end">
-    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#date"/>
     <rdfs:domain rdf:resource="http://vivoweb.org/ontology/core#Position"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#date"/>
   </owl:DatatypeProperty>
   <owl:DatatypeProperty rdf:about="http://w3id.org/roh/center">
     <rdfs:domain rdf:resource="http://vivoweb.org/ontology/core#Position"/>
     <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
   </owl:DatatypeProperty>
-  <owl:DatatypeProperty rdf:about="http://purl.org/ontology/bibo/abstract">
+  <owl:DatatypeProperty rdf:about="http://w3id.org/roh/cvnCode">
     <rdfs:domain rdf:resource="http://vivoweb.org/ontology/core#Position"/>
     <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+  </owl:DatatypeProperty>
+  <owl:DatatypeProperty rdf:about="http://purl.org/ontology/bibo/abstract">
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+    <rdfs:domain rdf:resource="http://vivoweb.org/ontology/core#Position"/>
   </owl:DatatypeProperty>
   <owl:DatatypeProperty rdf:about="http://w3id.org/roh/department">
     <rdfs:domain rdf:resource="http://vivoweb.org/ontology/core#Position"/>
     <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
   </owl:DatatypeProperty>
   <owl:FunctionalProperty rdf:about="https://www.w3.org/2006/vcard/ns#hasValue">
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
     <rdfs:domain rdf:resource="https://www.w3.org/2006/vcard/ns#TelephoneType"/>
     <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#DatatypeProperty"/>
-    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
   </owl:FunctionalProperty>
 </rdf:RDF>
 

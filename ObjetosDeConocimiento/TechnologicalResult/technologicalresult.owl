@@ -15,7 +15,6 @@
   xml:base="http://www.owl-ontologies.com/Ontology1627625538.owl">
   <owl:Ontology rdf:about=""/>
   <owl:Class rdf:about="http://w3id.org/roh/CategoryPath">
-    <rdfs:subClassOf rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
     <rdfs:subClassOf>
       <owl:Restriction>
         <owl:onProperty>
@@ -25,12 +24,13 @@
         >1</owl:minCardinality>
       </owl:Restriction>
     </rdfs:subClassOf>
+    <rdfs:subClassOf rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
   </owl:Class>
   <owl:Class rdf:about="http://w3id.org/roh/TechnologicalResult">
     <rdfs:subClassOf>
       <owl:Restriction>
         <owl:onProperty>
-          <owl:DatatypeProperty rdf:about="http://w3id.org/roh/relevantResults"/>
+          <owl:DatatypeProperty rdf:about="http://vivoweb.org/ontology/core#start"/>
         </owl:onProperty>
         <owl:maxCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#int"
         >1</owl:maxCardinality>
@@ -41,8 +41,71 @@
         <owl:maxCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#int"
         >1</owl:maxCardinality>
         <owl:onProperty>
-          <owl:DatatypeProperty rdf:about="http://vivoweb.org/ontology/core#start"/>
+          <owl:DatatypeProperty rdf:about="http://w3id.org/roh/principalInvestigatorNick"/>
         </owl:onProperty>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+    <rdfs:subClassOf>
+      <owl:Restriction>
+        <owl:onProperty>
+          <owl:DatatypeProperty rdf:about="http://w3id.org/roh/principalInvestigatorFirstName"/>
+        </owl:onProperty>
+        <owl:maxCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#int"
+        >1</owl:maxCardinality>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+    <rdfs:subClassOf>
+      <owl:Restriction>
+        <owl:onProperty>
+          <owl:DatatypeProperty rdf:about="http://w3id.org/roh/geographicFocusOther"/>
+        </owl:onProperty>
+        <owl:maxCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#int"
+        >1</owl:maxCardinality>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+    <rdfs:subClassOf>
+      <owl:Restriction>
+        <owl:onProperty>
+          <owl:DatatypeProperty rdf:about="http://w3id.org/roh/coprincipalInvestigatorSecondFamilyName"/>
+        </owl:onProperty>
+        <owl:maxCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#int"
+        >1</owl:maxCardinality>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+    <rdfs:subClassOf>
+      <owl:Restriction>
+        <owl:maxCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#int"
+        >1</owl:maxCardinality>
+        <owl:onProperty>
+          <owl:DatatypeProperty rdf:about="http://w3id.org/roh/durationYears"/>
+        </owl:onProperty>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+    <rdfs:subClassOf>
+      <owl:Restriction>
+        <owl:onProperty>
+          <owl:DatatypeProperty rdf:about="http://w3id.org/roh/newTechniques"/>
+        </owl:onProperty>
+        <owl:maxCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#int"
+        >1</owl:maxCardinality>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+    <rdfs:subClassOf>
+      <owl:Restriction>
+        <owl:maxCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#int"
+        >1</owl:maxCardinality>
+        <owl:onProperty>
+          <owl:ObjectProperty rdf:about="http://vivoweb.org/ontology/core#geographicFocus"/>
+        </owl:onProperty>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+    <rdfs:subClassOf>
+      <owl:Restriction>
+        <owl:onProperty>
+          <owl:DatatypeProperty rdf:about="http://w3id.org/roh/technologicalExpert"/>
+        </owl:onProperty>
+        <owl:maxCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#int"
+        >1</owl:maxCardinality>
       </owl:Restriction>
     </rdfs:subClassOf>
     <rdfs:subClassOf>
@@ -56,53 +119,26 @@
     </rdfs:subClassOf>
     <rdfs:subClassOf>
       <owl:Restriction>
-        <owl:onProperty>
-          <owl:DatatypeProperty rdf:about="http://w3id.org/roh/durationYears"/>
-        </owl:onProperty>
-        <owl:maxCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#int"
-        >1</owl:maxCardinality>
-      </owl:Restriction>
-    </rdfs:subClassOf>
-    <rdfs:subClassOf>
-      <owl:Restriction>
         <owl:maxCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#int"
         >1</owl:maxCardinality>
         <owl:onProperty>
-          <owl:DatatypeProperty rdf:about="http://w3id.org/roh/durationMonths"/>
+          <owl:ObjectProperty rdf:about="http://w3id.org/roh/contributionGrade"/>
         </owl:onProperty>
-      </owl:Restriction>
-    </rdfs:subClassOf>
-    <rdfs:subClassOf>
-      <owl:Restriction>
-        <owl:onProperty>
-          <owl:DatatypeProperty rdf:about="http://w3id.org/roh/homologation"/>
-        </owl:onProperty>
-        <owl:maxCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#int"
-        >1</owl:maxCardinality>
-      </owl:Restriction>
-    </rdfs:subClassOf>
-    <rdfs:subClassOf>
-      <owl:Restriction>
-        <owl:maxCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#int"
-        >1</owl:maxCardinality>
-        <owl:onProperty>
-          <owl:DatatypeProperty rdf:about="http://w3id.org/roh/coprincipalInvestigatorSecondFamilyName"/>
-        </owl:onProperty>
-      </owl:Restriction>
-    </rdfs:subClassOf>
-    <rdfs:subClassOf>
-      <owl:Restriction>
-        <owl:onProperty>
-          <owl:DatatypeProperty rdf:about="http://w3id.org/roh/principalInvestigatorNick"/>
-        </owl:onProperty>
-        <owl:maxCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#int"
-        >1</owl:maxCardinality>
       </owl:Restriction>
     </rdfs:subClassOf>
     <rdfs:subClassOf>
       <owl:Restriction>
         <owl:onProperty>
           <owl:DatatypeProperty rdf:about="http://w3id.org/roh/principalInvestigatorFamilyName"/>
+        </owl:onProperty>
+        <owl:maxCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#int"
+        >1</owl:maxCardinality>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+    <rdfs:subClassOf>
+      <owl:Restriction>
+        <owl:onProperty>
+          <owl:DatatypeProperty rdf:about="http://w3id.org/roh/coprincipalInvestigatorFirstName"/>
         </owl:onProperty>
         <owl:maxCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#int"
         >1</owl:maxCardinality>
@@ -122,50 +158,14 @@
         <owl:maxCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#int"
         >1</owl:maxCardinality>
         <owl:onProperty>
-          <owl:DatatypeProperty rdf:about="http://w3id.org/roh/activityResults"/>
+          <owl:DatatypeProperty rdf:about="http://w3id.org/roh/coprincipalInvestigatorNick"/>
         </owl:onProperty>
       </owl:Restriction>
     </rdfs:subClassOf>
     <rdfs:subClassOf>
       <owl:Restriction>
         <owl:onProperty>
-          <owl:ObjectProperty rdf:about="http://w3id.org/roh/contributionGrade"/>
-        </owl:onProperty>
-        <owl:maxCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#int"
-        >1</owl:maxCardinality>
-      </owl:Restriction>
-    </rdfs:subClassOf>
-    <rdfs:subClassOf>
-      <owl:Restriction>
-        <owl:onProperty>
-          <owl:DatatypeProperty rdf:about="http://w3id.org/roh/principalInvestigatorFirstName"/>
-        </owl:onProperty>
-        <owl:maxCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#int"
-        >1</owl:maxCardinality>
-      </owl:Restriction>
-    </rdfs:subClassOf>
-    <rdfs:subClassOf>
-      <owl:Restriction>
-        <owl:maxCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#int"
-        >1</owl:maxCardinality>
-        <owl:onProperty>
-          <owl:DatatypeProperty rdf:about="http://w3id.org/roh/crisIdentifier"/>
-        </owl:onProperty>
-      </owl:Restriction>
-    </rdfs:subClassOf>
-    <rdfs:subClassOf>
-      <owl:Restriction>
-        <owl:maxCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#int"
-        >1</owl:maxCardinality>
-        <owl:onProperty>
-          <owl:DatatypeProperty rdf:about="http://w3id.org/roh/coprincipalInvestigatorFirstName"/>
-        </owl:onProperty>
-      </owl:Restriction>
-    </rdfs:subClassOf>
-    <rdfs:subClassOf>
-      <owl:Restriction>
-        <owl:onProperty>
-          <owl:ObjectProperty rdf:about="http://vivoweb.org/ontology/core#geographicFocus"/>
+          <owl:DatatypeProperty rdf:about="http://w3id.org/roh/homologation"/>
         </owl:onProperty>
         <owl:maxCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#int"
         >1</owl:maxCardinality>
@@ -175,7 +175,16 @@
     <rdfs:subClassOf>
       <owl:Restriction>
         <owl:onProperty>
-          <owl:DatatypeProperty rdf:about="http://w3id.org/roh/spinoffCompanies"/>
+          <owl:DatatypeProperty rdf:about="http://w3id.org/roh/durationMonths"/>
+        </owl:onProperty>
+        <owl:maxCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#int"
+        >1</owl:maxCardinality>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+    <rdfs:subClassOf>
+      <owl:Restriction>
+        <owl:onProperty>
+          <owl:DatatypeProperty rdf:about="http://w3id.org/roh/activityResults"/>
         </owl:onProperty>
         <owl:maxCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#int"
         >1</owl:maxCardinality>
@@ -192,36 +201,27 @@
     </rdfs:subClassOf>
     <rdfs:subClassOf>
       <owl:Restriction>
-        <owl:onProperty>
-          <owl:DatatypeProperty rdf:about="http://w3id.org/roh/technologicalExpert"/>
-        </owl:onProperty>
         <owl:maxCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#int"
         >1</owl:maxCardinality>
-      </owl:Restriction>
-    </rdfs:subClassOf>
-    <rdfs:subClassOf>
-      <owl:Restriction>
-        <owl:maxCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#int"
-        >1</owl:maxCardinality>
-        <owl:onProperty>
-          <owl:DatatypeProperty rdf:about="http://w3id.org/roh/collaborationAgreements"/>
-        </owl:onProperty>
-      </owl:Restriction>
-    </rdfs:subClassOf>
-    <rdfs:subClassOf>
-      <owl:Restriction>
-        <owl:onProperty>
-          <owl:DatatypeProperty rdf:about="http://w3id.org/roh/coprincipalInvestigatorNick"/>
-        </owl:onProperty>
-        <owl:maxCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#int"
-        >1</owl:maxCardinality>
-      </owl:Restriction>
-    </rdfs:subClassOf>
-    <rdfs:subClassOf>
-      <owl:Restriction>
         <owl:onProperty>
           <owl:DatatypeProperty rdf:about="http://w3id.org/roh/durationDays"/>
         </owl:onProperty>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+    <rdfs:subClassOf>
+      <owl:Restriction>
+        <owl:onProperty>
+          <owl:DatatypeProperty rdf:about="http://w3id.org/roh/collaborationAgreements"/>
+        </owl:onProperty>
+        <owl:maxCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#int"
+        >1</owl:maxCardinality>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+    <rdfs:subClassOf>
+      <owl:Restriction>
+        <owl:onProperty>
+          <owl:DatatypeProperty rdf:about="http://w3id.org/roh/relevantResults"/>
+        </owl:onProperty>
         <owl:maxCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#int"
         >1</owl:maxCardinality>
       </owl:Restriction>
@@ -231,14 +231,14 @@
         <owl:maxCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#int"
         >1</owl:maxCardinality>
         <owl:onProperty>
-          <owl:DatatypeProperty rdf:about="http://w3id.org/roh/newTechniques"/>
+          <owl:DatatypeProperty rdf:about="http://w3id.org/roh/crisIdentifier"/>
         </owl:onProperty>
       </owl:Restriction>
     </rdfs:subClassOf>
     <rdfs:subClassOf>
       <owl:Restriction>
         <owl:onProperty>
-          <owl:DatatypeProperty rdf:about="http://w3id.org/roh/geographicFocusOther"/>
+          <owl:DatatypeProperty rdf:about="http://w3id.org/roh/spinoffCompanies"/>
         </owl:onProperty>
         <owl:maxCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#int"
         >1</owl:maxCardinality>
@@ -246,31 +246,14 @@
     </rdfs:subClassOf>
   </owl:Class>
   <owl:Class rdf:about="http://w3id.org/roh/Organization">
-    <rdfs:subClassOf>
-      <owl:Restriction>
-        <owl:onProperty>
-          <owl:ObjectProperty rdf:about="https://www.w3.org/2006/vcard/ns#hasCountryName"/>
-        </owl:onProperty>
-        <owl:maxCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#int"
-        >1</owl:maxCardinality>
-      </owl:Restriction>
-    </rdfs:subClassOf>
+    <rdfs:subClassOf rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
     <rdfs:subClassOf>
       <owl:Restriction>
         <owl:maxCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#int"
         >1</owl:maxCardinality>
         <owl:onProperty>
-          <owl:ObjectProperty rdf:about="https://www.w3.org/2006/vcard/ns#hasRegion"/>
+          <owl:ObjectProperty rdf:about="http://w3id.org/roh/organization"/>
         </owl:onProperty>
-      </owl:Restriction>
-    </rdfs:subClassOf>
-    <rdfs:subClassOf>
-      <owl:Restriction>
-        <owl:onProperty>
-          <owl:ObjectProperty rdf:about="http://w3id.org/roh/organizationType"/>
-        </owl:onProperty>
-        <owl:maxCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#int"
-        >1</owl:maxCardinality>
       </owl:Restriction>
     </rdfs:subClassOf>
     <rdfs:subClassOf>
@@ -287,15 +270,32 @@
         <owl:maxCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#int"
         >1</owl:maxCardinality>
         <owl:onProperty>
-          <owl:ObjectProperty rdf:about="http://w3id.org/roh/organization"/>
+          <owl:ObjectProperty rdf:about="http://w3id.org/roh/organizationType"/>
         </owl:onProperty>
       </owl:Restriction>
     </rdfs:subClassOf>
-    <rdfs:subClassOf rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
+    <rdfs:subClassOf>
+      <owl:Restriction>
+        <owl:onProperty>
+          <owl:ObjectProperty rdf:about="https://www.w3.org/2006/vcard/ns#hasRegion"/>
+        </owl:onProperty>
+        <owl:maxCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#int"
+        >1</owl:maxCardinality>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+    <rdfs:subClassOf>
+      <owl:Restriction>
+        <owl:onProperty>
+          <owl:ObjectProperty rdf:about="https://www.w3.org/2006/vcard/ns#hasCountryName"/>
+        </owl:onProperty>
+        <owl:maxCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#int"
+        >1</owl:maxCardinality>
+      </owl:Restriction>
+    </rdfs:subClassOf>
   </owl:Class>
   <owl:ObjectProperty rdf:about="http://w3id.org/roh/unescoPrimary">
-    <rdfs:range rdf:resource="http://w3id.org/roh/CategoryPath"/>
     <rdfs:domain rdf:resource="http://w3id.org/roh/TechnologicalResult"/>
+    <rdfs:range rdf:resource="http://w3id.org/roh/CategoryPath"/>
   </owl:ObjectProperty>
   <owl:ObjectProperty rdf:about="https://www.w3.org/2006/vcard/ns#hasCountryName">
     <rdfs:domain rdf:resource="http://w3id.org/roh/Organization"/>
@@ -324,16 +324,16 @@
     <rdfs:domain rdf:resource="http://w3id.org/roh/Organization"/>
   </owl:ObjectProperty>
   <owl:ObjectProperty rdf:about="http://w3id.org/roh/unescoSecondary">
-    <rdfs:range rdf:resource="http://w3id.org/roh/CategoryPath"/>
     <rdfs:domain rdf:resource="http://w3id.org/roh/TechnologicalResult"/>
+    <rdfs:range rdf:resource="http://w3id.org/roh/CategoryPath"/>
   </owl:ObjectProperty>
   <owl:ObjectProperty rdf:about="http://vivoweb.org/ontology/core#freeTextKeywords">
-    <rdfs:range rdf:resource="http://w3id.org/roh/CategoryPath"/>
     <rdfs:domain rdf:resource="http://w3id.org/roh/TechnologicalResult"/>
+    <rdfs:range rdf:resource="http://w3id.org/roh/CategoryPath"/>
   </owl:ObjectProperty>
   <owl:ObjectProperty rdf:about="http://w3id.org/roh/participates">
-    <rdfs:domain rdf:resource="http://w3id.org/roh/TechnologicalResult"/>
     <rdfs:range rdf:resource="http://w3id.org/roh/Organization"/>
+    <rdfs:domain rdf:resource="http://w3id.org/roh/TechnologicalResult"/>
   </owl:ObjectProperty>
   <owl:ObjectProperty rdf:about="https://www.w3.org/2006/vcard/ns#hasRegion">
     <rdfs:domain rdf:resource="http://w3id.org/roh/Organization"/>
@@ -356,8 +356,8 @@
     <rdfs:domain rdf:resource="http://w3id.org/roh/TechnologicalResult"/>
   </owl:DatatypeProperty>
   <owl:DatatypeProperty rdf:about="http://w3id.org/roh/spinoffCompanies">
-    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#boolean"/>
     <rdfs:domain rdf:resource="http://w3id.org/roh/TechnologicalResult"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#boolean"/>
   </owl:DatatypeProperty>
   <owl:DatatypeProperty rdf:about="http://w3id.org/roh/activityResults">
     <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#boolean"/>
@@ -380,8 +380,8 @@
     <rdfs:domain rdf:resource="http://w3id.org/roh/TechnologicalResult"/>
   </owl:DatatypeProperty>
   <owl:DatatypeProperty rdf:about="https://www.w3.org/2006/vcard/ns#locality">
-    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
     <rdfs:domain rdf:resource="http://w3id.org/roh/Organization"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
   </owl:DatatypeProperty>
   <owl:DatatypeProperty rdf:about="http://w3id.org/roh/technologicalExpert">
     <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#boolean"/>
@@ -395,8 +395,8 @@
     <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
   </owl:DatatypeProperty>
   <owl:DatatypeProperty rdf:about="http://w3id.org/roh/principalInvestigatorFirstName">
-    <rdfs:domain rdf:resource="http://w3id.org/roh/TechnologicalResult"/>
     <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+    <rdfs:domain rdf:resource="http://w3id.org/roh/TechnologicalResult"/>
   </owl:DatatypeProperty>
   <owl:DatatypeProperty rdf:about="http://w3id.org/roh/coprincipalInvestigatorNick">
     <rdfs:domain rdf:resource="http://w3id.org/roh/TechnologicalResult"/>
@@ -411,12 +411,12 @@
     <rdfs:domain rdf:resource="http://w3id.org/roh/TechnologicalResult"/>
   </owl:DatatypeProperty>
   <owl:DatatypeProperty rdf:about="http://w3id.org/roh/durationMonths">
-    <rdfs:domain rdf:resource="http://w3id.org/roh/TechnologicalResult"/>
     <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#float"/>
+    <rdfs:domain rdf:resource="http://w3id.org/roh/TechnologicalResult"/>
   </owl:DatatypeProperty>
   <owl:DatatypeProperty rdf:about="http://w3id.org/roh/collaborationAgreements">
-    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#boolean"/>
     <rdfs:domain rdf:resource="http://w3id.org/roh/TechnologicalResult"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#boolean"/>
   </owl:DatatypeProperty>
   <owl:DatatypeProperty rdf:about="http://w3id.org/roh/organizationTypeOther">
     <rdfs:domain rdf:resource="http://w3id.org/roh/Organization"/>
@@ -435,8 +435,8 @@
     <rdfs:domain rdf:resource="http://w3id.org/roh/TechnologicalResult"/>
   </owl:DatatypeProperty>
   <owl:DatatypeProperty rdf:about="http://w3id.org/roh/crisIdentifier">
-    <rdfs:domain rdf:resource="http://w3id.org/roh/TechnologicalResult"/>
     <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+    <rdfs:domain rdf:resource="http://w3id.org/roh/TechnologicalResult"/>
   </owl:DatatypeProperty>
   <owl:DatatypeProperty rdf:about="http://w3id.org/roh/homologation">
     <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#boolean"/>
@@ -447,13 +447,22 @@
     <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
   </owl:DatatypeProperty>
   <owl:DatatypeProperty rdf:ID="DatatypeProperty_2"/>
+  <owl:FunctionalProperty rdf:about="http://w3id.org/roh/owner">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#ObjectProperty"/>
+    <rdfs:domain rdf:resource="http://w3id.org/roh/TechnologicalResult"/>
+  </owl:FunctionalProperty>
   <owl:FunctionalProperty rdf:about="http://w3id.org/roh/roleOf">
     <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#ObjectProperty"/>
   </owl:FunctionalProperty>
+  <owl:FunctionalProperty rdf:about="http://w3id.org/roh/cvnCode">
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+    <rdfs:domain rdf:resource="http://w3id.org/roh/TechnologicalResult"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#DatatypeProperty"/>
+  </owl:FunctionalProperty>
   <owl:FunctionalProperty rdf:about="http://w3id.org/roh/organizationTitle">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#DatatypeProperty"/>
     <rdfs:domain rdf:resource="http://w3id.org/roh/Organization"/>
     <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
-    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#DatatypeProperty"/>
   </owl:FunctionalProperty>
   <owl:FunctionalProperty rdf:about="http://w3id.org/roh/title">
     <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
