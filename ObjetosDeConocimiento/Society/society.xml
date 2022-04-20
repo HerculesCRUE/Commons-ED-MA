@@ -12,8 +12,6 @@
     </ConfiguracionGeneral>
     <EspefPropiedad>
         <Propiedad  ID="http://w3id.org/roh/categoryNode" EntidadID="http://w3id.org/roh/CategoryPath">
-            <AtrNombre>categoryNode</AtrNombre>
-            <AtrNombreLectura>categoryNode</AtrNombreLectura>
 			<SeleccionEntidad>
 				<TipoSeleccion>Tesauro</TipoSeleccion>
 				<Grafo>taxonomy.owl</Grafo>				
@@ -21,8 +19,6 @@
 			</SeleccionEntidad>
         </Propiedad>		
 		<Propiedad  ID="http://w3id.org/roh/affiliatedOrganizationType" EntidadID="http://w3id.org/roh/Society">
-            <AtrNombre>http://w3id.org/roh/affiliatedOrganizationType</AtrNombre>
-            <AtrNombreLectura>http://w3id.org/roh/affiliatedOrganizationType</AtrNombreLectura>
 			<SeleccionEntidad>
                 <TipoSeleccion>Autocompletar</TipoSeleccion>
                 <Grafo>organizationtype.owl</Grafo>
@@ -38,8 +34,6 @@
             </SeleccionEntidad>
         </Propiedad>
 		<Propiedad  ID="http://w3id.org/roh/affiliatedOrganizationHasCountryName" EntidadID="http://w3id.org/roh/Society">
-            <AtrNombre>http://w3id.org/roh/affiliatedOrganizationHasCountryName</AtrNombre>
-            <AtrNombreLectura>http://w3id.org/roh/affiliatedOrganizationHasCountryName</AtrNombreLectura>
 			<SeleccionEntidad>
                 <TipoSeleccion>Autocompletar</TipoSeleccion>
                 <Grafo>feature.owl</Grafo>
@@ -55,8 +49,6 @@
 			</SeleccionEntidad>
         </Propiedad>
 		<Propiedad  ID="http://w3id.org/roh/affiliatedOrganizationHasRegion" EntidadID="http://w3id.org/roh/Society">
-            <AtrNombre>http://w3id.org/roh/affiliatedOrganizationHasRegion</AtrNombre>
-            <AtrNombreLectura>http://w3id.org/roh/affiliatedOrganizationHasRegion</AtrNombreLectura>
 			<SeleccionEntidad>
                 <TipoSeleccion>Autocompletar</TipoSeleccion>
                 <Grafo>feature.owl</Grafo>
@@ -72,8 +64,6 @@
 			</SeleccionEntidad>
         </Propiedad>		
         <Propiedad  ID="https://www.w3.org/2006/vcard/ns#hasRegion" EntidadID="http://w3id.org/roh/Society">
-            <AtrNombre>hasRegion</AtrNombre>
-            <AtrNombreLectura>hasRegion</AtrNombreLectura>
 			<SeleccionEntidad>
                 <TipoSeleccion>Combo</TipoSeleccion>
                 <Grafo>feature.owl</Grafo>
@@ -89,8 +79,6 @@
             </SeleccionEntidad>
         </Propiedad>
         <Propiedad  ID="http://vivoweb.org/ontology/core#affiliatedOrganization" EntidadID="http://w3id.org/roh/Society">
-            <AtrNombre>affiliatedOrganization</AtrNombre>
-            <AtrNombreLectura>affiliatedOrganization</AtrNombreLectura>
 			<SeleccionEntidad>
                 <TipoSeleccion>Combo</TipoSeleccion>
                 <Grafo>organization.owl</Grafo>
@@ -106,8 +94,6 @@
             </SeleccionEntidad>
         </Propiedad>
         <Propiedad  ID="http://w3id.org/roh/participates" EntidadID="http://w3id.org/roh/Society">
-            <AtrNombre>participates</AtrNombre>
-            <AtrNombreLectura>participates</AtrNombreLectura>
 			<SeleccionEntidad>
                 <TipoSeleccion>Combo</TipoSeleccion>
                 <Grafo>organization.owl</Grafo>
@@ -123,8 +109,6 @@
             </SeleccionEntidad>
         </Propiedad>
         <Propiedad  ID="https://www.w3.org/2006/vcard/ns#hasCountryName" EntidadID="http://w3id.org/roh/Society">
-            <AtrNombre>hasCountryName</AtrNombre>
-            <AtrNombreLectura>hasCountryName</AtrNombreLectura>
 			<SeleccionEntidad>
                 <TipoSeleccion>Combo</TipoSeleccion>
                 <Grafo>feature.owl</Grafo>
@@ -140,8 +124,6 @@
             </SeleccionEntidad>
         </Propiedad>
         <Propiedad  ID="http://vivoweb.org/ontology/core#geographicFocus" EntidadID="http://w3id.org/roh/Society">
-            <AtrNombre>geographicFocus</AtrNombre>
-            <AtrNombreLectura>geographicFocus</AtrNombreLectura>
 			<SeleccionEntidad>
                 <TipoSeleccion>Autocompletar</TipoSeleccion>
                 <Grafo>geographicregion.owl</Grafo>
@@ -156,6 +138,21 @@
                 </PropsEntLectura>
             </SeleccionEntidad>
         </Propiedad>
+		<Propiedad  ID="http://w3id.org/roh/owner" EntidadID="http://w3id.org/roh/Society">
+			<SeleccionEntidad>
+                <TipoSeleccion>Autocompletar</TipoSeleccion>
+                <Grafo>person.owl</Grafo>
+                <UrlTipoEntSolicitada>http://xmlns.com/foaf/0.1/Person</UrlTipoEntSolicitada>              
+                <PropsEntEdicion>
+                    <NameProp>http://w3id.org/roh/title</NameProp>
+                </PropsEntEdicion>
+                <PropsEntLectura>
+                    <Propiedad ID="http://xmlns.com/foaf/0.1/name" EntidadID="http://xmlns.com/foaf/0.1/Person">
+                        <AtrNombreLectura></AtrNombreLectura>
+                    </Propiedad>
+                </PropsEntLectura>
+            </SeleccionEntidad>
+        </Propiedad>	
     </EspefPropiedad>
     <EspefEntidad>
     </EspefEntidad>

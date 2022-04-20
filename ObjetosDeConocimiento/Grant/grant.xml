@@ -12,8 +12,6 @@
     </ConfiguracionGeneral>
     <EspefPropiedad>
         <Propiedad  ID="http://w3id.org/roh/entity" EntidadID="http://vivoweb.org/ontology/core#Grant">
-            <AtrNombre>entity</AtrNombre>
-            <AtrNombreLectura>entity</AtrNombreLectura>
 			<SeleccionEntidad>
                 <TipoSeleccion>Combo</TipoSeleccion>
                 <Grafo>organization.owl</Grafo>
@@ -29,8 +27,6 @@
             </SeleccionEntidad>
         </Propiedad>
 		<Propiedad  ID="http://w3id.org/roh/awardingEntityType" EntidadID="http://vivoweb.org/ontology/core#Grant">
-            <AtrNombre>http://w3id.org/roh/awardingEntityType</AtrNombre>
-            <AtrNombreLectura>http://w3id.org/roh/awardingEntityType</AtrNombreLectura>
 			<SeleccionEntidad>
                 <TipoSeleccion>Autocompletar</TipoSeleccion>
                 <Grafo>organizationtype.owl</Grafo>
@@ -46,8 +42,6 @@
             </SeleccionEntidad>
         </Propiedad>
         <Propiedad  ID="http://w3id.org/roh/aims" EntidadID="http://vivoweb.org/ontology/core#Grant">
-            <AtrNombre>aims</AtrNombre>
-            <AtrNombreLectura>aims</AtrNombreLectura>
 			<SeleccionEntidad>
                 <TipoSeleccion>Autocompletar</TipoSeleccion>
                 <Grafo>grantaim.owl</Grafo>
@@ -63,8 +57,6 @@
             </SeleccionEntidad>
         </Propiedad>
         <Propiedad  ID="http://w3id.org/roh/awardingEntity" EntidadID="http://vivoweb.org/ontology/core#Grant">
-			<AtrNombre>awardingEntity</AtrNombre>
-            <AtrNombreLectura>awardingEntity</AtrNombreLectura>
 			<SeleccionEntidad>
                 <TipoSeleccion>Combo</TipoSeleccion>
                 <Grafo>organization.owl</Grafo>
@@ -80,8 +72,6 @@
             </SeleccionEntidad>
         </Propiedad>
         <Propiedad  ID="http://w3id.org/roh/categoryNode" EntidadID="http://w3id.org/roh/CategoryPath">
-            <AtrNombre>categoryNode</AtrNombre>
-            <AtrNombreLectura>categoryNode</AtrNombreLectura>
 			<SeleccionEntidad>
 				<TipoSeleccion>Tesauro</TipoSeleccion>
 				<Grafo>taxonomy.owl</Grafo>				
@@ -89,8 +79,6 @@
 			</SeleccionEntidad>
         </Propiedad>		
 		 <Propiedad  ID="https://www.w3.org/2006/vcard/ns#hasCountryName" EntidadID="http://vivoweb.org/ontology/core#Grant">
-            <AtrNombre>hasCountryName</AtrNombre>
-            <AtrNombreLectura>hasCountryName</AtrNombreLectura>
 			<SeleccionEntidad>
                 <TipoSeleccion>Autocompletar</TipoSeleccion>
                 <Grafo>feature.owl</Grafo>
@@ -106,8 +94,6 @@
 			</SeleccionEntidad>
         </Propiedad>
 		<Propiedad  ID="https://www.w3.org/2006/vcard/ns#hasRegion" EntidadID="http://vivoweb.org/ontology/core#Grant">
-            <AtrNombre>hasRegion</AtrNombre>
-            <AtrNombreLectura>hasRegion</AtrNombreLectura>
 			<SeleccionEntidad>
                 <TipoSeleccion>Autocompletar</TipoSeleccion>
                 <Grafo>feature.owl</Grafo>
@@ -121,6 +107,21 @@
                     </Propiedad>
                 </PropsEntLectura>
 			</SeleccionEntidad>
+        </Propiedad>
+		<Propiedad  ID="http://w3id.org/roh/owner" EntidadID="http://vivoweb.org/ontology/core#Grant">
+			<SeleccionEntidad>
+                <TipoSeleccion>Autocompletar</TipoSeleccion>
+                <Grafo>person.owl</Grafo>
+                <UrlTipoEntSolicitada>http://xmlns.com/foaf/0.1/Person</UrlTipoEntSolicitada>              
+                <PropsEntEdicion>
+                    <NameProp>http://w3id.org/roh/title</NameProp>
+                </PropsEntEdicion>
+                <PropsEntLectura>
+                    <Propiedad ID="http://xmlns.com/foaf/0.1/name" EntidadID="http://xmlns.com/foaf/0.1/Person">
+                        <AtrNombreLectura></AtrNombreLectura>
+                    </Propiedad>
+                </PropsEntLectura>
+            </SeleccionEntidad>
         </Propiedad>
 		
     </EspefPropiedad>

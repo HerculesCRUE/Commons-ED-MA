@@ -45,6 +45,21 @@
                 </PropsEntLectura>
             </SeleccionEntidad>
         </Propiedad>
+		<Propiedad  ID="http://w3id.org/roh/projectAux" EntidadID="http://purl.org/ontology/bibo/Document">
+			<SeleccionEntidad>
+                <TipoSeleccion>Autocompletar</TipoSeleccion>
+                <Grafo>project.owl</Grafo>
+                <UrlTipoEntSolicitada>http://vivoweb.org/ontology/core#Project</UrlTipoEntSolicitada>              
+                <PropsEntEdicion>
+                    <NameProp>http://w3id.org/roh/title</NameProp>
+                </PropsEntEdicion>
+                <PropsEntLectura>
+                    <Propiedad ID="http://w3id.org/roh/title" EntidadID="http://vivoweb.org/ontology/core#Project">
+                        <AtrNombreLectura></AtrNombreLectura>
+                    </Propiedad>
+                </PropsEntLectura>
+            </SeleccionEntidad>
+        </Propiedad>
 		<Propiedad  ID="http://w3id.org/roh/isProducedBy" EntidadID="http://purl.org/ontology/bibo/Document">
             <AtrNombre>http://w3id.org/roh/isProducedBy</AtrNombre>
             <AtrNombreLectura>http://w3id.org/roh/isProducedBy</AtrNombreLectura>

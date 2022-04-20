@@ -12,8 +12,6 @@
     </ConfiguracionGeneral>
     <EspefPropiedad>
         <Propiedad  ID="http://w3id.org/roh/categoryNode" EntidadID="http://w3id.org/roh/CategoryPath">
-            <AtrNombre>Nodo de categoría</AtrNombre>
-            <AtrNombreLectura>Nodo de categoría</AtrNombreLectura>
 			<SeleccionEntidad>
 				<TipoSeleccion>Tesauro</TipoSeleccion>
 				<Grafo>taxonomy.owl</Grafo>				
@@ -21,8 +19,6 @@
 			</SeleccionEntidad>
         </Propiedad>
         <Propiedad  ID="http://vivoweb.org/ontology/core#affiliatedOrganization" EntidadID="http://w3id.org/roh/Committee">
-            <AtrNombre>http://vivoweb.org/ontology/core#affiliatedOrganization</AtrNombre>
-            <AtrNombreLectura>http://vivoweb.org/ontology/core#affiliatedOrganization</AtrNombreLectura>
 			<SeleccionEntidad>
                 <TipoSeleccion>Autocompletar</TipoSeleccion>
                 <Grafo>organization.owl</Grafo>
@@ -38,8 +34,6 @@
             </SeleccionEntidad>
         </Propiedad>
         <Propiedad  ID="http://vivoweb.org/ontology/core#geographicFocus" EntidadID="http://w3id.org/roh/Committee">
-            <AtrNombre>http://vivoweb.org/ontology/core#geographicFocus</AtrNombre>
-            <AtrNombreLectura>http://vivoweb.org/ontology/core#geographicFocus</AtrNombreLectura>
 			<SeleccionEntidad>
                 <TipoSeleccion>Autocompletar</TipoSeleccion>
                 <Grafo>geographicregion.owl</Grafo>
@@ -55,8 +49,6 @@
             </SeleccionEntidad>
         </Propiedad>
         <Propiedad  ID="https://www.w3.org/2006/vcard/ns#hasRegion" EntidadID="http://w3id.org/roh/Committee">
-            <AtrNombre>https://www.w3.org/2006/vcard/ns#hasRegion</AtrNombre>
-            <AtrNombreLectura>https://www.w3.org/2006/vcard/ns#hasRegion</AtrNombreLectura>
 			<SeleccionEntidad>
                 <TipoSeleccion>Combo</TipoSeleccion>
                 <Grafo>feature.owl</Grafo>
@@ -72,8 +64,6 @@
             </SeleccionEntidad>
         </Propiedad>
         <Propiedad  ID="https://www.w3.org/2006/vcard/ns#hasCountryName" EntidadID="http://w3id.org/roh/Committee">
-            <AtrNombre>https://www.w3.org/2006/vcard/ns#hasCountryName</AtrNombre>
-            <AtrNombreLectura>https://www.w3.org/2006/vcard/ns#hasCountryName</AtrNombreLectura>
 			<SeleccionEntidad>
                 <TipoSeleccion>Combo</TipoSeleccion>
                 <Grafo>feature.owl</Grafo>
@@ -88,11 +78,7 @@
                 </PropsEntLectura>
             </SeleccionEntidad>
         </Propiedad>
-		
-		
 		<Propiedad  ID="http://w3id.org/roh/affiliatedOrganizationHasRegion" EntidadID="http://w3id.org/roh/Committee">
-            <AtrNombre>http://w3id.org/roh/affiliatedOrganizationHasRegion</AtrNombre>
-            <AtrNombreLectura>http://w3id.org/roh/affiliatedOrganizationHasRegion</AtrNombreLectura>
 			<SeleccionEntidad>
                 <TipoSeleccion>Combo</TipoSeleccion>
                 <Grafo>feature.owl</Grafo>
@@ -108,8 +94,6 @@
             </SeleccionEntidad>
         </Propiedad>
         <Propiedad  ID="http://w3id.org/roh/affiliatedOrganizationHasCountryName" EntidadID="http://w3id.org/roh/Committee">
-            <AtrNombre>http://w3id.org/roh/affiliatedOrganizationHasCountryName</AtrNombre>
-            <AtrNombreLectura>http://w3id.org/roh/affiliatedOrganizationHasCountryName</AtrNombreLectura>
 			<SeleccionEntidad>
                 <TipoSeleccion>Combo</TipoSeleccion>
                 <Grafo>feature.owl</Grafo>
@@ -124,30 +108,7 @@
                 </PropsEntLectura>
             </SeleccionEntidad>
         </Propiedad>
-		
-        <Propiedad  ID="http://w3id.org/roh/hasKnowledgeArea" EntidadID="http://w3id.org/roh/Committee">
-            <AtrNombre>http://w3id.org/roh/hasKnowledgeArea</AtrNombre>
-            <AtrNombreLectura>http://w3id.org/roh/hasKnowledgeArea</AtrNombreLectura>
-        </Propiedad>
-        <Propiedad  ID="http://w3id.org/roh/crisIdentifier" EntidadID="http://w3id.org/roh/Committee">
-            <AtrNombre>http://w3id.org/roh/crisIdentifier</AtrNombre>
-            <AtrNombreLectura>http://w3id.org/roh/crisIdentifier</AtrNombreLectura>
-        </Propiedad>
-        <Propiedad  ID="http://w3id.org/roh/geographicFocusOther" EntidadID="http://w3id.org/roh/Committee">
-            <AtrNombre>http://w3id.org/roh/geographicFocusOther</AtrNombre>
-            <AtrNombreLectura>http://w3id.org/roh/geographicFocusOther</AtrNombreLectura>
-        </Propiedad>
-        <Propiedad  ID="https://www.w3.org/2006/vcard/ns#locality" EntidadID="http://w3id.org/roh/Committee">
-            <AtrNombre>https://www.w3.org/2006/vcard/ns#locality</AtrNombre>
-            <AtrNombreLectura>https://www.w3.org/2006/vcard/ns#locality</AtrNombreLectura>
-        </Propiedad>
-        <Propiedad  ID="http://w3id.org/roh/title" EntidadID="http://w3id.org/roh/Committee">
-            <AtrNombre>http://w3id.org/roh/title</AtrNombre>
-            <AtrNombreLectura>http://w3id.org/roh/title</AtrNombreLectura>
-        </Propiedad>
 		<Propiedad  ID="http://w3id.org/roh/affiliatedOrganizationType" EntidadID="http://w3id.org/roh/Committee">
-            <AtrNombre>http://w3id.org/roh/affiliatedOrganizationType</AtrNombre>
-            <AtrNombreLectura>http://w3id.org/roh/affiliatedOrganizationType</AtrNombreLectura>
 			<SeleccionEntidad>
                 <TipoSeleccion>Autocompletar</TipoSeleccion>
                 <Grafo>organizationtype.owl</Grafo>
@@ -162,69 +123,22 @@
                 </PropsEntLectura>
             </SeleccionEntidad>
         </Propiedad>
+		<Propiedad  ID="http://w3id.org/roh/owner" EntidadID="http://w3id.org/roh/Committee">
+			<SeleccionEntidad>
+                <TipoSeleccion>Autocompletar</TipoSeleccion>
+                <Grafo>person.owl</Grafo>
+                <UrlTipoEntSolicitada>http://xmlns.com/foaf/0.1/Person</UrlTipoEntSolicitada>              
+                <PropsEntEdicion>
+                    <NameProp>http://w3id.org/roh/title</NameProp>
+                </PropsEntEdicion>
+                <PropsEntLectura>
+                    <Propiedad ID="http://xmlns.com/foaf/0.1/name" EntidadID="http://xmlns.com/foaf/0.1/Person">
+                        <AtrNombreLectura></AtrNombreLectura>
+                    </Propiedad>
+                </PropsEntLectura>
+            </SeleccionEntidad>
+        </Propiedad>			
     </EspefPropiedad>
     <EspefEntidad>
-        <Entidad  ID="http://w3id.org/roh/CategoryPath">
-            <AtrNombre>http://w3id.org/roh/CategoryPath</AtrNombre>
-            <AtrNombreLectura>http://w3id.org/roh/CategoryPath</AtrNombreLectura>
-            <OrdenEntidad>
-                <Grupo class="formtheme02">
-                    <Grupo class="fieldset">
-                        <Grupo Tipo="fieldset" class="mediumLabels">
-                            <NameProp>http://w3id.org/roh/categoryNode</NameProp>
-                        </Grupo>
-                    </Grupo>
-                </Grupo>
-            </OrdenEntidad>
-            <OrdenEntidadLectura>
-                <Grupo classLectura="group content semanticView">
-                    <Grupo classLectura="group group_info">
-                        <AtrNombreGrupo>Propiedades</AtrNombreGrupo>
-                        <Grupo classLectura="contentGroup">
-                            <NameProp>http://w3id.org/roh/categoryNode</NameProp>
-                        </Grupo>
-                    </Grupo>
-                </Grupo>
-            </OrdenEntidadLectura>
-        </Entidad>
-        <Entidad  ID="http://w3id.org/roh/Committee">
-            <AtrNombre>http://w3id.org/roh/Committee</AtrNombre>
-            <AtrNombreLectura>http://w3id.org/roh/Committee</AtrNombreLectura>
-            <OrdenEntidad>
-                <Grupo class="formtheme02">
-                    <Grupo class="fieldset">
-                        <Grupo Tipo="fieldset" class="mediumLabels">
-                            <NameProp>http://vivoweb.org/ontology/core#affiliatedOrganization</NameProp> 
-                            <NameProp>http://vivoweb.org/ontology/core#geographicFocus</NameProp> 
-                            <NameProp>https://www.w3.org/2006/vcard/ns#hasRegion</NameProp> 
-                            <NameProp>https://www.w3.org/2006/vcard/ns#hasCountryName</NameProp> 
-                            <NameProp>http://w3id.org/roh/hasKnowledgeArea</NameProp> 
-                            <NameProp>http://w3id.org/roh/crisIdentifier</NameProp> 
-                            <NameProp>http://w3id.org/roh/geographicFocusOther</NameProp> 
-                            <NameProp>https://www.w3.org/2006/vcard/ns#locality</NameProp> 
-                            <NameProp>http://w3id.org/roh/title</NameProp>
-                        </Grupo>
-                    </Grupo>
-                </Grupo>
-            </OrdenEntidad>
-            <OrdenEntidadLectura>
-                <Grupo classLectura="group content semanticView">
-                    <Grupo classLectura="group group_info">
-                        <AtrNombreGrupo>Propiedades</AtrNombreGrupo>
-                        <Grupo classLectura="contentGroup">
-                            <NameProp>http://vivoweb.org/ontology/core#affiliatedOrganization</NameProp> 
-                            <NameProp>http://vivoweb.org/ontology/core#geographicFocus</NameProp> 
-                            <NameProp>https://www.w3.org/2006/vcard/ns#hasRegion</NameProp> 
-                            <NameProp>https://www.w3.org/2006/vcard/ns#hasCountryName</NameProp> 
-                            <NameProp>http://w3id.org/roh/hasKnowledgeArea</NameProp> 
-                            <NameProp>http://w3id.org/roh/crisIdentifier</NameProp> 
-                            <NameProp>http://w3id.org/roh/geographicFocusOther</NameProp> 
-                            <NameProp>https://www.w3.org/2006/vcard/ns#locality</NameProp> 
-                            <NameProp>http://w3id.org/roh/title</NameProp>
-                        </Grupo>
-                    </Grupo>
-                </Grupo>
-            </OrdenEntidadLectura>
-        </Entidad>
     </EspefEntidad>
 </config>
