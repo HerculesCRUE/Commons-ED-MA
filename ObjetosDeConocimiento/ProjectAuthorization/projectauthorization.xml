@@ -1,0 +1,33 @@
+<config>
+    <ConfiguracionGeneral>
+        <namespace>projectauthorization</namespace>
+        <idiomasOnto>
+            <idiomaOnto>es</idiomaOnto>
+		</idiomasOnto>
+        <TituloDoc EntidadID="http://w3id.org/roh/ProjectAuthorization">http://w3id.org/roh/title</TituloDoc>
+		<DescripcionDoc EntidadID="http://w3id.org/roh/ProjectAuthorization">http://w3id.org/roh/title</DescripcionDoc>
+        <HtmlNuevo>true</HtmlNuevo>
+		<CategorizacionTesauroGnossObligatoria>false</CategorizacionTesauroGnossObligatoria>
+	</ConfiguracionGeneral>
+    <EspefPropiedad>
+        <Propiedad  ID="http://w3id.org/roh/owner" EntidadID="http://w3id.org/roh/ProjectAuthorization">
+			<SeleccionEntidad>
+				<LinkARecurso IrAComunidad="true" PropiedadID="http://xmlns.com/foaf/0.1/name"></LinkARecurso>
+                <TipoSeleccion>Autocompletar</TipoSeleccion>
+                <Grafo>person.owl</Grafo>
+                <UrlTipoEntSolicitada>http://xmlns.com/foaf/0.1/Person</UrlTipoEntSolicitada>              
+                <PropsEntEdicion>
+                    <NameProp>http://xmlns.com/foaf/0.1/name</NameProp>
+                </PropsEntEdicion>
+                <PropsEntLectura>
+                    <Propiedad ID="http://xmlns.com/foaf/0.1/name" EntidadID="http://xmlns.com/foaf/0.1/Person">
+                        <AtrNombreLectura></AtrNombreLectura>
+                    </Propiedad>
+                </PropsEntLectura>
+            </SeleccionEntidad>
+        </Propiedad>
+	</EspefPropiedad>
+    <EspefEntidad>
+        
+	</EspefEntidad>
+</config>
