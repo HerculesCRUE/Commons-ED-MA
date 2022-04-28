@@ -263,6 +263,22 @@
                 </PropsEntLectura>
             </SeleccionEntidad>
         </Propiedad>
+		<Propiedad  ID="http://w3id.org/roh/projectAuthorization" EntidadID="http://vivoweb.org/ontology/core#Project">
+			<SeleccionEntidad>
+				<LinkARecurso IrAComunidad="true" PropiedadID="http://xmlns.com/foaf/0.1/name"></LinkARecurso>
+                <TipoSeleccion>Autocompletar</TipoSeleccion>
+                <Grafo>projectauthorization.owl</Grafo>
+                <UrlTipoEntSolicitada>http://w3id.org/roh/ProjectAuthorization</UrlTipoEntSolicitada>              
+                <PropsEntEdicion>
+                    <NameProp>http://w3id.org/roh/title</NameProp>
+                </PropsEntEdicion>
+                <PropsEntLectura>
+                    <Propiedad ID="http://w3id.org/roh/title" EntidadID="http://w3id.org/roh/ProjectAuthorization">
+                        <AtrNombreLectura></AtrNombreLectura>
+                    </Propiedad>
+                </PropsEntLectura>
+            </SeleccionEntidad>
+        </Propiedad>
 	
     </EspefPropiedad>
     <EspefEntidad>
