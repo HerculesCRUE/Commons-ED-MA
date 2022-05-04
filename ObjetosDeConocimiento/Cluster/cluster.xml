@@ -32,6 +32,7 @@
             <AtrNombre>http://www.w3.org/1999/02/22-rdf-syntax-ns#member</AtrNombre>
             <AtrNombreLectura>http://www.w3.org/1999/02/22-rdf-syntax-ns#member</AtrNombreLectura>
             <SeleccionEntidad>
+                <LinkARecurso IrAComunidad="true" PropiedadID="http://xmlns.com/foaf/0.1/name"></LinkARecurso>
                 <TipoSeleccion>Autocompletar</TipoSeleccion>
                 <Grafo>person.owl</Grafo>
                 <UrlTipoEntSolicitada>http://xmlns.com/foaf/0.1/Person</UrlTipoEntSolicitada>              
@@ -40,6 +41,29 @@
                 </PropsEntEdicion>
                 <PropsEntLectura>
                     <Propiedad ID="http://xmlns.com/foaf/0.1/name" EntidadID="http://xmlns.com/foaf/0.1/Person">
+                        <AtrNombreLectura></AtrNombreLectura>
+                    </Propiedad>
+                    <Propiedad ID="http://w3id.org/roh/hasPosition" EntidadID="http://xmlns.com/foaf/0.1/Person">
+                        <AtrNombreLectura></AtrNombreLectura>
+                    </Propiedad>
+                    <Propiedad  ID="http://vivoweb.org/ontology/core#departmentOrSchool" EntidadID="http://xmlns.com/foaf/0.1/Person">
+                        <AtrNombre>http://vivoweb.org/ontology/core#departmentOrSchool</AtrNombre>
+                        <AtrNombreLectura>http://vivoweb.org/ontology/core#departmentOrSchool</AtrNombreLectura>
+                        <SeleccionEntidad>
+                            <TipoSeleccion>Combo</TipoSeleccion>
+                            <Grafo>department.owl</Grafo>
+                            <UrlTipoEntSolicitada>http://vivoweb.org/ontology/core#Department</UrlTipoEntSolicitada>              
+                            <PropsEntEdicion>
+                                <NameProp>http://purl.org/dc/elements/1.1/title</NameProp>
+                            </PropsEntEdicion>
+                            <PropsEntLectura>
+                                <Propiedad ID="http://purl.org/dc/elements/1.1/title" EntidadID="http://vivoweb.org/ontology/core#Department">
+                                    <AtrNombreLectura></AtrNombreLectura>
+                                </Propiedad>
+                            </PropsEntLectura>
+                        </SeleccionEntidad>
+                    </Propiedad>
+                    <Propiedad ID="http://w3id.org/roh/publicationsNumber" EntidadID="http://xmlns.com/foaf/0.1/Person">
                         <AtrNombreLectura></AtrNombreLectura>
                     </Propiedad>
                 </PropsEntLectura>
@@ -56,12 +80,12 @@
                     <NameProp>http://purl.org/dc/elements/1.1/source</NameProp>
                 </PropsEntEdicion>
                 <PropsEntLectura>
-                    <Propiedad ID="http://purl.org/dc/elements/1.1/source" EntidadID="http://www.w3.org/2004/02/skos/core#Concept">
+                    <Propiedad ID="http://www.w3.org/2008/05/skos#prefLabel" EntidadID="http://www.w3.org/2004/02/skos/core#Concept">
                         <AtrNombreLectura></AtrNombreLectura>
                     </Propiedad>
                 </PropsEntLectura>
             </SeleccionEntidad>
-        </Propiedad>        
+        </Propiedad>  
     </EspefPropiedad>
 	<EspefEntidad>
 	</EspefEntidad>
