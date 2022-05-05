@@ -245,7 +245,7 @@
 				<UrlPropiedad>um</UrlPropiedad>                
 			</SeleccionEntidad>
         </Propiedad>
-		<Propiedad  ID="http://w3id.org/roh/members" EntidadID="http://vivoweb.org/ontology/core#Project">
+		<Propiedad  ID="http://w3id.org/roh/membersProject" EntidadID="http://vivoweb.org/ontology/core#Project">
             <AtrNombre>Persona</AtrNombre>
             <AtrNombreLectura>Persona</AtrNombreLectura>
 			<SeleccionEntidad>
