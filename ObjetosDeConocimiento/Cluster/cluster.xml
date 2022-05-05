@@ -46,6 +46,9 @@
                     <Propiedad ID="http://w3id.org/roh/hasPosition" EntidadID="http://xmlns.com/foaf/0.1/Person">
                         <AtrNombreLectura></AtrNombreLectura>
                     </Propiedad>
+                    <Propiedad ID="http://w3id.org/roh/ipNumber" EntidadID="http://xmlns.com/foaf/0.1/Person">
+                        <AtrNombreLectura></AtrNombreLectura>
+                    </Propiedad>
                     <Propiedad  ID="http://vivoweb.org/ontology/core#departmentOrSchool" EntidadID="http://xmlns.com/foaf/0.1/Person">
                         <AtrNombre>http://vivoweb.org/ontology/core#departmentOrSchool</AtrNombre>
                         <AtrNombreLectura>http://vivoweb.org/ontology/core#departmentOrSchool</AtrNombreLectura>
