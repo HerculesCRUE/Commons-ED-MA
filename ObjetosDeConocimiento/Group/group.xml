@@ -118,7 +118,7 @@
                 </PropsEntLectura>
             </SeleccionEntidad>
         </Propiedad>	
-		<Propiedad  ID="http://w3id.org/roh/members" EntidadID="http://xmlns.com/foaf/0.1/Group">
+		<Propiedad  ID="http://w3id.org/roh/membersGroup" EntidadID="http://xmlns.com/foaf/0.1/Group">
             <AtrNombre>Persona</AtrNombre>
             <AtrNombreLectura>Persona</AtrNombreLectura>
 			<SeleccionEntidad>
