@@ -1,0 +1,380 @@
+<?xml version="1.0"?>
+<Ontology xmlns="http://www.w3.org/2002/07/owl#"
+     xml:base="http://www.owl-ontologies.com/Ontology1627556398.owl"
+     xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+     xmlns:xml="http://www.w3.org/XML/1998/namespace"
+     xmlns:xsd="http://www.w3.org/2001/XMLSchema#"
+     xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+     ontologyIRI="http://www.owl-ontologies.com/Ontology1627556398.owl">
+    <Prefix name="" IRI="http://www.owl-ontologies.com/Ontology1627556398.owl"/>
+    <Prefix name="dc" IRI="http://purl.org/dc/elements/1.1/"/>
+    <Prefix name="qb" IRI="http://purl.org/linked-data/cube#observation"/>
+    <Prefix name="dct" IRI="http://purl.org/dc/terms/"/>
+    <Prefix name="drm" IRI="http://vocab.data.gov/def/drm#"/>
+    <Prefix name="obo" IRI="http://purl.obolibrary.org/obo/"/>
+    <Prefix name="owl" IRI="http://www.w3.org/2002/07/owl#"/>
+    <Prefix name="rdf" IRI="http://www.w3.org/1999/02/22-rdf-syntax-ns#"/>
+    <Prefix name="roh" IRI="http://w3id.org/roh/"/>
+    <Prefix name="xml" IRI="http://www.w3.org/XML/1998/namespace"/>
+    <Prefix name="xsd" IRI="http://www.w3.org/2001/XMLSchema#"/>
+    <Prefix name="bibo" IRI="http://purl.org/ontology/bibo/"/>
+    <Prefix name="foaf" IRI="http://xmlns.com/foaf/0.1/"/>
+    <Prefix name="rdfs" IRI="http://www.w3.org/2000/01/rdf-schema#"/>
+    <Prefix name="vivo" IRI="http://vivoweb.org/ontology/core#"/>
+    <Prefix name="schema" IRI="http://schema.org/"/>
+    <Declaration>
+        <Class IRI="http://schema/Offer"/>
+    </Declaration>
+    <Declaration>
+        <Class abbreviatedIRI="roh:AvailabilityChangeEvent"/>
+    </Declaration>
+    <Declaration>
+        <ObjectProperty abbreviatedIRI="bibo:status"/>
+    </Declaration>
+    <Declaration>
+        <ObjectProperty abbreviatedIRI="schema:availability"/>
+    </Declaration>
+    <Declaration>
+        <ObjectProperty abbreviatedIRI="schema:offeredBy"/>
+    </Declaration>
+    <Declaration>
+        <ObjectProperty abbreviatedIRI="roh:availabilityChangeEvent"/>
+    </Declaration>
+    <Declaration>
+        <ObjectProperty abbreviatedIRI="roh:document"/>
+    </Declaration>
+    <Declaration>
+        <ObjectProperty abbreviatedIRI="roh:framingSector"/>
+    </Declaration>
+    <Declaration>
+        <ObjectProperty abbreviatedIRI="roh:patents"/>
+    </Declaration>
+    <Declaration>
+        <ObjectProperty abbreviatedIRI="roh:project"/>
+    </Declaration>
+    <Declaration>
+        <ObjectProperty abbreviatedIRI="roh:roleOf"/>
+    </Declaration>
+    <Declaration>
+        <ObjectProperty IRI="http://w3id.org/roh/roh:researchers"/>
+    </Declaration>
+    <Declaration>
+        <DataProperty abbreviatedIRI="dct:issued"/>
+    </Declaration>
+    <Declaration>
+        <DataProperty IRI="http://purl.org/linked-data/cube#observation"/>
+    </Declaration>
+    <Declaration>
+        <DataProperty abbreviatedIRI="bibo:recipient"/>
+    </Declaration>
+    <Declaration>
+        <DataProperty abbreviatedIRI="schema:description"/>
+    </Declaration>
+    <Declaration>
+        <DataProperty abbreviatedIRI="schema:name"/>
+    </Declaration>
+    <Declaration>
+        <DataProperty abbreviatedIRI="schema:validFrom"/>
+    </Declaration>
+    <Declaration>
+        <DataProperty abbreviatedIRI="vivo:freetextKeyword"/>
+    </Declaration>
+    <Declaration>
+        <DataProperty abbreviatedIRI="drm:origin"/>
+    </Declaration>
+    <Declaration>
+        <DataProperty abbreviatedIRI="roh:application"/>
+    </Declaration>
+    <Declaration>
+        <DataProperty abbreviatedIRI="roh:collaborationSought"/>
+    </Declaration>
+    <Declaration>
+        <DataProperty abbreviatedIRI="roh:innovation"/>
+    </Declaration>
+    <Declaration>
+        <DataProperty abbreviatedIRI="roh:lineResearch"/>
+    </Declaration>
+    <Declaration>
+        <DataProperty abbreviatedIRI="roh:partnerType"/>
+    </Declaration>
+    <Declaration>
+        <Datatype abbreviatedIRI="xsd:date"/>
+    </Declaration>
+    <SubClassOf>
+        <Class IRI="http://schema/Offer"/>
+        <Class abbreviatedIRI="owl:Thing"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="http://schema/Offer"/>
+        <ObjectMinCardinality cardinality="1">
+            <ObjectProperty abbreviatedIRI="roh:availabilityChangeEvent"/>
+            <Class abbreviatedIRI="roh:AvailabilityChangeEvent"/>
+        </ObjectMinCardinality>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="http://schema/Offer"/>
+        <DataSomeValuesFrom>
+            <DataProperty abbreviatedIRI="vivo:freetextKeyword"/>
+            <Datatype abbreviatedIRI="rdfs:Literal"/>
+        </DataSomeValuesFrom>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="http://schema/Offer"/>
+        <DataSomeValuesFrom>
+            <DataProperty abbreviatedIRI="roh:lineResearch"/>
+            <Datatype abbreviatedIRI="rdfs:Literal"/>
+        </DataSomeValuesFrom>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="http://schema/Offer"/>
+        <DataMaxCardinality cardinality="1">
+            <DataProperty abbreviatedIRI="dct:issued"/>
+            <Datatype abbreviatedIRI="xsd:date"/>
+        </DataMaxCardinality>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="http://schema/Offer"/>
+        <DataMaxCardinality cardinality="1">
+            <DataProperty IRI="http://purl.org/linked-data/cube#observation"/>
+        </DataMaxCardinality>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="http://schema/Offer"/>
+        <DataMaxCardinality cardinality="1">
+            <DataProperty abbreviatedIRI="bibo:recipient"/>
+        </DataMaxCardinality>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="http://schema/Offer"/>
+        <DataMaxCardinality cardinality="1">
+            <DataProperty abbreviatedIRI="schema:description"/>
+        </DataMaxCardinality>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="http://schema/Offer"/>
+        <DataMaxCardinality cardinality="1">
+            <DataProperty abbreviatedIRI="schema:name"/>
+        </DataMaxCardinality>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="http://schema/Offer"/>
+        <DataMaxCardinality cardinality="1">
+            <DataProperty abbreviatedIRI="drm:origin"/>
+        </DataMaxCardinality>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="http://schema/Offer"/>
+        <DataMaxCardinality cardinality="1">
+            <DataProperty abbreviatedIRI="roh:application"/>
+        </DataMaxCardinality>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="http://schema/Offer"/>
+        <DataMaxCardinality cardinality="1">
+            <DataProperty abbreviatedIRI="roh:collaborationSought"/>
+        </DataMaxCardinality>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="http://schema/Offer"/>
+        <DataMaxCardinality cardinality="1">
+            <DataProperty abbreviatedIRI="roh:innovation"/>
+        </DataMaxCardinality>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="http://schema/Offer"/>
+        <DataMaxCardinality cardinality="1">
+            <DataProperty abbreviatedIRI="roh:partnerType"/>
+        </DataMaxCardinality>
+    </SubClassOf>
+    <SubClassOf>
+        <Class abbreviatedIRI="roh:AvailabilityChangeEvent"/>
+        <DataMaxCardinality cardinality="1">
+            <DataProperty abbreviatedIRI="schema:validFrom"/>
+            <Datatype abbreviatedIRI="xsd:date"/>
+        </DataMaxCardinality>
+    </SubClassOf>
+    <FunctionalObjectProperty>
+        <ObjectProperty abbreviatedIRI="schema:availability"/>
+    </FunctionalObjectProperty>
+    <FunctionalObjectProperty>
+        <ObjectProperty abbreviatedIRI="schema:offeredBy"/>
+    </FunctionalObjectProperty>
+    <FunctionalObjectProperty>
+        <ObjectProperty abbreviatedIRI="roh:availabilityChangeEvent"/>
+    </FunctionalObjectProperty>
+    <FunctionalObjectProperty>
+        <ObjectProperty abbreviatedIRI="roh:roleOf"/>
+    </FunctionalObjectProperty>
+    <FunctionalObjectProperty>
+        <ObjectProperty IRI="http://w3id.org/roh/roh:researchers"/>
+    </FunctionalObjectProperty>
+    <ObjectPropertyDomain>
+        <ObjectProperty abbreviatedIRI="bibo:status"/>
+        <Class IRI="http://schema/Offer"/>
+    </ObjectPropertyDomain>
+    <ObjectPropertyDomain>
+        <ObjectProperty abbreviatedIRI="schema:availability"/>
+        <Class IRI="http://schema/Offer"/>
+    </ObjectPropertyDomain>
+    <ObjectPropertyDomain>
+        <ObjectProperty abbreviatedIRI="schema:availability"/>
+        <Class abbreviatedIRI="roh:AvailabilityChangeEvent"/>
+    </ObjectPropertyDomain>
+    <ObjectPropertyDomain>
+        <ObjectProperty abbreviatedIRI="schema:offeredBy"/>
+        <Class IRI="http://schema/Offer"/>
+    </ObjectPropertyDomain>
+    <ObjectPropertyDomain>
+        <ObjectProperty abbreviatedIRI="roh:availabilityChangeEvent"/>
+        <Class IRI="http://schema/Offer"/>
+    </ObjectPropertyDomain>
+    <ObjectPropertyDomain>
+        <ObjectProperty abbreviatedIRI="roh:document"/>
+        <Class IRI="http://schema/Offer"/>
+    </ObjectPropertyDomain>
+    <ObjectPropertyDomain>
+        <ObjectProperty abbreviatedIRI="roh:framingSector"/>
+        <Class IRI="http://schema/Offer"/>
+    </ObjectPropertyDomain>
+    <ObjectPropertyDomain>
+        <ObjectProperty abbreviatedIRI="roh:patents"/>
+        <Class IRI="http://schema/Offer"/>
+    </ObjectPropertyDomain>
+    <ObjectPropertyDomain>
+        <ObjectProperty abbreviatedIRI="roh:project"/>
+        <Class IRI="http://schema/Offer"/>
+    </ObjectPropertyDomain>
+    <ObjectPropertyDomain>
+        <ObjectProperty abbreviatedIRI="roh:roleOf"/>
+        <Class abbreviatedIRI="roh:AvailabilityChangeEvent"/>
+    </ObjectPropertyDomain>
+    <ObjectPropertyDomain>
+        <ObjectProperty IRI="http://w3id.org/roh/roh:researchers"/>
+        <Class IRI="http://schema/Offer"/>
+    </ObjectPropertyDomain>
+    <ObjectPropertyRange>
+        <ObjectProperty abbreviatedIRI="roh:availabilityChangeEvent"/>
+        <Class abbreviatedIRI="roh:AvailabilityChangeEvent"/>
+    </ObjectPropertyRange>
+    <FunctionalDataProperty>
+        <DataProperty abbreviatedIRI="dct:issued"/>
+    </FunctionalDataProperty>
+    <FunctionalDataProperty>
+        <DataProperty abbreviatedIRI="bibo:recipient"/>
+    </FunctionalDataProperty>
+    <FunctionalDataProperty>
+        <DataProperty abbreviatedIRI="schema:name"/>
+    </FunctionalDataProperty>
+    <FunctionalDataProperty>
+        <DataProperty abbreviatedIRI="roh:application"/>
+    </FunctionalDataProperty>
+    <DataPropertyDomain>
+        <DataProperty abbreviatedIRI="dct:issued"/>
+        <Class IRI="http://schema/Offer"/>
+    </DataPropertyDomain>
+    <DataPropertyDomain>
+        <DataProperty IRI="http://purl.org/linked-data/cube#observation"/>
+        <Class IRI="http://schema/Offer"/>
+    </DataPropertyDomain>
+    <DataPropertyDomain>
+        <DataProperty abbreviatedIRI="bibo:recipient"/>
+        <Class IRI="http://schema/Offer"/>
+    </DataPropertyDomain>
+    <DataPropertyDomain>
+        <DataProperty abbreviatedIRI="schema:description"/>
+        <Class IRI="http://schema/Offer"/>
+    </DataPropertyDomain>
+    <DataPropertyDomain>
+        <DataProperty abbreviatedIRI="schema:name"/>
+        <Class IRI="http://schema/Offer"/>
+    </DataPropertyDomain>
+    <DataPropertyDomain>
+        <DataProperty abbreviatedIRI="schema:validFrom"/>
+        <Class abbreviatedIRI="roh:AvailabilityChangeEvent"/>
+    </DataPropertyDomain>
+    <DataPropertyDomain>
+        <DataProperty abbreviatedIRI="vivo:freetextKeyword"/>
+        <Class IRI="http://schema/Offer"/>
+    </DataPropertyDomain>
+    <DataPropertyDomain>
+        <DataProperty abbreviatedIRI="drm:origin"/>
+        <Class IRI="http://schema/Offer"/>
+    </DataPropertyDomain>
+    <DataPropertyDomain>
+        <DataProperty abbreviatedIRI="roh:application"/>
+        <Class IRI="http://schema/Offer"/>
+    </DataPropertyDomain>
+    <DataPropertyDomain>
+        <DataProperty abbreviatedIRI="roh:collaborationSought"/>
+        <Class IRI="http://schema/Offer"/>
+    </DataPropertyDomain>
+    <DataPropertyDomain>
+        <DataProperty abbreviatedIRI="roh:innovation"/>
+        <Class IRI="http://schema/Offer"/>
+    </DataPropertyDomain>
+    <DataPropertyDomain>
+        <DataProperty abbreviatedIRI="roh:lineResearch"/>
+        <Class IRI="http://schema/Offer"/>
+    </DataPropertyDomain>
+    <DataPropertyDomain>
+        <DataProperty abbreviatedIRI="roh:partnerType"/>
+        <Class IRI="http://schema/Offer"/>
+    </DataPropertyDomain>
+    <DataPropertyRange>
+        <DataProperty abbreviatedIRI="dct:issued"/>
+        <Datatype abbreviatedIRI="xsd:date"/>
+    </DataPropertyRange>
+    <DataPropertyRange>
+        <DataProperty IRI="http://purl.org/linked-data/cube#observation"/>
+        <Datatype abbreviatedIRI="xsd:string"/>
+    </DataPropertyRange>
+    <DataPropertyRange>
+        <DataProperty abbreviatedIRI="bibo:recipient"/>
+        <Datatype abbreviatedIRI="xsd:string"/>
+    </DataPropertyRange>
+    <DataPropertyRange>
+        <DataProperty abbreviatedIRI="schema:description"/>
+        <Datatype abbreviatedIRI="xsd:string"/>
+    </DataPropertyRange>
+    <DataPropertyRange>
+        <DataProperty abbreviatedIRI="schema:name"/>
+        <Datatype abbreviatedIRI="xsd:string"/>
+    </DataPropertyRange>
+    <DataPropertyRange>
+        <DataProperty abbreviatedIRI="schema:validFrom"/>
+        <Datatype abbreviatedIRI="xsd:date"/>
+    </DataPropertyRange>
+    <DataPropertyRange>
+        <DataProperty abbreviatedIRI="vivo:freetextKeyword"/>
+        <Datatype abbreviatedIRI="xsd:string"/>
+    </DataPropertyRange>
+    <DataPropertyRange>
+        <DataProperty abbreviatedIRI="drm:origin"/>
+        <Datatype abbreviatedIRI="xsd:string"/>
+    </DataPropertyRange>
+    <DataPropertyRange>
+        <DataProperty abbreviatedIRI="roh:application"/>
+        <Datatype abbreviatedIRI="xsd:string"/>
+    </DataPropertyRange>
+    <DataPropertyRange>
+        <DataProperty abbreviatedIRI="roh:collaborationSought"/>
+        <Datatype abbreviatedIRI="xsd:string"/>
+    </DataPropertyRange>
+    <DataPropertyRange>
+        <DataProperty abbreviatedIRI="roh:innovation"/>
+        <Datatype abbreviatedIRI="xsd:string"/>
+    </DataPropertyRange>
+    <DataPropertyRange>
+        <DataProperty abbreviatedIRI="roh:lineResearch"/>
+        <Datatype abbreviatedIRI="xsd:string"/>
+    </DataPropertyRange>
+    <DataPropertyRange>
+        <DataProperty abbreviatedIRI="roh:partnerType"/>
+        <Datatype abbreviatedIRI="xsd:string"/>
+    </DataPropertyRange>
+</Ontology>
+
+
+
+<!-- Generated by the OWL API (version 4.5.9.2019-02-01T07:24:44Z) https://github.com/owlcs/owlapi -->
+
