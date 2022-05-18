@@ -1032,10 +1032,10 @@
                     </Propiedad>
                 </PropsEntLectura>
             </SeleccionEntidad>
-        </Propiedad>
-
-
-		
+        </Propiedad>		
+		<Propiedad  ID="http://w3id.org/roh/filePDF" EntidadID="http://w3id.org/roh/GeneratedPDFFile">
+			<TipoCampo>Archivo</TipoCampo>
+        </Propiedad>		
     </EspefPropiedad>
     <EspefEntidad>
     </EspefEntidad>
