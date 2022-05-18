@@ -1,0 +1,211 @@
+<config>
+    <ConfiguracionGeneral>
+        <namespace>offer</namespace>
+        <idiomasOnto>
+            <idiomaOnto>es</idiomaOnto>
+        </idiomasOnto>
+        <ocultarTituloDescpImgDoc></ocultarTituloDescpImgDoc>
+        <TituloDoc EntidadID="http://schema/Offer">@@@TITULO</TituloDoc>
+        <DescripcionDoc EntidadID="http://schema/Offer">@@@DESCRIPCIÓN</DescripcionDoc>
+        <HtmlNuevo>true</HtmlNuevo>
+    </ConfiguracionGeneral>
+    <EspefPropiedad>
+        <Propiedad  ID="http://purl.org/ontology/bibo/status" EntidadID="http://schema/Offer">
+            <AtrNombre>http://purl.org/ontology/bibo/status</AtrNombre>
+            <AtrNombreLectura>http://purl.org/ontology/bibo/status</AtrNombreLectura>
+        </Propiedad>
+        <Propiedad  ID="http://schema.org/availability" EntidadID="http://schema/Offer">
+            <SeleccionEntidad>
+                <TipoSeleccion>Autocompletar</TipoSeleccion>
+                <Grafo>offerstate.owl</Grafo>
+                <UrlTipoEntSolicitada>http://w3id.org/roh/OfferState</UrlTipoEntSolicitada>              
+                <PropsEntEdicion>
+                    <NameProp>http://w3id.org/roh/title</NameProp>
+                </PropsEntEdicion>
+                <PropsEntLectura>
+                    <Propiedad ID="http://w3id.org/roh/title" EntidadID="http://w3id.org/roh/OfferState">
+                        <AtrNombreLectura></AtrNombreLectura>
+                    </Propiedad>
+                </PropsEntLectura>
+            </SeleccionEntidad>
+        </Propiedad>
+        <Propiedad  ID="http://schema.org/offeredBy" EntidadID="http://schema/Offer">
+            <SeleccionEntidad>
+                <TipoSeleccion>Autocompletar</TipoSeleccion>
+                <Grafo>person.owl</Grafo>
+                <UrlTipoEntSolicitada>http://xmlns.com/foaf/0.1/Person</UrlTipoEntSolicitada>
+                <PropsEntEdicion>
+                    <NameProp>http://w3id.org/roh/title</NameProp>
+                </PropsEntEdicion>
+                <PropsEntLectura>
+                    <Propiedad ID="http://xmlns.com/foaf/0.1/name" EntidadID="http://xmlns.com/foaf/0.1/Person">
+                        <AtrNombreLectura></AtrNombreLectura>
+                    </Propiedad>
+                </PropsEntLectura>
+            </SeleccionEntidad>
+        </Propiedad>
+        <Propiedad  ID="http://schema.org/availabilityChangeEvent" EntidadID="http://schema/Offer">
+            <SeleccionEntidad>
+                <TipoSeleccion>Autocompletar</TipoSeleccion>
+                <Grafo>offer.owl</Grafo>
+                <UrlTipoEntSolicitada>http://schema.org/AvailabilityChangeEvent</UrlTipoEntSolicitada>              
+                <PropsEntEdicion>
+                    <NameProp>http://w3id.org/roh/title</NameProp>
+                </PropsEntEdicion>
+                <PropsEntLectura>
+                    <Propiedad ID="http://xmlns.com/foaf/0.1/name" EntidadID="http://schema.org/AvailabilityChangeEvent">
+                        <AtrNombreLectura></AtrNombreLectura>
+                    </Propiedad>
+                </PropsEntLectura>
+            </SeleccionEntidad>
+        </Propiedad>
+        <Propiedad  ID="http://w3id.org/roh/document" EntidadID="http://schema/Offer">
+            <AtrNombre>http://w3id.org/roh/document</AtrNombre>
+            <AtrNombreLectura>http://w3id.org/roh/document</AtrNombreLectura>
+        </Propiedad>
+        <Propiedad  ID="http://w3id.org/roh/framingSector" EntidadID="http://schema/Offer">
+            <SeleccionEntidad>
+                <TipoSeleccion>Autocompletar</TipoSeleccion>
+                <Grafo>framingsector.owl</Grafo>
+                <UrlTipoEntSolicitada>http://w3id.org/roh/FramingSector</UrlTipoEntSolicitada>              
+                <PropsEntEdicion>
+                    <NameProp>http://purl.org/dc/elements/1.1/title</NameProp>
+                </PropsEntEdicion>
+                <PropsEntLectura>
+                    <Propiedad ID="http://purl.org/dc/elements/1.1/title" EntidadID="http://w3id.org/roh/FramingSector">
+                        <AtrNombreLectura></AtrNombreLectura>
+                    </Propiedad>
+                </PropsEntLectura>
+            </SeleccionEntidad>
+        </Propiedad>
+        <Propiedad  ID="http://w3id.org/roh/patents" EntidadID="http://schema/Offer">
+            <SeleccionEntidad>
+                <TipoSeleccion>Autocompletar</TipoSeleccion>
+                <Grafo>patent.owl</Grafo>
+                <UrlTipoEntSolicitada>http://purl.org/ontology/bibo/Patent</UrlTipoEntSolicitada>              
+                <PropsEntEdicion>
+                    <NameProp>http://w3id.org/roh/title</NameProp>
+                </PropsEntEdicion>
+                <PropsEntLectura>
+                    <Propiedad ID="http://w3id.org/roh/title" EntidadID="http://purl.org/ontology/bibo/Patent">
+                        <AtrNombreLectura></AtrNombreLectura>
+                    </Propiedad>
+                </PropsEntLectura>
+            </SeleccionEntidad>
+        </Propiedad>
+        <Propiedad  ID="http://w3id.org/roh/project" EntidadID="http://schema/Offer">
+            <SeleccionEntidad>
+                <TipoSeleccion>Autocompletar</TipoSeleccion>
+                <Grafo>project.owl</Grafo>
+                <UrlTipoEntSolicitada>http://vivoweb.org/ontology/Project</UrlTipoEntSolicitada>              
+                <PropsEntEdicion>
+                    <NameProp>http://w3id.org/roh/title</NameProp>
+                </PropsEntEdicion>
+                <PropsEntLectura>
+                    <Propiedad ID="http://w3id.org/roh/title" EntidadID="http://vivoweb.org/ontology/Project">
+                        <AtrNombreLectura></AtrNombreLectura>
+                    </Propiedad>
+                </PropsEntLectura>
+            </SeleccionEntidad>
+        </Propiedad>
+        <Propiedad  ID="http://w3id.org/roh/researchers" EntidadID="http://schema/Offer">
+            <SeleccionEntidad>
+                <TipoSeleccion>Autocompletar</TipoSeleccion>
+                <Grafo>person.owl</Grafo>
+                <UrlTipoEntSolicitada>http://xmlns.com/foaf/0.1/Person</UrlTipoEntSolicitada>              
+                <PropsEntEdicion>
+                    <NameProp>http://w3id.org/roh/title</NameProp>
+                </PropsEntEdicion>
+                <PropsEntLectura>
+                    <Propiedad ID="http://xmlns.com/foaf/0.1/name" EntidadID="http://xmlns.com/foaf/0.1/Person">
+                        <AtrNombreLectura></AtrNombreLectura>
+                    </Propiedad>
+                </PropsEntLectura>
+            </SeleccionEntidad>
+        </Propiedad>
+        <Propiedad  ID="http://purl.org/dc/terms/issued" EntidadID="http://schema/Offer">
+            <AtrNombre>http://purl.org/dc/terms/issued</AtrNombre>
+            <AtrNombreLectura>http://purl.org/dc/terms/issued</AtrNombreLectura>
+        </Propiedad>
+        <Propiedad  ID="http://purl.org/linked-data/cube#observation" EntidadID="http://schema/Offer">
+            <AtrNombre>http://purl.org/linked-data/cube#observation</AtrNombre>
+            <AtrNombreLectura>http://purl.org/linked-data/cube#observation</AtrNombreLectura>
+        </Propiedad>
+        <Propiedad  ID="http://purl.org/ontology/bibo/recipient" EntidadID="http://schema/Offer">
+            <AtrNombre>http://purl.org/ontology/bibo/recipient</AtrNombre>
+            <AtrNombreLectura>http://purl.org/ontology/bibo/recipient</AtrNombreLectura>
+        </Propiedad>
+        <Propiedad  ID="http://schema.org/description" EntidadID="http://schema/Offer">
+            <AtrNombre>http://schema.org/description</AtrNombre>
+            <AtrNombreLectura>http://schema.org/description</AtrNombreLectura>
+        </Propiedad>
+        <Propiedad  ID="http://schema.org/name" EntidadID="http://schema/Offer">
+            <AtrNombre>http://schema.org/name</AtrNombre>
+            <AtrNombreLectura>http://schema.org/name</AtrNombreLectura>
+        </Propiedad>
+        <Propiedad  ID="http://vivoweb.org/ontology/core#freetextKeyword" EntidadID="http://schema/Offer">
+            <AtrNombre>http://vivoweb.org/ontology/core#freetextKeyword</AtrNombre>
+            <AtrNombreLectura>http://vivoweb.org/ontology/core#freetextKeyword</AtrNombreLectura>
+        </Propiedad>
+        <Propiedad  ID="http://vocab.data.gov/def/drm#origin" EntidadID="http://schema/Offer">
+            <AtrNombre>http://vocab.data.gov/def/drm#origin</AtrNombre>
+            <AtrNombreLectura>http://vocab.data.gov/def/drm#origin</AtrNombreLectura>
+        </Propiedad>
+        <Propiedad  ID="http://w3id.org/roh/application" EntidadID="http://schema/Offer">
+            <AtrNombre>http://w3id.org/roh/application</AtrNombre>
+            <AtrNombreLectura>http://w3id.org/roh/application</AtrNombreLectura>
+        </Propiedad>
+        <Propiedad  ID="http://w3id.org/roh/collaborationSought" EntidadID="http://schema/Offer">
+            <AtrNombre>http://w3id.org/roh/collaborationSought</AtrNombre>
+            <AtrNombreLectura>http://w3id.org/roh/collaborationSought</AtrNombreLectura>
+        </Propiedad>
+        <Propiedad  ID="http://w3id.org/roh/innovation" EntidadID="http://schema/Offer">
+            <AtrNombre>http://w3id.org/roh/innovation</AtrNombre>
+            <AtrNombreLectura>http://w3id.org/roh/innovation</AtrNombreLectura>
+        </Propiedad>
+        <Propiedad  ID="http://w3id.org/roh/lineResearch" EntidadID="http://schema/Offer">
+            <AtrNombre>http://w3id.org/roh/lineResearch</AtrNombre>
+            <AtrNombreLectura>http://w3id.org/roh/lineResearch</AtrNombreLectura>
+        </Propiedad>
+        <Propiedad  ID="http://w3id.org/roh/partnerType" EntidadID="http://schema/Offer">
+            <AtrNombre>http://w3id.org/roh/partnerType</AtrNombre>
+            <AtrNombreLectura>http://w3id.org/roh/partnerType</AtrNombreLectura>
+        </Propiedad>
+        <Propiedad  ID="http://schema.org/availability" EntidadID="http://w3id.org/roh/AvailabilityChangeEvent">
+            <SeleccionEntidad>
+                <TipoSeleccion>Autocompletar</TipoSeleccion>
+                <Grafo>offerstate.owl</Grafo>
+                <UrlTipoEntSolicitada>http://w3id.org/roh/OfferState</UrlTipoEntSolicitada>              
+                <PropsEntEdicion>
+                    <NameProp>http://w3id.org/roh/title</NameProp>
+                </PropsEntEdicion>
+                <PropsEntLectura>
+                    <Propiedad ID="http://w3id.org/roh/title" EntidadID="http://w3id.org/roh/OfferState">
+                        <AtrNombreLectura></AtrNombreLectura>
+                    </Propiedad>
+                </PropsEntLectura>
+            </SeleccionEntidad>
+        </Propiedad>
+        <Propiedad  ID="http://w3id.org/roh/roleOf" EntidadID="http://w3id.org/roh/AvailabilityChangeEvent">
+            <SeleccionEntidad>
+                <TipoSeleccion>Autocompletar</TipoSeleccion>
+                <Grafo>person.owl</Grafo>
+                <UrlTipoEntSolicitada>http://xmlns.com/foaf/0.1/Person</UrlTipoEntSolicitada>              
+                <PropsEntEdicion>
+                    <NameProp>http://w3id.org/roh/title</NameProp>
+                </PropsEntEdicion>
+                <PropsEntLectura>
+                    <Propiedad ID="http://xmlns.com/foaf/0.1/name" EntidadID="http://xmlns.com/foaf/0.1/Person">
+                        <AtrNombreLectura></AtrNombreLectura>
+                    </Propiedad>
+                </PropsEntLectura>
+            </SeleccionEntidad>
+        </Propiedad>
+        <Propiedad  ID="http://schema.org/validFrom" EntidadID="http://w3id.org/roh/AvailabilityChangeEvent">
+            <AtrNombre>http://schema.org/validFrom</AtrNombre>
+            <AtrNombreLectura>http://schema.org/validFrom</AtrNombreLectura>
+        </Propiedad>
+    </EspefPropiedad>
+    <EspefEntidad>
+    </EspefEntidad>
+</config>

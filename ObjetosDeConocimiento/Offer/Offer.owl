@@ -1,378 +1,368 @@
 <?xml version="1.0"?>
-<Ontology xmlns="http://www.w3.org/2002/07/owl#"
+<rdf:RDF xmlns="http://www.owl-ontologies.com/Ontology1627556398.owl"
      xml:base="http://www.owl-ontologies.com/Ontology1627556398.owl"
+     xmlns:dc="http://purl.org/dc/elements/1.1/"
+     xmlns:qb="http://purl.org/linked-data/cube#observation"
+     xmlns:dct="http://purl.org/dc/terms/"
+     xmlns:drm="http://vocab.data.gov/def/drm#"
+     xmlns:obo="http://purl.obolibrary.org/obo/"
+     xmlns:owl="http://www.w3.org/2002/07/owl#"
      xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+     xmlns:roh="http://w3id.org/roh/"
      xmlns:xml="http://www.w3.org/XML/1998/namespace"
      xmlns:xsd="http://www.w3.org/2001/XMLSchema#"
+     xmlns:bibo="http://purl.org/ontology/bibo/"
+     xmlns:foaf="http://xmlns.com/foaf/0.1/"
      xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
-     ontologyIRI="http://www.owl-ontologies.com/Ontology1627556398.owl">
-    <Prefix name="" IRI="http://www.owl-ontologies.com/Ontology1627556398.owl"/>
-    <Prefix name="dc" IRI="http://purl.org/dc/elements/1.1/"/>
-    <Prefix name="qb" IRI="http://purl.org/linked-data/cube#observation"/>
-    <Prefix name="dct" IRI="http://purl.org/dc/terms/"/>
-    <Prefix name="drm" IRI="http://vocab.data.gov/def/drm#"/>
-    <Prefix name="obo" IRI="http://purl.obolibrary.org/obo/"/>
-    <Prefix name="owl" IRI="http://www.w3.org/2002/07/owl#"/>
-    <Prefix name="rdf" IRI="http://www.w3.org/1999/02/22-rdf-syntax-ns#"/>
-    <Prefix name="roh" IRI="http://w3id.org/roh/"/>
-    <Prefix name="xml" IRI="http://www.w3.org/XML/1998/namespace"/>
-    <Prefix name="xsd" IRI="http://www.w3.org/2001/XMLSchema#"/>
-    <Prefix name="bibo" IRI="http://purl.org/ontology/bibo/"/>
-    <Prefix name="foaf" IRI="http://xmlns.com/foaf/0.1/"/>
-    <Prefix name="rdfs" IRI="http://www.w3.org/2000/01/rdf-schema#"/>
-    <Prefix name="vivo" IRI="http://vivoweb.org/ontology/core#"/>
-    <Prefix name="schema" IRI="http://schema.org/"/>
-    <Declaration>
-        <Class IRI="http://schema/Offer"/>
-    </Declaration>
-    <Declaration>
-        <Class abbreviatedIRI="roh:AvailabilityChangeEvent"/>
-    </Declaration>
-    <Declaration>
-        <ObjectProperty abbreviatedIRI="bibo:status"/>
-    </Declaration>
-    <Declaration>
-        <ObjectProperty abbreviatedIRI="schema:availability"/>
-    </Declaration>
-    <Declaration>
-        <ObjectProperty abbreviatedIRI="schema:offeredBy"/>
-    </Declaration>
-    <Declaration>
-        <ObjectProperty abbreviatedIRI="roh:availabilityChangeEvent"/>
-    </Declaration>
-    <Declaration>
-        <ObjectProperty abbreviatedIRI="roh:document"/>
-    </Declaration>
-    <Declaration>
-        <ObjectProperty abbreviatedIRI="roh:framingSector"/>
-    </Declaration>
-    <Declaration>
-        <ObjectProperty abbreviatedIRI="roh:patents"/>
-    </Declaration>
-    <Declaration>
-        <ObjectProperty abbreviatedIRI="roh:project"/>
-    </Declaration>
-    <Declaration>
-        <ObjectProperty abbreviatedIRI="roh:roleOf"/>
-    </Declaration>
-    <Declaration>
-        <ObjectProperty IRI="http://w3id.org/roh/roh:researchers"/>
-    </Declaration>
-    <Declaration>
-        <DataProperty abbreviatedIRI="dct:issued"/>
-    </Declaration>
-    <Declaration>
-        <DataProperty IRI="http://purl.org/linked-data/cube#observation"/>
-    </Declaration>
-    <Declaration>
-        <DataProperty abbreviatedIRI="bibo:recipient"/>
-    </Declaration>
-    <Declaration>
-        <DataProperty abbreviatedIRI="schema:description"/>
-    </Declaration>
-    <Declaration>
-        <DataProperty abbreviatedIRI="schema:name"/>
-    </Declaration>
-    <Declaration>
-        <DataProperty abbreviatedIRI="schema:validFrom"/>
-    </Declaration>
-    <Declaration>
-        <DataProperty abbreviatedIRI="vivo:freetextKeyword"/>
-    </Declaration>
-    <Declaration>
-        <DataProperty abbreviatedIRI="drm:origin"/>
-    </Declaration>
-    <Declaration>
-        <DataProperty abbreviatedIRI="roh:application"/>
-    </Declaration>
-    <Declaration>
-        <DataProperty abbreviatedIRI="roh:collaborationSought"/>
-    </Declaration>
-    <Declaration>
-        <DataProperty abbreviatedIRI="roh:innovation"/>
-    </Declaration>
-    <Declaration>
-        <DataProperty abbreviatedIRI="roh:lineResearch"/>
-    </Declaration>
-    <Declaration>
-        <DataProperty abbreviatedIRI="roh:partnerType"/>
-    </Declaration>
-    <Declaration>
-        <Datatype abbreviatedIRI="xsd:date"/>
-    </Declaration>
-    <SubClassOf>
-        <Class IRI="http://schema/Offer"/>
-        <Class abbreviatedIRI="owl:Thing"/>
-    </SubClassOf>
-    <SubClassOf>
-        <Class IRI="http://schema/Offer"/>
-        <ObjectMinCardinality cardinality="1">
-            <ObjectProperty abbreviatedIRI="roh:availabilityChangeEvent"/>
-            <Class abbreviatedIRI="roh:AvailabilityChangeEvent"/>
-        </ObjectMinCardinality>
-    </SubClassOf>
-    <SubClassOf>
-        <Class IRI="http://schema/Offer"/>
-        <DataSomeValuesFrom>
-            <DataProperty abbreviatedIRI="vivo:freetextKeyword"/>
-            <Datatype abbreviatedIRI="rdfs:Literal"/>
-        </DataSomeValuesFrom>
-    </SubClassOf>
-    <SubClassOf>
-        <Class IRI="http://schema/Offer"/>
-        <DataSomeValuesFrom>
-            <DataProperty abbreviatedIRI="roh:lineResearch"/>
-            <Datatype abbreviatedIRI="rdfs:Literal"/>
-        </DataSomeValuesFrom>
-    </SubClassOf>
-    <SubClassOf>
-        <Class IRI="http://schema/Offer"/>
-        <DataMaxCardinality cardinality="1">
-            <DataProperty abbreviatedIRI="dct:issued"/>
-            <Datatype abbreviatedIRI="xsd:date"/>
-        </DataMaxCardinality>
-    </SubClassOf>
-    <SubClassOf>
-        <Class IRI="http://schema/Offer"/>
-        <DataMaxCardinality cardinality="1">
-            <DataProperty IRI="http://purl.org/linked-data/cube#observation"/>
-        </DataMaxCardinality>
-    </SubClassOf>
-    <SubClassOf>
-        <Class IRI="http://schema/Offer"/>
-        <DataMaxCardinality cardinality="1">
-            <DataProperty abbreviatedIRI="bibo:recipient"/>
-        </DataMaxCardinality>
-    </SubClassOf>
-    <SubClassOf>
-        <Class IRI="http://schema/Offer"/>
-        <DataMaxCardinality cardinality="1">
-            <DataProperty abbreviatedIRI="schema:description"/>
-        </DataMaxCardinality>
-    </SubClassOf>
-    <SubClassOf>
-        <Class IRI="http://schema/Offer"/>
-        <DataMaxCardinality cardinality="1">
-            <DataProperty abbreviatedIRI="schema:name"/>
-        </DataMaxCardinality>
-    </SubClassOf>
-    <SubClassOf>
-        <Class IRI="http://schema/Offer"/>
-        <DataMaxCardinality cardinality="1">
-            <DataProperty abbreviatedIRI="drm:origin"/>
-        </DataMaxCardinality>
-    </SubClassOf>
-    <SubClassOf>
-        <Class IRI="http://schema/Offer"/>
-        <DataMaxCardinality cardinality="1">
-            <DataProperty abbreviatedIRI="roh:application"/>
-        </DataMaxCardinality>
-    </SubClassOf>
-    <SubClassOf>
-        <Class IRI="http://schema/Offer"/>
-        <DataMaxCardinality cardinality="1">
-            <DataProperty abbreviatedIRI="roh:collaborationSought"/>
-        </DataMaxCardinality>
-    </SubClassOf>
-    <SubClassOf>
-        <Class IRI="http://schema/Offer"/>
-        <DataMaxCardinality cardinality="1">
-            <DataProperty abbreviatedIRI="roh:innovation"/>
-        </DataMaxCardinality>
-    </SubClassOf>
-    <SubClassOf>
-        <Class IRI="http://schema/Offer"/>
-        <DataMaxCardinality cardinality="1">
-            <DataProperty abbreviatedIRI="roh:partnerType"/>
-        </DataMaxCardinality>
-    </SubClassOf>
-    <SubClassOf>
-        <Class abbreviatedIRI="roh:AvailabilityChangeEvent"/>
-        <DataMaxCardinality cardinality="1">
-            <DataProperty abbreviatedIRI="schema:validFrom"/>
-            <Datatype abbreviatedIRI="xsd:date"/>
-        </DataMaxCardinality>
-    </SubClassOf>
-    <FunctionalObjectProperty>
-        <ObjectProperty abbreviatedIRI="schema:availability"/>
-    </FunctionalObjectProperty>
-    <FunctionalObjectProperty>
-        <ObjectProperty abbreviatedIRI="schema:offeredBy"/>
-    </FunctionalObjectProperty>
-    <FunctionalObjectProperty>
-        <ObjectProperty abbreviatedIRI="roh:availabilityChangeEvent"/>
-    </FunctionalObjectProperty>
-    <FunctionalObjectProperty>
-        <ObjectProperty abbreviatedIRI="roh:roleOf"/>
-    </FunctionalObjectProperty>
-    <FunctionalObjectProperty>
-        <ObjectProperty IRI="http://w3id.org/roh/roh:researchers"/>
-    </FunctionalObjectProperty>
-    <ObjectPropertyDomain>
-        <ObjectProperty abbreviatedIRI="bibo:status"/>
-        <Class IRI="http://schema/Offer"/>
-    </ObjectPropertyDomain>
-    <ObjectPropertyDomain>
-        <ObjectProperty abbreviatedIRI="schema:availability"/>
-        <Class IRI="http://schema/Offer"/>
-    </ObjectPropertyDomain>
-    <ObjectPropertyDomain>
-        <ObjectProperty abbreviatedIRI="schema:availability"/>
-        <Class abbreviatedIRI="roh:AvailabilityChangeEvent"/>
-    </ObjectPropertyDomain>
-    <ObjectPropertyDomain>
-        <ObjectProperty abbreviatedIRI="schema:offeredBy"/>
-        <Class IRI="http://schema/Offer"/>
-    </ObjectPropertyDomain>
-    <ObjectPropertyDomain>
-        <ObjectProperty abbreviatedIRI="roh:availabilityChangeEvent"/>
-        <Class IRI="http://schema/Offer"/>
-    </ObjectPropertyDomain>
-    <ObjectPropertyDomain>
-        <ObjectProperty abbreviatedIRI="roh:document"/>
-        <Class IRI="http://schema/Offer"/>
-    </ObjectPropertyDomain>
-    <ObjectPropertyDomain>
-        <ObjectProperty abbreviatedIRI="roh:framingSector"/>
-        <Class IRI="http://schema/Offer"/>
-    </ObjectPropertyDomain>
-    <ObjectPropertyDomain>
-        <ObjectProperty abbreviatedIRI="roh:patents"/>
-        <Class IRI="http://schema/Offer"/>
-    </ObjectPropertyDomain>
-    <ObjectPropertyDomain>
-        <ObjectProperty abbreviatedIRI="roh:project"/>
-        <Class IRI="http://schema/Offer"/>
-    </ObjectPropertyDomain>
-    <ObjectPropertyDomain>
-        <ObjectProperty abbreviatedIRI="roh:roleOf"/>
-        <Class abbreviatedIRI="roh:AvailabilityChangeEvent"/>
-    </ObjectPropertyDomain>
-    <ObjectPropertyDomain>
-        <ObjectProperty IRI="http://w3id.org/roh/roh:researchers"/>
-        <Class IRI="http://schema/Offer"/>
-    </ObjectPropertyDomain>
-    <ObjectPropertyRange>
-        <ObjectProperty abbreviatedIRI="roh:availabilityChangeEvent"/>
-        <Class abbreviatedIRI="roh:AvailabilityChangeEvent"/>
-    </ObjectPropertyRange>
-    <FunctionalDataProperty>
-        <DataProperty abbreviatedIRI="dct:issued"/>
-    </FunctionalDataProperty>
-    <FunctionalDataProperty>
-        <DataProperty abbreviatedIRI="bibo:recipient"/>
-    </FunctionalDataProperty>
-    <FunctionalDataProperty>
-        <DataProperty abbreviatedIRI="schema:name"/>
-    </FunctionalDataProperty>
-    <FunctionalDataProperty>
-        <DataProperty abbreviatedIRI="roh:application"/>
-    </FunctionalDataProperty>
-    <DataPropertyDomain>
-        <DataProperty abbreviatedIRI="dct:issued"/>
-        <Class IRI="http://schema/Offer"/>
-    </DataPropertyDomain>
-    <DataPropertyDomain>
-        <DataProperty IRI="http://purl.org/linked-data/cube#observation"/>
-        <Class IRI="http://schema/Offer"/>
-    </DataPropertyDomain>
-    <DataPropertyDomain>
-        <DataProperty abbreviatedIRI="bibo:recipient"/>
-        <Class IRI="http://schema/Offer"/>
-    </DataPropertyDomain>
-    <DataPropertyDomain>
-        <DataProperty abbreviatedIRI="schema:description"/>
-        <Class IRI="http://schema/Offer"/>
-    </DataPropertyDomain>
-    <DataPropertyDomain>
-        <DataProperty abbreviatedIRI="schema:name"/>
-        <Class IRI="http://schema/Offer"/>
-    </DataPropertyDomain>
-    <DataPropertyDomain>
-        <DataProperty abbreviatedIRI="schema:validFrom"/>
-        <Class abbreviatedIRI="roh:AvailabilityChangeEvent"/>
-    </DataPropertyDomain>
-    <DataPropertyDomain>
-        <DataProperty abbreviatedIRI="vivo:freetextKeyword"/>
-        <Class IRI="http://schema/Offer"/>
-    </DataPropertyDomain>
-    <DataPropertyDomain>
-        <DataProperty abbreviatedIRI="drm:origin"/>
-        <Class IRI="http://schema/Offer"/>
-    </DataPropertyDomain>
-    <DataPropertyDomain>
-        <DataProperty abbreviatedIRI="roh:application"/>
-        <Class IRI="http://schema/Offer"/>
-    </DataPropertyDomain>
-    <DataPropertyDomain>
-        <DataProperty abbreviatedIRI="roh:collaborationSought"/>
-        <Class IRI="http://schema/Offer"/>
-    </DataPropertyDomain>
-    <DataPropertyDomain>
-        <DataProperty abbreviatedIRI="roh:innovation"/>
-        <Class IRI="http://schema/Offer"/>
-    </DataPropertyDomain>
-    <DataPropertyDomain>
-        <DataProperty abbreviatedIRI="roh:lineResearch"/>
-        <Class IRI="http://schema/Offer"/>
-    </DataPropertyDomain>
-    <DataPropertyDomain>
-        <DataProperty abbreviatedIRI="roh:partnerType"/>
-        <Class IRI="http://schema/Offer"/>
-    </DataPropertyDomain>
-    <DataPropertyRange>
-        <DataProperty abbreviatedIRI="dct:issued"/>
-        <Datatype abbreviatedIRI="xsd:date"/>
-    </DataPropertyRange>
-    <DataPropertyRange>
-        <DataProperty IRI="http://purl.org/linked-data/cube#observation"/>
-        <Datatype abbreviatedIRI="xsd:string"/>
-    </DataPropertyRange>
-    <DataPropertyRange>
-        <DataProperty abbreviatedIRI="bibo:recipient"/>
-        <Datatype abbreviatedIRI="xsd:string"/>
-    </DataPropertyRange>
-    <DataPropertyRange>
-        <DataProperty abbreviatedIRI="schema:description"/>
-        <Datatype abbreviatedIRI="xsd:string"/>
-    </DataPropertyRange>
-    <DataPropertyRange>
-        <DataProperty abbreviatedIRI="schema:name"/>
-        <Datatype abbreviatedIRI="xsd:string"/>
-    </DataPropertyRange>
-    <DataPropertyRange>
-        <DataProperty abbreviatedIRI="schema:validFrom"/>
-        <Datatype abbreviatedIRI="xsd:date"/>
-    </DataPropertyRange>
-    <DataPropertyRange>
-        <DataProperty abbreviatedIRI="vivo:freetextKeyword"/>
-        <Datatype abbreviatedIRI="xsd:string"/>
-    </DataPropertyRange>
-    <DataPropertyRange>
-        <DataProperty abbreviatedIRI="drm:origin"/>
-        <Datatype abbreviatedIRI="xsd:string"/>
-    </DataPropertyRange>
-    <DataPropertyRange>
-        <DataProperty abbreviatedIRI="roh:application"/>
-        <Datatype abbreviatedIRI="xsd:string"/>
-    </DataPropertyRange>
-    <DataPropertyRange>
-        <DataProperty abbreviatedIRI="roh:collaborationSought"/>
-        <Datatype abbreviatedIRI="xsd:string"/>
-    </DataPropertyRange>
-    <DataPropertyRange>
-        <DataProperty abbreviatedIRI="roh:innovation"/>
-        <Datatype abbreviatedIRI="xsd:string"/>
-    </DataPropertyRange>
-    <DataPropertyRange>
-        <DataProperty abbreviatedIRI="roh:lineResearch"/>
-        <Datatype abbreviatedIRI="xsd:string"/>
-    </DataPropertyRange>
-    <DataPropertyRange>
-        <DataProperty abbreviatedIRI="roh:partnerType"/>
-        <Datatype abbreviatedIRI="xsd:string"/>
-    </DataPropertyRange>
-</Ontology>
+     xmlns:vivo="http://vivoweb.org/ontology/core#"
+     xmlns:schema="http://schema.org/">
+    <owl:Ontology rdf:about="http://www.owl-ontologies.com/Ontology1627556398.owl"/>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Datatypes
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    
+
+
+    <!-- http://www.w3.org/2001/XMLSchema#date -->
+
+    <rdfs:Datatype rdf:about="http://www.w3.org/2001/XMLSchema#date"/>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Object Properties
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    
+
+
+    <!-- http://purl.org/ontology/bibo/status -->
+
+    <owl:ObjectProperty rdf:about="http://purl.org/ontology/bibo/status">
+        <rdfs:domain rdf:resource="http://schema/Offer"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://schema.org/availability -->
+
+    <owl:ObjectProperty rdf:about="http://schema.org/availability">
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
+        <rdfs:domain rdf:resource="http://schema/Offer"/>
+        <rdfs:domain rdf:resource="http://w3id.org/roh/AvailabilityChangeEvent"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://schema.org/offeredBy -->
+
+    <owl:ObjectProperty rdf:about="http://schema.org/offeredBy">
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
+        <rdfs:domain rdf:resource="http://schema/Offer"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://w3id.org/roh/availabilityChangeEvent -->
+
+    <owl:ObjectProperty rdf:about="http://w3id.org/roh/availabilityChangeEvent">
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
+        <rdfs:domain rdf:resource="http://schema/Offer"/>
+        <rdfs:range rdf:resource="http://w3id.org/roh/AvailabilityChangeEvent"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://w3id.org/roh/document -->
+
+    <owl:ObjectProperty rdf:about="http://w3id.org/roh/document">
+        <rdfs:domain rdf:resource="http://schema/Offer"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://w3id.org/roh/framingSector -->
+
+    <owl:ObjectProperty rdf:about="http://w3id.org/roh/framingSector">
+        <rdfs:domain rdf:resource="http://schema/Offer"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://w3id.org/roh/patents -->
+
+    <owl:ObjectProperty rdf:about="http://w3id.org/roh/patents">
+        <rdfs:domain rdf:resource="http://schema/Offer"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://w3id.org/roh/project -->
+
+    <owl:ObjectProperty rdf:about="http://w3id.org/roh/project">
+        <rdfs:domain rdf:resource="http://schema/Offer"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://w3id.org/roh/roleOf -->
+
+    <owl:ObjectProperty rdf:about="http://w3id.org/roh/roleOf">
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
+        <rdfs:domain rdf:resource="http://w3id.org/roh/AvailabilityChangeEvent"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://w3id.org/roh/roh:researchers -->
+
+    <owl:ObjectProperty rdf:about="http://w3id.org/roh/researchers">
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
+        <rdfs:domain rdf:resource="http://schema/Offer"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Data properties
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    
+
+
+    <!-- http://purl.org/dc/terms/issued -->
+
+    <owl:DatatypeProperty rdf:about="http://purl.org/dc/terms/issued">
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
+        <rdfs:domain rdf:resource="http://schema/Offer"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#date"/>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://purl.org/linked-data/cube#observation -->
+
+    <owl:DatatypeProperty rdf:about="http://purl.org/linked-data/cube#observation">
+        <rdfs:domain rdf:resource="http://schema/Offer"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://purl.org/ontology/bibo/recipient -->
+
+    <owl:DatatypeProperty rdf:about="http://purl.org/ontology/bibo/recipient">
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
+        <rdfs:domain rdf:resource="http://schema/Offer"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://schema.org/description -->
+
+    <owl:DatatypeProperty rdf:about="http://schema.org/description">
+        <rdfs:domain rdf:resource="http://schema/Offer"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://schema.org/name -->
+
+    <owl:DatatypeProperty rdf:about="http://schema.org/name">
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
+        <rdfs:domain rdf:resource="http://schema/Offer"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://schema.org/validFrom -->
+
+    <owl:DatatypeProperty rdf:about="http://schema.org/validFrom">
+        <rdfs:domain rdf:resource="http://w3id.org/roh/AvailabilityChangeEvent"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#date"/>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://vivoweb.org/ontology/core#freetextKeyword -->
+
+    <owl:DatatypeProperty rdf:about="http://vivoweb.org/ontology/core#freetextKeyword">
+        <rdfs:domain rdf:resource="http://schema/Offer"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://vocab.data.gov/def/drm#origin -->
+
+    <owl:DatatypeProperty rdf:about="http://vocab.data.gov/def/drm#origin">
+        <rdfs:domain rdf:resource="http://schema/Offer"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://w3id.org/roh/application -->
+
+    <owl:DatatypeProperty rdf:about="http://w3id.org/roh/application">
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
+        <rdfs:domain rdf:resource="http://schema/Offer"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://w3id.org/roh/collaborationSought -->
+
+    <owl:DatatypeProperty rdf:about="http://w3id.org/roh/collaborationSought">
+        <rdfs:domain rdf:resource="http://schema/Offer"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://w3id.org/roh/innovation -->
+
+    <owl:DatatypeProperty rdf:about="http://w3id.org/roh/innovation">
+        <rdfs:domain rdf:resource="http://schema/Offer"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://w3id.org/roh/lineResearch -->
+
+    <owl:DatatypeProperty rdf:about="http://w3id.org/roh/lineResearch">
+        <rdfs:domain rdf:resource="http://schema/Offer"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://w3id.org/roh/partnerType -->
+
+    <owl:DatatypeProperty rdf:about="http://w3id.org/roh/partnerType">
+        <rdfs:domain rdf:resource="http://schema/Offer"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Classes
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    
+
+
+    <!-- http://schema/Offer -->
+
+    <owl:Class rdf:about="http://schema/Offer">
+        <rdfs:subClassOf rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://vivoweb.org/ontology/core#freetextKeyword"/>
+                <owl:someValuesFrom rdf:resource="http://www.w3.org/2000/01/rdf-schema#Literal"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://w3id.org/roh/lineResearch"/>
+                <owl:someValuesFrom rdf:resource="http://www.w3.org/2000/01/rdf-schema#Literal"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://purl.org/dc/terms/issued"/>
+                <owl:maxQualifiedCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">1</owl:maxQualifiedCardinality>
+                <owl:onDataRange rdf:resource="http://www.w3.org/2001/XMLSchema#date"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://purl.org/linked-data/cube#observation"/>
+                <owl:maxCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">1</owl:maxCardinality>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://purl.org/ontology/bibo/recipient"/>
+                <owl:maxCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">1</owl:maxCardinality>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://schema.org/description"/>
+                <owl:maxCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">1</owl:maxCardinality>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://schema.org/name"/>
+                <owl:maxCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">1</owl:maxCardinality>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://vocab.data.gov/def/drm#origin"/>
+                <owl:maxCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">1</owl:maxCardinality>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://w3id.org/roh/application"/>
+                <owl:maxCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">1</owl:maxCardinality>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://w3id.org/roh/collaborationSought"/>
+                <owl:maxCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">1</owl:maxCardinality>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://w3id.org/roh/innovation"/>
+                <owl:maxCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">1</owl:maxCardinality>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://w3id.org/roh/partnerType"/>
+                <owl:maxCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">1</owl:maxCardinality>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+    </owl:Class>
+    
+
+
+    <!-- http://w3id.org/roh/AvailabilityChangeEvent -->
+
+    <owl:Class rdf:about="http://w3id.org/roh/AvailabilityChangeEvent"/>
+</rdf:RDF>
 
 
 
