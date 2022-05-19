@@ -1,370 +1,180 @@
 <?xml version="1.0"?>
-<rdf:RDF xmlns="http://www.owl-ontologies.com/Ontology1627556398.owl"
-     xml:base="http://www.owl-ontologies.com/Ontology1627556398.owl"
-     xmlns:dc="http://purl.org/dc/elements/1.1/"
-     xmlns:qb="http://purl.org/linked-data/cube#observation"
-     xmlns:dct="http://purl.org/dc/terms/"
-     xmlns:drm="http://vocab.data.gov/def/drm#"
-     xmlns:obo="http://purl.obolibrary.org/obo/"
-     xmlns:owl="http://www.w3.org/2002/07/owl#"
-     xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
-     xmlns:roh="http://w3id.org/roh/"
-     xmlns:xml="http://www.w3.org/XML/1998/namespace"
-     xmlns:xsd="http://www.w3.org/2001/XMLSchema#"
-     xmlns:bibo="http://purl.org/ontology/bibo/"
-     xmlns:foaf="http://xmlns.com/foaf/0.1/"
-     xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
-     xmlns:vivo="http://vivoweb.org/ontology/core#"
-     xmlns:schema="http://schema.org/">
-    <owl:Ontology rdf:about="http://www.owl-ontologies.com/Ontology1627556398.owl"/>
-    
-
-
-    <!-- 
-    ///////////////////////////////////////////////////////////////////////////////////////
-    //
-    // Datatypes
-    //
-    ///////////////////////////////////////////////////////////////////////////////////////
-     -->
-
-    
-
-
-    <!-- http://www.w3.org/2001/XMLSchema#date -->
-
-    <rdfs:Datatype rdf:about="http://www.w3.org/2001/XMLSchema#date"/>
-    
-
-
-    <!-- 
-    ///////////////////////////////////////////////////////////////////////////////////////
-    //
-    // Object Properties
-    //
-    ///////////////////////////////////////////////////////////////////////////////////////
-     -->
-
-    
-
-
-    <!-- http://purl.org/ontology/bibo/status -->
-
-    <owl:ObjectProperty rdf:about="http://purl.org/ontology/bibo/status">
-        <rdfs:domain rdf:resource="http://schema/Offer"/>
-    </owl:ObjectProperty>
-    
-
-
-    <!-- http://schema.org/availability -->
-
-    <owl:ObjectProperty rdf:about="http://schema.org/availability">
-        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
-        <rdfs:domain rdf:resource="http://schema/Offer"/>
-        <rdfs:domain rdf:resource="http://w3id.org/roh/AvailabilityChangeEvent"/>
-    </owl:ObjectProperty>
-    
-
-
-    <!-- http://schema.org/offeredBy -->
-
-    <owl:ObjectProperty rdf:about="http://schema.org/offeredBy">
-        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
-        <rdfs:domain rdf:resource="http://schema/Offer"/>
-    </owl:ObjectProperty>
-    
-
-
-    <!-- http://w3id.org/roh/availabilityChangeEvent -->
-
-    <owl:ObjectProperty rdf:about="http://w3id.org/roh/availabilityChangeEvent">
-        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
-        <rdfs:domain rdf:resource="http://schema/Offer"/>
-        <rdfs:range rdf:resource="http://w3id.org/roh/AvailabilityChangeEvent"/>
-    </owl:ObjectProperty>
-    
-
-
-    <!-- http://w3id.org/roh/document -->
-
-    <owl:ObjectProperty rdf:about="http://w3id.org/roh/document">
-        <rdfs:domain rdf:resource="http://schema/Offer"/>
-    </owl:ObjectProperty>
-    
-
-
-    <!-- http://w3id.org/roh/framingSector -->
-
-    <owl:ObjectProperty rdf:about="http://w3id.org/roh/framingSector">
-        <rdfs:domain rdf:resource="http://schema/Offer"/>
-    </owl:ObjectProperty>
-    
-
-
-    <!-- http://w3id.org/roh/patents -->
-
-    <owl:ObjectProperty rdf:about="http://w3id.org/roh/patents">
-        <rdfs:domain rdf:resource="http://schema/Offer"/>
-    </owl:ObjectProperty>
-    
-
-
-    <!-- http://w3id.org/roh/project -->
-
-    <owl:ObjectProperty rdf:about="http://w3id.org/roh/project">
-        <rdfs:domain rdf:resource="http://schema/Offer"/>
-    </owl:ObjectProperty>
-    
-
-
-    <!-- http://w3id.org/roh/roleOf -->
-
-    <owl:ObjectProperty rdf:about="http://w3id.org/roh/roleOf">
-        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
-        <rdfs:domain rdf:resource="http://w3id.org/roh/AvailabilityChangeEvent"/>
-    </owl:ObjectProperty>
-    
-
-
-    <!-- http://w3id.org/roh/roh:researchers -->
-
-    <owl:ObjectProperty rdf:about="http://w3id.org/roh/researchers">
-        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
-        <rdfs:domain rdf:resource="http://schema/Offer"/>
-    </owl:ObjectProperty>
-    
-
-
-    <!-- 
-    ///////////////////////////////////////////////////////////////////////////////////////
-    //
-    // Data properties
-    //
-    ///////////////////////////////////////////////////////////////////////////////////////
-     -->
-
-    
-
-
-    <!-- http://purl.org/dc/terms/issued -->
-
-    <owl:DatatypeProperty rdf:about="http://purl.org/dc/terms/issued">
-        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
-        <rdfs:domain rdf:resource="http://schema/Offer"/>
-        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#date"/>
-    </owl:DatatypeProperty>
-    
-
-
-    <!-- http://purl.org/linked-data/cube#observation -->
-
-    <owl:DatatypeProperty rdf:about="http://purl.org/linked-data/cube#observation">
-        <rdfs:domain rdf:resource="http://schema/Offer"/>
-        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
-    </owl:DatatypeProperty>
-    
-
-
-    <!-- http://purl.org/ontology/bibo/recipient -->
-
-    <owl:DatatypeProperty rdf:about="http://purl.org/ontology/bibo/recipient">
-        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
-        <rdfs:domain rdf:resource="http://schema/Offer"/>
-        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
-    </owl:DatatypeProperty>
-    
-
-
-    <!-- http://schema.org/description -->
-
-    <owl:DatatypeProperty rdf:about="http://schema.org/description">
-        <rdfs:domain rdf:resource="http://schema/Offer"/>
-        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
-    </owl:DatatypeProperty>
-    
-
-
-    <!-- http://schema.org/name -->
-
-    <owl:DatatypeProperty rdf:about="http://schema.org/name">
-        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
-        <rdfs:domain rdf:resource="http://schema/Offer"/>
-        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
-    </owl:DatatypeProperty>
-    
-
-
-    <!-- http://schema.org/validFrom -->
-
-    <owl:DatatypeProperty rdf:about="http://schema.org/validFrom">
-        <rdfs:domain rdf:resource="http://w3id.org/roh/AvailabilityChangeEvent"/>
-        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#date"/>
-    </owl:DatatypeProperty>
-    
-
-
-    <!-- http://vivoweb.org/ontology/core#freetextKeyword -->
-
-    <owl:DatatypeProperty rdf:about="http://vivoweb.org/ontology/core#freetextKeyword">
-        <rdfs:domain rdf:resource="http://schema/Offer"/>
-        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
-    </owl:DatatypeProperty>
-    
-
-
-    <!-- http://vocab.data.gov/def/drm#origin -->
-
-    <owl:DatatypeProperty rdf:about="http://vocab.data.gov/def/drm#origin">
-        <rdfs:domain rdf:resource="http://schema/Offer"/>
-        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
-    </owl:DatatypeProperty>
-    
-
-
-    <!-- http://w3id.org/roh/application -->
-
-    <owl:DatatypeProperty rdf:about="http://w3id.org/roh/application">
-        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
-        <rdfs:domain rdf:resource="http://schema/Offer"/>
-        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
-    </owl:DatatypeProperty>
-    
-
-
-    <!-- http://w3id.org/roh/collaborationSought -->
-
-    <owl:DatatypeProperty rdf:about="http://w3id.org/roh/collaborationSought">
-        <rdfs:domain rdf:resource="http://schema/Offer"/>
-        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
-    </owl:DatatypeProperty>
-    
-
-
-    <!-- http://w3id.org/roh/innovation -->
-
-    <owl:DatatypeProperty rdf:about="http://w3id.org/roh/innovation">
-        <rdfs:domain rdf:resource="http://schema/Offer"/>
-        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
-    </owl:DatatypeProperty>
-    
-
-
-    <!-- http://w3id.org/roh/lineResearch -->
-
-    <owl:DatatypeProperty rdf:about="http://w3id.org/roh/lineResearch">
-        <rdfs:domain rdf:resource="http://schema/Offer"/>
-        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
-    </owl:DatatypeProperty>
-    
-
-
-    <!-- http://w3id.org/roh/partnerType -->
-
-    <owl:DatatypeProperty rdf:about="http://w3id.org/roh/partnerType">
-        <rdfs:domain rdf:resource="http://schema/Offer"/>
-        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
-    </owl:DatatypeProperty>
-    
-
-
-    <!-- 
-    ///////////////////////////////////////////////////////////////////////////////////////
-    //
-    // Classes
-    //
-    ///////////////////////////////////////////////////////////////////////////////////////
-     -->
-
-    
-
-
-    <!-- http://schema/Offer -->
-
-    <owl:Class rdf:about="http://schema/Offer">
-        <rdfs:subClassOf rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
-        <rdfs:subClassOf>
-            <owl:Restriction>
-                <owl:onProperty rdf:resource="http://vivoweb.org/ontology/core#freetextKeyword"/>
-                <owl:someValuesFrom rdf:resource="http://www.w3.org/2000/01/rdf-schema#Literal"/>
-            </owl:Restriction>
-        </rdfs:subClassOf>
-        <rdfs:subClassOf>
-            <owl:Restriction>
-                <owl:onProperty rdf:resource="http://w3id.org/roh/lineResearch"/>
-                <owl:someValuesFrom rdf:resource="http://www.w3.org/2000/01/rdf-schema#Literal"/>
-            </owl:Restriction>
-        </rdfs:subClassOf>
-        <rdfs:subClassOf>
-            <owl:Restriction>
-                <owl:onProperty rdf:resource="http://purl.org/dc/terms/issued"/>
-                <owl:maxQualifiedCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">1</owl:maxQualifiedCardinality>
-                <owl:onDataRange rdf:resource="http://www.w3.org/2001/XMLSchema#date"/>
-            </owl:Restriction>
-        </rdfs:subClassOf>
-        <rdfs:subClassOf>
-            <owl:Restriction>
-                <owl:onProperty rdf:resource="http://purl.org/linked-data/cube#observation"/>
-                <owl:maxCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">1</owl:maxCardinality>
-            </owl:Restriction>
-        </rdfs:subClassOf>
-        <rdfs:subClassOf>
-            <owl:Restriction>
-                <owl:onProperty rdf:resource="http://purl.org/ontology/bibo/recipient"/>
-                <owl:maxCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">1</owl:maxCardinality>
-            </owl:Restriction>
-        </rdfs:subClassOf>
-        <rdfs:subClassOf>
-            <owl:Restriction>
-                <owl:onProperty rdf:resource="http://schema.org/description"/>
-                <owl:maxCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">1</owl:maxCardinality>
-            </owl:Restriction>
-        </rdfs:subClassOf>
-        <rdfs:subClassOf>
-            <owl:Restriction>
-                <owl:onProperty rdf:resource="http://schema.org/name"/>
-                <owl:maxCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">1</owl:maxCardinality>
-            </owl:Restriction>
-        </rdfs:subClassOf>
-        <rdfs:subClassOf>
-            <owl:Restriction>
-                <owl:onProperty rdf:resource="http://vocab.data.gov/def/drm#origin"/>
-                <owl:maxCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">1</owl:maxCardinality>
-            </owl:Restriction>
-        </rdfs:subClassOf>
-        <rdfs:subClassOf>
-            <owl:Restriction>
-                <owl:onProperty rdf:resource="http://w3id.org/roh/application"/>
-                <owl:maxCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">1</owl:maxCardinality>
-            </owl:Restriction>
-        </rdfs:subClassOf>
-        <rdfs:subClassOf>
-            <owl:Restriction>
-                <owl:onProperty rdf:resource="http://w3id.org/roh/collaborationSought"/>
-                <owl:maxCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">1</owl:maxCardinality>
-            </owl:Restriction>
-        </rdfs:subClassOf>
-        <rdfs:subClassOf>
-            <owl:Restriction>
-                <owl:onProperty rdf:resource="http://w3id.org/roh/innovation"/>
-                <owl:maxCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">1</owl:maxCardinality>
-            </owl:Restriction>
-        </rdfs:subClassOf>
-        <rdfs:subClassOf>
-            <owl:Restriction>
-                <owl:onProperty rdf:resource="http://w3id.org/roh/partnerType"/>
-                <owl:maxCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">1</owl:maxCardinality>
-            </owl:Restriction>
-        </rdfs:subClassOf>
-    </owl:Class>
-    
-
-
-    <!-- http://w3id.org/roh/AvailabilityChangeEvent -->
-
-    <owl:Class rdf:about="http://w3id.org/roh/AvailabilityChangeEvent"/>
+<rdf:RDF
+    xmlns:drm="http://vocab.data.gov/def/drm#"
+    xmlns:vivo="http://vivoweb.org/ontology/core#"
+    xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+    xmlns:owl="http://www.w3.org/2002/07/owl#"
+    xmlns:qb="http://purl.org/linked-data/cube#"
+    xmlns:bibo="http://purl.org/ontology/bibo/"
+    xmlns:roh="http://w3id.org/roh/"
+    xmlns:dct="http://purl.org/dc/terms/"
+    xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+    xmlns="http://www.owl-ontologies.com/Ontology1637054730.owl#"
+    xmlns:xsd="http://www.w3.org/2001/XMLSchema#"
+    xmlns:schema="http://www.schema.org/"
+    xmlns:vcard="https://www.w3.org/2006/vcard/ns#"
+  xml:base="http://www.owl-ontologies.com/Ontology1637054730.owl">
+  <owl:Ontology rdf:about=""/>
+  <owl:Class rdf:about="http://www.schema.org/Offer">
+    <rdfs:subClassOf>
+      <owl:Restriction>
+        <owl:onProperty>
+          <owl:ObjectProperty rdf:about="http://w3id.org/roh/availabilityChangeEvent"/>
+        </owl:onProperty>
+        <owl:minCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#int"
+        >1</owl:minCardinality>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+    <rdfs:subClassOf>
+      <owl:Restriction>
+        <owl:onProperty>
+          <owl:DatatypeProperty rdf:about="http://purl.org/linked-data/cube#observation"/>
+        </owl:onProperty>
+        <owl:maxCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#int"
+        >1</owl:maxCardinality>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+    <rdfs:subClassOf>
+      <owl:Restriction>
+        <owl:maxCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#int"
+        >1</owl:maxCardinality>
+        <owl:onProperty>
+          <owl:DatatypeProperty rdf:about="http://w3id.org/roh/collaborationSought"/>
+        </owl:onProperty>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+    <rdfs:subClassOf>
+      <owl:Restriction>
+        <owl:maxCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#int"
+        >1</owl:maxCardinality>
+        <owl:onProperty>
+          <owl:DatatypeProperty rdf:about="http://w3id.org/roh/partnerType"/>
+        </owl:onProperty>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+    <rdfs:subClassOf>
+      <owl:Restriction>
+        <owl:maxCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#int"
+        >1</owl:maxCardinality>
+        <owl:onProperty>
+          <owl:DatatypeProperty rdf:about="http://w3id.org/roh/innovation"/>
+        </owl:onProperty>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+    <rdfs:subClassOf>
+      <owl:Restriction>
+        <owl:maxCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#int"
+        >1</owl:maxCardinality>
+        <owl:onProperty>
+          <owl:DatatypeProperty rdf:about="http://vocab.data.gov/def/drm#origin"/>
+        </owl:onProperty>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+    <rdfs:subClassOf rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
+  </owl:Class>
+  <owl:Class rdf:about="http://w3id.org/roh/AvailiabilityChangeEvent"/>
+  <owl:ObjectProperty rdf:about="http://w3id.org/roh/researchers">
+    <rdfs:domain rdf:resource="http://www.schema.org/Offer"/>
+  </owl:ObjectProperty>
+  <owl:ObjectProperty rdf:about="http://w3id.org/roh/document">
+    <rdfs:domain rdf:resource="http://www.schema.org/Offer"/>
+  </owl:ObjectProperty>
+  <owl:ObjectProperty rdf:about="http://w3id.org/roh/project">
+    <rdfs:domain rdf:resource="http://www.schema.org/Offer"/>
+  </owl:ObjectProperty>
+  <owl:ObjectProperty rdf:about="http://w3id.org/roh/availabilityChangeEvent">
+    <rdfs:range rdf:resource="http://w3id.org/roh/AvailiabilityChangeEvent"/>
+    <rdfs:domain rdf:resource="http://www.schema.org/Offer"/>
+  </owl:ObjectProperty>
+  <owl:ObjectProperty rdf:ID="ObjectProperty_25"/>
+  <owl:ObjectProperty rdf:about="http://w3id.org/roh/patents">
+    <rdfs:domain rdf:resource="http://www.schema.org/Offer"/>
+  </owl:ObjectProperty>
+  <owl:DatatypeProperty rdf:about="http://vocab.data.gov/def/drm#origin">
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+    <rdfs:domain rdf:resource="http://www.schema.org/Offer"/>
+  </owl:DatatypeProperty>
+  <owl:DatatypeProperty rdf:about="http://w3id.org/roh/lineResearch">
+    <rdfs:domain rdf:resource="http://www.schema.org/Offer"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+  </owl:DatatypeProperty>
+  <owl:DatatypeProperty rdf:about="http://vivoweb.org/ontology/core#freetextKeyword">
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+    <rdfs:domain rdf:resource="http://www.schema.org/Offer"/>
+  </owl:DatatypeProperty>
+  <owl:DatatypeProperty rdf:about="http://w3id.org/roh/innovation">
+    <rdfs:domain rdf:resource="http://www.schema.org/Offer"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+  </owl:DatatypeProperty>
+  <owl:DatatypeProperty rdf:about="http://w3id.org/roh/collaborationSought">
+    <rdfs:domain rdf:resource="http://www.schema.org/Offer"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+  </owl:DatatypeProperty>
+  <owl:DatatypeProperty rdf:about="http://w3id.org/roh/partnerType">
+    <rdfs:domain rdf:resource="http://www.schema.org/Offer"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+  </owl:DatatypeProperty>
+  <owl:DatatypeProperty rdf:about="http://purl.org/linked-data/cube#observation">
+    <rdfs:domain rdf:resource="http://www.schema.org/Offer"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+  </owl:DatatypeProperty>
+  <owl:FunctionalProperty rdf:about="http://purl.org/ontology/bibo/recipient">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#DatatypeProperty"/>
+    <rdfs:domain rdf:resource="http://www.schema.org/Offer"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+  </owl:FunctionalProperty>
+  <owl:FunctionalProperty rdf:about="http://purl.org/dc/terms/issued">
+    <rdfs:domain rdf:resource="http://www.schema.org/Offer"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#date"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#DatatypeProperty"/>
+  </owl:FunctionalProperty>
+  <owl:FunctionalProperty rdf:about="http://www.schema.org/offeredBy">
+    <rdfs:domain rdf:resource="http://www.schema.org/Offer"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#ObjectProperty"/>
+  </owl:FunctionalProperty>
+  <owl:FunctionalProperty rdf:about="http://w3id.org/roh/roleOf">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#ObjectProperty"/>
+    <rdfs:domain rdf:resource="http://w3id.org/roh/AvailiabilityChangeEvent"/>
+  </owl:FunctionalProperty>
+  <owl:FunctionalProperty rdf:about="http://w3id.org/roh/application">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#DatatypeProperty"/>
+    <rdfs:domain rdf:resource="http://www.schema.org/Offer"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+  </owl:FunctionalProperty>
+  <owl:FunctionalProperty rdf:about="http://www.schema.org/availability">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#ObjectProperty"/>
+    <rdfs:domain>
+      <owl:Class>
+        <owl:unionOf rdf:parseType="Collection">
+          <owl:Class rdf:about="http://www.schema.org/Offer"/>
+          <owl:Class rdf:about="http://w3id.org/roh/AvailiabilityChangeEvent"/>
+        </owl:unionOf>
+      </owl:Class>
+    </rdfs:domain>
+  </owl:FunctionalProperty>
+  <owl:FunctionalProperty rdf:about="http://www.schema.org/validFrom">
+    <rdfs:domain rdf:resource="http://w3id.org/roh/AvailiabilityChangeEvent"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#DatatypeProperty"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#date"/>
+  </owl:FunctionalProperty>
+  <owl:FunctionalProperty rdf:about="http://www.schema.org/description">
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#DatatypeProperty"/>
+    <rdfs:domain rdf:resource="http://www.schema.org/Offer"/>
+  </owl:FunctionalProperty>
+  <owl:FunctionalProperty rdf:about="http://w3id.org/roh/framingSector">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#ObjectProperty"/>
+    <rdfs:domain rdf:resource="http://www.schema.org/Offer"/>
+  </owl:FunctionalProperty>
+  <owl:FunctionalProperty rdf:about="http://purl.org/ontology/bibo/status">
+    <rdfs:domain rdf:resource="http://www.schema.org/Offer"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#ObjectProperty"/>
+  </owl:FunctionalProperty>
+  <owl:FunctionalProperty rdf:about="http://www.schema.org/name">
+    <rdfs:domain rdf:resource="http://www.schema.org/Offer"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#DatatypeProperty"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+  </owl:FunctionalProperty>
 </rdf:RDF>
 
-
-
-<!-- Generated by the OWL API (version 4.5.9.2019-02-01T07:24:44Z) https://github.com/owlcs/owlapi -->
-
+<!-- Created with Protege (with OWL Plugin 3.3.1, Build 430)  http://protege.stanford.edu -->
