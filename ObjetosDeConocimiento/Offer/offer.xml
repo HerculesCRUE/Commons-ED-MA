@@ -11,8 +11,19 @@
     </ConfiguracionGeneral>
     <EspefPropiedad>
         <Propiedad  ID="http://purl.org/ontology/bibo/status" EntidadID="http://www.schema.org/Offer">
-            <AtrNombre>http://purl.org/ontology/bibo/status</AtrNombre>
-            <AtrNombreLectura>http://purl.org/ontology/bibo/status</AtrNombreLectura>
+            <SeleccionEntidad>
+                <TipoSeleccion>Autocompletar</TipoSeleccion>
+                <Grafo>maturestate.owl</Grafo>
+                <UrlTipoEntSolicitada>http://w3id.org/roh/MatureState</UrlTipoEntSolicitada>              
+                <PropsEntEdicion>
+                    <NameProp>http://purl.org/dc/elements/1.1/title</NameProp>
+                </PropsEntEdicion>
+                <PropsEntLectura>
+                    <Propiedad ID="http://purl.org/dc/elements/1.1/title" EntidadID="http://w3id.org/roh/MatureState">
+                        <AtrNombreLectura></AtrNombreLectura>
+                    </Propiedad>
+                </PropsEntLectura>
+            </SeleccionEntidad>
         </Propiedad>
         <Propiedad  ID="http://www.schema.org/availability" EntidadID="http://www.schema.org/Offer">
             <SeleccionEntidad>
@@ -20,10 +31,10 @@
                 <Grafo>offerstate.owl</Grafo>
                 <UrlTipoEntSolicitada>http://w3id.org/roh/OfferState</UrlTipoEntSolicitada>              
                 <PropsEntEdicion>
-                    <NameProp>http://w3id.org/roh/title</NameProp>
+                    <NameProp>http://purl.org/dc/elements/1.1/title</NameProp>
                 </PropsEntEdicion>
                 <PropsEntLectura>
-                    <Propiedad ID="http://w3id.org/roh/title" EntidadID="http://w3id.org/roh/OfferState">
+                    <Propiedad ID="http://purl.org/dc/elements/1.1/title" EntidadID="http://w3id.org/roh/OfferState">
                         <AtrNombreLectura></AtrNombreLectura>
                     </Propiedad>
                 </PropsEntLectura>
@@ -35,25 +46,10 @@
                 <Grafo>person.owl</Grafo>
                 <UrlTipoEntSolicitada>http://xmlns.com/foaf/0.1/Person</UrlTipoEntSolicitada>
                 <PropsEntEdicion>
-                    <NameProp>http://w3id.org/roh/title</NameProp>
+                    <NameProp>http://xmlns.com/foaf/0.1/name</NameProp>
                 </PropsEntEdicion>
                 <PropsEntLectura>
                     <Propiedad ID="http://xmlns.com/foaf/0.1/name" EntidadID="http://xmlns.com/foaf/0.1/Person">
-                        <AtrNombreLectura></AtrNombreLectura>
-                    </Propiedad>
-                </PropsEntLectura>
-            </SeleccionEntidad>
-        </Propiedad>
-        <Propiedad  ID="http://www.schema.org/availabilityChangeEvent" EntidadID="http://www.schema.org/Offer">
-            <SeleccionEntidad>
-                <TipoSeleccion>Autocompletar</TipoSeleccion>
-                <Grafo>offer.owl</Grafo>
-                <UrlTipoEntSolicitada>http://www.schema.org/AvailabilityChangeEvent</UrlTipoEntSolicitada>              
-                <PropsEntEdicion>
-                    <NameProp>http://w3id.org/roh/title</NameProp>
-                </PropsEntEdicion>
-                <PropsEntLectura>
-                    <Propiedad ID="http://xmlns.com/foaf/0.1/name" EntidadID="http://www.schema.org/AvailabilityChangeEvent">
                         <AtrNombreLectura></AtrNombreLectura>
                     </Propiedad>
                 </PropsEntLectura>
@@ -125,7 +121,7 @@
                 <Grafo>person.owl</Grafo>
                 <UrlTipoEntSolicitada>http://xmlns.com/foaf/0.1/Person</UrlTipoEntSolicitada>              
                 <PropsEntEdicion>
-                    <NameProp>http://w3id.org/roh/title</NameProp>
+                    <NameProp>http://xmlns.com/foaf/0.1/name</NameProp>
                 </PropsEntEdicion>
                 <PropsEntLectura>
                     <Propiedad ID="http://xmlns.com/foaf/0.1/name" EntidadID="http://xmlns.com/foaf/0.1/Person">
@@ -140,10 +136,10 @@
                 <Grafo>offerstate.owl</Grafo>
                 <UrlTipoEntSolicitada>http://w3id.org/roh/OfferState</UrlTipoEntSolicitada>              
                 <PropsEntEdicion>
-                    <NameProp>http://w3id.org/roh/title</NameProp>
+                    <NameProp>http://purl.org/dc/elements/1.1/title</NameProp>
                 </PropsEntEdicion>
                 <PropsEntLectura>
-                    <Propiedad ID="http://w3id.org/roh/title" EntidadID="http://w3id.org/roh/OfferState">
+                    <Propiedad ID="http://purl.org/dc/elements/1.1/title" EntidadID="http://w3id.org/roh/OfferState">
                         <AtrNombreLectura></AtrNombreLectura>
                     </Propiedad>
                 </PropsEntLectura>
