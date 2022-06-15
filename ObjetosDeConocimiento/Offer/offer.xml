@@ -8,6 +8,7 @@
         <TituloDoc EntidadID="http://www.schema.org/Offer">http://www.schema.org/name</TituloDoc>
         <DescripcionDoc EntidadID="http://www.schema.org/Offer">http://www.schema.org/name</DescripcionDoc>
         <HtmlNuevo>true</HtmlNuevo>
+		<CategorizacionTesauroGnossObligatoria>false</CategorizacionTesauroGnossObligatoria>
     </ConfiguracionGeneral>
     <EspefPropiedad>
         <Propiedad  ID="http://purl.org/ontology/bibo/status" EntidadID="http://www.schema.org/Offer">
