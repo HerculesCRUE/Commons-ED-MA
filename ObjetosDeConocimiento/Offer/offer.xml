@@ -38,6 +38,9 @@
                     <Propiedad ID="http://purl.org/dc/elements/1.1/title" EntidadID="http://w3id.org/roh/OfferState">
                         <AtrNombreLectura></AtrNombreLectura>
                     </Propiedad>
+                    <Propiedad ID="http://purl.org/dc/elements/1.1/identifier" EntidadID="http://w3id.org/roh/OfferState">
+                        <AtrNombreLectura></AtrNombreLectura>
+                    </Propiedad>
                 </PropsEntLectura>
             </SeleccionEntidad>
         </Propiedad>
@@ -128,6 +131,32 @@
                     <Propiedad ID="http://xmlns.com/foaf/0.1/name" EntidadID="http://xmlns.com/foaf/0.1/Person">
                         <AtrNombreLectura></AtrNombreLectura>
                     </Propiedad>
+                    <Propiedad ID="http://w3id.org/roh/hasPosition" EntidadID="http://xmlns.com/foaf/0.1/Person">
+                        <AtrNombreLectura></AtrNombreLectura>
+                    </Propiedad>
+                    <Propiedad ID="http://w3id.org/roh/ipNumber" EntidadID="http://xmlns.com/foaf/0.1/Person">
+                        <AtrNombreLectura></AtrNombreLectura>
+                    </Propiedad>
+                    <Propiedad  ID="http://vivoweb.org/ontology/core#departmentOrSchool" EntidadID="http://xmlns.com/foaf/0.1/Person">
+                        <AtrNombre>http://vivoweb.org/ontology/core#departmentOrSchool</AtrNombre>
+                        <AtrNombreLectura>http://vivoweb.org/ontology/core#departmentOrSchool</AtrNombreLectura>
+                        <SeleccionEntidad>
+                            <TipoSeleccion>Combo</TipoSeleccion>
+                            <Grafo>department.owl</Grafo>
+                            <UrlTipoEntSolicitada>http://vivoweb.org/ontology/core#Department</UrlTipoEntSolicitada>              
+                            <PropsEntEdicion>
+                                <NameProp>http://purl.org/dc/elements/1.1/title</NameProp>
+                            </PropsEntEdicion>
+                            <PropsEntLectura>
+                                <Propiedad ID="http://purl.org/dc/elements/1.1/title" EntidadID="http://vivoweb.org/ontology/core#Department">
+                                    <AtrNombreLectura></AtrNombreLectura>
+                                </Propiedad>
+                            </PropsEntLectura>
+                        </SeleccionEntidad>
+                    </Propiedad>
+                    <Propiedad ID="http://w3id.org/roh/publicationsNumber" EntidadID="http://xmlns.com/foaf/0.1/Person">
+                        <AtrNombreLectura></AtrNombreLectura>
+                    </Propiedad>
                 </PropsEntLectura>
             </SeleccionEntidad>
         </Propiedad>        
@@ -141,6 +170,9 @@
                 </PropsEntEdicion>
                 <PropsEntLectura>
                     <Propiedad ID="http://purl.org/dc/elements/1.1/title" EntidadID="http://w3id.org/roh/OfferState">
+                        <AtrNombreLectura></AtrNombreLectura>
+                    </Propiedad>
+                    <Propiedad ID="http://purl.org/dc/elements/1.1/identifier" EntidadID="http://w3id.org/roh/OfferState">
                         <AtrNombreLectura></AtrNombreLectura>
                     </Propiedad>
                 </PropsEntLectura>
