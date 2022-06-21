@@ -71,6 +71,49 @@
                     <Propiedad ID="http://w3id.org/roh/title" EntidadID="http://purl.org/ontology/bibo/Document">
                         <AtrNombreLectura></AtrNombreLectura>
                     </Propiedad>
+                    <Propiedad ID="http://w3id.org/roh/presentedAtStart" EntidadID="http://purl.org/ontology/bibo/Document">
+                        <AtrNombreLectura></AtrNombreLectura>
+                    </Propiedad>
+                    <Propiedad ID="http://w3id.org/roh/presentedAtEnd" EntidadID="http://purl.org/ontology/bibo/Document">
+                        <AtrNombreLectura></AtrNombreLectura>
+                    </Propiedad>
+                    <Propiedad ID="https://www.w3.org/2006/vcard/ns#hasRegion" EntidadID="http://purl.org/ontology/bibo/Document">
+                        <AtrNombre>https://www.w3.org/2006/vcard/ns#hasRegion</AtrNombre>
+                        <AtrNombreLectura>https://www.w3.org/2006/vcard/ns#hasRegion</AtrNombreLectura>
+                        <SeleccionEntidad>
+                            <TipoSeleccion>Combo</TipoSeleccion>
+                            <Grafo>feature.owl</Grafo>
+                            <UrlTipoEntSolicitada>http://www.geonames.org/ontology#Feature</UrlTipoEntSolicitada>
+                            <PropsEntEdicion>
+                                <NameProp>http://www.geonames.org/ontology#name</NameProp>
+                            </PropsEntEdicion>
+                            <PropsEntLectura>
+                                <Propiedad ID="http://www.geonames.org/ontology#name" EntidadID="http://www.geonames.org/ontology#Feature">
+                                    <AtrNombreLectura></AtrNombreLectura>
+                                </Propiedad>
+                            </PropsEntLectura>
+                        </SeleccionEntidad>
+                    </Propiedad>
+                    <Propiedad ID="http://w3id.org/roh/conductedBy" EntidadID="http://purl.org/ontology/bibo/Document">
+                        <AtrNombre>http://w3id.org/roh/conductedBy</AtrNombre>
+                        <AtrNombreLectura>http://w3id.org/roh/conductedBy</AtrNombreLectura>
+                        <SeleccionEntidad>
+                            <TipoSeleccion>Combo</TipoSeleccion>
+                            <Grafo>organization.owl</Grafo>
+                            <UrlTipoEntSolicitada>http://xmlns.com/foaf/0.1/Organization</UrlTipoEntSolicitada>
+                            <PropsEntEdicion>
+                                <NameProp>http://w3id.org/roh/title</NameProp>
+                            </PropsEntEdicion>
+                            <PropsEntLectura>
+                                <Propiedad ID="http://w3id.org/roh/title" EntidadID="http://xmlns.com/foaf/0.1/Organization">
+                                    <AtrNombreLectura></AtrNombreLectura>
+                                </Propiedad>
+                            </PropsEntLectura>
+                        </SeleccionEntidad>
+                    </Propiedad>
+                    <Propiedad ID="http://w3id.org/roh/title" EntidadID="http://vivoweb.org/ontology/Project">
+                        <AtrNombreLectura></AtrNombreLectura>
+                    </Propiedad>
                 </PropsEntLectura>
             </SeleccionEntidad>
         </Propiedad>
@@ -113,6 +156,32 @@
                     <NameProp>http://w3id.org/roh/title</NameProp>
                 </PropsEntEdicion>
                 <PropsEntLectura>
+                    <Propiedad ID="http://w3id.org/roh/title" EntidadID="http://vivoweb.org/ontology/Project">
+                        <AtrNombreLectura></AtrNombreLectura>
+                    </Propiedad>
+                    <Propiedad ID="http://vivoweb.org/ontology/core#end" EntidadID="http://vivoweb.org/ontology/Project">
+                        <AtrNombreLectura></AtrNombreLectura>
+                    </Propiedad>
+                    <Propiedad ID="http://vivoweb.org/ontology/core#start" EntidadID="http://vivoweb.org/ontology/Project">
+                        <AtrNombreLectura></AtrNombreLectura>
+                    </Propiedad>
+                    <Propiedad ID="http://w3id.org/roh/conductedBy" EntidadID="http://vivoweb.org/ontology/Project">
+                        <AtrNombre>http://w3id.org/roh/conductedBy</AtrNombre>
+                        <AtrNombreLectura>http://w3id.org/roh/conductedBy</AtrNombreLectura>
+                        <SeleccionEntidad>
+                            <TipoSeleccion>Combo</TipoSeleccion>
+                            <Grafo>organization.owl</Grafo>
+                            <UrlTipoEntSolicitada>http://xmlns.com/foaf/0.1/Organization</UrlTipoEntSolicitada>
+                            <PropsEntEdicion>
+                                <NameProp>http://w3id.org/roh/title</NameProp>
+                            </PropsEntEdicion>
+                            <PropsEntLectura>
+                                <Propiedad ID="http://w3id.org/roh/title" EntidadID="http://xmlns.com/foaf/0.1/Organization">
+                                    <AtrNombreLectura></AtrNombreLectura>
+                                </Propiedad>
+                            </PropsEntLectura>
+                        </SeleccionEntidad>
+                    </Propiedad>
                     <Propiedad ID="http://w3id.org/roh/title" EntidadID="http://vivoweb.org/ontology/Project">
                         <AtrNombreLectura></AtrNombreLectura>
                     </Propiedad>
