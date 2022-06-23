@@ -41,6 +41,9 @@
                     <Propiedad ID="http://purl.org/dc/elements/1.1/identifier" EntidadID="http://w3id.org/roh/OfferState">
                         <AtrNombreLectura></AtrNombreLectura>
                     </Propiedad>
+                    <Propiedad ID="http://www.schema.org/color" EntidadID="http://w3id.org/roh/OfferState">
+                        <AtrNombreLectura></AtrNombreLectura>
+                    </Propiedad>
                 </PropsEntLectura>
             </SeleccionEntidad>
         </Propiedad>
@@ -242,6 +245,9 @@
                         <AtrNombreLectura></AtrNombreLectura>
                     </Propiedad>
                     <Propiedad ID="http://purl.org/dc/elements/1.1/identifier" EntidadID="http://w3id.org/roh/OfferState">
+                        <AtrNombreLectura></AtrNombreLectura>
+                    </Propiedad>
+                    <Propiedad ID="http://www.schema.org/color" EntidadID="http://w3id.org/roh/OfferState">
                         <AtrNombreLectura></AtrNombreLectura>
                     </Propiedad>
                 </PropsEntLectura>
