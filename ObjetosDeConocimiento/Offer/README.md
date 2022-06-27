@@ -36,7 +36,6 @@ A continuación se listan todas aquellas propiedades contenidas en eroh:Offer qu
 - eroh:project
 - eroh:document
 - roh:patents
-- schema:color
 
 ![](../../Docs/media/ObjetosDeConocimiento/Offer.png)
 
