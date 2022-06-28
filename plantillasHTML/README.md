@@ -9,7 +9,7 @@
 |Tipo|Diseño|
 |Cambios de la Versión|Versión inicial|
 
-# Hércules ED. Objetos de conocimiento
+# Hércules ED y MA. Plantillas y maquetación HTML
 
 [Introducción](#introducción)
 

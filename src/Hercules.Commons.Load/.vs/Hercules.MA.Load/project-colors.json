@@ -1,0 +1,21 @@
+{
+  "Version": 1,
+  "ProjectMap": {
+    "870930a6-f8f2-4ced-ad28-6e7ab8a044d6": {
+      "ProjectGuid": "870930a6-f8f2-4ced-ad28-6e7ab8a044d6",
+      "DisplayName": "Hercules.MA.Load",
+      "ColorIndex": 0
+    },
+    "d29c5da1-7d16-4058-a07a-6bc21d0ead03": {
+      "ProjectGuid": "d29c5da1-7d16-4058-a07a-6bc21d0ead03",
+      "DisplayName": "hercules",
+      "ColorIndex": 1
+    },
+    "a2fe74e1-b743-11d0-ae1a-00a0c90fffc3": {
+      "ProjectGuid": "a2fe74e1-b743-11d0-ae1a-00a0c90fffc3",
+      "DisplayName": "Miscellaneous Files",
+      "ColorIndex": -1
+    }
+  },
+  "NextColorIndex": 2
+}

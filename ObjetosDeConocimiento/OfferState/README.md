@@ -17,6 +17,7 @@ A continuación se listan todas aquellas propiedades contenidas en eroh:OfferSta
 
 - dc:title
 - dc:identifier
+- schema:color
 
 ![](../../Docs/media/ObjetosDeConocimiento/OfferState.png)
 
