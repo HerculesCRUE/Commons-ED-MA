@@ -27,3 +27,11 @@ Es necesario que los ficheros XML ofrecidos por la universidad estén en el dire
 
 También hay que guardar el excel de las taxonomias (Hércules-ED_Taxonomías.xlsx) y el de datos adicionales de las personas (personas_hercules.xlsx) en ./Dataset
 
+Dependencias
+============
+- EnterpriseLibrary.Data.NetCore: v6.3.2
+- ExcelDataReader: v3.6.0
+- ExcelDataReader.DataSet: v3.6.0
+- GnossApiWrapper.NetCore: v1.0.8
+- Newtonsoft.Json: v13.0.1
+- System.Text.Encoding.CodePages: v6.0.0
