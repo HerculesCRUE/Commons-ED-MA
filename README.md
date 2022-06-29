@@ -10,3 +10,4 @@ Este repositorio contiene componentes o diseños compartidos en los proyectos:
 Los componentes comunes están en las siguientes carpetas:
 * [PlantillasHTML](./plantillasHTML). Contiene las maquetas HTML con las que se han desarrollado los interfaces de los proyectos Hércules ED y Hércules MA, que comparten diseños comunes.
 * [ObjetosDeConocimiento](./ObjetosDeConocimiento). objetos de conocimiento que se utilizan en el desarrollo de los proyectos Hércules ED y Hércules MA.
+* [src](/.src). Contiene los servicios y tareas de uso en los proyectos Hércules ED y Hércules MA.
