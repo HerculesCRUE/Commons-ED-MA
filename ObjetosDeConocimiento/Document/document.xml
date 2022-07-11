@@ -460,6 +460,22 @@
             </SeleccionEntidad>
         </Propiedad>
 		
+		<Propiedad  ID="http://w3id.org/roh/genderIP" EntidadID="http://purl.org/ontology/bibo/Document">
+			<SeleccionEntidad>
+                <TipoSeleccion>Combo</TipoSeleccion>
+                <Grafo>gender.owl</Grafo>
+                <UrlTipoEntSolicitada>http://w3id.org/roh/Gender</UrlTipoEntSolicitada>              
+                <PropsEntEdicion>
+                    <NameProp>http://purl.org/dc/elements/1.1/title</NameProp>
+                </PropsEntEdicion>
+                <PropsEntLectura>
+                    <Propiedad ID="http://purl.org/dc/elements/1.1/title" EntidadID="http://w3id.org/roh/Gender">
+                        <AtrNombreLectura></AtrNombreLectura>
+                    </Propiedad>
+                </PropsEntLectura>
+            </SeleccionEntidad>
+        </Propiedad>
+		
 		
     </EspefPropiedad>
     <EspefEntidad>

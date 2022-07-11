@@ -138,13 +138,13 @@
                 </PropsEntLectura>
             </SeleccionEntidad>
         </Propiedad>
-		<Propiedad  ID="http://w3id.org/roh/owner" EntidadID="http://purl.org/ontology/bibo/Patent">
+		<Propiedad  ID="http://www.w3.org/1999/02/22-rdf-syntax-ns#member" EntidadID="http://w3id.org/roh/PersonAux">
 			<SeleccionEntidad>
                 <TipoSeleccion>Autocompletar</TipoSeleccion>
                 <Grafo>person.owl</Grafo>
                 <UrlTipoEntSolicitada>http://xmlns.com/foaf/0.1/Person</UrlTipoEntSolicitada>              
                 <PropsEntEdicion>
-                    <NameProp>http://w3id.org/roh/title</NameProp>
+                    <NameProp>http://xmlns.com/foaf/0.1/name</NameProp>
                 </PropsEntEdicion>
                 <PropsEntLectura>
                     <Propiedad ID="http://xmlns.com/foaf/0.1/name" EntidadID="http://xmlns.com/foaf/0.1/Person">
