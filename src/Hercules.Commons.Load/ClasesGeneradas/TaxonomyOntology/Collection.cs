@@ -106,6 +106,24 @@ namespace TaxonomyOntology
 				AgregarTripleALista($"{resourceAPI.GraphsUrl}items/Concept_{ResourceID}_{item0.ArticleID}", "http://www.w3.org/2000/01/rdf-schema#label", $"\"http://www.w3.org/2008/05/skos#Concept\"", list, " . ");
 				AgregarTripleALista($"{resourceAPI.GraphsUrl}{ResourceID}", "http://gnoss/hasEntidad", $"<{resourceAPI.GraphsUrl}items/Concept_{ResourceID}_{item0.ArticleID}>", list, " . ");
 				AgregarTripleALista($"{resourceAPI.GraphsUrl}items/Collection_{ResourceID}_{ArticleID}", "http://www.w3.org/2008/05/skos#member", $"<{resourceAPI.GraphsUrl}items/Concept_{ResourceID}_{item0.ArticleID}>", list, " . ");
+			if(item0.Roh_sourceDescriptor != null)
+			{
+			foreach(var item1 in item0.Roh_sourceDescriptor)
+			{
+				AgregarTripleALista($"{resourceAPI.GraphsUrl}items/SourceDescriptor_{ResourceID}_{item1.ArticleID}", "http://www.w3.org/1999/02/22-rdf-syntax-ns#type", $"<http://w3id.org/roh/SourceDescriptor>", list, " . ");
+				AgregarTripleALista($"{resourceAPI.GraphsUrl}items/SourceDescriptor_{ResourceID}_{item1.ArticleID}", "http://www.w3.org/2000/01/rdf-schema#label", $"\"http://w3id.org/roh/SourceDescriptor\"", list, " . ");
+				AgregarTripleALista($"{resourceAPI.GraphsUrl}{ResourceID}", "http://gnoss/hasEntidad", $"<{resourceAPI.GraphsUrl}items/SourceDescriptor_{ResourceID}_{item1.ArticleID}>", list, " . ");
+				AgregarTripleALista($"{resourceAPI.GraphsUrl}items/Concept_{ResourceID}_{item0.ArticleID}", "http://w3id.org/roh/sourceDescriptor", $"<{resourceAPI.GraphsUrl}items/SourceDescriptor_{ResourceID}_{item1.ArticleID}>", list, " . ");
+				if(item1.Roh_impactSourceCategory != null)
+				{
+					AgregarTripleALista($"{resourceAPI.GraphsUrl}items/SourceDescriptor_{ResourceID}_{item1.ArticleID}",  "http://w3id.org/roh/impactSourceCategory", $"\"{GenerarTextoSinSaltoDeLinea(item1.Roh_impactSourceCategory)}\"", list, " . ");
+				}
+				if(item1.IdRoh_impactSource != null)
+				{
+					AgregarTripleALista($"{resourceAPI.GraphsUrl}items/SourceDescriptor_{ResourceID}_{item1.ArticleID}",  "http://w3id.org/roh/impactSource", $"<{item1.IdRoh_impactSource}>", list, " . ");
+				}
+			}
+			}
 				if(item0.Skos_symbol != null)
 				{
 					AgregarTripleALista($"{resourceAPI.GraphsUrl}items/Concept_{ResourceID}_{item0.ArticleID}",  "http://www.w3.org/2008/05/skos#symbol", $"\"{GenerarTextoSinSaltoDeLinea(item0.Skos_symbol)}\"", list, " . ");
@@ -145,6 +163,31 @@ namespace TaxonomyOntology
 			foreach(var item0 in this.Skos_member)
 			{
 				AgregarTripleALista($"http://gnoss/{ResourceID.ToString().ToUpper()}", "http://www.w3.org/2008/05/skos#member", $"<{resourceAPI.GraphsUrl}items/concept_{ResourceID}_{item0.ArticleID}>", list, " . ");
+			if(item0.Roh_sourceDescriptor != null)
+			{
+			foreach(var item1 in item0.Roh_sourceDescriptor)
+			{
+				AgregarTripleALista($"{resourceAPI.GraphsUrl}items/concept_{ResourceID}_{item0.ArticleID}", "http://w3id.org/roh/sourceDescriptor", $"<{resourceAPI.GraphsUrl}items/sourcedescriptor_{ResourceID}_{item1.ArticleID}>", list, " . ");
+				if(item1.Roh_impactSourceCategory != null)
+				{
+					AgregarTripleALista($"{resourceAPI.GraphsUrl}items/sourcedescriptor_{ResourceID}_{item1.ArticleID}",  "http://w3id.org/roh/impactSourceCategory", $"\"{GenerarTextoSinSaltoDeLinea(item1.Roh_impactSourceCategory).ToLower()}\"", list, " . ");
+				}
+				if(item1.IdRoh_impactSource != null)
+				{
+					Regex regex = new Regex(@"\/items\/.+_[0-9A-Fa-f]{8}[-]?(?:[0-9A-Fa-f]{4}[-]?){3}[0-9A-Fa-f]{12}_[0-9A-Fa-f]{8}[-]?(?:[0-9A-Fa-f]{4}[-]?){3}[0-9A-Fa-f]{12}");
+					string itemRegex = item1.IdRoh_impactSource;
+					if (regex.IsMatch(itemRegex))
+					{
+						itemRegex = $"http://gnoss/{resourceAPI.GetShortGuid(itemRegex).ToString().ToUpper()}";
+					}
+					else
+					{
+						itemRegex = itemRegex.ToLower();
+					}
+					AgregarTripleALista($"{resourceAPI.GraphsUrl}items/sourcedescriptor_{ResourceID}_{item1.ArticleID}",  "http://w3id.org/roh/impactSource", $"<{itemRegex}>", list, " . ");
+				}
+			}
+			}
 				if(item0.Skos_symbol != null)
 				{
 					AgregarTripleALista($"{resourceAPI.GraphsUrl}items/concept_{ResourceID}_{item0.ArticleID}",  "http://www.w3.org/2008/05/skos#symbol", $"\"{GenerarTextoSinSaltoDeLinea(item0.Skos_symbol).ToLower()}\"", list, " . ");
