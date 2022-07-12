@@ -44,6 +44,23 @@
             <AtrNombre>Fuente</AtrNombre>
             <AtrNombreLectura>Fuente</AtrNombreLectura>
         </Propiedad>
+		<Propiedad  ID="http://w3id.org/roh/impactSource" EntidadID="http://w3id.org/roh/SourceDescriptor">
+            <AtrNombre>Fuente de impacto</AtrNombre>
+            <AtrNombreLectura>Fuente de impacto</AtrNombreLectura>
+			<SeleccionEntidad>
+                <TipoSeleccion>Autocompletar</TipoSeleccion>
+                <Grafo>referencesource.owl</Grafo>
+                <UrlTipoEntSolicitada>http://purl.org/ontology/bibo/ReferenceSource</UrlTipoEntSolicitada>              
+                <PropsEntEdicion>
+                    <NameProp>http://purl.org/dc/elements/1.1/title</NameProp>
+                </PropsEntEdicion>
+                <PropsEntLectura>
+                    <Propiedad ID="http://purl.org/dc/elements/1.1/title" EntidadID="http://purl.org/ontology/bibo/ReferenceSource">
+                        <AtrNombreLectura></AtrNombreLectura>
+                    </Propiedad>
+                </PropsEntLectura>
+            </SeleccionEntidad>
+        </Propiedad>
     </EspefPropiedad>
     <EspefEntidad>
         <Entidad  ID="http://www.w3.org/2008/05/skos#Collection">
