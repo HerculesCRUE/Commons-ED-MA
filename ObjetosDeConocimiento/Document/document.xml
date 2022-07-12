@@ -425,23 +425,6 @@
         </Propiedad>
 		
 		
-		<Propiedad  ID="http://w3id.org/roh/impactIndexCategory" EntidadID="http://w3id.org/roh/ImpactIndex">
-            <AtrNombre>Categoría del índice de impacto</AtrNombre>
-            <AtrNombreLectura>Categoría del índice de impacto</AtrNombreLectura>
-			<SeleccionEntidad>
-                <TipoSeleccion>Autocompletar</TipoSeleccion>
-                <Grafo>impactindexcategory.owl</Grafo>
-                <UrlTipoEntSolicitada>http://w3id.org/roh/ImpactIndexCategory</UrlTipoEntSolicitada>              
-                <PropsEntEdicion>
-                    <NameProp>http://purl.org/dc/elements/1.1/title</NameProp>
-                </PropsEntEdicion>
-                <PropsEntLectura>
-                    <Propiedad ID="http://purl.org/dc/elements/1.1/title" EntidadID="http://w3id.org/roh/ImpactIndexCategory">
-                        <AtrNombreLectura></AtrNombreLectura>
-                    </Propiedad>
-                </PropsEntLectura>
-            </SeleccionEntidad>
-        </Propiedad>
 		<Propiedad  ID="http://w3id.org/roh/impactSource" EntidadID="http://w3id.org/roh/ImpactIndex">
             <AtrNombre>Fuente de impacto</AtrNombre>
             <AtrNombreLectura>Fuente de impacto</AtrNombreLectura>
