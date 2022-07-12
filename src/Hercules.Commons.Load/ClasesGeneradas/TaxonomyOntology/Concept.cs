@@ -28,6 +28,18 @@ namespace TaxonomyOntology
 		{
 			this.mGNOSSID = pSemCmsModel.Entity.Uri;
 			this.mURL = pSemCmsModel.Properties.FirstOrDefault(p => p.PropertyValues.Any(prop => prop.DownloadUrl != null))?.FirstPropertyValue.DownloadUrl;
+			this.Roh_sourceDescriptor = new List<SourceDescriptor>();
+			SemanticPropertyModel propRoh_sourceDescriptor = pSemCmsModel.GetPropertyByPath("http://w3id.org/roh/sourceDescriptor");
+			if(propRoh_sourceDescriptor != null && propRoh_sourceDescriptor.PropertyValues.Count > 0)
+			{
+				foreach (SemanticPropertyModel.PropertyValue propValue in propRoh_sourceDescriptor.PropertyValues)
+				{
+					if(propValue.RelatedEntity!=null){
+						SourceDescriptor roh_sourceDescriptor = new SourceDescriptor(propValue.RelatedEntity,idiomaUsuario);
+						this.Roh_sourceDescriptor.Add(roh_sourceDescriptor);
+					}
+				}
+			}
 			this.Skos_broader = new List<Concept>();
 			SemanticPropertyModel propSkos_broader = pSemCmsModel.GetPropertyByPath("http://www.w3.org/2008/05/skos#broader");
 			if(propSkos_broader != null && propSkos_broader.PropertyValues.Count > 0)
@@ -61,6 +73,9 @@ namespace TaxonomyOntology
 		public virtual string RdfType { get { return "http://www.w3.org/2008/05/skos#Concept"; } }
 		public virtual string RdfsLabel { get { return "http://www.w3.org/2008/05/skos#Concept"; } }
 		public OntologyEntity Entity { get; set; }
+
+		[RDFProperty("http://w3id.org/roh/sourceDescriptor")]
+		public  List<SourceDescriptor> Roh_sourceDescriptor { get; set;}
 
 		[LABEL(LanguageEnum.es,"Genérico")]
 		[RDFProperty("http://www.w3.org/2008/05/skos#broader")]
@@ -99,6 +114,15 @@ namespace TaxonomyOntology
 		internal override void GetEntities()
 		{
 			base.GetEntities();
+			if(Roh_sourceDescriptor!=null){
+				foreach(SourceDescriptor prop in Roh_sourceDescriptor){
+					prop.GetProperties();
+					prop.GetEntities();
+					OntologyEntity entitySourceDescriptor = new OntologyEntity("http://w3id.org/roh/SourceDescriptor", "http://w3id.org/roh/SourceDescriptor", "roh:sourceDescriptor", prop.propList, prop.entList);
+				entList.Add(entitySourceDescriptor);
+				prop.Entity= entitySourceDescriptor;
+				}
+			}
 			if(Skos_broader!=null){
 				foreach(Concept prop in Skos_broader){
 					prop.GetProperties();
