@@ -51,6 +51,16 @@ namespace Hercules.Commons.Load
         /// </summary>
         public static void CargarEntidadesPrincipales()
         {
+            // Cargar tesauro excels
+            //CambiarOntologia("taxonomy");
+            //List<SecondaryResource> listaRecursosSecundariosArea = new List<SecondaryResource>();
+            //ObtenerTesauroExcelAreaProcedencia(ref listaRecursosSecundariosArea, "areaprocedencia");
+            //CargarDatosSecundarios(listaRecursosSecundariosArea);
+            
+            //List<SecondaryResource> listaRecursosSecundariosSector = new List<SecondaryResource>();
+            //ObtenerTesauroExcelSectorAplicacion(ref listaRecursosSecundariosSector, "sectoraplicacion");
+            //CargarDatosSecundarios(listaRecursosSecundariosSector);
+
             //Lectura de datos XML.   
             List<AreasUnescoProyectos> areasUnescoProyectos = LeerAreasUnescoProyectos(inputFolder + "/Areas UNESCO Proyectos.xml");
             List<Articulo> articulos = LeerArticulos(inputFolder + "/Articulos.xml");
@@ -458,6 +468,112 @@ namespace Hercules.Commons.Load
             collection.Dc_source = pSource;
             collection.Skos_member = listConcepts.Where(x => x.Dc_identifier.EndsWith(".0.0.0")).ToList();
             collection.Skos_scopeNote = "Research areas";
+            pListaRecursosCargar.Add(collection.ToGnossApiResource(mResourceApi, "0"));
+        }
+        
+        /// <summary>
+        /// Proceso para contruir el tesáuro del sector aplicación
+        /// </summary>
+        /// <param name="pListaRecursosCargar">Lista de recursos a cargar.</param>
+        /// <param name="pSource">Nombre del tesáuro.</param>
+        private static void ObtenerTesauroExcelSectorAplicacion(ref List<SecondaryResource> pListaRecursosCargar, string pSource)
+        {
+            DataSet ds = LeerDatosExcel(@"Dataset\SectorAplicacion.xlsx");
+
+            //Recorremos las filas
+            List<Concept> listConcepts = new List<Concept>();
+            foreach (DataRow fila in ds.Tables["Hoja1"].Rows)
+            {
+                string id = fila["ID"].ToString();
+                string nombre = fila["Nombre"].ToString();
+                string traduccion = fila["Traducido"].ToString();
+
+                ConceptEDMA concept = new ConceptEDMA();
+                Dictionary<GnossBase.GnossOCBase.LanguageEnum, string> dicNombresTraduccion = new Dictionary<GnossBase.GnossOCBase.LanguageEnum, string>();
+                dicNombresTraduccion.Add(GnossBase.GnossOCBase.LanguageEnum.es, nombre);
+                dicNombresTraduccion.Add(GnossBase.GnossOCBase.LanguageEnum.en, traduccion);
+                concept.Skos_prefLabelMulti = dicNombresTraduccion;
+                concept.Dc_identifier = id;
+                concept.Dc_source = pSource;
+                listConcepts.Add(concept);
+            }
+
+            foreach (Concept concept in listConcepts)
+            {
+                string[] idSplit = concept.Dc_identifier.Split('.');
+                concept.Skos_narrower = new List<Concept>();
+                concept.Skos_broader = new List<Concept>();
+                if (concept.Dc_identifier.EndsWith(".0.0"))
+                {
+                    concept.Skos_narrower = listConcepts.Where(x => x.Dc_identifier.StartsWith(idSplit[0] + ".") && x.Dc_identifier.EndsWith(".0") && x.Dc_identifier != concept.Dc_identifier).ToList();
+                    concept.Skos_symbol = "1";
+                }
+                else if (concept.Dc_identifier.EndsWith(".0"))
+                {
+                    concept.Skos_broader = listConcepts.Where(x => x.Dc_identifier.EndsWith(".0.0") && x.Dc_identifier.StartsWith(idSplit[0] + "." )).ToList();
+                    concept.Skos_narrower = listConcepts.Where(x => x.Dc_identifier.StartsWith(idSplit[0] + "." + idSplit[1] + ".") && x.Dc_identifier != concept.Dc_identifier).ToList();
+                    concept.Skos_symbol = "2";
+                }
+                else
+                {
+                    concept.Skos_broader = listConcepts.Where(x => x.Dc_identifier.StartsWith(idSplit[0] + "." + idSplit[1] + ".") && x.Dc_identifier.EndsWith(".0") && x.Dc_identifier != concept.Dc_identifier).ToList();
+                    concept.Skos_symbol = "3";
+                }
+                pListaRecursosCargar.Add(((ConceptEDMA)concept).ToGnossApiResource(mResourceApi, concept.Dc_identifier));
+            }
+
+            CollectionEDMA collection = new CollectionEDMA();
+            collection.Dc_source = pSource;
+            collection.Skos_member = listConcepts.Where(x => x.Dc_identifier.EndsWith(".0.0")).ToList();
+            collection.Skos_scopeNote = "Sector aplicacion";
+            pListaRecursosCargar.Add(collection.ToGnossApiResource(mResourceApi, "0"));
+        }
+
+        /// <summary>
+        /// Proceso para contruir el tesáuro del área de procedencia
+        /// </summary>
+        /// <param name="pListaRecursosCargar">Lista de recursos a cargar.</param>
+        /// <param name="pSource">Nombre del tesáuro.</param>
+        private static void ObtenerTesauroExcelAreaProcedencia(ref List<SecondaryResource> pListaRecursosCargar, string pSource)
+        {
+            DataSet ds = LeerDatosExcel(@"Dataset\AreaProcedencia.xlsx");
+
+            //Recorremos las filas
+            List<Concept> listConcepts = new List<Concept>();
+            foreach (DataRow fila in ds.Tables["Hoja1"].Rows)
+            {
+                string id = fila["ID"].ToString();
+                string nombre = fila["Nombre"].ToString();
+
+                ConceptEDMA concept = new ConceptEDMA();
+                concept.Skos_prefLabel = nombre;
+                concept.Dc_identifier = id;
+                concept.Dc_source = pSource;
+                listConcepts.Add(concept);
+            }
+
+            foreach (Concept concept in listConcepts)
+            {
+                string[] idSplit = concept.Dc_identifier.Split('.');
+                concept.Skos_narrower = new List<Concept>();
+                concept.Skos_broader = new List<Concept>();
+                if (concept.Dc_identifier.EndsWith(".0"))
+                {
+                    concept.Skos_narrower = listConcepts.Where(x => x.Dc_identifier.StartsWith(idSplit[0] + ".") && x.Dc_identifier != concept.Dc_identifier).ToList();
+                    concept.Skos_symbol = "1";
+                }
+                else
+                {
+                    concept.Skos_broader = listConcepts.Where(x => x.Dc_identifier.StartsWith(idSplit[0]) && x.Dc_identifier.EndsWith(".0") && x.Dc_identifier != concept.Dc_identifier).ToList();
+                    concept.Skos_symbol = "2";
+                }
+                pListaRecursosCargar.Add(((ConceptEDMA)concept).ToGnossApiResource(mResourceApi, concept.Dc_identifier));
+            }
+
+            CollectionEDMA collection = new CollectionEDMA();
+            collection.Dc_source = pSource;
+            collection.Skos_member = listConcepts.Where(x => x.Dc_identifier.EndsWith(".0")).ToList();
+            collection.Skos_scopeNote = "Area procedencia";
             pListaRecursosCargar.Add(collection.ToGnossApiResource(mResourceApi, "0"));
         }
 
