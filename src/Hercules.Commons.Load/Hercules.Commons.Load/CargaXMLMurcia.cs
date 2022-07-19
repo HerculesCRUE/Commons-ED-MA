@@ -88,13 +88,11 @@ namespace Hercules.Commons.Load
 
             //Taxonomía 
             List<SecondaryResource> listaRecursosSecundariosCargar = new List<SecondaryResource>();
-            List<Tuple<string, string, string, string, string>> listaTuplas = new List<Tuple<string, string, string, string, string>>();
-            List<Concept> listaConcepts = new List<Concept>();
             CambiarOntologia("taxonomy");
-            //CargaNormaCVN.EliminarDatosCargados("http://www.w3.org/2008/05/skos#Collection", "taxonomy", "researcharea");
-            //CargaNormaCVN.EliminarDatosCargados("http://www.w3.org/2008/05/skos#Concept", "taxonomy", "researcharea");
-            ObtenerTesauroExcel(ref listaRecursosSecundariosCargar, ref listaTuplas, ref listaConcepts, "researcharea");
-            //CargarDatosSecundarios(listaRecursosSecundariosCargar);
+            CargaNormaCVN.EliminarDatosCargados("http://www.w3.org/2008/05/skos#Collection", "taxonomy", "researcharea");
+            CargaNormaCVN.EliminarDatosCargados("http://www.w3.org/2008/05/skos#Concept", "taxonomy", "researcharea");
+            ObtenerTesauroExcel(ref listaRecursosSecundariosCargar, "researcharea");
+            CargarDatosSecundarios(listaRecursosSecundariosCargar);
             listaRecursosSecundariosCargar.Clear();
 
             //Persona en específico a cargar.
@@ -369,86 +367,66 @@ namespace Hercules.Commons.Load
         /// Proceso para contruir el tesáuro con la taxonomía unificada.
         /// </summary>
         /// <param name="pListaRecursosCargar">Lista de recursos a cargar.</param>
-        /// <param name="pListaTuplas">Lista de tuplas con datos. Tupla<Cat. 1er Nivel, Cat. 2o Nivel, Cat. 3er Nivel, Cat. 4o Nivel, ID de WoS></param>
-        /// <param name="pListaConcepts">Lista con los objetos Concepts para el tesáuro.</param>
         /// <param name="pSource">Nombre del tesáuro.</param>
-        private static void ObtenerTesauroExcel(ref List<SecondaryResource> pListaRecursosCargar, ref List<Tuple<string, string, string, string, string>> pListaTuplas, ref List<Concept> pListaConcepts, string pSource)
+        private static void ObtenerTesauroExcel(ref List<SecondaryResource> pListaRecursosCargar, string pSource)
         {
-            DataSet ds = LeerDatosExcel(@"Dataset\Hércules-ED_Taxonomías_v1.1.xlsx");
+            DataSet ds = LeerDatosExcel(@"Dataset\Hércules-ED_Taxonomías_v1.36.xlsx");
 
-            List<Tuple<string, string, string, string, string>> listaDatos = new List<Tuple<string, string, string, string, string>>();
-            foreach (DataRow fila in ds.Tables["Hércules-KA-taxonomy (clean)"].Rows)
-            {
-                Tuple<string, string, string, string, string> tupla = new Tuple<string, string, string, string, string>(fila["Level 0"].ToString(), fila["Level 1"].ToString(), fila["Level 2"].ToString(), fila["Level 3"].ToString(), fila["WoS-JCR"].ToString());
-                listaDatos.Add(tupla);
-            }
-
-            pListaTuplas = listaDatos;
-
+            //Recorremos las filas
             List<Concept> listConcepts = new List<Concept>();
-            int lv1 = 0, lv2 = 0, lv3 = 0, lv4 = 0;
-            string lastLv1 = "", lastLv2 = "", lastLv3 = "", lastLv4 = "";
-            foreach (Tuple<string, string, string, string, string> tupla in listaDatos)
+            foreach (DataRow fila in ds.Tables["HérculesKA-taxonomy (clean)"].Rows)
             {
-                if (!string.IsNullOrEmpty(tupla.Item1) && lastLv1 != tupla.Item1)
+                string level0 = fila["Level 0"].ToString();
+                string level1 = fila["Level 1"].ToString();
+                string level2 = fila["Level 2"].ToString();
+                string level3 = fila["Level 3"].ToString();
+                string scopusDescriptor = fila["ASJC-Scopus descriptor"].ToString();
+                string wosDescriptor = fila["WoS-JCR descriptor"].ToString();
+                string id = fila["ID"].ToString();
+                string nombre = level0;
+                string symbol = "1";
+                if (string.IsNullOrEmpty(nombre))
                 {
-                    lv1++;
-                    lv2 = 0;
-                    lv3 = 0;
-                    lv4 = 0;
-                    string id = lv1.ToString() + "." + lv2.ToString() + "." + lv3.ToString() + "." + lv4.ToString();
-                    ConceptEDMA concept = new ConceptEDMA();
-                    concept.Dc_identifier = id;
-                    concept.Dc_source = pSource;
-                    concept.Skos_prefLabel = tupla.Item1;
-                    concept.Skos_symbol = "1";
-                    listConcepts.Add(concept);
+                    nombre = level1;
+                    symbol = "2";
                 }
-                if (!string.IsNullOrEmpty(tupla.Item2) && lastLv2 != tupla.Item2)
+                if (string.IsNullOrEmpty(nombre))
                 {
-                    lv2++;
-                    lv3 = 0;
-                    lv4 = 0;
-                    string id = lv1.ToString() + "." + lv2.ToString() + "." + lv3.ToString() + "." + lv4.ToString();
-                    ConceptEDMA concept = new ConceptEDMA();
-                    concept.Dc_identifier = id;
-                    concept.Dc_source = pSource;
-                    concept.Skos_prefLabel = tupla.Item2;
-                    concept.Skos_symbol = "2";
-                    listConcepts.Add(concept);
+                    nombre = level2;
+                    symbol = "3";
                 }
-                if (!string.IsNullOrEmpty(tupla.Item3) && lastLv3 != tupla.Item3)
+                if (string.IsNullOrEmpty(nombre))
                 {
-                    lv3++;
-                    lv4 = 0;
-                    string id = lv1.ToString() + "." + lv2.ToString() + "." + lv3.ToString() + "." + lv4.ToString();
-                    ConceptEDMA concept = new ConceptEDMA();
-                    concept.Dc_identifier = id;
-                    concept.Dc_source = pSource;
-                    concept.Skos_prefLabel = tupla.Item3;
-                    concept.Skos_symbol = "3";
-                    listConcepts.Add(concept);
-
+                    nombre = level3;
+                    symbol = "4";
                 }
-                if (!string.IsNullOrEmpty(tupla.Item4) && lastLv4 != tupla.Item4)
+                if (string.IsNullOrEmpty(nombre))
                 {
-                    lv4++;
-                    string id = lv1.ToString() + "." + lv2.ToString() + "." + lv3.ToString() + "." + lv4.ToString();
-                    ConceptEDMA concept = new ConceptEDMA();
-                    concept.Dc_identifier = id;
-                    concept.Dc_source = pSource;
-                    concept.Skos_prefLabel = tupla.Item4;
-                    concept.Skos_symbol = "4";
-                    listConcepts.Add(concept);
+                    throw new Exception("No tiene nombre la categoría");
                 }
 
-                lastLv1 = tupla.Item1;
-                lastLv2 = tupla.Item2;
-                lastLv3 = tupla.Item3;
-                lastLv4 = tupla.Item4;
+                ConceptEDMA concept = new ConceptEDMA();
+                concept.Dc_identifier = id;
+                concept.Dc_source = pSource;
+                concept.Skos_prefLabel = nombre;
+                concept.Skos_symbol = symbol;
+                concept.Roh_sourceDescriptor = new List<SourceDescriptor>();
+                if (!string.IsNullOrEmpty(wosDescriptor))
+                {
+                    SourceDescriptor sourceDescriptor = new SourceDescriptor();
+                    sourceDescriptor.IdRoh_impactSource = mResourceApi.GraphsUrl + "items/referencesource_000";
+                    sourceDescriptor.Roh_impactSourceCategory = wosDescriptor;
+                    concept.Roh_sourceDescriptor.Add(sourceDescriptor);
+                }
+                if (!string.IsNullOrEmpty(scopusDescriptor))
+                {
+                    SourceDescriptor sourceDescriptor = new SourceDescriptor();
+                    sourceDescriptor.IdRoh_impactSource = mResourceApi.GraphsUrl + "items/referencesource_010";
+                    sourceDescriptor.Roh_impactSourceCategory = scopusDescriptor;
+                    concept.Roh_sourceDescriptor.Add(sourceDescriptor);
+                }
+                listConcepts.Add(concept);
             }
-
-            pListaConcepts = listConcepts;
 
             foreach (Concept concept in listConcepts)
             {
@@ -1008,7 +986,7 @@ namespace Hercules.Commons.Load
                     //Roh_isValidated
                     proyectoCargar.Roh_isValidated = true;
 
-                    
+
                     // ---------- ÑAPA
                     Random random = new Random();
 
