@@ -564,7 +564,7 @@ namespace Hercules.Commons.Load
                 }
                 else
                 {
-                    concept.Skos_broader = listConcepts.Where(x => x.Dc_identifier.StartsWith(idSplit[0]) && x.Dc_identifier.EndsWith(".0") && x.Dc_identifier != concept.Dc_identifier).ToList();
+                    concept.Skos_broader = listConcepts.Where(x => x.Dc_identifier.StartsWith(idSplit[0] + '.') && x.Dc_identifier.EndsWith(".0") && x.Dc_identifier != concept.Dc_identifier).ToList();
                     concept.Skos_symbol = "2";
                 }
                 pListaRecursosCargar.Add(((ConceptEDMA)concept).ToGnossApiResource(mResourceApi, concept.Dc_identifier));
