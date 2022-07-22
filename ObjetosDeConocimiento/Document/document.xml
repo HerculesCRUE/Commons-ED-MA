@@ -429,7 +429,7 @@
             <AtrNombre>Fuente de impacto</AtrNombre>
             <AtrNombreLectura>Fuente de impacto</AtrNombreLectura>
 			<SeleccionEntidad>
-                <TipoSeleccion>Autocompletar</TipoSeleccion>
+                <TipoSeleccion MultiIdioma="true">Autocompletar</TipoSeleccion>
                 <Grafo>referencesource.owl</Grafo>
                 <UrlTipoEntSolicitada>http://purl.org/ontology/bibo/ReferenceSource</UrlTipoEntSolicitada>              
                 <PropsEntEdicion>
