@@ -138,21 +138,6 @@
                 </PropsEntLectura>
             </SeleccionEntidad>
         </Propiedad>
-        <Propiedad  ID="http://w3id.org/roh/framingSector" EntidadID="http://www.schema.org/Offer">
-            <SeleccionEntidad>
-                <TipoSeleccion>Autocompletar</TipoSeleccion>
-                <Grafo>framingsector.owl</Grafo>
-                <UrlTipoEntSolicitada>http://w3id.org/roh/FramingSector</UrlTipoEntSolicitada>              
-                <PropsEntEdicion>
-                    <NameProp>http://purl.org/dc/elements/1.1/title</NameProp>
-                </PropsEntEdicion>
-                <PropsEntLectura>
-                    <Propiedad ID="http://purl.org/dc/elements/1.1/title" EntidadID="http://w3id.org/roh/FramingSector">
-                        <AtrNombreLectura></AtrNombreLectura>
-                    </Propiedad>
-                </PropsEntLectura>
-            </SeleccionEntidad>
-        </Propiedad>
         <Propiedad  ID="http://w3id.org/roh/patents" EntidadID="http://www.schema.org/Offer">
             <SeleccionEntidad>
                 <TipoSeleccion>Autocompletar</TipoSeleccion>
@@ -285,6 +270,15 @@
                     </Propiedad>
                 </PropsEntLectura>
             </SeleccionEntidad>
+        </Propiedad>
+		<Propiedad  ID="http://w3id.org/roh/categoryNode" EntidadID="http://w3id.org/roh/CategoryPath">
+            <AtrNombre>http://w3id.org/roh/categoryNode</AtrNombre>
+            <AtrNombreLectura>http://w3id.org/roh/categoryNode</AtrNombreLectura>
+			<SeleccionEntidad>
+				<TipoSeleccion>Tesauro</TipoSeleccion>
+				<Grafo>taxonomy.owl</Grafo>				
+				<UrlPropiedad>um</UrlPropiedad>                
+			</SeleccionEntidad>
         </Propiedad>
     </EspefPropiedad>
     <EspefEntidad>
