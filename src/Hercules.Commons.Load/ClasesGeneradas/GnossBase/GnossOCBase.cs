@@ -59,8 +59,8 @@ namespace GnossBase
 			gl,
 			fr,
 		}
-		internal List<OntologyEntity> entList = new List<OntologyEntity>();
-		internal List<OntologyProperty> propList = new List<OntologyProperty>();
+		public List<OntologyEntity> entList = new List<OntologyEntity>();
+		public List<OntologyProperty> propList = new List<OntologyProperty>();
 		internal List<OntologyProperty> imagePropList = new List<OntologyProperty>();
 		internal List<string> prefList = new List<string>();
 		internal string mGNOSSID;
