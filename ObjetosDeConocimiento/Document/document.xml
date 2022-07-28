@@ -25,6 +25,9 @@
                     <Propiedad ID="http://purl.org/dc/elements/1.1/title" EntidadID="http://w3id.org/roh/ScientificActivityDocument">
                         <AtrNombreLectura></AtrNombreLectura>
                     </Propiedad>
+					<Propiedad ID="http://purl.org/dc/elements/1.1/identifier" EntidadID="http://w3id.org/roh/ScientificActivityDocument">
+                        <AtrNombreLectura></AtrNombreLectura>
+                    </Propiedad>
                 </PropsEntLectura>
             </SeleccionEntidad>
         </Propiedad>
