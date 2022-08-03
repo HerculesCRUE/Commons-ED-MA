@@ -25,6 +25,9 @@
                     <Propiedad ID="http://purl.org/dc/elements/1.1/title" EntidadID="http://w3id.org/roh/ScientificActivityDocument">
                         <AtrNombreLectura></AtrNombreLectura>
                     </Propiedad>
+					<Propiedad ID="http://purl.org/dc/elements/1.1/identifier" EntidadID="http://w3id.org/roh/ScientificActivityDocument">
+                        <AtrNombreLectura></AtrNombreLectura>
+                    </Propiedad>
                 </PropsEntLectura>
             </SeleccionEntidad>
         </Propiedad>
@@ -420,8 +423,32 @@
                     <Propiedad ID="http://w3id.org/roh/title" EntidadID="http://w3id.org/roh/KeyWordConcept">
                         <AtrNombreLectura></AtrNombreLectura>
                     </Propiedad>
-                    <Propiedad ID="http://w3id.org/roh/url" EntidadID="http://w3id.org/roh/KeyWordConcept">
+					<Propiedad ID="http://w3id.org/roh/url" EntidadID="http://w3id.org/roh/KeyWordConcept">
                         <AtrNombreLectura></AtrNombreLectura>
+                    </Propiedad>
+					<Propiedad ID="http://w3id.org/roh/type" EntidadID="http://w3id.org/roh/KeyWordConcept">
+                        <AtrNombreLectura></AtrNombreLectura>
+                    </Propiedad>
+					<Propiedad ID="http://w3id.org/roh/match" EntidadID="http://w3id.org/roh/KeyWordConcept">
+                        <SeleccionEntidad>
+							<TipoSeleccion>Autocompletar</TipoSeleccion>
+							<Grafo>keywordconcept.owl</Grafo>
+							<UrlTipoEntSolicitada>http://w3id.org/roh/KeyWordConcept</UrlTipoEntSolicitada>              
+							<PropsEntEdicion>
+								<NameProp>http://w3id.org/roh/title</NameProp>
+							</PropsEntEdicion>
+							<PropsEntLectura>
+								<Propiedad ID="http://w3id.org/roh/title" EntidadID="http://w3id.org/roh/KeyWordConcept">
+									<AtrNombreLectura></AtrNombreLectura>
+								</Propiedad>
+								<Propiedad ID="http://w3id.org/roh/url" EntidadID="http://w3id.org/roh/KeyWordConcept">
+									<AtrNombreLectura></AtrNombreLectura>
+								</Propiedad>
+								<Propiedad ID="http://w3id.org/roh/type" EntidadID="http://w3id.org/roh/KeyWordConcept">
+									<AtrNombreLectura></AtrNombreLectura>
+								</Propiedad>
+							</PropsEntLectura>
+						</SeleccionEntidad>
                     </Propiedad>
                 </PropsEntLectura>
             </SeleccionEntidad>
