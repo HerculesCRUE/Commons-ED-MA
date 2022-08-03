@@ -420,6 +420,9 @@
                     <Propiedad ID="http://w3id.org/roh/title" EntidadID="http://w3id.org/roh/KeyWordConcept">
                         <AtrNombreLectura></AtrNombreLectura>
                     </Propiedad>
+                    <Propiedad ID="http://w3id.org/roh/url" EntidadID="http://w3id.org/roh/KeyWordConcept">
+                        <AtrNombreLectura></AtrNombreLectura>
+                    </Propiedad>
                 </PropsEntLectura>
             </SeleccionEntidad>
         </Propiedad>
