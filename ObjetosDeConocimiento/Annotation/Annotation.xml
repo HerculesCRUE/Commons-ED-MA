@@ -1,0 +1,113 @@
+<config>
+    <ConfiguracionGeneral>
+        <namespace>annotation</namespace>
+        <idiomasOnto>
+            <idiomaOnto>es</idiomaOnto>
+        </idiomasOnto>
+        <ocultarTituloDescpImgDoc></ocultarTituloDescpImgDoc>
+        <TituloDoc EntidadID="http://w3id.org/roh/Annotation">http://w3id.org/roh/text</TituloDoc>
+        <MultiIdioma>false</MultiIdioma>
+        <HtmlNuevo>true</HtmlNuevo>
+        <CategorizacionTesauroGnossObligatoria>false</CategorizacionTesauroGnossObligatoria>
+    </ConfiguracionGeneral>
+    <EspefPropiedad>
+        <Propiedad  ID="http://w3id.org/roh/text" EntidadID="http://w3id.org/roh/Annotation">
+            <MultiIdioma>false</MultiIdioma>
+        </Propiedad>
+        <Propiedad  ID="http://w3id.org/roh/dateIssued" EntidadID="http://w3id.org/roh/Annotation">
+            <MultiIdioma>false</MultiIdioma>
+        </Propiedad>
+        <Propiedad  ID="http://w3id.org/roh/owner" EntidadID="http://w3id.org/roh/Annotation">
+            <SeleccionEntidad>
+                <TipoSeleccion>Autocompletar</TipoSeleccion>
+                <Grafo>person.owl</Grafo>
+                <UrlTipoEntSolicitada>http://xmlns.com/foaf/0.1/Person</UrlTipoEntSolicitada>
+                <PropsEntEdicion>
+                    <NameProp>http://xmlns.com/foaf/0.1/name</NameProp>
+                </PropsEntEdicion>
+                <PropsEntLectura>
+                    <Propiedad ID="http://xmlns.com/foaf/0.1/name" EntidadID="http://xmlns.com/foaf/0.1/Person">
+                        <AtrNombreLectura></AtrNombreLectura>
+                    </Propiedad>
+                    <Propiedad ID="http://w3id.org/roh/gnossUser" EntidadID="http://xmlns.com/foaf/0.1/Person">
+                        <AtrNombreLectura></AtrNombreLectura>
+                    </Propiedad>
+                </PropsEntLectura>
+            </SeleccionEntidad>
+        </Propiedad>
+        <Propiedad  ID="http://w3id.org/roh/document" EntidadID="http://w3id.org/roh/Annotation">
+            <SeleccionEntidad>
+                <TipoSeleccion>Autocompletar</TipoSeleccion>
+                <Grafo>document.owl</Grafo>
+                <UrlTipoEntSolicitada>http://purl.org/ontology/bibo/Document</UrlTipoEntSolicitada>              
+                <PropsEntEdicion>
+                    <NameProp>http://w3id.org/roh/title</NameProp>
+                </PropsEntEdicion>
+                <PropsEntLectura>
+                    <Propiedad ID="http://w3id.org/roh/title" EntidadID="http://purl.org/ontology/bibo/Document">
+                        <AtrNombreLectura></AtrNombreLectura>
+                    </Propiedad>
+                    <Propiedad ID="http://w3id.org/roh/presentedAtStart" EntidadID="http://purl.org/ontology/bibo/Document">
+                        <AtrNombreLectura></AtrNombreLectura>
+                    </Propiedad>
+                    <Propiedad ID="http://w3id.org/roh/presentedAtEnd" EntidadID="http://purl.org/ontology/bibo/Document">
+                        <AtrNombreLectura></AtrNombreLectura>
+                    </Propiedad>
+                    <Propiedad ID="https://www.w3.org/2006/vcard/ns#hasRegion" EntidadID="http://purl.org/ontology/bibo/Document">
+                        <AtrNombre>https://www.w3.org/2006/vcard/ns#hasRegion</AtrNombre>
+                        <AtrNombreLectura>https://www.w3.org/2006/vcard/ns#hasRegion</AtrNombreLectura>
+                        <SeleccionEntidad>
+                            <TipoSeleccion>Combo</TipoSeleccion>
+                            <Grafo>feature.owl</Grafo>
+                            <UrlTipoEntSolicitada>http://www.geonames.org/ontology#Feature</UrlTipoEntSolicitada>
+                            <PropsEntEdicion>
+                                <NameProp>http://www.geonames.org/ontology#name</NameProp>
+                            </PropsEntEdicion>
+                            <PropsEntLectura>
+                                <Propiedad ID="http://www.geonames.org/ontology#name" EntidadID="http://www.geonames.org/ontology#Feature">
+                                    <AtrNombreLectura></AtrNombreLectura>
+                                </Propiedad>
+                            </PropsEntLectura>
+                        </SeleccionEntidad>
+                    </Propiedad>
+                    <Propiedad ID="http://w3id.org/roh/conductedBy" EntidadID="http://purl.org/ontology/bibo/Document">
+                        <AtrNombre>http://w3id.org/roh/conductedBy</AtrNombre>
+                        <AtrNombreLectura>http://w3id.org/roh/conductedBy</AtrNombreLectura>
+                        <SeleccionEntidad>
+                            <TipoSeleccion>Combo</TipoSeleccion>
+                            <Grafo>organization.owl</Grafo>
+                            <UrlTipoEntSolicitada>http://xmlns.com/foaf/0.1/Organization</UrlTipoEntSolicitada>
+                            <PropsEntEdicion>
+                                <NameProp>http://w3id.org/roh/title</NameProp>
+                            </PropsEntEdicion>
+                            <PropsEntLectura>
+                                <Propiedad ID="http://w3id.org/roh/title" EntidadID="http://xmlns.com/foaf/0.1/Organization">
+                                    <AtrNombreLectura></AtrNombreLectura>
+                                </Propiedad>
+                            </PropsEntLectura>
+                        </SeleccionEntidad>
+                    </Propiedad>
+                    <Propiedad ID="http://w3id.org/roh/title" EntidadID="http://vivoweb.org/ontology/Project">
+                        <AtrNombreLectura></AtrNombreLectura>
+                    </Propiedad>
+                </PropsEntLectura>
+            </SeleccionEntidad>
+        </Propiedad>
+        <Propiedad  ID="http://w3id.org/roh/researchobject" EntidadID="http://w3id.org/roh/Annotation">
+            <SeleccionEntidad>
+                <TipoSeleccion>Autocompletar</TipoSeleccion>
+                <Grafo>researchobject.owl</Grafo>
+                <UrlTipoEntSolicitada>http://w3id.org/roh/ResearchObject</UrlTipoEntSolicitada>
+                <PropsEntEdicion>
+                    <NameProp>http://w3id.org/roh/title</NameProp>
+                </PropsEntEdicion>
+                <PropsEntLectura>
+                    <Propiedad ID="http://w3id.org/roh/title" EntidadID="http://w3id.org/roh/ResearchObject">
+                        <AtrNombreLectura></AtrNombreLectura>
+                    </Propiedad>
+                </PropsEntLectura>
+            </SeleccionEntidad>
+        </Propiedad>
+    </EspefPropiedad>
+    <EspefEntidad></EspefEntidad>
+</config>
