@@ -14,13 +14,22 @@
 La entidad eroh:Collaboration (ver Figura 1) representa otros modos de colaboración con equipos de investigación, tanto públicos como privados (incluida la colaboración mixta público-privada en cualquiera de sus modalidades), nacionales o internacionales, de reconocido prestigio a criterio del titular del CV.
 Se han añadido ciertas propiedades que extienden la ontología fundamental con el fin de dar respuesta a las necesidades de gestión de datos requeridas durante el desarrollo de la infraestructura Hércules EDMA.
 
-Las propiedades extendidas son las siguientes:
+Las propiedades son las siguientes:
 
+- eroh:owner
+- eroh:cvnCode
+- roh:crisIdentifier
+- roh:title
 - eroh:relationshipType
-- eroh:relationshipTypeOthers
+- eroh:relationshipTypeOther
 - eroh:researchers
 - eroh:participates
+- vivo:start
+- vcard:locality
+- vcard:hasCountryName
+- vcard:hasRegion
 - eroh:relevantResults
+- vivo:freeTextKeyword
 
 Se han incluido ciertas propiedades VCARD básicas, como vcard:locality, vcard:hasCountryName y vcard:Region, con las cuales referenciar el marco geográfico en el que se desarrolla la colaboración.
 

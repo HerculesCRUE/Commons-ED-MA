@@ -14,13 +14,28 @@
 La entidad eroh:Network (ver Figura 1) representa las distintas redes de cooperación nacional, regional e internacional, constituidas por entidades públicas o privadas: redes académicas, de investigación, temáticas, interdisciplinares, de innovación, institucionales, interinstitucionales, etc., que tengan relevancia en el ámbito científico.
 Se han añadido varias propiedades que extienden la ontología fundamental con el fin de dar respuesta a las necesidades de gestión de datos requeridas durante el desarrollo de la infraestructura.
 
-Las propiedades extendidas son las siguientes:
+Las propiedades son las siguientes:
 
+- eroh:owner
+- eroh:cvnCode
+- roh:crisIdentifier
+- roh:title
 - eroh:identification
+- roh:participates
+- vivo:start
 - eroh:durationYears
 - eroh:durationMonths
 - eroh:durationDays
+- vcard:locality
+- vcard:hasCountryName
+- vcard:hasRegion
+- eroh:selectionEntityTitle
 - eroh:selectionEntity
+- eroh:selectionEntityType
+- eroh:selectionEntityTypeOther
+- eroh:selectionEntityLocality
+- eroh:selectionEntityHasCountryName
+- eroh:selectionEntityHasRegion
 - eroh:performedTasks
 - eroh:members
 

@@ -16,6 +16,10 @@ Se han añadido varias propiedades que extienden la ontología fundamental con e
 
 Las propiedades extendidas son las siguientes:
 
+- eroh:owner
+- eroh:cvnCode
+- roh:crisIdentifier
+- roh:title
 - eroh:participates
 - eroh:principalInvestigatorNick
 - eroh:principalInvestigatorFirstName
@@ -26,6 +30,8 @@ Las propiedades extendidas son las siguientes:
 - eroh:coprincipalInvestigatorFamilyName
 - eroh:coprincipalInvestigatorSecondFamilyName
 - eroh:contributionGrade
+- eroh:contributionGradeOther
+- vivo:start
 - eroh:durationYears
 - eroh:durationMonths
 - eroh:durationDays
@@ -38,8 +44,10 @@ Las propiedades extendidas son las siguientes:
 - eroh:homologation
 - eroh:technologicalExpert
 - eroh:collaborationAgreements
+- eroh:geographicFocus
 - eroh:geographicFocusOther
 - eroh:targetOrganizations
+- eroh:freeTextKeywords
 - eroh:relevantResults
 
 

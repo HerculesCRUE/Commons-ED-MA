@@ -23,6 +23,7 @@ A continuación se listan todas aquellas propiedades contenidas en eroh:Notifica
 - eroh:idEntityCV
 - eroh:tabPropertyCV
 - eroh:cvnCode
+- eroh:text
 
 ![](../../Docs/media/ObjetosDeConocimiento/Notification.png)
 

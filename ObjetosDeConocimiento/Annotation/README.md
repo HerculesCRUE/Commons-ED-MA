@@ -14,10 +14,13 @@
 La entidad eroh:Annotation (ver Figura 1) representa anotaciones realizadas por el personal investigador sobre diferentes ROs, ya sean suyos o de terceras personas.
 Se han añadido ciertas propiedades que extienden la ontología fundamental con el fin de dar respuesta a las necesidades de gestión de datos requeridas durante el desarrollo de la infraestructura Hércules EDMA.
 
-Las propiedades extendidas son las siguientes:
+Las propiedades son las siguientes:
 
+- eroh:owner
+- roh:text
+- roh:dateIssued
 - eroh:document
-- eroh:researchobject
+- eroh:researchObject
 
 
 ![](../../Docs/media/ObjetosDeConocimiento/Annotation.png)

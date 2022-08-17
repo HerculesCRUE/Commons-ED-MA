@@ -11,6 +11,17 @@
 
 # Hércules ED. Objeto de conocimiento ScientificProduction
 
+La entidad eroh:ScientificProduction (ver Figura 1) representa la producción científica.
+
+Las propiedades son las siguientes:
+
+- eroh:owner
+- eroh:cvnCode
+- roh:h-index
+- dct:issued
+- eroh:h-indexSource
+- eroh:h-indexSourceOther
+
 ![](../../Docs/media/ObjetosDeConocimiento/ScientificProduction.png)
 
 *Figura 1. Diagrama ontológico para la entidad eroh:ScientificProduction*

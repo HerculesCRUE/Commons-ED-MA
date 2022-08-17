@@ -26,24 +26,53 @@ Del mismo modo, una instancia de vivo:Project está asociada con estas otras ent
 
 A continuación se listan todas aquellas propiedades contenidas en vivo:Project que extienden la ontología fundamental ROH con el fin de ajustarse a las necesidades de Hércules EDMA:
 
+- roh:crisIdentifier
+- eroh:isValidated
+- vivo:relates
+- eroh:scientificExperienceProject
+- eroh:publicationsNumber
+- eroh:themedAreasNumber
+- eroh:collaboratorsNumber
+- eroh:projectAuthorization
+- eroh:validationStatusProject
+- eroh:isProducedBy
+- eroh:yearStart
+- eroh:yearEnd
+- eroh:collaborative
+- roh:title
+- vivo:description
 - eroh:researchersNumber
+- eroh:mainResearchers
+- eroh:researchers
+- eroh:membersProject
+- eroh:conductedByTitle
 - eroh:conductedBy
+- eroh:conductedByType
+- eroh:conductedByTypeOther
+- vcard:locality
+- vcard:hasCountryName
+- vcard:hasRegion
+- roh:grantedBy
+- vivo:start
+- vivo:end
+- roh:monetaryAmount
 - eroh:durationYears
 - eroh:durationMonths
 - eroh:durationDays
+- roh:hasKnowledgeArea
+- roh:modality
+- vivo:geographicFocus
 - eroh:geographicFocusOther
 - eroh:peopleYearNumber
+- roh:isSupportedBy
+- eroh:projectCode
+- eroh:subProjectMonetaryAmount
+- eroh:grantsPercentage
+- eroh:creditPercentage
+- eroh:mixedPercentage
 - eroh:relevantResults
-- eroh:hasResultsProjectClassification
 - eroh:participates
-- eroh:isSynchronized
 - eroh:projectType
-- eroh:scientificExperienceProject
-- eroh:publicAuthorList
-- eroh:publicGroupList
-- eroh:isPublic
-- eroh:mainResearchers
-
 
 ![](../../Docs/media/ObjetosDeConocimiento/Project.png)
 

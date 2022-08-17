@@ -24,7 +24,9 @@ A continuación se listan todas aquellas propiedades contenidas en eroh:Teaching
 - eroh:supportType
 - eroh:supportTypeOther
 - bibo:authorList
+- eroh:correspondingAuthor
 - eroh:publicationName
+- bibo:volume
 - bibo:issue
 - bibo:pageStart
 - bibo:pageEnd

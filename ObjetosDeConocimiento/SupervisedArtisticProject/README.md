@@ -16,9 +16,18 @@ Se han añadido ciertas propiedades que extienden la ontología fundamental con 
 
 Las propiedades extendidas son las siguientes:
 
+- eroh:owner
+- eroh:cvnCode
+- roh:crisIdentifier
+- roh:title
 - eroh:exhibition
+- vivo:start
+- bibo:authorList
 - eroh:publicationTitle
 - eroh:others
+- vcard:locality
+- vcard:hasCountryName
+- vcard:hasRegion
 - eroh:exhibitionForum
 - eroh:monographic
 - eroh:catalogue

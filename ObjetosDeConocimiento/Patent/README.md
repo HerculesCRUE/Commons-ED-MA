@@ -16,10 +16,18 @@ Se han añadido varias propiedades que extienden la ontología fundamental con e
 
 Las propiedades extendidas son las siguientes:
 
+- eroh:isValidated
+- roh:crisIdentifier
+- roh:title
 - eroh:dateField
+- dct:issued
 - eroh:applicationNumber
+- vcard:hasCountryName
+- vcard:hasRegion
+- bibo:authorList
 - eroh:operatingCountries
 - eroh:ownerOrganizationTitle
+- roh:ownerOrganization
 - eroh:operatingCompanies
 - eroh:industrialPropertyType
 - eroh:industrialPropertyTypeOther
@@ -33,6 +41,7 @@ Las propiedades extendidas son las siguientes:
 - eroh:europeanPatent
 - eroh:internationalPatent
 - eroh:pctPatent
+- vivo:freeTextKeywords
 - eroh:relevantResults
 - eroh:licenses
 - eroh:qualityDescription

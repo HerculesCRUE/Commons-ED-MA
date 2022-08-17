@@ -15,26 +15,39 @@ La entidad foaf:Group (ver Figura 1) representa a un grupo de investigación. La
 
 Se han añadido ciertas propiedades que extienden la ontología fundamental con el fin de dar respuesta a las necesidades de gestión de datos requeridas durante el desarrollo de la infraestructura Hércules EDMA.
 
-Las propiedades extendidas son las siguientes:
+Las propiedades son las siguientes:
 
-- eroh:colaborationType
+- roh:crisIdentifier
+- eroh:isValidated
+- vivo:relates
+- eroh:lineResearch
+- eroh:projectsNumber
+- eroh:publicationsNumber
+- eroh:themedAreasNumber
+- eroh:collaboratorsNumber
+- roh:title
 - eroh:normalizedCode
-- eroh:foundationDate
-- eroh:durationYears
-- eroh:durationMonths
+- vivo:description
+- eroh:affiliatedOrganizationTitle
+- eroh:affiliatedOrganization
+- eroh:affiliatedOrganizationType
+- eroh:affiliatedOrganizationTypeOther
+- roh:foundationDate
+- eroh:durationYear
+- eroh:durationMonth
 - eroh:durationDays
-- eroh:researchersNumber
-- eroh:directedThesisNumber
+- vcard:locality
+- vcard:hasCountryName
+- vcard:hasRegion
+- eroh:mainRegion
+- eroh:researchers 
+- eroh:membersGroup 
+- eroh:membersNumber 
+- eroh:directedThesisNumber 
 - eroh:directedPostdocsNumber
 - eroh:relevantResults
 - eroh:otherRelevantResults
-- eroh:hasResultsGroupClassification
-- eroh:mainResearchers
-- eroh:publicationsNumber
-- eroh:projectsNumber
-- eroh:lineResearch
-- eroh:isPublic
-
+- roh:hasKnowledgeArea
 
 En ROH, foaf:Group está basada en FOAF (Friend of a Friend) y sigue los patrones empleados en VIVO. Ello explica la inclusión de propiedades como foaf:member, vivo:affiliatedOrganization o vivo:description. Se han adoptado otras relaciones de importancia acordes al formato común de información en materia de la investigación europea (CERIF), como roh:crisIdentifier o roh:title.
 

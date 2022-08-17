@@ -14,16 +14,32 @@
 La entidad vivo:Grant (ver Figura 1) representa todas aquellas ayudas económicas y/o becas de titularidad pública o privada, nacionales e internacionales, de las que pueda ser beneficiario un investigador.
 Se han añadido ciertas propiedades que extienden la ontología fundamental con el fin de dar respuesta a las necesidades de gestión de datos requeridas durante el desarrollo de la infraestructura Hércules EDMA.
 
-Las propiedades extendidas son las siguientes:
+Las propiedades son las siguientes:
 
+- eroh:owner
+- eroh:cvnCode
+- roh:crisIdentifier
+- roh:title
+- eroh:awardingEntityTitle
 - eroh:awardingEntity
+- eroh:awardingEntityType
+- eroh:awardingEntityTypeOther
 - eroh:aims
 - eroh:aimsOther
 - eroh:conferralDate
+- vivo:start
+- vivo:end
 - eroh:durationYears
 - eroh:durationMonths
 - eroh:durationDays
+- eroh:entityTitle
 - eroh:entity
+- eroh:center
+- vcard:locality
+- vcard:hasCountryName
+- vcard:hasRegion
+- roh:monetaryAmount
+- vivo:freeTextKeyword
 
 Una instancia de vivo:Grant se asocia con las siguientes entidades a través de propiedades de objeto:
 

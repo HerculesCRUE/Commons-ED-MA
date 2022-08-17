@@ -16,16 +16,39 @@ Se han añadido ciertas propiedades que extienden la ontología fundamental con 
 
 Las propiedades extendidas son las siguientes:
 
+- eroh:owner
+- eroh:cvnCode
+- roh:crisIdentifier
+- roh:title
 - eroh:goals
 - eroh:goalsOther
 - eroh:performedTasks
 - eroh:entity
+- eroh:entityType
+- eroh:entityTypeOther
+- eroh:center
+- vcard:locality
+- vcard:hasCountryName
+- vcard:hasRegion
+- vivo:start
+- vivo:end
 - eroh:durationYears
 - eroh:durationMonths
 - eroh:durationDays
+- roh:hasKnowledgeArea
 - eroh:programme
 - eroh:skillsDeveloped
 - eroh:relevantResults
+- roh:fundedBy
+- roh:fundedByType
+- roh:fundedByTypeOther
+- roh:fundedByLocality
+- roh:fundedByHasRegion
+- roh:fundedByHasCountryName
+- roh:unescoPrimary
+- roh:unescoSecondary
+- roh:unescoTertiary
+- vivo:freeTextKeyword
 
 Una instancia de eroh:Stay se asocia con las siguientes entidades a través de propiedades de objeto:
 

@@ -22,7 +22,6 @@ A continuación se listan todas aquellas propiedades contenidas en eroh:Offer qu
 - vivo:freetextKeyword
 - eroh:lineResearch
 - bibo:status
-- eroh:framingSector
 - schema:availability
 - dct:issued
 - eroh:application
@@ -36,6 +35,11 @@ A continuación se listan todas aquellas propiedades contenidas en eroh:Offer qu
 - eroh:project
 - eroh:document
 - roh:patents
+- eroh:groups
+- eroh:search
+- eroh:advantagesBenefits
+- eroh:areaprocedencia
+- eroh:sectoraplicacion
 
 ![](../../Docs/media/ObjetosDeConocimiento/Offer.png)
 

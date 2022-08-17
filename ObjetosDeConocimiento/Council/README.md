@@ -14,15 +14,32 @@
 La entidad eroh:Council (ver Figura 1) representa consejos editoriales de revistas científicas, consejos asesores o de redacción y comités editoriales en los que el titular del CV ha participado.
 Se han añadido ciertas propiedades que extienden la ontología fundamental con el fin de dar respuesta a las necesidades de gestión de datos requeridas durante el desarrollo de la infraestructura Hércules EDMA.
 
-Las propiedades extendidas son las siguientes:
+Las propiedades son las siguientes:
 
-- eroh:performedTasks
+- eroh:owner
+- eroh:cvnCode
+- roh:crisIdentifier
+- roh:title
+- eroh:affiliatedOrganizationTitle
+- vivo:affiliatedOrganization
+- eroh:affiliatedOrganizationType
+- eroh:affiliatedOrganizationTypeOther
+- eroh:affiliatedOrganizationLocality
+- eroh:affiliatedOrganizationHasCountryName
+- eroh:affiliatedOrganizationHasRegion
+- vivo:start
+- vcard:locality
+- vcard:hasCountryName
+- vcard:hasRegion
+- eroh:performedTask
 - eroh:professionalCategory
 - eroh:members
 - eroh:durationYears
 - eroh:durationMonths
 - eroh:durationDays
+- vivo:geographicFocus
 - eroh:geographicFocusOther
+- bibo:issn
 
 Se han incluido en esta entidad propiedades asociadas a la participación del investigador en el consejo editorial, como vivo:start o eroh:durationYears, eroh:durationMonths y eroh:durationDays, que expresan los periodos de pertenencia del investigador al consejo editorial. 
 

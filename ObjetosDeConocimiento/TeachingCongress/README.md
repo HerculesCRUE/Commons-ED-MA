@@ -46,6 +46,7 @@ A continuación se listan todas aquellas propiedades contenidas en eroh:Teaching
 - eroh:publicationDate
 - vcard:hasLanguage
 - eroh:publicationType
+- bibo:volume
 - bibo:issue
 - bibo:pageStart
 - bibo:pageEnd

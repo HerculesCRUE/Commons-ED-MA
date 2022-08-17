@@ -14,11 +14,29 @@
 La entidad eroh:Society (ver Figura 1) representa  sociedades científicas, literarias o artísticas establecidas con autoridad pública, así como las sociedades y asociaciones nacionales e internacionales de carácter científico-técnico, tecnológico, académico y/o profesional (colegios profesionales, reales sociedades, patronatos de museos, fundaciones culturales, etc.).
 Se han añadido varias propiedades que extienden la ontología fundamental con el fin de dar respuesta a las necesidades de gestión de datos requeridas durante el desarrollo de la infraestructura.
 
-Las propiedades extendidas son las siguientes:
+Las propiedades son las siguientes:
 
+- eroh:owner
+- eroh:cvnCode
+- roh:crisIdentifier
+- roh:title
+- eroh:affiliatedOrganizationTitle
+- eroh:affiliatedOrganization
+- eroh:affiliatedOrganizationType
+- eroh:affiliatedOrganizationTypeOther
+- eroh:affiliatedOrganizationLocality
+- eroh:affiliatedOrganizationHasCountryName
+- eroh:affiliatedOrganizationHasRegion
 - eroh:participates
+- vivo:start
+- vivo:end
+- vcard:locality
+- vcard:hasCountryName
+- vcard:hasRegion
+- vivo: freeTextKeyword
 - eroh:professionalCategory
 - eroh:members
+- eroh:geographicFocus
 - eroh:geographicFocusOther
 
 Una instancia de eroh:Society se asocia, a su vez, con las siguientes entidades a través de propiedades de objeto:
