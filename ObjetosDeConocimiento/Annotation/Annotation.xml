@@ -5,18 +5,12 @@
             <idiomaOnto>es</idiomaOnto>
         </idiomasOnto>
         <ocultarTituloDescpImgDoc></ocultarTituloDescpImgDoc>
-        <TituloDoc EntidadID="http://w3id.org/roh/Annotation">http://w3id.org/roh/text</TituloDoc>
+        <TituloDoc EntidadID="http://w3id.org/roh/Annotation">http://w3id.org/roh/title</TituloDoc>
         <MultiIdioma>false</MultiIdioma>
         <HtmlNuevo>true</HtmlNuevo>
         <CategorizacionTesauroGnossObligatoria>false</CategorizacionTesauroGnossObligatoria>
     </ConfiguracionGeneral>
     <EspefPropiedad>
-        <Propiedad  ID="http://w3id.org/roh/text" EntidadID="http://w3id.org/roh/Annotation">
-            <MultiIdioma>false</MultiIdioma>
-        </Propiedad>
-        <Propiedad  ID="http://w3id.org/roh/dateIssued" EntidadID="http://w3id.org/roh/Annotation">
-            <MultiIdioma>false</MultiIdioma>
-        </Propiedad>
         <Propiedad  ID="http://w3id.org/roh/owner" EntidadID="http://w3id.org/roh/Annotation">
             <SeleccionEntidad>
                 <TipoSeleccion>Autocompletar</TipoSeleccion>
