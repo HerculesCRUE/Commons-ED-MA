@@ -19,13 +19,22 @@ Las propiedades extendidas son las siguientes:
 
 En roh:CV
 
-- eroh:gnossUser
+- eroh:multilangProperties
 - eroh:personalData
+- eroh:professionalSituation
 - eroh:scientificExperience
 - eroh:scientificActivity
+- eroh:researchObject
+- eroh:freeTextSummary
+- eroh:qualifications
+- eroh:teachingExperience
+- eroh:generatedPDFFile
+- eroh:exportProfile
+- eroh:noDuplicateGroup
 
 En eroh:PersonalData (contiene los datos personales del investigador):
 
+- eroh:hasTelephone
 - eroh:hasFax
 - eroh:otherIds
 - eroh:hasMobilePhone
@@ -36,7 +45,10 @@ En eroh:PersonalData (contiene los datos personales del investigador):
 
 En eroh:ScientificActivity (listado de ítems asociados a la actividad científica del investigador según la norma CVN):
 
+- eroh:scientificProduction
+- eroh:generalQualityIndicators
 - eroh:scientificPublications
+- eroh:worksSubmittedConferences
 - eroh:worksSubmittedSeminars
 - eroh:otherDisseminationActivities
 - eroh:committees
@@ -60,9 +72,42 @@ En eroh:ScientificExperience (listado de ítems asociados a la experiencia cient
 
 - eroh:competitiveProjects
 - eroh:nonCompetitiveProjects
+- eroh:patents
 - eroh:groups
 - eroh:supervisedArtisticProjects
 - eroh:technologicalResults
+
+En eroh:TeachingExperience (listado de ítems asociados a la actividad docente):
+
+- eroh:thesisSupervisions
+- eroh:impartedAcademicTrainings
+- eroh:academicTutorials
+- eroh:impartedCoursesSeminars
+- eroh:teachingPublications
+- eroh:teachingProjects
+- eroh:teachingCongress
+- eroh:teachingInnovationAwardsReceived
+- eroh:otherActivities
+- eroh:mostRelevantContributions
+
+En eroh:Qualifications (listado de ítems asociados a la formatión recibida):
+
+- eroh:firstSecondCycles
+- eroh:doctorates
+- eroh:languageSkills
+- eroh:postgraduates
+- eroh:specialisedTraining
+- eroh:coursesAndSeminars
+
+En eroh:ProfessionalSituation (listado de ítems asociados a la situación profesional):
+
+- eroh:currentProfessionalSituacion
+- eroh:previousPositions
+
+En eroh:FreeTextSummary (listado de ítems asociados al resumen de texto libre):
+
+- eroh:freeTextSummaryValues
+
 
 A su vez, cada una de las entidades auxiliares a las que apuntan las propiedades anteriormente mencionadas referencian, por un lado, el objeto con datos generales que será mostrado en el buscador público de Hércules MA (proyecto, publicación, grupo de investigación y datos del investigador) mediante la propiedad vivo:relatedBy; por otra parte, se referencian otras entidades que contienen información sobre los datos específicos de un investigador respecto a ese ítem (ej. su grado de contribución, tareas que ha desarrollado, etc.)
 
