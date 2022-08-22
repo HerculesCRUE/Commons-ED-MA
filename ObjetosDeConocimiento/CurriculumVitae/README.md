@@ -68,31 +68,52 @@ A su vez, cada una de las entidades auxiliares a las que apuntan las propiedades
 
 En las siguientes figuras se muestra el resto de diagramas correspondientes al objeto de conocimiento CurriculumVitae.
 
-![](../../Docs/media/ObjetosDeConocimiento/ScientificActivity1.png)
+![](../../Docs/media/ObjetosDeConocimiento/CV_ScientificActivity1.png)
 
 *Figura 1. Diagrama ontológico de las entidades relativas a actividad científica para el objeto de conocimiento CurriculumVitae*
 
 
-![](../../Docs/media/ObjetosDeConocimiento/ScientificActivity2.png)
+![](../../Docs/media/ObjetosDeConocimiento/CV_ScientificActivity2.png)
 
 *Figura 2. Diagrama ontológico de las entidades relativas a actividad científica para el objeto de conocimiento CurriculumVitae*
 
 
-![](../../Docs/media/ObjetosDeConocimiento/ScientificActivity3.png)
+![](../../Docs/media/ObjetosDeConocimiento/CV_ScientificActivity3.png)
 
 *Figura 3. Diagrama ontológico de las entidades relativas a actividad científica para el objeto de conocimiento CurriculumVitae*
 
 
-![](../../Docs/media/ObjetosDeConocimiento/ScientificActivity4.png)
+![](../../Docs/media/ObjetosDeConocimiento/CV_ScientificActivity4.png)
 
 *Figura 4. Diagrama ontológico de las entidades relativas a actividad científica para el objeto de conocimiento CurriculumVitae*
 
-![](../../Docs/media/ObjetosDeConocimiento/ScientificExperience.png)
+
+![](../../Docs/media/ObjetosDeConocimiento/CV_ScientificExperience.png)
 
 *Figura 5. Diagrama ontológico de las entidades relativas a experiencia científica para el objeto de conocimiento CurriculumVitae*
 
-![](../../Docs/media/ObjetosDeConocimiento/ProfessionalSituation.png)
-![](../../Docs/media/ObjetosDeConocimiento/Qualifications.png)
-![](../../Docs/media/ObjetosDeConocimiento/TeachingExperience.png)
-![](../../Docs/media/ObjetosDeConocimiento/FreeTextSummary.png)
-![](../../Docs/media/ObjetosDeConocimiento/CV-ResearchObjects.png)
+
+![](../../Docs/media/ObjetosDeConocimiento/CV_ProfessionalSituation.png)
+
+*Figura 6. Diagrama ontológico de las entidades relativas a situación profesional para el objeto de conocimiento CurriculumVitae*
+
+
+![](../../Docs/media/ObjetosDeConocimiento/CV_Qualifications.png)
+
+*Figura 7. Diagrama ontológico de las entidades relativas a formación recibida para el objeto de conocimiento CurriculumVitae*
+
+
+![](../../Docs/media/ObjetosDeConocimiento/CV_TeachingExperience.png)
+
+*Figura 8. Diagrama ontológico de las entidades relativas a actividad docente para el objeto de conocimiento CurriculumVitae*
+
+
+![](../../Docs/media/ObjetosDeConocimiento/CV_FreeTextSummary.png)
+
+*Figura 9. Diagrama ontológico de las entidades relativas a resumen de texto libre para el objeto de conocimiento CurriculumVitae*
+
+
+![](../../Docs/media/ObjetosDeConocimiento/CV_ResearchObjects.png)
+
+*Figura 9. Diagrama ontológico de las entidades relativas a research objects libre para el objeto de conocimiento CurriculumVitae*
+
