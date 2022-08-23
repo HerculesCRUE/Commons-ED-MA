@@ -17,6 +17,7 @@ Se han añadido ciertas propiedades que extienden la ontología fundamental con 
 Las propiedades son las siguientes:
 
 - eroh:owner
+- roh:title
 - roh:text
 - roh:dateIssued
 - eroh:document
