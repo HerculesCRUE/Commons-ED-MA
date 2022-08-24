@@ -1,4 +1,4 @@
-; Thu Feb 17 12:50:06 CET 2022
+; Wed Aug 24 12:24:52 CEST 2022
 ; 
 ;+ (version "3.3.1")
 ;+ (build "Build 430")
@@ -6,11 +6,11 @@
 ([BROWSER_SLOT_NAMES] of  Property_List
 
 	(properties
-		[person_ProjectKB_Instance_56]
-		[person_ProjectKB_Instance_57]
-		[person_ProjectKB_Instance_58]
-		[person_ProjectKB_Instance_59]
-		[person_ProjectKB_Instance_60]))
+		[person_ProjectKB_Instance_51]
+		[person_ProjectKB_Instance_52]
+		[person_ProjectKB_Instance_53]
+		[person_ProjectKB_Instance_54]
+		[person_ProjectKB_Instance_55]))
 
 ([CLSES_TAB] of  Widget
 
@@ -865,6 +865,11 @@
 	(name ":OWL-ANONYMOUS-ROOT")
 	(property_list [XY_Instance_665])
 	(widget_class_name "edu.stanford.smi.protegex.owl.ui.widget.OWLFormWidget"))
+
+([KB_399396_Instance_0] of  String
+
+	(name "owl_file_name")
+	(string_value "person.owl"))
 
 ([KB_444675_Instance_0] of  String
 
@@ -7161,11 +7166,6 @@
 ([KB_941921_Instance_7] of  Property_List
 )
 
-([KB_976218_Instance_0] of  String
-
-	(name "owl_file_name")
-	(string_value "person.owl"))
-
 ([OWL_ProjectKB_Instance_3] of  Integer
 
 	(integer_value 430)
@@ -7389,33 +7389,33 @@
 ([person_ProjectKB_Instance_50] of  Property_List
 )
 
-([person_ProjectKB_Instance_56] of  String
+([person_ProjectKB_Instance_51] of  String
 
 	(name "owl:Class")
 	(string_value "%3ANAME"))
 
-([person_ProjectKB_Instance_57] of  String
+([person_ProjectKB_Instance_52] of  String
 
 	(name ":INSTANCE-ANNOTATION")
 	(string_value "%3AANNOTATION-TEXT"))
 
-([person_ProjectKB_Instance_58] of  String
+([person_ProjectKB_Instance_53] of  String
 
 	(name ":PAL-CONSTRAINT")
 	(string_value "%3APAL-NAME"))
 
-([person_ProjectKB_Instance_59] of  String
+([person_ProjectKB_Instance_54] of  String
 
 	(name "owl:Thing")
 	(string_value "%3ANAME"))
 
-([person_ProjectKB_Instance_6] of  Property_List
-)
-
-([person_ProjectKB_Instance_60] of  String
+([person_ProjectKB_Instance_55] of  String
 
 	(name ":META-CLASS")
 	(string_value "%3ANAME"))
+
+([person_ProjectKB_Instance_6] of  Property_List
+)
 
 ([person_ProjectKB_Instance_7] of  Widget
 
@@ -7712,7 +7712,7 @@
 		[OWL_ProjectKB_Instance_3]
 		[KB_444675_Instance_0]
 		[KB_632156_Instance_0]
-		[KB_976218_Instance_0]))
+		[KB_399396_Instance_0]))
 
 ([STANDARD_CLASS_FORM_WIDGET] of  Widget
 
