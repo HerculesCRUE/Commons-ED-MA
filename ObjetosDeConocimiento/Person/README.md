@@ -21,6 +21,7 @@ Las propiedades son las siguientes:
 - eroh:projectsNumber
 - eroh:publicProjectsNumber
 - eroh:publicCollaboratorsNumber
+- eroh:publicResearchObjectsNumber
 - foaf:gender
 - roh:crisIdentifier
 - eroh:isOtriManager
