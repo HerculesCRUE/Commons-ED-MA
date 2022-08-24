@@ -103,7 +103,7 @@
         </Propiedad>
 		<Propiedad  ID="http://vivoweb.org/ontology/core#geographicFocus" EntidadID="http://vivoweb.org/ontology/core#Project">
 			<SeleccionEntidad>
-                <TipoSeleccion>Autocompletar</TipoSeleccion>
+				<TipoSeleccion MultiIdioma="true">Autocompletar</TipoSeleccion>
                 <Grafo>geographicregion.owl</Grafo>
                 <UrlTipoEntSolicitada>http://w3id.org/roh/GeographicRegion</UrlTipoEntSolicitada>              
                 <PropsEntEdicion>
