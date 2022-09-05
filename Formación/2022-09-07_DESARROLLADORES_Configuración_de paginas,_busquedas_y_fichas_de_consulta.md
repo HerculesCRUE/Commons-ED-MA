@@ -1,4 +1,4 @@
-![](./media/CabeceraDocumentosMD.png)
+![](Docs/media/CabeceraDocumentosMD.png)
 
 | Fecha                 | 29/8/2022                                |
 | --------------------- | ---------------------------------------- |
