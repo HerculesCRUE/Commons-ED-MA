@@ -2,14 +2,14 @@
 
 | Fecha                 | 05/09/2022                                |
 | --------------------- | ---------------------------------------- |
-| Título                | Desarrolladores: Configuración de paginas, busquedas y fichas de consulta|
+| Título                | Desarrolladores: Configuración de páginas, búsquedas y fichas de consulta|
 | Descripción           | Formación para desarrolladores |
 | Versión               | 1.0                                      |
 | Módulo                | Formación                            |
 | Tipo                  | Especificación                           |
 | Cambios de la Versión | Versión inicial                          |
 
-# Configuración de paginas, busquedas y fichas de consulta
+# Configuración de páginas, búsquedas y fichas de consulta
 
 Dentro de este módulo de formación dirigido a desarrolladores se verán los siguientes apartados
 
