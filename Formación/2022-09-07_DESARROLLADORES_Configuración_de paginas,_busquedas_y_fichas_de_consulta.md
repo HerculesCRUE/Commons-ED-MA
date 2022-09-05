@@ -11,6 +11,8 @@
 
 # Configuración de paginas, busquedas y fichas de consulta
 
- 1. Configuración de páginas
- 2. Metabuscador
- 3. Ficha de consulta
+Dentro de este módulo de formación dirigido a desarrolladores se verán los siguientes apartados
+
+ 1. Configuración de páginas: Creación de las páginas de la plataforma (buscadores y cms)
+ 2. Metabuscador: Funcionamiento del metabuscador
+ 3. Ficha de consulta: Funcionamiento de la fichas de los items (publicaciones, proyectos...)
