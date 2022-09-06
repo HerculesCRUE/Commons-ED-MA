@@ -69,3 +69,7 @@ Las vistas personlazadas involucradas en los componentes del CMS se encuentran e
 ### Fichas de consulta
 Las vista personlazadas involucradas en las fichas de consulta se encuentran en la siguiente URL [https://github.com/HerculesCRUE/HerculesED/tree/main/Web/Views/Recursos](https://github.com/HerculesCRUE/HerculesED/tree/main/Web/Views/Recursos).  
 
+Adicionalmente las fichas de consulta pueden utilizar métodos específicos creados en el [servicio externo](https://github.com/HerculesCRUE/HerculesMA/tree/main/src/Hercules.MA.ServicioExterno) para realizar determinadas acciones como el pintado de gráficas
+
+También pueden incluir buscadores, reutilizando el funcionamiento de los servicios de facetas y de resultados
+
