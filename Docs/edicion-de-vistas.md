@@ -13,8 +13,9 @@
 
  - [Introducción](#introducción)
  - [Administración de vistas](#administración-de-vistas)
+ - [Administración de traducciones](#administración-de-traducciones)
  - [Compilador de vistas](#compilador-de-vistas)
- traducciones
+
 
 ## Introducción
 En esta documentación se explican la forma de depurar las vistas usadas en la plataforma (buscadores, páginas del CMS, fichas de consulta...)
@@ -28,5 +29,12 @@ Dentro de esta página hay varias secciones:
  - Plantillas del servicio de resultados: Dentro de esta sección se encuentran las vistas utilizadas en el servicio de resultados
  - Plantillas del servicio de facetas: Dentro de esta sección se encuentran las vistas utilizadas en el servicio de facetas
  - Plantillas de los componentes del CMS: Dentro de esta sección se encuentran las vistas de los componentes del CMS
+
+## Administración de traducciones
+Desde esta página se pudeden editar los textos de las traducciones incluidos en las vistas
+
+## Compilador de vistas
+El compilador de vistas nos servirá para depurar vistas y poder editar/crear vistas.  
+Se encuentra en la siguiente URL: [Compilador de vistas](https://github.com/equipognoss/Gnoss.DevTools.ViewMaker)
 
 
