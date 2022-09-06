@@ -57,11 +57,11 @@ Para cargar una página hay que configurar lo siguiente:
 
 ### Buscadores
 Las vistas involucradas en los búscadores son:
- - Views/Busqueda/Index.cshtml: La vista que se carga en la Web que tiene los contenedores para cargar las facetas y los resultados.
- - Views/CargadorFacetas/_Faceta.cshtml: La vista que se encarga de pintar una faceta.
- - Views/CargadorFacetas/_ItemFaceta.cshtml: La vista que se encarga de pintar un ítem de una faceta.
- - Views/CargadorResultados/CargadorResultados.cshtml: La vista que se encarga de pintar el listado de resultados.
- - Views/CargadorResultados/_ResultadoRecurso.cshtml: La vista que se encarga de pintar un ítem dentro de los resultados.
+ - [Views/Busqueda/Index.cshtml](https://github.com/HerculesCRUE/HerculesED/blob/main/Web/Views/Views/Busqueda/Index.cshtml): La vista que se carga en la Web que tiene los contenedores para cargar las facetas y los resultados.
+ - [Views/CargadorFacetas/_Faceta.cshtml](https://github.com/HerculesCRUE/HerculesED/blob/main/Web/Views/Views/CargadorFacetas/_Faceta.cshtml): La vista que se encarga de pintar una faceta.
+ - [Views/CargadorFacetas/_ItemFaceta.cshtml](https://github.com/HerculesCRUE/HerculesED/blob/main/Web/Views/Views/CargadorFacetas/_ItemFaceta.cshtml): La vista que se encarga de pintar un ítem de una faceta.
+ - [Views/CargadorResultados/CargadorResultados.cshtml](https://github.com/HerculesCRUE/HerculesED/blob/main/Web/Views/Views/CargadorResultados/CargarResultados.cshtml): La vista que se encarga de pintar el listado de resultados.
+ - [Views/CargadorResultados/_ResultadoRecurso.cshtml](https://github.com/HerculesCRUE/HerculesED/blob/main/Web/Views/Views/CargadorResultados/_ResultadoRecurso.cshtml): La vista que se encarga de pintar un ítem dentro de los resultados.
 
 ### Páginas del CMS
 ### Fichas de consulta
