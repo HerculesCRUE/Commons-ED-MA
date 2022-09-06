@@ -16,6 +16,8 @@
  - [Administración de traducciones](#administración-de-traducciones)
  - [Compilador de vistas](#compilador-de-vistas)
    - [Buscadores](#buscadores) 
+   - [Páginas del CMS](#páginas-del-cms) 
+   - [Fichas de consulta](#fichas-de-consulta) 
 
 
 ## Introducción
@@ -54,3 +56,13 @@ Para cargar una página hay que configurar lo siguiente:
 ![](./media/EdicionVistas/SessionID.jpg)
 
 ### Buscadores
+Las vistas involucradas en los búscadores son:
+ - Views/Busqueda/Index.cshtml: La vista que se carga en la Web que tiene los contenedores para cargar las facetas y los resultados.
+ - Views/CargadorFacetas/_Faceta.cshtml: La vista que se encarga de pintar una faceta.
+ - Views/CargadorFacetas/_ItemFaceta.cshtml: La vista que se encarga de pintar un ítem de una faceta.
+ - Views/CargadorResultados/CargadorResultados.cshtml: La vista que se encarga de pintar el listado de resultados.
+ - Views/CargadorResultados/_ResultadoRecurso.cshtml: La vista que se encarga de pintar un ítem dentro de los resultados.
+
+### Páginas del CMS
+### Fichas de consulta
+
