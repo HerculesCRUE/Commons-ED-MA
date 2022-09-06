@@ -67,5 +67,5 @@ Las vistas personlazadas involucradas en los búscadores son:
 Las vistas personlazadas involucradas en los componentes del CMS se encuentran en la siguiente URL [https://github.com/HerculesCRUE/HerculesED/tree/main/Web/Views/CMS](https://github.com/HerculesCRUE/HerculesED/tree/main/Web/Views/CMS).
 
 ### Fichas de consulta
-Las vista personlazadas involucradas en las fichas de consulta se encuentran en la siguiente URL [https://github.com/HerculesCRUE/HerculesED/tree/main/Web/Views/Recursos]([https://github.com/HerculesCRUE/HerculesED/tree/main/Web/Views/CMS](https://github.com/HerculesCRUE/HerculesED/tree/main/Web/Views/Recursos).  
+Las vista personlazadas involucradas en las fichas de consulta se encuentran en la siguiente URL [https://github.com/HerculesCRUE/HerculesED/tree/main/Web/Views/Recursos](https://github.com/HerculesCRUE/HerculesED/tree/main/Web/Views/Recursos).  
 
