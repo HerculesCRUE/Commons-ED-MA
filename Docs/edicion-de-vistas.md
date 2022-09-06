@@ -28,7 +28,7 @@ La creación/edición/eliminación de vistas se realiza desde la página {URL_CO
 Dentro de esta página hay varias secciones:
  - Plantillas de la web: Dentro de esta sección se encuentran las vistas de la web excepto las del CMS
    - Páginas generales: Aquí se encuentran las vistas generales (todas excepto las de las fichas de los recursos)
-   - Fichas de recursos: Aqí se encuentran las vistas de las fichas de los recursos 
+   - Fichas de recursos: Aquí se encuentran las vistas de las fichas de los recursos 
  - Plantillas del servicio de resultados: Dentro de esta sección se encuentran las vistas utilizadas en el servicio de resultados
  - Plantillas del servicio de facetas: Dentro de esta sección se encuentran las vistas utilizadas en el servicio de facetas
  - Plantillas de los componentes del CMS: Dentro de esta sección se encuentran las vistas de los componentes del CMS
