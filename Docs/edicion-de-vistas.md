@@ -33,7 +33,9 @@ Dentro de esta página hay varias secciones:
 ![](./media/EdicionVistas/AdministrarVistas.jpg)
 
 ## Administración de traducciones
-Desde esta página se pudeden editar los textos de las traducciones incluidos en las vistas
+Desde esta página se pudeden editar los textos de las traducciones incluidos en las vistas desde la página {URL_COMUNIDAD}/administrar-traducciones.  
+
+![](./media/EdicionVistas/AdministrarTraducciones.jpg)
 
 ## Compilador de vistas
 El compilador de vistas nos servirá para depurar vistas y poder editar/crear vistas.  
