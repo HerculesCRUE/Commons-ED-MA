@@ -15,5 +15,4 @@ Dentro de este módulo  de formación presentado el 7/9/2022 de 90 minutos de du
 
  1. [Configuración de páginas: Creación de las páginas de la plataforma (buscadores y cms)]([../../../../HerculesMA](https://github.com/HerculesCRUE/HerculesMA)/blob/main/Docs/configuracion-de-paginas.md).
  2. [Metabuscador: Funcionamiento del metabuscador](https://github.com/HerculesCRUE/HerculesMA/blob/main/Docs/metabuscador.md)
- 3. Ficha de consulta: Funcionamiento de la fichas de los items (publicaciones, proyectos...).
- 4. Edición de vistas: Edición de las vistas.
+ 3. Edición de vistas: Edición de las vistas de buscadores, páginas del CMS y fichas de consulta.
