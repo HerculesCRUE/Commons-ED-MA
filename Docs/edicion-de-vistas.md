@@ -15,6 +15,7 @@
  - [Administración de vistas](#administración-de-vistas)
  - [Administración de traducciones](#administración-de-traducciones)
  - [Compilador de vistas](#compilador-de-vistas)
+   - [Buscadores](#buscadores) 
 
 
 ## Introducción
@@ -51,3 +52,5 @@ Para cargar una página hay que configurar lo siguiente:
  - Autenticación Básica/Password: Contraseña para la autenticación HTTP en caso de que esté configurada.
  - SessionID: Si no se introduce se comportaría como si navegase un usuario invitado. Se puede introducir el ID de sesión de un usuario para que la página se cargue como si fuese ese usuario el que está navegando, para ello hay que recuperarlo de la cookie '.AspNetCore.Session'
 ![](./media/EdicionVistas/SessionID.jpg)
+
+### Buscadores
