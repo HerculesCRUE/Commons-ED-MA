@@ -45,7 +45,8 @@ namespace Hercules.Commons.Load.Models.TaxonomyOntology
         {
             SecondaryResource resource = new SecondaryResource();
             List<SecondaryEntity> listSecondaryEntity = null;
-            GetProperties();
+            GetEntities();
+            GetProperties();            
             SecondaryOntology ontology = new SecondaryOntology(resourceAPI.GraphsUrl, resourceAPI.OntologyUrl, "http://www.w3.org/2008/05/skos#Concept", "http://www.w3.org/2008/05/skos#Concept", prefList, propList, this.Dc_source + "_" + identificador, listSecondaryEntity, entList);
             resource.SecondaryOntology = ontology;
             return resource;
@@ -84,8 +85,21 @@ namespace Hercules.Commons.Load.Models.TaxonomyOntology
             }
         }
 
+        private void GetEntities()
+        {
+            if (Roh_sourceDescriptor != null)
+            {
+                foreach (SourceDescriptor prop in Roh_sourceDescriptor)
+                {
+                    prop.propList.Add(new StringOntologyProperty("roh:impactSourceCategory", prop.Roh_impactSourceCategory));
+                    prop.propList.Add(new StringOntologyProperty("roh:impactSource", prop.IdRoh_impactSource));
 
-
+                    OntologyEntity entitySourceDescriptor = new OntologyEntity("http://w3id.org/roh/SourceDescriptor", "http://w3id.org/roh/SourceDescriptor", "roh:sourceDescriptor", prop.propList, prop.entList);
+                    entList.Add(entitySourceDescriptor);
+                    prop.Entity = entitySourceDescriptor;
+                }
+            }
+        }
 
     }
 }
