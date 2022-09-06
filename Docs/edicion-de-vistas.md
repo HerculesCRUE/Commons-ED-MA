@@ -30,8 +30,12 @@ Dentro de esta página hay varias secciones:
  - Plantillas del servicio de facetas: Dentro de esta sección se encuentran las vistas utilizadas en el servicio de facetas
  - Plantillas de los componentes del CMS: Dentro de esta sección se encuentran las vistas de los componentes del CMS
 
+![](./media/EdicionVistas/AdministrarVistas.jpg)
+
 ## Administración de traducciones
-Desde esta página se pudeden editar los textos de las traducciones incluidos en las vistas
+Desde esta página se pudeden editar los textos de las traducciones incluidos en las vistas desde la página {URL_COMUNIDAD}/administrar-traducciones.  
+
+![](./media/EdicionVistas/AdministrarTraducciones.jpg)
 
 ## Compilador de vistas
 El compilador de vistas nos servirá para depurar vistas y poder editar/crear vistas.  
