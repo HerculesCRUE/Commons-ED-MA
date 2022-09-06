@@ -13,6 +13,7 @@
 
 Dentro de este módulo de formación dirigido a desarrolladores se verán los siguientes apartados
 
- 1. [Configuración de páginas: Creación de las páginas de la plataforma (buscadores y cms)](../../../../HerculesMA/blob/main/Docs/configuracion-de-paginas.md)
- 2. Metabuscador: Funcionamiento del metabuscador
- 3. Ficha de consulta: Funcionamiento de la fichas de los items (publicaciones, proyectos...)
+ 1. [Configuración de páginas: Creación de las páginas de la plataforma (buscadores y cms)](../../../../HerculesMA/blob/main/Docs/configuracion-de-paginas.md).
+ 2. Metabuscador: Funcionamiento del metabuscador.
+ 3. Ficha de consulta: Funcionamiento de la fichas de los items (publicaciones, proyectos...).
+ 4. Edición de vistas: Edición de las vistas.
