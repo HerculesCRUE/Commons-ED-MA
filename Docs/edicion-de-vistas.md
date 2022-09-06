@@ -24,7 +24,7 @@
 En esta documentación se explican la forma de depurar las vistas usadas en la plataforma (buscadores, páginas del CMS, fichas de consulta...)
 
 ## Administración de vistas
-La creación/edición/eliminación de vistas se realiza desde la página {URL_COMUNIDAD}/administrar-vistas.  
+La creación/edición/eliminación de vistas se realiza desde la página {URL_COMUNIDAD}/administrar-vistas accesible por el administrador.  
 Dentro de esta página hay varias secciones:
  - Plantillas de la web: Dentro de esta sección se encuentran las vistas de la web excepto las del CMS
    - Páginas generales: Aquí se encuentran las vistas generales (todas excepto las de las fichas de los recursos)
@@ -36,7 +36,7 @@ Dentro de esta página hay varias secciones:
 ![](./media/EdicionVistas/AdministrarVistas.jpg)
 
 ## Administración de traducciones
-Desde esta página se pudeden editar los textos de las traducciones incluidos en las vistas desde la página {URL_COMUNIDAD}/administrar-traducciones.  
+Desde esta página se pudeden editar los textos de las traducciones incluidos en las vistas desde la página {URL_COMUNIDAD}/administrar-traducciones accesible por el administrador.  
 
 ![](./media/EdicionVistas/AdministrarTraducciones.jpg)
 
