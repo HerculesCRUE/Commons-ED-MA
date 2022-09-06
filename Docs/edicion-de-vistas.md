@@ -2,8 +2,8 @@
 
 | Fecha                 | 05/09/2022                                |
 | --------------------- | ---------------------------------------- |
-| Título                | Configuración de páginas                 |
-| Descripción           | Guía de funcionamiento de las páginas de búsqueda y CMS |
+| Título                | Edición de vistas                        |
+| Descripción           | Guía de funcionamiento de la edición de vista|
 | Versión               | 1.0                                      |
 | Módulo                | Documentación                            |
 | Tipo                  | Especificación                           |
