@@ -13,6 +13,6 @@
 
 Dentro de este módulo  de formación presentado el 7/9/2022 de 90 minutos de duración dirigido a desarrolladores se verán los siguientes apartados
 
- 1. [Configuración de páginas: Creación de las páginas de la plataforma (buscadores y cms)]([../../../../HerculesMA](https://github.com/HerculesCRUE/HerculesMA)/blob/main/Docs/configuracion-de-paginas.md).
+ 1. [Configuración de páginas: Creación de las páginas de la plataforma (buscadores y cms)](https://github.com/HerculesCRUE/HerculesMA)/blob/main/Docs/configuracion-de-paginas.md).
  2. [Metabuscador: Funcionamiento del metabuscador](https://github.com/HerculesCRUE/HerculesMA/blob/main/Docs/metabuscador.md)
  3. Edición de vistas: Edición de las vistas de buscadores, páginas del CMS y fichas de consulta.
