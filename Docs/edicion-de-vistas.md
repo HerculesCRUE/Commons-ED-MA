@@ -47,7 +47,7 @@ Para depurar las vistas hay que copiar las vistas del repositorio [https://githu
 
 Para cargar una página hay que configurar lo siguiente:
  - Url: La URL de la página que queremos depurar.
+ - Autenticación Básica/Usuario: Usuario para la autenticación HTTP en caso de que esté configurada.
+ - Autenticación Básica/Password: Contraseña para la autenticación HTTP en caso de que esté configurada.
  - SessionID: Si no se introduce se comportaría como si navegase un usuario invitado. Se puede introducir el ID de sesión de un usuario para que la página se cargue como si fuese ese usuario el que está navegando, para ello hay que recuperarlo de la cookie '.AspNetCore.Session'
 ![](./media/EdicionVistas/SessionID.jpg)
-- Autenticación Básica/Usuario: Usuario para la autenticación HTTP en caso de que esté configurada.
-- Autenticación Básica/Password: Contraseña para la autenticación HTTP en caso de que esté configurada.
