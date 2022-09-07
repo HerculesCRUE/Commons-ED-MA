@@ -55,6 +55,10 @@ Para cargar una página hay que configurar lo siguiente:
  - SessionID: Si no se introduce se comportaría como si navegase un usuario invitado. Se puede introducir el ID de sesión de un usuario para que la página se cargue como si fuese ese usuario el que está navegando, para ello hay que recuperarlo de la cookie '.AspNetCore.Session'
 ![](./media/EdicionVistas/SessionID.jpg)
 
+Una vez cargada la página en el compilador de vistas tenemos arriba dos opción 'cargar' y 'recargar'.
+ - Cargar: Vuelve a cargar la página pero reutilizando el modelo obtenido en la anterior petición.
+ - Recargar: Lanza una nueva petición para obtener de nuevo el modelo.
+
 ### Buscadores
 Las vistas personalizadas involucradas en los búscadores son:
  - [Views/Busqueda/Index.cshtml](https://github.com/HerculesCRUE/HerculesED/blob/main/Web/Views/Views/Busqueda/Index.cshtml): La vista que se carga en la Web que tiene los contenedores para cargar las facetas y los resultados.
