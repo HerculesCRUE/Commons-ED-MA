@@ -44,7 +44,7 @@ Desde esta página se pudeden editar los textos de las traducciones incluidos en
 El compilador de vistas nos servirá para depurar vistas y poder editar/crear vistas.  
 Se encuentra en la siguiente URL: [Compilador de vistas](https://github.com/equipognoss/Gnoss.DevTools.ViewMaker)
 
-Para depurar las vistas hay que copiar las vistas del repositorio [https://github.com/HerculesCRUE/HerculesED/tree/main/Web/Views](https://github.com/HerculesCRUE/HerculesED/tree/main/Web/Views) (Carpetas CMS, Recursos y Views) dentro de la solución en /Views/hercules/
+Para depurar las vistas hay que copiar las vistas del repositorio [https://github.com/HerculesCRUE/HerculesED/tree/main/Web/Views](https://github.com/HerculesCRUE/HerculesED/tree/main/Web/Views) (Carpetas CMS, Recursos y Views) dentro de la solución en /Views/hercules/Vistas/
 
 ![](./media/EdicionVistas/CompiladorVistas.jpg)
 
