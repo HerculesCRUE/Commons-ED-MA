@@ -1,6 +1,6 @@
 ![](../Docs/media/CabeceraDocumentosMD.png)
 
-| Fecha                 | 05/09/2022                                |
+| Fecha                 | 13/09/2022                                |
 | --------------------- | ---------------------------------------- |
 | Título                | Desarrolladores: Configuración de páginas, búsquedas y fichas de consulta|
 | Descripción           | Formación para desarrolladores |
