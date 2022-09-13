@@ -1,4 +1,4 @@
-![](../Docs/media/HerculesMA/edit/main/Docs/configuracion-de-paginas.md)
+![](../Docs/media/CabeceraDocumentosMD.png)
 
 | Fecha                 | 05/09/2022                                |
 | --------------------- | ---------------------------------------- |
