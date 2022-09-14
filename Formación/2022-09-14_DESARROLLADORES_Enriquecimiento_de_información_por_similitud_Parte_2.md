@@ -14,14 +14,14 @@
 Dentro de este módulo  de formación presentado el 13/9/2022 de 30 minutos de duración dirigido a desarrolladores se verán los siguientes apartados:
  - [Carga de datos](#carga-de-datos)
  - [Explotación](#explotación)
-   1. Ficha
-   2. Sevicio externo
-   3. Search personalizado
-   4. Visualización de similitud
+   1. [Fichad de publicación](#ficha)
+   2. [Sevicio externo](#servicio-externo)
+   3. [Search personalizado](#search-personalizado)
+   4. [Visualización de similitud](#visualización-de-similitud)
 
 ## Carga de datos
 Esta carga la realiza el [desnormalizador](https://github.com/HerculesCRUE/HerculesED/tree/main/src/Hercules.ED.Desnormalizador) dentro del método ActualizadorEDMA.DesnormalizarTodo(), en este servicio se puede configurar una expresión CRON para indicar la frecuencia de esta desnormalización.  
-Para ello se obtienen todos los datos de la BBDD y del servicio de similaridad, se comparan y se cargan/editan/eliminan los datos necesarios con los siguientes datos:
+Para ello se obtienen todos los datos de la BBDD y del servicio de similaridad, se comparan y se cargan/editan/eliminan los datos necesarios en el [servicio de similitud](https://github.com/HerculesCRUE/HerculesED/tree/main/src/Hercules.ED.Enrichment/Similitud) con los siguientes datos:
  1. Identificador
  2. Nombres de los autores
  3. Descripción
@@ -32,11 +32,14 @@ Para ello se obtienen todos los datos de la BBDD y del servicio de similaridad, 
 ## Explotación
 Estos datos se explotan dentro de las fichas de las publicaciones dentro de la pestaña de relacionados.
 
-###
+### Ficha
+Al entrar en la ficha o pulsar sobre la pestaña de relacionados se hace una petición al [servicio externo](https://github.com/HerculesCRUE/HerculesMA/tree/main/src/Hercules.MA.ServicioExterno) 
 
-https://serviciospreedma.gnoss.com/servicioexterno/Similarity/GetSimilaritiesDocument?pIdDocument=http://gnoss.com/items/Document_5c01909a-b577-4de3-b424-9f89881654bf_7423452d-6435-499c-9df2-0fa73b7d52bd
+### Servicio externo
+La petición llega al método 'GetSimilaritiesDocument' del controlador 'SimilarityController' pasando como parámetro el ID de la publiación {URL_SERVCIO_EXTERNO}/Similarity/GetSimilaritiesDocument?pIdDocument={ID_PUBLICACIÓN}. Esta petición nos devuelve los IDs de las publicaciones relacionadas junto con las etiquetas y su peso en la relación.
 
+### Search personalizado
+Una vez obtenidos los IDs de las publicaciones a mostrar se realiza una búsqueda utilizando los servicios de facetas y de resultados utilizadno el Search personalizado 'searchRelacionadosDocumentoIn' con el que obtendremos los datos de las publicaciones ordenadas en función de la respuesta del servicio externo.
 
- 1. [Configuración de páginas: Creación de las páginas de la plataforma (buscadores y cms)](https://github.com/HerculesCRUE/HerculesMA/blob/main/Docs/configuracion-de-paginas.md).
- 2. [Metabuscador: Funcionamiento del metabuscador](https://github.com/HerculesCRUE/HerculesMA/blob/main/Docs/metabuscador.md)
- 3. [Edición de vistas: Edición de las vistas de buscadores, páginas del CMS y fichas de consulta](https://github.com/HerculesCRUE/Commons-ED-MA/blob/main/Docs/edicion-de-vistas.md)
+### Visualización de similitud
+Una vez completada la carga de resultados se ejecuta el javascript 'CompletadaCargaRecursosSimilitud()' que marca en color rojo las etiquetas de las publicaciones de los resultados que guarden relación con la ficha de la publicación que estemos visualizando.
