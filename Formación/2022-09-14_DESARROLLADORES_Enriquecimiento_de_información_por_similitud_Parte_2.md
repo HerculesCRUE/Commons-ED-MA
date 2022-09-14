@@ -15,7 +15,7 @@ Dentro de este módulo  de formación presentado el 13/9/2022 de 30 minutos de d
  - [Carga de datos](#carga-de-datos)
  - [Explotación](#explotación)
    1. [Ficha de publicación](#ficha-de-publicación)
-   2. [Sevicio externo](#servicio-externo)
+   2. [Servicio externo](#servicio-externo)
    3. [Search personalizado](#search-personalizado)
    4. [Visualización de similitud](#visualización-de-similitud)
 
