@@ -9,7 +9,7 @@
 | Tipo                  | Especificación                           |
 | Cambios de la Versión | Versión inicial                          |
 
-# Enriquecimiento de información por similitud. Explotación del servicio
+# Enriquecimiento de información por similitud. Integración de los resultados
 
 Dentro de este módulo  de formación presentado el 13/9/2022 de 30 minutos de duración dirigido a desarrolladores se verán los siguientes apartados:
  - [Carga de datos](#carga-de-datos)
