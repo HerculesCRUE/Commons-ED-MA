@@ -2,7 +2,7 @@
 
 | Fecha                 | 14/09/2022                                |
 | --------------------- | ---------------------------------------- |
-| Título                | Desarrolladores: Enriquecimiento de información por similitud. Explotación del servicio|
+| Título                | Desarrolladores: Enriquecimiento de información por similitud. Integración de los resultados|
 | Descripción           | Formación para desarrolladores |
 | Versión               | 1.0                                      |
 | Módulo                | Formación                            |
