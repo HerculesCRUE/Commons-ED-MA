@@ -2,19 +2,19 @@
 
 | Fecha                 | 14/09/2022                                |
 | --------------------- | ---------------------------------------- |
-| Título                | Desarrolladores: Enriquecimiento de información por similitud Parte 2|
+| Título                | Desarrolladores: Enriquecimiento de información por similitud. Explotación del servicio|
 | Descripción           | Formación para desarrolladores |
 | Versión               | 1.0                                      |
 | Módulo                | Formación                            |
 | Tipo                  | Especificación                           |
 | Cambios de la Versión | Versión inicial                          |
 
-# Enriquecimiento de información por similitud Parte 2
+# Enriquecimiento de información por similitud. Explotación del servicio
 
 Dentro de este módulo  de formación presentado el 13/9/2022 de 30 minutos de duración dirigido a desarrolladores se verán los siguientes apartados:
  - [Carga de datos](#carga-de-datos)
  - [Explotación](#explotación)
-   1. [Fichad de publicación](#ficha)
+   1. [Ficha de publicación](#ficha-de-publicación)
    2. [Sevicio externo](#servicio-externo)
    3. [Search personalizado](#search-personalizado)
    4. [Visualización de similitud](#visualización-de-similitud)
@@ -32,7 +32,7 @@ Para ello se obtienen todos los datos de la BBDD y del servicio de similaridad, 
 ## Explotación
 Estos datos se explotan dentro de las fichas de las publicaciones dentro de la pestaña de relacionados.
 
-### Ficha
+### Ficha de publicación
 Al entrar en la ficha o pulsar sobre la pestaña de relacionados se hace una petición al [servicio externo](https://github.com/HerculesCRUE/HerculesMA/tree/main/src/Hercules.MA.ServicioExterno) 
 
 ### Servicio externo
