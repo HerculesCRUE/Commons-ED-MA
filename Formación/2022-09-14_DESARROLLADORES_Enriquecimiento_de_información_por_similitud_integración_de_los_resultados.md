@@ -36,10 +36,10 @@ Estos datos se explotan dentro de las fichas de las publicaciones dentro de la p
 Al entrar en la ficha o pulsar sobre la pestaña de relacionados se hace una petición al [servicio externo](https://github.com/HerculesCRUE/HerculesMA/tree/main/src/Hercules.MA.ServicioExterno) 
 
 ### Servicio externo
-La petición llega al método 'GetSimilaritiesDocument' del controlador 'SimilarityController' pasando como parámetro el ID de la publiación {URL_SERVCIO_EXTERNO}/Similarity/GetSimilaritiesDocument?pIdDocument={ID_PUBLICACIÓN}. Esta petición nos devuelve los IDs de las publicaciones relacionadas junto con las etiquetas y su peso en la relación.
+La petición llega al método 'GetSimilaritiesDocument' del controlador 'SimilarityController' pasando como parámetro el ID de la publiación {URL_SERVICIO_EXTERNO}/Similarity/GetSimilaritiesDocument?pIdDocument={ID_PUBLICACIÓN}. Esta petición nos devuelve los IDs de las publicaciones relacionadas junto con las etiquetas y su peso en la relación.
 
 ### Search personalizado
-Una vez obtenidos los IDs de las publicaciones a mostrar se realiza una búsqueda utilizando los servicios de facetas y de resultados utilizadno el Search personalizado 'searchRelacionadosDocumentoIn' con el que obtendremos los datos de las publicaciones ordenadas en función de la respuesta del servicio externo.
+Una vez obtenidos los IDs de las publicaciones a mostrar se realiza una búsqueda usando los servicios de facetas y de resultados mediante el Search personalizado 'searchRelacionadosDocumentoIn' con el que obtendremos los datos de las publicaciones ordenadas en función de la respuesta del servicio externo.
 
 ### Visualización de similitud
-Una vez completada la carga de resultados se ejecuta el javascript 'CompletadaCargaRecursosSimilitud()' que marca en color rojo las etiquetas de las publicaciones de los resultados que guarden relación con la ficha de la publicación que estemos visualizando.
+Una vez completada la carga de resultados se ejecuta el javascript 'CompletadaCargaRecursosSimilitud()' que marca en color rojo las etiquetas de las publicaciones de los resultados que guarden relación con la ficha de la publicación que estemos visualizando, para ilustrar los resultados de similitud.
