@@ -1,6 +1,6 @@
 ![](../Docs/media/CabeceraDocumentosMD.png)
 
-| Fecha                 | 13/09/2022                                |
+| Fecha                 | 14/09/2022                                |
 | --------------------- | ---------------------------------------- |
 | Título                | Desarrolladores: Enriquecimiento de información por similitud Parte 2|
 | Descripción           | Formación para desarrolladores |
@@ -13,14 +13,26 @@
 
 Dentro de este módulo  de formación presentado el 13/9/2022 de 30 minutos de duración dirigido a desarrolladores se verán los siguientes apartados:
  - [Carga de datos](#carga-de-datos)
- - Explotación
-   - Ficha
-   - Search personalizado
-   - Visualización de similitud
+ - [Explotación](#explotación)
+   1- Ficha
+   2- Sevicio externo
+   3- Search personalizado
+   4- Visualización de similitud
 
 ## Carga de datos
 Esta carga la realiza el [desnormalizador](https://github.com/HerculesCRUE/HerculesED/tree/main/src/Hercules.ED.Desnormalizador) dentro del método ActualizadorEDMA.DesnormalizarTodo(), en este servicio se puede configurar una expresión CRON para indicar la frecuencia de esta desnormalización.  
-Para ello se obtienen todos los datos de la BBDD y del servicio de similaridad, se comparan y se cargan/editan/eliminan los datos necesarios.
+Para ello se obtienen todos los datos de la BBDD y del servicio de similaridad, se comparan y se cargan/editan/eliminan los datos necesarios con los siguientes datos:
+ 1. Identificador
+ 2. Nombres de los autores
+ 3. Descripción
+ 4. Etiquetas con peso
+ 5. Categorías con peso
+ 
+
+## Explotación
+Estos datos se explotan dentro de las fichas de las publicaciones dentro de la pestaña de relacionados.
+
+###
 
 https://serviciospreedma.gnoss.com/servicioexterno/Similarity/GetSimilaritiesDocument?pIdDocument=http://gnoss.com/items/Document_5c01909a-b577-4de3-b424-9f89881654bf_7423452d-6435-499c-9df2-0fa73b7d52bd
 
