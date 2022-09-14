@@ -14,10 +14,10 @@
 Dentro de este módulo  de formación presentado el 13/9/2022 de 30 minutos de duración dirigido a desarrolladores se verán los siguientes apartados:
  - [Carga de datos](#carga-de-datos)
  - [Explotación](#explotación)
-   1- Ficha
-   2- Sevicio externo
-   3- Search personalizado
-   4- Visualización de similitud
+   1. Ficha
+   2. Sevicio externo
+   3. Search personalizado
+   4. Visualización de similitud
 
 ## Carga de datos
 Esta carga la realiza el [desnormalizador](https://github.com/HerculesCRUE/HerculesED/tree/main/src/Hercules.ED.Desnormalizador) dentro del método ActualizadorEDMA.DesnormalizarTodo(), en este servicio se puede configurar una expresión CRON para indicar la frecuencia de esta desnormalización.  
