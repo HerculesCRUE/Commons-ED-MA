@@ -52,3 +52,31 @@ Los elementos se pintarán en medio del pop-up, mostrando en caso de que alguno 
 El [motor de desambiguación](https://github.com/HerculesCRUE/HerculesED/tree/main/src/Hercules.ED.DisambiguationEngine) se utiliza en diferentes implementaciones dentro de Hércules, su función es la de comparar diferentes items en base a sus características para comprobar si se trata de los mismo items. 
 
 Dentro de Hércules se ha utilizado en diferentes servicios, a continución se explican diferentes implementaciones de este motor dentro de Hércules.
+
+### Editor de CV. Autores de publicaciones
+Dentro del [editor de CV](https://github.com/HerculesCRUE/HerculesED/tree/main/src/Hercules.ED.EditorCV) se utiliza cuando se añaden autores a las publicaciones.
+Para ello en el CV se introducen las firmas de los autores separadas por ';' y se pulsa sobre 'Buscar'. Esto desencadenará una llamada AJAX al servicio [editor de cv](https://github.com/HerculesCRUE/HerculesED/tree/main/src/Hercules.ED.EditorCV) al método 'ValidateSignatures' del controlador 'EdicionCVController'.
+
+En primer lugar recuperamos todos los colaboradores del dueño del CV junto con su número de colaboraciones tanto en proyectos como en publicaciones y también los departamentos de todos sus colaboradores.
+
+Posteriormente para cada uno de los nombres introducidos buscamos a todos los candidatos con el método 'ObtenerPersonasFirma' de la clase 'AccionesEdicion' y construimos objetos de tipo [Person](https://github.com/HerculesCRUE/HerculesED/blob/main/src/Hercules.ED.EditorCV/EditorCV/Models/API/Response/Person.cs) en los cuales cargaremos su nombre en una propiedad de tipo 'algoritmoNombres'.
+
+A continuación creamos otro objeto [Person](https://github.com/HerculesCRUE/HerculesED/blob/main/src/Hercules.ED.EditorCV/EditorCV/Models/API/Response/Person.cs) con el nombre de la firma tal cual se ha introducido.
+
+Con estos datos realizamos una petición al método 'SimilarityBBDDScores' con los siguientes parámetros:
+  - pItems: La persona con el nombre introducido por el usuario.
+  - pItemBBDD: Las personas candidatas obtenidas.
+  - pUmbral: Pasamos '0' porque en este caso queremos obtener el score de cualquier posible candidato.
+  - pToleranciaNombres: Pasamos '0.5' porque en este caso permitimos que haya una discrepancia en los nombres de hasta el 50% ya que luego el usuario elegirá de entre los candidatos.
+
+Como resultado obtenemos un diccionario con los Identificadores de todos los candidatos junto con una puntuación en función de la similitud de los nombres.
+
+Asignamos a la lista de candidatos el score obtenido y eliminamos aquellos para los que no hayamos obtenido ningún score.
+
+Nos recorremos cada una de las personas y consideramos su score máximo = person.score + (1 - person.score) * person.score;
+
+Consideramos por cada publicación en común con el usuario actual un score adicional de 0.1, por cada proyecto 0.1 y en caso de que coincida el departamento 0.2.
+
+Realizamos todos los cálculos, ordenamos los resultados y los devolvemos al usuario.
+
+
