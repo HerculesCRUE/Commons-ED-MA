@@ -20,8 +20,8 @@ Dentro de este módulo  de formación presentado el 20/9/2022 de 90 minutos de d
  
 
 ## Gestión de duplicidades del CV
-Se ha implementado una herrramienta para que los investigadores desde su CV puedan gestionar sus posibles duplicados.
-REDACTAR POSIBLES CAUSAS
+Se ha implementado una herramienta para que los investigadores desde su CV puedan gestionar sus posibles duplicados. Ya que estas pueden surgir al importar datos de diversos lugares Fuentes externas, carga inicial, carga del CV por el usuario, carga de ítems como coautor, etc.
+
 
 ### Flujo
 En el servicio [EdiciónCV](https://github.com/HerculesCRUE/HerculesED/tree/main/src/Hercules.ED.EditorCV) se configuran los elementos sobre los cuales se deben comprobar duplicidades, para ello en los [TabTemplates](https://github.com/HerculesCRUE/HerculesED/tree/main/src/Hercules.ED.EditorCV/EditorCV/Config/TabTemplates) se añade el campo "checkDuplicates" con valor true en los ítems a comprobar.
