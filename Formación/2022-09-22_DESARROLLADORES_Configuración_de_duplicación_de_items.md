@@ -77,6 +77,6 @@ Nos recorremos cada una de las personas y consideramos su score máximo = person
 
 Consideramos por cada publicación en común con el usuario actual un score adicional de 0.1, por cada proyecto 0.1 y en caso de que coincida el departamento 0.2.
 
-Realizamos todos los cálculos, ordenamos los resultados y los devolvemos al usuario.
+Realizamos todos los cálculos, ordenamos los resultados, cogemos las primeras 20 propuestas para cada firma y lo devolvemos al usuario.
 
 
