@@ -49,4 +49,6 @@ Los elementos se pintarán en medio del pop-up, mostrando en caso de que alguno 
  
 
 ## Motor de desambiguación
------
+El [motor de desambiguación](https://github.com/HerculesCRUE/HerculesED/tree/main/src/Hercules.ED.DisambiguationEngine) se utiliza en diferentes implementaciones dentro de Hércules, su función es la de comparar diferentes items en base a sus características para comprobar si se trata de los mismo items. 
+
+Dentro de Hércules se ha utilizado en diferentes servicios, a continución se explican diferentes implementaciones de este motor dentro de Hércules.
