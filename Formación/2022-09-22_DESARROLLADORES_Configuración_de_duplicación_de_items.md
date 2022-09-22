@@ -83,4 +83,21 @@ El flujo de esta operativa es el siguiente:
   - En última instancia instancia, en caso de no encontrar el ORCID se podrá crear la persona introducienco el nombre y los apellidos.
 
 ### Carga de fuentes externas
-A los investigadores se les cargarán publicaciones provenientes de fuentes externas como [Wos](https://github.com/HerculesCRUE/HerculesED/tree/main/src/Hercules.ED.ExternalSources/Hercules.ED.WoSConnect), [Scopus](https://github.com/HerculesCRUE/HerculesED/tree/main/src/Hercules.ED.ExternalSources/Hercules.ED.ScopusConnect), y [OpenAire](https://github.com/HerculesCRUE/HerculesED/tree/main/src/Hercules.ED.ExternalSources/Hercules.ED.OpenAireConnect) obtenidas a través del servicio [Publication](https://github.com/HerculesCRUE/HerculesED/tree/main/src/Hercules.ED.ExternalSources/Hercules.ED.Publication) que generará un JSON para su carga posterior con el [Servicio de carga de datos obtenidos de fuentes externas](https://github.com/HerculesCRUE/HerculesED/tree/main/src/Hercules.ED.ResearcherObjectLoad)
+A los investigadores se les cargarán publicaciones provenientes de fuentes externas como [Wos](https://github.com/HerculesCRUE/HerculesED/tree/main/src/Hercules.ED.ExternalSources/Hercules.ED.WoSConnect), [Scopus](https://github.com/HerculesCRUE/HerculesED/tree/main/src/Hercules.ED.ExternalSources/Hercules.ED.ScopusConnect), y [OpenAire](https://github.com/HerculesCRUE/HerculesED/tree/main/src/Hercules.ED.ExternalSources/Hercules.ED.OpenAireConnect) obtenidas a través del servicio [Publication](https://github.com/HerculesCRUE/HerculesED/tree/main/src/Hercules.ED.ExternalSources/Hercules.ED.Publication) que generará un JSON para su carga posterior con el [Servicio de carga de datos obtenidos de fuentes externas](https://github.com/HerculesCRUE/HerculesED/tree/main/src/Hercules.ED.ResearcherObjectLoad). 
+
+El flujo de esta operativa es el siguiente:
+  - El servicio lee los JSON que están en la carpeta que está configurada como directorio de lectura.
+  - Obtenemos los datos de la persona propietaria del JSON y cargamos los datos del JSON.
+  - Obtenemos los datos candidatos para las publicaciones y los autores leídos del JSON y los cargamos de tipo [DisambiguationPerson](https://github.com/HerculesCRUE/HerculesED/blob/main/src/Hercules.ED.ResearcherObjectLoad/Hercules.ED.ResearcherObjectLoad/Models/DisambiguationObjects/DisambiguationPerson.cs) y  [DisambiguationPubilcation](https://github.com/HerculesCRUE/HerculesED/blob/main/src/Hercules.ED.ResearcherObjectLoad/Hercules.ED.ResearcherObjectLoad/Models/DisambiguationObjects/DisambiguationPublication.cs) en los cargaremos las propiedades necesarias para realizar la posterior desambiguación.
+  - Con estos datos realizamos una petición al método 'Disambiguate' con los siguientes parámetros:
+    - pItems: Las personas y publicaciones obtenidas del JSON.
+    - pItemBBDD: Las personas y publicaciones candidatas recuperadas de BBDD.
+  - Como resultado obtenemos un diccionario cuyas claves son los identificadores de las publicaciones de BBDD y cuyos valores son las publicaciones y personas del JSON
+  - A continuación cargamos las personas que no existan en el sistema o actualizamos el ORCID de las que corresponda.
+  - Posteriormente creamos los objetos de las publicaciones a cargar y les asignamos las personas que hemos cargado previamente.
+  - Creamos los objetos de las notificaciones para informar a los usuarios de la carga/modificación de las publicaciones.
+  - Realizamos la carga/modificación de personas y publicaciones.
+  - Realizamos la carga de las notificaciones.
+  - Creamos la notificación para informar al propietario del JSON que se ha terminado de procesar.
+  - En último lugar creamos un ZIP con el JSON comprimido y lo eliminamos de la carpeta de pensientes de procesar.
+
