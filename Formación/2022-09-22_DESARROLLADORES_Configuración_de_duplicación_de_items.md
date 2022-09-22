@@ -17,7 +17,7 @@ Dentro de este módulo  de formación presentado el 20/9/2022 de 90 minutos de d
  - [Gestión de duplicidades del CV](#gestión-de-duplicidades-del-cv)
    - [Flujo](#flujo)
  - [Motor de desambiguación](#motor-de-desambiguación)
-   - [Editor de CV. Autores de publicaciones](#editor-de-cv--autores-de-publicaciones) 
+   - [Editor de CV. Autores de publicaciones](#editor-de-cv-autores-de-publicaciones) 
    - [Carga de fuentes externas](#carga-de-fuentes-externas) 
  
 
