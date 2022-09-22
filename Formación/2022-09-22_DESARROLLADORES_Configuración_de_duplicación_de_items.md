@@ -17,6 +17,8 @@ Dentro de este módulo  de formación presentado el 20/9/2022 de 90 minutos de d
  - [Gestión de duplicidades del CV](#gestión-de-duplicidades-del-cv)
    - [Flujo](#flujo)
  - [Motor de desambiguación](#motor-de-desambiguación)
+   - [Editor de CV. Autores de publicaciones](#editor-de-cv--autores-de-publicaciones) 
+   - [Carga de fuentes externas](#carga-de-fuentes-externas) 
  
 
 ## Gestión de duplicidades del CV
@@ -73,13 +75,11 @@ El flujo de esta operativa es el siguiente:
     - pToleranciaNombres: Pasamos '0.5' porque en este caso permitimos que haya una discrepancia en los nombres de hasta el 50% ya que luego el usuario elegirá de entre los candidatos.
 
   - Como resultado obtenemos un diccionario con los Identificadores de todos los candidatos junto con una puntuación en función de la similitud de los nombres.
-
   - Asignamos a la lista de candidatos el score obtenido y eliminamos aquellos para los que no hayamos obtenido ningún score.
-
-  - Nos recorremos cada una de las personas y consideramos su score máximo = person.score + (1 - person.score) * person.score;
-
+  - Nos recorremos cada una de las personas y consideramos su score máximo = person.score + (1 - person.score) * person.score.
   - Consideramos por cada publicación en común con el usuario actual un score adicional de 0.1, por cada proyecto 0.1 y en caso de que coincida el departamento 0.2.
-
   - Realizamos todos los cálculos, ordenamos los resultados, cogemos las primeras 20 propuestas para cada firma y lo devolvemos al usuario.
+  - El usuario puede seleccionar uno de los candidatos propuestos o buscar uno nuevo a través de su ORCID, en el método ValidateORCID del controlador GuardadoCVController, que buscará dentro del sistema alguien con ese ORCID y en caso de no encontrarlo lo buscará a través del API de ORCID.
+  - En última instancia instancia, en caso de no encontrar el ORCID se podrá crear la persona introducienco el nombre y los apellidos.
 
-
+### Carga de fuentes externas
