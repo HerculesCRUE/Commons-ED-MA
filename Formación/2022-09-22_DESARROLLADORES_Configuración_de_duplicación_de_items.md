@@ -42,7 +42,7 @@ Los elementos son guardados en un diccionario, y se recorrerán comprobando la d
  
 Para comprobar la diferencia entre dos elementos se comprobará la diferencia entre sus títulos, mediante la comprobación de la distancia de Levenshtein (mínimo número de operaciones requeridas para transformar una cadena de caracteres A en otra B).
  
-Se eliminará del listado de respuesta aquellos marcados como no duplicados pero que se haya encontrado similaridad entre ambos.
+Se eliminará del listado de respuesta los repetidos y aquellos marcados como no duplicados pero que se haya encontrado similaridad entre ambos.
 
 Tras ello se devolverá al navegador un listado de objetos [SimilarityResponse](https://github.com/HerculesCRUE/HerculesED/blob/main/src/Hercules.ED.EditorCV/EditorCV/Models/Similarity/SimilarityResponse.cs)
 
