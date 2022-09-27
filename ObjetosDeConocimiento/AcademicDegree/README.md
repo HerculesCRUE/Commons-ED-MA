@@ -22,7 +22,7 @@ Las propiedades son las siguientes:
 - roh:title
 - eroh:degreeType
 - eroh:postgradeDegree
-- eroh:doctoralDegree
+- eroh:doctoralProgram
 - dct:issued
 - eroh:universityDegreeType
 - eroh:universityDegreeTypeOther
