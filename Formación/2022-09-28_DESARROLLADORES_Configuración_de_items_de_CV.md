@@ -1,6 +1,6 @@
 ![](../Docs/media/CabeceraDocumentosMD.png)
 
-| Fecha                 | 22/09/2022                                |
+| Fecha                 | 28/09/2022                                |
 | --------------------- | ---------------------------------------- |
 | Título                | Desarrolladores: Configuración de items de CV|
 | Descripción           | Formación para desarrolladores |
