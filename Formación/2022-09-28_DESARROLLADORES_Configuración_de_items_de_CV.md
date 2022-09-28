@@ -9,7 +9,7 @@
 | Tipo                  | Especificación                           |
 | Cambios de la Versión | Versión inicial                          |
 
-# Configuración de duplicación de items
+# Configuración de items de CV
 
 Dentro de este módulo  de formación presentado el 28/9/2022 de 90 minutos de duración dirigido a desarrolladores se verán los siguientes apartados:
 
