@@ -17,8 +17,8 @@ Dentro de este módulo  de formación presentado el 28/9/2022 de 90 minutos de d
   - [Controladores](https://github.com/HerculesCRUE/HerculesED/blob/main/src/Hercules.ED.EditorCV/README.md#controladores)
   - [Hércules ED. Configuración del Editor de CV](https://github.com/HerculesCRUE/HerculesED/blob/main/src/Hercules.ED.EditorCV/README.md#hércules-ed-configuración-del-editor-de-cv)
     - [Introducción](https://github.com/HerculesCRUE/HerculesED/blob/main/src/Hercules.ED.EditorCV/README.md#introducción)
-    - [Ejemplo de edición](https://github.com/HerculesCRUE/HerculesED/blob/main/src/Hercules.ED.EditorCV/README.md#ejemplo-de-edición)
-      - [Configuración de la presentación (listado y minificha)](https://github.com/HerculesCRUE/HerculesED/blob/main/src/Hercules.ED.EditorCV/README.md#configuración-de-la-presentación-listado)
-      - [Configuración de la edición](https://github.com/HerculesCRUE/HerculesED/blob/main/src/Hercules.ED.EditorCV/README.md#configuración-de-la-edición)
- 
-
+    - [Estructura de los JSON](https://github.com/HerculesCRUE/HerculesED/blob/main/src/Hercules.ED.EditorCV/README.md##estructura-de-los-json)
+    - [Métodos de edición y visualización del cv](https://github.com/HerculesCRUE/HerculesED/blob/main/src/Hercules.ED.EditorCV/README.md##metodos-de-edicion-y-visualizacion-del-cv)
+    - [Ejemplos de edición](https://github.com/HerculesCRUE/HerculesED/blob/main/src/Hercules.ED.EditorCV/README.md##ejemplo-de-edición)
+      - [Configuración de la presentación (listado y minificha)](https://github.com/HerculesCRUE/HerculesED/blob/main/src/Hercules.ED.EditorCV/README.md##configuración-de-la-presentación-listado)
+      - [Configuración de la edición](https://github.com/HerculesCRUE/HerculesED/blob/main/src/Hercules.ED.EditorCV/README.md##configuración-de-la-edición)
