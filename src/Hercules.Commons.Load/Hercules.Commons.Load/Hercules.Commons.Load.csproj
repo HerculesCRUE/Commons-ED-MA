@@ -6,9 +6,18 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Dataset\Revistas\**" />
+    <Compile Remove="Dataset\UMU\**" />
+    <EmbeddedResource Remove="Dataset\Revistas\**" />
+    <EmbeddedResource Remove="Dataset\UMU\**" />
+    <None Remove="Dataset\Revistas\**" />
+    <None Remove="Dataset\UMU\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="ExcelDataReader" Version="3.6.0" />
     <PackageReference Include="ExcelDataReader.DataSet" Version="3.6.0" />
-    <PackageReference Include="GnossApiWrapper.NetCore" Version="1.0.8" />
+    <PackageReference Include="GnossApiWrapper.NetCore" Version="6.0.6" />
     <PackageReference Include="System.Text.Encoding.CodePages" Version="6.0.0" />
   </ItemGroup>
 
@@ -29,216 +38,15 @@
     <None Update="Dataset\Hércules-ED_Taxonomías_v1.1.xlsx">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Update="Dataset\Hércules-ED_Taxonomías_v1.36.xlsx">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="Dataset\personas_hercules.xlsx">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="Dataset\REVISTAS\Revistas-Scopus-Ciencias.xlsx">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="Dataset\REVISTAS\Revistas-Scopus-CienciasSociales.xlsx">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="Dataset\Revistas\scopus\revistas-scopus-2011.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="Dataset\Revistas\scopus\revistas-scopus-2012.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="Dataset\Revistas\scopus\revistas-scopus-2013.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="Dataset\Revistas\scopus\revistas-scopus-2014.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="Dataset\Revistas\scopus\revistas-scopus-2015.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="Dataset\Revistas\scopus\revistas-scopus-2016.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="Dataset\Revistas\scopus\revistas-scopus-2017.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="Dataset\Revistas\scopus\revistas-scopus-2018.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="Dataset\Revistas\scopus\revistas-scopus-2019.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="Dataset\Revistas\scopus\revistas-scopus-2020.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="Dataset\Revistas\wos-scie\revistas-wos-scie-2011.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="Dataset\Revistas\wos-scie\revistas-wos-scie-2012.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="Dataset\Revistas\wos-scie\revistas-wos-scie-2013.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="Dataset\Revistas\wos-scie\revistas-wos-scie-2014.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="Dataset\Revistas\wos-scie\revistas-wos-scie-2015.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="Dataset\Revistas\wos-scie\revistas-wos-scie-2016.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="Dataset\Revistas\wos-scie\revistas-wos-scie-2017.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="Dataset\Revistas\wos-scie\revistas-wos-scie-2018.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="Dataset\Revistas\wos-scie\revistas-wos-scie-2019.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="Dataset\Revistas\wos-scie\revistas-wos-scie-2020.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="Dataset\Revistas\wos-ssci\revistas-wos-ssci-2011.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="Dataset\Revistas\wos-ssci\revistas-wos-ssci-2012.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="Dataset\Revistas\wos-ssci\revistas-wos-ssci-2013.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="Dataset\Revistas\wos-ssci\revistas-wos-ssci-2014.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="Dataset\Revistas\wos-ssci\revistas-wos-ssci-2015.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="Dataset\Revistas\wos-ssci\revistas-wos-ssci-2016.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="Dataset\Revistas\wos-ssci\revistas-wos-ssci-2017.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="Dataset\Revistas\wos-ssci\revistas-wos-ssci-2018.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="Dataset\Revistas\wos-ssci\revistas-wos-ssci-2019.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="Dataset\Revistas\wos-ssci\revistas-wos-ssci-2020.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="Dataset\UMU\Areas UNESCO Proyectos.xml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="Dataset\UMU\Articulos.xml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="Dataset\UMU\Autores articulos.xml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="Dataset\UMU\Autores congresos.xml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="Dataset\UMU\Autores exposicion.xml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="Dataset\UMU\Autores exposiciones.xml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="Dataset\UMU\Centros.xml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="Dataset\UMU\Codigos UNESCO.xml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="Dataset\UMU\Congresos.xml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="Dataset\UMU\Datos equipo investigacion.xml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="Dataset\UMU\Departamentos.xml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="Dataset\UMU\Directores tesis.xml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="Dataset\UMU\Equipos proyectos.xml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="Dataset\UMU\Evaluación y revisión de proyectos y artículos de I+D+i.xml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="Dataset\UMU\Exposiciones.xml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="Dataset\UMU\Fechas equipos proyectos.xml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="Dataset\UMU\Fechas proyectos.xml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="Dataset\UMU\Fuentes financiacion proyectos.xml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="Dataset\UMU\Grupos de investigacion.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Update="Dataset\Hércules-ED_Taxonomías_v1.1.xlsx">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Update="Dataset\UMU\Inventores patentes.xml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="Dataset\UMU\Lineas de investigacion.xml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="Dataset\UMU\Lineas investigador.xml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="Dataset\UMU\Lineas UNESCO.xml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="Dataset\UMU\Obras artisticas dirigidas.xml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="Dataset\UMU\Organizaciones externas.xml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="Dataset\UMU\Organización de actividades de I+D+i.xml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="Dataset\UMU\Palabras clave articulos.xml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="Dataset\UMU\Patentes.xml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="Dataset\UMU\Personas.xml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="Dataset\UMU\Proyectos.xml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="Dataset\UMU\Tesis.xml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="Dataset\UMU\Tipo participacion grupo.xml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="Dataset\UMU\Tipos eventos.xml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="Dataset\UMU\Trabajos presentados en congresos nacionales o internacionales.xml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Dataset\UMU\" />
-    <Folder Include="Dataset\Revistas\" />
-    <Folder Include="Dataset\UMU\" />
   </ItemGroup>
 
 </Project>
