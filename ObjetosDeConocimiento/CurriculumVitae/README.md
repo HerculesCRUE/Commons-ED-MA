@@ -19,6 +19,8 @@ Las propiedades extendidas son las siguientes:
 
 En roh:CV
 
+- foaf:name
+- roh:cvOf
 - eroh:multilangProperties
 - eroh:personalData
 - eroh:professionalSituation
@@ -34,17 +36,30 @@ En roh:CV
 
 En eroh:PersonalData (contiene los datos personales del investigador):
 
-- eroh:hasTelephone
+- foaf:firstName
+- foaf:familyName
+- eroh:secondFamilyName
+- vcard:birth-date
+- vcard:email
+- vcard:hasTelephone
 - eroh:hasFax
+- foaf:img
+- foaf:homepage
 - eroh:otherIds
 - eroh:hasMobilePhone
+- vcard:address
+- schema:nationality
 - eroh:birthplace
 - eroh:dni
 - eroh:nie
 - eroh:passport
+- roh:ORCID
+- vivo:scopusId
+- vivo:researcherId
 
-En eroh:ScientificActivity (listado de ítems asociados a la actividad científica del investigador según la norma CVN):
+En eroh:ScientificActivity (listado de ítems asociados a la actividad científica del investigador):
 
+- roh:title
 - eroh:scientificProduction
 - eroh:generalQualityIndicators
 - eroh:scientificPublications
@@ -68,8 +83,9 @@ En eroh:ScientificActivity (listado de ítems asociados a la actividad científi
 - eroh:obtainedRecognitions
 - eroh:otherAchievements
 
-En eroh:ScientificExperience (listado de ítems asociados a la experiencia científica del investigador según la norma CVN):
+En eroh:ScientificExperience (listado de ítems asociados a la experiencia científica del investigador):
 
+- roh:title
 - eroh:competitiveProjects
 - eroh:nonCompetitiveProjects
 - eroh:patents
@@ -79,6 +95,7 @@ En eroh:ScientificExperience (listado de ítems asociados a la experiencia cient
 
 En eroh:TeachingExperience (listado de ítems asociados a la actividad docente):
 
+- roh:title
 - eroh:thesisSupervisions
 - eroh:impartedAcademicTrainings
 - eroh:academicTutorials
@@ -92,6 +109,7 @@ En eroh:TeachingExperience (listado de ítems asociados a la actividad docente):
 
 En eroh:Qualifications (listado de ítems asociados a la formatión recibida):
 
+- roh:title
 - eroh:firstSecondCycles
 - eroh:doctorates
 - eroh:languageSkills
@@ -101,6 +119,7 @@ En eroh:Qualifications (listado de ítems asociados a la formatión recibida):
 
 En eroh:ProfessionalSituation (listado de ítems asociados a la situación profesional):
 
+- roh:title
 - eroh:currentProfessionalSituacion
 - eroh:previousPositions
 

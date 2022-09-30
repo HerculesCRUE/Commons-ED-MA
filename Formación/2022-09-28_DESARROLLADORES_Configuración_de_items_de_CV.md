@@ -1,26 +1,24 @@
 ![](../Docs/media/CabeceraDocumentosMD.png)
 
-| Fecha                 | 22/09/2022                                |
+| Fecha                 | 28/09/2022                                |
 | --------------------- | ---------------------------------------- |
-| Título                | Desarrolladores: Configuración de duplicación de items|
+| Título                | Desarrolladores: Configuración de items de CV|
 | Descripción           | Formación para desarrolladores |
 | Versión               | 1.0                                      |
 | Módulo                | Formación                            |
 | Tipo                  | Especificación                           |
 | Cambios de la Versión | Versión inicial                          |
 
-# Configuración de duplicación de items
+# Configuración de items de CV
 
-Dentro de este módulo  de formación presentado el 20/9/2022 de 90 minutos de duración dirigido a desarrolladores se verán los siguientes apartados:
+Dentro de este módulo  de formación presentado el 28/9/2022 de 90 minutos de duración dirigido a desarrolladores se verán los siguientes apartados:
 
 
- - [Gestión de duplicidades del CV](#gestión-de-duplicidades-del-cv)
- - [Motor de desambiguación](#motor-de-desambiguación)
- 
-
-## Gestión de duplicidades del CV
------
- 
-
-## Motor de desambiguación
------
+  - [Controladores](https://github.com/HerculesCRUE/HerculesED/blob/main/src/Hercules.ED.EditorCV/README.md#controladores)
+  - [Hércules ED. Configuración del Editor de CV](https://github.com/HerculesCRUE/HerculesED/blob/main/src/Hercules.ED.EditorCV/README.md#hércules-ed-configuración-del-editor-de-cv)
+    - [Introducción](https://github.com/HerculesCRUE/HerculesED/blob/main/src/Hercules.ED.EditorCV/README.md#introducción)
+    - [Estructura de los JSON](https://github.com/HerculesCRUE/HerculesED/blob/main/src/Hercules.ED.EditorCV/README.md##estructura-de-los-json)
+    - [Métodos de edición y visualización del cv](https://github.com/HerculesCRUE/HerculesED/blob/main/src/Hercules.ED.EditorCV/README.md##metodos-de-edicion-y-visualizacion-del-cv)
+    - [Ejemplos de edición](https://github.com/HerculesCRUE/HerculesED/blob/main/src/Hercules.ED.EditorCV/README.md##ejemplo-de-edición)
+      - [Configuración de la presentación (listado y minificha)](https://github.com/HerculesCRUE/HerculesED/blob/main/src/Hercules.ED.EditorCV/README.md##configuración-de-la-presentación-listado)
+      - [Configuración de la edición](https://github.com/HerculesCRUE/HerculesED/blob/main/src/Hercules.ED.EditorCV/README.md##configuración-de-la-edición)
