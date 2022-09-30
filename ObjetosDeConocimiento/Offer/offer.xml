@@ -49,6 +49,7 @@
         </Propiedad>
         <Propiedad  ID="http://www.schema.org/offeredBy" EntidadID="http://www.schema.org/Offer">
             <SeleccionEntidad>
+				<LinkARecurso IrAComunidad="true" PropiedadID="http://xmlns.com/foaf/0.1/name"></LinkARecurso>
                 <TipoSeleccion>Autocompletar</TipoSeleccion>
                 <Grafo>person.owl</Grafo>
                 <UrlTipoEntSolicitada>http://xmlns.com/foaf/0.1/Person</UrlTipoEntSolicitada>
@@ -82,6 +83,7 @@
         </Propiedad>
         <Propiedad  ID="http://w3id.org/roh/document" EntidadID="http://www.schema.org/Offer">
             <SeleccionEntidad>
+				<LinkARecurso IrAComunidad="true" PropiedadID="http://w3id.org/roh/title"></LinkARecurso>
                 <TipoSeleccion>Autocompletar</TipoSeleccion>
                 <Grafo>document.owl</Grafo>
                 <UrlTipoEntSolicitada>http://purl.org/ontology/bibo/Document</UrlTipoEntSolicitada>              
@@ -155,6 +157,7 @@
         </Propiedad>
         <Propiedad  ID="http://w3id.org/roh/project" EntidadID="http://www.schema.org/Offer">
             <SeleccionEntidad>
+				<LinkARecurso IrAComunidad="true" PropiedadID="http://w3id.org/roh/title"></LinkARecurso>
                 <TipoSeleccion>Autocompletar</TipoSeleccion>
                 <Grafo>project.owl</Grafo>
                 <UrlTipoEntSolicitada>http://vivoweb.org/ontology/Project</UrlTipoEntSolicitada>              
@@ -196,6 +199,7 @@
         </Propiedad>
         <Propiedad  ID="http://w3id.org/roh/researchers" EntidadID="http://www.schema.org/Offer">
             <SeleccionEntidad>
+				<LinkARecurso IrAComunidad="true" PropiedadID="http://xmlns.com/foaf/0.1/name"></LinkARecurso>
                 <TipoSeleccion>Autocompletar</TipoSeleccion>
                 <Grafo>person.owl</Grafo>
                 <UrlTipoEntSolicitada>http://xmlns.com/foaf/0.1/Person</UrlTipoEntSolicitada>              
@@ -258,6 +262,7 @@
         </Propiedad>
         <Propiedad  ID="http://w3id.org/roh/roleOf" EntidadID="http://w3id.org/roh/AvailabilityChangeEvent">
             <SeleccionEntidad>
+				<LinkARecurso IrAComunidad="true" PropiedadID="http://xmlns.com/foaf/0.1/name"></LinkARecurso>
                 <TipoSeleccion>Autocompletar</TipoSeleccion>
                 <Grafo>person.owl</Grafo>
                 <UrlTipoEntSolicitada>http://xmlns.com/foaf/0.1/Person</UrlTipoEntSolicitada>              
