@@ -26,7 +26,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Update="Config\configOAuth\OAuthV3.config">
+    <None Update="Config\ConfigOAuth\OAuthV3.config">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Update="Dataset\CVN\ReferenceTables.xml">
