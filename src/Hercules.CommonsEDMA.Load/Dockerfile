@@ -21,4 +21,4 @@ RUN dotnet publish "Hercules.CommonsEDMA.Load/Hercules.CommonsEDMA.Load.csproj" 
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
-ENTRYPOINT ["dotnet", "Hercules.CommonsEDMA.Load.dll"]
+ENTRYPOINT ["/bin/bash"]
