@@ -20,11 +20,6 @@ La entidad eroh:RelationshipType (ver Figura 1) representa el modo de relación 
 - Redes sin proyecto conjunto
 - Otros
 
-A continuación se listan todas aquellas propiedades contenidas en eroh:RelationshipType que extienden la ontología fundamental ROH con el fin de ajustarse a las necesidades de Hércules EDMA:
-
-- dc:title
-- dc:identifier
-
 ![](../../Docs/media/ObjetosDeConocimiento/RelationshipType.png)
 
 *Figura 1. Diagrama ontológico para la entidad eroh:RelationshipType*
