@@ -16,11 +16,6 @@ La entidad eroh:TeachingType (ver Figura 1) representa el tipo de docencia en el
 - Docencia no oficial
 - Docencia oficial
 
-A continuación se listan todas aquellas propiedades contenidas en eroh:TeachingType que extienden la ontología fundamental ROH con el fin de ajustarse a las necesidades de Hércules EDMA:
-
-- dc:title
-- dc:identifier
-
 ![](../../Docs/media/ObjetosDeConocimiento/TeachingType.png)
 
 *Figura 1. Diagrama ontológico para la entidad eroh:TeachingType*
