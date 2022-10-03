@@ -13,14 +13,9 @@
 
 La entidad eroh:ScientificProduction (ver Figura 1) representa la producción científica.
 
-Las propiedades son las siguientes:
+Una instancia de eroh:ScientificProduction se asocia, a su vez, con la siguiente entidad a través de propiedades de objeto:
 
-- eroh:owner
-- eroh:cvnCode
-- roh:h-index
-- dct:issued
-- eroh:h-indexSource
-- eroh:h-indexSourceOther
+- [eroh:h-indexSource](https://github.com/HerculesCRUE/Commons-ED-MA/tree/main/ObjetosDeConocimiento/HIndexSource), que relaciona la producción científica con el índice H.
 
 ![](../../Docs/media/ObjetosDeConocimiento/ScientificProduction.png)
 
