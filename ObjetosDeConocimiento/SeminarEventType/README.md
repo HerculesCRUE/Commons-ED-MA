@@ -18,11 +18,6 @@ La entidad eroh:SeminarEventType (ver Figura 1) representa el tipo de evento, de
 - Teller de trabajo
 - Otros
 
-A continuación se listan todas aquellas propiedades contenidas en eroh:SeminarEventType que extienden la ontología fundamental ROH con el fin de ajustarse a las necesidades de Hércules EDMA:
-
-- dc:title
-- dc:identifier
-
 ![](../../Docs/media/ObjetosDeConocimiento/SeminarEventType.png)
 
 *Figura 1. Diagrama ontológico para la entidad eroh:SeminarEventType*
