@@ -13,39 +13,15 @@
 
 La entidad eroh:TeachingPublication (ver Figura 1) representa una Publicaciones docente o de carácter pedagógico, libros, artículos, etc. en el Curriculum Vitae en la plataforma Hércules.
 
-A continuación se listan todas aquellas propiedades contenidas en eroh:TeachingPublication que extienden la ontología fundamental ROH con el fin de ajustarse a las necesidades de Hércules EDMA:
+Una instancia de eroh:TeachingPublication se asocia con las siguientes entidades a través de propiedades de objeto:
 
-- eroh:owner
-- eroh:cvnCode
-- roh:crisIdentifier
-- roh:title
-- dct:issue
-- eroh:publicationTitle
-- eroh:supportType
-- eroh:supportTypeOther
-- bibo:authorList
-- eroh:correspondingAuthor
-- eroh:publicationName
-- bibo:volume
-- bibo:issue
-- bibo:pageStart
-- bibo:pageEnd
-- vivo:publisher
-- eroh:signaturePosition
-- eroh:contributionGrade
-- roh:isbn
-- bibo:issn
-- bibo:doi
-- bibo:handle
-- bibo:pmid
-- bibo:identifier
-- eroh:legalDeposit
-- vcard:url
-- vcard:hasCountryName
-- vcard:hasRegion
-- eroh:targetProfile
-- eroh:materialJustification
-- eroh:publishDate
+- [foaf:Person](https://github.com/HerculesCRUE/Commons-ED-MA/tree/main/ObjetosDeConocimiento/Person), representa la persona asociada la publicación.
+- [eroh:SupportType](https://github.com/HerculesCRUE/Commons-ED-MA/tree/main/ObjetosDeConocimiento/SupportType), representa el tipo de soporte en el que se ha plasmado el material docente.
+- roh:PersonAux, representa los autores que han intervenido.
+- [eroh:ContributionGradeDocument](https://github.com/HerculesCRUE/Commons-ED-MA/tree/main/ObjetosDeConocimiento/ContributionGradeDocument), representa el tipo de participación.
+- foaf:Document, representa otros identificadores del material docente.
+- [gn:Feature](https://github.com/HerculesCRUE/Commons-ED-MA/tree/main/ObjetosDeConocimiento/Feature), representa el país y comunidad autónoma de la publicación.
+
 
 ![](../../Docs/media/ObjetosDeConocimiento/TeachingPublication.png)
 
