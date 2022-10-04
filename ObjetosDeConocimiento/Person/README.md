@@ -62,6 +62,7 @@ Las propiedades son las siguientes:
 - eroh:ipNumber
 - eroh:metricPage
 - eroh:useMatching
+- eroh:ignorePublication
 
 En ROH, foaf:Person está basada en FOAF (Friend of a Friend) y sigue los patrones empleados en VIVO. Ello explica la inclusión de ciertas propiedades FOAF básicas como foaf:firstName, foaf:lastName, foaf:nick, foaf:name y foaf:homepage. Se han adoptado otras relaciones de importancia acordes al formato común de información en materia de la investigación europea (CERIF), como roh:crisIdentifier, roh:hasRole, roh:h-index o roh:ORCID.
 
@@ -70,6 +71,8 @@ Una instancia de foaf:Person se asocia con las siguientes entidades a través de
 - vivo:Department, que vincula a un investigador con un departamento o escuela universitaria concreta.
 - roh:CategoryPath, que vincula las áreas temáticas en las que un investigador desarrolla su trabajo.
 - foaf:Group, que vincula al investigador con uno o varios grupos de investigación.
+- eroh:metricPage, que vincula al investigador con las graficas de indicadores personales.
+- eroh:ignorePublication, que vincula la persona con las publicaciones que no quiere que se vuelvan a insertar en el CV.
 
 ![](../../Docs/media/ObjetosDeConocimiento/Person.png)
 
