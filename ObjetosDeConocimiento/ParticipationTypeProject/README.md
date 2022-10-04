@@ -14,7 +14,6 @@
 La entidad eroh:ParticipationTypeProject (ver Figura 1) representa el tipo de participación en el Curriculum Vitae en la plataforma Hércules. Dispone de varias opciones:
 - Investigador principal
 - Miembro del equipo
-- Colaborador
 - Coordinador
 - Otros
 
