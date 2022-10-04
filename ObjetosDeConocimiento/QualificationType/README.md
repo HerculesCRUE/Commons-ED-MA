@@ -17,11 +17,6 @@ La entidad eroh:QualificationType (ver Figura 1) representa el tipo de nota medi
 - Sobresaliente
 - Matrícula de Honor
 
-A continuación se listan todas aquellas propiedades contenidas en eroh:QualificationType que extienden la ontología fundamental ROH con el fin de ajustarse a las necesidades de Hércules EDMA:
-
-- dc:title
-- dc:identifier
-
 ![](../../Docs/media/ObjetosDeConocimiento/QualificationType.png)
 
 *Figura 1. Diagrama ontológico para la entidad eroh:QualificationType*

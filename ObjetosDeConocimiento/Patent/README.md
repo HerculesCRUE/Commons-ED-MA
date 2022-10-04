@@ -50,6 +50,14 @@ Las propiedades extendidas son las siguientes:
 - eroh:results
 - eroh:products
 
+Una instancia de bibo:Patent se asocia, a su vez, con las siguientes entidades a través de propiedades de objeto:
+
+- roh:PersonAux, que referencia los autores de la propiedad intelectual.
+- [eroh:Feature](https://github.com/HerculesCRUE/Commons-ED-MA/tree/main/ObjetosDeConocimiento/Feature), que referencia los paises sobre los cuales se ha extendido/formalizado la explotación.
+- eroh:Organization, que referencia las empresas.
+- [eroh:IndustrialPropertyType](https://github.com/HerculesCRUE/Commons-ED-MA/tree/main/ObjetosDeConocimiento/IndustrialPropertyType), que referencia el tipo de propiedad intelectual.
+- [eroh:ResultType](https://github.com/HerculesCRUE/Commons-ED-MA/tree/main/ObjetosDeConocimiento/ResultType), que referencia el resultado.
+
 
 ![](../../Docs/media/ObjetosDeConocimiento/Patent.png)
 

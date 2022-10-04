@@ -15,11 +15,6 @@ La entidad eroh:SeminarInscriptionType (ver Figura 1) representa el tipo de inte
 - Ponente
 - Por invitación
 
-A continuación se listan todas aquellas propiedades contenidas en eroh:SeminarInscriptionType que extienden la ontología fundamental ROH con el fin de ajustarse a las necesidades de Hércules EDMA:
-
-- dc:title
-- dc:identifier
-
 ![](../../Docs/media/ObjetosDeConocimiento/SeminarInscriptionType.png)
 
 *Figura 1. Diagrama ontológico para la entidad eroh:SeminarInscriptionType*

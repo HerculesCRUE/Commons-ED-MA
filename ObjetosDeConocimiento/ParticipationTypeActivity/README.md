@@ -18,11 +18,6 @@ La entidad eroh:ParticipationTypeActivity (ver Figura 1) representa el tipo de m
 - Secretario/a
 - Otros
 
-A continuación se listan todas aquellas propiedades contenidas en eroh:ParticipationTypeActivity que extienden la ontología fundamental ROH con el fin de ajustarse a las necesidades de Hércules EDMA:
-
-- dc:title
-- dc:identifier
-
 ![](../../Docs/media/ObjetosDeConocimiento/ParticipationTypeActivity.png)
 
 *Figura 1. Diagrama ontológico para la entidad eroh:ParticipationTypeActivity*

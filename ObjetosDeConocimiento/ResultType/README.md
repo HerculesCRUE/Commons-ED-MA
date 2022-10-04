@@ -15,11 +15,6 @@ La entidad eroh:ResultType (ver Figura 1) representa el tipo de resultado como e
 - Exito
 - Fallido
 
-A continuación se listan todas aquellas propiedades contenidas en eroh:ResultType que extienden la ontología fundamental ROH con el fin de ajustarse a las necesidades de Hércules EDMA:
-
-- dc:title
-- dc:identifier
-
 ![](../../Docs/media/ObjetosDeConocimiento/ResultType.png)
 
 *Figura 1. Diagrama ontológico para la entidad eroh:ResultType*

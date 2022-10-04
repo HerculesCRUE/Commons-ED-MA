@@ -19,11 +19,6 @@ La entidad eroh:LanguageLevel (ver Figura 1) representa el tipo de compresión a
 - C1
 - C2
 
-A continuación se listan todas aquellas propiedades contenidas en eroh:LanguageLevel que extienden la ontología fundamental ROH con el fin de ajustarse a las necesidades de Hércules EDMA:
-
-- dc:title
-- dc:identifier
-
 ![](../../Docs/media/ObjetosDeConocimiento/LanguageLevel.png)
 
 *Figura 1. Diagrama ontológico para la entidad eroh:LanguageLevel*

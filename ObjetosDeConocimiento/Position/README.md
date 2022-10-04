@@ -46,6 +46,14 @@ Las propiedades son las siguientes:
 - bibo:abstract
 - vivo:freeTextKeyword
 
+Una instancia de vivo:Position se asocia, a su vez, con las siguientes entidades a través de propiedades de objeto:
+
+- vcard:TelephoneType, que referencia el teléfono y fax.
+- roh:CategoryPath, que referencia los códigos UNESCO.
+- eroh:ContractModality, que referencia la modalidad de contrato.
+- eroh:DedicationRegime, que referencia los régimenes de dedicación.
+- eroh:ScopeManagementActivity, que referencia el ámbito de actividad de gestión.
+
 ![](../../Docs/media/ObjetosDeConocimiento/Position.png)
 
 *Figura 1. Diagrama ontológico para la entidad eroh:Position*

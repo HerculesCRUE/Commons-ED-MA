@@ -13,17 +13,9 @@
 
 La entidad eroh:Notification (ver Figura 1) representa una notificación en la plataforma Hércules.
 
-A continuación se listan todas aquellas propiedades contenidas en eroh:Notification que extienden la ontología fundamental ROH con el fin de ajustarse a las necesidades de Hércules EDMA:
+Una instancia de eroh:Notification se asocia, a su vez, con las siguientes entidades a través de propiedades de objeto:
 
-- eroh:type
-- dct:issued
-- eroh:owner
-- eroh:trigger
-- eroh:entity
-- eroh:idEntityCV
-- eroh:tabPropertyCV
-- eroh:cvnCode
-- eroh:text
+- roh:PersonAux, representa el propietario y el lanzador de la notificación.
 
 ![](../../Docs/media/ObjetosDeConocimiento/Notification.png)
 

@@ -13,12 +13,6 @@
 
 La entidad eroh:ProjectAuthorization (ver Figura 1) la autorización devuelta por parte del SGI, en el Curriculum Vitae en la plataforma Hércules. 
 
-A continuación se listan todas aquellas propiedades contenidas en eroh:ProjectAuthorization que extienden la ontología fundamental ROH con el fin de ajustarse a las necesidades de Hércules EDMA:
-
-- eroh:crisIdentifier
-- roh:title
-- eroh:owner
-
 ![](../../Docs/media/ObjetosDeConocimiento/ProjectAuthorization.png)
 
 *Figura 1. Diagrama ontológico para la entidad eroh:ProjectAuthorization*

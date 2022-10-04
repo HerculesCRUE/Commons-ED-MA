@@ -30,11 +30,6 @@ La entidad eroh:OrganizationType (ver Figura 1) representa el tipo de entidad en
 - Centros de Innovacion y Tecnología
 - Organismo, Otros
 
-A continuación se listan todas aquellas propiedades contenidas en eroh:OrganizationType que extienden la ontología fundamental ROH con el fin de ajustarse a las necesidades de Hércules EDMA:
-
-- dc:title
-- dc:identifier
-
 ![](../../Docs/media/ObjetosDeConocimiento/OrganizationType.png)
 
 *Figura 1. Diagrama ontológico para la entidad eroh:OrganizationType*

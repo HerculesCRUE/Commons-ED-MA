@@ -13,34 +13,15 @@
 
 La entidad eroh:ThesisSupervision (ver Figura 1) representa una dirección de tesis doctoral y/o proyecto fin de carrera en el Curriculum Vitae en la plataforma Hércules.
 
-A continuación se listan todas aquellas propiedades contenidas en eroh:ThesisSupervision que extienden la ontología fundamental ROH con el fin de ajustarse a las necesidades de Hércules EDMA:
+Una instancia de eroh:ThesisSupervision se asocia con las siguientes entidades a través de propiedades de objeto:
 
-- eroh:owner
-- eroh:cvnCode
-- roh:crisIdentifier
-- roh:title
-- dct:issued
-- eroh:studentNick
-- eroh:studentName
-- eroh:studentFirstSurname
-- eroh:studentSecondSurname
-- eroh:promotedByTitle
-- roh:promotedBy
-- eroh:promotedByType
-- eroh:promotedByTypeOther
-- vcard:locality
-- vcard:hasCountryName
-- vcard:hasRegion
-- eroh:projectCharacterType
-- eroh:projectCharacterTypeOther
-- eroh:codirector
-- eroh:qualification
-- eroh:qualityMention
-- eroh:qualityMentionDate
-- eroh:europeanDoctorate
-- eroh:europeanDoctorateDate
-- vivo:freeTextKeyword
-
+- [foaf:Person](https://github.com/HerculesCRUE/Commons-ED-MA/tree/main/ObjetosDeConocimiento/Person), representa la persona asociada a la tesis doctoral.
+- [foaf:Organization](https://github.com/HerculesCRUE/Commons-ED-MA/tree/main/ObjetosDeConocimiento/Organization), representa la entidad de realización de la tesis.
+- [eroh:OrganizationType](https://github.com/HerculesCRUE/Commons-ED-MA/tree/main/ObjetosDeConocimiento/OrganizationType), representa el tipo de entidad de realización de la tesis.
+- [gn:Feature](https://github.com/HerculesCRUE/Commons-ED-MA/tree/main/ObjetosDeConocimiento/Feature), representa el país y la comunidad autónoma o región de realización.
+- [eroh:ProjectCharacterType](https://github.com/HerculesCRUE/Commons-ED-MA/tree/main/ObjetosDeConocimiento/ProjectCharacterType), representa el tipo de proyecto.
+- roh:PersonAux, representa los codirectores de la tesis.
+- roh:CategoryPath, representa las palabras clave.
 
 ![](../../Docs/media/ObjetosDeConocimiento/ThesisSupervision.png)
 

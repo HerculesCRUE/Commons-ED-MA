@@ -19,14 +19,7 @@ La entidad eroh:ParticipationTypeDocument (ver Figura 1) representa el tipo de p
 - Participativo - Ponencia invitada/Keynote
 - Participativo - Ponencia oral (comunicación oral)
 - Participativo - Póster
-- Comité organizador
-- Comité científico
 - Participativo - Otros
-
-A continuación se listan todas aquellas propiedades contenidas en eroh:ParticipationTypeDocument que extienden la ontología fundamental ROH con el fin de ajustarse a las necesidades de Hércules EDMA:
-
-- dc:title
-- dc:identifier
 
 ![](../../Docs/media/ObjetosDeConocimiento/ParticipationTypeDocument.png)
 

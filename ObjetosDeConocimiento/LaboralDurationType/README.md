@@ -15,11 +15,6 @@ La entidad eroh:LaboralDurationType (ver Figura 1) representa el tipo de duraci�
 - De duración indeterminada o indefinida.
 - Por tiempo determinado
 
-A continuación se listan todas aquellas propiedades contenidas en eroh:LaboralDurationType que extienden la ontología fundamental ROH con el fin de ajustarse a las necesidades de Hércules EDMA:
-
-- dc:title
-- dc:identifier
-
 ![](../../Docs/media/ObjetosDeConocimiento/LaboralDurationType.png)
 
 *Figura 1. Diagrama ontológico para la entidad eroh:LaboralDurationType*

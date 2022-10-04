@@ -19,11 +19,6 @@ La entidad eroh:ModalityTeachingType (ver Figura 1) representa el tipo de docenc
 - Virtual
 - Otros
 
-A continuación se listan todas aquellas propiedades contenidas en eroh:ModalityTeachingType que extienden la ontología fundamental ROH con el fin de ajustarse a las necesidades de Hércules EDMA:
-
-- dc:title
-- dc:identifier
-
 ![](../../Docs/media/ObjetosDeConocimiento/ModalityTeachingType.png)
 
 *Figura 1. Diagrama ontológico para la entidad eroh:ModalityTeachingType*

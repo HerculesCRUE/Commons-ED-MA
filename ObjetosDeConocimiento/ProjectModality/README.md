@@ -19,11 +19,6 @@ La entidad eroh:ProjectModality (ver Figura 1) representa el tipo de modalidad d
 - Estudio de viabilidad técnica
 - De actividad de desarrollo precompetitiva
 
-A continuación se listan todas aquellas propiedades contenidas en eroh:ProjectModality que extienden la ontología fundamental ROH con el fin de ajustarse a las necesidades de Hércules EDMA:
-
-- dc:title
-- dc:identifier
-
 ![](../../Docs/media/ObjetosDeConocimiento/ProjectModality.png)
 
 *Figura 1. Diagrama ontológico para la entidad eroh:ProjectModality*

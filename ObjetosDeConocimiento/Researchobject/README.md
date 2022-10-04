@@ -13,42 +13,16 @@
 
 La entidad eroh:ResearchObject (ver Figura 1) representa un objeto de investigación.
 
-Las propiedades son las siguientes:
+Una instancia de eroh:ResearchObject se asocia, a su vez, con las siguientes entidades a través de propiedades de objeto:
 
-- dc:type
-- roh:title
-- bibo:abstract
-- dct:issued
-- bibo:authorList
-- vcard:url
-- eroh:project
-- eroh:isValidated
-- eroh:citationLoadedCount
-- bibo:doi
-- vivo:freeTextKeyword
-- eroh:externalKeywords
-- eroh:enrichedKeywords
-- eroh:userKeywords
-- eroh:suggestedKeywords
-- roh:hasKnowledgeArea
-- eroh:externalKnowledgeArea
-- eroh:enrichedKnowledgeArea
-- eroh:userKnowledgeArea
-- eroh:suggestedKnowledgeArea
-- vcard:hasLanguage
-- dct:license
-- eroh:updateDate
-- eroh:releasesNumber
-- eroh:branchesNumber
-- eroh:packagesNumber
-- eroh:forksNumber
-- eroh:viewsNumber
-- eroh:issuesNumber
-- eroh:resolvedIssuesNumber
-- eroh:annotations
-- eroh:idFigShare
-- eroh:idGit
-- eroh:idZenodo
+- [eroh:ResearchObjectType](https://github.com/HerculesCRUE/Commons-ED-MA/tree/main/ObjetosDeConocimiento/ResearchObjectType), representa .
+- obo:BFO_0000023, representa a los autores.
+- [vivo:Project](https://github.com/HerculesCRUE/Commons-ED-MA/tree/main/ObjetosDeConocimiento/Project), representa 
+- [eroh:Language](https://github.com/HerculesCRUE/Commons-ED-MA/tree/main/ObjetosDeConocimiento/Language), representa al tipo de lenguaje de programación.
+- roh:CategoryPath, representa las áreas temáticas.
+- [roh:Annotation](https://github.com/HerculesCRUE/Commons-ED-MA/tree/main/ObjetosDeConocimiento/Annotation), representa a las anotaciones.
+- [bibo:Document](https://github.com/HerculesCRUE/Commons-ED-MA/tree/main/ObjetosDeConocimiento/Document), representa
+- [eroh:ResearchObject](https://github.com/HerculesCRUE/Commons-ED-MA/tree/main/ObjetosDeConocimiento/Researchobject), representa
 
 ![](../../Docs/media/ObjetosDeConocimiento/ResearchObject.png)
 

@@ -17,11 +17,6 @@ La entidad eroh:SupportType (ver Figura 1) representa el tipo de soporte en el C
 - Libro
 - Revista
 
-A continuación se listan todas aquellas propiedades contenidas en eroh:SupportType que extienden la ontología fundamental ROH con el fin de ajustarse a las necesidades de Hércules EDMA:
-
-- dc:title
-- dc:identifier
-
 ![](../../Docs/media/ObjetosDeConocimiento/SupportType.png)
 
 *Figura 1. Diagrama ontológico para la entidad eroh:SupportType*

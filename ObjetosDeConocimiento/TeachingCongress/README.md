@@ -11,55 +11,20 @@
 
 # Hércules ED. Objeto de conocimiento TeachingCongress
 
-La entidad eroh:TeachingCongress (ver Figura 1) representa una Participación en congresos de innovación docente en el Curriculum Vitae en la plataforma Hércules.
+La entidad eroh:TeachingCongress (ver Figura 1) representa una Participación en congresos con ponencias orientadas a la formación docente en el Curriculum Vitae en la plataforma Hércules.
 
-A continuación se listan todas aquellas propiedades contenidas en eroh:TeachingCongress que extienden la ontología fundamental ROH con el fin de ajustarse a las necesidades de Hércules EDMA:
+Una instancia de eroh:TeachingCongress se asocia con las siguientes entidades a través de propiedades de objeto:
 
-- eroh:owner
-- eroh:cvnCode
-- roh:crisIdentifier
-- roh:title
-- eroh:eventType
-- eroh:eventTypeOther
-- dct:issued
-- vivo:start
-- vivo:end
-- eroh:durationHours
-- vcard:locality
-- vcard:hasCountryName
-- vcard:hasRegion
-- eroh:conductedByTitle
-- eroh:conductedBy
-- eroh:conductedByType
-- eroh:conductedByTypeOther
-- eroh:conductedByLocality
-- eroh:conductedByHasRegion
-- eroh:conductedByHasCountryName
-- eroh:publicationTitle
-- eroh:goals
-- eroh:participationType
-- eroh:participationTypeOther
-- eroh:correspondingAuthor
-- vcard:url
-- eroh:targetProfile
-- eroh:publicationName
-- eroh:publicationDate
-- vcard:hasLanguage
-- eroh:publicationType
-- bibo:volume
-- bibo:issue
-- bibo:pageStart
-- bibo:pageEnd
-- vivo:publisher
-- roh:isbn
-- bibo:issn
-- bibo:doi
-- bibo:handle
-- bibo:pmid
-- bibo:identifier
-- eroh:legalDeposit
-- eroh:publicationHasCountryName
-- eroh:publicationHasRegion
+- [foaf:Person](https://github.com/HerculesCRUE/Commons-ED-MA/tree/main/ObjetosDeConocimiento/Person), representa la persona asociada la participación en congresos.
+- [eroh:EventType](https://github.com/HerculesCRUE/Commons-ED-MA/tree/main/ObjetosDeConocimiento/EventType), representa el tipo de evento en el que se ha presentado la ponencia.
+- [gn:Feature](https://github.com/HerculesCRUE/Commons-ED-MA/tree/main/ObjetosDeConocimiento/Feature), representa el país y comunidad autónoma o región de celebración, de la entidad organizadora y de la publicación.
+- [foaf:Organization](https://github.com/HerculesCRUE/Commons-ED-MA/tree/main/ObjetosDeConocimiento/Organization), representa la entidad organizadora.
+- [eroh:OrganizationType](https://github.com/HerculesCRUE/Commons-ED-MA/tree/main/ObjetosDeConocimiento/OrganizationType), representa el tipo de entidad organizadora.
+- [eroh:ParticipationTypeDocument](https://github.com/HerculesCRUE/Commons-ED-MA/tree/main/ObjetosDeConocimiento/ParticipationTypeDocument), representa el tipo de participación.
+- [eroh:Language](https://github.com/HerculesCRUE/Commons-ED-MA/tree/main/ObjetosDeConocimiento/Language), representa el idioma de la presentación.
+- [eroh:PublicationType](https://github.com/HerculesCRUE/Commons-ED-MA/tree/main/ObjetosDeConocimiento/PublicationType), representa el tipo de material publicado.
+- foaf:Document, representa otros identificadores.
+
 
 ![](../../Docs/media/ObjetosDeConocimiento/TeachingCongress.png)
 

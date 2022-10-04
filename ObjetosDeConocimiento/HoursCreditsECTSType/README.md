@@ -15,11 +15,6 @@ La entidad eroh:HoursCreditsECTSType (ver Figura 1) representa el tipo de horas/
 - Créditos
 - Horas
 
-A continuación se listan todas aquellas propiedades contenidas en eroh:HoursCreditsECTSType que extienden la ontología fundamental ROH con el fin de ajustarse a las necesidades de Hércules EDMA:
-
-- dc:title
-- dc:identifier
-
 ![](../../Docs/media/ObjetosDeConocimiento/HoursCreditsECTSType.png)
 
 *Figura 1. Diagrama ontológico para la entidad eroh:HoursCreditsECTSType*

@@ -11,13 +11,11 @@
 
 # Hércules ED. Objeto de conocimiento ScientificActivityDocument
 
-La entidad eroh:ScientificActivityDocument (ver Figura 1) representa el tipo de los documentos de actividad científica en el Curriculum Vitae en la plataforma Hércules.
-
-A continuación se listan todas aquellas propiedades contenidas en eroh:ScientificActivityDocument que extienden la ontología fundamental ROH con el fin de ajustarse a las necesidades de Hércules EDMA:
-
-- dc:title
-- dc:identifier
-- bibo:abstract
+La entidad eroh:ScientificActivityDocument (ver Figura 1) representa el tipo de los documentos de actividad científica en el Curriculum Vitae en la plataforma Hércules. Dispone de varias opciones:
+- Publicaciones
+- En congresos
+- En jornadas, seminarios...
+- De divulgación
 
 ![](../../Docs/media/ObjetosDeConocimiento/ScientificActivityDocument.png)
 
