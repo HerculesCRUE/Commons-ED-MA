@@ -29,11 +29,6 @@ La entidad eroh:PublicationType (ver Figura 1) representa el tipo de producción
 - Diccionario científico
 - Otros
 
-A continuación se listan todas aquellas propiedades contenidas en eroh:PublicationType que extienden la ontología fundamental ROH con el fin de ajustarse a las necesidades de Hércules EDMA:
-
-- dc:title
-- dc:identifier
-
 ![](../../Docs/media/ObjetosDeConocimiento/PublicationType.png)
 
 *Figura 1. Diagrama ontológico para la entidad eroh:PublicationType*
