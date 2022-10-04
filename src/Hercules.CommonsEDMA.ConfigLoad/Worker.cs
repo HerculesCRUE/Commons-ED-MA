@@ -42,17 +42,10 @@ namespace Hercules.CommonsEDMA.ConfigLoad
             try
             {
                 configService = new ConfigService();
-
-                UserApi userAPI = new UserApi($@"{System.AppDomain.CurrentDomain.SetupInformation.ApplicationBase}Config{Path.DirectorySeparatorChar}ConfigOAuth{Path.DirectorySeparatorChar}OAuthV3.config");
-                CommunityApi communityAPI = new CommunityApi($@"{System.AppDomain.CurrentDomain.SetupInformation.ApplicationBase}Config{Path.DirectorySeparatorChar}ConfigOAuth{Path.DirectorySeparatorChar}OAuthV3.config");
-
                 string nombreProy = configService.ObtenerNombreCortoComunidad();
-                string loginAdmin = configService.ObtenerLoginAdminEcosistema();
-                userAPI.CommunityShortName = nombreProy;
-                communityAPI.CommunityShortName = nombreProy;
-
-                string loginUsuario = configService.ObtenerLoginAdminEcosistema();
-                SubirConfiguraciones(nombreProy, loginUsuario, communityAPI.GetCommunityId(), userAPI.GetUserByShortName(loginAdmin).user_id);
+                string loginAdmin = configService.ObtenerLoginAdmin();
+                string passAdmin = configService.ObtenerPassAdmin();
+                SubirConfiguraciones(nombreProy, loginAdmin, passAdmin);
             }
             catch (Exception ex)
             {
@@ -72,37 +65,37 @@ namespace Hercules.CommonsEDMA.ConfigLoad
             Thread.Sleep(30000);
         }
 
-        private static void SubirConfiguraciones(string pNombreProy, string pLoginUsuario, Guid pProyectoID, Guid pUsuarioID)
+        private static void SubirConfiguraciones(string pNombreProy, string pLoginUsuario, string pPasswordUsuario)
         {
             Console.WriteLine("8.- Subimos configuraciones");
             string rutaBase = $@"{System.AppDomain.CurrentDomain.SetupInformation.ApplicationBase}Files{Path.DirectorySeparatorChar}";
             Console.WriteLine("8.1- Subimos ontologías");
-            Despliegue(rutaBase + "Ontologias.zip", "Ontologias", pNombreProy, pLoginUsuario, pProyectoID, pUsuarioID);
+            Despliegue(rutaBase + "Ontologias.zip", "Ontologias", pNombreProy, pLoginUsuario, pPasswordUsuario);
             Console.WriteLine("8.2- Subimos Objetos de conocimiento");
-            Despliegue(rutaBase + "ObjetosConocimiento.zip", "ObjetosConocimiento", pNombreProy, pLoginUsuario, pProyectoID, pUsuarioID);
+            Despliegue(rutaBase + "ObjetosConocimiento.zip", "ObjetosConocimiento", pNombreProy, pLoginUsuario, pPasswordUsuario);
             Console.WriteLine("8.3- Subimos Facetas");
-            Despliegue(rutaBase + "Facetas.zip", "Facetas", pNombreProy, pLoginUsuario, pProyectoID, pUsuarioID);
+            Despliegue(rutaBase + "Facetas.zip", "Facetas", pNombreProy, pLoginUsuario, pPasswordUsuario);
             Console.WriteLine("8.4- Subimos Componentes del CMS");
-            Despliegue(rutaBase + "ComponentesCMS.zip", "ComponentesCMS", pNombreProy, pLoginUsuario, pProyectoID, pUsuarioID);
+            Despliegue(rutaBase + "ComponentesCMS.zip", "ComponentesCMS", pNombreProy, pLoginUsuario, pPasswordUsuario);
             Console.WriteLine("8.5- Subimos Pestañas");
-            Despliegue(rutaBase + "Pestanyas.zip", "Pestanyas", pNombreProy, pLoginUsuario, pProyectoID, pUsuarioID);
+            Despliegue(rutaBase + "Pestanyas.zip", "Pestanyas", pNombreProy, pLoginUsuario, pPasswordUsuario);
             Console.WriteLine("8.6- Subimos Paginas del CMS");
-            Despliegue(rutaBase + "PaginasCMS.zip", "PaginasCMS", pNombreProy, pLoginUsuario, pProyectoID, pUsuarioID);
+            Despliegue(rutaBase + "PaginasCMS.zip", "PaginasCMS", pNombreProy, pLoginUsuario, pPasswordUsuario);
             Console.WriteLine("8.7- Subimos Utilidades");
-            Despliegue(rutaBase + "Utilidades.zip", "Utilidades", pNombreProy, pLoginUsuario, pProyectoID, pUsuarioID);
+            Despliegue(rutaBase + "Utilidades.zip", "Utilidades", pNombreProy, pLoginUsuario, pPasswordUsuario);
             Console.WriteLine("8.8- Subimos Opciones avanzadas");
-            Despliegue(rutaBase + "OpcionesAvanzadas.zip", "OpcionesAvanzadas", pNombreProy, pLoginUsuario, pProyectoID, pUsuarioID);
+            Despliegue(rutaBase + "OpcionesAvanzadas.zip", "OpcionesAvanzadas", pNombreProy, pLoginUsuario, pPasswordUsuario);
             Console.WriteLine("8.9- Subimos Estilos");
-            Despliegue(rutaBase + "Estilos.zip", "Estilos", pNombreProy, pLoginUsuario, pProyectoID, pUsuarioID);
+            Despliegue(rutaBase + "Estilos.zip", "Estilos", pNombreProy, pLoginUsuario, pPasswordUsuario);
             Console.WriteLine("8.10- Subimos Parámetros de búsqueda personalizados");
-            Despliegue(rutaBase + "SearchPersonalizado.zip", "SearchPersonalizado", pNombreProy, pLoginUsuario, pProyectoID, pUsuarioID);
+            Despliegue(rutaBase + "SearchPersonalizado.zip", "SearchPersonalizado", pNombreProy, pLoginUsuario, pPasswordUsuario);
             Console.WriteLine("8.11- Subimos Vistas");
-            Despliegue(rutaBase + "Vistas.zip", "Vistas", pNombreProy, pLoginUsuario, pProyectoID, pUsuarioID);
+            Despliegue(rutaBase + "Vistas.zip", "Vistas", pNombreProy, pLoginUsuario, pPasswordUsuario);
         }
 
-        private static void Despliegue(string pRutaFichero, string pMetodo, string pNombreProy, string pLoginUsuario, Guid pProyectoID, Guid pUsuarioID)
+        private static void Despliegue(string pRutaFichero, string pMetodo, string pNombreProy, string pLoginUsuario, string pPasswordUsuario)
         {
-            string sWebAddress = $"{configService.ObtenerUrlAPIDespliegues()}Upload?tipoPeticion={pMetodo}&usuario={pLoginUsuario}&nombreProy={pNombreProy}";
+            string sWebAddress = $"{configService.ObtenerUrlAPIDespliegues()}Upload?tipoPeticion={pMetodo}&usuario={pLoginUsuario}&password={pPasswordUsuario}&nombreProy={pNombreProy}";
 
             HttpContent contentData = null;
 
