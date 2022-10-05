@@ -19,11 +19,6 @@ La entidad eroh:ColaborationTypeGroup (ver Figura 1) representa el tipo de clase
 - Coautoría coop con terceras entidades nacionales
 - Colaboración en formación a terceros
 
-A continuación se listan todas aquellas propiedades contenidas en eroh:ColaborationTypeGroup que extienden la ontología fundamental ROH con el fin de ajustarse a las necesidades de Hércules EDMA:
-
-- dc:title
-- dc:identifier
-
 ![](../../Docs/media/ObjetosDeConocimiento/ColaborationTypeGroup.png)
 
 *Figura 1. Diagrama ontológico para la entidad eroh:ColaborationTypeGroup*
