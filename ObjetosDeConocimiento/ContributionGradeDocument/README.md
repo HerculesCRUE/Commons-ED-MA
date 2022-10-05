@@ -24,11 +24,6 @@ La entidad eroh:ContributionGradeDocument (ver Figura 1) representa el grado de 
 - Autor/a o coautor/a de revisión.
 - Edito/a o coeditor/a.
 
-A continuación se listan todas aquellas propiedades contenidas en eroh:ContributionGradeDocument que extienden la ontología fundamental ROH con el fin de ajustarse a las necesidades de Hércules EDMA:
-
-- dc:title
-- dc:identifier
-
 ![](../../Docs/media/ObjetosDeConocimiento/ContributionGradeDocument.png)
 
 *Figura 1. Diagrama ontológico para la entidad eroh:ContributionGradeDocument*
