@@ -13,12 +13,9 @@
 
 La entidad gn:Feature (ver Figura 1) representa el tipo de país de celebración, comunidad autónoma/región de celebración y ciudad de celebración en la plataforma Hércules.
 
-A continuación se listan todas aquellas propiedades contenidas en gn:Feature que extienden la ontología fundamental ROH con el fin de ajustarse a las necesidades de Hércules EDMA:
+Una instancia de gn:Feature se asocia con entidades a través de propiedades de objeto:
 
-- gn:name
-- dc:identifier
-- gn:featureCode
-- gn:parentFeature
+- gn:Feature, representa el ítem padre.
 
 ![](../../Docs/media/ObjetosDeConocimiento/Feature.png)
 
