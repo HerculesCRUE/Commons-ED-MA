@@ -18,11 +18,6 @@ La entidad vivo:GeographicRegion (ver Figura 1) representa el tipo de ámbito de
 - Internacional no UE
 - Otros
 
-A continuación se listan todas aquellas propiedades contenidas en vivo:GeographicRegion que extienden la ontología fundamental ROH con el fin de ajustarse a las necesidades de Hércules EDMA:
-
-- dc:title
-- dc:identifier
-
 ![](../../Docs/media/ObjetosDeConocimiento/GeographicRegion.png)
 
 *Figura 1. Diagrama ontológico para la entidad eroh:GeographicRegion*
