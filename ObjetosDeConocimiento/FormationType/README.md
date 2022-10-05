@@ -17,11 +17,6 @@ La entidad eroh:FormationType (ver Figura 1) representa el tipo de formación en
 - Extensión Universitaria
 - Especialidad
 
-A continuación se listan todas aquellas propiedades contenidas en eroh:FormationType que extienden la ontología fundamental ROH con el fin de ajustarse a las necesidades de Hércules EDMA:
-
-- dc:title
-- dc:identifier
-
 ![](../../Docs/media/ObjetosDeConocimiento/FormationType.png)
 
 *Figura 1. Diagrama ontológico para la entidad eroh:FormationType*
