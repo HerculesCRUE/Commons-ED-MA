@@ -13,62 +13,22 @@
 
 La entidad eroh:ImpartedAcademicTraining (ver Figura 1) representa la Formación académica impartida en el Curriculum Vitae en la plataforma Hércules.
 
+Una instancia de eroh:ImpartedAcademicTraining se asocia, a su vez, con las siguientes entidades a través de propiedades de objeto:
 
-A continuación se listan todas aquellas propiedades contenidas en eroh:ImpartedAcademicTraining que extienden la ontología fundamental ROH con el fin de ajustarse a las necesidades de Hércules EDMA:
-
-- eroh:owner
-- eroh:cvnCode
-- roh:crisIdentifier
-- roh:title
-- eroh:degreeType
-- roh:teaches
-- vivo:start
-- vivo:end
-- eroh:promotedByTitle
-- roh:promotedBy
-- eroh:promotedByType
-- eroh:promotedByTypeOther
-- eroh:center
-- vcard:locality
-- vcard:hasCountryName
-- vcard:hasRegion
-- eroh:teachingType
-- eroh:numberECTSHours
-- eroh:frequuency
-- eroh:programType
-- eroh:programTypeOther
-- eroh:modalityTeachingType
-- eroh:modalityTeachingTypeOther
-- eroh:department
-- eroh:courseType
-- eroh:courseTypeOther
-- eroh:course
-- eroh:hoursCreditsECTSType
-- vcard:hasLanguage
-- eroh:competencies
-- eroh:professionalCategory
-- eroh:quealification
-- eroh:maxQualification
-- eroh:evaluatedByTitle
-- eroh:evaluatedBy
-- eroh:evaluatedByType
-- eroh:evaluatedByTypeOther
-- eroh:evaluatedByLocality
-- eroh:evaluatedByHasCountryName
-- eroh:evaluatedByHasRegion
-- eroh:evaluationType
-- eroh:evaluationTypeOther
-- eroh:financedByTitle
-- eroh:financedBy
-- eroh:financedByType
-- eroh:financedByTypeOther
-- eroh:financedByLocality
-- eroh:financedByHasCountryName
-- eroh:financedByHasRegion
-- eroh:callType
-- eroh:callTypeOther
-- vivo:geographicFocus
-- eroh:geographicFocusOther
+- [foaf:Person](https://github.com/HerculesCRUE/Commons-ED-MA/tree/main/ObjetosDeConocimiento/Person), representa la persona asociada a la formación.
+- [eroh:DegreeType](https://github.com/HerculesCRUE/Commons-ED-MA/tree/main/ObjetosDeConocimiento/DegreeType), representa la titulación universitaria.
+- [foaf:Organization](https://github.com/HerculesCRUE/Commons-ED-MA/tree/main/ObjetosDeConocimiento/Organization), representa las entidades.
+- [eroh:OrganizationType](https://github.com/HerculesCRUE/Commons-ED-MA/tree/main/ObjetosDeConocimiento/OrganizationType), representa el tipo de entidad.
+- [gn:Feature](https://github.com/HerculesCRUE/Commons-ED-MA/tree/main/ObjetosDeConocimiento/Feature), representa el país y la comunidad autónoma o región.
+- [eroh:TeachingType](https://github.com/HerculesCRUE/Commons-ED-MA/tree/main/ObjetosDeConocimiento/TeachingType), representa el tipo de docencia.
+- [eroh:ProgramType](https://github.com/HerculesCRUE/Commons-ED-MA/tree/main/ObjetosDeConocimiento/ProgramType), representa el tipo de programa.
+- [eroh:ModalityTeachingType](https://github.com/HerculesCRUE/Commons-ED-MA/tree/main/ObjetosDeConocimiento/ModalityTeachingType), representa el tipo de modalidad de docencia.
+- [eroh:CourseType](https://github.com/HerculesCRUE/Commons-ED-MA/tree/main/ObjetosDeConocimiento/CourseType), representa el tipo de asignatura.
+- [eroh:HoursCreditsECTSType](https://github.com/HerculesCRUE/Commons-ED-MA/tree/main/ObjetosDeConocimiento/HoursCreditsECTSType), representa el tipo de horas/creditos ECTS.
+- [eroh:Language](https://github.com/HerculesCRUE/Commons-ED-MA/tree/main/ObjetosDeConocimiento/Language), representa el idioma de la asignatura.
+- [eroh:EvaluationType](https://github.com/HerculesCRUE/Commons-ED-MA/tree/main/ObjetosDeConocimiento/EvaluationType), representa el tipo de evaluación.
+- [eroh:CallType](https://github.com/HerculesCRUE/Commons-ED-MA/tree/main/ObjetosDeConocimiento/CallType), representa el tipo de convocatoria.
+- [eroh:EventGeographicRegion](https://github.com/HerculesCRUE/Commons-ED-MA/tree/main/ObjetosDeConocimiento/EventGeographicRegion), representa el ámbito geográfico.
 
 ![](../../Docs/media/ObjetosDeConocimiento/ImpartedAcademicTraining.png)
 
