@@ -11,12 +11,8 @@
 
 # Hércules ED. Objeto de conocimiento DedicationRegime
 
-La entidad eroh:DedicationRegime (ver Figura 1) representa el tipo de régimen de dedicación en el Curriculum Vitae en la plataforma Hércules. Dispone de dos opciones "Tiempo completo" y "Tiempo parcial"
-
-A continuación se listan todas aquellas propiedades contenidas en eroh:DedicationRegime que extienden la ontología fundamental ROH con el fin de ajustarse a las necesidades de Hércules EDMA:
-
-- dc:title
-- dc:identifier
+La entidad eroh:DedicationRegime (ver Figura 1) representa el tipo de régimen de dedicación en el Curriculum Vitae en la plataforma Hércules. 
+Dispone de dos opciones "Tiempo completo" y "Tiempo parcial"
 
 ![](../../Docs/media/ObjetosDeConocimiento/DedicationRegime.png)
 
