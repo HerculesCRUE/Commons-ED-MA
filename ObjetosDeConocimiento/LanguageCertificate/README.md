@@ -13,17 +13,11 @@
 
 La entidad roh:LanguageCertificate (ver Figura 1) representa un ítem de conocimiento de idiomas.
 
-Las propiedades son las siguientes:
+Una instancia de roh:LanguageCertificate se asocia, a su vez, con las siguientes entidades a través de propiedades de objeto:
 
-- eroh:owner
-- eroh:cvnCode
-- roh:crisIdentifier
-- roh:languageOfTheCertificate
-- roh:listeningSkill
-- roh:readingSkill
-- roh:spokingInteractionSkill
-- roh:speakingSkill
-- roh:writingSkill
+- [foaf:Person](https://github.com/HerculesCRUE/Commons-ED-MA/tree/main/ObjetosDeConocimiento/Person), representa la persona asociada al ítem.
+- [eroh:Language](https://github.com/HerculesCRUE/Commons-ED-MA/tree/main/ObjetosDeConocimiento/Language), representa la lengua que se acredita.
+- [eroh:LanguageLevel](https://github.com/HerculesCRUE/Commons-ED-MA/tree/main/ObjetosDeConocimiento/LanguageLevel), representa el nivel sobre la lengua descrita.
 
 ![](../../Docs/media/ObjetosDeConocimiento/LanguageCertificate.png)
 
