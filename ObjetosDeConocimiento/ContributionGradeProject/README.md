@@ -21,11 +21,6 @@ Dispone de varias opciones:
 - Titulado/a universitario/a en formación
 - Otros
 
-A continuación se listan todas aquellas propiedades contenidas en eroh:ContributionGradeProject que extienden la ontología fundamental ROH con el fin de ajustarse a las necesidades de Hércules EDMA:
-
-- dc:title
-- dc:identifier
-
 ![](../../Docs/media/ObjetosDeConocimiento/ContributionGradeProject.png)
 
 *Figura 1. Diagrama ontológico para la entidad eroh:ContributionGradeProject*
