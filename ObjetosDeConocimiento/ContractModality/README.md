@@ -21,11 +21,6 @@ La entidad eroh:ContractModality (ver Figura 1) representa el tipo de la modalid
 - Interino/a
 - Otros
 
-A continuación se listan todas aquellas propiedades contenidas en eroh:ContractModality que extienden la ontología fundamental ROH con el fin de ajustarse a las necesidades de Hércules EDMA:
-
-- dc:title
-- dc:identifier
-
 ![](../../Docs/media/ObjetosDeConocimiento/ContractModality.png)
 
 *Figura 1. Diagrama ontológico para la entidad eroh:ContractModality*
