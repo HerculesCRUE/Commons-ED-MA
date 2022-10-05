@@ -16,11 +16,6 @@ La entidad eroh:GrantAim (ver Figura 1) representa el tipo de finalidad en el Cu
 - Predoctoral
 - Otros
 
-A continuación se listan todas aquellas propiedades contenidas en eroh:GrantAim que extienden la ontología fundamental ROH con el fin de ajustarse a las necesidades de Hércules EDMA:
-
-- dc:title
-- dc:identifier
-
 ![](../../Docs/media/ObjetosDeConocimiento/GrantAim.png)
 
 *Figura 1. Diagrama ontológico para la entidad eroh:GrantAim*
