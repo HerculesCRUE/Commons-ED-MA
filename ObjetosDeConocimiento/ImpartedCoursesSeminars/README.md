@@ -13,36 +13,16 @@
 
 La entidad eroh:ImpartedCoursesSeminars (ver Figura 1) representa los Cursos y seminarios impartidos orientados a la formación docente universitaria en el Curriculum Vitae en la plataforma Hércules.
 
+Una instancia de eroh:ImpartedCoursesSeminars se asocia, a su vez, con las siguientes entidades a través de propiedades de objeto:
 
-A continuación se listan todas aquellas propiedades contenidas en eroh:ImpartedCoursesSeminars que extienden la ontología fundamental ROH con el fin de ajustarse a las necesidades de Hércules EDMA:
-
-- eroh:owner
-- eroh:cvnCode
-- roh:crisIdentifier
-- roh:title
-- eroh:eventType
-- eroh:eventTypeOther
-- eroh:promotedByTitle
-- roh:promotedBy
-- eroh:promotedByType
-- eroh:promotedByTypeOther
-- vivo:start
-- eroh:durationHours
-- vcard:locality
-- vcard:hasCountryName
-- vcard:hasRegion
-- eroh:goals
-- vcard:hasLanguage
-- roh:isbn
-- bibo:issn
-- eroh:correspondingAuthor
-- bibo:doi
-- bibo:handle
-- bibo:pmid
-- bibo:identifier
-- eroh:targetProfile
-- eroh:participationType
-- eroh:participationTypeOther
+- [foaf:Person](https://github.com/HerculesCRUE/Commons-ED-MA/tree/main/ObjetosDeConocimiento/Person), representa la persona asociada a los cursos y seminarios.
+- [eroh:EventType](https://github.com/HerculesCRUE/Commons-ED-MA/tree/main/ObjetosDeConocimiento/EventType), representa el tipo de evento.
+- [foaf:Organization](https://github.com/HerculesCRUE/Commons-ED-MA/tree/main/ObjetosDeConocimiento/Organization), representa la entidad organizadora del programa.
+- [eroh:OrganizationType](https://github.com/HerculesCRUE/Commons-ED-MA/tree/main/ObjetosDeConocimiento/OrganizationType), representa el tipo de entidad organizadora del programa.
+- [gn:Feature](https://github.com/HerculesCRUE/Commons-ED-MA/tree/main/ObjetosDeConocimiento/Feature), representa el país y la comunidad autónoma o región de la entidad organizadora.
+- [eroh:Language](https://github.com/HerculesCRUE/Commons-ED-MA/tree/main/ObjetosDeConocimiento/Language), representa el idioma en el que impartió.
+- foaf:Document, representa otros identificadores.
+- [eroh:ParticipationTypeDocument](https://github.com/HerculesCRUE/Commons-ED-MA/tree/main/ObjetosDeConocimiento/ParticipationTypeDocument), representa el tipo de participación.
 
 ![](../../Docs/media/ObjetosDeConocimiento/ImpartedCoursesSeminars.png)
 
