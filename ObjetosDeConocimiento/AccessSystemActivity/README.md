@@ -20,11 +20,6 @@ La entidad eroh:AccessSystemActivity (ver Figura 1) representa el sistema de acc
 - Por votación entre diversos candidatos
 - Otros
 
-A continuación se listan todas aquellas propiedades contenidas en eroh:AccessSystemActivity que extienden la ontología fundamental ROH con el fin de ajustarse a las necesidades de Hércules EDMA:
-
-- dc:title
-- dc:identifier
-
 ![](../../Docs/media/ObjetosDeConocimiento/AccessSystemActivity.png)
 
 *Figura 1. Diagrama ontológico para la entidad eroh:AccessSystemActivity*
