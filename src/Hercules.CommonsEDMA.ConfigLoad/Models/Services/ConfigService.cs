@@ -9,11 +9,9 @@ namespace Hercules.CommonsEDMA.ConfigLoad.Models.Services
     {
         private IConfiguration _configuration { get; set; }
 
-        private string loginAdminEcosistema = "admin";
+        private string loginAdmin { get; set; }
+        private string passAdmin { get; set; }
         private string nombreCortoComunidad = "hercules";
-
-        private Guid metaProyectoID = new Guid("11111111-1111-1111-1111-111111111111");
-        private string urlAPI { get; set; }
         private string urlAPIDespliegues { get; set; }
 
         /// <summary>
@@ -38,23 +36,6 @@ namespace Hercules.CommonsEDMA.ConfigLoad.Models.Services
             return builder.Build();
         }
 
-        public string ObtenerUrlAPI()
-        {
-            if (string.IsNullOrEmpty(urlAPI))
-            {
-                IDictionary environmentVariables = Environment.GetEnvironmentVariables();
-                if (environmentVariables.Contains("urlAPI"))
-                {
-                    urlAPI = environmentVariables["urlAPI"] as string;
-                }
-                else
-                {
-                    urlAPI = _configuration["urlAPI"];
-                }
-            }
-            return urlAPI;
-        }
-
         public string ObtenerUrlAPIDespliegues()
         {
             if (string.IsNullOrEmpty(urlAPIDespliegues))
@@ -73,16 +54,40 @@ namespace Hercules.CommonsEDMA.ConfigLoad.Models.Services
         }
 
 
-
-        public string ObtenerLoginAdminEcosistema()
+        public string ObtenerLoginAdmin()
         {
-            return loginAdminEcosistema;
+            if (string.IsNullOrEmpty(loginAdmin))
+            {
+                IDictionary environmentVariables = Environment.GetEnvironmentVariables();
+                if (environmentVariables.Contains("loginAdmin"))
+                {
+                    loginAdmin = environmentVariables["loginAdmin"] as string;
+                }
+                else
+                {
+                    loginAdmin = _configuration["loginAdmin"];
+                }
+            }
+            return loginAdmin;
         }
 
-        public Guid ObtenerMetaProyectoID()
+        public string ObtenerPassAdmin()
         {
-            return metaProyectoID;
+            if (string.IsNullOrEmpty(passAdmin))
+            {
+                IDictionary environmentVariables = Environment.GetEnvironmentVariables();
+                if (environmentVariables.Contains("passAdmin"))
+                {
+                    passAdmin = environmentVariables["passAdmin"] as string;
+                }
+                else
+                {
+                    passAdmin = _configuration["passAdmin"];
+                }
+            }
+            return passAdmin;
         }
+
 
         public string ObtenerNombreCortoComunidad()
         {            
