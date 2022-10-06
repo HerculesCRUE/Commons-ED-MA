@@ -19,6 +19,11 @@ Una instancia de eroh:Cluster se asocia con las siguientes entidades a través d
 - eroh:ClusterPerfil, representa los perfiles definidos en el cluster.
 - [foaf:Person](https://github.com/HerculesCRUE/Commons-ED-MA/tree/main/ObjetosDeConocimiento/Person), representa los miembros asociados al cluster.
 
+A su vez eroh:ClusterPerfil se asocia con las siguientes entidades:
+
+- roh:CategoryPath, representa las áreas temáticas asociadas al perfil del cluster.
+- [foaf:Person](https://github.com/HerculesCRUE/Commons-ED-MA/tree/main/ObjetosDeConocimiento/Person), representa los miembros asociados al perfil de cluster.
+
 ![](../../Docs/media/ObjetosDeConocimiento/Cluster.png)
 
 *Figura 1. Diagrama ontológico para la entidad eroh:Cluster*
