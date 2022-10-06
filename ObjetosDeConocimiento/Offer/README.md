@@ -13,33 +13,17 @@
 
 La entidad eroh:Offer (ver Figura 1) representa una oferta tecnológicas en la plataforma Hércules.
 
-A continuación se listan todas aquellas propiedades contenidas en eroh:Offer que extienden la ontología fundamental ROH con el fin de ajustarse a las necesidades de Hércules EDMA:
+Una instancia de eroh:Offer se asocia, a su vez, con las siguientes entidades a través de propiedades de objeto:
 
-- schema:name
-- schema:description
-- schema:offeredBy
-- eroh:researchers
-- vivo:freetextKeyword
-- eroh:lineResearch
-- bibo:status
-- schema:availability
-- dct:issued
-- eroh:application
-- bibo:recipient
-- drm:origin
-- eroh:innovation
-- eroh:partnerType
-- eroh:collaborationSought
-- qb:observation
-- eroh:availabilityChangeEvent
-- eroh:project
-- eroh:document
-- roh:patents
-- eroh:groups
-- eroh:search
-- eroh:advantagesBenefits
-- eroh:areaprocedencia
-- eroh:sectoraplicacion
+- [foaf:Person](https://github.com/HerculesCRUE/Commons-ED-MA/tree/main/ObjetosDeConocimiento/Person), representa la persona asociada a la oferta.
+- [eroh:MatureState](https://github.com/HerculesCRUE/Commons-ED-MA/tree/main/ObjetosDeConocimiento/MatureState), representa el estado de madurez.
+- [eroh:OfferState](https://github.com/HerculesCRUE/Commons-ED-MA/tree/main/ObjetosDeConocimiento/OfferState), representa el estado de la oferta.
+- eroh:AvailabilityChangeEvent, representa un evento de cambio en el estado de la oferta, realizado por una persona.
+- [vivo:Project](https://github.com/HerculesCRUE/Commons-ED-MA/tree/main/ObjetosDeConocimiento/Project), representa los proyectos asociados a la oferta.
+- [bibo:Document](https://github.com/HerculesCRUE/Commons-ED-MA/tree/main/ObjetosDeConocimiento/Document), representa los documentos asociados a la oferta.
+- [bibo:Patent](https://github.com/HerculesCRUE/Commons-ED-MA/tree/main/ObjetosDeConocimiento/Patent), representa los ítems de propiedad industrial e intelectual asociados al ítem.
+- [foaf:Group](https://github.com/HerculesCRUE/Commons-ED-MA/tree/main/ObjetosDeConocimiento/Group), representa los grupos asociados a una oferta.
+- roh:CategoryPath, representa las áreas de procedencia y los sectores de aplicación de una oferta.
 
 ![](../../Docs/media/ObjetosDeConocimiento/Offer.png)
 
