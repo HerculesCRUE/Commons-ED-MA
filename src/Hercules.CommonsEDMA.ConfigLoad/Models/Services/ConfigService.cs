@@ -13,6 +13,11 @@ namespace Hercules.CommonsEDMA.ConfigLoad.Models.Services
         private string passAdmin { get; set; }
         private string nombreCortoComunidad = "hercules";
         private string urlAPIDespliegues { get; set; }
+        private string urlServiciosBase { get; set; }
+        private string urlServiciosInstalacion { get; set; }
+
+        private string urlContentBase { get; set; }
+        private string urlContentInstalacion { get; set; }
 
         /// <summary>
         /// Constructor.
@@ -86,6 +91,74 @@ namespace Hercules.CommonsEDMA.ConfigLoad.Models.Services
                 }
             }
             return passAdmin;
+        }
+
+        public string ObtenerUrlServiciosBase()
+        {
+            if (string.IsNullOrEmpty(urlServiciosBase))
+            {
+                IDictionary environmentVariables = Environment.GetEnvironmentVariables();
+                if (environmentVariables.Contains("urlServiciosBase"))
+                {
+                    urlServiciosBase = environmentVariables["urlServiciosBase"] as string;
+                }
+                else
+                {
+                    urlServiciosBase = _configuration["urlServiciosBase"];
+                }
+            }
+            return urlServiciosBase;
+        }
+
+        public string ObtenerUrlServiciosInstalacion()
+        {
+            if (string.IsNullOrEmpty(urlServiciosInstalacion))
+            {
+                IDictionary environmentVariables = Environment.GetEnvironmentVariables();
+                if (environmentVariables.Contains("urlServiciosInstalacion"))
+                {
+                    urlServiciosInstalacion = environmentVariables["urlServiciosInstalacion"] as string;
+                }
+                else
+                {
+                    urlServiciosInstalacion = _configuration["urlServiciosInstalacion"];
+                }
+            }
+            return urlServiciosInstalacion;
+        }
+
+        public string ObtenerUrlContentBase()
+        {
+            if (string.IsNullOrEmpty(urlContentBase))
+            {
+                IDictionary environmentVariables = Environment.GetEnvironmentVariables();
+                if (environmentVariables.Contains("urlContentBase"))
+                {
+                    urlContentBase = environmentVariables["urlContentBase"] as string;
+                }
+                else
+                {
+                    urlContentBase = _configuration["urlContentBase"];
+                }
+            }
+            return urlContentBase;
+        }
+
+        public string ObtenerUrlContentInstalacion()
+        {
+            if (string.IsNullOrEmpty(urlContentInstalacion))
+            {
+                IDictionary environmentVariables = Environment.GetEnvironmentVariables();
+                if (environmentVariables.Contains("urlContentInstalacion"))
+                {
+                    urlContentInstalacion = environmentVariables["urlContentInstalacion"] as string;
+                }
+                else
+                {
+                    urlContentInstalacion = _configuration["urlContentInstalacion"];
+                }
+            }
+            return urlContentInstalacion;
         }
 
 
