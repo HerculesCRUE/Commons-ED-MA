@@ -42,10 +42,7 @@ namespace Hercules.CommonsEDMA.ConfigLoad
             try
             {
                 configService = new ConfigService();
-                string nombreProy = configService.ObtenerNombreCortoComunidad();
-                string loginAdmin = configService.ObtenerLoginAdmin();
-                string passAdmin = configService.ObtenerPassAdmin();
-                SubirConfiguraciones(nombreProy, loginAdmin, passAdmin);
+                SubirConfiguraciones();
             }
             catch (Exception ex)
             {
@@ -65,37 +62,74 @@ namespace Hercules.CommonsEDMA.ConfigLoad
             Thread.Sleep(30000);
         }
 
-        private static void SubirConfiguraciones(string pNombreProy, string pLoginUsuario, string pPasswordUsuario)
+        private void SubirConfiguraciones()
         {
-            Console.WriteLine("8.- Subimos configuraciones");
+
+
+            Console.WriteLine("Subimos configuraciones");
             string rutaBase = $@"{System.AppDomain.CurrentDomain.SetupInformation.ApplicationBase}Files{Path.DirectorySeparatorChar}";
-            Console.WriteLine("8.1- Subimos ontologías");
-            Despliegue(rutaBase + "Ontologias.zip", "Ontologias", pNombreProy, pLoginUsuario, pPasswordUsuario);
-            Console.WriteLine("8.2- Subimos Objetos de conocimiento");
-            Despliegue(rutaBase + "ObjetosConocimiento.zip", "ObjetosConocimiento", pNombreProy, pLoginUsuario, pPasswordUsuario);
-            Console.WriteLine("8.3- Subimos Facetas");
-            Despliegue(rutaBase + "Facetas.zip", "Facetas", pNombreProy, pLoginUsuario, pPasswordUsuario);
-            Console.WriteLine("8.4- Subimos Componentes del CMS");
-            Despliegue(rutaBase + "ComponentesCMS.zip", "ComponentesCMS", pNombreProy, pLoginUsuario, pPasswordUsuario);
-            Console.WriteLine("8.5- Subimos Pestañas");
-            Despliegue(rutaBase + "Pestanyas.zip", "Pestanyas", pNombreProy, pLoginUsuario, pPasswordUsuario);
-            Console.WriteLine("8.6- Subimos Paginas del CMS");
-            Despliegue(rutaBase + "PaginasCMS.zip", "PaginasCMS", pNombreProy, pLoginUsuario, pPasswordUsuario);
-            Console.WriteLine("8.7- Subimos Utilidades");
-            Despliegue(rutaBase + "Utilidades.zip", "Utilidades", pNombreProy, pLoginUsuario, pPasswordUsuario);
-            Console.WriteLine("8.8- Subimos Opciones avanzadas");
-            Despliegue(rutaBase + "OpcionesAvanzadas.zip", "OpcionesAvanzadas", pNombreProy, pLoginUsuario, pPasswordUsuario);
-            Console.WriteLine("8.9- Subimos Estilos");
-            Despliegue(rutaBase + "Estilos.zip", "Estilos", pNombreProy, pLoginUsuario, pPasswordUsuario);
-            Console.WriteLine("8.10- Subimos Parámetros de búsqueda personalizados");
-            Despliegue(rutaBase + "SearchPersonalizado.zip", "SearchPersonalizado", pNombreProy, pLoginUsuario, pPasswordUsuario);
-            Console.WriteLine("8.11- Subimos Vistas");
-            Despliegue(rutaBase + "Vistas.zip", "Vistas", pNombreProy, pLoginUsuario, pPasswordUsuario);
+            Console.WriteLine("1- Subimos ontologías");
+            Despliegue(rutaBase + "Ontologias.zip", "Ontologias");
+            Console.WriteLine("2- Subimos Objetos de conocimiento");
+            Despliegue(rutaBase + "ObjetosConocimiento.zip", "ObjetosConocimiento");
+            Console.WriteLine("3- Subimos Facetas");
+            Despliegue(rutaBase + "Facetas.zip", "Facetas");
+            Console.WriteLine("4- Subimos Componentes del CMS");
+            Despliegue(rutaBase + "ComponentesCMS.zip", "ComponentesCMS");
+            Console.WriteLine("5- Subimos Pestañas");
+            Despliegue(rutaBase + "Pestanyas.zip", "Pestanyas");
+            Console.WriteLine("6- Subimos Paginas del CMS");
+            Despliegue(rutaBase + "PaginasCMS.zip", "PaginasCMS");
+            Console.WriteLine("7- Subimos Utilidades");
+            Despliegue(rutaBase + "Utilidades.zip", "Utilidades");
+            Console.WriteLine("8- Subimos Opciones avanzadas");
+            Despliegue(rutaBase + "OpcionesAvanzadas.zip", "OpcionesAvanzadas");
+            Console.WriteLine("9- Subimos Estilos");
+            Despliegue(rutaBase + "Estilos.zip", "Estilos");
+            Console.WriteLine("10- Subimos Parámetros de búsqueda personalizados");
+            Despliegue(rutaBase + "SearchPersonalizado.zip", "SearchPersonalizado");
+            Console.WriteLine("11- Subimos Vistas");
+            Despliegue(rutaBase + "Vistas.zip", "Vistas");
         }
 
-        private static void Despliegue(string pRutaFichero, string pMetodo, string pNombreProy, string pLoginUsuario, string pPasswordUsuario)
+        private void CambiarURLs(string rutaZip)
         {
-            string sWebAddress = $"{configService.ObtenerUrlAPIDespliegues()}Upload?tipoPeticion={pMetodo}&usuario={pLoginUsuario}&password={pPasswordUsuario}&nombreProy={pNombreProy}";
+            string rutaCarpeta = rutaZip.Substring(0, rutaZip.Length - 4);
+            if (Directory.Exists(rutaCarpeta))
+            {
+                Directory.Delete(rutaCarpeta, true);
+            }
+            System.IO.Compression.ZipFile.ExtractToDirectory(rutaZip, rutaCarpeta);
+            foreach (string file in Directory.EnumerateFiles(rutaCarpeta, "*.*", SearchOption.AllDirectories))
+            {
+                string contenidoOriginal = File.ReadAllText(file);
+                string contenidoModificado = contenidoOriginal;
+                contenidoModificado=contenidoModificado.Replace(configService.ObtenerUrlContentBase(), configService.ObtenerUrlContentInstalacion());
+                contenidoModificado=contenidoModificado.Replace(configService.ObtenerUrlServiciosBase(), configService.ObtenerUrlServiciosInstalacion());
+                if (contenidoOriginal != contenidoModificado)
+                {
+                    System.IO.File.WriteAllText(file, contenidoModificado);
+                }
+            }
+            if (File.Exists(rutaZip))
+            {
+                File.Delete(rutaZip);
+            }
+            System.IO.Compression.ZipFile.CreateFromDirectory(rutaCarpeta,rutaZip);
+            if (Directory.Exists(rutaCarpeta))
+            {
+                System.IO.Directory.Delete(rutaCarpeta, true);
+            }
+        }
+
+
+        private void Despliegue(string pRutaFichero, string pMetodo)
+        {
+            string nombreProy = configService.ObtenerNombreCortoComunidad();
+            string loginAdmin = configService.ObtenerLoginAdmin();
+            string passAdmin = configService.ObtenerPassAdmin();
+            CambiarURLs(pRutaFichero);
+            string sWebAddress = $"{configService.ObtenerUrlAPIDespliegues()}Upload?tipoPeticion={pMetodo}&usuario={loginAdmin}&password={passAdmin}&nombreProy={nombreProy}";
 
             HttpContent contentData = null;
 
