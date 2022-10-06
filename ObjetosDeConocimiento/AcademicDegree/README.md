@@ -11,70 +11,24 @@
 
 # Hércules ED. Objeto de conocimiento AcademicDegree
 
-La entidad eroh:Annotation (ver Figura 1) representa anotaciones realizadas por el personal investigador sobre diferentes ROs, ya sean suyos o de terceras personas.
-Se han añadido ciertas propiedades que extienden la ontología fundamental con el fin de dar respuesta a las necesidades de gestión de datos requeridas durante el desarrollo de la infraestructura Hércules EDMA.
+La entidad vivo:AcademicDegree (ver Figura 1) representa la formación recibida por el titular del CV relativa a enseñanzas universitarias y artísticas superiores y de especialización, tanto oficiales como no oficiales.
 
-Las propiedades son las siguientes:
+Una instancia de vivo:AcademicDegree se asocia con las siguientes entidades a través de propiedades de objeto:
 
-- eroh:owner
-- eroh:cvnCode
-- roh:crisIdentifier
-- roh:title
-- eroh:degreeType
-- eroh:postgradeDegree
-- eroh:doctoralProgram
-- dct:issued
-- eroh:universityDegreeType
-- eroh:universityDegreeTypeOther
-- eroh:conductedByTitle
-- eroh:conductedBy
-- eroh:conductedByType
-- eroh:conductedByTypeOther
-- vcard:locality
-- vcard:hasCountryName
-- vcard:hasRegion
-- eroh:foreignTitle
-- eroh:foreignDegreeType
-- eroh:approvedDegree
-- eroh:approvedDate
-- roh:mark
-- eroh:prize
-- eroh:prizeOther
-- eroh:formationType
-- eroh:qualification
-- eroh:center
-- eroh:durationHours
-- eroh:goals
-- eroh:trainerNick
-- eroh:trainerName
-- eroh:trainerFirstSurname
-- eroh:trainerSecondSurname
-- vivo:end
-- eroh:formationActivityType
-- eroh:formationActivityTypeOther
-- eroh:stayGoal
-- eroh:stayGoalOther
-- eroh:fundingProgram
-- eroh:targetProfile
-- eroh:performedTasks
-- eroh:durationYears
-- eroh:durationMonths
-- eroh:durationDays
-- eroh:deaEntityTitle
-- eroh:deaEntity
-- eroh:deaDate
-- eroh:thesisTitle
-- eroh:directorNick
-- eroh:directorName
-- eroh:directorFirstSurname
-- eroh:directorSecondSurname
-- eroh:codirector
-- eroh:europeanDoctorate
-- eroh:europeanDoctorateDate
-- eroh:qualityMention
-- eroh:doctorExtraordinaryAward
-- eroh:doctorExtraordinaryAwardDate
-
+- [foaf:Person](https://github.com/HerculesCRUE/Commons-ED-MA/tree/main/ObjetosDeConocimiento/Person), representa a la persona asociada al ítem.
+- [eroh:DegreeType](https://github.com/HerculesCRUE/Commons-ED-MA/tree/main/ObjetosDeConocimiento/DegreeType), representa el tipo de titulación.
+- [eroh:PostgradeDegree](https://github.com/HerculesCRUE/Commons-ED-MA/tree/main/ObjetosDeConocimiento/PostgradeDegree), representa un ítem referenciando una titulación de posgrado.
+- [eroh:DoctoralProgramType](https://github.com/HerculesCRUE/Commons-ED-MA/tree/main/ObjetosDeConocimiento/DoctoralProgramType), representa el tipo de programa de doctorado.
+- [eroh:UniversityDegreeType](https://github.com/HerculesCRUE/Commons-ED-MA/tree/main/ObjetosDeConocimiento/UniversityDegreeType), representa el tipo de titulación universitaria.
+- [foaf:Organization](https://github.com/HerculesCRUE/Commons-ED-MA/tree/main/ObjetosDeConocimiento/Organization), representa una entidad referenciada al ítem.
+- [eroh:OrganizationType](https://github.com/HerculesCRUE/Commons-ED-MA/tree/main/ObjetosDeConocimiento/OrganizationType), representa el tipo de entidad.
+- [gn:Feature](https://github.com/HerculesCRUE/Commons-ED-MA/tree/main/ObjetosDeConocimiento/Feature), representa el país y comunidad autónoma o región.
+- [eroh:QualificationType](https://github.com/HerculesCRUE/Commons-ED-MA/tree/main/ObjetosDeConocimiento/QualificationType), representa el tipo de nota media del expediente.
+- [eroh:PrizeType](https://github.com/HerculesCRUE/Commons-ED-MA/tree/main/ObjetosDeConocimiento/PrizeType), representa el tipo de premio obtenido.
+- [eroh:FormationType](https://github.com/HerculesCRUE/Commons-ED-MA/tree/main/ObjetosDeConocimiento/FormationType), representa el tipo de formación(nivel académico de los estudios cursados).
+- [eroh:FormationActivityType](https://github.com/HerculesCRUE/Commons-ED-MA/tree/main/ObjetosDeConocimiento/FormationActivityType), representa el tipo de la formación (carácter del curso de especialización realizado).
+- [eroh:StayGoal](https://github.com/HerculesCRUE/Commons-ED-MA/tree/main/ObjetosDeConocimiento/StayGoal), representa el objetivo que se pretende alcanzar.
+- roh:PersonAux, representa los codirectores del ítem, representados por su orden, firma, nombre y apellidos.
 
 ![](../../Docs/media/ObjetosDeConocimiento/AcademicDegree.png)
 
