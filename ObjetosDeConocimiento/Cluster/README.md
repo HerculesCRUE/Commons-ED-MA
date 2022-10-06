@@ -13,14 +13,11 @@
 
 La entidad eroh:Cluster (ver Figura 1) representa un cluster de investigadores.
 
-Las propiedades son las siguientes:
+Una instancia de eroh:Cluster se asocia con las siguientes entidades a través de propiedades de objeto:
 
-- roh:title
-- vivo:description
-- dct:issued
-- roh:hasKnowledgeArea
-- eroh:clusterPerfil
-- rdf:member
+- roh:CategoryPath, representa las áreas temáticas.
+- eroh:ClusterPerfil, representa los perfiles definidos en el cluster.
+- [foaf:Person](https://github.com/HerculesCRUE/Commons-ED-MA/tree/main/ObjetosDeConocimiento/Person), representa los miembros asociados al cluster.
 
 ![](../../Docs/media/ObjetosDeConocimiento/Cluster.png)
 
