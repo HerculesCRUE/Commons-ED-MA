@@ -13,15 +13,9 @@
 
 La entidad eroh:KeyWordConcept (ver Figura 1) representa las palabras clave en el Curriculum Vitae en la plataforma Hércules.
 
-A continuación se listan todas aquellas propiedades contenidas en eroh:KeyWordConcept que extienden la ontología fundamental ROH con el fin de ajustarse a las necesidades de Hércules EDMA:
+Una instancia de eroh:KeyWordConcept se asocia, a su vez, con las siguientes entidades a través de propiedades de objeto:
 
-- roh:title
-- eroh:url
-- eroh:type
-- eroh:broaders
-- eroh:qualifiers
-- eroh:relatedTo
-- eroh:match
+- eroh:KeyWordConcept, representa la relación que hay entre palabras clave.
 
 ![](../../Docs/media/ObjetosDeConocimiento/KeyWordConcept.png)
 
