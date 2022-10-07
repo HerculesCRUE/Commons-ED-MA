@@ -320,6 +320,10 @@
     <rdfs:range rdf:resource="http://w3id.org/roh/CategoryPath"/>
     <rdfs:domain rdf:resource="http://xmlns.com/foaf/0.1/Person"/>
   </owl:ObjectProperty>
+  <owl:ObjectProperty rdf:about="http://w3id.org/roh/hIndex">
+    <rdfs:range rdf:resource="http://w3id.org/roh/HIndex"/>
+    <rdfs:domain rdf:resource="http://xmlns.com/foaf/0.1/Person"/>
+  </owl:ObjectProperty>
   <owl:ObjectProperty rdf:about="http://vivoweb.org/ontology/core#relates">
     <rdfs:domain rdf:resource="http://xmlns.com/foaf/0.1/Person"/>
   </owl:ObjectProperty>
