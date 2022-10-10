@@ -1,0 +1,190 @@
+@model CMSComponentHot
+@{ CommunityModel Comunidad = Html.GetComunidad();
+    UserIdentityModel IdentidadActual = Html.GetIdentidadActual();
+    string urlPersonalizacion = Html.GetBaseUrlContent() + "/imagenes/proyectos/personalizacion/" + Comunidad.Key.ToString();
+    string urlJS = $"{urlPersonalizacion}/theme/graphic-engine.js?v={Html.Translate("VERSION_CSS_JS")}";
+    Html.GetListaJS().Add(urlJS);
+}
+<input type="hidden" id="NO_HAY_GRAFICAS" value="@Html.Translate("NO_HAY_GRAFICAS")"/>
+<input type="hidden" id="PUEDES" value="@Html.Translate("PUEDES")"/>
+<input type="hidden" id="BORRAR_LA_PAGINA" value="@Html.Translate("BORRAR_LA_PAGINA")"/>
+<input type="hidden" id="O" value="@Html.Translate("O")"/>
+@{
+    string urlIndicadores = Comunidad.Url + "/" + @Html.Translate("URL_INDICADORES");
+}
+<input type="hidden" id="URL_INDICADORES" value="@urlIndicadores"/>
+<input type="hidden" id="ANIADIR_NUEVAS_GRAFICAS" value="@Html.Translate("ANIADIR_NUEVAS_GRAFICAS")"/>
+<input type="hidden" id="LA_PAGINA_DE_INDICADORES" value="@Html.Translate("LA_PAGINA_DE_INDICADORES")"/>
+<input type="hidden" id="COMIENZA_A_CREAR_INDICADORES" value="@Html.Translate("COMIENZA_A_CREAR_INDICADORES")"/>
+<input type="hidden" id="NO_TIENES_INDICADORES" value="@Html.Translate("NO_TIENES_INDICADORES")"/>
+<input type="hidden" id="NO_HAS_INICIADO_SESION" value="@Html.Translate("NO_HAS_INICIADO_SESION")"/>
+<input type="hidden" id="DESCRIPCION_NO_HAS_INICIADO_SESION" value="@Html.Translate("DESCRIPCION_NO_HAS_INICIADO_SESION")"/>
+<input type="hidden" id="EDITAR_GRAFICA" value="@Html.Translate("EDITAR_GRAFICA")"/>
+<input type="hidden" id="ELIMINAR_GRAFICA" value="@Html.Translate("ELIMINAR_GRAFICA")"/>
+<div class="topbar-container" style="display: none;">
+    <ul class="listadoMenuPaginas nav nav-tabs" id="myTab" role="tablist"></ul>
+    <div class="pageOptions">
+        
+        <div class="download-page">
+            <span class="material-icons btn-download-page">picture_as_pdf</span>
+            <p>@Html.Translate("DESCARGAR_PAGINA")</p>
+        </div>
+        <div class="edit-page" data-toggle="modal" data-target="#modal-editarpagina">
+            <span class="material-icons btn-edit-page">edit</span>   
+            <p>@Html.Translate("EDITAR_PAGINA")</p>                            
+        </div>
+        <div class="delete-page" data-toggle="modal" data-target="#modal-eliminarpagina">
+            <span class="material-icons btn-delete-page">delete</span>
+            <p>@Html.Translate("BORRAR_PAGINA")</p>
+        </div>
+
+    </div>
+</div>
+<div class="row containerPage indicadoresPersonalizados">
+    <div class="col col-12 col-xl-9 col-contenido derecha">
+        <div class="col-buscador tab-content">
+        </div>                         
+        <div class="resource-list graphView ">
+            <div class="resource-list-wrap"></div>
+        </div>                        
+    </div>
+</div>
+
+<div id="modal-ampliar-mapa" class="modal modal-top fade modal-ampliar-mapa" style="pointer-events:none" tabindex="-1" role="dialog">
+    <div class="modal-dialog" style="margin:50px" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <p class="modal-title"></p>
+                <span class="material-icons cerrar cerrar-grafica" aria-label="Close">close</span>
+            </div>
+            <div class="modal-body">
+                <div class="graph-container" style="width:100%;"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="modal-eliminar" class="modal modal-top fade modal-edicion" tabindex="-1" style="display: none;" aria-hidden="true">
+    <div class="modal-dialog" style="margin:50px" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <p class="modal-title"><span class="material-icons">delete</span>@Html.Translate("ELIMINAR")</p>
+                <span class="material-icons cerrar" data-dismiss="modal" aria-label="Close">close</span>
+            </div>
+            <div class="modal-body">
+                <div class="formulario-edicion">
+                    <div class="form-group">
+                        <label class="control-label">@Html.Translate("CONFIRMAR_ELIMINAR_GRAFICA")</label>
+                    </div>
+                    <div class="form-actions">
+                        <a data-dismiss="modal" class="btn btn-primary cerrar">@Html.Translate("NO")</a>
+                        <a class="btn btn-outline-primary eliminar">@Html.Translate("SI")</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="modal-editargrafica" class="modal modal-top fade modal-edicion" tabindex="-1" style="display: none;" aria-hidden="true">
+    <div class="modal-dialog" style="margin:50px" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <p class="modal-title"><span class="material-icons">edit</span>@Html.Translate("EDITAR_GRAFICA")</p>
+                <span class="material-icons cerrar" data-dismiss="modal" aria-label="Close">close</span>
+            </div>
+            <div class="modal-body">
+                <div class="custom-form-row">
+                    <div class="form-group full-group disabled ">
+					    <label class="control-label d-block">@Html.Translate("TITULO_GRAFICA")</label>
+                        <input id="labelTituloGrafica" placeholder="" onfocus="" type="text" class="form-control not-outline">
+			        </div>
+                </div>
+                <div class="custom-form-row">
+                    <div class="form-group ">
+				        <label class="control-label d-block">@Html.Translate("ANCHURA")</label>
+				        <select id="idSelectorTamanyo" class="js-select2 select2-hidden-accessible" dependency="" data-select-search="true" tabindex="-1" aria-hidden="true">
+                            <option value="11">100%</option>
+                            <option value="34">75%</option>
+                            <option value="23">66%</option>
+                            <option value="12">50%</option>
+                            <option value="13">33%</option>
+                            <option value="14">25%</option>
+                        </select>
+			        </div>
+                </div>
+                <div class="custom-form-row">
+                    <div class="form-group full-group disabled ">
+					    <label class="control-label d-block">@Html.Translate("ORDEN_GRAFICA")</label>
+                        <select id="idSelectorOrden" class="js-select2 select2-hidden-accessible" dependency="" data-select-search="true" tabindex="-1" aria-hidden="true">
+                        </select>
+			        </div>
+                </div>
+                <div class="custom-form-row">
+                    <div class="form-group full-group disabled" id="escalaPrimaria">
+					    <label class="control-label d-block">@Html.Translate("ESCALA_GRAFICA")</label>
+                        <input id="labelEscalaGrafica" placeholder="" onfocus="" type="number" min="0" class="form-control not-outline">
+			        </div>
+                    <div class="form-group full-group disabled" id="escalaSecundaria">
+					    <label class="control-label d-block">@Html.Translate("ESCALA_GRAFICA_DOS")</label>
+                        <input id="labelEscalaSecundariaGrafica" placeholder="" onfocus="" type="number" min="0" class="form-control not-outline">
+			        </div>
+                </div>
+                <div class="form-actions">
+                    <a class="btn btn-primary" id="btnGuardarEditGrafica">@Html.Translate("GUARDAR")</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="modal-editarpagina" class="modal modal-top fade modal-edicion" tabindex="-1" style="display: none;" aria-hidden="true">
+    <div class="modal-dialog" style="margin:50px" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <p class="modal-title"><span class="material-icons">edit</span>@Html.Translate("EDITAR_PAGINA")</p>
+                <span class="material-icons cerrar" data-dismiss="modal" aria-label="Close">close</span>
+            </div>
+            <div class="modal-body">
+                <div class="custom-form-row">
+                    <div class="form-group full-group disabled ">
+					    <label class="control-label d-block">@Html.Translate("TITULO_DE_LA_PAGINA")</label>
+                        <input id="labelTituloPagina" placeholder="" onfocus="" type="text" class="form-control not-outline">
+			        </div>
+                </div>
+                <div class="custom-form-row">
+                    <div class="form-group full-group disabled ">
+					    <label class="control-label d-block">@Html.Translate("ORDEN_DE_LA_PAGINA")</label>
+                        <select id="idSelectorOrdenPg" class="js-select2 select2-hidden-accessible" dependency="" data-select-search="true" tabindex="-1" aria-hidden="true">
+                        </select>
+			        </div>
+                </div>
+                <div class="form-actions">
+                    <a class="btn btn-primary" id="btnGuardarEditPagina">@Html.Translate("GUARDAR")</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="modal-eliminarpagina" class="modal modal-top fade modal-edicion" tabindex="-1" style="display: none;" aria-hidden="true">
+    <div class="modal-dialog" style="margin:50px" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <p class="modal-title"><span class="material-icons">delete</span>@Html.Translate("ELIMINAR")</p>
+                <span class="material-icons cerrar" data-dismiss="modal" aria-label="Close">close</span>
+            </div>
+            <div class="modal-body">
+                <div class="formulario-edicion">
+                    <div class="form-group">
+                        <label class="control-label">@Html.Translate("CONFIRMAR_ELIMINAR_PAGINA")</label>
+                    </div>
+                    <div class="form-actions">
+                        <a data-dismiss="modal" class="btn btn-primary cerrar">@Html.Translate("NO")</a>
+                        <a class="btn btn-outline-primary eliminarpg">@Html.Translate("SI")</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

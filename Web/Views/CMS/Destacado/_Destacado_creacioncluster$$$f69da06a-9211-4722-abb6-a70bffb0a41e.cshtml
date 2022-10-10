@@ -1,0 +1,433 @@
+@model CMSComponentHot
+@{ CommunityModel Comunidad = Html.GetComunidad();
+    UserIdentityModel IdentidadActual = Html.GetIdentidadActual();
+}
+@if(Model != null)
+{
+	<div class="col col-12 col-breadcrumb">
+	    <ul>
+	        <li>
+	            <a href="@Comunidad.Url">Home</a>
+	        </li>
+	        <li>
+	            @Model.Title
+	        </li>
+	    </ul>
+	</div>
+
+	@if (!IdentidadActual.IsGuestUser)
+	{
+		<script type="text/javascript">
+			var stepsCls;
+			$(document).ready(function () {
+				stepsCls = new StepsCluster();
+				stepsCls.init()
+			});
+		</script>
+
+
+		<div class="col col-12">
+			
+			<div id="wrapper-crear-cluster" class="edicionRecurso edicionCluster" tabindex="-1" data-eliminartext="@Html.Translate("ELIMINAR")" data-areastematicastext="@Html.Translate("AREAS_TEMATICAS")" data-descriptoresespecificostext="@Html.Translate("DESCRIPTORES_ESPECIFICOS")" data-comurl="@Comunidad.Url" data-comkey="@Comunidad.Key.ToString()" data-cshortname="@Comunidad.ShortName" data-urlrecurso="@Html.GetText("URLSEM", "RECURSO")" data-editarcluster="@Html.Translate("EDITAR_CLUSTER")" data-addotherprofile="@Html.Translate("ANADIR_OTRO_PERFIL")" data-clustertxt="@Html.Translate("CLUSTER")" data-addnewprofile="@Html.Translate("ANADIR_UN_PERFIL")" data-imguser="@Html.GetBaseUrlContent()/imagenes/proyectos/personalizacion/@Comunidad.Key.ToString()/theme/resources/iconos/person-gris.png">
+				<div class="formulario-edicion background-blanco">
+					<h1>@Model.Title</h1>
+				    <div class="d-flex flex-wrap mb-2">
+				        <div class="step-progress-wrap mb-5">
+				            <ul class="step-progress">
+				                <li class="step-progress__circle active" id="step1">
+				                    <a href="javascript: void(0);">
+				                        <span class="step-progress__text current">@Html.Translate("DEFINIR_CLUSTER")</span>
+				                    </a>
+				                </li>
+				                <li class="step-progress__bar"></li>
+				                <li class="step-progress__circle" id="step2">
+				                    <a href="javascript: void(0);">
+				                        <span class="step-progress__text">@Html.Translate("DEFINIR_PERFILES_AREAS_INVESTIGACION")</span>
+				                    </a>
+				                </li>
+				                <li class="step-progress__bar"></li>
+				                <li class="step-progress__circle" id="step3">
+				                    <a href="javascript: void(0);">
+				                        <span class="step-progress__text">@Html.Translate("RECOMENDACIONES_SELECCION_INVESTIGADORES")</span>
+				                    </a>
+				                </li>
+				            </ul>
+				        </div>
+				    </div>
+				    <div class="steps-content-wrap">
+				        <div class="p-3 mb-2 bg-danger text-white" id="error-modal-cluster" style="display:none">@Html.Translate("REVISE_ERRORES_CAMPOS_RELLENADOS")</div>
+				        <div class="p-3 mb-2 bg-danger text-white" id="error-modal-cluster-step2" style="display:none">@Html.Translate("REVISE_ERRORES_CAMPOS_ETIQUETAS_TAGS")</div>
+				        <div class="p-3 mb-2 bg-danger text-white" id="error-modal-cluster-step2-equals" style="display:none">@Html.Translate("PERFILES_REPETIDOS")</div>
+				        <div class="p-3 mb-2 bg-danger text-white" id="error-modal-server-cluster" style="display:none">@Html.Translate("ERROR_SERVER")</div>
+
+				        <!-- START STEP 1 -->
+				        <div id="wrapper-crear-cluster-step1" class="fade show section-steps">
+				            <form class="formulario-edicion background-blanco" type="post" id="cluster-step1-form">
+				                <fieldset>
+				                    <legend>@Html.Translate("DEFINIR_CLUSTER")</legend>
+				                    <div class="form-group mb-5 edit-titulo">
+				                        <label class="control-label d-block">@Html.Translate("NOMBRE_TITULO_CLUSTER") *</label>
+				                        <input placeholder="@Html.Translate("INTRODUCE_NOMBRE_TITULO")" type="text" name="nombrecluster" id="nombreclusterinput" class="form-control not-outline">
+				                    </div>
+				                    <div class="form-group mb-5 edit-descripcion">
+				                        <label class="control-label d-block">@Html.Translate("DESCRIPCION")</label>
+				                        <textarea id="txtDescripcion" placeholder="Introduce una descripción" name="txtdescripcion" class="cke form-control recursos" cols="20" rows="2"></textarea>
+				                    </div>
+				                    <!-- Areas temáticas -->
+				                    <div class="panel-body mb-5 edit-etiquetas pl-0">
+				                        <div class="form-group">
+				                            <label class="control-label d-block">@Html.Translate("AREAS_TEMATICAS") *</label>
+				                            <div class="autocompletar autocompletar-tags form-group" id="cluster-modal-sec1-tax-wrapper">
+				                                <span class="tag-list mb-4">
+				                                </span>
+				                            </div>
+				                            <a class="btn btn-outline-primary" href="javascript: void(0)">
+				                                <span class="material-icons" data-rel="cluster-modal-sec1-tax-wrapper" onclick="stepsCls.setAreasTematicas(this)">add</span>
+				                            </a>
+				                        </div>
+				                    </div>
+				                    <!-- -->
+				                </fieldset>
+				                <fieldset class="d-none">
+				                    <div class="form-group mb-4 edit-areas-tematicas">
+				                        <label class="control-label d-block mb-3">@Html.Translate("CLASIFICACION_AREAS_TEMATICAS")</label>
+				                        <div class="custom-control themed little custom-radio">
+				                            <input type="radio" id="clasificacion-area-hercules" name="clasificacion-area" class="custom-control-input at-input" checked="">
+				                            <label class="custom-control-label" for="clasificacion-area-hercules">Hércules</label>
+				                        </div>
+				                        <div class="custom-control themed little custom-radio">
+				                            <input type="radio" id="clasificacion-area-horizon-europa" name="clasificacion-area" class="custom-control-input at-input">
+				                            <label class="custom-control-label" for="clasificacion-area-horizon-europa">Horizon Europa</label>
+				                        </div>
+				                        <div class="custom-control themed little custom-radio">
+				                            <input type="radio" id="clasificacion-area-ods" name="clasificacion-area" class="custom-control-input">
+				                            <label class="custom-control-label" for="clasificacion-area-ods">ODS</label>
+				                        </div>
+				                        <div class="custom-control themed little custom-radio">
+				                            <input type="radio" id="clasificacion-area-plan-espana" name="clasificacion-area" class="custom-control-input">
+				                            <label class="custom-control-label" for="clasificacion-area-plan-espana">Plan España Digital 2025</label>
+				                        </div>
+				                    </div>
+				                </fieldset>
+				                <div class="botonera">
+				                    <a class="btn btn-primary uppercase" href="javascript:stepsCls.goStep(2)" follow="nofollow">
+				                        @Html.Translate("SIGUIENTE")
+				                        <span class="material-icons">keyboard_arrow_right</span>
+				                    </a>
+				                </div>
+				            </form>
+				        </div>
+				        <!-- END STEP 1 -->
+
+				        <!-- START STEP 2 -->
+				        <div id="wrapper-crear-cluster-step2" class="fade section-steps">
+				            <form class="formulario-edicion background-blanco">
+				                <fieldset>
+				                    <legend>@Html.Translate("DEFINIR_PERFILES_AREAS_INVESTIGACION")</legend>
+				                    <p>@Html.Translate("QUIERES_BUSCAR_INVESTIGADORES_EXPERIENCIA___")</p>
+				                    <p>@Html.Translate("ORGANIZA_AREAS_PERFIL_TEMATICOS___")</p>
+				                    <p class="section-title">@Html.Translate("PERFILES")</p>
+				                    <div class="panel-group pmd-accordion" id="accordion_cluster" role="tablist" aria-multiselectable="true">
+				                        <div class="panel">
+				                            
+				                        </div>
+				                    </div>
+				                    <div class="form-group mt-4 mb-4 anadir-perfil">
+				                        <a class="btn btn-outline-primary" data-toggle="modal" data-target="#modal-anadir-perfil-cluster" id="wrapper-crear-cluster-step2-add-profile">@Html.Translate("ANADIR_UN_PERFIL") *</a>
+				                    </div>
+				                </fieldset>
+				                <div class="botonera">
+				                    <a href="javascript:stepsCls.goStep(1)" class="btn btn-outline-primary uppercase">
+				                        <span class="material-icons">keyboard_arrow_left</span>
+				                        @Html.Translate("ANTERIOR")
+				                    </a>
+				                    <a href="javascript:stepsCls.goStep(3)" class="btn btn-primary uppercase">
+				                        @Html.Translate("SIGUIENTE")
+				                        <span class="material-icons">keyboard_arrow_right</span>
+				                    </a>
+				                </div>
+				            </form>
+				        </div>
+				        <!-- END STEP 2 -->
+
+				        <!-- START STEP 3 -->
+				        <div id="wrapper-crear-cluster-step3" class="fade section-steps">
+				            <ul class="nav nav-tabs" id="myTab" role="tablist">
+				                <li class="nav-item">
+				                    <a class="nav-link active" id="sugeridos-cluster-tab" data-toggle="tab" href="#sugeridos-cluster" role="tab" aria-controls="sugeridos-cluster" aria-selected="true">@Html.Translate("SUGERIDOS")</a>
+				                </li>
+				                <li class="nav-item">
+				                    <a class="nav-link" id="seleccionados-cluster-tab" data-toggle="tab" href="#seleccionados-cluster" role="tab" aria-controls="seleccionados-cluster" aria-selected="false">@Html.Translate("SELECCIONADOS")</a>
+				                </li>
+				            </ul>
+				            <div class="tab-content">
+				                <div class="tab-pane fade active show" id="sugeridos-cluster" role="tabpanel" aria-labelledby="sugeridos-cluster-tab">
+				                    <div class="row">
+				                        <div class="col col-12 col-section-title font-weight-bold">
+				                            <div class="wrapCol">
+				                                <p>@Html.Translate("COLABORADORES")</p>
+				                                <div class="acciones-grafo">
+				                                	<div class="relaciones dropdown ">
+														<a href="javascript: newGrafProjClust.actualizarGraficaColaboradores()" class="btn btn-outline-grey" role="button">
+															@Html.Translate("RESETEAR_GRAFICA")
+														</a>
+													</div>
+				                                    <div class="relaciones dropdown dropdown-select">
+				                                        <a href="#" class="dropdown-toggle btn btn-outline-grey" role="button" id="dropdownRelaciones" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+				                                            @Html.Translate("RELACIONES"):
+				                                            <span class="texto">@Html.Translate("TODAS")</span>
+				                                        </a>
+				                                        <div class="dropdown-menu basic-dropdown dropdown-menu-right" aria-labelledby="dropdownRelaciones">
+				                                            <ul class="no-list-style">
+				                                                <li>
+				                                                    <a href="javascript: actualizarTypesClusterOcultar('relation_todas');" rel="nofollow" class="item-dropdown activeView">
+				                                                        <span class="textoAlternativo">@Html.Translate("RELACIONES"):</span>
+				                                                        <span class="texto">@Html.Translate("TODAS")</span>
+				                                                    </a>
+				                                                </li>
+				                                                <li>
+				                                                    <a href="javascript: actualizarTypesClusterOcultar('relation_project');" rel="nofollow" class="item-dropdown">
+				                                                        <span class="textoAlternativo">@Html.Translate("RELACIONES"):</span>
+				                                                        <span class="texto">@Html.Translate("PROYECTOS")</span>
+				                                                    </a>
+				                                                </li>
+				                                                <li>
+				                                                    <a href="javascript: actualizarTypesClusterOcultar('relation_document');" rel="nofollow" class="item-dropdown">
+				                                                        <span class="textoAlternativo">@Html.Translate("RELACIONES"):</span>
+				                                                        <span class="texto">@Html.Translate("DOCUMENTOS")</span>
+				                                                    </a>
+				                                                </li>
+				                                            </ul>
+				                                        </div>
+				                                    </div>				                                    
+				                                </div>
+				                            </div>
+				                        </div>
+				                        <div class="col col-12 col-grafo-title font-weight-bold">
+				                            <div class="grafico-wrap">
+				                                <div class="wrapCol" id="colaboratorsgraphCluster" style="width: 100%; height: 400px;"></div>
+				                            </div>
+				                        </div>
+				                        <div class="col col-12 pt-4">
+			                            	<div class="alert alert-warning alert-dismissible fade show" role="alert">
+												<strong>@Html.Translate("ATENCION").</strong> @Html.Translate("DEBES_SELECCIONAR_LOS_PERFILES_CLICANDOLOS_CADA_PERSONA")
+												<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+													<span aria-hidden="true">&times;</span>
+												</button>
+											</div>
+				                        </div>
+				                        <div class="col col-12">
+				                            <div class="wrapCol mt-4">
+				                                <div class="row" id="clusterListUsers" data-volumen="@Html.Translate("ORDER_VOLUMEN")" data-volumentooltip="@Html.Translate("ORDER_VOLUMEN_TOOLTIP")" data-ajuste="@Html.Translate("ORDER_AJUSTE")" data-ajustetooltip="@Html.Translate("ORDER_AJUSTE_TOOLTIP")" data-mixto="@Html.Translate("ORDER_MIXTO")" data-mixtotooltip="@Html.Translate("ORDER_MIXTO_TOOLTIP")">
+				                                    
+				                                </div>
+				                            </div>
+				                        </div>
+				                    </div>
+				                </div>
+				                <div class="tab-pane fade" id="seleccionados-cluster" role="tabpanel" aria-labelledby="seleccionados-cluster-tab">
+				                    
+				                    <div class="row">
+				                        <div class="col col-12 col-section-title font-weight-bold">
+				                            <div class="wrapCol">
+				                                <p>@Html.Translate("GRAFO_RELACIONES_INVESTIGADORES_SELECCIONADOS")</p>
+												<div class="acciones-grafo">
+													<div class="relaciones dropdown dropdown-select">
+														<a href="#" class="dropdown-toggle btn btn-outline-grey" role="button" id="dropdownRelaciones" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+															@Html.Translate("RELACIONES"):
+															<span class="texto">@Html.Translate("TODAS")</span>
+														</a>
+														<div class="dropdown-menu basic-dropdown dropdown-menu-right" aria-labelledby="dropdownRelaciones">
+															<ul class="no-list-style">
+																<li>
+																	<a href="javascript: actualizarTypesClusterOcultarSE('relation_todas');" rel="nofollow" class="item-dropdown activeView">
+																		<span class="textoAlternativo">@Html.Translate("RELACIONES"):</span>
+																		<span class="texto">@Html.Translate("TODAS")</span>
+																	</a>
+																</li>
+																<li>
+																	<a href="javascript: actualizarTypesClusterOcultarSE('relation_project');" rel="nofollow" class="item-dropdown">
+																		<span class="textoAlternativo">@Html.Translate("RELACIONES"):</span>
+																		<span class="texto">@Html.Translate("PROYECTOS")</span>
+																	</a>
+																</li>
+																<li>
+																	<a href="javascript: actualizarTypesClusterOcultarSE('relation_document');" rel="nofollow" class="item-dropdown">
+																		<span class="textoAlternativo">@Html.Translate("RELACIONES"):</span>
+																		<span class="texto">@Html.Translate("DOCUMENTOS")</span>
+																	</a>
+																</li>
+															</ul>
+														</div>
+													</div>				                                    
+												</div>
+				                            </div>
+				                        </div>
+				                        <div class="col col-12 col-grafo-title font-weight-bold">
+											<div class="grafico-wrap">
+												<div class="wrapCol" id="selectedgraphCluster" style="width: 100%; height: 400px;"></div>
+											</div>
+										</div>  
+				                        <div class="col col-12 col-section-title font-weight-bold">
+				                            <div class="wrapCol">
+				                                <p>@Html.Translate("LISTADO_INVETIGADORES_SELECCIONADOS")</p>
+				                            </div>
+				                        </div>
+				                        <div class="col col-12 col-contenido" id="perfiles-stp3-result-cluster">
+				                            <p class="section-title">@Html.Translate("PERFILES") </p>
+				                            
+				                        </div>
+				                    </div>
+
+				                </div>
+				            </div>
+				            <div class="botonera">
+				                <a href="javascript:stepsCls.goStep(2)" class="btn btn-outline-primary uppercase">
+				                    <span class="material-icons">keyboard_arrow_left</span>
+				                    @Html.Translate("ANTERIOR")
+				                </a>
+				                <a href="javascript:stepsCls.goStep(3)" class="btn btn-primary uppercase">
+				                    @Html.Translate("GUARDAR_TERMINAR")
+				                    <span class="material-icons">keyboard_arrow_right</span>
+				                </a>
+				            </div>
+				        </div>
+				        <!-- END STEP 3 -->
+				    </div>
+				</div>
+			</div>
+			      
+		</div>
+
+		<div id="modal-seleccionar-area-tematica" data-backdrop="static" class="modal modal-top fade modal-edicion" tabindex="-1" role="dialog">
+		    <div class="modal-dialog" role="document">
+		        <div class="modal-content">
+		            <div class="modal-header">
+		                <p class="modal-title"><span class="material-icons">folder_open</span>@Html.Translate("SELECCIONAR_AREAS_TEMATICAS")</p>
+		                <span class="material-icons cerrar" data-dismiss="modal" aria-label="Close">close</span>
+		            </div>
+		            <div class="modal-body">
+		                <div class="formulario-edicion">
+		                    <div class="form-group">
+		                        <label class="control-label">@Html.Translate("AREAS_TEMATICAS")</label>
+		                    </div>
+		                    <small>@Html.Translate("TEXTO_EXPLICATIVO_MODAL_AREAS_TEMATICAS")</small>
+		                    <div id="panDesplegableSelCat" class="mt-4">
+		                        <ul class="nav nav-tabs d-none" id="myTab" role="tablist">
+		                            <li class="nav-item">
+		                                <a class="nav-link active" id="ver-arbol-tab" data-toggle="tab" href="#ver-arbol" role="tab" aria-controls="ver-arbol" aria-selected="true">@Html.Translate("ARBOL")</a>
+		                            </li>
+		                        </ul>
+		                        <div class="tab-content pt-0">
+
+		                            <div class="tab-pane fade show active" id="ver-arbol" role="tabpanel" aria-labelledby="ver-arbol-tab">
+		                                <div class="divTesArbol divCategorias clearfix">
+		                                    <div class="buscador-categorias">
+		                                        <div class="form-group">
+		                                            <input class="filtroRapido form-control not-outline" placeholder="@Html.Translate("BUSCAR_AREA_TEMATICA")" type="text" onkeydown="javascript:if(event.which || event.keyCode){if ((event.which == 13) || (event.keyCode == 13)) {return false;}}" onkeyup="javascript:MVCFiltrarListaSelCatArbol(this, 'panDesplegableSelCat');">
+		                                        </div>
+		                                    </div>
+		                                </div>
+		                            </div>
+		                        </div>
+		                    </div>
+		                    <div class="form-actions top">
+		                        <a href="javascript:void(0)" class="btn btn-primary pmd-ripple-effect btnsave disabled">@Html.Translate("GUARDAR_CAMBIOS")</a>
+		                    </div>
+		                </div>
+		            </div>
+		        </div>
+		    </div>
+		</div>
+
+		<div id="modal-anadir-topicos-cluster" data-backdrop="static"  class="modal modal-top fade modal-anadir-topicos" tabindex="-1" role="dialog">
+		    <div class="modal-dialog" role="document">
+		        <div class="modal-content modal-content-height">
+		            <div class="modal-header">
+		                <p class="modal-title"><span class="material-icons">label</span>@Html.Translate("ANADIR_DESCRIPTORES_ESPECIFICOS")</p>
+		                <span class="material-icons cerrar" data-dismiss="modal" aria-label="Close">close</span>
+		            </div>
+		            <div class="modal-body">
+		                <div class="formulario-edicion">
+		                    <div class="custom-form-row">
+		                        <div class="form-group full-group">
+		                            <label class="control-label d-block">@Html.Translate("DESCRIPTOR_ESPECIFICO")</label>
+		                            <small class="pb-2 d-inline-block">@Html.Translate("TEXTO_EXPLICATIVO_TAGS_MODAL")</small>
+		                            <input placeholder="@Html.Translate("TECLEA_E_INTRODUCE_AUTOCOMPLETADO")" type="text" name="" id="tagsSearchModalCluster" class="form-control not-outline">
+		                            <div class="ac_results" style="position: absolute;width: 100%;display: none;">
+		                                <ul>
+		                                </ul>
+		                            </div>
+		                        </div>
+		                    </div>
+		                    <div class="list-wrap tags">
+		                        <ul>
+		                        </ul>
+		                    </div>
+		                    <div class="form-actions top">
+		                        <a href="javascript: void(0);" class="btn btn-primary uppercase btnclosemodal" data-dismiss="modal">@Html.Translate("GUARDAR")</a>
+		                    </div>
+		                </div>
+		            </div>
+		        </div>
+		    </div>
+		</div>
+
+		<div id="modal-anadir-perfil-cluster" class="modal modal-top fade modal-edicion" tabindex="-1" role="dialog">
+		    <div class="modal-dialog" role="document">
+		        <div class="modal-content">
+		            <div class="modal-header">
+		                <p class="modal-title"><span class="material-icons">person</span>@Html.Translate("ANADIR_PERFIL")</p>
+		                <span class="material-icons cerrar" data-dismiss="modal" aria-label="Close">close</span>
+		            </div>
+		            <div class="modal-body">
+		                <div class="formulario-edicion">
+		                    <div class="custom-form-row">
+		                        <div class="form-group full-group">
+		                            <label class="control-label d-block">@Html.Translate("ANADIR_PERFIL")</label>
+		                            <input placeholder="@Html.Translate("INTRODUCE_NOMBRE_NUEVO_PERFIL")" type="text" name="perfilname" id="input-anadir-perfil" class="form-control not-outline">
+		                        </div>
+		                    </div>
+
+		                    <div class="custom-form-row">
+		                        <div class="form-group full-group">
+		                            <label class="control-label d-block">@Html.Translate("ANADIR_PERFIL_GUARDADO")</label>
+		                            <div class="modal-apc-listado-saved divTesArbol divCategorias clearfix"></div>
+		                        </div>
+		                    </div>
+		                    <div class="form-actions">
+		                        <a href="javascript: stepsCls.addPerfilSearchBtnEvent()" class="btn btn-primary uppercase">@Html.Translate("GUARDAR")</a>
+		                    </div>
+		                </div>
+		            </div>
+		        </div>
+		    </div>
+		</div>
+
+		<div id="modal-editar-perfil-cluster" class="modal modal-top fade modal-edicion" tabindex="-1" role="dialog">
+		    <div class="modal-dialog" role="document">
+		        <div class="modal-content">
+		            <div class="modal-header">
+		                <p class="modal-title"><span class="material-icons">person</span>@Html.Translate("EDITAR_PERFIL")</p>
+		                <span class="material-icons cerrar" data-dismiss="modal" aria-label="Close">close</span>
+		            </div>
+		            <div class="modal-body">
+		                <div class="formulario-edicion">
+		                    <div class="custom-form-row">
+		                        <div class="form-group full-group">
+		                            <label class="control-label d-block">@Html.Translate("EDITAR_PERFIL")</label>
+		                            <input placeholder="@Html.Translate("INTRODUCE_NOMBRE_NUEVO_PERFIL")" type="text" name="perfilname" id="input-editar-perfil" class="form-control not-outline">
+		                        </div>
+		                    </div>
+		                    <div class="form-actions">
+		                        <a href="javascript: void(0)" class="btn btn-primary btneditar uppercase">@Html.Translate("EDITAR")</a>
+		                    </div>
+		                </div>
+		            </div>
+		        </div>
+		    </div>
+		</div>
+	}
+}
+
+

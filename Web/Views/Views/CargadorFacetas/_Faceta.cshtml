@@ -1,0 +1,414 @@
+@using System.Text.RegularExpressions
+
+@model FacetModel
+@if (Model != null && (Model.FacetItemList.Count > 0 || Model.AutocompleteBehaviour.Equals(AutocompleteBehaviours.OnlyTextBox) || Model.ShowWithoutItems))
+{
+    string claveFacetaSinObjetoConocimiento = Model.FacetKey;
+    if (claveFacetaSinObjetoConocimiento.Contains(";"))
+    {
+        claveFacetaSinObjetoConocimiento = claveFacetaSinObjetoConocimiento.Substring(claveFacetaSinObjetoConocimiento.IndexOf(";") + 1);
+    }
+
+    if (Model.ThesaurusID != Guid.Empty)
+    {
+        string tesauroID = "";
+        string contenidoID = "contenido_" + Model.Key;
+        if (!string.IsNullOrEmpty(Model.Filter))
+        {
+            contenidoID += "_" + Model.Filter;
+            tesauroID = "--" + Model.Filter;
+        }
+
+
+        <div id="@contenidoID">
+            <div class="box" id="@(Model.Key + tesauroID)">
+                <span class="faceta-title">@Model.Name</span>
+                @Html.PartialView("_CajaBusqueda", Model)
+                <div class="section">
+                    @if (Model.AutocompleteBehaviour == AutocompleteBehaviours.Default)
+                    {
+                        <ul class="listadoFacetas">
+                            @foreach (FacetItemModel item in Model.FacetItemList)
+                            {
+                                @Html.PartialView("_ItemFaceta", item)
+                            }
+                        </ul>
+                    }
+
+                    @if (Model.SeeMore)
+                    {
+                        <p class="moreResults">
+                            <a class="verMasFaceta" href="#" rel="@claveFacetaSinObjetoConocimiento|@Model.Key">@Html.GetText("COMBUSQUEDAAVANZADA", "VERMAS")</a>
+                        </p>
+                    }
+                </div>
+            </div>
+        </div>
+    }
+    else
+    {
+        string noCollapse = "";
+        string ulClass = "listadoFacetas";
+        if (Model.Key == "rdf_type")
+        {
+            noCollapse = "noCollapse";
+        }
+        else if (Model.SearchBoxType.Equals(SearchBoxType.RankCalendar) || Model.SearchBoxType.Equals(SearchBoxType.Calendar))
+        {
+            ulClass = "oculto nevershow";
+        }
+        else
+        {
+            ulClass = "listadoFacetas";
+        }
+
+        string contenidoOut = "out_" + Model.Key;
+        string contenidoIn = "in_" + Model.Key;
+
+        // Search filter type - Date Range 
+        if (Model.SearchBoxType == SearchBoxType.FromToDates)
+        {
+            int num = 0;
+            string parametrosAdicionales = Context.Request.Query["pParametros_adiccionales"];
+
+            if (Model.AutocompleteBehaviour == AutocompleteBehaviours.Default)
+            {
+                           
+                int minNumber = 0;
+                int maxNumber = 0;
+                int ActualNumber = 0;
+                string filter = "";
+                foreach (FacetItemModel item in Model.FacetItemList)
+                {
+                    int.TryParse(item.Tittle.AsSpan(), out ActualNumber);
+                                
+                    // If the year is not a normal date, like a month, convert to a year from the filter
+                    if (ActualNumber == 0)
+                    {
+                        try
+                        {
+                            var nmbrArray = item.Name.Split("=").ToList();
+                            if (nmbrArray[1] != null)
+                            {
+                                Char[] chars = nmbrArray[1].ToCharArray();
+                                var ActualNumberARR = chars.ToList().GetRange(0, 4).ToArray();
+                                var ActualNumberSTR = new String(ActualNumberARR);
+                                int.TryParse(ActualNumberSTR, out ActualNumber);
+                            }
+                        } catch(Exception e) {}
+                    }
+
+                    // Get the year the first time
+                    if (num == 0)
+                    {
+                        filter = item.Filter;
+                        minNumber = ActualNumber;
+                        maxNumber = ActualNumber;
+                    } else
+                    {
+                        // Get the max and min number
+                        if (ActualNumber > maxNumber)
+                        {
+                            maxNumber = ActualNumber;
+                        }
+                        if (ActualNumber < minNumber)
+                        {
+                            minNumber = ActualNumber;
+                        }
+                    }
+                    num++;
+
+                }
+
+                // Set a regex to find all filters into the url
+                List<string> founded = new List<string>();
+                string regex = string.Format(@"{0}=[0-9]+-[0-9]+",
+                    Regex.Escape(Model.FacetKey));
+                foreach (Match match in Regex.Matches(filter, regex))
+                {
+                    // Get all filters
+                    founded.Add(match.ToString());
+                }
+                // Split the filter from the dates filter founded
+                var dataArr = filter.Split(founded.ToArray<string>(), StringSplitOptions.None);
+                var data = dataArr.ToList<string>();
+
+
+                // Get the first element
+                var filterFinalPart1 = data[0] + Model.FacetKey + "=";
+                data.RemoveAt(0);
+
+                // Get the others filters (no dates)
+                string filterFinalPart2 = "";
+                data.ForEach(item => {
+                    if (item != "&" && item != "&&" && item != "&&&")
+                    {
+                        filterFinalPart2 += item;
+                    }
+                });
+
+                if (num > 0)
+                {
+                    <div id="@contenidoOut" class="facetedSearch fechaDesdeHasta">
+                        <div id="@contenidoIn">
+                            <div class="box @noCollapse" id="@Model.Key" faceta="">
+                                <span class="faceta-title">@Model.Name </span>
+                        
+
+                                <div class="faceta-date-range faceta-general-range" id="gmd_cont_@Model.Key">
+                                    <div id="gmd_@Model.Key" class="ui-slider ui-corner-all ui-slider-horizontal ui-widget ui-widget-content"  data-inputname1="gmd_@Model.Key@("_1")" data-inputname2="gmd_@Model.Key@("_2")" data-minnumber="@minNumber" data-maxnumber="@maxNumber" data-filterpart1="@Html.Raw(filterFinalPart1)" data-filterpart2="@Html.Raw(filterFinalPart2)" data-facekey="@Model.FacetKey">
+                                        <div class="ui-slider-range ui-corner-all ui-widget-header"></div>
+                                        <span tabindex="0" class="ui-slider-handle ui-corner-all ui-state-default"></span>
+                                        <span tabindex="0" class="ui-slider-handle ui-corner-all ui-state-default"></span>
+                                    </div>
+                                    <input title="Año" type="number" min="@minNumber" max="@maxNumber" autocomplete="off" class="filtroFacetaFecha hasDatepicker minVal" placeholder="@minNumber" name="gmd_@Model.Key@("_1")" id="gmd_@Model.Key@("_1")" value="@minNumber">
+                                    <input title="Año" type="number" min="@minNumber" max="@maxNumber" autocomplete="off" class="filtroFacetaFecha hasDatepicker maxVal" placeholder="@maxNumber" name="gmd_@Model.Key@("_2")" id="gmd_@Model.Key@("_2")" value="@maxNumber">
+                                    <a name="@Model.FacetKey" class="searchButton" href="javascript:void(0);">Aplicar</a>
+                                    <ul class="no-list-style">
+                                        <li>
+                                            <a href="javascript: void(0);" class="last5Years">@Html.Translate("ULTIMOS_CINCO_ANIOS")</a>
+                                        </li>
+                                        <li>
+                                            <a href="javascript: void(0);" class="lastYear">@Html.Translate("ULTIMO_ANIO")</a>
+                                        </li>
+                                        <li>
+                                            <a href="javascript: void(0);" class="allYears">@Html.Translate("TODOS")</a>
+                                        </li>
+                                    </ul>
+                                </div>
+
+
+                            </div>
+                        </div>
+                    </div>
+                }
+            }
+
+
+        } else if (Model.SearchBoxType == SearchBoxType.FromToRank)
+        {
+
+            int num = 0;
+            string parametrosAdicionales = Context.Request.Query["pParametros_adiccionales"];
+
+            @if (Model.AutocompleteBehaviour == AutocompleteBehaviours.Default)
+            {
+                           
+                int minNumber = 0;
+                int maxNumber = 0;
+                int ActualMinNumber = 0;
+                int ActualMaxNumber = 0;
+                string filter = "";
+                @foreach (FacetItemModel item in Model.FacetItemList)
+                {
+                    int.TryParse(item.Tittle.AsSpan(), out ActualMinNumber);
+                    ActualMaxNumber = ActualMinNumber;
+                    // In this place, we need add 1 element to the range
+                    if (ActualMaxNumber >= 0)
+                    {
+                        ActualMaxNumber++;
+                    }
+                                
+                    // If the year is not a normal date, like a month, convert to a year from the filter
+                    if (ActualMinNumber == 0)
+                    {
+                        try
+                        {
+                            var nmbrArray = item.Tittle.Split(" a ").ToList();
+                            if (nmbrArray[0] != null)
+                            {
+                                var ActualNumberSTR = new string((from c in nmbrArray[0]
+                                    where char.IsNumber(c)
+                                    select c
+                                    ).ToArray());
+                                int.TryParse(ActualNumberSTR, out ActualMinNumber);
+                            }
+                            if (nmbrArray.Count > 1)
+                            {
+                                var ActualNumberSTR = new string((from c in nmbrArray[1]
+                                    where char.IsNumber(c)
+                                    select c
+                                    ).ToArray());
+                                int.TryParse(ActualNumberSTR, out ActualMaxNumber);
+                            }
+                        } catch(Exception e) {}
+                    }
+
+                    // Get the year the first time
+                    if (num == 0)
+                    {
+                        filter = item.Filter;
+                        minNumber = ActualMinNumber;
+                        maxNumber = ActualMaxNumber > ActualMinNumber ? ActualMaxNumber : ActualMinNumber;
+                    } else
+                    {
+                        // Get the max and min number
+                        if (ActualMinNumber > maxNumber)
+                        {
+                            maxNumber = ActualMinNumber;
+                        }
+                        if (ActualMinNumber < minNumber)
+                        {
+                            minNumber = ActualMinNumber;
+                        }
+
+                        // Get the max and min number
+                        if (ActualMaxNumber > maxNumber)
+                        {
+                            maxNumber = ActualMaxNumber;
+                        }
+                        if (ActualMaxNumber < minNumber)
+                        {
+                            minNumber = ActualMaxNumber;
+                        }
+                    }
+                    num++;
+
+                }
+
+                // Set a regex to find all filters into the url
+                List<string> founded = new List<string>();
+                string regex = string.Format(@"{0}=[0-9]+-[0-9]+",
+                    Regex.Escape(Model.FacetKey));
+                foreach (Match match in Regex.Matches(filter, regex))
+                {
+                    // Get all filters
+                    founded.Add(match.ToString());
+                }
+                // Split the filter from the dates filter founded
+                var dataArr = filter.Split(founded.ToArray<string>(), StringSplitOptions.None);
+                var data = dataArr.ToList<string>();
+
+
+                // Get the first element
+                var filterFinalPart1 = data[0] + Model.FacetKey + "=";
+                data.RemoveAt(0);
+
+                // Get the others filters (no dates)
+                string filterFinalPart2 = "";
+                data.ForEach(item => {
+                    if (item != "&" && item != "&&" && item != "&&&")
+                    {
+                        filterFinalPart2 += item;
+                    }
+                });
+                if (num > 0)
+                {
+
+                    <div id="@contenidoOut" class="facetedSearch fechaDesdeHasta">
+                        <div id="@contenidoIn">
+                            <div class="box @noCollapse" id="@Model.Key" faceta="">
+                                <span class="faceta-title">@Model.Name</span>
+                        
+
+                                <div class="faceta-date-range faceta-general-number-range" id="gmd_cont_@Model.Key">
+                                    <div id="gmd_@Model.Key" class="ui-slider ui-corner-all ui-slider-horizontal ui-widget ui-widget-content"  data-inputname1="gmd_@Model.Key@("_1")" data-inputname2="gmd_@Model.Key@("_2")" data-minnumber="@minNumber" data-maxnumber="@maxNumber" data-filterpart1="@Html.Raw(filterFinalPart1)" data-filterpart2="@Html.Raw(filterFinalPart2)" data-facekey="@Model.FacetKey">
+                                        <div class="ui-slider-range ui-corner-all ui-widget-header"></div>
+                                        <span tabindex="0" class="ui-slider-handle ui-corner-all ui-state-default"></span>
+                                        <span tabindex="0" class="ui-slider-handle ui-corner-all ui-state-default"></span>
+                                    </div>
+                                    <input title="Año" type="number" min="@minNumber" max="@maxNumber" autocomplete="off" class="filtroFacetaFecha hasDatepicker minVal" placeholder="@minNumber" name="gmd_@Model.Key@("_1")" id="gmd_@Model.Key@("_1")" value="@minNumber">
+                                    <input title="Año" type="number" min="@minNumber" max="@maxNumber" autocomplete="off" class="filtroFacetaFecha hasDatepicker maxVal" placeholder="@maxNumber" name="gmd_@Model.Key@("_2")" id="gmd_@Model.Key@("_2")" value="@maxNumber">
+                                    <a name="@Model.FacetKey" class="searchButton" href="javascript:void(0);">Aplicar</a>
+                                </div>
+
+
+                            </div>
+                        </div>
+                    </div>
+            
+                }
+            }
+            
+        }
+        else if (Model.FacetGrouped)
+        {
+
+            @functions
+            { 
+                public string obtenerNombreSemFaceta(FacetItemModel itemFaceta)
+                {
+                    string nombreSem = itemFaceta.Name.Replace("rdf:type=", "");
+                    if (nombreSem.Contains(";"))
+                    {
+                        nombreSem = nombreSem.Substring(nombreSem.IndexOf(";") + 1);
+                    }
+                    return nombreSem;
+                }
+            } 
+            string auxAgrupado = "";
+            FacetItemModel itemSeleccionado = Model.FacetItemList.Find(item => item.Selected == true);
+            if (itemSeleccionado != null)
+            {
+                auxAgrupado = "in_" + obtenerNombreSemFaceta(itemSeleccionado);
+            }
+
+            <div id="@contenidoOut" class="listadoAgrupado" @(auxAgrupado != "" ? "aux=" + auxAgrupado : "")>
+
+                @if (Model.GroupedGroups != null && Model.GroupedGroups.Count > 0)
+                {
+                    <ul class="oculto">
+                        @foreach (string grupo in Model.GroupedGroups.Keys)
+                        {
+                            string classGroup = "";
+                            foreach (string tipo in Model.GroupedGroups[grupo])
+                            {
+                                classGroup += " in_" + tipo;
+                            }
+                            <li><a class="@classGroup">@grupo</a></li>
+                        }
+                    </ul>
+                }
+
+                @foreach (FacetItemModel item in Model.FacetItemList)
+                {
+                    <div id="in_@obtenerNombreSemFaceta(item)">
+                        <a rel="nofollow" href="@item.Filter" class="faceta grupo" name="@item.Name" title="@item.Tittle">@item.Tittle (@item.Number)</a>
+                    </div>
+                }
+            </div>
+        }
+        else
+        {
+
+            bool limit10 = false;
+            int num = 0;
+            var idLimit = "out_roh_hasKnowledgeArea---roh_categoryNode";
+            var idLimit2 = "out_bibo_authorList---rdf_member---roh_hasKnowledgeArea---roh_categoryNode";
+            string parametrosAdicionales = Context.Request.Query["pParametros_adiccionales"];
+            if ((contenidoOut == idLimit || contenidoOut == idLimit2) && (parametrosAdicionales==null ||!parametrosAdicionales.Contains("NumElementosFaceta=10000")))
+            {
+                limit10 = true;
+            }
+
+            <div id="@contenidoOut">
+                <div id="@contenidoIn">
+                    <div class="box @noCollapse" id="@Model.Key">
+                        <span class="faceta-title">@Model.Name</span>
+
+                        @if (Model.AutocompleteBehaviour == AutocompleteBehaviours.Default)
+                        {
+                            <ul class="@ulClass">
+                                @foreach (FacetItemModel item in Model.FacetItemList)
+                                {
+                                    num++;
+                                    if (num > 10 && limit10)
+                                    {
+                                        break;
+                                    }
+                                    @Html.PartialView("_ItemFaceta", item)
+                                }
+                            </ul>
+                        }
+                        @if (Model.SeeMore || (limit10 && num >= 10))
+                        {
+                            <p class="moreResults">
+                                <a class="verMasFaceta" href="#" rel="@claveFacetaSinObjetoConocimiento|@Model.Key">@Html.GetText("COMBUSQUEDAAVANZADA", "VERMAS")</a>
+                            </p>
+                        }
+                    </div>
+                </div>
+            </div>
+        }
+    }
+}

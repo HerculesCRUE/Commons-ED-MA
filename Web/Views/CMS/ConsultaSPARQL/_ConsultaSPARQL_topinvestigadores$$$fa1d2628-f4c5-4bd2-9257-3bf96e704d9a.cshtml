@@ -1,0 +1,132 @@
+@using System.Reflection
+@model CMSComponentQuerySPARQL
+@{
+    CommunityModel Comunidad = Html.GetComunidad();
+    UserIdentityModel IdentidadActual = Html.GetIdentidadActual();
+
+    System.Data.DataTable col = Model.DataSetResult.Tables[0];
+    listaPersons = new List<Person>();
+    @foreach (System.Data.DataRow fila in Model.DataSetResult.Tables[0].Rows)
+    {
+        Person person = new Person(fila);
+        listaPersons.Add(person);
+    }
+
+
+}
+
+
+@if (Model != null)
+{
+
+
+	<div class="grupo-top">
+		<div class="wrapCol grupo-personas">
+			<h2 class="section-title">@Html.Translate("TOP_INVESTIGADORES")</h2>
+			<div class="resource-list usuarios con-borde">
+				@foreach (Person person in listaPersons)
+				{
+					<article class="resource resource-grupo">
+						<div class="user-miniatura">
+							@{
+                                string urlPerson =Comunidad.Url+"/"+Html.GetText("URLSEM", "RECURSO")+"/"+ Es.Riam.Util.UtilCadenas.EliminarCaracteresUrlSem(person.name)+"/"+person.id.Split('_')[1];
+                            }
+							<div class="imagen-usuario-wrap">
+								<a href="@urlPerson" target="_blank" >
+									<div class="imagen sinImagen">
+										<span class="material-icons">person</span>
+									</div>
+								</a>
+							</div>
+							<div class="nombre-usuario-wrap">
+								<a href="@urlPerson" target="_blank">
+									<p class="nombre">@person.name</p>
+									<p class="nombre-completo">@person.tituloOrg · @person.hasPosition · @person.departamento</p>
+								</a>
+							</div>
+						</div>
+					</article>
+				}
+
+				<a href="@Comunidad.Url/@Html.Translate("INVESTIGADORES_URL")" target="_blank" class="ver-mas ver-mas-icono con-icono-after">@Html.Translate("VER_TODOS")</a>
+			</div>
+		</div>
+	</div>
+
+}
+
+
+
+
+@functions
+{
+    public static List<Person> listaPersons = new List<Person>();
+
+    public class Person
+    {
+        public string id { get; set; }
+        public string name { get; set; }
+        public string tituloOrg { get; set; }
+        public string hasPosition { get; set; }
+        public string departamento { get; set; }
+        public string numDoc { get; set; }
+
+        public Person()
+        {
+            id = "";
+            name = "";
+            tituloOrg = "";
+            hasPosition = "";
+            departamento = "";
+            numDoc = "";
+        }
+
+        public Person(System.Data.DataRow fila)
+        {
+
+            try
+            {
+                this.id = fila["person"].ToString();
+                this.name = fila["name"].ToString();
+                this.numDoc = fila["numDoc"].ToString();
+
+            } catch (Exception e ) {}
+
+            try
+            {
+                if (!fila.IsNull("tituloOrg"))
+                {
+                    this.tituloOrg = fila["tituloOrg"].ToString();
+                }
+                if (!fila.IsNull("hasPosition"))
+                {
+                    this.hasPosition = fila["hasPosition"].ToString();
+                }
+                if (!fila.IsNull("departamento"))
+                {
+                    this.departamento = fila["departamento"].ToString();
+                }
+
+            } catch (Exception e ) {}
+
+
+        }
+
+
+        private string GetFecha(string fecha)
+        {
+            if (!string.IsNullOrEmpty(fecha) && fecha.Length == 14)
+            {
+                string anio = fecha.Substring(0, 4);
+                string mes = fecha.Substring(4, 2);
+                string dia = fecha.Substring(6, 2);
+                string hora = fecha.Substring(8, 2);
+                string min = fecha.Substring(10, 2);
+                string segs = fecha.Substring(12, 2);
+                fecha = dia + "/" + mes + "/" + anio + " " + hora + ":" + min + ":" + segs;
+            }
+            return fecha;
+        }
+
+    }
+}

@@ -1,0 +1,1579 @@
+@*[security|||cluster|||hercules]*@
+@using System.Reflection;
+@model ResourceViewModel
+@{
+    ResourceModel FichaDocumento = Model.Resource;
+    CommunityModel Comunidad = Html.GetComunidad();
+    UserIdentityModel IdentidadActual = Html.GetIdentidadActual();
+    Html.AddBodyClass(" fichaRecurso ");
+    Html.AddBodyClass(" fichaRecurso-cluster ");
+    string urlPersonalizacion = Html.GetBaseUrlContent() + "/imagenes/proyectos/personalizacion/" + Comunidad.Key.ToString();
+    string urlJS = $"{urlPersonalizacion}/theme/ficharecurso.js?v={Html.Translate("VERSION_CSS_JS")}";
+    Html.GetListaJS().Add(urlJS);
+    SemanticResourceModel semCmsModel = Model.SemanticFrom;
+    GnossOCBase.LanguageEnum idiomaUsuario = (GnossOCBase.LanguageEnum)Enum.Parse(typeof(GnossOCBase.LanguageEnum), Html.GetUtilIdiomas().LanguageCode.ToLower());
+    Cluster pCluster = new Cluster(semCmsModel, idiomaUsuario);
+
+    Dictionary<string, Person> persons = new();
+    Dictionary<string, List<string>> userPerfil = new();
+
+    /*
+        //Url de la pestaña para mostrarla en el Breadcrumb
+        string urlPestanya = Comunidad.Url + "/" + @Html.Translate("CLUSTER_URL");
+        //Nombre o título de la pestaña para ponerlo en el Breadcrumb
+        string nombrePestanya = Html.GetNombrePestanya();
+    */
+
+    //Url de la pestaña para mostrarla en el Breadcrumb
+    string urlPestanya = Comunidad.Url + "/" + Html.Translate("CLUSTER_URL");
+    //Nombre o título de la pestaña para ponerlo en el Breadcrumb
+    string nombrePestanya = Html.Translate("LISTADO_CLUSTERS");
+
+
+    // Comprobar si el usuario actual es el mismo que creó el recurso
+    string idGnossUser = string.Empty;
+    var rdf_member = pCluster.Rdf_member;
+    Guid clusterUserID = Guid.Empty;
+    if (rdf_member != null) {
+        idGnossUser = rdf_member.IdRoh_gnossUser;
+        if (idGnossUser != null) {
+            try 
+            {
+                string[] GnossIDSplit = idGnossUser.Split('/');
+                Guid.TryParse(GnossIDSplit[GnossIDSplit.Count() - 1].ToLower(), out clusterUserID);
+            } catch (Exception e) {}
+        }
+    }
+
+    Guid currentId = IdentidadActual.KeyUser;
+
+    var ownUser = false;
+
+    if (clusterUserID != Guid.Empty && currentId == clusterUserID)
+    {
+        ownUser = true;
+    }
+
+}
+
+<div class="col col-12 col-breadcrumb">
+    <ul>
+        <li>
+            <a href="@Comunidad.Url">Home</a>
+        </li>
+
+        @{
+            if (!string.IsNullOrEmpty(pCluster.Roh_title))
+            {
+                <li><a href="@urlPestanya">@nombrePestanya</a></li>
+                <li>@pCluster.Roh_title</li>
+            }
+            else
+            {
+                <li>---</li>
+            }
+        }
+    </ul>
+</div>
+
+@if (true)
+{
+    <div class="col col-12 col-xl-12 col-contenido">
+        <div class="wrapCol">
+            <div class="cabecera-ficha">
+                <div class="ficha-upper-row">
+                    <div class="ficha-icon-wrap"></div>
+                    <div class="ficha-title-wrap">
+                        <h1 class="ficha-title" about="@pCluster.GNOSSID" property="@pCluster.GetPropertyURI(nameof(pCluster.Roh_title))" >
+                            @pCluster.Roh_title
+                        </h1>
+                    </div>
+                    <div class="acciones-ficha-wrap">
+                        <ul class="no-list-style d-flex">
+                            @if (ownUser)
+                            {
+                                <li>
+                                    <a class="btn btn-outline-grey d-none d-xl-flex" href="@Comunidad.Url/nuevo-cluster?id=@pCluster.GNOSSID">
+                                        <span class="material-icons">edit</span>
+                                        <span>@Html.Translate("EDITAR")</span>
+                                    </a>
+                                </li>
+                            }
+                            <li>
+                                <div class="acciones-recurso-listado">
+                                    <div class="dropdown">
+                                        <a href="#" class="dropdown-toggle btn btn-outline-grey no-flecha" role="button" id="dropdownMasOpciones" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                            <span class="material-icons">more_vert</span>
+                                        </a>
+                                        <div class="dropdown-menu basic-dropdown dropdown-icons dropdown-menu-right" aria-labelledby="dropdownMasOpciones" style="will-change: transform;">
+                                            <p class="dropdown-title">@Html.Translate("ACCIONES")</p>
+                                            <ul class="no-list-style">
+                                                @if (ownUser)
+                                                {
+                                                    <li>
+                                                        <a class="item-dropdown" href="javascript: void(0)" data-toggle="modal" data-target="#modal-eliminar-cluster-confirmacion">
+                                                            <span class="texto">@Html.Translate("BORRAR")</span>
+                                                        </a>
+                                                    </li>
+                                                }
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="group-wrap">
+                    <div class="bloque">
+                        @if (pCluster.Dct_issued != null && pCluster.Dct_issued.ToString() != String.Empty)
+                        {
+                            string fecha = String.Join(" / ", pCluster.Dct_issued.ToString().Split('/').Select(e => e.Split(' ')[0]));
+                            <div class="value font-weight-bold" about="@pCluster.GNOSSID" property="@pCluster.GetPropertyURI(nameof(pCluster.Dct_issued))">@fecha</div>
+                        }
+                    </div>
+                </div>
+                @if (pCluster.Vivo_description != null)
+                {
+                    <div class="description-wrap counted">
+                        <div class="desc">
+                            <p>@pCluster.Vivo_description</p>
+                        </div>
+                    </div>
+                }
+
+                @if (pCluster.Roh_clusterPerfil != null && pCluster.Roh_clusterPerfil.Count > 0)
+                {
+                    <div class="list-wrap tags">
+                        <div class="label">@Html.Translate("AREAS_TEMATICAS")</div>
+                        <ul>
+
+                            @{
+                                int contadorAreaConocimiento = 0;
+                                foreach (CategoryPath knowArea in pCluster.Roh_hasKnowledgeArea)
+                                {
+
+                                    foreach (Concept area in knowArea.Roh_categoryNode)
+                                    {
+                                        if (area != null && !string.IsNullOrEmpty(area.Skos_prefLabel) && contadorAreaConocimiento < 3)
+                                        {
+                                            contadorAreaConocimiento++;
+                                            <li>
+                                                <a href="@Comunidad.Url/@Html.Translate("CLUSTER_URL")?roh:hasKnowledgeArea@("@@@")roh:categoryNode=@area.GNOSSID">
+                                                    <span about="@area.GNOSSID" property="@area.GetPropertyURI(nameof(area.Skos_prefLabel))" class="texto">@area.Skos_prefLabel</span>
+                                                </a>
+                                            </li>
+                                        }
+                                        else if (area != null && !string.IsNullOrEmpty(area.Skos_prefLabel))
+                                        {
+                                            contadorAreaConocimiento++;
+                                            <li class="ocultar" style="display: none;">
+                                                <a href="@Comunidad.Url/@Html.Translate("CLUSTER_URL")?roh:hasKnowledgeArea@("@@@")roh:categoryNode=@area.GNOSSID">
+                                                    <span about="@area.GNOSSID" property="@area.GetPropertyURI(nameof(area.Skos_prefLabel))" class="texto">@area.Skos_prefLabel</span>
+                                                </a>
+                                            </li>
+                                        }
+                                            
+                                    }
+                                }
+                            }
+                        </ul>
+                        @if (contadorAreaConocimiento > 3)
+                        {
+                            <p class="moreResults">
+                                <a href="javascript: void(0);" class="ver-mas" style="display: flex;">@Html.Translate("VER_MAS")</a>
+                                <a href="javascript: void(0);" class="ver-menos" style="display: none;">@Html.Translate("VER_MENOS")</a>
+                            </p>
+                        }
+                    </div>
+
+                }
+
+
+
+                @{
+                    List<string> tags = new();
+                    string nameOfItem = String.Empty;
+                    foreach (ClusterPerfil perfil in pCluster.Roh_clusterPerfil)
+                    {
+                        tags = tags.Union(perfil.Vivo_freeTextKeyword).ToList();
+                        nameOfItem = @pCluster.GetPropertyURI(nameof(perfil.Vivo_freeTextKeyword));
+                    }
+                    tags.Distinct().ToList();
+                }
+
+                <!-- <div class="list-wrap tags">
+                    <div class="label">@Html.Translate("TEMAS_INVESTIGACION")</div>
+                    <ul>
+
+                        @{
+                            int contadorCategorias = 0;
+                            foreach (string etiqueta in tags)
+                            {
+                                if (!string.IsNullOrEmpty(etiqueta) && contadorCategorias < 3)
+                                {
+                                    contadorCategorias++;
+                                    <li>
+                                        <a href="@Comunidad.Url/@Html.Translate("CLUSTER_URL")?vivo:freeTextKeyword@@@@@@roh:title=@etiqueta">
+                                            <span about="@pCluster.GNOSSID" property="nameOfItem" class="texto">@etiqueta</span>
+                                        </a>
+                                    </li>
+                                }
+                                else if (!string.IsNullOrEmpty(etiqueta))
+                                {
+                                    contadorCategorias++;
+                                    <li class="ocultar" style="display: none;">
+                                        <a href="@Comunidad.Url/@Html.Translate("CLUSTER_URL")?vivo:freeTextKeyword@@@@@@roh:title=@etiqueta">
+                                            <span about="@pCluster.GNOSSID" property="@nameOfItem" class="texto">@etiqueta</span>
+                                        </a>
+                                    </li>
+                                }
+                            }
+                        }
+                    </ul>
+                    @if (contadorCategorias > 3)
+                    {
+                        <p class="moreResults">
+                            <a href="javascript: void(0);" class="ver-mas" style="display: flex;">@Html.Translate("VER_MAS")</a>
+                            <a href="javascript: void(0);" class="ver-menos" style="display: none;">@Html.Translate("VER_MENOS")</a>
+                        </p>
+                    }
+                </div> -->
+            </div>
+            <div class="contenido-ficha">
+                <div class="tab-paneles-ficha">
+                    <div class="tabs">
+                        <div class="nombre">
+                            @pCluster.Roh_title
+                        </div>
+                        @{
+                            
+                            foreach (var perfil in pCluster.Roh_clusterPerfil)
+                            {
+
+                                foreach (Person prs in perfil.Rdf_member)
+                                {
+                                    if (!persons.ContainsKey(prs.GNOSSID))
+                                    {
+                                        persons.Add(prs.GNOSSID, prs);
+                                        userPerfil.Add(prs.GNOSSID, new() { perfil.Roh_title });
+                                    }else
+                                    {
+                                        userPerfil[prs.GNOSSID].Add( perfil.Roh_title );
+                                    }
+                                }
+                            }
+                        }
+                        <ul class="nav nav-tabs" id="navegacion-recurso" role="tablist">
+                            <li class="nav-item" role="presentation">
+                                <a class="nav-link active" id="participantes-tab" data-toggle="tab" href="#participantes-panel" role="tab" aria-controls="participantes-panel" aria-selected="true">
+                                    <div class="bloque">
+                                        <div class="label">@Html.Translate("PARTICIPANTES")</div>
+                                        <div class="data">@persons.Count</div>
+                                    </div>
+                                </a>
+                            </li>
+                            <li class="nav-item" role="presentation">
+                                <a class="nav-link" id="temas-investigacion-tab" data-toggle="tab" href="#temas-investigacion-panel" role="tab" aria-controls="temas-investigacion-panel" aria-selected="true">
+                                    <div class="bloque">
+                                        <div class="label">@Html.Translate("TEMAS_INVESTIGACION")</div>
+                                        <div class="data">@tags.Count</div>
+                                    </div>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="tab-content" id="paneles-recurso">
+                        <div class="tab-pane fade show active" id="participantes-panel" role="tabpanel" aria-labelledby="participantes-tab">
+                            <div class="row">
+                                <div class="col col-12 col-section-title font-weight-bold">
+                                    <div class="wrapCol">
+                                        <p>Grafo de relaciones con otros participantes</p>
+                                    </div>
+                                </div>
+                                <div class="col col-12 col-grafo mb-5">
+                                    <div class="wrapCol" id="colaboratorsgraph" style="height: 500px;">
+                                        
+                                    </div>
+                                </div>
+                                <div class="col col-12 col-contenido derecha">
+                                    <div class="wrapCol">
+                                        <h2>Participantes</h2>
+                                        <div class="acciones-listado acciones-listado-personas">
+                                            <div class="wrap">
+                                                <div class="usuario-wrap"></div>
+                                                <div class="perfil-wrap">@Html.Translate("PERFIL")</div>
+                                                <div class="publicaciones-wrap">@Html.Translate("PUBLICACIONES")</div>
+                                                <div class="principal-wrap">@Html.Translate("PRINCIPAL")</div>
+                                            </div>
+                                        </div>
+                                        <div class="resource-list listView resource-list-personas">
+                                            <div class="resource-list-wrap">
+                                                @foreach (KeyValuePair<string, Person> person in persons)
+                                                {
+                                                    <article class="resource">
+                                                        <div class="wrap">
+                                                            <div class="usuario-wrap">
+                                                                <div class="user-miniatura">
+                                                                    <div class="imagen-usuario-wrap">
+                                                                        <a href="./fichaPerfil.php">
+                                                                            <div class="imagen">
+                                                                                <span style="background-image: url(theme/resources/imagenes-pre/foto-usuario-2.jpg)"></span>
+                                                                            </div>
+                                                                        </a>
+                                                                    </div>
+                                                                    <div class="nombre-usuario-wrap">
+                                                                        <a href="@person.Value.URL">
+                                                                            <p class="nombre">@person.Value.Foaf_name</p>
+                                                                            <p class="nombre-completo">
+                                                                                @{
+                                                                                    if (!string.IsNullOrEmpty(person.Value.Roh_hasPosition))
+                                                                                    {
+                                                                                        <span about="@person.Key" property="@person.Value.GetPropertyURI(nameof(person.Value.Roh_hasPosition))">@person.Value.Roh_hasPosition</span>
+                                                                                    }
+                                                                                    if (person.Value.Roh_hasRole != null && !string.IsNullOrEmpty(person.Value.Roh_hasRole.Roh_title))
+                                                                                    {
+                                                                                        <span> @person.Value.Roh_hasRole.Roh_title, </span>
+                                                                                    }
+
+                                                                                    if (person.Value.Vivo_departmentOrSchool != null && !string.IsNullOrEmpty(person.Value.Vivo_departmentOrSchool.Dc_title) && !string.IsNullOrEmpty(person.Key))
+                                                                                    {
+                                                                                        <span about="@person.Key" property="@person.Value.GetPropertyURI(nameof(person.Value.Vivo_departmentOrSchool.Dc_title))">@person.Value.Vivo_departmentOrSchool.Dc_title</span>
+
+                                                                                    }
+                                                                                }
+                                                                            </p>
+                                                                            @*<p class="nombre-completo">Categoria profesional, Departamento interno / externo</p>*@
+                                                                        </a>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="perfil-wrap">@String.Join(", ", userPerfil[person.Key])</div>
+                                                            @if (person.Value.Roh_publicationsNumber != null && person.Value.Roh_publicationsNumber > 0 && !string.IsNullOrEmpty(person.Key))
+                                                            {
+                                                                <div class="publicaciones-wrap" about="@person.Key" property="@person.Value.GetPropertyURI(nameof(person.Value.Roh_publicationsNumber))">@person.Value.Roh_publicationsNumber</div>
+                                                            } else {
+                                                                <div class="publicaciones-wrap">0</div>
+                                                            }
+                                                            @if (person.Value.Roh_ipNumber != null && person.Value.Roh_ipNumber > 0 && !string.IsNullOrEmpty(person.Key))
+                                                            {
+                                                                <div class="principal-wrap" about="@person.Key" property="@person.Value.GetPropertyURI(nameof(person.Value.Roh_ipNumber))">@person.Value.Roh_ipNumber</div>
+                                                            } else {
+                                                                <div class="principal-wrap">0</div>
+                                                            }
+                                                        </div>
+                                                    </article>
+                                                }
+                                                
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tab-pane fade" id="temas-investigacion-panel" role="tabpanel" aria-labelledby="temas-investigacion-tab">
+                            <div class="row">
+                                @* <div class="col col-12 col-section-title font-weight-bold">
+                                    <div class="wrapCol">
+                                        <p>Evolución temporal publicaciones</p>
+                                    </div>
+                                </div>
+                                <div class="col col-12 col-grafo mb-5">
+                                    <div class="wrapCol">
+                                        aquí iría el grafo
+                                    </div>
+                                </div> *@
+                                <div class="col col-12 col-section-title font-weight-bold">
+                                    <div class="wrapCol">
+                                        <p>Distribución principales temas de investigación</p>
+                                    </div>
+                                </div>
+                                <div class="col col-12 col-chart mb-5">
+                                    <div class="wrapCol" id="topicsgraph">
+                                        <div class="chart-wrap">
+                                            
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="modal-eliminar-cluster-confirmacion" class="modal modal-top fade modal-edicion" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <p class="modal-title"><span class="material-icons">delete</span>@Html.Translate("BORRAR_CLUSTER")</p>
+                    <span class="material-icons cerrar" data-dismiss="modal" aria-label="Close">close</span>
+                </div>
+                <div class="modal-body">
+                    <div class="formulario-edicion">
+                        <div class="custom-form-row">
+                            <div class="form-group full-group">
+                                <label class="control-label d-block">@Html.Translate("CONFIRMACION_BORRAR_CLUSTER")</label>
+                                <div class="form-actions">
+                                    <a href="javascript: borrarCluster()" class="btn btn-primary uppercase">@Html.Translate("BORRAR")</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+
+
+
+
+
+<!-- JAVASCRIPT -->
+<script type="text/javascript">
+
+    const persons = [@Html.Raw(String.Join(", ", persons.Select(p => '"' + p.Value.GNOSSID.Split('_')[1].ToUpper() + '"')))]
+
+
+    // Clase para las trabajar en las gráficas de los colaboradores en el cluster
+    class CargarGraficaProjectoObj {
+        dataCB = {};
+        dataSE = {};
+        idContenedorCB = "";
+        idContenedorSE = "";
+        typesOcultar = [];
+        typesOcultarSE = [];
+        showRelation = true;    
+        showRelationSE = true;
+
+        actualizarGraficaColaboradores = () => {
+            AjustarGraficaArania(this.dataCB, this.idContenedorCB, this.typesOcultar, this.showRelation);
+        };
+        
+        actualizarGraficaSeleccionados = () => {
+            AjustarGraficaArania(this.dataSE, this.idContenedorSE, this.typesOcultarSE, this.showRelationSE);
+        };
+
+        CargarGraficaColaboradores = (cluster, idContenedor, mostrarCargando = false) => {
+            var url = url_servicio_externo + "Cluster/DatosGraficaColaboradoresCluster";
+            var self = this;
+            $('#' + idContenedor).empty();
+            if (mostrarCargando) {
+                MostrarUpdateProgress();
+            }
+
+            let optionsRelations = ["relation_project", "relation_document"];
+            cluster.seleccionados=false;
+            $.post(url, cluster, function (data) {
+                // Establecer los valores en la variable externa
+                self.dataCB = data;
+                self.idContenedorCB = idContenedor;
+
+                self.actualizarGraficaColaboradores();
+                if (mostrarCargando) {
+                    OcultarUpdateProgress();
+                }
+            });
+        };
+        
+        CargarGraficaSeleccionados = (cluster, idContenedor, mostrarCargando = false) => {
+            var url = url_servicio_externo + "Cluster/DatosGraficaColaboradoresCluster";
+            var self = this;
+            $('#' + idContenedor).empty();
+            if (mostrarCargando) {
+                MostrarUpdateProgress();
+            }
+
+            let optionsRelations = ["relation_project", "relation_document"];
+            cluster.seleccionados=true;
+            $.post(url, cluster, function (data) {
+                // Establecer los valores en la variable externa
+                self.dataSE = data;
+                self.idContenedorSE = idContenedor;
+
+                self.actualizarGraficaSeleccionados();
+                if (mostrarCargando) {
+                    OcultarUpdateProgress();
+                }
+            });
+        };
+    };
+
+    // Creamos un nuevo objeto
+    var newGrafProj = new CargarGraficaProjectoObj();
+
+
+    // Función a la que se llama para seleccionar qué elementos de las relaciones mostrar
+    function actualizarTypesOcultar(type) {
+        if (type == "relation_todas") {
+            newGrafProj.typesOcultar = [];
+        } else {
+            newGrafProj.typesOcultar = [type];
+        }
+        newGrafProj.actualizarGraficaColaboradores();
+    }
+
+    function actualizarTypesOcultarSE(type) {
+        if (type == "relation_todas") {
+            newGrafProj.typesOcultarSE = [];
+        } else {
+            newGrafProj.typesOcultarSE = [type];
+        }
+        newGrafProj.actualizarGraficaSeleccionados();
+    }
+
+
+    // función para actualizar la gráfica de colaboradores
+    function ActualizarGraficaClusterolaboradores(typesOcultar = [], showRelation = true) {
+        AjustarGraficaArania(dataCB, idContenedorCB, typesOcultar, showRelation);
+    }
+
+
+    // Datos gráfica áreas temáticas
+    function CargarGraficaAreasTematicas(personas, idContenedor) {
+        var url = url_servicio_externo + "Cluster/DatosGraficaAreasTematicasCluster"
+        var arg = {};
+        $.post(url, personas, function (data) {
+            PintarGraficaAreasTematicas(data, idContenedor);
+        });
+    }
+
+
+    // Datos gráfica áreas temáticas
+    function borrarCluster() {
+        var url = url_servicio_externo + "Cluster/BorrarCluster"
+        var arg = {};
+        arg.pIdClusterId = "@pCluster.GNOSSID"
+        $.post(url, arg, function (data) {
+            window.location = "@Comunidad.Url/@Html.Translate("CLUSTER_URL")"
+        });
+    }
+
+
+
+    // Comportamiento página proyecto
+    var comportamientoPaginaDocumento = {
+        tabActive: null,
+        init: function () {
+            this.config();
+            $('#participantes-tab').click();
+            return;
+        },
+        config: function () {
+            var that = this;
+
+            $('#participantes-tab').unbind().click(function (e) {
+                e.preventDefault();
+                that.tabActive = "participantes";
+                var parametros = ObtenerHash2() + '&' + buscadorPersonalizado.filtro
+                newGrafProj.CargarGraficaColaboradores({pPersons: persons}, 'colaboratorsgraph', true)
+            });
+
+            $('#temas-investigacion-tab').unbind().click(function (e) {
+                e.preventDefault();
+                that.tabActive = "topics";
+                CargarGraficaAreasTematicas({pPersons: persons}, "topicsgraph");
+            });
+            return;
+        }
+    };
+
+
+    $(function () {
+        comportamientoPaginaDocumento.init();
+    });
+
+    // Acciones a llevar a cabo en el filtrado.
+    function accionFiltrado() {
+        if(comportamientoPaginaDocumento.tabActive == "referencias")
+        {
+            //var parametros = ObtenerHash2();
+            //CargarGraficaReferencias("@pCluster.GNOSSID.Split('_')[1].ToUpper()", parametros);
+        } else if (comportamientoPaginaDocumento.tabActive == "citas")
+        {
+            //var parametros = ObtenerHash2();
+            //CargarGraficaCitas("@pCluster.GNOSSID.Split('_')[1].ToUpper()", parametros);
+        }
+    }
+
+</script>
+
+@functions {
+    public class RDFPropertyAttribute : Attribute
+    {
+        public RDFPropertyAttribute(string pRDFA)
+        {
+            mRDFA = pRDFA;
+        }
+        protected string mRDFA;
+        public string RDFProperty
+        {
+            get { return mRDFA; }
+        }
+    }
+
+    [AttributeUsage(AttributeTargets.All, AllowMultiple = true)]
+    public class LABELAttribute : Attribute
+    {
+        private GnossOCBase.LanguageEnum IdiomaDefecto = GnossOCBase.LanguageEnum.es;
+        private GnossOCBase.LanguageEnum midioma;
+        private string mlabel;
+        public LABELAttribute(GnossOCBase.LanguageEnum idioma, string label)
+        {
+            mlabel = label;
+            midioma = idioma;
+        }
+        public string LABEL(GnossOCBase.LanguageEnum pLang)
+        {
+            if (midioma.Equals(pLang))
+            {
+                return mlabel;
+            }
+            return "";
+        }
+    }
+
+    public class GnossOCBase
+    {
+        public enum LanguageEnum
+        {
+            es,
+            en,
+            pt,
+            ca,
+            eu,
+            gl,
+            fr,
+            de,
+            it,
+        }
+        internal List<string> prefList = new List<string>();
+        internal string mGNOSSID;
+        internal string mURL;
+        internal Guid resourceID;
+        internal Guid articleID;
+        private static List<string> NoEnIdiomas = new List<string> { "N�o", "Non", "Ez", "Nein", "No" };
+        public List<string> tagList = new List<string>();
+        public GnossOCBase()
+        {
+            prefList.Add("xmlns:foaf=\"http://xmlns.com/foaf/0.1/\"");
+            prefList.Add("xmlns:vivo=\"http://vivoweb.org/ontology/core#\"");
+            prefList.Add("xmlns:rdfs=\"http://www.w3.org/2000/01/rdf-schema#\"");
+            prefList.Add("xmlns:owl=\"http://www.w3.org/2002/07/owl#\"");
+            prefList.Add("xmlns:bibo=\"http://purl.org/ontology/bibo/\"");
+            prefList.Add("xmlns:roh=\"http://w3id.org/roh/\"");
+            prefList.Add("xmlns:dct=\"http://purl.org/dc/terms/\"");
+            prefList.Add("xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\"");
+            prefList.Add("xmlns:xsd=\"http://www.w3.org/2001/XMLSchema#\"");
+            prefList.Add("xmlns:obo=\"http://purl.obolibrary.org/obo/\"");
+            prefList.Add("xmlns:vcard=\"https://www.w3.org/2006/vcard/ns#\"");
+            prefList.Add("xmlns:dc=\"http://purl.org/dc/elements/1.1/\"");
+            prefList.Add("xmlns:gn=\"http://www.geonames.org/ontology#\"");
+
+            this.resourceID = Guid.NewGuid();
+            this.articleID = Guid.NewGuid();
+        }
+
+        public string GNOSSID
+        {
+            get { return mGNOSSID; }
+            set
+            {
+                this.mGNOSSID = value;
+                var GnossIDSplit = this.mGNOSSID.Split('_');
+                Guid nuevoResource = Guid.Parse(GnossIDSplit[GnossIDSplit.Count() - 2]);
+                Guid nuevoArticle = Guid.Parse(GnossIDSplit.Last());
+                if (!this.ResourceID.Equals(nuevoResource))
+                {
+                    this.resourceID = nuevoResource;
+                }
+                if (!this.ArticleID.Equals(nuevoArticle))
+                {
+                    this.articleID = nuevoArticle;
+                }
+            }
+        }
+        public string URL
+        {
+            get { return mURL; }
+        }
+
+        public Guid ResourceID
+        {
+            get { return resourceID; }
+            set
+            {
+                this.resourceID = value;
+                string primeraParte = this.mGNOSSID.Substring(0, this.mGNOSSID.LastIndexOf('/') + 1);
+                string antiguoGuid = this.mGNOSSID.Substring(this.mGNOSSID.LastIndexOf('/') + 1, this.mGNOSSID.LastIndexOf('_'));
+                string ultimaParte = this.mGNOSSID.Substring(this.mGNOSSID.LastIndexOf('_') + 1);
+                if (!antiguoGuid.Equals(this.resourceID.ToString()))
+                {
+                    this.mGNOSSID = $"{primeraParte}{this.resourceID.ToString()}{ultimaParte}";
+                }
+            }
+        }
+
+        public Guid ArticleID
+        {
+            get { return articleID; }
+            set
+            {
+                this.articleID = value;
+                string primeraParte = this.mGNOSSID.Substring(0, this.mGNOSSID.LastIndexOf('_') + 1);
+                string antiguoGuid = this.mGNOSSID.Substring(this.mGNOSSID.LastIndexOf('_') + 1);
+                if (!antiguoGuid.Equals(this.articleID.ToString()))
+                {
+                    this.mGNOSSID = $"{primeraParte}{this.articleID.ToString()}";
+                }
+            }
+        }
+
+        public static string GetPropertyValueSemCms(SemanticPropertyModel pProperty)
+        {
+            if (pProperty != null && pProperty.PropertyValues.Count > 0)
+            {
+                return pProperty.PropertyValues[0].Value;
+            }
+            return "";
+        }
+
+        public static int? GetNumberIntPropertyValueSemCms(SemanticPropertyModel pProperty)
+        {
+            if (pProperty != null && pProperty.PropertyValues.Count > 0 && !string.IsNullOrEmpty(pProperty.PropertyValues[0].Value))
+            {
+                return int.Parse(pProperty.PropertyValues[0].Value);
+            }
+            return 0;
+        }
+
+        public static int? GetNumberIntPropertyMultipleValueSemCms(SemanticPropertyModel.PropertyValue pProperty)
+        {
+            if (pProperty != null && !string.IsNullOrEmpty(pProperty.Value))
+            {
+                return int.Parse(pProperty.Value);
+            }
+            return 0;
+        }
+
+        public static float? GetNumberFloatPropertyValueSemCms(SemanticPropertyModel pProperty)
+        {
+            if (pProperty != null && pProperty.PropertyValues.Count > 0 && !string.IsNullOrEmpty(pProperty.PropertyValues[0].Value))
+            {
+                return float.Parse(pProperty.PropertyValues[0].Value.Replace('.', ','));
+            }
+            return 0;
+        }
+
+        public static DateTime? GetDateValuePropertySemCms(SemanticPropertyModel pProperty)
+        {
+            string stringDate = GetPropertyValueSemCms(pProperty);
+            if (!string.IsNullOrEmpty(stringDate))
+            {
+                int year = 0;
+                int month = 0;
+                int day = 0;
+                if (stringDate.Contains('/'))
+                {
+                    day = int.Parse(stringDate.Split('/')[0]);
+                    month = int.Parse(stringDate.Split('/')[1]);
+                    year = int.Parse(stringDate.Split('/')[2].Split(' ')[0]);
+                }
+                else
+                {
+                    year = int.Parse(stringDate.Substring(0, 4));
+                    month = int.Parse(stringDate.Substring(4, 2));
+                    day = int.Parse(stringDate.Substring(6, 2));
+                }
+                if (stringDate.Length == 14)
+                {
+                    if (month == 0 || day == 0)
+                    {
+                        return new DateTime(year);
+                    }
+                    else
+                    {
+                        int hour = int.Parse(stringDate.Substring(8, 2));
+                        int minute = int.Parse(stringDate.Substring(10, 2));
+                        int second = int.Parse(stringDate.Substring(12, 2));
+                        return new DateTime(year, month, day, hour, minute, second);
+                    }
+                }
+                else
+                {
+                    return new DateTime(year, month, day);
+                }
+            }
+            return null;
+        }
+
+        public static bool GetBooleanPropertyValueSemCms(SemanticPropertyModel pProperty)
+        {
+            bool resultado = false;
+            if (pProperty != null && pProperty.PropertyValues.Count > 0 && !string.IsNullOrEmpty(pProperty.PropertyValues[0].Value))
+            {
+                if (!bool.TryParse(pProperty.PropertyValues[0].Value, out resultado))
+                {
+                    resultado = !NoEnIdiomas.Contains(pProperty.PropertyValues[0].Value);
+                }
+            }
+            return resultado;
+        }
+
+        internal virtual void GetProperties()
+        {
+        }
+
+        internal virtual void GetEntities()
+        {
+        }
+
+        internal string GetExtension(string file)
+        {
+            return file.Substring(file.LastIndexOf('.'));
+        }
+
+
+        public string GetPropertyURI(string nombrePropiedad)
+        {
+            Type type = this.GetType();
+            PropertyInfo mInfo = type.GetProperty(nombrePropiedad);
+            if (mInfo != null)
+            {
+                Attribute attr = Attribute.GetCustomAttribute(mInfo, typeof(RDFPropertyAttribute));
+                if (attr != null)
+                {
+                    return ((RDFPropertyAttribute)attr).RDFProperty;
+                }
+            }
+            return "";
+        }
+
+
+
+        public string GetLabel(string nombrePropiedad, LanguageEnum pLang)
+        {
+            Type type = this.GetType();
+            PropertyInfo mInfo = type.GetProperty(nombrePropiedad);
+
+            if (mInfo != null)
+            {
+                Attribute[] attr = Attribute.GetCustomAttributes(mInfo, typeof(LABELAttribute));
+                {
+                    foreach (Attribute atributo in attr)
+                    {
+                        if (atributo != null)
+                        {
+                            if (!((LABELAttribute)atributo).LABEL(pLang).Equals(""))
+                            {
+                                return ((LABELAttribute)atributo).LABEL(pLang);
+                            }
+                        }
+                    }
+                }
+            }
+
+            return "";
+        }
+
+        public int GetID() { return 0; }
+    }
+
+    public class Cluster : GnossOCBase
+    {
+
+        public Cluster() : base() { } 
+
+        public Cluster(SemanticResourceModel pSemCmsModel, LanguageEnum idiomaUsuario) : base()
+        {
+            this.mGNOSSID = pSemCmsModel.RootEntities[0].Entity.Uri;
+            SemanticPropertyModel propRdf_member = pSemCmsModel.GetPropertyByPath("http://www.w3.org/1999/02/22-rdf-syntax-ns#member");
+            if(propRdf_member != null && propRdf_member.PropertyValues.Count > 0)
+            {
+                this.Rdf_member = new Person(propRdf_member.PropertyValues[0].RelatedEntity,idiomaUsuario);
+            }
+            this.Roh_clusterPerfil = new List<ClusterPerfil>();
+            SemanticPropertyModel propRoh_clusterPerfil = pSemCmsModel.GetPropertyByPath("http://w3id.org/roh/clusterPerfil");
+            if(propRoh_clusterPerfil != null && propRoh_clusterPerfil.PropertyValues.Count > 0)
+            {
+                foreach (SemanticPropertyModel.PropertyValue propValue in propRoh_clusterPerfil.PropertyValues)
+                {
+                    if(propValue.RelatedEntity!=null){
+                        ClusterPerfil roh_clusterPerfil = new ClusterPerfil(propValue.RelatedEntity,idiomaUsuario);
+                        this.Roh_clusterPerfil.Add(roh_clusterPerfil);
+                    }
+                }
+            }
+            this.Roh_hasKnowledgeArea = new List<CategoryPath>();
+            SemanticPropertyModel propRoh_hasKnowledgeArea = pSemCmsModel.GetPropertyByPath("http://w3id.org/roh/hasKnowledgeArea");
+            if(propRoh_hasKnowledgeArea != null && propRoh_hasKnowledgeArea.PropertyValues.Count > 0)
+            {
+                foreach (SemanticPropertyModel.PropertyValue propValue in propRoh_hasKnowledgeArea.PropertyValues)
+                {
+                    if(propValue.RelatedEntity!=null){
+                        CategoryPath roh_hasKnowledgeArea = new CategoryPath(propValue.RelatedEntity,idiomaUsuario);
+                        this.Roh_hasKnowledgeArea.Add(roh_hasKnowledgeArea);
+                    }
+                }
+            }
+            this.Vivo_description = GetPropertyValueSemCms(pSemCmsModel.GetPropertyByPath("http://vivoweb.org/ontology/core#description"));
+            var item0 = GetDateValuePropertySemCms(pSemCmsModel.GetPropertyByPath("http://purl.org/dc/terms/issued"));
+            if(item0.HasValue){
+                this.Dct_issued = item0.Value;
+            }
+            this.Roh_title = GetPropertyValueSemCms(pSemCmsModel.GetPropertyByPath("http://w3id.org/roh/title"));
+        }
+
+        public Cluster(SemanticEntityModel pSemCmsModel, LanguageEnum idiomaUsuario) : base()
+        {
+            this.mGNOSSID = pSemCmsModel.Entity.Uri;
+            this.mURL = pSemCmsModel.Properties.FirstOrDefault(p => p.PropertyValues.Any(prop => prop.DownloadUrl != null))?.FirstPropertyValue.DownloadUrl;
+            SemanticPropertyModel propRdf_member = pSemCmsModel.GetPropertyByPath("http://www.w3.org/1999/02/22-rdf-syntax-ns#member");
+            if(propRdf_member != null && propRdf_member.PropertyValues.Count > 0)
+            {
+                this.Rdf_member = new Person(propRdf_member.PropertyValues[0].RelatedEntity,idiomaUsuario);
+            }
+            this.Roh_clusterPerfil = new List<ClusterPerfil>();
+            SemanticPropertyModel propRoh_clusterPerfil = pSemCmsModel.GetPropertyByPath("http://w3id.org/roh/clusterPerfil");
+            if(propRoh_clusterPerfil != null && propRoh_clusterPerfil.PropertyValues.Count > 0)
+            {
+                foreach (SemanticPropertyModel.PropertyValue propValue in propRoh_clusterPerfil.PropertyValues)
+                {
+                    if(propValue.RelatedEntity!=null){
+                        ClusterPerfil roh_clusterPerfil = new ClusterPerfil(propValue.RelatedEntity,idiomaUsuario);
+                        this.Roh_clusterPerfil.Add(roh_clusterPerfil);
+                    }
+                }
+            }
+            this.Roh_hasKnowledgeArea = new List<CategoryPath>();
+            SemanticPropertyModel propRoh_hasKnowledgeArea = pSemCmsModel.GetPropertyByPath("http://w3id.org/roh/hasKnowledgeArea");
+            if(propRoh_hasKnowledgeArea != null && propRoh_hasKnowledgeArea.PropertyValues.Count > 0)
+            {
+                foreach (SemanticPropertyModel.PropertyValue propValue in propRoh_hasKnowledgeArea.PropertyValues)
+                {
+                    if(propValue.RelatedEntity!=null){
+                        CategoryPath roh_hasKnowledgeArea = new CategoryPath(propValue.RelatedEntity,idiomaUsuario);
+                        this.Roh_hasKnowledgeArea.Add(roh_hasKnowledgeArea);
+                    }
+                }
+            }
+            this.Vivo_description = GetPropertyValueSemCms(pSemCmsModel.GetPropertyByPath("http://vivoweb.org/ontology/core#description"));
+            var item1 = GetDateValuePropertySemCms(pSemCmsModel.GetPropertyByPath("http://purl.org/dc/terms/issued"));
+            if(item1.HasValue){
+                this.Dct_issued = item1.Value;
+            }
+            this.Roh_title = GetPropertyValueSemCms(pSemCmsModel.GetPropertyByPath("http://w3id.org/roh/title"));
+        }
+
+        public virtual string RdfType { get { return "http://w3id.org/roh/Cluster"; } }
+        public virtual string RdfsLabel { get { return "http://w3id.org/roh/Cluster"; } }
+        [LABEL(LanguageEnum.es,"http://www.w3.org/1999/02/22-rdf-syntax-ns#member")]
+        [RDFProperty("http://www.w3.org/1999/02/22-rdf-syntax-ns#member")]
+        public  Person Rdf_member  { get; set;} 
+        public string IdRdf_member  { get; set;} 
+
+        [RDFProperty("http://w3id.org/roh/clusterPerfil")]
+        public  List<ClusterPerfil> Roh_clusterPerfil { get; set;}
+
+        [RDFProperty("http://w3id.org/roh/hasKnowledgeArea")]
+        public  List<CategoryPath> Roh_hasKnowledgeArea { get; set;}
+
+        [RDFProperty("http://vivoweb.org/ontology/core#description")]
+        public  string Vivo_description { get; set;}
+
+        [RDFProperty("http://purl.org/dc/terms/issued")]
+        public  DateTime Dct_issued { get; set;}
+
+        [RDFProperty("http://w3id.org/roh/title")]
+        public  string Roh_title { get; set;}
+    }
+
+    public class CategoryPath : GnossOCBase
+    {
+
+        public CategoryPath() : base() { } 
+
+        public CategoryPath(SemanticEntityModel pSemCmsModel, LanguageEnum idiomaUsuario) : base()
+        {
+            this.mGNOSSID = pSemCmsModel.Entity.Uri;
+            this.mURL = pSemCmsModel.Properties.FirstOrDefault(p => p.PropertyValues.Any(prop => prop.DownloadUrl != null))?.FirstPropertyValue.DownloadUrl;
+            this.Roh_categoryNode = new List<Concept>();
+            SemanticPropertyModel propRoh_categoryNode = pSemCmsModel.GetPropertyByPath("http://w3id.org/roh/categoryNode");
+            if(propRoh_categoryNode != null && propRoh_categoryNode.PropertyValues.Count > 0)
+            {
+                foreach (SemanticPropertyModel.PropertyValue propValue in propRoh_categoryNode.PropertyValues)
+                {
+                    if(propValue.RelatedEntity!=null){
+                        Concept roh_categoryNode = new Concept(propValue.RelatedEntity,idiomaUsuario);
+                        this.Roh_categoryNode.Add(roh_categoryNode);
+                    }
+                }
+            }
+        }
+
+        public virtual string RdfType { get { return "http://w3id.org/roh/CategoryPath"; } }
+        public virtual string RdfsLabel { get { return "http://w3id.org/roh/CategoryPath"; } }
+
+        [LABEL(LanguageEnum.es,"http://w3id.org/roh/categoryNode")]
+        [RDFProperty("http://w3id.org/roh/categoryNode")]
+        public  List<Concept> Roh_categoryNode { get; set;}
+        public List<string> IdsRoh_categoryNode { get; set;} 
+    }
+
+    public class Concept : GnossOCBase
+    {
+
+        public Concept() : base() { }
+
+        public Concept(SemanticEntityModel pSemCmsModel, LanguageEnum idiomaUsuario) : base()
+        {
+            this.mGNOSSID = pSemCmsModel.Entity.Uri;
+            this.mURL = pSemCmsModel.Properties.FirstOrDefault(p => p.PropertyValues.Any(prop => prop.DownloadUrl != null))?.FirstPropertyValue.DownloadUrl;
+            this.Skos_broader = new List<Concept>();
+            SemanticPropertyModel propSkos_broader = pSemCmsModel.GetPropertyByPath("http://www.w3.org/2008/05/skos#broader");
+            if (propSkos_broader != null && propSkos_broader.PropertyValues.Count > 0)
+            {
+                foreach (SemanticPropertyModel.PropertyValue propValue in propSkos_broader.PropertyValues)
+                {
+                    if (propValue.RelatedEntity != null)
+                    {
+                        Concept skos_broader = new Concept(propValue.RelatedEntity, idiomaUsuario);
+                        this.Skos_broader.Add(skos_broader);
+                    }
+                }
+            }
+            this.Skos_narrower = new List<Concept>();
+            SemanticPropertyModel propSkos_narrower = pSemCmsModel.GetPropertyByPath("http://www.w3.org/2008/05/skos#narrower");
+            if (propSkos_narrower != null && propSkos_narrower.PropertyValues.Count > 0)
+            {
+                foreach (SemanticPropertyModel.PropertyValue propValue in propSkos_narrower.PropertyValues)
+                {
+                    if (propValue.RelatedEntity != null)
+                    {
+                        Concept skos_narrower = new Concept(propValue.RelatedEntity, idiomaUsuario);
+                        this.Skos_narrower.Add(skos_narrower);
+                    }
+                }
+            }
+            this.Skos_symbol = GetPropertyValueSemCms(pSemCmsModel.GetPropertyByPath("http://www.w3.org/2008/05/skos#symbol"));
+            this.Dc_identifier = GetPropertyValueSemCms(pSemCmsModel.GetPropertyByPath("http://purl.org/dc/elements/1.1/identifier"));
+            this.Skos_prefLabel = GetPropertyValueSemCms(pSemCmsModel.GetPropertyByPath("http://www.w3.org/2008/05/skos#prefLabel"));
+            this.Dc_source = GetPropertyValueSemCms(pSemCmsModel.GetPropertyByPath("http://purl.org/dc/elements/1.1/source"));
+        }
+
+        public virtual string RdfType { get { return "http://www.w3.org/2008/05/skos#Concept"; } }
+        public virtual string RdfsLabel { get { return "http://www.w3.org/2008/05/skos#Concept"; } }
+
+        [LABEL(LanguageEnum.es, "Genérico")]
+        [RDFProperty("http://www.w3.org/2008/05/skos#broader")]
+        public List<Concept> Skos_broader { get; set; }
+
+        [LABEL(LanguageEnum.es, "Específico")]
+        [RDFProperty("http://www.w3.org/2008/05/skos#narrower")]
+        public List<Concept> Skos_narrower { get; set; }
+
+        [LABEL(LanguageEnum.es, "Símbolo")]
+        [RDFProperty("http://www.w3.org/2008/05/skos#symbol")]
+        public string Skos_symbol { get; set; }
+
+        [LABEL(LanguageEnum.es, "Identificador")]
+        [RDFProperty("http://purl.org/dc/elements/1.1/identifier")]
+        public string Dc_identifier { get; set; }
+
+        [LABEL(LanguageEnum.es, "Etiqueta preferente")]
+        [RDFProperty("http://www.w3.org/2008/05/skos#prefLabel")]
+        public string Skos_prefLabel { get; set; }
+
+        [LABEL(LanguageEnum.es, "Fuente")]
+        [RDFProperty("http://purl.org/dc/elements/1.1/source")]
+        public string Dc_source { get; set; }
+    }
+
+    public class ClusterPerfil : GnossOCBase
+    {
+
+        public ClusterPerfil() : base() { } 
+
+        public ClusterPerfil(SemanticEntityModel pSemCmsModel, LanguageEnum idiomaUsuario) : base()
+        {
+            this.mGNOSSID = pSemCmsModel.Entity.Uri;
+            this.mURL = pSemCmsModel.Properties.FirstOrDefault(p => p.PropertyValues.Any(prop => prop.DownloadUrl != null))?.FirstPropertyValue.DownloadUrl;
+            this.Rdf_member = new List<Person>();
+            SemanticPropertyModel propRdf_member = pSemCmsModel.GetPropertyByPath("http://www.w3.org/1999/02/22-rdf-syntax-ns#member");
+            if(propRdf_member != null && propRdf_member.PropertyValues.Count > 0)
+            {
+                foreach (SemanticPropertyModel.PropertyValue propValue in propRdf_member.PropertyValues)
+                {
+                    if(propValue.RelatedEntity!=null){
+                        Person rdf_member = new Person(propValue.RelatedEntity,idiomaUsuario);
+                        this.Rdf_member.Add(rdf_member);
+                    }
+                }
+            }
+            this.Roh_hasKnowledgeArea = new List<CategoryPath>();
+            SemanticPropertyModel propRoh_hasKnowledgeArea = pSemCmsModel.GetPropertyByPath("http://w3id.org/roh/hasKnowledgeArea");
+            if(propRoh_hasKnowledgeArea != null && propRoh_hasKnowledgeArea.PropertyValues.Count > 0)
+            {
+                foreach (SemanticPropertyModel.PropertyValue propValue in propRoh_hasKnowledgeArea.PropertyValues)
+                {
+                    if(propValue.RelatedEntity!=null){
+                        CategoryPath roh_hasKnowledgeArea = new CategoryPath(propValue.RelatedEntity,idiomaUsuario);
+                        this.Roh_hasKnowledgeArea.Add(roh_hasKnowledgeArea);
+                    }
+                }
+            }
+            SemanticPropertyModel propVivo_freeTextKeyword = pSemCmsModel.GetPropertyByPath("http://vivoweb.org/ontology/core#freeTextKeyword");
+            this.Vivo_freeTextKeyword = new List<string>();
+            if (propVivo_freeTextKeyword != null && propVivo_freeTextKeyword.PropertyValues.Count > 0)
+            {
+                foreach (SemanticPropertyModel.PropertyValue propValue in propVivo_freeTextKeyword.PropertyValues)
+                {
+                    this.Vivo_freeTextKeyword.Add(propValue.Value);
+                }
+            }
+            this.Roh_title = GetPropertyValueSemCms(pSemCmsModel.GetPropertyByPath("http://w3id.org/roh/title"));
+        }
+
+        public virtual string RdfType { get { return "http://w3id.org/roh/ClusterPerfil"; } }
+        public virtual string RdfsLabel { get { return "http://w3id.org/roh/ClusterPerfil"; } }
+
+        [LABEL(LanguageEnum.es,"http://www.w3.org/1999/02/22-rdf-syntax-ns#member")]
+        [RDFProperty("http://www.w3.org/1999/02/22-rdf-syntax-ns#member")]
+        public  List<Person> Rdf_member { get; set;}
+        public List<string> IdsRdf_member { get; set;}
+
+        [RDFProperty("http://w3id.org/roh/hasKnowledgeArea")]
+        public  List<CategoryPath> Roh_hasKnowledgeArea { get; set;}
+
+        [RDFProperty("http://vivoweb.org/ontology/core#freeTextKeyword")]
+        public  List<string> Vivo_freeTextKeyword { get; set;}
+
+        [RDFProperty("http://w3id.org/roh/title")]
+        public  string Roh_title { get; set;}
+    }
+
+
+    public class Person : GnossOCBase
+    {
+
+        public Person() : base() { } 
+
+        public Person(SemanticResourceModel pSemCmsModel, LanguageEnum idiomaUsuario) : base()
+        {
+            this.mGNOSSID = pSemCmsModel.RootEntities[0].Entity.Uri;
+            SemanticPropertyModel propRoh_hasRole = pSemCmsModel.GetPropertyByPath("http://w3id.org/roh/hasRole");
+            if(propRoh_hasRole != null && propRoh_hasRole.PropertyValues.Count > 0)
+            {
+                this.Roh_hasRole = new Organization(propRoh_hasRole.PropertyValues[0].RelatedEntity,idiomaUsuario);
+            }
+            SemanticPropertyModel propVivo_departmentOrSchool = pSemCmsModel.GetPropertyByPath("http://vivoweb.org/ontology/core#departmentOrSchool");
+            if(propVivo_departmentOrSchool != null && propVivo_departmentOrSchool.PropertyValues.Count > 0)
+            {
+                this.Vivo_departmentOrSchool = new Department(propVivo_departmentOrSchool.PropertyValues[0].RelatedEntity,idiomaUsuario);
+            }
+            this.Vivo_hasResearchArea = new List<CategoryPath>();
+            SemanticPropertyModel propVivo_hasResearchArea = pSemCmsModel.GetPropertyByPath("http://vivoweb.org/ontology/core#hasResearchArea");
+            if(propVivo_hasResearchArea != null && propVivo_hasResearchArea.PropertyValues.Count > 0)
+            {
+                foreach (SemanticPropertyModel.PropertyValue propValue in propVivo_hasResearchArea.PropertyValues)
+                {
+                    if(propValue.RelatedEntity!=null){
+                        CategoryPath vivo_hasResearchArea = new CategoryPath(propValue.RelatedEntity,idiomaUsuario);
+                        this.Vivo_hasResearchArea.Add(vivo_hasResearchArea);
+                    }
+                }
+            }
+            SemanticPropertyModel propRoh_lineResearch = pSemCmsModel.GetPropertyByPath("http://w3id.org/roh/lineResearch");
+            this.Roh_lineResearch = new List<string>();
+            if (propRoh_lineResearch != null && propRoh_lineResearch.PropertyValues.Count > 0)
+            {
+                foreach (SemanticPropertyModel.PropertyValue propValue in propRoh_lineResearch.PropertyValues)
+                {
+                    this.Roh_lineResearch.Add(propValue.Value);
+                }
+            }
+            this.Roh_lastUpdatedDate= GetDateValuePropertySemCms(pSemCmsModel.GetPropertyByPath("http://w3id.org/roh/lastUpdatedDate"));
+            this.Roh_publicProjectsNumber = GetNumberIntPropertyValueSemCms(pSemCmsModel.GetPropertyByPath("http://w3id.org/roh/publicProjectsNumber"));
+            this.Roh_publicationsNumber = GetNumberIntPropertyValueSemCms(pSemCmsModel.GetPropertyByPath("http://w3id.org/roh/publicationsNumber"));
+            this.Vivo_researcherId = GetPropertyValueSemCms(pSemCmsModel.GetPropertyByPath("http://vivoweb.org/ontology/core#researcherId"));
+            this.Roh_ipNumber = GetNumberIntPropertyValueSemCms(pSemCmsModel.GetPropertyByPath("http://w3id.org/roh/ipNumber"));
+            this.Roh_tokenFigShare = GetPropertyValueSemCms(pSemCmsModel.GetPropertyByPath("http://w3id.org/roh/tokenFigShare"));
+            this.Roh_tokenGitHub = GetPropertyValueSemCms(pSemCmsModel.GetPropertyByPath("http://w3id.org/roh/tokenGitHub"));
+            this.Roh_publicCollaboratorsNumber = GetNumberIntPropertyValueSemCms(pSemCmsModel.GetPropertyByPath("http://w3id.org/roh/publicCollaboratorsNumber"));
+            this.Vivo_scopusId = GetPropertyValueSemCms(pSemCmsModel.GetPropertyByPath("http://vivoweb.org/ontology/core#scopusId"));
+            this.Vcard_address = GetPropertyValueSemCms(pSemCmsModel.GetPropertyByPath("https://www.w3.org/2006/vcard/ns#address"));
+            SemanticPropertyModel propVcard_email = pSemCmsModel.GetPropertyByPath("https://www.w3.org/2006/vcard/ns#email");
+            this.Vcard_email = new List<string>();
+            if (propVcard_email != null && propVcard_email.PropertyValues.Count > 0)
+            {
+                foreach (SemanticPropertyModel.PropertyValue propValue in propVcard_email.PropertyValues)
+                {
+                    this.Vcard_email.Add(propValue.Value);
+                }
+            }
+            this.Vivo_description = GetPropertyValueSemCms(pSemCmsModel.GetPropertyByPath("http://vivoweb.org/ontology/core#description"));
+            this.Roh_themedAreasNumber = GetNumberIntPropertyValueSemCms(pSemCmsModel.GetPropertyByPath("http://w3id.org/roh/themedAreasNumber"));
+            this.Roh_usuarioGitHub = GetPropertyValueSemCms(pSemCmsModel.GetPropertyByPath("http://w3id.org/roh/usuarioGitHub"));
+            this.Roh_publicPublicationsNumber = GetNumberIntPropertyValueSemCms(pSemCmsModel.GetPropertyByPath("http://w3id.org/roh/publicPublicationsNumber"));
+            this.Roh_projectsNumber = GetNumberIntPropertyValueSemCms(pSemCmsModel.GetPropertyByPath("http://w3id.org/roh/projectsNumber"));
+            SemanticPropertyModel propFoaf_homepage = pSemCmsModel.GetPropertyByPath("http://xmlns.com/foaf/0.1/homepage");
+            this.Foaf_homepage = new List<string>();
+            if (propFoaf_homepage != null && propFoaf_homepage.PropertyValues.Count > 0)
+            {
+                foreach (SemanticPropertyModel.PropertyValue propValue in propFoaf_homepage.PropertyValues)
+                {
+                    this.Foaf_homepage.Add(propValue.Value);
+                }
+            }
+            this.Roh_hasPosition = GetPropertyValueSemCms(pSemCmsModel.GetPropertyByPath("http://w3id.org/roh/hasPosition"));
+            this.Roh_crisIdentifier = GetPropertyValueSemCms(pSemCmsModel.GetPropertyByPath("http://w3id.org/roh/crisIdentifier"));
+            this.Roh_ORCID = GetPropertyValueSemCms(pSemCmsModel.GetPropertyByPath("http://w3id.org/roh/ORCID"));
+            this.Roh_usuarioFigShare = GetPropertyValueSemCms(pSemCmsModel.GetPropertyByPath("http://w3id.org/roh/usuarioFigShare"));
+            this.Roh_semanticScholarId = GetPropertyValueSemCms(pSemCmsModel.GetPropertyByPath("http://w3id.org/roh/semanticScholarId"));
+            this.Roh_h_index = GetNumberFloatPropertyValueSemCms(pSemCmsModel.GetPropertyByPath("http://w3id.org/roh/h-index"));
+            SemanticPropertyModel propVcard_hasTelephone = pSemCmsModel.GetPropertyByPath("https://www.w3.org/2006/vcard/ns#hasTelephone");
+            this.Vcard_hasTelephone = new List<string>();
+            if (propVcard_hasTelephone != null && propVcard_hasTelephone.PropertyValues.Count > 0)
+            {
+                foreach (SemanticPropertyModel.PropertyValue propValue in propVcard_hasTelephone.PropertyValues)
+                {
+                    this.Vcard_hasTelephone.Add(propValue.Value);
+                }
+            }
+            SemanticPropertyModel propFoaf_nick = pSemCmsModel.GetPropertyByPath("http://xmlns.com/foaf/0.1/nick");
+            this.Foaf_nick = new List<string>();
+            if (propFoaf_nick != null && propFoaf_nick.PropertyValues.Count > 0)
+            {
+                foreach (SemanticPropertyModel.PropertyValue propValue in propFoaf_nick.PropertyValues)
+                {
+                    this.Foaf_nick.Add(propValue.Value);
+                }
+            }
+            this.Roh_isIPGroupActually= GetBooleanPropertyValueSemCms(pSemCmsModel.GetPropertyByPath("http://w3id.org/roh/isIPGroupActually"));
+            this.Roh_isSynchronized= GetBooleanPropertyValueSemCms(pSemCmsModel.GetPropertyByPath("http://w3id.org/roh/isSynchronized"));
+            this.Roh_isIPProjectHistorically= GetBooleanPropertyValueSemCms(pSemCmsModel.GetPropertyByPath("http://w3id.org/roh/isIPProjectHistorically"));
+            this.Foaf_firstName = GetPropertyValueSemCms(pSemCmsModel.GetPropertyByPath("http://xmlns.com/foaf/0.1/firstName"));
+            this.Roh_isActive= GetBooleanPropertyValueSemCms(pSemCmsModel.GetPropertyByPath("http://w3id.org/roh/isActive"));
+            this.Roh_isIPGroupHistorically= GetBooleanPropertyValueSemCms(pSemCmsModel.GetPropertyByPath("http://w3id.org/roh/isIPGroupHistorically"));
+            this.Roh_isIPProjectActually= GetBooleanPropertyValueSemCms(pSemCmsModel.GetPropertyByPath("http://w3id.org/roh/isIPProjectActually"));
+            this.Foaf_name = GetPropertyValueSemCms(pSemCmsModel.GetPropertyByPath("http://xmlns.com/foaf/0.1/name"));
+            this.Foaf_lastName = GetPropertyValueSemCms(pSemCmsModel.GetPropertyByPath("http://xmlns.com/foaf/0.1/lastName"));
+            this.IdRoh_gnossUser = GetPropertyValueSemCms(pSemCmsModel.GetPropertyByPath("http://w3id.org/roh/gnossUser"));
+        }
+
+        public Person(SemanticEntityModel pSemCmsModel, LanguageEnum idiomaUsuario) : base()
+        {
+            this.mGNOSSID = pSemCmsModel.Entity.Uri;
+            this.mURL = pSemCmsModel.Properties.FirstOrDefault(p => p.PropertyValues.Any(prop => prop.DownloadUrl != null))?.FirstPropertyValue.DownloadUrl;
+            SemanticPropertyModel propRoh_hasRole = pSemCmsModel.GetPropertyByPath("http://w3id.org/roh/hasRole");
+            if(propRoh_hasRole != null && propRoh_hasRole.PropertyValues.Count > 0)
+            {
+                this.Roh_hasRole = new Organization(propRoh_hasRole.PropertyValues[0].RelatedEntity,idiomaUsuario);
+            }
+            SemanticPropertyModel propVivo_departmentOrSchool = pSemCmsModel.GetPropertyByPath("http://vivoweb.org/ontology/core#departmentOrSchool");
+            if(propVivo_departmentOrSchool != null && propVivo_departmentOrSchool.PropertyValues.Count > 0)
+            {
+                this.Vivo_departmentOrSchool = new Department(propVivo_departmentOrSchool.PropertyValues[0].RelatedEntity,idiomaUsuario);
+            }
+            this.Vivo_hasResearchArea = new List<CategoryPath>();
+            SemanticPropertyModel propVivo_hasResearchArea = pSemCmsModel.GetPropertyByPath("http://vivoweb.org/ontology/core#hasResearchArea");
+            if(propVivo_hasResearchArea != null && propVivo_hasResearchArea.PropertyValues.Count > 0)
+            {
+                foreach (SemanticPropertyModel.PropertyValue propValue in propVivo_hasResearchArea.PropertyValues)
+                {
+                    if(propValue.RelatedEntity!=null){
+                        CategoryPath vivo_hasResearchArea = new CategoryPath(propValue.RelatedEntity,idiomaUsuario);
+                        this.Vivo_hasResearchArea.Add(vivo_hasResearchArea);
+                    }
+                }
+            }
+            SemanticPropertyModel propRoh_lineResearch = pSemCmsModel.GetPropertyByPath("http://w3id.org/roh/lineResearch");
+            this.Roh_lineResearch = new List<string>();
+            if (propRoh_lineResearch != null && propRoh_lineResearch.PropertyValues.Count > 0)
+            {
+                foreach (SemanticPropertyModel.PropertyValue propValue in propRoh_lineResearch.PropertyValues)
+                {
+                    this.Roh_lineResearch.Add(propValue.Value);
+                }
+            }
+            this.Roh_lastUpdatedDate= GetDateValuePropertySemCms(pSemCmsModel.GetPropertyByPath("http://w3id.org/roh/lastUpdatedDate"));
+            this.Roh_publicProjectsNumber = GetNumberIntPropertyValueSemCms(pSemCmsModel.GetPropertyByPath("http://w3id.org/roh/publicProjectsNumber"));
+            this.Roh_publicationsNumber = GetNumberIntPropertyValueSemCms(pSemCmsModel.GetPropertyByPath("http://w3id.org/roh/publicationsNumber"));
+            this.Vivo_researcherId = GetPropertyValueSemCms(pSemCmsModel.GetPropertyByPath("http://vivoweb.org/ontology/core#researcherId"));
+            this.Roh_ipNumber = GetNumberIntPropertyValueSemCms(pSemCmsModel.GetPropertyByPath("http://w3id.org/roh/ipNumber"));
+            this.Roh_tokenFigShare = GetPropertyValueSemCms(pSemCmsModel.GetPropertyByPath("http://w3id.org/roh/tokenFigShare"));
+            this.Roh_tokenGitHub = GetPropertyValueSemCms(pSemCmsModel.GetPropertyByPath("http://w3id.org/roh/tokenGitHub"));
+            this.Roh_publicCollaboratorsNumber = GetNumberIntPropertyValueSemCms(pSemCmsModel.GetPropertyByPath("http://w3id.org/roh/publicCollaboratorsNumber"));
+            this.Vivo_scopusId = GetPropertyValueSemCms(pSemCmsModel.GetPropertyByPath("http://vivoweb.org/ontology/core#scopusId"));
+            this.Vcard_address = GetPropertyValueSemCms(pSemCmsModel.GetPropertyByPath("https://www.w3.org/2006/vcard/ns#address"));
+            SemanticPropertyModel propVcard_email = pSemCmsModel.GetPropertyByPath("https://www.w3.org/2006/vcard/ns#email");
+            this.Vcard_email = new List<string>();
+            if (propVcard_email != null && propVcard_email.PropertyValues.Count > 0)
+            {
+                foreach (SemanticPropertyModel.PropertyValue propValue in propVcard_email.PropertyValues)
+                {
+                    this.Vcard_email.Add(propValue.Value);
+                }
+            }
+            this.Vivo_description = GetPropertyValueSemCms(pSemCmsModel.GetPropertyByPath("http://vivoweb.org/ontology/core#description"));
+            this.Roh_themedAreasNumber = GetNumberIntPropertyValueSemCms(pSemCmsModel.GetPropertyByPath("http://w3id.org/roh/themedAreasNumber"));
+            this.Roh_usuarioGitHub = GetPropertyValueSemCms(pSemCmsModel.GetPropertyByPath("http://w3id.org/roh/usuarioGitHub"));
+            this.Roh_publicPublicationsNumber = GetNumberIntPropertyValueSemCms(pSemCmsModel.GetPropertyByPath("http://w3id.org/roh/publicPublicationsNumber"));
+            this.Roh_projectsNumber = GetNumberIntPropertyValueSemCms(pSemCmsModel.GetPropertyByPath("http://w3id.org/roh/projectsNumber"));
+            SemanticPropertyModel propFoaf_homepage = pSemCmsModel.GetPropertyByPath("http://xmlns.com/foaf/0.1/homepage");
+            this.Foaf_homepage = new List<string>();
+            if (propFoaf_homepage != null && propFoaf_homepage.PropertyValues.Count > 0)
+            {
+                foreach (SemanticPropertyModel.PropertyValue propValue in propFoaf_homepage.PropertyValues)
+                {
+                    this.Foaf_homepage.Add(propValue.Value);
+                }
+            }
+            this.Roh_hasPosition = GetPropertyValueSemCms(pSemCmsModel.GetPropertyByPath("http://w3id.org/roh/hasPosition"));
+            this.Roh_crisIdentifier = GetPropertyValueSemCms(pSemCmsModel.GetPropertyByPath("http://w3id.org/roh/crisIdentifier"));
+            this.Roh_ORCID = GetPropertyValueSemCms(pSemCmsModel.GetPropertyByPath("http://w3id.org/roh/ORCID"));
+            this.Roh_usuarioFigShare = GetPropertyValueSemCms(pSemCmsModel.GetPropertyByPath("http://w3id.org/roh/usuarioFigShare"));
+            this.Roh_semanticScholarId = GetPropertyValueSemCms(pSemCmsModel.GetPropertyByPath("http://w3id.org/roh/semanticScholarId"));
+            this.Roh_h_index = GetNumberFloatPropertyValueSemCms(pSemCmsModel.GetPropertyByPath("http://w3id.org/roh/h-index"));
+            SemanticPropertyModel propVcard_hasTelephone = pSemCmsModel.GetPropertyByPath("https://www.w3.org/2006/vcard/ns#hasTelephone");
+            this.Vcard_hasTelephone = new List<string>();
+            if (propVcard_hasTelephone != null && propVcard_hasTelephone.PropertyValues.Count > 0)
+            {
+                foreach (SemanticPropertyModel.PropertyValue propValue in propVcard_hasTelephone.PropertyValues)
+                {
+                    this.Vcard_hasTelephone.Add(propValue.Value);
+                }
+            }
+            SemanticPropertyModel propFoaf_nick = pSemCmsModel.GetPropertyByPath("http://xmlns.com/foaf/0.1/nick");
+            this.Foaf_nick = new List<string>();
+            if (propFoaf_nick != null && propFoaf_nick.PropertyValues.Count > 0)
+            {
+                foreach (SemanticPropertyModel.PropertyValue propValue in propFoaf_nick.PropertyValues)
+                {
+                    this.Foaf_nick.Add(propValue.Value);
+                }
+            }
+            this.Roh_isIPGroupActually= GetBooleanPropertyValueSemCms(pSemCmsModel.GetPropertyByPath("http://w3id.org/roh/isIPGroupActually"));
+            this.Roh_isSynchronized= GetBooleanPropertyValueSemCms(pSemCmsModel.GetPropertyByPath("http://w3id.org/roh/isSynchronized"));
+            this.Roh_isIPProjectHistorically= GetBooleanPropertyValueSemCms(pSemCmsModel.GetPropertyByPath("http://w3id.org/roh/isIPProjectHistorically"));
+            this.Foaf_firstName = GetPropertyValueSemCms(pSemCmsModel.GetPropertyByPath("http://xmlns.com/foaf/0.1/firstName"));
+            this.Roh_isActive= GetBooleanPropertyValueSemCms(pSemCmsModel.GetPropertyByPath("http://w3id.org/roh/isActive"));
+            this.Roh_isIPGroupHistorically= GetBooleanPropertyValueSemCms(pSemCmsModel.GetPropertyByPath("http://w3id.org/roh/isIPGroupHistorically"));
+            this.Roh_isIPProjectActually= GetBooleanPropertyValueSemCms(pSemCmsModel.GetPropertyByPath("http://w3id.org/roh/isIPProjectActually"));
+            this.Foaf_name = GetPropertyValueSemCms(pSemCmsModel.GetPropertyByPath("http://xmlns.com/foaf/0.1/name"));
+            this.Foaf_lastName = GetPropertyValueSemCms(pSemCmsModel.GetPropertyByPath("http://xmlns.com/foaf/0.1/lastName"));
+            this.IdRoh_gnossUser = GetPropertyValueSemCms(pSemCmsModel.GetPropertyByPath("http://w3id.org/roh/gnossUser"));
+        }
+
+        public virtual string RdfType { get { return "http://xmlns.com/foaf/0.1/Person"; } }
+        public virtual string RdfsLabel { get { return "http://xmlns.com/foaf/0.1/Person"; } }
+        [LABEL(LanguageEnum.es,"http://w3id.org/roh/hasRole")]
+        [RDFProperty("http://w3id.org/roh/hasRole")]
+        public  Organization Roh_hasRole  { get; set;} 
+        public string IdRoh_hasRole  { get; set;} 
+
+        [LABEL(LanguageEnum.es,"http://vivoweb.org/ontology/core#departmentOrSchool")]
+        [RDFProperty("http://vivoweb.org/ontology/core#departmentOrSchool")]
+        public  Department Vivo_departmentOrSchool  { get; set;} 
+        public string IdVivo_departmentOrSchool  { get; set;} 
+
+        [LABEL(LanguageEnum.es,"Usuario Gnoss")]
+        [RDFProperty("http://w3id.org/roh/gnossUser")]
+        public string IdRoh_gnossUser  { get; set;} 
+
+        [LABEL(LanguageEnum.es,"http://vivoweb.org/ontology/core#hasResearchArea")]
+        [RDFProperty("http://vivoweb.org/ontology/core#hasResearchArea")]
+        public  List<CategoryPath> Vivo_hasResearchArea { get; set;}
+
+        [LABEL(LanguageEnum.es,"http://w3id.org/roh/lineResearch")]
+        [RDFProperty("http://w3id.org/roh/lineResearch")]
+        public  List<string> Roh_lineResearch { get; set;}
+
+        [LABEL(LanguageEnum.es,"http://w3id.org/roh/lastUpdatedDate")]
+        [RDFProperty("http://w3id.org/roh/lastUpdatedDate")]
+        public  DateTime? Roh_lastUpdatedDate { get; set;}
+
+        [RDFProperty("http://w3id.org/roh/publicProjectsNumber")]
+        public  int? Roh_publicProjectsNumber { get; set;}
+
+        [LABEL(LanguageEnum.es,"http://w3id.org/roh/publicationsNumber")]
+        [RDFProperty("http://w3id.org/roh/publicationsNumber")]
+        public  int? Roh_publicationsNumber { get; set;}
+
+        [LABEL(LanguageEnum.es,"http://vivoweb.org/ontology/core#researcherId")]
+        [RDFProperty("http://vivoweb.org/ontology/core#researcherId")]
+        public  string Vivo_researcherId { get; set;}
+
+        [RDFProperty("http://w3id.org/roh/ipNumber")]
+        public  int? Roh_ipNumber { get; set;}
+
+        [RDFProperty("http://w3id.org/roh/tokenFigShare")]
+        public  string Roh_tokenFigShare { get; set;}
+
+        [RDFProperty("http://w3id.org/roh/tokenGitHub")]
+        public  string Roh_tokenGitHub { get; set;}
+
+        [RDFProperty("http://w3id.org/roh/publicCollaboratorsNumber")]
+        public  int? Roh_publicCollaboratorsNumber { get; set;}
+
+        [LABEL(LanguageEnum.es,"http://vivoweb.org/ontology/core#scopusId")]
+        [RDFProperty("http://vivoweb.org/ontology/core#scopusId")]
+        public  string Vivo_scopusId { get; set;}
+
+        [LABEL(LanguageEnum.es,"https://www.w3.org/2006/vcard/ns#address")]
+        [RDFProperty("https://www.w3.org/2006/vcard/ns#address")]
+        public  string Vcard_address { get; set;}
+
+        [LABEL(LanguageEnum.es,"https://www.w3.org/2006/vcard/ns#email")]
+        [RDFProperty("https://www.w3.org/2006/vcard/ns#email")]
+        public  List<string> Vcard_email { get; set;}
+
+        [LABEL(LanguageEnum.es,"http://vivoweb.org/ontology/core#description")]
+        [RDFProperty("http://vivoweb.org/ontology/core#description")]
+        public  string Vivo_description { get; set;}
+
+        [RDFProperty("http://w3id.org/roh/themedAreasNumber")]
+        public  int? Roh_themedAreasNumber { get; set;}
+
+        [RDFProperty("http://w3id.org/roh/usuarioGitHub")]
+        public  string Roh_usuarioGitHub { get; set;}
+
+        [RDFProperty("http://w3id.org/roh/publicPublicationsNumber")]
+        public  int? Roh_publicPublicationsNumber { get; set;}
+
+        [LABEL(LanguageEnum.es,"http://w3id.org/roh/projectsNumber")]
+        [RDFProperty("http://w3id.org/roh/projectsNumber")]
+        public  int? Roh_projectsNumber { get; set;}
+
+        [LABEL(LanguageEnum.es,"http://xmlns.com/foaf/0.1/homepage")]
+        [RDFProperty("http://xmlns.com/foaf/0.1/homepage")]
+        public  List<string> Foaf_homepage { get; set;}
+
+        [LABEL(LanguageEnum.es,"http://w3id.org/roh/hasPosition")]
+        [RDFProperty("http://w3id.org/roh/hasPosition")]
+        public  string Roh_hasPosition { get; set;}
+
+        [LABEL(LanguageEnum.es,"http://w3id.org/roh/crisIdentifier")]
+        [RDFProperty("http://w3id.org/roh/crisIdentifier")]
+        public  string Roh_crisIdentifier { get; set;}
+
+        [LABEL(LanguageEnum.es,"http://w3id.org/roh/ORCID")]
+        [RDFProperty("http://w3id.org/roh/ORCID")]
+        public  string Roh_ORCID { get; set;}
+
+        [RDFProperty("http://w3id.org/roh/usuarioFigShare")]
+        public  string Roh_usuarioFigShare { get; set;}
+
+        [LABEL(LanguageEnum.es,"http://w3id.org/roh/semanticScholarId")]
+        [RDFProperty("http://w3id.org/roh/semanticScholarId")]
+        public  string Roh_semanticScholarId { get; set;}
+
+        [LABEL(LanguageEnum.es,"http://w3id.org/roh/h-index")]
+        [RDFProperty("http://w3id.org/roh/h-index")]
+        public  float? Roh_h_index { get; set;}
+
+        [LABEL(LanguageEnum.es,"https://www.w3.org/2006/vcard/ns#hasTelephone")]
+        [RDFProperty("https://www.w3.org/2006/vcard/ns#hasTelephone")]
+        public  List<string> Vcard_hasTelephone { get; set;}
+
+        [LABEL(LanguageEnum.es,"http://xmlns.com/foaf/0.1/nick")]
+        [RDFProperty("http://xmlns.com/foaf/0.1/nick")]
+        public  List<string> Foaf_nick { get; set;}
+
+        [RDFProperty("http://w3id.org/roh/isIPGroupActually")]
+        public  bool Roh_isIPGroupActually { get; set;}
+
+        [LABEL(LanguageEnum.es,"http://w3id.org/roh/isSynchronized")]
+        [RDFProperty("http://w3id.org/roh/isSynchronized")]
+        public  bool Roh_isSynchronized { get; set;}
+
+        [RDFProperty("http://w3id.org/roh/isIPProjectHistorically")]
+        public  bool Roh_isIPProjectHistorically { get; set;}
+
+        [LABEL(LanguageEnum.es,"http://xmlns.com/foaf/0.1/firstName")]
+        [RDFProperty("http://xmlns.com/foaf/0.1/firstName")]
+        public  string Foaf_firstName { get; set;}
+
+        [LABEL(LanguageEnum.es,"http://w3id.org/roh/isActive")]
+        [RDFProperty("http://w3id.org/roh/isActive")]
+        public  bool Roh_isActive { get; set;}
+
+        [RDFProperty("http://w3id.org/roh/isIPGroupHistorically")]
+        public  bool Roh_isIPGroupHistorically { get; set;}
+
+        [RDFProperty("http://w3id.org/roh/isIPProjectActually")]
+        public  bool Roh_isIPProjectActually { get; set;}
+
+        [LABEL(LanguageEnum.es,"http://xmlns.com/foaf/0.1/name")]
+        [RDFProperty("http://xmlns.com/foaf/0.1/name")]
+        public  string Foaf_name { get; set;}
+
+        [LABEL(LanguageEnum.es,"http://xmlns.com/foaf/0.1/lastName")]
+        [RDFProperty("http://xmlns.com/foaf/0.1/lastName")]
+        public  string Foaf_lastName { get; set;}
+    }
+
+    public class Department : GnossOCBase
+    {
+
+        public Department() : base() { }
+
+        public Department(SemanticEntityModel pSemCmsModel, LanguageEnum idiomaUsuario) : base()
+        {
+            this.mGNOSSID = pSemCmsModel.Entity.Uri;
+            this.mURL = pSemCmsModel.Properties.FirstOrDefault(p => p.PropertyValues.Any(prop => prop.DownloadUrl != null))?.FirstPropertyValue.DownloadUrl;
+            this.Dc_title = GetPropertyValueSemCms(pSemCmsModel.GetPropertyByPath("http://purl.org/dc/elements/1.1/title"));
+            this.Dc_identifier = GetPropertyValueSemCms(pSemCmsModel.GetPropertyByPath("http://purl.org/dc/elements/1.1/identifier"));
+        }
+
+        public virtual string RdfType { get { return "http://vivoweb.org/ontology/core#Department"; } }
+        public virtual string RdfsLabel { get { return "http://vivoweb.org/ontology/core#Department"; } }
+        [LABEL(LanguageEnum.es, "http://purl.org/dc/elements/1.1/title")]
+        [RDFProperty("http://purl.org/dc/elements/1.1/title")]
+        public string Dc_title { get; set; }
+
+        [LABEL(LanguageEnum.es, "http://purl.org/dc/elements/1.1/identifier")]
+        [RDFProperty("http://purl.org/dc/elements/1.1/identifier")]
+        public string Dc_identifier { get; set; }
+    }
+
+    public class Organization : GnossOCBase
+    {
+
+        public Organization() : base() { }
+
+
+        public Organization(SemanticEntityModel pSemCmsModel, LanguageEnum idiomaUsuario) : base()
+        {
+            this.mGNOSSID = pSemCmsModel.Entity.Uri;
+            this.mURL = pSemCmsModel.Properties.FirstOrDefault(p => p.PropertyValues.Any(prop => prop.DownloadUrl != null))?.FirstPropertyValue.DownloadUrl;
+            this.Roh_title = GetPropertyValueSemCms(pSemCmsModel.GetPropertyByPath("http://w3id.org/roh/title"));
+        }
+
+        public virtual string RdfType { get { return "http://xmlns.com/foaf/0.1/Organization"; } }
+        public virtual string RdfsLabel { get { return "http://xmlns.com/foaf/0.1/Organization"; } }
+
+        [LABEL(LanguageEnum.es, "http://w3id.org/roh/title")]
+        [RDFProperty("http://w3id.org/roh/title")]
+        public string Roh_title { get; set; }
+    }
+
+    public class CV : GnossOCBase
+    {
+
+        public CV() : base() { }
+
+        public CV(SemanticEntityModel pSemCmsModel, LanguageEnum idiomaUsuario) : base()
+        {
+            this.mGNOSSID = pSemCmsModel.Entity.Uri;
+            this.mURL = pSemCmsModel.Properties.FirstOrDefault(p => p.PropertyValues.Any(prop => prop.DownloadUrl != null))?.FirstPropertyValue.DownloadUrl;
+        }
+
+        public virtual string RdfType { get { return "http://w3id.org/roh/CV"; } }
+        public virtual string RdfsLabel { get { return "http://w3id.org/roh/CV"; } }
+    }
+
+}

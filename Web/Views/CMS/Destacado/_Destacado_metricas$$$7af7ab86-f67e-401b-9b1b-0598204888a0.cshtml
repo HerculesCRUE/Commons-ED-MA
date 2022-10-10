@@ -1,0 +1,186 @@
+@model CMSComponentHot
+@{ CommunityModel Comunidad = Html.GetComunidad();
+    UserIdentityModel IdentidadActual = Html.GetIdentidadActual();
+    string urlPersonalizacion = Html.GetBaseUrlContent() + "/imagenes/proyectos/personalizacion/" + Comunidad.Key.ToString();
+	string urlJS = $"{urlPersonalizacion}/theme/graphic-engine.js?v={Html.Translate("VERSION_CSS_JS")}";
+    Html.GetListaJS().Add(urlJS);
+}
+
+<input type="hidden" id="ULTIMO_ANIO" value="@Html.Translate("ULTIMO_ANIO")"/>
+<input type="hidden" id="ULTIMOS_CINCO_ANIOS" value="@Html.Translate("ULTIMOS_CINCO_ANIOS")"/>
+<input type="hidden" id="ADMINISTRAR_GRAFICAS" value="@Html.Translate("ADMINISTRAR_GRAFICAS")"/>
+<input type="hidden" id="GUARDAR_GRAFICA" value="@Html.Translate("GUARDAR_GRAFICA")"/>
+<input type="hidden" id="CONFIGURACION" value="@Html.Translate("CONFIGURACION")"/>
+<div class="topbar-container">
+    <a class="btn-filtrar-movil">
+        <span class="material-icons">filter_list</span>
+    </a>
+    <ul class="listadoMenuPaginas nav nav-tabs" id="myTab" role="tablist"></ul>
+    <div class="pageOptions">
+        <div class="download-page">
+            <span class="material-icons btn-download-page">picture_as_pdf</span>
+            <p>@Html.Translate("DESCARGAR_PAGINA")</p>
+        </div>
+    </div>
+</div>
+<div class="row containerPage">
+    <div class="col col-12 col-xl-3 col-facetas col-lateral izquierda">
+        <div class="wrapCol">
+            <div class="header-facetas">
+                <p>@Html.Translate("FILTROS")</p>
+                <a href="javascript: void(0);" class="cerrar">
+                    <span class="material-icons">close</span>
+                </a>
+            </div>
+            <div id="panFacetas" class="facetas-wrap custom-css-scroll">    
+            </div>                        
+        </div>
+    </div>
+    <div class="col col-12 col-xl-9 col-contenido derecha">
+        <div class="wrapCol">
+            @*<div class="col-buscador tab-content">
+                <form method="post" id="formCajaBusqueda">
+                    <fieldset style="display: block">
+                        <legend class="nota">facetas</legend>
+                        <div class="finderUtils" id="divCajaBusqueda">
+                            <div class="group finderSection">
+                                <label for="finderSection" class="">Encontrar</label>
+                                <input type="text" id="finderSection" class="not-outline finderSectionText autocompletar ac_input" autocomplete="off" placeholder="@Html.Translate("BUSCAR_EN_SECCION")">
+                                <input title="Encontrar" type="button" class="findAction" id="inputLupa">
+                                <a href="javascript: void(0);" class="btn-filtrar-movil">
+                                    <span class="material-icons">filter_list</span>
+                                </a>
+                            </div>
+                        </div>
+                    </fieldset>
+                </form>                            
+            </div>*@
+            <div class="etiquetas" id="panFiltros">
+                <ul class="facetedSearch tags" id="panListadoFiltros"></ul>
+            </div>                            
+            <div class="resource-list graphView ">
+                <div class="resource-list-wrap">                    
+                </div>
+            </div>                        
+        </div>
+    </div>
+</div>
+
+<div id="modal-ampliar-mapa" class="modal modal-top fade modal-ampliar-mapa" style="pointer-events:none" tabindex="-1" role="dialog">
+    <div class="modal-dialog" style="margin:50px" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <p class="modal-title"></p>
+                <span class="material-icons cerrar cerrar-grafica" aria-label="Close">close</span>
+            </div>
+            <div class="modal-body">
+                <div class="graph-container" style="width:100%;"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="modal-agregar-datos" class="modal modal-top fade modal-agregar-datos" style="pointer-events:none" tabindex="-1" role="dialog">
+    <div class="modal-dialog" style="margin:50px" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <p class="modal-title">@Html.Translate("GUARDAR_GRAFICA_ESPACIO_PERSONAL")</p>
+                <span class="material-icons cerrar cerrar-grafica" aria-label="Close">close</span>
+            </div>
+            <div class="modal-body">
+                <div class="custom-form-row">
+                    <div class="form-group full-group disabled ">
+					    <label class="control-label d-block">@Html.Translate("TITULO_GRAFICA")</label>
+                        <input id="labelTituloGrafica" placeholder="@Html.Translate("INTRODUCE_TITULO_GRAFICA")" onfocus="" type="text" class="form-control not-outline">
+			        </div>
+                </div>
+                <div class="custom-form-row">
+                    <div class="form-group ">
+				        <label class="control-label d-block">@Html.Translate("ANCHURA")</label>
+				        <select id="idSelectorTamanyo" class="js-select2 select2-hidden-accessible" dependency="" data-select-search="true" tabindex="-1" aria-hidden="true">
+                            <option value="11">100%</option>
+                            <option value="34">75%</option>
+                            <option value="23">66%</option>
+                            <option value="12">50%</option>
+                            <option value="13">33%</option>
+                            <option value="14">25%</option>
+                        </select>
+			        </div>
+                </div>
+                <div class="custom-form-row">
+                    <div class="custom-control themed little custom-radio">
+						<input type="radio" id="selectPageRadio" name="createOrSelect" class="custom-control-input">
+						<label class="custom-control-label" for="selectPageRadio">
+                            <label class="control-label d-block" for="selectPageRadio">@Html.Translate("SELECCIONAR_PAGINA")</label>
+                        </label>
+			        </div>
+                </div>
+                <div class="custom-form-row">
+                    <div class="custom-control themed little custom-radio">
+						<input type="radio" id="createPageRadio" name="createOrSelect" class="custom-control-input">
+						<label class="custom-control-label" for="createPageRadio">
+                            <label class="control-label d-block" for="createPageRadio">@Html.Translate("CREAR_NUEVA_PAGINA")</label>
+                        </label>
+                    </div>
+                </div>
+                <div class="custom-form-row" id="selectPage">
+                    <div class="form-group full-group disabled">
+				        <label class="control-label d-block">@Html.Translate("SELECCIONAR_PAGINA")</label>
+					    <select id="idSelectorPagina" class="js-select2 select2-hidden-accessible" dependency="" data-select-search="true" tabindex="-1" aria-hidden="true">
+                        </select>
+                    </div>
+                </div>
+                <div class="custom-form-row" id="createPage">
+                    <div class="form-group full-group disabled">
+					    <label class="control-label d-block">@Html.Translate("TITULO_NUEVA_PAGINA")</label>
+                        <input id="labelTituloPagina" placeholder="@Html.Translate("INTRODUCE_EL_TITULO")" onfocus="" type="text" class="form-control not-outline">
+			        </div>
+                </div>
+                <div class="form-actions">
+                    <a class="btn btn-primary" id="btnGuardarGrafica">@Html.Translate("GUARDAR")</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="modal-admin-config" class="modal modal-top fade modal-editar-configuracion" style="pointer-events:none" tabindex="-1" role="dialog">
+    <div class="modal-dialog" style="margin:50px" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <p class="modal-title">@Html.Translate("CONFIGURACION_GRAFICA")</p>
+                <span class="material-icons cerrar cerrar-grafica" aria-label="Close">close</span>
+            </div>
+            <div class="modal-body">
+                <div class="custom-form-row">
+                    <div class="form-group full-group disabled">
+                        <label class="control-label d-block">@Html.Translate("TITULO_GRAFICA")</label>
+                        <input id="labelTituloGraficaConfig" placeholder="@Html.Translate("INTRODUCE_TITULO_GRAFICA")" onfocus="" type="text" class="form-control not-outline">
+                    </div>
+                </div>
+                <div class="custom-form-row">
+                    <div class="form-group ">
+                        <label class="control-label d-block">@Html.Translate("ANCHURA")</label>
+                        <select id="idSelectorTamanyoConfig" class="js-select2 select2-hidden-accessible" dependency="" data-select-search="true" tabindex="-1" aria-hidden="true">
+                            <option value="11">100%</option>
+                            <option value="34">75%</option>
+                            <option value="23">66%</option>
+                            <option value="12">50%</option>
+                            <option value="13">33%</option>
+                            <option value="14">25%</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="custom-form-row">
+                    <div class="form-group full-group disabled ">
+					    <label class="control-label d-block">@Html.Translate("ORDEN_GRAFICA")</label>
+                        <select id="idSelectorOrden" class="js-select2 select2-hidden-accessible" dependency="" data-select-search="true" tabindex="-1" aria-hidden="true">
+                        </select>
+			        </div>
+                </div>
+                <div class="form-actions">
+                    <a class="btn btn-primary" id="btnGuardarGraficaConfig">@Html.Translate("GUARDAR")</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

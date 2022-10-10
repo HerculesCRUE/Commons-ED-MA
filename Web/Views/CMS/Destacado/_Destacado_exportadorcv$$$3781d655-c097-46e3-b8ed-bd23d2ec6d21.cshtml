@@ -1,0 +1,193 @@
+@model CMSComponentHot
+@{ 
+	CommunityModel Comunidad = Html.GetComunidad();
+    UserIdentityModel IdentidadActual = Html.GetIdentidadActual();
+	string urlPersonalizacion = Html.GetBaseUrlContent() + "/imagenes/proyectos/personalizacion/" + Comunidad.Key.ToString();
+	string urlJS = $"{urlPersonalizacion}/theme/edicioncv.js?v={Html.Translate("VERSION_CSS_JS")}";
+	string urlExportacionJS = $"{urlPersonalizacion}/theme/exportacioncv.js?v={Html.Translate("VERSION_CSS_JS")}";
+    Html.GetListaJS().Add(urlJS);
+    Html.GetListaJS().Add(urlExportacionJS);	
+	string urlCSS = $"{urlPersonalizacion}/theme/edicioncv.css?v={Html.Translate("VERSION_CSS_JS")}";
+	Html.GetListaCSS().Add(urlCSS);
+}
+
+<input type="hidden" id="CV_FIRMANOSELECCIONADOPERSONA" value="@Html.Translate("CV_FIRMANOSELECCIONADOPERSONA")"/>
+<input type="hidden" id="CV_MASRESULTADOS" value="@Html.Translate("CV_MASRESULTADOS")"/>
+<input type="hidden" id="CV_BUSCAR" value="@Html.Translate("CV_BUSCAR")"/>
+<input type="hidden" id="CV_COINCIDENCIA" value="@Html.Translate("CV_COINCIDENCIA")"/>
+<input type="hidden" id="CV_LAFIRMAXESTADUPLICADA" value="@Html.Translate("CV_LAFIRMAXESTADUPLICADA")"/>
+<input type="hidden" id="CV_LAFIRMAXYAESTAINTRODUCIDA" value="@Html.Translate("CV_LAFIRMAXYAESTAINTRODUCIDA")"/>
+<input type="hidden" id="CV_ESTACARGADAPERSONAOTRAFIRMA" value="@Html.Translate("CV_ESTACARGADAPERSONAOTRAFIRMA")"/>
+<input type="hidden" id="CV_NOMBREOBLIGATORIO" value="@Html.Translate("CV_NOMBREOBLIGATORIO")"/>
+<input type="hidden" id="CV_APELLIDOSOBLIGATORIO" value="@Html.Translate("CV_APELLIDOSOBLIGATORIO")"/>
+<input type="hidden" id="CV_AGNADIR" value="@Html.Translate("CV_AGNADIR")"/>
+<input type="hidden" id="CV_ELIMINAR" value="@Html.Translate("CV_ELIMINAR")"/>
+<input type="hidden" id="CV_EDITAR" value="@Html.Translate("CV_EDITAR")"/>
+<input type="hidden" id="CV_NOHASINTRODUCIDONINGUNAFIRMA" value="@Html.Translate("CV_NOHASINTRODUCIDONINGUNAFIRMA")"/>
+<input type="hidden" id="CV_ELCODIGOINTRODUCIDONOESVALIDO" value="@Html.Translate("CV_ELCODIGOINTRODUCIDONOESVALIDO")"/>
+<input type="hidden" id="CV_DATOSPERSONALES" value="@Html.Translate("CV_DATOSPERSONALES")"/>
+<input type="hidden" id="CV_ESCRIBE_ALGO" value="@Html.Translate("CV_ESCRIBE_ALGO")"/>
+<input type="hidden" id="CV_ACCIONES" value="@Html.Translate("CV_ACCIONES")"/>
+<input type="hidden" id="CV_PUBLICAR" value="@Html.Translate("CV_PUBLICAR")"/>
+<input type="hidden" id="CV_DESPUBLICAR" value="@Html.Translate("CV_DESPUBLICAR")"/>
+<input type="hidden" id="CV_PLEGAR" value="@Html.Translate("CV_PLEGAR")"/>
+<input type="hidden" id="CV_DESPLEGAR" value="@Html.Translate("CV_DESPLEGAR")"/>
+<input type="hidden" id="CV_GUARDAR" value="@Html.Translate("CV_GUARDAR")"/>
+<input type="hidden" id="CV_FORMATOIMAGENES" value="@Html.Translate("CV_FORMATOIMAGENES")"/>
+<input type="hidden" id="CV_PESOMAXIMOIMAGENES" value="@Html.Translate("CV_PESOMAXIMOIMAGENES")"/>
+<input type="hidden" id="CV_IMAGENPESADEMASIADO" value="@Html.Translate("CV_IMAGENPESADEMASIADO")"/>
+<input type="hidden" id="CV_RESTABLECER" value="@Html.Translate("CV_RESTABLECER")"/>
+<input type="hidden" id="CV_BLOQUEADO" value="@Html.Translate("CV_BLOQUEADO")"/>
+<input type="hidden" id="CV_VISIBLE" value="@Html.Translate("CV_VISIBLE")"/>
+<input type="hidden" id="CV_OCULTO" value="@Html.Translate("CV_OCULTO")"/>
+<input type="hidden" id="ESPAGNOL" value="@Html.Translate("ESPAGNOL")"/>
+<input type="hidden" id="INGLES" value="@Html.Translate("INGLES")"/>
+<input type="hidden" id="CATALAN" value="@Html.Translate("CATALAN")"/>
+<input type="hidden" id="EUSKERA" value="@Html.Translate("EUSKERA")"/>
+<input type="hidden" id="GALLEGO" value="@Html.Translate("GALLEGO")"/>
+<input type="hidden" id="FRANCES" value="@Html.Translate("FRANCES")"/>
+<input type="hidden" id="CV_SINTRADUCCION" value="@Html.Translate("CV_SINTRADUCCION")"/>
+<input type="hidden" id="CV_CONTRADUCCION" value="@Html.Translate("CV_CONTRADUCCION")"/>
+<input type="hidden" id="CV_OCULTAR_EDICION" value="@Html.Translate("CV_OCULTAR_EDICION")"/>
+<input type="hidden" id="CV_EXPORTAR_PROCESADO" value="@Html.Translate("CV_EXPORTAR_PROCESADO")"/>
+<input type="hidden" id="CV_EXPORTAR_PENDIENTE" value="@Html.Translate("CV_EXPORTAR_PENDIENTE")"/>
+<input type="hidden" id="CV_EXPORTAR_ERROR" value="@Html.Translate("CV_EXPORTAR_ERROR")"/>
+<input type="hidden" id="SELECCIONA_UNA_OPCION" value="@Html.Translate("SELECCIONA_UNA_OPCION")"/>
+<input type="hidden" id="CV_ANIADIR_PERFIL_EXPORTACION" value="@Html.Translate("CV_ANIADIR_PERFIL_EXPORTACION")"/>
+<input type="hidden" id="CV_ERROR_ANIADIR_PERFIL_EXPORTACION" value="@Html.Translate("CV_ERROR_ANIADIR_PERFIL_EXPORTACION")"/>
+<input type="hidden" id="CV_ELIMINAR_PERFIL_EXPORTACION" value="@Html.Translate("CV_ELIMINAR_PERFIL_EXPORTACION")"/>
+<input type="hidden" id="CV_ERROR_ELIMINAR_PERFIL_EXPORTACION" value="@Html.Translate("CV_ERROR_ELIMINAR_PERFIL_EXPORTACION")"/>
+<input type="hidden" id="CV_EXPORTAR_COMPLETO_COMPLETADO" value="@Html.Translate("CV_EXPORTAR_COMPLETO_COMPLETADO")"/>
+<input type="hidden" id="CV_EXPORTAR_COMPLETADO" value="@Html.Translate("CV_EXPORTAR_COMPLETADO")"/>
+<input type="hidden" id="LEYENDO_DATOS_CV" value="@Html.Translate("LEYENDO_DATOS_CV")"/>
+<input type="hidden" id="CARGANDO_DATOS_CV" value="@Html.Translate("CARGANDO_DATOS_CV")"/>
+<input type="hidden" id="PINTANDO_DATOS_CV" value="@Html.Translate("PINTANDO_DATOS_CV")"/>
+<input type="hidden" id="CV_SELECCIONAR_TODOS" value="@Html.Translate("CV_SELECCIONAR_TODOS")"/>
+<input type="hidden" id="CV_DESELECCIONAR_TODOS" value="@Html.Translate("CV_DESELECCIONAR_TODOS")"/>
+
+<div id="containerCV">
+	<div class="row">
+		<div class="col col-12 col-breadcrumb">
+			<ul>
+				<li>
+					<a href="@Comunidad.Url">Home</a>
+				</li>
+				<li>@Html.Translate("EXPORTAR_CV")</li>
+			</ul>
+		</div>
+		<div class="col col-12 col-contenido listadoExportacion">
+			<div class="wrapCol">
+				<div class="header-contenido">
+					<div class="h1-container">
+						<h1>@Html.Translate("EXPORTA_TU_CVN")</h1>
+					</div>
+				</div>
+				<p>@Html.Translate("AYUDAMOS_GESTIONAR_RESULTADOS_INVESTIGACIÓN")</p>
+				<div class="page-section">
+					<div class="page-section-title">
+						<span class="material-icons">backup</span>
+						<h2>@Html.Translate("DESCARGAR_CVN")</h2>
+					</div>
+					<div class="form-group mb-3">
+						<label class="control-label d-block">@Html.Translate("TITULO")</label>
+						<input id="exportCvName" placeholder="@Html.Translate("INTRODUCE_UN_TITULO_PARA_EL_FICHERO")" type="text" class="form-control not-outline">
+					</div>
+					<div class="form-group mb-3 ddlIdioma">
+						<label class="control-label d-block">@Html.Translate("IDIOMA")</label>
+						<select id="ddlIdioma" name="ddlIdioma" class="js-select2">
+							<option value="es" selected>@Html.Translate("ESPAGNOL")</option>
+							<option value="en">@Html.Translate("INGLES")</option>
+							<option value="ca">@Html.Translate("CATALAN")</option>
+							<option value="eu">@Html.Translate("EUSKERA")</option>
+							<option value="gl">@Html.Translate("GALLEGO")</option>
+							<option value="fr">@Html.Translate("FRANCES")</option>
+						</select>
+					</div>
+					<div class="form-group mb-3">
+						<label class="control-label d-block ddlTipoExportacion">@Html.Translate("TIPO_EXPORTACION")</label>
+						<select id="ddlTipoExportacion" name="ddlTipoExportacion" class="js-select2">
+							<option value="PN2008" selected>CVN</option>
+							<option value="CVAISCIII">CVA-ISCIII</option>
+							<option value="CVA2015">CVA-AEI</option>
+						</select>
+					</div>
+					<div class="form-group mb-3">
+						<label class="control-label d-block ddlVersionExportacion">@Html.Translate("VERSION_EXPORTACION")</label>
+						<select id="ddlVersionExportacion" name="ddlVersionExportacion" class="js-select2">
+							<option value="1_4_0">1.4.0</option>
+							<option value="1_4_3" selected>1.4.3</option>
+						</select>
+					</div>
+					<div class="form-group mb-3 ddlSecciones">
+						<label class="control-label d-block mb-3">@Html.Translate("SECCIONES")</label>
+						<div class="custom-control themed little custom-radio">
+							<input type="radio" checked="checked" id="todas" name="secciones" class="custom-control-input">
+							<label class="custom-control-label" for="todas">@Html.Translate("TODAS")</label>
+						</div>
+						<div class="custom-control themed little custom-radio">
+							<input type="radio" id="seleccionar" name="secciones" class="custom-control-input">
+							<label class="custom-control-label" for="seleccionar">@Html.Translate("SELECCIONAR")</label>
+						</div>
+						<div class="custom-control themed little custom-radio">
+							<input type="radio" id="ultimosCinco" name="secciones" class="custom-control-input">
+							<label class="custom-control-label" for="ultimosCinco">@Html.Translate("ULTIMOS_CINCO_ANIOS")</label>
+						</div>
+						<a class="btn btn-primary uppercase btGenerarExportarCV" >@Html.Translate("GENERAR_NUEVA_EXPORTACION")</a>
+					</div>
+				</div>
+				<div class="page-section">
+					<div class="page-section-title">
+						<span class="material-icons">settings_input_component</span>
+						<h2>@Html.Translate("CVN_GENERADOS")</h2>
+					</div>
+					<div class="resource-list listView">
+						<div class="resource-list-wrap listadoCV">
+						</div>
+						<div class="panNavegador">
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="col col-12 col-contenido exportacion" style="display:none">
+			<div class="wrapCol">
+				<div class="cabecera-cv">
+					<div class="upper-wrap">
+						<div class="h1-container">
+							<h1>@Html.Translate("EXPORTA_TU_CVN")</h1>
+						</div>
+					</div>
+				</div>				
+				<div class="selector-cv">
+					<div class="page-section">
+						<div class="page-section-title">
+							<span class="material-icons">fact_check</span>
+							<h2>@Html.Translate("PERFIL_DE_EXPORTACION")</h2>
+						</div>
+						<div class="form-group mb-3">
+							<label class="control-label d-block">@Html.Translate("NOMBRE_DEL_PERFIL")</label>
+							<input placeholder="@Html.Translate("ASIGNE_UN_NOMBRE")" type="text" class="form-control not-outline nombrePerfilExportacion">
+							<br>
+							<a class="btn btn-primary uppercase btGuardarCV">@Html.Translate("GUARDAR")</a>
+						</div>
+						<div class="form-group mb-3 misPerfiles">
+							<label class="control-label d-block">@Html.Translate("MIS_PERFILES"):</label>
+							<select id="ddlProfile" name="ddlProfile" class="js-select2" data-select-search="true">								
+							</select>
+							<a class="btn btn-primary uppercase btCargarCV">@Html.Translate("CARGAR")</a>
+							<a class="btn btn-primary uppercase btBorrarCV">@Html.Translate("BORRAR")</a>
+						</div>
+					</div>
+				</div>				
+				<div class="contenido-cv">
+				</div>
+				<a class="btn btn-primary uppercase btExportarCV" >@Html.Translate("EXPORTAR")</a>
+			</div>
+		</div>
+	</div>	
+</div>
+<script>
+$(document).ready(function () {
+	exportacionCV.init();
+});
+</script>

@@ -1,0 +1,131 @@
+@using System.Reflection
+@model CMSComponentQuerySPARQL
+@{
+    CommunityModel Comunidad = Html.GetComunidad();
+    UserIdentityModel IdentidadActual = Html.GetIdentidadActual();
+
+    string urlImagen = $"{Html.GetBaseUrlContent()}/imagenes/proyectos/personalizacion/{Comunidad.Key.ToString()}/theme/resources/imagenes-pre/um_comunicacion.jpg";
+
+}
+
+
+@if (Model != null)
+{
+
+    <img src="@urlImagen" alt="Universidad">
+    <div class="container">
+        <div class="buscador-container">
+            <div id="buscador" class="buscador">
+                <form method="post" id="formBuscador">
+                    <div class="fieldsetGroup searchGroup">
+                        <div class="textoBusquedaPrincipalInput">
+                            <input type="text" id="txtBusquedaPrincipal" class="not-outline text txtBusqueda autocompletar personalizado ac_input" placeholder="Escribe algo..." autocomplete="off">
+                            <span class="botonSearch">
+                                <span class="material-icons">search</span>
+                            </span>
+                        </div>
+                    </div>
+                    <input type="submit" style="display: none;" id="enviarFormBuscador" value="enviar" title="enviar">
+                </form>
+            </div>
+            <div class="info-recursos" id="info-resources-home-ma" style="display:none;">
+                <div class="item" style="opacity:0;">
+                    <a class="titulo" href="@Comunidad.Url/@Html.Translate("PUBLICACIONES_URL")">@Html.Translate("PUBLICACIONES")</a>
+                    <span class="numResultados documents">0</span>
+                </div>
+                <div class="item" style="opacity:0;">
+                    <a class="titulo" href="@Comunidad.Url/@Html.Translate("INVESTIGADORES_URL")">@Html.Translate("INVESTIGADORES") </a>
+                    <span class="numResultados persons">0</span>
+                </div>
+                <div class="item" style="opacity:0;">
+                    <a class="titulo" href="@Comunidad.Url/@Html.Translate("GRUPOS_URL")">@Html.Translate("GRUPOS_HOME") </a>
+                    <span class="numResultados groups">0</span>
+                </div>
+                <div class="item" style="opacity:0;">
+                    <a class="titulo" href="@Comunidad.Url/@Html.Translate("PROYECTOS_URL")">@Html.Translate("PROYECTOS") </a>
+                    <span class="numResultados projects">0</span>
+                </div>
+                <div class="item" style="opacity:0;">
+                    <a class="titulo" href="@Comunidad.Url/@Html.Translate("ROS_URL")">@Html.Translate("ROS") </a>
+                    <span class="numResultados researchObjects">0</span>
+                </div>
+				<div class="item" style="opacity:0;">
+                    <a class="titulo" href="@Comunidad.Url/@Html.Translate("OFERTAS_URL")">@Html.Translate("OFFERS_HOME") </a>
+                    <span class="numResultados offers">0</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script type="text/javascript">
+
+        let metabuscadorTrigger = document.querySelector('#header .col-buscador');
+        $(metabuscadorTrigger).remove()
+
+
+        // Constantes necesarias
+        const localUrlBase = "https://localhost:44321/"
+        const servicioExtermpBaseUrl = "@Html.GetBaseUrlContent()/"
+        // Variables necesarias
+        var depuracion = false
+        var uriNumTypeItems = "Search/GetNumItems"
+
+        // Compruebo si estamos en depuración o no
+        const urlBase = "@Html.GetBaseUrl()";
+        if (urlBase.includes("localhost") || urlBase.includes("depuracion")) {
+            depuracion = true;
+        }
+
+        // Genero la url de la llamada ajax
+        var urlNumTypeItems = url_servicio_externo + uriNumTypeItems
+        if (depuracion) {
+            urlNumTypeItems = localUrlBase + uriNumTypeItems
+        }
+
+        var arg = {};
+        $.get(urlNumTypeItems, arg, function (data) {
+            let itemCont = $("#info-resources-home-ma")
+            for (var[typeItem, number] of Object.entries(data)) {
+                $("#info-resources-home-ma ." + typeItem).text(formatNumber.new(number))
+            }
+            itemCont.show(400, function(e) {
+                $(this).find(".item").css("opacity", 1)
+            })
+        });
+
+
+        var formatNumber = {
+            separador: ".", // separador para los miles
+            sepDecimal: ',', // separador para los decimales
+            formatear:function (num){
+                num +='';
+                var splitStr = num.split('.');
+                var splitLeft = splitStr[0];
+                var splitRight = splitStr.length > 1 ? this.sepDecimal + splitStr[1] : '';
+                var regx = /(\d+)(\d{3})/;
+                while (regx.test(splitLeft)) {
+                    splitLeft = splitLeft.replace(regx, '$1' + this.separador + '$2');
+                }
+                return this.simbol + splitLeft +splitRight;
+            },
+            new:function(num, simbol){
+                this.simbol = simbol ||'';
+                return this.formatear(num);
+            }
+        }
+
+
+    </script>
+
+
+    @* foreach (System.Data.DataRow fila in Model.DataSetResult.Tables[0].Rows)
+    {
+        for(int i=0;i<Model.DataSetResult.Tables[0].Columns.Count;i++)
+        {
+            string NombreColumna=Model.DataSetResult.Tables[0].Columns[i].ColumnName;
+            string ValorColumna=fila[i].ToString();
+            <!-- <p>@NombreColumna: @ValorColumna</p> -->
+
+        }        
+    } *@
+}

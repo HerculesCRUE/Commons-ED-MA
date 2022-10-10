@@ -1,0 +1,64 @@
+@*[security|||shared/head/_hojasdeestilo.cshtml|||hercules]*@
+@{
+    CommunityModel Comunidad = Html.GetComunidad();
+    string versionCSS = ViewBag.Version;
+    if (Comunidad.VersionCSS.HasValue)
+    {
+        versionCSS += "-" + Comunidad.VersionCSS.Value.ToString();
+    }
+    string urlPersonalizacion = Html.GetBaseUrlContent() + "/imagenes/proyectos/personalizacion/" + Comunidad.Key.ToString();
+}
+
+
+
+
+<!-- MATERIAL ICONS -->
+<link type="text/css" rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons|Material+Icons+Outlined" media="all">
+
+<!-- FONT AWESOME -->
+<link href="https://use.fontawesome.com/releases/v5.0.8/css/all.css" rel="stylesheet">
+
+<!-- BOOTSTRAP 4 + PROPELLER -->
+<link rel="stylesheet" href="@urlPersonalizacion/theme/libraries/bootstrap/bootstrap.min.css?v=@Html.Translate("VERSION_CSS_JS")">
+<link rel="stylesheet" href="@urlPersonalizacion/theme/libraries/propeller/css/propeller.min.css?v=@Html.Translate("VERSION_CSS_JS")" media="screen" type="text/css">
+
+<!-- LIGHTGALLERY -->
+<link type="text/css" rel="stylesheet" href="@urlPersonalizacion/theme/libraries/lightgallery/css/lightgallery.min.css?v=@Html.Translate("VERSION_CSS_JS")">
+
+<!-- JQUERY CUSTOM SCROLL BAR Version: 3.1.13 -->
+<link type="text/css" rel="stylesheet" href="@urlPersonalizacion/theme/libraries/customscroller/css/jquery.mCustomScrollbar.min.css?v=@Html.Translate("VERSION_CSS_JS")">
+
+<!-- PRELOADER MATERIALIZE -->
+<link type="text/css" rel="stylesheet" href="@urlPersonalizacion/theme/libraries/spinner-material/spinner-material.css?v=@Html.Translate("VERSION_CSS_JS")">
+
+<!-- DATATABLES -->
+<link type="text/css" rel="stylesheet" href="@urlPersonalizacion/theme/libraries/datatables/datatables.min.css?v=@Html.Translate("VERSION_CSS_JS")">
+
+<!-- SELECT2 -->
+<link type="text/css" rel="stylesheet" href="@urlPersonalizacion/theme/libraries/select2/css/select2.min.css?v=@Html.Translate("VERSION_CSS_JS")">
+
+<!-- TOASTR - https://www.jqueryscript.net/other/bootstrap-toasts-manager.html -->
+<link type="text/css" rel="stylesheet" href="@urlPersonalizacion/theme/libraries/toastr/toastr.min.css?v=@Html.Translate("VERSION_CSS_JS")">
+
+<!-- DATEPICKER -->
+<link type="text/css" rel="stylesheet" href="@urlPersonalizacion/theme/libraries/jqueryUI/jquery-ui.min.css?v=@Html.Translate("VERSION_CSS_JS")">
+
+<!-- GNOSS DRAG & DROP -->
+<link type="text/css" rel="stylesheet" href="@urlPersonalizacion/theme/libraries/GnossDragAndDrop/GnossDragAndDrop.css?v=@Html.Translate("VERSION_CSS_JS")">
+
+<!-- PERSONALIZACION TEMA -->
+<link type="text/css" rel="stylesheet" href="@urlPersonalizacion/theme/theme.css?v=@Html.Translate("VERSION_CSS_JS")">
+
+<!-- PERSONALIZACION COMUNIDAD -->
+<link type="text/css" rel="stylesheet" href="@urlPersonalizacion/theme/community.css?v=@Html.Translate("VERSION_CSS_JS")">
+<link type="text/css" rel="stylesheet" href="@urlPersonalizacion/theme/community_proy.css?v=@Html.Translate("VERSION_CSS_JS")">
+<link type="text/css" rel="stylesheet" href="@urlPersonalizacion/theme/cluster.css?v=@Html.Translate("VERSION_CSS_JS")">
+<link type="text/css" rel="stylesheet" href="@urlPersonalizacion/theme/graphic-engine.css?v=@Html.Translate("VERSION_CSS_JS")">
+
+@if (Html.GetListaCSS() != null)
+{
+    foreach (string css in Html.GetListaCSS())
+    {
+        <link media="screen" type="text/css" rel="stylesheet" href="@css" />
+    }
+}

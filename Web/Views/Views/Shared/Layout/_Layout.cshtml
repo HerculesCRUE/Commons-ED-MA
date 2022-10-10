@@ -1,0 +1,731 @@
+@*[security|||shared/layout/_layout.cshtml|||hercules]*@
+@{ CommunityModel Comunidad = Html.GetComunidad();
+    UserIdentityModel IdentidadActual = Html.GetIdentidadActual();
+    string avisoCookies = Html.GetCookiesWarning();
+	UserProfileModel perfil = Html.GetPerfil();
+}
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML+RDFa 1.0//EN" "http://www.w3.org/MarkUp/DTD/xhtml-rdfa-1.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="@Html.GetUtilIdiomas().LanguageCode" xmlns:og="http://ogp.me/ns#">
+<head>
+	<script>
+		var url_servicio_externo="@Html.Translate("URL_SERVICIO_EXTERNO")";
+		var url_servicio_editorcv="@Html.Translate("URL_SERVICIO_EDITORCV")";
+		var url_servicio_graphicengine="@Html.Translate("URL_SERVICIO_GRAPHICENGINE")";
+	</script>	
+
+    @if (Comunidad != null && Comunidad.ProjectExtraHTMLList != null)
+    {
+        @Html.PartialView("../Shared/ProyectoElementoHTML", Comunidad.ProjectExtraHTMLList.Where(a => a.Ubication == UbicacionHtmlProyecto.BeginHead).ToList());
+    }
+
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+    @Html.PartialView("../Shared/Head/_Metas")
+
+    <title>@Html.GetTituloPagina()</title>
+
+    <link id="IMGfavicon" rel="shortcut icon" type="image/ico" href="@Html.GetFavicon()" />
+
+    @if (!string.IsNullOrEmpty(Html.GetUrlCanonical()))
+    {
+        <link rel="canonical" href="@Html.GetUrlCanonical()" />
+    }
+    @if (Html.GetCabecera() != null && Html.GetCabecera().MultiLingualLinks != null)
+    {
+        if (Html.GetCabecera().MultiLingualLinks.Keys.Contains(Html.GetUtilIdiomas().LanguageCode))
+        {
+            <link rel="alternate" hreflang="@Html.GetUtilIdiomas().LanguageCode" href="@Html.GetCabecera().MultiLingualLinks[Html.GetUtilIdiomas().LanguageCode].Value" />
+        }
+        foreach (string language in Html.GetCabecera().MultiLingualLinks.Keys)
+        {
+            if (!language.Equals(Html.GetUtilIdiomas().LanguageCode))
+            {
+                if (Html.GetCabecera().MultiLingualLinks[language].Key)
+                {
+                    <link rel="alternate" hreflang="@language" href="@Html.GetCabecera().MultiLingualLinks[language].Value" />
+                }
+            }
+        }
+    } 
+    @*
+    @if (!string.IsNullOrEmpty(Html.GetURLRSS()))
+    {
+        <link rel="alternate" type="application/rss+xml" href="@Html.GetURLRSS()" />
+    }
+    *@
+    @if (!string.IsNullOrEmpty(Html.GetURLRDF()))
+    {
+        <link rel="alternate" type="application/rdf+xml" href="@Html.GetURLRDF()" />
+    }
+
+    @if (Html.GetListaMetas() != null)
+    {
+        foreach (KeyValuePair<string, string> contentMeta in Html.GetListaMetas())
+        {
+            <meta name="@contentMeta.Key" content="@contentMeta.Value" />
+        }
+    }
+
+    @if (Html.GetListaMetasComplejas() != null)
+    {
+        foreach (Dictionary<string, string> atributosMeta in Html.GetListaMetasComplejas())
+        {
+            System.Text.StringBuilder meta = new System.Text.StringBuilder("<meta");
+
+            foreach (string clave in atributosMeta.Keys)
+            {
+                meta.Append(" ");
+                meta.Append(clave);
+                meta.Append("=");
+                meta.Append("\"");
+                meta.Append(atributosMeta[clave]);
+                meta.Append("\"");
+            }
+
+            meta.Append(" />\r\n");
+
+            @Html.Raw(meta)
+        }
+    }
+
+    @Html.PartialView("../Shared/Head/_HojasDeEstilo")
+
+    @Html.PartialView("../Shared/Head/_FicherosJavascript")
+
+    @if (Html.GetBusquedasXml() != null)
+    {
+        foreach (string busqeda in Html.GetBusquedasXml())
+        {
+            <link rel="search" type="application/opensearchdescription+xml" href="@busqeda" />
+        }
+    }
+
+    @if (Comunidad != null && Comunidad.ProjectExtraHTMLList != null)
+    {
+        @Html.PartialView("../Shared/ProyectoElementoHTML", Comunidad.ProjectExtraHTMLList.Where(a => a.Ubication == UbicacionHtmlProyecto.EndHead).ToList());
+    }
+
+</head>
+
+    <body class="@Html.GetBodyClass() @(IdentidadActual == null || IdentidadActual.IsGuestUser ? " invitado" : "") @Html.GetBodyClassPestanya()">
+
+        @if (Comunidad != null && Comunidad.ProjectExtraHTMLList != null)
+        {
+            @Html.PartialView("../Shared/ProyectoElementoHTML", Comunidad.ProjectExtraHTMLList.Where(a => a.Ubication == UbicacionHtmlProyecto.BeginBody).ToList());
+        }
+
+        <form method="post" target="_blank" action="" name="formularioHidden" id="formularioHidden">
+            <fieldset style="display: none">
+                <legend class="nota">formularioHidden</legend>
+                @if (Html.GetListaInputHidden() != null)
+                {
+                    foreach (KeyValuePair<string, string> inputHidden in Html.GetListaInputHidden())
+                    {
+                        <input type="hidden" id="@inputHidden.Key" class="@inputHidden.Key" value="@inputHidden.Value" />
+                    }
+                }				
+                <input type="submit" style="display: none;" id="enviarHidden" value="enviar" title="enviar" />
+            </fieldset>
+        </form>
+
+        <form method="post" target="_blank" action="" name="formularioRDF" id="formularioRDF">
+            <fieldset style="display: none">
+                <legend class="nota">formularioRDF</legend>
+                <input type="text" style="display: none;" title="query" name="query" id="query" />
+                <input type="text" style="display: none;" title="pagina" name="pagina" id="pagina" />
+                <input type="submit" style="display: none;" id="rdfHack" value="enviar" title="enviar" />
+            </fieldset>
+        </form>
+
+        <div style="width: 100px; height: 100px; position: absolute; display: none; left: 0px; top: 0px; z-index: 2000" class="popup">
+            <img style="border-width: 0px;" alt="Cargando..." src="@Html.GetBaseUrlStatic()/img/espera.gif" />
+            <p><strong>Cargando...</strong></p>
+        </div>
+        <div id="mascaraBlanca">
+            <div class="wrap popup">
+                <div class="preloader-wrapper active">
+                    <div class="spinner-layer spinner-blue-only">
+                        <div class="circle-clipper left">
+                            <div class="circle"></div>
+                        </div><div class="gap-patch">
+                            <div class="circle"></div>
+                        </div><div class="circle-clipper right">
+                            <div class="circle"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        @Html.PartialView("../Shared/_Cabecera")
+
+        <main role="main">
+            <div class="container">
+                @if (!string.IsNullOrEmpty(avisoCookies))
+                {
+                    <div id="phAvisoCookie">
+                        <div class="info columms cookies" id="info">
+                            <p class="title-panel-info"><span>Panel </span>@Html.GetText("COMMON", "INFORMACION")</p>
+                            <div class="col-4">
+                                <div class="box" id="divAvisoCookie">@Html.Raw(avisoCookies)</div>
+                            </div>
+                        </div>
+                    </div>
+                }
+                @if (Comunidad != null && string.IsNullOrEmpty(Context.Request.Query["new-community-wizard"]) && (IdentidadActual.IsExpelled || Comunidad.ProjectState == CommunityModel.StateProject.Close || Comunidad.ProjectState == CommunityModel.StateProject.CloseTemporaly || Comunidad.ProjectState == CommunityModel.StateProject.Definition))
+                {
+                    <div class="aviso columms" id="info">
+                        <h3><span>Panel </span>Aviso</h3>
+                        <div class="col-4">
+                            <div class="box">
+                                @if (IdentidadActual.IsExpelled)
+                                {
+                                    @*Usuario expulsado*@
+                                    <p>@Html.Raw(Html.GetText("COMINICIOLOGIN", "ADVERTENCIAEXPULSADO1"))</p>
+                                    <p>@Html.GetText("COMMON", "MUCHASGRACIAS")</p>
+                                }
+                                else if (Comunidad.ProjectState == CommunityModel.StateProject.Close)
+                                {
+                                    <p>@Html.GetText("COMADMIN", "EXPLICACIONCERRADA", Html.GetNombreProyectoEcosistema())</p>
+                                }
+                                else if (Comunidad.ProjectState == CommunityModel.StateProject.CloseTemporaly)
+                                {
+                                    <p>@Html.GetText("COMADMIN", "EXPLICACIONCERRADATMP")</p>
+                                }
+                                else if (Comunidad.ProjectState == CommunityModel.StateProject.Definition)
+                                {
+                                    if (IdentidadActual.IsProyectAdmin)
+                                    {
+                                        string urlAdmin = @Html.GetGeneradorURLs().ObtenerURLAdministracionComunidad(Html.GetUtilIdiomas(), Html.GetBaseUrlIdioma(), Comunidad.ShortName, "ADMINISTRARCOMUNIDADGENERAL");
+                                        //Sacamos el mensaje al administrador:
+                                        switch (Comunidad.AccessType)
+                                        {
+                                            case CommunityModel.TypeAccessProject.Public:
+                                            @Html.Raw(Html.GetText("COMINICIOLOGIN", "NOACCESODEFINICIONADMINPUBLICA", urlAdmin)) break;
+                                            case CommunityModel.TypeAccessProject.Private:
+                                            @Html.Raw(Html.GetText("COMINICIOLOGIN", "NOACCESODEFINICIONADMINPRIVADA", urlAdmin)) break;
+                                            case CommunityModel.TypeAccessProject.Reserved:
+                                            @Html.Raw(Html.GetText("COMINICIOLOGIN", "NOACCESODEFINICIONADMINRESERVADA", urlAdmin)) break;
+                                            case CommunityModel.TypeAccessProject.Restricted:
+                                            @Html.Raw(Html.GetText("COMINICIOLOGIN", "NOACCESODEFINICIONADMINRESTRINGIDA", urlAdmin)) break;
+                                        }
+                                    }
+                                    else
+                                    {
+                                        <p>@Html.GetText("COMINICIOLOGIN", "COMUNIDADDEFINICION")</p>
+                                        <p>@Html.GetText("COMINICIOLOGIN", "NOACCESODEFINICION")</p> foreach (ProfileModel admin in Comunidad.Administrators)
+                                        {
+                                            <p>@Html.ObtenerNombrePerfil(admin)</p>
+                                        }
+                                    }
+                                }
+                            </div>
+                        </div>
+                    </div>
+                }
+                <div class="row-content">
+                    @RenderBody()
+                </div>
+            </div>
+        </main>
+
+        @Html.PartialView("../Shared/_Pie")
+
+        <aside id="menuLateral" class="menuLateral" role="navigation">
+            <div class="header">
+                <div class="wrap-header">
+                    <div class="menu-logo-wrapper">
+                        <div class="menu-toggle">
+                            <a href="javascript: void(0);" class="cerrar texto-blanco">
+                                <span class="material-icons">apps</span>
+                            </a>
+                        </div>
+                        <div class="logo-wrapper">
+                            <a href="javascript: void(0);" class="texto-blanco">
+                                Hércules
+                            </a>
+                        </div>
+                    </div>
+                    <span class="material-icons cerrar">close</span>
+                </div>
+            </div>
+
+            <div class="body">
+                <ul class="nav pmd-sidebar-nav">
+                    <li>
+                        <ul>
+                            @foreach (CommunityModel.TabModel pPestanya in Comunidad.Tabs)
+                            {
+                                <li>
+                                    <a href="@pPestanya.Url">@pPestanya.Name</a>
+                                </li>
+                            }
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </aside>
+		<aside id="menuLateralUsuario" class="menuLateral usuario" role="navigation">
+            <div class="header">
+				<div class="wrap-header">
+					<div class="usuarioWrapper">
+						<div class="nombre">
+							<span>@perfil.Name</span>
+						</div>
+					</div>
+					<span class="material-icons cerrar">close</span>
+				</div>
+			</div>
+
+            <div class="body pmd-scrollbar mCustomScrollbar" data-mcs-theme="minimal-dark">
+                <div class="menuUsuario ">
+                    <div class="group-collapse alertas hasCV" style="display:none">
+                        <div id="alertas-usuario" class="collapse show">
+                            <ul class="pmd-sidebar-nav">
+								<li class="liOtros">
+                                    @{
+                                        string urlHomeED = Comunidad.Url + "/" + Html.Translate("HOMEED_URL");
+                                    }
+                                    <a href="@urlHomeED">@Html.Translate("PAGINA_INICIAL")</a>
+                                </li>
+                                <li class="liNotificaciones nuevos">
+                                    @{
+                                        string urlAlertas = Comunidad.Url + "/" + Html.Translate("ALERTAS_URL");
+                                    }
+                                    <a href="@urlAlertas">@Html.Translate("ALERTAS")</a>
+                                </li>
+                                <li class="liOtros">
+                                    @{
+                                        string urlROs = Comunidad.Url + "/" + Html.Translate("GESTIONROS_URL");
+                                    }
+                                    <a href="@urlROs">@Html.Translate("GESTION_ROS")</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="group-collapse curriculumvitae hasCV" style="display:none">
+                        <a href="#curriculumvitae" data-toggle="collapse" aria-expanded="true">@Html.Translate("CURRICULUM")</a>
+                        <div id="curriculumvitae" class="collapse show">
+                            <ul class="pmd-sidebar-nav">
+                                <li class="liOtros liEditarCV">
+                                    <a href="javascript: void(0);">@Html.Translate("EDITAR_CV")</a>
+                                </li>
+                                <li class="liAnadir">
+                                    @{
+                                        string urlImportarCV = Comunidad.Url + "/" + Html.Translate("IMPORTAR_CV_URL");
+                                    }
+                                    <a href="@urlImportarCV">@Html.Translate("IMPORTAR_CV")</a>
+                                </li>
+                                <li class="liOtros">
+                                    @{
+                                        string urlExportarCV = Comunidad.Url + "/" + Html.Translate("EXPORTAR_CV_URL");
+                                    }
+                                    <a href="@urlExportarCV">@Html.Translate("EXPORTAR_CV")</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="group-collapse redes-investigacion hasCV" style="display:none">
+                        <a href="#recuperar-ros" data-toggle="collapse" aria-expanded="true">@Html.Translate("REDES_INVESTIGACION")</a>
+                        <div id="recuperar-ros" class="collapse show">
+                            <ul class="pmd-sidebar-nav">
+                                <li class="liPublicacion">
+                                    <a href="#" onclick="PedirFuentesExternas()">@Html.Translate("RECUPERAR_ROS")</a>
+                                </li>
+                                <li class="liConfiguracion">
+                                    @{
+                                        string urlRedes = Comunidad.Url + "/" + Html.Translate("REDES_URL");
+                                    }
+                                    <a href="@urlRedes">@Html.Translate("CONFIGURACION")</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+
+
+                    <div class="group-collapse cluster  hasCV" style="display:none">
+                        <a href="#cluster" data-toggle="collapse" aria-expanded="true">@Html.Translate("GESTION_CLUSTERS")</a>
+                        <div id="cluster" class="collapse show">
+                            <ul class="pmd-sidebar-nav">
+                                <li class="liCluster">
+                                    @{
+                                        string urlListadoCluster = Comunidad.Url + "/" + Html.Translate("CLUSTER_URL");
+                                    }
+                                    <a href="@urlListadoCluster">@Html.Translate("LISTADO_CLUSTERS")</a>
+                                </li>
+                                <li class="liCluster">
+                                    @{
+                                        string urlNuevoCluster = Comunidad.Url + "/" + Html.Translate("NUEVO_CLUSTER_URL");
+                                    }
+                                    <a href="@urlNuevoCluster">@Html.Translate("NUEVO_CLUSTER")</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="group-collapse anotaciones  hasCV" style="display:none">
+                        <a href="#anotaciones" data-toggle="collapse" aria-expanded="true">@Html.Translate("GESTION_ANOTACIONES")</a>
+                        <div id="anotaciones" class="collapse show">
+                            <ul class="pmd-sidebar-nav">
+                                <li class="liComentarios">
+                                    @{
+                                        string urlListadoAnotaciones = Comunidad.Url + "/" + Html.Translate("ANOTACIONES_URL");
+                                    }
+                                    <a href="@urlListadoAnotaciones">@Html.Translate("LISTADO_ANOTACIONES")</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="group-collapse indicadores-personales hasCV" style="display:none">
+                        <a href="#indicadorespersonales" data-toggle="collapse" aria-expanded="true">@Html.Translate("INDICADORES")</a>
+                        <div id="indicadorespersonales" class="collapse show">
+                            <ul class="pmd-sidebar-nav">
+                                <li class="liIndicadores">
+                                    @{
+                                        string urlIndicadoresPersonales = Comunidad.Url + "/" + Html.Translate("INDICADORES_PERSONALES_URL");
+                                    }
+                                    <a href="@urlIndicadoresPersonales">@Html.Translate("MIS_INDICADORES")</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="group-collapse oferta-tecnologica hasCV" style="display:none">
+                        <a href="#ofertatecnologica" data-toggle="collapse" aria-expanded="true">@Html.Translate("OFERTAS_TECNOLOGICAS")</a>
+                        <div id="ofertatecnologica" class="collapse show">
+                            <ul class="pmd-sidebar-nav">
+                                <li class="liOffer">
+                                    @{
+                                        string urlMisOfertasTecnologicas = Comunidad.Url + "/" + Html.Translate("OFERTA_URL");
+                                    }
+                                    <a href="@urlMisOfertasTecnologicas">@Html.Translate("MIS_OFERTAS_TECNOLOGICAS")</a>
+                                </li>
+                                <li class="liOffer">
+                                    @{
+                                        string urlCrearOfertaTecnologica = Comunidad.Url + "/" + Html.Translate("NUEVA_OFERTA_TECNOLOGICA_URL");
+                                    }
+                                    <a href="@urlCrearOfertaTecnologica">@Html.Translate("NUEVA_OFERTA_TECNOLOGICA")</a>
+                                </li>
+                                <li class="liOffer d-none" id="menu_is_otri">
+                                    @{
+                                        string urlOfertasTecnologicasOtri = Comunidad.Url + "/" + Html.Translate("OFERTA_TECNOLOGICA_OTRI_URL");
+                                    }
+                                    <a href="@urlOfertasTecnologicasOtri">@Html.Translate("GESTIONAR_OFERTA_TECNOLOGICA")</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="group-collapse desconectar">
+                        <div id="desconectar-usuario" class="collapse show">
+                            <ul class="pmd-sidebar-nav">
+                                <li>
+                                    <a href="@Html.GetUrlLogout()" class="desconectar-usuario bold">@Html.GetText("MENU", "SALIR")</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+			</div>
+        </aside>
+
+
+
+        @RenderSection("javascript", required: false)
+
+
+
+
+        @if (Comunidad != null)
+        {
+            try
+            {
+                DateTime? envioCookie = Context.Session.Get<DateTime?>("EnvioCookie");
+
+            //Actualizo la cookie del usuario para que no caduque
+            if (Context.Request.Method.Equals("GET") && !envioCookie.HasValue && !Html.GetIdentidadActual().IsGuestUser)
+            {
+                Context.Session.Set("EnvioCookie", DateTime.Now);
+
+                string urlServicioLogin = Html.GetUrlServicioLogin();
+                string query = string.Format("?usuarioID={0}&dominio={1}/", IdentidadActual.KeyUser, Html.GetBaseUrl());
+
+                if (Context.Request.Scheme.Equals("http"))
+                {
+                    //Elimino la sesión del resto de dominios en los que había entrado el usuario
+                    //para que cuando entre en ellos soliciten la cookie al servicio de login
+
+                    if (urlServicioLogin.StartsWith("https://"))
+                    {
+                        //Hago una petición con http porque si no no te desconecta de los dominios que no tienen https.
+                        urlServicioLogin = urlServicioLogin.Replace("https://", "http://");
+                    }
+
+                    string nuevoEnvio = "";
+                    if (Context.Session.Get<object>("CrearCookieEnServicioLogin") != null)
+                        {
+                            nuevoEnvio = "&nuevoEnvio=true";
+                        }
+
+                        <iframe style="WIDTH:1px;HEIGHT:1px; display:none;" frameBorder="0" src="@string.Format("{0}/eliminarcookie.aspx{1}{2}", urlServicioLogin, query, nuevoEnvio)"></iframe> ////Registro el evento y lanzo la accion del proyecto
+                    //ProyectoCL proyectoCL = new ProyectoCL();
+                    //Dictionary<TipoProyectoEventoAccion, string> listaEventos = proyectoCL.ObtenerEventosAccionProyectoPorProyectoID(ProyectoSeleccionado.Clave, ((GnossWebPage)Page).EsBot);
+                    //proyectoCL.Dispose();
+                    //if (listaEventos != null && listaEventos.Count > 0)
+                    //{
+                    //    //comprobación existencia evento login
+                    //    if (listaEventos.ContainsKey(TipoProyectoEventoAccion.Login) && (!((GnossWebPage)Page).OmitirProyectoEventoAccionLogin))
+                    //    {
+                    //        StringBuilder sbEventos = new StringBuilder();
+                    //        sbEventos.AppendLine(listaEventos[TipoProyectoEventoAccion.Login]);
+                    //        this.Page.ClientScript.RegisterStartupScript(this.GetType(), "EventoLogin", sbEventos.ToString(), true);
+                    //    }
+                    //}
+                }
+                if (Context.Session.Get<object>("CrearCookieEnServicioLogin") != null && Context.Session.Get<object>("Usuario") != null)
+                    {
+                    //Envío la cookie del usuario
+                    Es.Riam.Gnoss.Util.Seguridad.GnossIdentity usuario = Context.Session.Get<Es.Riam.Gnoss.Util.Seguridad.GnossIdentity>("Usuario");
+
+                        query = "usuarioID=" + usuario.UsuarioID + "&loginUsuario=" + usuario.Login + "&idioma=" + usuario.Idioma + "&personaID=" + usuario.PersonaID + "&nombreCorto=" + usuario.Login;
+                        query += "&token=" + Html.GetTokenLoginUsuario();
+
+                        <iframe style="WIDTH:1px;HEIGHT:1px; display:none;" frameBorder="0" src="@string.Format("{0}/crearCookie.aspx?{1}", urlServicioLogin, query)"></iframe> Context.Session.Remove("CrearCookieEnServicioLogin");
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+            }
+            if (Comunidad.ProjectExtraHTMLList != null)
+            {
+                @Html.PartialView("../Shared/ProyectoElementoHTML", Comunidad.ProjectExtraHTMLList.Where(a => a.Ubication == UbicacionHtmlProyecto.EndBody).ToList());
+            }
+        }
+
+        <div id="modal-resultados" class="modal modal-top fade modal-resultados modal-resultados-paginado" tabindex="-1" role="dialog">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <p class="modal-title">@Html.Translate("CATEGORIAS")</p>
+                        <span class="material-icons cerrar" data-dismiss="modal" aria-label="Close">close</span>
+                    </div>
+                    <div class="modal-body">
+                        <div class="buscador-coleccion">
+                            <form>
+                                <div>
+                                    <span class="buscar">
+                                        <input type="text" value="" class="texto">
+                                        <span class="material-icons lupa">search</span>
+                                    </span>
+                                </div>
+                            </form>
+                            <script>
+                                $(document).ready(function () {
+                                    $(".buscador-coleccion .buscar input").on("focus", function () {
+                                        $(this).val("");
+                                    });
+                                });
+                            </script>
+                        </div>
+                        <div class="indice-lista no-letra facetas-wrap">
+                            <div class="action-buttons-resultados">
+                                <ul class="no-list-style">
+                                    <li class="js-anterior-facetas-modal">
+                                        <span class="material-icons">navigate_before</span>
+                                        <span class="texto">Anteriores</span>
+                                    </li>
+                                    <li class="js-siguiente-facetas-modal">
+                                        <span class="texto">Siguientes</span>
+                                        <span class="material-icons">navigate_next</span>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="modal-tesauro" class="modal modal-top fade modal-con-buscador" tabindex="-1" role="dialog">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content modal-content-height">
+                    <div class="modal-header">
+                        <p class="modal-title"></p>
+                        <span class="material-icons cerrar" data-dismiss="modal" aria-label="Close">close</span>
+                    </div>
+                    <div class="modal-body">
+                        <div class="entityaux">
+                            <div class="buscador-coleccion">
+                                <div>
+                                    <span class="buscar">
+                                        <input type="text" value="" class="texto">
+                                        <span class="material-icons lupa">search</span>
+                                    </span>
+                                </div>
+                                <script>
+                                    $(document).ready(function () {
+                                        $(".buscador-coleccion .buscar input").on("focus", function () {
+                                            $(this).val("");
+                                        });
+                                    });
+                                </script>
+                            </div>
+
+                            <div class="action-buttons-resultados">
+                                <ul class="no-list-style">
+                                    <li class="js-plegar-facetas-modal">
+                                        <span class="texto">@Html.Translate("PLEGAR")</span>
+                                        <span class="material-icons">expand_less</span>
+                                    </li>
+                                    <li class="js-desplegar-facetas-modal">
+                                        <span class="texto">@Html.Translate("DESPLEGAR")</span>
+                                        <span class="material-icons">expand_more</span>
+                                    </li>
+                                </ul>
+                            </div>
+
+                            <ul class="listadoTesauro">
+
+                            </ul>
+                        </div>                  
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="modal-anadir-item-cv" class="modal modal-top fade modal-alertas" tabindex="-1" role="dialog">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <p class="modal-title"><span class="material-icons">post_add</span>Añadir</p>
+                        <span class="material-icons cerrar" data-dismiss="modal" aria-label="Close">close</span>
+                    </div>
+                    <div class="modal-body">
+                        <form class="formulario-edicion formulario-alertas">
+                            <p>El item se incorporará a tu CV</p>
+                            <div class="form-group">
+                                <label class="control-label">¿Deseas también hacerlo público y/o enviarlo a producción científica?</label>
+                            </div>
+                            <div class="custom-control custom-checkbox mb-4">
+                                <input type="checkbox" id="solicitar-validacion" name="solicitar-validacion" class="custom-control-input at-input">
+                                <label class="custom-control-label texto-gris-claro" for="solicitar-validacion">Solicitar validación de la Universidad</label>
+                            </div>
+                            <div class="form-group mb-4">
+                                <div class="image-uploader js-image-uploader">
+                                    <div class="image-uploader__preview">
+                                        <img class="image-uploader__img" alt="Imagen Usuario" src="">
+                                    </div>
+                                    <div class="image-uploader__drop-area">
+                                        <div class="image-uploader__icon">
+                                            <span class="material-icons">backup</span>
+                                        </div>
+                                        <div class="image-uploader__info">
+                                            <p><strong>Arrastra y suelta en la zona punteada los documentos acreditativos</strong></p>
+                                            <p>Imágenes en formato .PNG o .JPG</p>
+                                            <p>Peso máximo de las imágenes 250 kb</p>
+                                        </div>
+                                    </div>
+                                    <div class="image-uploader__error">
+                                        <p class="ko"></p>
+                                    </div>
+                                </div>
+                                <input type="file" class="image-uploader__input" accept="image/*">
+                            </div>
+                            <div class="custom-control custom-checkbox mb-4">
+                                <input type="checkbox" id="hacer-publico" name="hacer-publico" class="custom-control-input">
+                                <label class="custom-control-label texto-gris-claro" for="hacer-publico">Hacerlo público</label>
+                            </div>
+                        </form>
+                        <div class="form-actions">
+                            <a class="btn btn-primary uppercase">Añadir</a>
+                            <a class="btn btn-link uppercase" data-dismiss="modal">Cancelar</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="pmd-sidebar-overlay" data-rel="menuLateralUsuario"></div>
+        <aside id="menuLateralMetabuscador" class="menuLateral metabuscador">
+            <div class="body custom-css-scroll">
+                <div class="resultados" id="resultadosMetabuscador" data-url="Search/DoMetaSearch">
+                    <ul>
+						@{
+							string urlTab=Comunidad.Url+"/"+Html.Translate("PUBLICACIONES_URL");
+						}
+                        <li class="bloque documents" data-urlcomunidad="@urlTab">
+                            <p class="title">@Html.Translate("PUBLICACIONES")</p>
+                            <ul>
+                            </ul>
+                        </li>
+						@{
+							urlTab=Comunidad.Url+"/"+Html.Translate("INVESTIGADORES_URL");
+						}
+                        <li class="bloque persons" data-urlcomunidad="@urlTab">
+                            <p class="title">@Html.Translate("INVESTIGADORES")</p>
+                            <ul>
+                            </ul>
+                        </li>
+						@{
+							urlTab=Comunidad.Url+"/"+Html.Translate("GRUPOS_URL");
+						}
+                        <li class="bloque groups" data-urlcomunidad="@urlTab">
+                            <p class="title">@Html.Translate("GRUPOS")</p>
+                            <ul>
+                            </ul>
+                        </li>
+						@{
+							urlTab=Comunidad.Url+"/"+Html.Translate("PROJECTS_URL");
+						}
+                        <li class="bloque projects" data-urlcomunidad="@urlTab">
+                            <p class="title">@Html.Translate("PROYECTOS")</p>
+                            <ul>
+                            </ul>
+                        </li>
+						@{
+							urlTab=Comunidad.Url+"/"+Html.Translate("ROS_URL");
+						}
+                        <li class="bloque researchObjects" data-urlcomunidad="@urlTab">
+                            <p class="title">@Html.Translate("RESEARCHOBJECTS")</p>
+                            <ul>
+                            </ul>
+                        </li>
+						@{
+							urlTab=Comunidad.Url+"/"+Html.Translate("OFFER_URL");
+						}
+						<li class="bloque offers" data-urlcomunidad="@urlTab">
+                            <p class="title">@Html.Translate("OFFERS")</p>
+                            <ul>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+                <div class="sugerencias" id="sugerenciasMetabuscador">
+                    <p class="title">Últimas búsquedas</p>
+                    <ul class="nav pmd-sidebar-nav"></ul>
+                </div>
+                <div class="cargadores">
+                    <div class="progress-loader" id="loader-recursos-wrap">
+                        <p class="progress-loader-label">Buscando recursos</p>
+                    </div>
+                </div>
+                <div class="sinresultadosMetabuscador d-none" id="sinResultadosMetabuscador"> </div>
+            </div>
+        </aside>
+
+        @if (!IdentidadActual.IsGuestUser)
+        {			
+
+			<script type="text/javascript">
+				$(document).ready(function () {
+					EjecutarScriptsIniciales2();
+                    EnhableIfIsOtri();
+				});
+			</script>
+		
+			<input type="hidden" id="INVESTIGADORES" value="@Html.Translate("INVESTIGADORES")"/>
+			
+            
+        }   
+    </body>
+</html>

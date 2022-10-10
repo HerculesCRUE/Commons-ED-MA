@@ -1,0 +1,67 @@
+@model CMSComponentHot
+@*
+Descripción
+-----------------------------------------------
+Vista que muestra el componente CMS de tipo Destacado
+
+Variables
+----------------------------------------------------------------
+*@
+@{
+    
+}
+@*
+----------------------------------------------------------------
+-------------------- Vista CMS del componente de tipo Destacado --------------------*@
+
+@if(Model != null)
+{
+	@* Contenido destacado *@
+    <div class="destacado horizontal">
+		@*Imagen de destacado *@
+		@if (!string.IsNullOrEmpty(Model.Image))
+        {
+			<div class="group image">                
+				@if (!string.IsNullOrEmpty(Model.Link))
+				{
+					<a href="@Model.Link"><img alt="@Model.Title" title="@Model.Title" src="@Model.Image" /></a>
+				}
+                else
+                {
+					<img alt="@Model.Title" title="@Model.Title" src="@Model.Image" />
+				}
+			</div>
+		}
+
+		<div class="box content">
+			@* Título de Destacados *@
+			@if (!string.IsNullOrEmpty(Model.Title)) { 
+				<div class="group title">
+					@if (!string.IsNullOrEmpty(Model.Link))
+					{
+						<h3>
+							<a href="@Model.Link">@Model.Title</a>
+						</h3>						
+					}
+					else
+					{
+						<h3>@Model.Title</h3>					
+					}
+					@* Subtítulo *@
+					@if (!string.IsNullOrEmpty(Model.Subtitle)) { 
+						<p>@Html.Raw(Model.Subtitle)</p>
+					} 
+
+				</div>
+			}
+			@* Descripción / texto del artículo *@
+			@if (!string.IsNullOrEmpty(Model.HTML))
+			{
+				<div class="group contenido">                    
+                    <p>@Html.Raw(Model.HTML)</p>
+				</div>
+			}
+		</div>
+	</div>
+}
+      

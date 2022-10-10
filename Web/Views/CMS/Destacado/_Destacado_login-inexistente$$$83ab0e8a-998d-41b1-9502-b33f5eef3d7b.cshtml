@@ -1,0 +1,39 @@
+@model CMSComponentHot
+@{
+    CommunityModel Comunidad = Html.GetComunidad();
+    UserIdentityModel IdentidadActual = Html.GetIdentidadActual();
+}
+
+@if (Model != null)
+{
+
+    <div class="d-flex flex-column flex-wrap">
+        <div class="col col-12 col-breadcrumb">
+            <ul>
+                <li>
+                    <a href="@Comunidad.Url">Home</a>
+                </li>
+                <li>
+                    @Html.Translate("ERROR_LOGIN_INEXISTENTE_H1")
+                </li>
+            </ul>
+        </div>
+        <div class="col col-12 col-xl-9 header-listado">
+            <div class="h1-container">
+                <h1>@Html.Translate("ERROR_LOGIN_INEXISTENTE_H1") </h1>
+            </div>
+        </div>
+        <div class="col col-12 col-xl-9 col-contenido">
+            <div class="wrapCol">
+                <div class="resource-list listView resource-list-cluster">
+                    <div class="resource-list-wrap text-center">
+                        <p> @Html.Translate("ERROR_LOGIN_INEXISTENTE") @Context.Request.Query["email"]</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <iframe class="oculto" width="1" height="1" src="@Html.Translate("URL_AUTH_LOGOUT")"></iframe>
+
+}

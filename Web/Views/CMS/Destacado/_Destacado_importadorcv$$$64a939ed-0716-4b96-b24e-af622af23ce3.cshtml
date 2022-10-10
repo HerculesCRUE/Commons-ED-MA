@@ -1,0 +1,154 @@
+@model CMSComponentHot
+@{ 
+	CommunityModel Comunidad = Html.GetComunidad();
+    UserIdentityModel IdentidadActual = Html.GetIdentidadActual();
+	string urlPersonalizacion = Html.GetBaseUrlContent() + "/imagenes/proyectos/personalizacion/" + Comunidad.Key.ToString();
+	string urlJS = $"{urlPersonalizacion}/theme/edicioncv.js?v={Html.Translate("VERSION_CSS_JS")}";
+	string urlImportacionJS = $"{urlPersonalizacion}/theme/importacioncv.js?v={Html.Translate("VERSION_CSS_JS")}";
+    Html.GetListaJS().Add(urlJS);
+    Html.GetListaJS().Add(urlImportacionJS);
+	string urlCSS = $"{urlPersonalizacion}/theme/edicioncv.css?v={Html.Translate("VERSION_CSS_JS")}";
+	Html.GetListaCSS().Add(urlCSS);
+}
+
+<input type="hidden" id="CV_FIRMANOSELECCIONADOPERSONA" value="@Html.Translate("CV_FIRMANOSELECCIONADOPERSONA")"/>
+<input type="hidden" id="CV_MASRESULTADOS" value="@Html.Translate("CV_MASRESULTADOS")"/>
+<input type="hidden" id="CV_BUSCAR" value="@Html.Translate("CV_BUSCAR")"/>
+<input type="hidden" id="CV_COINCIDENCIA" value="@Html.Translate("CV_COINCIDENCIA")"/>
+<input type="hidden" id="CV_LAFIRMAXESTADUPLICADA" value="@Html.Translate("CV_LAFIRMAXESTADUPLICADA")"/>
+<input type="hidden" id="CV_LAFIRMAXYAESTAINTRODUCIDA" value="@Html.Translate("CV_LAFIRMAXYAESTAINTRODUCIDA")"/>
+<input type="hidden" id="CV_ESTACARGADAPERSONAOTRAFIRMA" value="@Html.Translate("CV_ESTACARGADAPERSONAOTRAFIRMA")"/>
+<input type="hidden" id="CV_NOMBREOBLIGATORIO" value="@Html.Translate("CV_NOMBREOBLIGATORIO")"/>
+<input type="hidden" id="CV_APELLIDOSOBLIGATORIO" value="@Html.Translate("CV_APELLIDOSOBLIGATORIO")"/>
+<input type="hidden" id="CV_AGNADIR" value="@Html.Translate("CV_AGNADIR")"/>
+<input type="hidden" id="CV_ELIMINAR" value="@Html.Translate("CV_ELIMINAR")"/>
+<input type="hidden" id="CV_EDITAR" value="@Html.Translate("CV_EDITAR")"/>
+<input type="hidden" id="CV_NOHASINTRODUCIDONINGUNAFIRMA" value="@Html.Translate("CV_NOHASINTRODUCIDONINGUNAFIRMA")"/>
+<input type="hidden" id="CV_ELCODIGOINTRODUCIDONOESVALIDO" value="@Html.Translate("CV_ELCODIGOINTRODUCIDONOESVALIDO")"/>
+<input type="hidden" id="CV_DATOSPERSONALES" value="@Html.Translate("CV_DATOSPERSONALES")"/>
+<input type="hidden" id="CV_ESCRIBE_ALGO" value="@Html.Translate("CV_ESCRIBE_ALGO")"/>
+<input type="hidden" id="CV_ACCIONES" value="@Html.Translate("CV_ACCIONES")"/>
+<input type="hidden" id="CV_PUBLICAR" value="@Html.Translate("CV_PUBLICAR")"/>
+<input type="hidden" id="CV_DESPUBLICAR" value="@Html.Translate("CV_DESPUBLICAR")"/>
+<input type="hidden" id="CV_PLEGAR" value="@Html.Translate("CV_PLEGAR")"/>
+<input type="hidden" id="CV_DESPLEGAR" value="@Html.Translate("CV_DESPLEGAR")"/>
+<input type="hidden" id="CV_GUARDAR" value="@Html.Translate("CV_GUARDAR")"/>
+<input type="hidden" id="CV_FORMATOIMAGENES" value="@Html.Translate("CV_FORMATOIMAGENES")"/>
+<input type="hidden" id="CV_PESOMAXIMOIMAGENES" value="@Html.Translate("CV_PESOMAXIMOIMAGENES")"/>
+<input type="hidden" id="CV_IMAGENPESADEMASIADO" value="@Html.Translate("CV_IMAGENPESADEMASIADO")"/>
+<input type="hidden" id="CV_RESTABLECER" value="@Html.Translate("CV_RESTABLECER")"/>
+<input type="hidden" id="CV_BLOQUEADO" value="@Html.Translate("CV_BLOQUEADO")"/>
+<input type="hidden" id="CV_VISIBLE" value="@Html.Translate("CV_VISIBLE")"/>
+<input type="hidden" id="CV_OCULTO" value="@Html.Translate("CV_OCULTO")"/>
+<input type="hidden" id="ESPAGNOL" value="@Html.Translate("ESPAGNOL")"/>
+<input type="hidden" id="INGLES" value="@Html.Translate("INGLES")"/>
+<input type="hidden" id="CATALAN" value="@Html.Translate("CATALAN")"/>
+<input type="hidden" id="EUSKERA" value="@Html.Translate("EUSKERA")"/>
+<input type="hidden" id="GALLEGO" value="@Html.Translate("GALLEGO")"/>
+<input type="hidden" id="FRANCES" value="@Html.Translate("FRANCES")"/>
+<input type="hidden" id="CV_SINTRADUCCION" value="@Html.Translate("CV_SINTRADUCCION")"/>
+<input type="hidden" id="CV_CONTRADUCCION" value="@Html.Translate("CV_CONTRADUCCION")"/>
+<input type="hidden" id="CV_OCULTAR_EDICION" value="@Html.Translate("CV_OCULTAR_EDICION")"/>
+<input type="hidden" id="CV_IGNORAR" value="@Html.Translate("CV_IGNORAR")"/>
+<input type="hidden" id="CV_FUSIONAR" value="@Html.Translate("CV_FUSIONAR")"/>
+<input type="hidden" id="CV_SOBREESCRIBIR" value="@Html.Translate("CV_SOBREESCRIBIR")"/>
+<input type="hidden" id="CV_DUPLICAR" value="@Html.Translate("CV_DUPLICAR")"/>
+<input type="hidden" id="CV_SELECCIONAR_TODOS" value="@Html.Translate("CV_SELECCIONAR_TODOS")"/>
+<input type="hidden" id="CV_DESELECCIONAR_TODOS" value="@Html.Translate("CV_DESELECCIONAR_TODOS")"/>
+<input type="hidden" id="CV_SELECCIONAR_SIMILITUDES" value="@Html.Translate("CV_SELECCIONAR_SIMILITUDES")"/>
+<input type="hidden" id="CV_DESELECCIONAR_SIMILITUDES" value="@Html.Translate("CV_DESELECCIONAR_SIMILITUDES")"/>
+<input type="hidden" id="CV_SELECCIONAR_NUEVOS" value="@Html.Translate("CV_SELECCIONAR_NUEVOS")"/>
+<input type="hidden" id="CV_DESELECCIONAR_NUEVOS" value="@Html.Translate("CV_DESELECCIONAR_NUEVOS")"/>
+<input type="hidden" id="CV_MOSTRAR_TODOS" value="@Html.Translate("CV_MOSTRAR_TODOS")"/>
+<input type="hidden" id="CV_MOSTRAR_SIMILITUDES" value="@Html.Translate("CV_MOSTRAR_SIMILITUDES")"/>
+<input type="hidden" id="CV_MOSTRAR_NUEVOS" value="@Html.Translate("CV_MOSTRAR_NUEVOS")"/>
+<input type="hidden" id="ESTADO_PREIMPORTAR_INICIO" value="@Html.Translate("ESTADO_PREIMPORTAR_INICIO")"/>
+<input type="hidden" id="ESTADO_PREIMPORTAR_LECTURA" value="@Html.Translate("ESTADO_PREIMPORTAR_LECTURA")"/>
+<input type="hidden" id="ESTADO_PREIMPORTAR_PROCESARDATOS" value="@Html.Translate("ESTADO_PREIMPORTAR_PROCESARDATOS")"/>
+<input type="hidden" id="ESTADO_PREIMPORTAR_FINLECTURA" value="@Html.Translate("ESTADO_PREIMPORTAR_FINLECTURA")"/>
+<input type="hidden" id="ESTADO_POSTIMPORTAR_INICIO" value="@Html.Translate("ESTADO_POSTIMPORTAR_INICIO")"/>
+<input type="hidden" id="ESTADO_POSTIMPORTAR_LECTURA" value="@Html.Translate("ESTADO_POSTIMPORTAR_LECTURA")"/>
+<input type="hidden" id="ESTADO_POSTIMPORTAR_DUPLICAR" value="@Html.Translate("ESTADO_POSTIMPORTAR_DUPLICAR")"/>
+<input type="hidden" id="ESTADO_POSTIMPORTAR_FUSIONAR" value="@Html.Translate("ESTADO_POSTIMPORTAR_FUSIONAR")"/>
+<input type="hidden" id="ESTADO_POSTIMPORTAR_SOBRESCRIBIR" value="@Html.Translate("ESTADO_POSTIMPORTAR_SOBRESCRIBIR")"/>
+<input type="hidden" id="DUPLICAR_TOOLTIP" value="@Html.Translate("DUPLICAR_TOOLTIP")"/>
+<input type="hidden" id="SOBREESCRIBIR_TOOLTIP" value="@Html.Translate("SOBREESCRIBIR_TOOLTIP")"/>
+<input type="hidden" id="FUSIONAR_TOOLTIP" value="@Html.Translate("FUSIONAR_TOOLTIP")"/>
+<input type="hidden" id="IGNORAR_TOOLTIP" value="@Html.Translate("IGNORAR_TOOLTIP")"/>
+<input type="hidden" id="CV_INDICADORES_GENERALES" value="@Html.Translate("CV_INDICADORES_GENERALES")"/>
+<input type="hidden" id="CV_DATOS_IDENTIFICACION" value="@Html.Translate("CV_DATOS_IDENTIFICACION")"/>
+<input type="hidden" id="INFORMACION_IMPORTACION" value="@Html.Translate("INFORMACION_IMPORTACION")"/>
+<input type="hidden" id="DETALLES_INFORMACION_IMPORTACION" value="@Html.Translate("DETALLES_INFORMACION_IMPORTACION")"/>
+
+<div id="containerCV">
+	<div class="row">
+		<div class="col col-12 col-breadcrumb">
+			<ul>
+				<li>
+					<a href="@Comunidad.Url">Home</a>
+				</li>
+				<li>@Html.Translate("IMPORTAR_CV")</li>
+			</ul>
+		</div>
+		<div class="col col-12 col-xl-8 col-contenido izquierda paso1">
+			<div class="wrapCol">
+				<div class="header-contenido">
+					<div class="h1-container">
+						<h1>@Html.Translate("IMPORTA_TU_CVN")</h1>
+					</div>
+				</div>
+				<p>@Html.Translate("IMPORTA_TU_CVN_CON_UN_CLICK")</p>
+				<input type="file" name="" id="file_cvn" accept="application/pdf" data-title-text="@Html.Translate("SUBE_PDF_CV")" data-size-text="@Html.Translate("MAXIMO_PESO_CV")" data-format-text="@Html.Translate("FORMATOS_ADMITIDOS_CV")" data-format-error="@Html.Translate("FORMATO_ERROR_CV")" data-size-error="@Html.Translate("TAMANIO_ERROR_CV")">
+				<br>
+				<div class="botonera">
+					<a href="javascript: void(0);" class="btn btn-primary uppercase btProcesarCV">@Html.Translate("PROCESAR")</a>
+				</div>
+			</div>
+		</div>
+		<div class="col col-12 col-contenido paso2" style="display:none">
+			<div class="wrapCol">
+				<div class="cabecera-cv">
+					<div class="upper-wrap">
+						<div class="h1-container">
+							<h1>@Html.Translate("IMPORTA_TU_CVN")</h1>
+							<div id="dropdown_seleccion_cv" class="seleccionar dropdown dropdown-select">
+								<a class="dropdown-toggle" data-toggle="dropdown" aria-expanded="true">
+									<span class="material-icons">done_all</span>
+								</a>
+								<div class="dropdown-menu basic-dropdown dropdown-menu-right" x-placement="bottom-end">
+									<a id="CV_select_all" class="item-dropdown"><span class="material-icons">done_all</span><span class="texto">Seleccionar todos</span></a>
+									<a id="CV_unselect_all" class="item-dropdown"><span class="material-icons">remove_done</span><span class="texto">Deseleccionar todos</span></a>
+								</div>
+							</div>					
+							<div id="dropdown_mostrar_cv" class="seleccionar dropdown dropdown-select">
+								<a class="dropdown-toggle" data-toggle="dropdown" aria-expanded="true">
+									<span class="material-icons">preview</span>
+								</a>
+								<div class="dropdown-menu basic-dropdown dropdown-menu-right" x-placement="bottom-end">
+									<a class="item-dropdown mostrarTodos"><span class="texto">Mostrar todos</span></a>
+									<a class="item-dropdown mostrarSimilitudes"><span class="texto">Mostrar similitudes</span></a>
+									<a class="item-dropdown mostrarNuevos"><span class="texto">Mostrar nuevos</span></a>
+								</div>
+							</div>							
+						</div>						
+					</div>
+				</div>
+				<div class="alert" id="informacionImportacion">
+					<p class="alert-title">
+						<span class="material-icons">warning</span>
+						@Html.Translate("INFORMACION_IMPORTACION")
+						@Html.Raw(Html.Translate("DETALLES_INFORMACION_IMPORTACION"))
+					</p>
+				</div>
+				<div class="contenido-cv">
+				</div>
+				<a class="btn btn-primary uppercase btImportarCV" >@Html.Translate("IMPORTAR")</a>
+			</div>
+		</div>
+	</div>
+</div>
+<script>
+	$(document).ready(function () {	
+		importarCVN.init();
+	});
+</script>

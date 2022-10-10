@@ -1,0 +1,1090 @@
+@*[security|||curriculumvitae|||hercules]*@
+@using System.Reflection;
+@model ResourceViewModel
+@{ 
+    ResourceModel FichaDocumento = Model.Resource;
+    CommunityModel Comunidad = Html.GetComunidad();
+    UserIdentityModel IdentidadActual = Html.GetIdentidadActual();
+	
+    string urlPersonalizacion = Html.GetBaseUrlContent() + "/imagenes/proyectos/personalizacion/" + Comunidad.Key.ToString();
+
+    Html.AddBodyClass(" page-cv");
+    string urlJS = $"{urlPersonalizacion}/theme/edicioncv.js?v={Html.Translate("VERSION_CSS_JS")}";	
+    Html.GetListaJS().Add(urlJS);
+	string urlJS2 = $"{urlPersonalizacion}/theme/editorWysiwyg.js?v={Html.Translate("VERSION_CSS_JS")}";	
+	Html.GetListaJS().Add(urlJS2);
+	string urlCSS = $"{urlPersonalizacion}/theme/edicioncv.css?v={Html.Translate("VERSION_CSS_JS")}";
+    Html.GetListaCSS().Add(urlCSS);
+	string urlCSS2 = $"{urlPersonalizacion}/theme/editorWysiwyg.css?v={Html.Translate("VERSION_CSS_JS")}";
+    Html.GetListaCSS().Add(urlCSS2);
+    SemanticResourceModel semCmsModel = Model.SemanticFrom;
+    GnossOCBase.LanguageEnum idiomaUsuario = (GnossOCBase.LanguageEnum)Enum.Parse(typeof(GnossOCBase.LanguageEnum), Html.GetUtilIdiomas().LanguageCode.ToLower());
+    CV pCV = new CV(semCmsModel, idiomaUsuario); 
+	HeaderModel cabecera = Html.GetCabecera();
+	
+	
+	Guid idCV=new Guid(pCV.Roh_cvOf.IdRoh_gnossUser.Replace("http://gnoss/",""));
+	Guid idUsuarioActual=IdentidadActual.KeyUser;
+	if(idCV!=idUsuarioActual)
+	{
+		Context.Response.StatusCode=404;
+        <div class="row">
+            <div class="col">
+                <div class="form panel-centrado">
+                    <h1>@Html.Translate("TITULO_PAGINA_NO_ENCONTRADA")</h1>
+                    <p>@Html.Translate("DESCRIPCION_PAGINA_NO_ENCONTRADA")</p>
+                    <p>@Html.Translate("SI_LO_DESEAS_PUEDES") <a href="@Comunidad.Url">@Html.Translate("VOLVER_A_HOME")</a>.</p>
+                </div>
+            </div>
+        </div>
+		return;
+	}
+}
+
+<input type="hidden" id="CV_FIRMANOSELECCIONADOPERSONA" value="@Html.Translate("CV_FIRMANOSELECCIONADOPERSONA")"/>
+<input type="hidden" id="CV_MASRESULTADOS" value="@Html.Translate("CV_MASRESULTADOS")"/>
+<input type="hidden" id="CV_BUSCAR" value="@Html.Translate("CV_BUSCAR")"/>
+<input type="hidden" id="CV_COINCIDENCIA" value="@Html.Translate("CV_COINCIDENCIA")"/>
+<input type="hidden" id="CV_LAFIRMAXESTADUPLICADA" value="@Html.Translate("CV_LAFIRMAXESTADUPLICADA")"/>
+<input type="hidden" id="CV_LAFIRMAXYAESTAINTRODUCIDA" value="@Html.Translate("CV_LAFIRMAXYAESTAINTRODUCIDA")"/>
+<input type="hidden" id="CV_ESTACARGADAPERSONAOTRAFIRMA" value="@Html.Translate("CV_ESTACARGADAPERSONAOTRAFIRMA")"/>
+<input type="hidden" id="CV_NOMBREOBLIGATORIO" value="@Html.Translate("CV_NOMBREOBLIGATORIO")"/>
+<input type="hidden" id="CV_APELLIDOSOBLIGATORIO" value="@Html.Translate("CV_APELLIDOSOBLIGATORIO")"/>
+<input type="hidden" id="CV_AGNADIR" value="@Html.Translate("CV_AGNADIR")"/>
+<input type="hidden" id="CV_ELIMINAR" value="@Html.Translate("CV_ELIMINAR")"/>
+<input type="hidden" id="CV_EDITAR" value="@Html.Translate("CV_EDITAR")"/>
+<input type="hidden" id="CV_NOHASINTRODUCIDONINGUNAFIRMA" value="@Html.Translate("CV_NOHASINTRODUCIDONINGUNAFIRMA")"/>
+<input type="hidden" id="CV_ELCODIGOINTRODUCIDONOESVALIDO" value="@Html.Translate("CV_ELCODIGOINTRODUCIDONOESVALIDO")"/>
+<input type="hidden" id="CV_DATOSPERSONALES" value="@Html.Translate("CV_DATOSPERSONALES")"/>
+<input type="hidden" id="CV_ESCRIBE_ALGO" value="@Html.Translate("CV_ESCRIBE_ALGO")"/>
+<input type="hidden" id="CV_ACCIONES" value="@Html.Translate("CV_ACCIONES")"/>
+<input type="hidden" id="CV_PUBLICAR" value="@Html.Translate("CV_PUBLICAR")"/>
+<input type="hidden" id="CV_DESPUBLICAR" value="@Html.Translate("CV_DESPUBLICAR")"/>
+<input type="hidden" id="CV_PLEGAR" value="@Html.Translate("CV_PLEGAR")"/>
+<input type="hidden" id="CV_DESPLEGAR" value="@Html.Translate("CV_DESPLEGAR")"/>
+<input type="hidden" id="CV_GUARDAR" value="@Html.Translate("CV_GUARDAR")"/>
+<input type="hidden" id="CV_FORMATOIMAGENES" value="@Html.Translate("CV_FORMATOIMAGENES")"/>
+<input type="hidden" id="CV_PESOMAXIMOIMAGENES" value="@Html.Translate("CV_PESOMAXIMOIMAGENES")"/>
+<input type="hidden" id="CV_IMAGENPESADEMASIADO" value="@Html.Translate("CV_IMAGENPESADEMASIADO")"/>
+<input type="hidden" id="CV_RESTABLECER" value="@Html.Translate("CV_RESTABLECER")"/>
+<input type="hidden" id="CV_BLOQUEADO" value="@Html.Translate("CV_BLOQUEADO")"/>
+<input type="hidden" id="CV_VISIBLE" value="@Html.Translate("CV_VISIBLE")"/>
+<input type="hidden" id="CV_OCULTO" value="@Html.Translate("CV_OCULTO")"/>
+<input type="hidden" id="ESPAGNOL" value="@Html.Translate("ESPAGNOL")"/>
+<input type="hidden" id="INGLES" value="@Html.Translate("INGLES")"/>
+<input type="hidden" id="CATALAN" value="@Html.Translate("CATALAN")"/>
+<input type="hidden" id="EUSKERA" value="@Html.Translate("EUSKERA")"/>
+<input type="hidden" id="GALLEGO" value="@Html.Translate("GALLEGO")"/>
+<input type="hidden" id="FRANCES" value="@Html.Translate("FRANCES")"/>
+<input type="hidden" id="CV_SINTRADUCCION" value="@Html.Translate("CV_SINTRADUCCION")"/>
+<input type="hidden" id="CV_CONTRADUCCION" value="@Html.Translate("CV_CONTRADUCCION")"/>
+<input type="hidden" id="CV_OCULTAR_EDICION" value="@Html.Translate("CV_OCULTAR_EDICION")"/>
+<input type="hidden" id="ENVIAR_PRODUCCION_CIENTIFICA" value="@Html.Translate("ENVIAR_PRODUCCION_CIENTIFICA")"/>
+<input type="hidden" id="ENVIAR_VALIDACION" value="@Html.Translate("ENVIAR_VALIDACION")"/>
+<input type="hidden" id="CV_PUBLICACION_BLOQUEADA_RESUELVA_PROCEDIMIENTO" value="@Html.Translate("CV_PUBLICACION_BLOQUEADA_RESUELVA_PROCEDIMIENTO")"/>
+<input type="hidden" id="CV_DOCUMENTO_VALIDACION" value="@Html.Translate("CV_DOCUMENTO_VALIDACION")"/>
+<input type="hidden" id="CV_ERROR_DOCUMENTO_VALIDACION" value="@Html.Translate("CV_ERROR_DOCUMENTO_VALIDACION")"/>
+<input type="hidden" id="CV_ERROR_PUBLICACION_PRC" value="@Html.Translate("CV_ERROR_PUBLICACION_PRC")"/>
+<input type="hidden" id="CV_PENDIENTE" value="@Html.Translate("CV_PENDIENTE")"/>
+<input type="hidden" id="CV_VALIDADO" value="@Html.Translate("CV_VALIDADO")"/>
+<input type="hidden" id="CV_PROPIEDADIDENTIFICADORREPETIDA" value="@Html.Translate("CV_PROPIEDADIDENTIFICADORREPETIDA")"/>
+<input type="hidden" id="DUPLICADOS_SELECCIONAR_TODAS_OPCIONES" value="@Html.Translate("DUPLICADOS_SELECCIONAR_TODAS_OPCIONES")"/>
+<input type="hidden" id="DUPLICADOS_DUPLICIDAD_RESUELTA" value="@Html.Translate("DUPLICADOS_DUPLICIDAD_RESUELTA")"/>
+<input type="hidden" id="CV_DUPLICADO_FUSIONAR" value="@Html.Translate("CV_DUPLICADO_FUSIONAR")"/>
+<input type="hidden" id="CV_DUPLICADO_ELIMINAR" value="@Html.Translate("CV_DUPLICADO_ELIMINAR")"/>
+<input type="hidden" id="CV_DUPLICADO_NO_DUPLICADO" value="@Html.Translate("CV_DUPLICADO_NO_DUPLICADO")"/>
+<input type="hidden" id="CV_CAMBIAR_A_PRINCIPAL" value="@Html.Translate("CV_CAMBIAR_A_PRINCIPAL")"/>
+<input type="hidden" id="DUPLICADOS_NO_HAY_DUPLICADOS" value="@Html.Translate("DUPLICADOS_NO_HAY_DUPLICADOS")"/>
+<input type="hidden" id="CV_ALERTA_FUSION_ELIMINACION_BLOQUEADO" value="@Html.Translate("CV_ALERTA_FUSION_ELIMINACION_BLOQUEADO")"/>
+<input type="hidden" id="CV_ALERTA_ELIMINACION_BLOQUEADO" value="@Html.Translate("CV_ALERTA_ELIMINACION_BLOQUEADO")"/>
+<input type="hidden" id="ENVIAR_BORRAR_PRODUCCION_CIENTIFICA" value="@Html.Translate("ENVIAR_BORRAR_PRODUCCION_CIENTIFICA")"/>
+<input type="hidden" id="ENVIAR_A_DSPACE" value="@Html.Translate("ENVIAR_A_DSPACE")"/>
+<input type="hidden" id="CV_ENVIO_DSPACE_CORRECTO" value="@Html.Translate("CV_ENVIO_DSPACE_CORRECTO")"/>
+<input type="hidden" id="CV_ENVIO_DSPACE_ERROR" value="@Html.Translate("CV_ENVIO_DSPACE_ERROR")"/>
+
+<script>
+$(function() {
+    edicionCV.init();
+});
+</script>
+	
+	
+<div id="modal-enviar-produccion-cientifica" class="modal modal-top modal-wide modal-enviar-produccion-cientifica fade" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <p class="modal-title"><span class="material-icons">send</span>@Html.Translate("ENVIAR_PRODUCCION_CIENTIFICA")</p>
+                <span class="material-icons cerrar" data-dismiss="modal" aria-label="Close">close</span>
+            </div>
+            <div class="modal-body">
+                <div class="alert" style="display: none;">
+                    <p class="alert-title">
+                        <span class="material-icons">warning</span>
+                        @Html.Translate("POSIBLE_DUPLICIDAD")
+                        @Html.Raw(Html.Translate("POSIBLE_DUPLICIDAD_MENSAJE"))
+                    </p>
+                </div>
+                <div class="resource-list listView">
+                    <div class="resource-list-wrap">
+                        <article class="resource">
+                            <div class="wrap">
+                                <div class="middle-wrap">
+                                </div>
+                            </div>
+                        </article>
+                    </div>
+                </div>
+                <div class="formulario-edicion formulario-publicacion" style="display: none;">
+                    <div class="select-resource-list">
+                        <div class="resource-list listView list-con-checks">
+                            <div class="resource-list-wrap">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-actions">
+                        <a class="btn btn-primary uppercase btn-aplicar">@Html.Translate("CV_APLICAR_CONTINUAR")</a>
+                        <a class="btn btn-primary uppercase btn-continuar">@Html.Translate("CV_CONTINUAR")</a>
+                    </div>
+                </div>
+                <div class="formulario-edicion formulario-proyecto" >
+                    <div class="alert">
+                        <p class="alert-title">
+                            <span class="material-icons">warning</span>
+                            @Html.Translate("NO_HAS_ASOCIADO_PROYECTO")
+                            <a href="javascript: void(0);">@Html.Translate("CONTINUAR_SIN_ASOCIAR")</a>
+                        </p>
+                    </div>
+                    <div class="select-resource-list">
+                        <p class="title">@Html.Translate("CV_RELACIONA_PUBLICACION")</p>
+                        <div class="resource-list listView list-con-checks">
+                            <div class="resource-list-wrap">                                
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-actions">
+                        <a class="btn btn-primary uppercase btnEnvioPRC">@Html.Translate("CV_ENVIAR")</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>	
+	
+	
+	
+<div class="row">
+    <div class="col col-12 col-breadcrumb">
+        <ul>
+            <li>
+                <a href="@Comunidad.Url">Home</a>
+            </li>
+            <li>@Html.Translate("CV_EDITARCV")</li>
+        </ul>
+    </div>
+    <div class="col col-12 col-contenido">
+        <div class="wrapCol">
+            <div class="cabecera-cv">
+                <div class="upper-wrap">
+                    <div class="h1-container">
+                        <h1>@Html.Translate("CV_EDITARCV")</h1>
+                        <!--
+						<div class="cambiar-seccion dropdown">
+                            <a class="dropdown-toggle" data-toggle="dropdown">
+                                <span class="texto">@Html.Translate("CV_CAMBIARSECCION")</span>
+                            </a>
+                            <div class="dropdown-menu basic-dropdown dropdown-menu-left">
+                                <a class="item-dropdown active" href="#identificacion-tab" data-toggle="tab" role="tab" aria-controls="identificacion-panel" aria-selected="true">@Html.Translate("CV_DATOSIDENTIFICACION")</a>
+                                <a class="item-dropdown" href="#situacion-tab" data-toggle="tab" role="tab" aria-controls="situacion-panel" aria-selected="true">@Html.Translate("CV_SITUACIONPROFESIONAL")</a>
+                                <a class="item-dropdown" href="#formacion-tab" data-toggle="tab" role="tab" aria-controls="formacion-panel" aria-selected="true">@Html.Translate("CV_FORMACIONRECIBIDA")</a>
+								<a class="item-dropdown" href="#actividad-docente-tab" data-toggle="tab" role="tab" aria-controls="actividad-docente-panel" aria-selected="true">@Html.Translate("CV_ACTIVIDADDOCENTE")</a>
+                                <a class="item-dropdown" href="#experiencia-tab" data-toggle="tab" role="tab" aria-controls="experiencia-panel" aria-selected="true">@Html.Translate("CV_EXPERIENCIACIENTIFICAYTECNOLOGICA")</a>
+                                <a class="item-dropdown" href="#actividad-tab" data-toggle="tab" role="tab" aria-controls="actividad-panel" aria-selected="true">@Html.Translate("CV_ACTIVIDADCIENTIFICAYTECNOLOGICA")</a>
+                                <a class="item-dropdown" href="#resumen-tab" data-toggle="tab" role="tab" aria-controls="resumen-panel" aria-selected="true">@Html.Translate("CV_RESUMENTEXTOLIBRE")</a>
+								<a class="item-dropdown" href="#researchobject-tab" data-toggle="tab" role="tab" aria-controls="researchobject-panel" aria-selected="true">@Html.Translate("CV_RESEARCHOBJECTS")</a>
+                            </div>
+                        </div>
+						-->
+                    </div>
+                    <div class="acciones-listado acciones-curriculum">
+                        <div class="wrap">
+							<a class="btn btn-secondary uppercase btn-principal gestionar-duplicados">@Html.Translate("GESTIONAR_DUPLICADOS")</a>
+                            <div class="traducciones dropdown dropdown-select">
+                                <a class="dropdown-toggle" data-toggle="dropdown">
+                                    <span class="textoAlternativo">@Html.Translate("CV_TRADUCCIONES")</span>
+                                    <span class="texto">ES</span>
+                                </a>
+                                <div class="dropdown-menu basic-dropdown dropdown-menu-right">
+									@{
+										string translate="translationEsView";
+									}
+									<a href="javascript: void(0)" class="item-dropdown" data-class-resource-list="@translate">
+										<span class="textoAlternativo">@Html.Translate("CV_TRADUCCIONES")</span>
+										<span class="texto">ES</span>
+									</a>
+									@{
+										translate="translationEnView";
+									}
+									<a href="javascript: void(0)" class="item-dropdown" data-class-resource-list="@translate">
+										<span class="textoAlternativo">@Html.Translate("CV_TRADUCCIONES")</span>
+										<span class="texto">EN</span>
+									</a>
+									@{
+										translate="translationCaView";
+									}
+									<a href="javascript: void(0)" class="item-dropdown" data-class-resource-list="@translate">
+										<span class="textoAlternativo">@Html.Translate("CV_TRADUCCIONES")</span>
+										<span class="texto">CA</span>
+									</a>
+									@{
+										translate="translationEuView";
+									}
+									<a href="javascript: void(0)" class="item-dropdown" data-class-resource-list="@translate">
+										<span class="textoAlternativo">@Html.Translate("CV_TRADUCCIONES")</span>
+										<span class="texto">EU</span>
+									</a>
+									@{
+										translate="translationGlView";
+									}
+									<a href="javascript: void(0)" class="item-dropdown" data-class-resource-list="@translate">
+										<span class="textoAlternativo">@Html.Translate("CV_TRADUCCIONES")</span>
+										<span class="texto">GL</span>
+									</a>
+									@{
+										 translate="translationFrView";
+									}
+									<a href="javascript: void(0)" class="item-dropdown" data-class-resource-list="@translate">
+										<span class="textoAlternativo">@Html.Translate("CV_TRADUCCIONES")</span>
+										<span class="texto">FR</span>
+									</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="contenido-cv" about="@pCV.GNOSSID" personid="@pCV.Roh_cvOf.GNOSSID">
+                <div class="tab-paneles-cv">
+                    <ul class="nav nav-tabs" id="navegacion-cv" role="tablist">
+                        <li class="nav-item" role="presentation">
+                            <a class="nav-link active" id="identificacion-tab" property="http://w3id.org/roh/personalData" data-toggle="tab" href="#identificacion-panel" role="tab" aria-controls="identificacion-panel" aria-selected="true">@Html.Translate("CV_DATOSIDENTIFICACION")</a>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <a class="nav-link" id="situacion-tab" property="http://w3id.org/roh/professionalSituation" data-toggle="tab" href="#situacion-panel" role="tab" aria-controls="situacion-panel" aria-selected="true">@Html.Translate("CV_SITUACIONPROFESIONAL")</a>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <a class="nav-link" id="formacion-tab" property="http://w3id.org/roh/qualifications" data-toggle="tab" href="#formacion-panel" role="tab" aria-controls="formacion-panel" aria-selected="true">@Html.Translate("CV_FORMACIONRECIBIDA")</a>
+                        </li>
+						<li class="nav-item" role="presentation">
+                            <a class="nav-link" id="actividad-docente-tab" property="http://w3id.org/roh/teachingExperience" data-toggle="tab" href="#actividad-docente-panel" role="tab" aria-controls="actividad-docente-panel" aria-selected="true">@Html.Translate("CV_ACTIVIDADDOCENTE")</a>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <a class="nav-link " id="experiencia-tab" property="http://w3id.org/roh/scientificExperience" data-toggle="tab" href="#experiencia-panel" role="tab" aria-controls="experiencia-panel" aria-selected="true">@Html.Translate("CV_EXPERIENCIACIENTIFICAYTECNOLOGICA")</a>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <a class="nav-link" id="actividad-tab" property="http://w3id.org/roh/scientificActivity" data-toggle="tab" href="#actividad-panel" role="tab" aria-controls="actividad-panel" aria-selected="true">@Html.Translate("CV_ACTIVIDADCIENTIFICAYTECNOLOGICA")</a>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <a class="nav-link" id="resumen-tab" property="http://w3id.org/roh/freeTextSummary" data-toggle="tab" href="#resumen-panel" role="tab" aria-controls="resumen-panel" aria-selected="true">@Html.Translate("CV_RESUMENTEXTOLIBRE")</a>
+                        </li>
+						<li class="nav-item" role="presentation">
+                            <a class="nav-link" id="researchobject-tab" property="http://w3id.org/roh/researchObject" data-toggle="tab" href="#researchobject-panel" role="tab" aria-controls="researchobject-panel" aria-selected="true">@Html.Translate("CV_RESEARCHOBJECTS")</a>
+                        </li>
+                    </ul>
+                    <div class="tab-content" id="paneles-cv">
+                        <div class="tab-pane fade show active" id="identificacion-panel" role="tabpanel" aria-labelledby="identificacion-tab">
+                            <div class="row cvTab" about="@pCV.Roh_personalData.GNOSSID" rdftype="http://w3id.org/roh/PersonalData" property="http://w3id.org/roh/personalData">
+                                <div class="col col-12 col-contenido">                                    
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tab-pane fade" id="situacion-panel" role="tabpanel" aria-labelledby="situacion-tab">							
+							<div class="row cvTab" about="@pCV.Roh_professionalSituation.GNOSSID" rdftype="http://w3id.org/roh/ProfessionalSituation" property="http://w3id.org/roh/professionalSituation">
+								<div class="col col-12 col-section-title">
+									<div class="wrapCol">
+										<p>2 - @Html.Translate("CV_SITUACIONPROFESIONAL")</p>
+									</div>
+								</div>
+								<div class="col col-12 col-contenido">
+								</div>
+							</div>
+                        </div>
+                        <div class="tab-pane fade" id="formacion-panel" role="tabpanel" aria-labelledby="formacion-tab">
+							<div class="row cvTab" about="@pCV.Roh_qualifications.GNOSSID" rdftype="http://w3id.org/roh/Qualifications" property="http://w3id.org/roh/qualifications">
+								<div class="col col-12 col-section-title">
+									<div class="wrapCol">
+										<p>3 - @Html.Translate("CV_FORMACIONRECIBIDA")</p>
+									</div>
+								</div>
+								<div class="col col-12 col-contenido">
+								</div>
+							</div>
+                        </div>
+						<div class="tab-pane fade" id="actividad-docente-panel" role="tabpanel" aria-labelledby="actividad-docente-tab">							
+							<div class="row cvTab" about="@pCV.Roh_teachingExperience.GNOSSID" rdftype="http://w3id.org/roh/TeachingExperience" property="http://w3id.org/roh/teachingExperience">
+								<div class="col col-12 col-section-title">
+									<div class="wrapCol">
+										<p>4 - @Html.Translate("CV_ACTIVIDADDOCENTE")</p>
+									</div>
+								</div>
+								<div class="col col-12 col-contenido">
+								</div>
+							</div>
+                        </div>
+                        <div class="tab-pane fade " id="experiencia-panel" role="tabpanel" aria-labelledby="experiencia-tab">                            
+							<div class="row cvTab" about="@pCV.Roh_scientificExperience.GNOSSID" rdftype="http://w3id.org/roh/ScientificExperience" property="http://w3id.org/roh/scientificExperience">
+								<div class="col col-12 col-section-title">
+									<div class="wrapCol">
+										<p>5 - @Html.Translate("CV_EXPERIENCIACIENTIFICAYTECNOLOGICA")</p>
+									</div>
+								</div>
+								<div class="col col-12 col-contenido">
+								</div>
+							</div>
+                        </div>
+                        <div class="tab-pane fade" id="actividad-panel" role="tabpanel" aria-labelledby="actividad-tab">
+                            <div class="row cvTab" about="@pCV.Roh_scientificActivity.GNOSSID" rdftype="http://w3id.org/roh/ScientificActivity" property="http://w3id.org/roh/scientificActivity">
+                                <div class="col col-12 col-section-title">
+                                    <div class="wrapCol">
+                                        <p>6 - @Html.Translate("CV_ACTIVIDADCIENTIFICAYTECNOLOGICA")</p>
+                                    </div>
+                                </div>
+                                <div class="col col-12 col-contenido">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tab-pane fade" id="resumen-panel" role="tabpanel" aria-labelledby="resumen-tab">
+                            <div class="row cvTab" about="@pCV.Roh_freeTextSummary.GNOSSID" rdftype="http://w3id.org/roh/FreeTextSummary" property="http://w3id.org/roh/freeTextSummary">
+                                <div class="col col-12 col-section-title">
+                                    <div class="wrapCol">
+                                        <p>7 - @Html.Translate("CV_RESUMENTEXTOLIBRE")</p>
+                                    </div>
+                                </div>
+                                <div class="col col-12 col-contenido">
+                                </div>
+                            </div>
+                        </div>
+						<div class="tab-pane fade" id="researchobject-panel" role="tabpanel" aria-labelledby="researchobject-tab">
+                            <div class="row cvTab" about="@pCV.Roh_researchObject.GNOSSID" rdftype="http://w3id.org/roh/ResearchObjects" property="http://w3id.org/roh/researchObject">
+                                <div class="col col-12 col-section-title">
+                                    <div class="wrapCol">
+                                        <p>8 - @Html.Translate("CV_RESEARCHOBJECTS")</p>
+                                    </div>
+                                </div>
+                                <div class="col col-12 col-contenido">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="modal-posible-duplicidad" class="modal modal-top modal-wide fade show duplicidades" data-backdrop="static" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <p class="modal-title"><span class="material-icons">send</span>@Html.Translate("GESTIONAR_DUPLICADOS")<span class="numpasos"></span></p>
+                <span class="material-icons cerrar" data-dismiss="modal" aria-label="Close">close</span>
+            </div>
+            <div class="modal-body">
+                <div class="alert">
+                    <p class="alert-title">
+                        <span class="material-icons">warning</span>
+                        @Html.Translate("POSIBLE_DUPLICIDAD")
+                        @Html.Raw(Html.Translate("POSIBLE_DUPLICIDAD_MENSAJE"))
+                    </p>
+                </div>
+                <div class="resource-list listView">
+                    <div class="resource-list-wrap principal">					
+                    </div>
+                </div>
+                <div class="formulario-edicion formulario-publicacion">
+                    <div class="select-resource-list">
+                        <div class="resource-list listView list-con-checks">
+                            <div class="resource-list-wrap secundarios">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-actions">
+                        <a class="btn btn-primary uppercase btn-continuar">@Html.Translate("CONTINUAR")</a>
+                        <a class="btn btn-primary uppercase btn-omitir">@Html.Translate("OMITIR_Y_CONTINUAR")</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+    </div>
+</div>
+<div id="modal-repetir-duplicidad" class="modal modal-top modal-wide fade show duplicidades" data-backdrop="static" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <p class="modal-title"><span class="material-icons">send</span>@Html.Translate("GESTIONAR_DUPLICADOS")</p>
+                <span class="material-icons cerrar" data-dismiss="modal" aria-label="Close">close</span>
+            </div>
+            <div class="modal-body">
+                <div class="formulario-edicion">
+                    <div class="alert">
+                        <p class="alert-title">
+                            <span class="material-icons">warning</span>
+                            @Html.Translate("CONTINUAR_DUPLICIDAD")
+                            <br>
+                            <p>@Html.Translate("CONTINUAR_DUPLICIDAD_MENSAJE")</p>
+                        </p>
+                    </div>
+                    <div class="form-actions">
+                        <a data-dismiss="modal" class="btn btn-primary cerrarduplicidad">@Html.Translate("NO")</a>
+                        <a class="btn btn-outline-primary continuarduplicidad">@Html.Translate("SI")</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="modal-editar-entidad" class="modal modal-top modal-wide fade" data-backdrop="static" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <!--TODO-->
+                <p class="modal-title"><span class="material-icons">edit</span>@Html.Translate("CV_EDITAR")</p>
+                <span class="material-icons cerrar" data-dismiss="modal" aria-label="Close">close</span>
+            </div>
+            <div class="modal-body">
+                <form class="formulario-edicion ">
+                </form>
+                <div class="form-actions">
+                    <a class="btn btn-primary">@Html.Translate("CV_GUARDAR")</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@for (int i = 0; i < 5; i++)
+{
+	<div id="modal-editar-entidad-@i" class="modal modal-top modal fade" data-backdrop="static" tabindex="-1" role="dialog">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content modal-content-height">
+				<div class="modal-header">
+					<p class="modal-title"><span class="material-icons">edit</span>@Html.Translate("CV_EDITAR")</p>
+					<span class="material-icons cerrar" data-dismiss="modal" aria-label="Close">close</span>
+				</div>
+				<div class="modal-body">
+					<form class="formulario-edicion ">
+					</form>
+					<div class="form-actions">
+						<a class="btn btn-primary">@Html.Translate("CV_GUARDAR")</a>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+}
+<div id="modal-dspace" class="modal modal-top modal fade" data-backdrop="static" tabindex="-1" role="dialog">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<p class="modal-title"><span class="material-icons">dpsace</span>@Html.Translate("CV_ENVIAR_DSPACE")</p>
+					<span class="material-icons cerrar" data-dismiss="modal" aria-label="Close">close</span>
+				</div>
+				<div class="modal-body">
+                
+                <div class='resource-list'></div>
+				<input type="file" name="" id="file_dspace" accept="application/pdf" data-title-text="@Html.Translate("SUBE_DSPACE")" data-size-text="@Html.Translate("MAXIMO_PESO_DSPACE")" data-format-text="@Html.Translate("FORMATOS_ADMITIDOS_CV")" data-format-error="@Html.Translate("FORMATO_ERROR_CV")" data-size-error="@Html.Translate("TAMANIO_ERROR_CV")">
+
+					<div class="form-actions">
+						<a id="enviar-dspace" class="btn btn-primary">@Html.Translate("CV_ENVIAR")</a>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+<div id="modal-eliminar" class="modal modal-top fade modal-edicion" data-backdrop="static" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <p class="modal-title"><span class="material-icons">delete</span>@Html.Translate("CV_ELIMINAR")</p>
+                <span class="material-icons cerrar" data-dismiss="modal" aria-label="Close">close</span>
+            </div>
+            <div class="modal-body">
+                <div class="formulario-edicion">
+                    <div class="form-group">
+                        <label class="control-label">@Html.Translate("CV_SEGURODESEAELIMINAR")</label>
+                    </div>
+                    <div class="form-actions">
+                        <a href="javascript:$('#modal-eliminar .cerrar').click();" class="btn btn-primary">@Html.Translate("CV_NO")</a>
+                        <a href="" class="btn btn-outline-primary">@Html.Translate("CV_SI")</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div id="modal-anadir-autor" class="modal modal-top fade" tabindex="-1" data-backdrop="static" style="display: none;" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <p class="modal-title"><span class="material-icons">person_add</span>@Html.Translate("CV_ANIADIRPERSONALINVESTIGADOR")</p>
+                <span class="material-icons cerrar" data-dismiss="modal" aria-label="Close">close</span>
+            </div>
+            <div class="modal-body">
+                <form class="formulario-edicion formulario-principal" style="display: block;">
+                    <div class="custom-form-row">
+                        <div class="form-group full-group">
+                            <label class="control-label d-block">@Html.Translate("CV_BUSCARPORFIRMA")</label>
+                            <textarea autocomplete="off" placeholder="@Html.Translate("CV_INTRODUCEFIRMASSEPARADASCOMAS")" type="text" name="" id="inputsignatures" class="form-control not-outline"></textarea>
+							<input type="hidden" id="namePersonCV" value="@pCV.Roh_cvOf.Foaf_name">							
+                            <a href="javascript: void(0);" class="btn btn-outline-grey validar">@Html.Translate("CV_BUSCAR")</a>
+                        </div>
+                    </div>
+                    <div class="custom-form-row resultados" style="display: none;">
+                    </div>
+                    <div class="form-actions">
+                        <a href="javascript: void(0);" class="btn btn-primary uppercase addsignatures">@Html.Translate("CV_ANIADIRSELECCIONADOS")</a>
+						<p class="ko"></p>
+                    </div>
+                </form>
+                <form class="formulario-edicion formulario-codigo" style="display: none;">
+                    <legend>@Html.Translate("CV_BUSCARPOR")</legend>
+                    <div class="custom-form-row">
+                        <div class="form-group full-group">
+                            <label class="control-label d-block">@Html.Translate("CV_CODIGOORCID")</label>
+                            <input placeholder="@Html.Translate("CV_INTRODUCECODIGOORCID")" type="text" name="" id="signatureorcid" class="form-control not-outline">                            
+							<a href="javascript: void(0);" class="btn btn-outline-grey">@Html.Translate("CV_VALIDAR")</a>
+							<p class="ko"></p>
+                        </div>
+                    </div>
+                    <a href="javascript: void(0);" class="form-autor">@Html.Translate("CV_OTECLEADATOSDE") <span class="firma"></span></a>
+                    <div class="botones-wrap">
+                        <a href="javascript: void(0);" class="volver form-principal">
+                            <span class="material-icons">keyboard_arrow_left</span>
+                            @Html.Translate("CV_VOLVERPANTALLAANTERIOR")
+                        </a>
+                    </div>
+                </form>
+                <form class="formulario-edicion formulario-autor" style="display: none;">
+                    <div class="custom-form-row">
+                        <div class="form-group full-group">
+                            <label class="control-label d-block">@Html.Translate("CV_NOMBRE")</label>
+                            <input id="cvNombreAutor" placeholder="@Html.Translate("CV_INTRODUCENOMBRE")" type="text" name=""  class="form-control not-outline">
+                        </div>
+                    </div>
+                    <div class="custom-form-row">
+                        <div class="form-group full-group">
+                            <label class="control-label d-block">@Html.Translate("CV_APELLIDOS")</label>
+                            <input id="cvApellidosAutor"  placeholder="@Html.Translate("CV_INTRODUCEAPELLIDOS")" type="text" name=""  class="form-control not-outline">
+                        </div>
+                    </div>
+                    <div class="custom-form-row">
+                        <div class="form-group full-group">
+                            <label class="control-label d-block">@Html.Translate("CV_FIRMA")</label>
+                            <input id="cvFirmaAutor" placeholder="@Html.Translate("CV_INTRODUCEFIRMA")" type="text" name=""  value="" class="form-control not-outline" disabled="">
+                        </div>
+                    </div>
+					<p class="ko"></p>
+                    <div class="form-actions">
+                        <a class="btn btn-primary uppercase btEditarAutor">@Html.Translate("CV_GUARDAR")</a>
+                        <a href="javascript: void(0);" class="volver form-buscar">
+                            <span class="material-icons">keyboard_arrow_left</span>
+                            @Html.Translate("CV_VOLVERPANTALLAANTERIOR")
+                        </a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@functions{ public class RDFPropertyAttribute : Attribute
+            {
+                public RDFPropertyAttribute(string pRDFA)
+                {
+                    mRDFA = pRDFA;
+                }
+                protected string mRDFA;
+                public string RDFProperty
+                {
+                    get { return mRDFA; }
+                }
+            }
+
+            [AttributeUsage(AttributeTargets.All, AllowMultiple = true)]
+            public class LABELAttribute : Attribute
+            {
+                private GnossOCBase.LanguageEnum IdiomaDefecto = GnossOCBase.LanguageEnum.es;
+                private GnossOCBase.LanguageEnum midioma;
+                private string mlabel;
+                public LABELAttribute(GnossOCBase.LanguageEnum idioma, string label)
+                {
+                    mlabel = label;
+                    midioma = idioma;
+                }
+                public string LABEL(GnossOCBase.LanguageEnum pLang)
+                {
+                    if (midioma.Equals(pLang))
+                    {
+                        return mlabel;
+                    }
+                    return "";
+                }
+            }
+
+            public class GnossOCBase
+            {
+                public enum LanguageEnum
+                {
+                    es,
+                    en,
+                    pt,
+                    ca,
+                    eu,
+                    gl,
+                    fr,
+                    de,
+                    it,
+                }
+                internal List<string> prefList = new List<string>();
+                internal string mGNOSSID;
+                internal string mURL;
+                internal Guid resourceID;
+                internal Guid articleID;
+                private static List<string> NoEnIdiomas = new List<string> { "No", "Non", "Ez", "Nein", "No" };
+                public GnossOCBase()
+                {
+                    prefList.Add("xmlns:roh=\"http://w3id.org/roh/\"");
+                    prefList.Add("xmlns:foaf=\"http://xmlns.com/foaf/0.1/\"");
+                    prefList.Add("xmlns:vivo=\"http://vivoweb.org/ontology/core#\"");
+                    prefList.Add("xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\"");
+                    prefList.Add("xmlns:xsd=\"http://www.w3.org/2001/XMLSchema#\"");
+                    prefList.Add("xmlns:rdfs=\"http://www.w3.org/2000/01/rdf-schema#\"");
+                    prefList.Add("xmlns:owl=\"http://www.w3.org/2002/07/owl#\"");
+                    prefList.Add("xmlns:vcard=\"https://www.w3.org/2006/vcard/ns#\"");
+                    prefList.Add("xmlns:dc=\"http://purl.org/dc/elements/1.1/\"");
+
+                    this.resourceID = Guid.NewGuid();
+                    this.articleID = Guid.NewGuid();
+                }
+
+                public string GNOSSID
+                {
+                    get { return mGNOSSID; }
+                    set
+                    {
+                        this.mGNOSSID = value;
+                        var GnossIDSplit = this.mGNOSSID.Split('_');
+                        Guid nuevoResource = Guid.Parse(GnossIDSplit[GnossIDSplit.Count() - 2]);
+                        Guid nuevoArticle = Guid.Parse(GnossIDSplit.Last());
+                        if (!this.ResourceID.Equals(nuevoResource))
+                        {
+                            this.resourceID = nuevoResource;
+                        }
+                        if (!this.ArticleID.Equals(nuevoArticle))
+                        {
+                            this.articleID = nuevoArticle;
+                        }
+                    }
+                }
+                public string URL
+                {
+                    get { return mURL; }
+                }
+
+                public Guid ResourceID
+                {
+                    get { return resourceID; }
+                    set
+                    {
+                        this.resourceID = value;
+                        string primeraParte = this.mGNOSSID.Substring(0, this.mGNOSSID.LastIndexOf('/') + 1);
+                        string antiguoGuid = this.mGNOSSID.Substring(this.mGNOSSID.LastIndexOf('/') + 1, this.mGNOSSID.LastIndexOf('_'));
+                        string ultimaParte = this.mGNOSSID.Substring(this.mGNOSSID.LastIndexOf('_') + 1);
+                        if (!antiguoGuid.Equals(this.resourceID.ToString()))
+                        {
+                            this.mGNOSSID = $"{primeraParte}{this.resourceID.ToString()}{ultimaParte}";
+                        }
+                    }
+                }
+
+                public Guid ArticleID
+                {
+                    get { return articleID; }
+                    set
+                    {
+                        this.articleID = value;
+                        string primeraParte = this.mGNOSSID.Substring(0, this.mGNOSSID.LastIndexOf('_') + 1);
+                        string antiguoGuid = this.mGNOSSID.Substring(this.mGNOSSID.LastIndexOf('_') + 1);
+                        if (!antiguoGuid.Equals(this.articleID.ToString()))
+                        {
+                            this.mGNOSSID = $"{primeraParte}{this.articleID.ToString()}";
+                        }
+                    }
+                }
+
+                public static string GetPropertyValueSemCms(SemanticPropertyModel pProperty)
+                {
+                    if (pProperty != null && pProperty.PropertyValues.Count > 0)
+                    {
+                        return pProperty.PropertyValues[0].Value;
+                    }
+                    return "";
+                }
+
+                public static int? GetNumberIntPropertyValueSemCms(SemanticPropertyModel pProperty)
+                {
+                    if (pProperty != null && pProperty.PropertyValues.Count > 0 && !string.IsNullOrEmpty(pProperty.PropertyValues[0].Value))
+                    {
+                        return int.Parse(pProperty.PropertyValues[0].Value);
+                    }
+                    return 0;
+                }
+
+                public static int? GetNumberIntPropertyMultipleValueSemCms(SemanticPropertyModel.PropertyValue pProperty)
+                {
+                    if (pProperty != null && !string.IsNullOrEmpty(pProperty.Value))
+                    {
+                        return int.Parse(pProperty.Value);
+                    }
+                    return 0;
+                }
+
+                public static float? GetNumberFloatPropertyValueSemCms(SemanticPropertyModel pProperty)
+                {
+                    if (pProperty != null && pProperty.PropertyValues.Count > 0 && !string.IsNullOrEmpty(pProperty.PropertyValues[0].Value))
+                    {
+                        return float.Parse(pProperty.PropertyValues[0].Value.Replace('.', ','));
+                    }
+                    return 0;
+                }
+
+                public static DateTime? GetDateValuePropertySemCms(SemanticPropertyModel pProperty)
+                {
+                    string stringDate = GetPropertyValueSemCms(pProperty);
+                    if (!string.IsNullOrEmpty(stringDate))
+                    {
+                        int year = 0;
+                        int month = 0;
+                        int day = 0;
+                        if (stringDate.Contains('/'))
+                        {
+                            day = int.Parse(stringDate.Split('/')[0]);
+                            month = int.Parse(stringDate.Split('/')[1]);
+                            year = int.Parse(stringDate.Split('/')[2].Split(' ')[0]);
+                        }
+                        else
+                        {
+                            year = int.Parse(stringDate.Substring(0, 4));
+                            month = int.Parse(stringDate.Substring(4, 2));
+                            day = int.Parse(stringDate.Substring(6, 2));
+                        }
+                        if (stringDate.Length == 14)
+                        {
+                            if (month == 0 || day == 0)
+                            {
+                                return new DateTime(year);
+                            }
+                            else
+                            {
+                                int hour = int.Parse(stringDate.Substring(8, 2));
+                                int minute = int.Parse(stringDate.Substring(10, 2));
+                                int second = int.Parse(stringDate.Substring(12, 2));
+                                return new DateTime(year, month, day, hour, minute, second);
+                            }
+                        }
+                        else
+                        {
+                            return new DateTime(year, month, day);
+                        }
+                    }
+                    return null;
+                }
+
+                public static bool GetBooleanPropertyValueSemCms(SemanticPropertyModel pProperty)
+                {
+                    bool resultado = false;
+                    if (pProperty != null && pProperty.PropertyValues.Count > 0 && !string.IsNullOrEmpty(pProperty.PropertyValues[0].Value))
+                    {
+                        if (!bool.TryParse(pProperty.PropertyValues[0].Value, out resultado))
+                        {
+                            resultado = !NoEnIdiomas.Contains(pProperty.PropertyValues[0].Value);
+                        }
+                    }
+                    return resultado;
+                }
+
+                internal string GetExtension(string file)
+                {
+                    return file.Substring(file.LastIndexOf('.'));
+                }
+
+
+                public string GetPropertyURI(string nombrePropiedad)
+                {
+                    Type type = this.GetType();
+                    PropertyInfo mInfo = type.GetProperty(nombrePropiedad);
+                    if (mInfo != null)
+                    {
+                        Attribute attr = Attribute.GetCustomAttribute(mInfo, typeof(RDFPropertyAttribute));
+                        if (attr != null)
+                        {
+                            return ((RDFPropertyAttribute)attr).RDFProperty;
+                        }
+                    }
+                    return "";
+                }
+
+
+
+                public string GetLabel(string nombrePropiedad, LanguageEnum pLang)
+                {
+                    Type type = this.GetType();
+                    PropertyInfo mInfo = type.GetProperty(nombrePropiedad);
+
+                    if (mInfo != null)
+                    {
+                        Attribute[] attr = Attribute.GetCustomAttributes(mInfo, typeof(LABELAttribute));
+                        {
+                            foreach (Attribute atributo in attr)
+                            {
+                                if (atributo != null)
+                                {
+                                    if (!((LABELAttribute)atributo).LABEL(pLang).Equals(""))
+                                    {
+                                        return ((LABELAttribute)atributo).LABEL(pLang);
+                                    }
+                                }
+                            }
+                        }
+                    }
+
+                    return "";
+                }
+
+                public int GetID() { return 0; }
+            }
+
+
+            public class CV : GnossOCBase
+            {
+                public CV() : base() { }
+
+                public CV(SemanticResourceModel pSemCmsModel, LanguageEnum idiomaUsuario) : base()
+                {
+                    this.mGNOSSID = pSemCmsModel.RootEntities[0].Entity.Uri;
+					this.Foaf_name = GetPropertyValueSemCms(pSemCmsModel.GetPropertyByPath("http://xmlns.com/foaf/0.1/name"));
+					SemanticPropertyModel propRoh_cvOf = pSemCmsModel.GetPropertyByPath("http://w3id.org/roh/cvOf");
+					if(propRoh_cvOf != null && propRoh_cvOf.PropertyValues.Count > 0)
+					{
+						this.Roh_cvOf = new Person(propRoh_cvOf.PropertyValues[0].RelatedEntity,idiomaUsuario);
+					}
+					
+                    SemanticPropertyModel propRoh_personalData = pSemCmsModel.GetPropertyByPath("http://w3id.org/roh/personalData");
+                    if (propRoh_personalData != null && propRoh_personalData.PropertyValues.Count > 0)
+                    {
+                        this.Roh_personalData = new PersonalData(propRoh_personalData.PropertyValues[0].RelatedEntity, idiomaUsuario);
+                    }
+					
+					SemanticPropertyModel propRoh_professionalSituation = pSemCmsModel.GetPropertyByPath("http://w3id.org/roh/professionalSituation");
+                    if (propRoh_professionalSituation != null && propRoh_professionalSituation.PropertyValues.Count > 0)
+                    {
+                        this.Roh_professionalSituation = new ProfessionalSituation(propRoh_professionalSituation.PropertyValues[0].RelatedEntity, idiomaUsuario);
+                    }
+					
+					SemanticPropertyModel propRoh_qualifications = pSemCmsModel.GetPropertyByPath("http://w3id.org/roh/qualifications");
+                    if (propRoh_qualifications != null && propRoh_qualifications.PropertyValues.Count > 0)
+                    {
+                        this.Roh_qualifications = new Qualifications(propRoh_qualifications.PropertyValues[0].RelatedEntity, idiomaUsuario);
+                    }
+					
+					SemanticPropertyModel propRoh_teachingExperience = pSemCmsModel.GetPropertyByPath("http://w3id.org/roh/teachingExperience");
+                    if (propRoh_teachingExperience != null && propRoh_teachingExperience.PropertyValues.Count > 0)
+                    {
+                        this.Roh_teachingExperience = new TeachingExperience(propRoh_teachingExperience.PropertyValues[0].RelatedEntity, idiomaUsuario);
+                    }
+					
+                    SemanticPropertyModel propRoh_scientificExperience = pSemCmsModel.GetPropertyByPath("http://w3id.org/roh/scientificExperience");
+                    if (propRoh_scientificExperience != null && propRoh_scientificExperience.PropertyValues.Count > 0)
+                    {
+                        this.Roh_scientificExperience = new ScientificExperience(propRoh_scientificExperience.PropertyValues[0].RelatedEntity, idiomaUsuario);
+                    }					
+                    
+                    SemanticPropertyModel propRoh_scientificActivity = pSemCmsModel.GetPropertyByPath("http://w3id.org/roh/scientificActivity");
+                    if (propRoh_scientificActivity != null && propRoh_scientificActivity.PropertyValues.Count > 0)
+                    {
+                        this.Roh_scientificActivity = new ScientificActivity(propRoh_scientificActivity.PropertyValues[0].RelatedEntity, idiomaUsuario);
+                    }
+					
+					SemanticPropertyModel propRoh_freeTextSummary = pSemCmsModel.GetPropertyByPath("http://w3id.org/roh/freeTextSummary");
+                    if (propRoh_freeTextSummary != null && propRoh_freeTextSummary.PropertyValues.Count > 0)
+                    {
+                        this.Roh_freeTextSummary = new FreeTextSummary(propRoh_freeTextSummary.PropertyValues[0].RelatedEntity, idiomaUsuario);
+                    }
+					
+					SemanticPropertyModel propRoh_researchObject = pSemCmsModel.GetPropertyByPath("http://w3id.org/roh/researchObject");
+                    if (propRoh_researchObject != null && propRoh_researchObject.PropertyValues.Count > 0)
+                    {
+                        this.Roh_researchObject = new ResearchObjects(propRoh_researchObject.PropertyValues[0].RelatedEntity, idiomaUsuario);
+                    }
+					
+                    
+                }
+
+
+                public virtual string RdfType { get { return "http://w3id.org/roh/CV"; } }
+                public virtual string RdfsLabel { get { return "http://w3id.org/roh/CV"; } }
+                
+
+                [LABEL(LanguageEnum.es, "http://w3id.org/roh/personalData")]
+                [RDFProperty("http://w3id.org/roh/personalData")]
+                public PersonalData Roh_personalData { get; set; }
+				
+				[LABEL(LanguageEnum.es, "http://w3id.org/roh/professionalSituation")]
+                [RDFProperty("http://w3id.org/roh/professionalSituation")]
+                public ProfessionalSituation Roh_professionalSituation { get; set; }
+				
+				[LABEL(LanguageEnum.es, "http://w3id.org/roh/qualifications")]
+                [RDFProperty("http://w3id.org/roh/qualifications")]
+                public Qualifications Roh_qualifications { get; set; }
+				
+				[LABEL(LanguageEnum.es, "http://w3id.org/roh/teachingExperience")]
+                [RDFProperty("http://w3id.org/roh/teachingExperience")]
+                public TeachingExperience Roh_teachingExperience { get; set; }
+
+                [LABEL(LanguageEnum.es, "http://w3id.org/roh/scientificExperience")]
+                [RDFProperty("http://w3id.org/roh/scientificExperience")]
+                public ScientificExperience Roh_scientificExperience { get; set; }
+
+                [RDFProperty("http://xmlns.com/foaf/0.1/name")]
+                public string Foaf_name { get; set; }
+
+                [LABEL(LanguageEnum.es, "http://w3id.org/roh/scientificActivity")]
+                [RDFProperty("http://w3id.org/roh/scientificActivity")]
+                public ScientificActivity Roh_scientificActivity { get; set; }
+				
+				[LABEL(LanguageEnum.es, "http://w3id.org/roh/freeTextSummary")]
+                [RDFProperty("http://w3id.org/roh/freeTextSummary")]
+                public FreeTextSummary Roh_freeTextSummary { get; set; }
+				
+				[LABEL(LanguageEnum.es, "http://w3id.org/roh/researchObject")]
+                [RDFProperty("http://w3id.org/roh/researchObject")]
+                public ResearchObjects Roh_researchObject { get; set; }
+
+                [LABEL(LanguageEnum.es, "http://w3id.org/roh/cvOf")]
+                [RDFProperty("http://w3id.org/roh/cvOf")]
+                public Person Roh_cvOf { get; set; }
+
+            }
+			
+			public class Person : GnossOCBase
+			{
+				public string IdRoh_gnossUser  { get; set;} 
+                public string Foaf_name { get; set; }
+				public Person(SemanticEntityModel pSemCmsModel, LanguageEnum idiomaUsuario) : base()
+				{
+					this.mGNOSSID = pSemCmsModel.Entity.Uri;
+					this.IdRoh_gnossUser = GetPropertyValueSemCms(pSemCmsModel.GetPropertyByPath("http://w3id.org/roh/gnossUser"));
+					this.Foaf_name = GetPropertyValueSemCms(pSemCmsModel.GetPropertyByPath("http://xmlns.com/foaf/0.1/name"));
+				}
+			}
+			
+			public class PersonalData : GnossOCBase
+            {
+
+                public PersonalData() : base() { }
+
+                public PersonalData(SemanticEntityModel pSemCmsModel, LanguageEnum idiomaUsuario) : base()
+                {
+                    this.mGNOSSID = pSemCmsModel.Entity.Uri;
+                    this.mURL = pSemCmsModel.Properties.FirstOrDefault(p => p.PropertyValues.Any(prop => prop.DownloadUrl != null))?.FirstPropertyValue.DownloadUrl;
+                }
+            } 
+
+			public class ProfessionalSituation : GnossOCBase
+            {
+
+                public ProfessionalSituation() : base() { }
+
+                public ProfessionalSituation(SemanticEntityModel pSemCmsModel, LanguageEnum idiomaUsuario) : base()
+                {
+                    this.mGNOSSID = pSemCmsModel.Entity.Uri;
+                    this.mURL = pSemCmsModel.Properties.FirstOrDefault(p => p.PropertyValues.Any(prop => prop.DownloadUrl != null))?.FirstPropertyValue.DownloadUrl;
+                }
+            }
+			
+			public class Qualifications : GnossOCBase
+            {
+
+                public Qualifications() : base() { }
+
+                public Qualifications(SemanticEntityModel pSemCmsModel, LanguageEnum idiomaUsuario) : base()
+                {
+                    this.mGNOSSID = pSemCmsModel.Entity.Uri;
+                    this.mURL = pSemCmsModel.Properties.FirstOrDefault(p => p.PropertyValues.Any(prop => prop.DownloadUrl != null))?.FirstPropertyValue.DownloadUrl;
+                }
+            }
+			
+			public class TeachingExperience : GnossOCBase
+            {
+
+                public TeachingExperience() : base() { }
+
+                public TeachingExperience(SemanticEntityModel pSemCmsModel, LanguageEnum idiomaUsuario) : base()
+                {
+                    this.mGNOSSID = pSemCmsModel.Entity.Uri;
+                    this.mURL = pSemCmsModel.Properties.FirstOrDefault(p => p.PropertyValues.Any(prop => prop.DownloadUrl != null))?.FirstPropertyValue.DownloadUrl;
+                }
+            }
+
+
+            public class ScientificExperience : GnossOCBase
+            {
+
+                public ScientificExperience() : base() { }
+
+                public ScientificExperience(SemanticEntityModel pSemCmsModel, LanguageEnum idiomaUsuario) : base()
+                {
+                    this.mGNOSSID = pSemCmsModel.Entity.Uri;
+                    this.mURL = pSemCmsModel.Properties.FirstOrDefault(p => p.PropertyValues.Any(prop => prop.DownloadUrl != null))?.FirstPropertyValue.DownloadUrl;
+                }
+            }
+
+            public class ScientificActivity : GnossOCBase
+            {
+
+                public ScientificActivity() : base() { }
+
+                public ScientificActivity(SemanticEntityModel pSemCmsModel, LanguageEnum idiomaUsuario) : base()
+                {
+                    this.mGNOSSID = pSemCmsModel.Entity.Uri;
+                    this.mURL = pSemCmsModel.Properties.FirstOrDefault(p => p.PropertyValues.Any(prop => prop.DownloadUrl != null))?.FirstPropertyValue.DownloadUrl;
+                }
+            }
+			
+			public class FreeTextSummary : GnossOCBase
+            {
+
+                public FreeTextSummary() : base() { }
+
+                public FreeTextSummary(SemanticEntityModel pSemCmsModel, LanguageEnum idiomaUsuario) : base()
+                {
+                    this.mGNOSSID = pSemCmsModel.Entity.Uri;
+                    this.mURL = pSemCmsModel.Properties.FirstOrDefault(p => p.PropertyValues.Any(prop => prop.DownloadUrl != null))?.FirstPropertyValue.DownloadUrl;
+                }
+            }
+			
+			public class ResearchObjects : GnossOCBase
+            {
+
+                public ResearchObjects() : base() { }
+
+                public ResearchObjects(SemanticEntityModel pSemCmsModel, LanguageEnum idiomaUsuario) : base()
+                {
+                    this.mGNOSSID = pSemCmsModel.Entity.Uri;
+                    this.mURL = pSemCmsModel.Properties.FirstOrDefault(p => p.PropertyValues.Any(prop => prop.DownloadUrl != null))?.FirstPropertyValue.DownloadUrl;
+                }
+            }
+
+            
+		}

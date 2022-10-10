@@ -1,0 +1,321 @@
+@using System.Reflection
+@model CMSComponentQuerySPARQL
+@{
+    CommunityModel Comunidad = Html.GetComunidad();
+    UserIdentityModel IdentidadActual = Html.GetIdentidadActual();
+
+    System.Data.DataTable col = Model.DataSetResult.Tables[0];
+    listaUsers = new List<CvUser>();
+    @foreach (System.Data.DataRow fila in Model.DataSetResult.Tables[0].Rows)
+    {
+        CvUser cvuser = new CvUser(fila);
+        listaUsers.Add(cvuser);
+    }
+    UserProfileModel perfil = Html.GetPerfil();
+
+    Guid currentId = IdentidadActual.KeyUser;
+
+}
+
+
+@if (Model != null)
+{
+
+
+	<aside id="menuLateralUsuarioClonado" class="menuLateral usuario clonado" role="navigation">
+        <div class="header">
+            <div class="wrap-header">
+                <div class="usuarioWrapper">
+                    <div class="nombre">
+                        <span>@listaUsers[0].title</span> - <span>@listaUsers[0].tituloOrg</span>
+                    </div>
+                </div>
+                <span class="material-icons cerrar">close</span>
+                <div class="cabeceraUsuario">
+                    @{
+                        if (!string.IsNullOrEmpty(@listaUsers[0].foto)) 
+                        {
+                            <div class="imagen-usuario" style="background-image: url('@listaUsers[0].foto')">
+                            </div>
+                        } else
+                        {
+                            <div class="imagen-usuario default" style="background-image: url('@Html.GetBaseUrlContent()/imagenes/proyectos/personalizacion/@Comunidad.Key.ToString()/theme/resources/imagenes-pre/user-male-icon.png')">
+                            </div>
+                        }
+                    }
+                    <div class="nombre-usuario">
+                        <p class="nombre">@listaUsers[0].title</p>
+                        <p class="nombre-completo">
+                            <span>@listaUsers[0].tituloOrg</span>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="body">
+            <div class="menuUsuario">
+                <div class="group-collapse resultados">
+                    <a href="#trabajo" data-toggle="collapse" aria-expanded="true" class="">@Html.Translate("RESULTADOS_INVESTIGACION")</a>
+                    <div id="trabajo" class="collapse show" style="">
+                        <ul class="pmd-sidebar-nav">
+                            <li class="liPublicacion">
+                                <a class="editcvPub" href="javascript: void(0);">@Html.Translate("PUBLICACIONES") <span class="numResultados">0</span></a>
+                            </li>
+                            <li class="liComentarios">
+                                <a class="editcvPV" href="javascript: void(0);">@Html.Translate("PENDIENTE_DE_VALIDACION") <span class="numResultados">0</span></a>
+                            </li>
+                            <li class="liOtros">
+                                <a class="editcvOR" href="javascript: void(0);">@Html.Translate("OTROS_RESULTADOS") <span class="numResultados">0</span></a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="group-collapse alertas hasCV">
+                    <a href="#alertas-usuario" data-toggle="collapse" aria-expanded="true" class="">@Html.Translate("CONSULTAR")</a>
+                    <div id="alertas-usuario" class="collapse show">
+                        <ul class="pmd-sidebar-nav">
+                            <li class="liNotificaciones nuevos">
+                                @{
+                                    string urlAlertas = Comunidad.Url + "/" + Html.Translate("ALERTAS_URL");
+                                }
+                                <a href="@urlAlertas">@Html.Translate("ALERTAS")</a>
+                            </li>
+                            <li class="liOtros">
+                                @{
+                                    string urlROs = Comunidad.Url + "/" + Html.Translate("GESTIONROS_URL");
+                                }
+                                <a href="@urlROs">@Html.Translate("GESTION_ROS")</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="group-collapse curriculumvitae hasCV">
+                    <a href="#curriculumvitae" data-toggle="collapse" aria-expanded="true">@Html.Translate("CURRICULUM")</a>
+                    <div id="curriculumvitae" class="collapse show">
+                        <ul class="pmd-sidebar-nav">
+                            <li class="liOtros">
+                                <a class="editcv" href="javascript: void(0);">@Html.Translate("EDITAR_CV")</a>
+                            </li>
+                            <li class="liAnadir">
+                                @{
+                                    string urlImportarCV = Comunidad.Url + "/" + Html.Translate("IMPORTAR_CV_URL");
+                                }
+                                <a href="@urlImportarCV">@Html.Translate("IMPORTAR_CV")</a>
+                            </li>
+                            <li class="liOtros">
+                                @{
+                                    string urlExportarCV = Comunidad.Url + "/" + Html.Translate("EXPORTAR_CV_URL");
+                                }
+                                <a href="@urlExportarCV">@Html.Translate("EXPORTAR_CV")</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="group-collapse redes-investigacion hasCV">
+                    <a href="#redes-investigacion" data-toggle="collapse" aria-expanded="true">@Html.Translate("REDES_INVESTIGACION")</a>
+                    <div id="redes-investigacion" class="collapse show">
+                        <ul class="pmd-sidebar-nav">
+                            <li class="liPublicacion">
+                                <a href="#" onclick="PedirFuentesExternas()">@Html.Translate("RECUPERAR_ROS")</a>
+                            </li>
+                            <li class="liConfiguracion">
+                                @{
+                                    string urlRedes = Comunidad.Url + "/" + Html.Translate("REDES_URL");
+                                }
+                                <a href="@urlRedes">@Html.Translate("CONFIGURACION")</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+
+                <div class="group-collapse cluster  hasCV">
+                    <a href="#cluster" data-toggle="collapse" aria-expanded="true">@Html.Translate("GESTION_CLUSTERS")</a>
+                    <div id="cluster" class="collapse show">
+                        <ul class="pmd-sidebar-nav">
+                            <li class="liCluster">
+                                @{
+                                    string urlListadoCluster = Comunidad.Url + "/" + Html.Translate("CLUSTER_URL");
+                                }
+                                <a href="@urlListadoCluster">@Html.Translate("LISTADO_CLUSTERS")</a>
+                            </li>
+                            <li class="liCluster">
+                                @{
+                                    string urlNuevoCluster = Comunidad.Url + "/" + Html.Translate("NUEVO_CLUSTER_URL");
+                                }
+                                <a href="@urlNuevoCluster">@Html.Translate("NUEVO_CLUSTER")</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="group-collapse anotaciones  hasCV">
+                    <a href="#gestion-anotaciones" data-toggle="collapse" aria-expanded="true">@Html.Translate("GESTION_ANOTACIONES")</a>
+                    <div id="gestion-anotaciones" class="collapse show">
+                        <ul class="pmd-sidebar-nav">
+                            <li class="liComentarios">
+                                @{
+                                    string urlListadoAnotaciones = Comunidad.Url + "/" + Html.Translate("ANOTACIONES_URL");
+                                }
+                                <a href="@urlListadoAnotaciones">@Html.Translate("LISTADO_ANOTACIONES")</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="group-collapse indicadores-personales hasCV">
+                    <a href="#indicadores-personales" data-toggle="collapse" aria-expanded="true">@Html.Translate("INDICADORES")</a>
+                    <div id="indicadores-personales" class="collapse show">
+                        <ul class="pmd-sidebar-nav">
+                            <li class="liIndicadores">
+                                @{
+                                    string urlIndicadoresPersonales = Comunidad.Url + "/" + Html.Translate("INDICADORES_PERSONALES_URL");
+                                }
+                                <a href="@urlIndicadoresPersonales">@Html.Translate("MIS_INDICADORES")</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="group-collapse oferta-tecnologica hasCV">
+                    <a href="#oferta-tecnologica" data-toggle="collapse" aria-expanded="true">@Html.Translate("OFERTAS_TECNOLOGICAS")</a>
+                    <div id="oferta-tecnologica" class="collapse show">
+                        <ul class="pmd-sidebar-nav">
+                            <li class="liOffer">
+                                @{
+                                    string urlCrearOfertaTecnologica = Comunidad.Url + "/" + Html.Translate("NUEVA_OFERTA_TECNOLOGICA_URL");
+                                }
+                                <a href="@urlCrearOfertaTecnologica">@Html.Translate("NUEVA_OFERTA_TECNOLOGICA")</a>
+                            </li>
+                            <li class="liOffer">
+                                @{
+                                    string urlMisOfertasTecnologicas = Comunidad.Url + "/" + Html.Translate("OFERTA_URL");
+                                }
+                                <a href="@urlMisOfertasTecnologicas">@Html.Translate("MIS_OFERTAS_TECNOLOGICAS")</a>
+                            </li>
+                            <li class="liOffer d-none" id="menu_ed_is_otri">
+                                @{
+                                    string urlOfertasTecnologicasOtri = Comunidad.Url + "/" + Html.Translate("OFERTA_TECNOLOGICA_OTRI_URL");
+                                }
+                                <a href="@urlOfertasTecnologicasOtri">@Html.Translate("GESTIONAR_OFERTA_TECNOLOGICA")</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="group-collapse desconectar">
+                    <div id="desconectar-usuario" class="collapse show">
+                        <ul class="pmd-sidebar-nav">
+                            <li>
+                                <a href="@Html.GetUrlLogout()" class="desconectar-usuario bold">@Html.GetText("MENU", "SALIR")</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </aside>
+
+
+    <script type="text/javascript">
+
+        // Datos cabeceras de las fichas.
+        let urlGIHEU = url_servicio_externo+"Hercules/GetInfoHomeEdUser"
+
+        let arg = {};
+        arg.pIdGnossUser = "@currentId";
+        $.get(urlGIHEU, arg, function (data) {
+            $("#menuLateralUsuarioClonado #trabajo a.editcvPub .numResultados").text(data.numPublicaciones);
+            $("#menuLateralUsuarioClonado #trabajo a.editcvPV .numResultados").text(data.numPV);
+            $("#menuLateralUsuarioClonado #trabajo a.editcvOR .numResultados").text(data.numOtrosR);
+        });
+        cargarCVId.init()
+
+    </script>
+
+
+}
+
+
+
+
+@functions
+{
+    public static List<CvUser> listaUsers = new List<CvUser>();
+
+    public class CvUser
+    {
+        public string id { get; set; }
+        public string title { get; set; }
+        public string tituloOrg { get; set; }
+        public string foto { get; set; }
+        public string numPublicaciones { get; set; }
+        public string numPV { get; set; }
+        public string numOtrosR { get; set; }
+
+        public CvUser()
+        {
+            id = "";
+            title = "";
+            tituloOrg = "";
+            foto = "";
+            numPublicaciones = "";
+            numPV = "";
+            numOtrosR = "";
+        }
+
+        public CvUser(System.Data.DataRow fila)
+        {
+
+            try
+            {
+                this.id = fila["s"].ToString();
+                this.title = fila["name"].ToString();
+
+            } catch (Exception e ) {}
+
+
+            // try
+            // {
+            //     if (!fila.IsNull("numPublicaciones"))
+            //     {
+            //         this.numPublicaciones = fila["numPublicaciones"].ToString();
+            //     }
+
+            // } catch (Exception e ) {
+            //     this.numPublicaciones = "0";
+            // }
+
+            // try
+            // {
+            //     if (!fila.IsNull("numPV"))
+            //     {
+            //         this.numPV = fila["numPV"].ToString();
+            //     }
+
+            // } catch (Exception e ) {
+            //     this.numPV = "0";
+            // }
+
+            // try
+            // {
+            //     if (!fila.IsNull("numOtrosR"))
+            //     {
+            //         this.numOtrosR = fila["numOtrosR"].ToString();
+            //     }
+
+            // } catch (Exception e ) {
+            //     this.numOtrosR = "0";
+            // }
+
+            try
+            {
+                if (!fila.IsNull("foto"))
+                {
+                    this.foto = fila["foto"].ToString();
+                }
+
+            } catch (Exception e ) {}
+
+
+        }
+    }
+}
