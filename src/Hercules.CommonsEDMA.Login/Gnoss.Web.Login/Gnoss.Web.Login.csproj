@@ -1,0 +1,109 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <UserSecretsId>ac306b82-d81a-4403-a7cd-784cb4c15007</UserSecretsId>
+    <DockerDefaultTargetOS>Windows</DockerDefaultTargetOS>
+    <DockerfileContext>.</DockerfileContext>
+    <EnableUnsafeBinaryFormatterSerialization>true</EnableUnsafeBinaryFormatterSerialization>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="EnterpriseLibrary.Data.NetCore" Version="6.3.2" />
+    <PackageReference Include="GnossApiWrapper.NetCore" Version="6.0.5">
+      <Aliases>ApiWrapper</Aliases>
+    </PackageReference>
+    <PackageReference Include="ITfoxtec.Identity.Saml2.MvcCore" Version="4.8.2" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="5.0.10" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="5.0.2" />
+    <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.10.9" />
+    <PackageReference Include="Npgsql" Version="5.0.7" />
+    <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="5.0.7" />
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="5.6.3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Gnoss.Web.Login.Open\Gnoss.Web.Login.Open.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="Es.Riam.AbstractsOpen">
+      <HintPath>..\Gnoss.Web.Login.Open\Librerias\Es.Riam.AbstractsOpen.dll</HintPath>
+    </Reference>
+    <Reference Include="Es.Riam.Gnoss.AD">
+      <HintPath>..\Gnoss.Web.Login.Open\Librerias\Es.Riam.Gnoss.AD.dll</HintPath>
+    </Reference>
+    <Reference Include="Es.Riam.Gnoss.CL">
+      <HintPath>..\Gnoss.Web.Login.Open\Librerias\Es.Riam.Gnoss.CL.dll</HintPath>
+    </Reference>
+    <Reference Include="Es.Riam.Gnoss.Elementos">
+      <HintPath>..\Gnoss.Web.Login.Open\Librerias\Es.Riam.Gnoss.Elementos.dll</HintPath>
+    </Reference>
+    <Reference Include="Es.Riam.Gnoss.ExportarImportar">
+      <HintPath>..\Gnoss.Web.Login.Open\Librerias\Es.Riam.Gnoss.ExportarImportar.dll</HintPath>
+    </Reference>
+    <Reference Include="Es.Riam.Gnoss.FileManager">
+      <HintPath>..\Gnoss.Web.Login.Open\Librerias\Es.Riam.Gnoss.FileManager.dll</HintPath>
+    </Reference>
+    <Reference Include="Es.Riam.Gnoss.Logica">
+      <HintPath>..\Gnoss.Web.Login.Open\Librerias\Es.Riam.Gnoss.Logica.dll</HintPath>
+    </Reference>
+    <Reference Include="Es.Riam.Gnoss.RabbitMQ">
+      <HintPath>..\Gnoss.Web.Login.Open\Librerias\Es.Riam.Gnoss.RabbitMQ.dll</HintPath>
+    </Reference>
+    <Reference Include="Es.Riam.Gnoss.Recursos">
+      <HintPath>..\Gnoss.Web.Login.Open\Librerias\Es.Riam.Gnoss.Recursos.dll</HintPath>
+    </Reference>
+    <Reference Include="Es.Riam.Gnoss.RedesSociales">
+      <HintPath>..\Gnoss.Web.Login.Open\Librerias\Es.Riam.Gnoss.RedesSociales.dll</HintPath>
+    </Reference>
+    <Reference Include="Es.Riam.Gnoss.Servicios">
+      <HintPath>..\Gnoss.Web.Login.Open\Librerias\Es.Riam.Gnoss.Servicios.dll</HintPath>
+    </Reference>
+    <Reference Include="Es.Riam.Gnoss.Util">
+      <HintPath>..\Gnoss.Web.Login.Open\Librerias\Es.Riam.Gnoss.Util.dll</HintPath>
+    </Reference>
+    <Reference Include="Es.Riam.Gnoss.UtilServiciosWeb">
+      <HintPath>..\Gnoss.Web.Login.Open\Librerias\Es.Riam.Gnoss.UtilServiciosWeb.dll</HintPath>
+    </Reference>
+    <Reference Include="Es.Riam.Gnoss.Web.Controles">
+      <HintPath>..\Gnoss.Web.Login.Open\Librerias\Es.Riam.Gnoss.Web.Controles.dll</HintPath>
+    </Reference>
+    <Reference Include="Es.Riam.Gnoss.Web.MVC.Models">
+      <HintPath>..\Gnoss.Web.Login.Open\Librerias\Es.Riam.Gnoss.Web.MVC.Models.dll</HintPath>
+    </Reference>
+    <Reference Include="Es.Riam.Interfaces">
+      <HintPath>..\Gnoss.Web.Login.Open\Librerias\Es.Riam.Interfaces.dll</HintPath>
+    </Reference>
+    <Reference Include="Es.Riam.OpenReplication">
+      <HintPath>..\Gnoss.Web.Login.Open\Librerias\Es.Riam.OpenReplication.dll</HintPath>
+    </Reference>
+    <Reference Include="Es.Riam.Semantica">
+      <HintPath>..\Gnoss.Web.Login.Open\Librerias\Es.Riam.Semantica.dll</HintPath>
+    </Reference>
+    <Reference Include="Es.Riam.Util">
+      <HintPath>..\Gnoss.Web.Login.Open\Librerias\Es.Riam.Util.dll</HintPath>
+    </Reference>
+    <Reference Include="Es.Riam.Web.Util">
+      <HintPath>..\Gnoss.Web.Login.Open\Librerias\Es.Riam.Web.Util.dll</HintPath>
+    </Reference>
+    <Reference Include="OpenLink.Data.Virtuoso">
+      <HintPath>..\Gnoss.Web.Login.Open\Librerias\OpenLink.Data.Virtuoso.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Data.Odbc">
+      <HintPath>..\Gnoss.Web.Login.Open\Librerias\System.Data.Odbc.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Data.OleDb">
+      <HintPath>..\Gnoss.Web.Login.Open\Librerias\System.Data.OleDb.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Data.OracleClient">
+      <HintPath>..\Gnoss.Web.Login.Open\Librerias\System.Data.OracleClient.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Data.SqlClient">
+      <HintPath>..\Gnoss.Web.Login.Open\Librerias\System.Data.SqlClient.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+  <ProjectExtensions><VisualStudio><UserProperties appsettings_1json__JsonSchema="" /></VisualStudio></ProjectExtensions>
+
+</Project>
