@@ -1,7 +1,7 @@
 const uriLoadTaxonomies = "Cluster/GetThesaurus"
 const uriSaveCluster = "Cluster/SaveCluster"
-const uriSearchTags = "Cluster/searchTags"
-const uriLoadProfiles = "Cluster/loadProfiles"
+const uriSearchTags = "Cluster/SearchTags"
+const uriLoadProfiles = "Cluster/LoadProfiles"
 const uriLoadSavedProfiles = "Cluster/LoadSavedProfiles"
 const uriLoadClst = "Cluster/LoadCluster"
 
