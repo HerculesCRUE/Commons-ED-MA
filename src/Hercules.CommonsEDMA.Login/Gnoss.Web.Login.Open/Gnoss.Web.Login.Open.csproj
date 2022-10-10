@@ -1,0 +1,106 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="EnterpriseLibrary.Data.NetCore" Version="6.3.2" />
+    <PackageReference Include="GnossApiWrapper.NetCore" Version="6.0.5" />
+    <PackageReference Include="Microsoft.AspNetCore.Cors" Version="2.2.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Hosting" Version="2.2.7" />
+    <PackageReference Include="Microsoft.AspNetCore.Http.Features" Version="5.0.16" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc" Version="2.2.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="5.0.10" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+    <PackageReference Include="Newtonsoft.Json.Bson" Version="1.0.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="BeetleX">
+      <HintPath>Librerias\BeetleX.dll</HintPath>
+    </Reference>
+    <Reference Include="BeetleX.Redis">
+      <HintPath>Librerias\BeetleX.Redis.dll</HintPath>
+    </Reference>
+    <Reference Include="BeetleX.Tracks">
+      <HintPath>Librerias\BeetleX.Tracks.dll</HintPath>
+    </Reference>
+    <Reference Include="Es.Riam.AbstractsOpen">
+      <HintPath>Librerias\Es.Riam.AbstractsOpen.dll</HintPath>
+    </Reference>
+    <Reference Include="Es.Riam.Gnoss.AD">
+      <HintPath>Librerias\Es.Riam.Gnoss.AD.dll</HintPath>
+    </Reference>
+    <Reference Include="Es.Riam.Gnoss.CL">
+      <HintPath>Librerias\Es.Riam.Gnoss.CL.dll</HintPath>
+    </Reference>
+    <Reference Include="Es.Riam.Gnoss.Elementos">
+      <HintPath>Librerias\Es.Riam.Gnoss.Elementos.dll</HintPath>
+    </Reference>
+    <Reference Include="Es.Riam.Gnoss.ExportarImportar">
+      <HintPath>Librerias\Es.Riam.Gnoss.ExportarImportar.dll</HintPath>
+    </Reference>
+    <Reference Include="Es.Riam.Gnoss.FileManager">
+      <HintPath>Librerias\Es.Riam.Gnoss.FileManager.dll</HintPath>
+    </Reference>
+    <Reference Include="Es.Riam.Gnoss.Logica">
+      <HintPath>Librerias\Es.Riam.Gnoss.Logica.dll</HintPath>
+    </Reference>
+    <Reference Include="Es.Riam.Gnoss.RabbitMQ">
+      <HintPath>Librerias\Es.Riam.Gnoss.RabbitMQ.dll</HintPath>
+    </Reference>
+    <Reference Include="Es.Riam.Gnoss.Recursos">
+      <HintPath>Librerias\Es.Riam.Gnoss.Recursos.dll</HintPath>
+    </Reference>
+    <Reference Include="Es.Riam.Gnoss.RedesSociales">
+      <HintPath>Librerias\Es.Riam.Gnoss.RedesSociales.dll</HintPath>
+    </Reference>
+    <Reference Include="Es.Riam.Gnoss.Servicios">
+      <HintPath>Librerias\Es.Riam.Gnoss.Servicios.dll</HintPath>
+    </Reference>
+    <Reference Include="Es.Riam.Gnoss.Util">
+      <HintPath>Librerias\Es.Riam.Gnoss.Util.dll</HintPath>
+    </Reference>
+    <Reference Include="Es.Riam.Gnoss.UtilServiciosWeb">
+      <HintPath>Librerias\Es.Riam.Gnoss.UtilServiciosWeb.dll</HintPath>
+    </Reference>
+    <Reference Include="Es.Riam.Gnoss.Web.Controles">
+      <HintPath>Librerias\Es.Riam.Gnoss.Web.Controles.dll</HintPath>
+    </Reference>
+    <Reference Include="Es.Riam.Gnoss.Web.MVC.Models">
+      <HintPath>Librerias\Es.Riam.Gnoss.Web.MVC.Models.dll</HintPath>
+    </Reference>
+    <Reference Include="Es.Riam.Interfaces">
+      <HintPath>Librerias\Es.Riam.Interfaces.dll</HintPath>
+    </Reference>
+    <Reference Include="Es.Riam.OpenReplication">
+      <HintPath>Librerias\Es.Riam.OpenReplication.dll</HintPath>
+    </Reference>
+    <Reference Include="Es.Riam.Semantica">
+      <HintPath>Librerias\Es.Riam.Semantica.dll</HintPath>
+    </Reference>
+    <Reference Include="Es.Riam.Util">
+      <HintPath>Librerias\Es.Riam.Util.dll</HintPath>
+    </Reference>
+    <Reference Include="Es.Riam.Web.Util">
+      <HintPath>Librerias\Es.Riam.Web.Util.dll</HintPath>
+    </Reference>
+    <Reference Include="OpenLink.Data.Virtuoso">
+      <HintPath>Librerias\OpenLink.Data.Virtuoso.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Data.Odbc">
+      <HintPath>Librerias\System.Data.Odbc.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Data.OleDb">
+      <HintPath>Librerias\System.Data.OleDb.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Data.OracleClient">
+      <HintPath>Librerias\System.Data.OracleClient.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Data.SqlClient">
+      <HintPath>Librerias\System.Data.SqlClient.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+</Project>
