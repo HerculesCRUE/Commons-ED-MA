@@ -31,14 +31,14 @@ namespace Hercules.CommonsEDMA.Journals
             string nombreHoja = "revistas";
 
             // Obtención de revistas de BBDD.
-            Console.WriteLine("1/6.- Obtenemos las revistas de BBDD");
+            Console.WriteLine("1/8.- Obtenemos las revistas de BBDD");
             List<string> idRecursosRevistas = ObtenerIDsRevistas();
             Dictionary<string, Journal> dicRevistasBBDD = ObtenerRevistaPorID(idRecursosRevistas);
 
             // Diccionario de revistas.
             List<Journal> listaRevistas = dicRevistasBBDD.Values.ToList();
 
-            Console.WriteLine("2/6.- Leemos las revistas del Excel");
+            Console.WriteLine("2/8.- Leemos las revistas del Excel");
             DataSet dataSet = LecturaExcel($@"{System.AppDomain.CurrentDomain.SetupInformation.ApplicationBase}Dataset{Path.DirectorySeparatorChar}{nombreExcel}.xlsx");
 
             if (ComprobarColumnasExcel(dataSet, nombreHoja))
@@ -77,6 +77,8 @@ namespace Hercules.CommonsEDMA.Journals
             ObtenerRevistas(revistasCargar, listaRecursosCargar);
             CargarDatos(listaRecursosCargar);
 
+            Console.WriteLine($"7/8.- Comprobando borrados");
+
             // Borrado
             foreach (Journal journal in dicRevistasBBDD)
             {
@@ -92,6 +94,8 @@ namespace Hercules.CommonsEDMA.Journals
                     }
                 }
             }
+
+            Console.WriteLine($"8/8.- Comprobando modificaciones");
 
             // Modificación            
             foreach (Journal journalBBDD in dicRevistasBBDD)
@@ -118,7 +122,7 @@ namespace Hercules.CommonsEDMA.Journals
         /// <returns></returns>
         private static List<Journal> GetRevistas(DataSet pDataSet, string pNombreHoja, List<Journal> pListaRevistas)
         {
-            Console.WriteLine("3/6.- Montamos los objetos a cargar");
+            Console.WriteLine("3/8.- Montamos los objetos a cargar");
             // Obtención de la hoja a leer.
             DataTable tabla = pDataSet.Tables[$@"{pNombreHoja}"];
 
@@ -133,11 +137,11 @@ namespace Hercules.CommonsEDMA.Journals
 
             int numRevista = 0;
             int numRevistas = tablaRevistas.Rows.Count;
-            Console.Write($"4/6.- Procesando fila del excel {0}/{numRevistas}");
+            Console.Write($"4/8.- Procesando fila del excel {0}/{numRevistas}");
             foreach (DataRow fila in tablaRevistas.Rows)
             {
                 numRevista++;
-                Console.Write($"\r4/6.- Procesando fila del excel {numRevista}/{numRevistas}");
+                Console.Write($"\r4/8.- Procesando fila del excel {numRevista}/{numRevistas}");
 
                 // Si la revista no tiene título, no es válida.
                 if (string.IsNullOrEmpty(fila["TITLE"].ToString()))
@@ -239,7 +243,7 @@ namespace Hercules.CommonsEDMA.Journals
                     }
                 }
             }
-            Console.WriteLine($"\r4/6.- Procesando fila del excel {numRevista}/{numRevistas}");
+            Console.WriteLine($"\r4/8.- Procesando fila del excel {numRevista}/{numRevistas}");
 
             return pListaRevistas;
         }
@@ -909,11 +913,11 @@ namespace Hercules.CommonsEDMA.Journals
         {
             int numRevista = 0;
             int numRevistas = pListaRevistas.Count;
-            Console.Write($"5/6.- Creando objetos de carga {0}/{numRevistas}");
+            Console.Write($"5/8.- Creando objetos de carga {0}/{numRevistas}");
             foreach (Journal revista in pListaRevistas)
             {
                 numRevista++;
-                Console.Write($"\r5/6.- Creando objetos de carga {numRevista}/{numRevistas}");
+                Console.Write($"\r5/8.- Creando objetos de carga {numRevista}/{numRevistas}");
                 MaindocumentOntology.MainDocument revistaCargar = new MaindocumentOntology.MainDocument();
                 revistaCargar.Roh_title = revista.titulo;
                 revistaCargar.Bibo_issn = revista.issn;
@@ -957,7 +961,7 @@ namespace Hercules.CommonsEDMA.Journals
                 ComplexOntologyResource resource = revistaCargar.ToGnossApiResource(mResourceApi, null);
                 pListaRecursos.Add(resource);
             }
-            Console.WriteLine($"\r5/6.- Creando objetos de carga {numRevista}/{numRevistas}");
+            Console.WriteLine($"\r5/8.- Creando objetos de carga {numRevista}/{numRevistas}");
         }
 
         /// <summary>
@@ -969,11 +973,11 @@ namespace Hercules.CommonsEDMA.Journals
             // Carga.
             int numRevista = 0;
             int numRevistas = pListaRecursosCargar.Count;
-            Console.Write($"6/6.- Cargando revistas {0}/{numRevistas}");
+            Console.Write($"6/8.- Cargando revistas {0}/{numRevistas}");
             foreach (ComplexOntologyResource recursoCargar in pListaRecursosCargar)
             {
                 numRevista++;
-                Console.Write($"\r6/6.- Cargando revistas {numRevista}/{numRevistas}");
+                Console.Write($"\r6/8.- Cargando revistas {numRevista}/{numRevistas}");
                 int numIntentos = 0;
                 while (!recursoCargar.Uploaded)
                 {
@@ -999,7 +1003,7 @@ namespace Hercules.CommonsEDMA.Journals
                     }
                 }
             };
-            Console.WriteLine($"\r6/6.- Cargando revistas {numRevista}/{numRevistas}");
+            Console.WriteLine($"\r6/8.- Cargando revistas {numRevista}/{numRevistas}");
         }
 
         /// <summary>
