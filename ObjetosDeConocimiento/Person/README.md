@@ -25,6 +25,8 @@ Una instancia de foaf:Person se asocia con las siguientes entidades a través de
 - [foaf:Group](https://github.com/HerculesCRUE/Commons-ED-MA/tree/main/ObjetosDeConocimiento/Group), que vincula al investigador con uno o varios grupos de investigación.
 - eroh:MetricPage, que vincula al investigador con las graficas de indicadores personales.
 - eroh:IgnorePublication, que vincula la persona con las publicaciones que no quiere que se vuelvan a insertar en el CV.
+- eroh:HIndexCitationCount, representa el número de citas del índice H.
+- eroh:HIndex, representa el índice H.
 
 ![](../../Docs/media/ObjetosDeConocimiento/Person.png)
 
