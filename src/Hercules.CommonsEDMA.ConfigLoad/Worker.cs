@@ -43,6 +43,8 @@ namespace Hercules.CommonsEDMA.ConfigLoad
             {
                 configService = new ConfigService();
                 SubirConfiguraciones();
+                Console.WriteLine("Ha finalizado la carga de configuraciones");
+                Finalizar();
             }
             catch (Exception ex)
             {
@@ -64,8 +66,6 @@ namespace Hercules.CommonsEDMA.ConfigLoad
 
         private void SubirConfiguraciones()
         {
-
-
             Console.WriteLine("Subimos configuraciones");
             string rutaBase = $@"{System.AppDomain.CurrentDomain.SetupInformation.ApplicationBase}Files{Path.DirectorySeparatorChar}";
             Console.WriteLine("1- Subimos ontologías");
