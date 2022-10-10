@@ -1809,7 +1809,7 @@ function CompletadaCargaRecursosCluster()
 {	
 	if(typeof stepsCls != 'undefined' && stepsCls!=null && stepsCls.data!=null)
 	{		
-		$('#clusterListUsers article.investigador h2.resource-title').attr('tagert','_blank');
+		$('#clusterListUsers article.investigador h2.resource-title a').attr('target','_blank');
 		stepsCls.data.pPersons=$('#clusterListUsers article.investigador').toArray().map(e => {return $(e).attr('id')});
 		
 		newGrafProjClust.CargarGraficaColaboradores(stepsCls.data, 'colaboratorsgraphCluster', true);
