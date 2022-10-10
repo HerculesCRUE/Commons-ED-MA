@@ -1,0 +1,3734 @@
+@*[security|||document|||hercules]*@
+@using System.Reflection;
+@model ResourceViewModel
+@{
+    ResourceModel FichaDocumento = Model.Resource;
+    CommunityModel Comunidad = Html.GetComunidad();
+    UserIdentityModel IdentidadActual = Html.GetIdentidadActual();
+    Html.AddBodyClass(" fichaRecurso ");
+    Html.AddBodyClass(" fichaRecurso-publicacion ");
+    string urlPersonalizacion = Html.GetBaseUrlContent() + "/imagenes/proyectos/personalizacion/" + Comunidad.Key.ToString();
+    string urlJS = $"{urlPersonalizacion}/theme/ficharecurso.js?v={Html.Translate("VERSION_CSS_JS")}";
+    string urlJSAnnotation = $"{urlPersonalizacion}/theme/annotations.js?v={Html.Translate("VERSION_CSS_JS")}";
+    Html.GetListaJS().Add(urlJS);
+    Html.GetListaJS().Add(urlJSAnnotation);
+    SemanticResourceModel semCmsModel = Model.SemanticFrom;
+    GnossOCBase.LanguageEnum idiomaUsuario = (GnossOCBase.LanguageEnum)Enum.Parse(typeof(GnossOCBase.LanguageEnum), Html.GetUtilIdiomas().LanguageCode.ToLower());
+    Document pDocument = new Document(semCmsModel, idiomaUsuario);
+
+    Guid currentId = IdentidadActual.KeyUser;
+}
+
+<div class="col col-12 col-breadcrumb">
+    <ul>
+        <li>
+            <a href="@Comunidad.Url">Home</a>
+        </li>
+        <li>
+            @{
+                string urlArticulos = Comunidad.Url + "/" + Html.Translate("PUBLICACIONES_URL");
+            }
+            <a href="@urlArticulos">Publicaciones</a>
+        </li>
+        @{
+            if (!string.IsNullOrEmpty(pDocument.Roh_title))
+            {
+                <li>@pDocument.Roh_title</li>
+            }
+            else
+            {
+                <li>---</li>
+            }
+        }
+    </ul>
+</div>
+
+
+@*TODO:*@
+<div class="col col-12 col-xl-12 col-contenido">
+        <input type="hidden" id="NO_HAY_NOTAS_PRIVADAS" value="@Html.Translate("NO_HAY_NOTAS_PRIVADAS")"/>
+    <div class="wrapCol">
+        <div class="cabecera-ficha enCurso">
+            <div class="ficha-upper-row">
+                <div class="ficha-icon-wrap">
+                    <span class="material-icons">article</span>
+                </div>
+                <div class="ficha-title-wrap">
+                    @{
+                        if (!string.IsNullOrEmpty(pDocument.Roh_title))
+                        {
+                            <h1 about="@pDocument.GNOSSID" property="@pDocument.GetPropertyURI(nameof(pDocument.Roh_title))" class="ficha-title">
+                                @pDocument.Roh_title
+                                @{
+                                    if (pDocument.Roh_isValidated)
+                                    {
+                                        <span class="material-icons candado-activo"></span>
+                                    }
+                                    else
+                                    {
+                                        <span class="material-icons candado"></span>
+                                    }
+                                }
+                            </h1>
+                        }
+                        else
+                        {
+                            <p class="ficha-title">
+                                ---
+                                <span class="material-icons candado-activo"></span>
+                            </p>
+                        }
+                    }
+                </div>
+
+
+
+
+
+                @{
+                    string valorOtros = string.Empty;
+
+                    var metric = pDocument.Roh_hasMetric;
+                    metric.ForEach(e =>
+                    {
+                        valorOtros += e.Roh_metricName + "~" + e.Roh_citationCount + "|";
+                    });
+
+                }
+
+
+                @{
+                    //Factor de impacto
+                    float? impactFactor = null;
+                    Dictionary<string, float> impactFactors = new Dictionary<string, float>();
+                    foreach (ImpactIndex impactindex in pDocument.Roh_impactIndex.OrderByDescending(x => x.Roh_impactIndexInYear))
+                    {
+                        if (impactindex.Roh_impactIndexInYear.HasValue)
+                        {
+                            impactFactors[impactindex.Roh_impactSource.Dc_title[idiomaUsuario]] = impactindex.Roh_impactIndexInYear.Value;
+                            if (!impactFactor.HasValue || impactindex.Roh_impactIndexInYear.Value > impactFactor.Value)
+                            {
+                                impactFactor = impactindex.Roh_impactIndexInYear;
+                            }
+                        }
+                    }
+                    string htmlTooltipImpactFactor = "<p class=\"tooltip-title\">" + Html.Translate("FACTOR_DE_IMPACTO") + "</p><ul class=\"no-list-style\">" + string.Join("", impactFactors.Select(x => "<li><span class=\"texto\">" + x.Key + "</span><span class=\"num-resultado\">" + x.Value + "</span></li>")) + "</ul>";
+                }
+
+                @{
+                    //Cuartiles
+                    int? quartile = null;
+                    List<string> quartiles = new List<string>();
+                    foreach (ImpactIndex impactindex in pDocument.Roh_impactIndex.OrderBy(x => x.Roh_impactSource?.Dc_title?[idiomaUsuario]).ThenBy(x => x.Roh_quartile).ThenBy(x => x.Roh_impactIndexCategory))
+                    {
+                        if (impactindex.Roh_quartile.HasValue && impactindex.Roh_quartile.Value != 0)
+                        {
+                            string fileCuartil = "<tr>";
+                            if (impactindex.Roh_impactSource != null && impactindex.Roh_impactSource.Dc_title.ContainsKey(idiomaUsuario))
+                            {
+                                fileCuartil += "<td>" + impactindex.Roh_impactSource.Dc_title[idiomaUsuario] + "</td>";
+                            }
+                            else
+                            {
+                                fileCuartil += "<td></td>";
+                            }
+
+                            if (!string.IsNullOrEmpty(impactindex.Roh_impactIndexCategory))
+                            {
+                                fileCuartil += "<td>" + impactindex.Roh_impactIndexCategory + "</td>";
+                            }
+                            else
+                            {
+                                fileCuartil += "<td></td>";
+                            }
+                            if (impactindex.Roh_publicationPosition.HasValue)
+                            {
+                                fileCuartil += "<td>" + impactindex.Roh_publicationPosition.Value + "</td>";
+                            }
+                            else
+                            {
+                                fileCuartil += "<td></td>";
+                            }
+
+                            if (impactindex.Roh_journalNumberInCat.HasValue)
+                            {
+                                fileCuartil += "<td>" + impactindex.Roh_journalNumberInCat.Value + "</td>";
+                            }
+                            else
+                            {
+                                fileCuartil += "<td></td>";
+                            }
+                            fileCuartil += "<td>Q" + impactindex.Roh_quartile.Value + "</td>";
+                            quartiles.Add(fileCuartil);
+                            if (!quartile.HasValue || impactindex.Roh_quartile.Value < quartile.Value)
+                            {
+                                quartile = impactindex.Roh_quartile;
+                            }
+                        }
+                    }
+                    string htmlTooltipCuartil = "<p class=\"tooltip-title\">" + Html.Translate("CUARTIL") + "</p><table><tr><th>" + Html.Translate("CUARTIL_FUENTE") + "</th><th>" + Html.Translate("CUARTIL_CATEGORIA") + "</th><th>" + Html.Translate("CUARTIL_PUBLICATIONPOSITION") + "</th><th>" + Html.Translate("CUARTIL_JOURNALNUMBERINCAT") + "</th><th>" + Html.Translate("CUARTIL") + "</th></tr>" + string.Join("", quartiles) + "</table>";
+                }
+
+                @if (impactFactor.HasValue)
+                {
+                    <div class="d-flex impactFactorTooltip">
+                        <p><span>@impactFactor.Value</p>
+                        <span class="oculto tooltipContent">@Html.Raw(htmlTooltipImpactFactor)</span>
+                    </div>
+                }
+
+                @if (quartile.HasValue)
+                {
+                    string valorCuartil = "Q" + quartile.Value;
+                    <div class="d-flex quartileTooltip">
+                        <p><span>@valorCuartil</p>
+                        <span class="oculto tooltipContent">@Html.Raw(htmlTooltipCuartil)</span>
+                    </div>
+                }
+
+                <div class="d-flex quotes" data-scopus="@pDocument.Roh_scopusCitationCount" data-wos="@pDocument.Roh_wosCitationCount" data-inrecs="@pDocument.Roh_inrecsCitationCount" data-otros="@valorOtros">
+                    <p><span id="citas_number">@pDocument.Roh_citationCount</span> @Html.Translate("CITAS")</p>
+                </div>
+				
+				@{
+					string urlCV = "";
+					if (pDocument.Bibo_authorList != null)
+					{
+						
+						foreach (BFO_0000023 bfo_0000023 in pDocument.Bibo_authorList)
+						{
+							if (bfo_0000023.Rdf_member != null && bfo_0000023.Rdf_member.Roh_cvOf != null && bfo_0000023.Rdf_member.Roh_gnossUser.Replace("http://gnoss/", "").ToLower() == IdentidadActual.KeyUser.ToString().ToLower())
+							{
+								urlCV = bfo_0000023.Rdf_member.Roh_cvOf.URL;
+								
+								string section="http://w3id.org/roh/scientificPublications";
+								if(pDocument.Roh_scientificActivityDocument?.Dc_identifier=="SAD2")
+								{
+									section="http://w3id.org/roh/worksSubmittedConferences";
+								}else if(pDocument.Roh_scientificActivityDocument?.Dc_identifier=="SAD3")
+								{
+									section="http://w3id.org/roh/worksSubmittedSeminars";
+								}
+								
+								urlCV += "?tab=http://w3id.org/roh/scientificActivity&id=" + FichaDocumento.Key.ToString().ToLower()+"&section="+section;
+							}
+						}
+					}
+				}
+				
+				@if (!IdentidadActual.IsGuestUser)
+				{
+					<div class="acciones-ficha-wrap">
+						<ul class="no-list-style d-flex">
+							<li>
+								<div class="acciones-recurso-listado">
+									<div class="dropdown">
+										<a href="#" class="dropdown-toggle btn btn-outline-grey no-flecha" role="button" id="dropdownMasOpciones" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+											<span class="material-icons">more_vert</span>
+										</a>
+										<div class="dropdown-menu basic-dropdown dropdown-icons dropdown-menu-right" aria-labelledby="dropdownMasOpciones">
+											<p class="dropdown-title">@Html.Translate("ACCIONES")</p>
+											<ul class="no-list-style">
+
+												@if (!string.IsNullOrEmpty(urlCV))
+												{
+													<li>
+														<a href="@urlCV" target="_blank" class="item-dropdown">
+															<span class="material-icons">edit</span>
+															<span class="texto">@Html.GetText("COMMON", "EDITAR")</span>
+														</a>
+													</li>
+                                                    <li>
+                                                        <a href="javascript:startVincularRo()" class="item-dropdown">
+                                                            <span class="material-icons">link</span>
+                                                            <span class="texto">@Html.Translate("VINCULAR_RO")</span>
+                                                        </a>
+                                                    </li>
+												}
+                                                <li>
+                                                    <a href="javascript:void(0)" data-toggle="modal" data-target="#modal-nueva-anotacion" class="item-dropdown">
+                                                        <span class="material-icons">edit_note</span>
+                                                        <span class="texto">@Html.Translate("NUEVA_ANOTACION")</span>
+                                                    </a>
+                                                </li>
+                                                <li>
+                                                    <a href="javascript:void(0)" data-toggle="modal" data-target="#modal-citar-publicacion" class="item-dropdown">
+                                                        <span class="material-icons">format_quote</span>
+                                                        <span class="texto">@Html.Translate("CITAR_PUBLICACION")</span>
+                                                    </a>
+                                                </li>
+											</ul>
+										</div>
+									</div>
+								</div>
+							</li>
+						</ul>
+					</div>
+				}
+            </div>
+            <h3>
+                @{
+                    if (pDocument.Dct_issued != null && pDocument.Dct_issued.HasValue)
+                    {
+                        string fecha = pDocument.Dct_issued.ToString().Split('/')[2].Split(' ')[0];
+                        <span about="@pDocument.GNOSSID" property="@pDocument.GetPropertyURI(nameof(pDocument.Dct_issued))">@fecha</span>
+                    }
+                    else
+                    {
+                        <span>---</span>
+                    }
+                }
+                @{
+                    if (pDocument.Vivo_hasPublicationVenue != null && !string.IsNullOrEmpty(pDocument.Roh_hasPublicationVenueJournalText))
+                    {
+                        <span about="@pDocument.Vivo_hasPublicationVenue.GNOSSID" property="@pDocument.GetPropertyURI(nameof(pDocument.Roh_hasPublicationVenueJournalText))">
+                            @pDocument.Roh_hasPublicationVenueJournalText
+                        </span>
+                    } else if (!string.IsNullOrEmpty(pDocument.Roh_hasPublicationVenueJournalText)) {
+                        <span property="@pDocument.GetPropertyURI(nameof(pDocument.Roh_hasPublicationVenueJournalText))">
+                            @pDocument.Roh_hasPublicationVenueJournalText
+                        </span>
+                    }
+                }
+            </h3>
+            <div class="list-wrap authors">
+                <ul class="d-flex flex-wrap no-list-style">
+                    @{
+                        Dictionary<string, List<List<string>>> dicAutoresOrg = new Dictionary<string, List<List<string>>>();
+
+                        List<Tuple<string, string, string, string, string>> listaTuplas = new List<Tuple<string, string, string, string, string>>();
+                        Dictionary<string, int> dicOrganizaciones = new Dictionary<string, int>();
+                        string orgExterna = "Organización Externa";
+
+                        if (pDocument.Bibo_authorList != null && pDocument.Bibo_authorList.Count > 0)
+                        {
+                            foreach (BFO_0000023 autor in pDocument.Bibo_authorList)
+                            {
+                                if (autor.Rdf_member != null)
+                                {
+                                    Person p = autor.Rdf_member;
+                                    string url = p.URL;
+                                    string org = "";
+
+                                    if (p.Roh_hasRole != null)
+                                    {
+                                        org = p.Roh_hasRole.Roh_title;
+                                    }
+
+                                    listaTuplas.Add(new Tuple<string, string, string, string, string>(p.GNOSSID, org, p.Foaf_name, autor.Foaf_nick, p.URL));
+                                }
+
+
+                            }
+                        }
+
+                        // Tupla<Id, Organizacion, Nombre, Firma>
+                        int contadorN = 1;
+                        foreach (Tuple<string, string, string, string, string> tupla in listaTuplas)
+                        {
+                            if (!string.IsNullOrEmpty(tupla.Item2) && !dicOrganizaciones.ContainsKey(tupla.Item2))
+                            {
+                                dicOrganizaciones.Add(tupla.Item2, contadorN);
+                                contadorN++;
+                            }
+                            else if (!dicOrganizaciones.ContainsKey(orgExterna) && string.IsNullOrEmpty(tupla.Item2))
+                            {
+                                dicOrganizaciones.Add(orgExterna, contadorN);
+                                contadorN++;
+                            }
+                        }
+
+                        //Tupla<Id, Organizacion, Nombre, Firma>
+                        foreach (Tuple<string, string, string, string, string> tupla in listaTuplas)
+                        {
+                            string filtroPersona = string.Empty;
+                            string nombreFirma = string.Empty;
+                            string userUrl = "javascript: void(0);";
+                            if (!string.IsNullOrEmpty(tupla.Item4))
+                            {
+                                nombreFirma = tupla.Item4;
+                                filtroPersona = $@"bibo:authorList@@@foaf:nick={tupla.Item4}";
+                            }
+                            else if (!string.IsNullOrEmpty(tupla.Item3))
+                            {
+                                nombreFirma = tupla.Item3;
+                                filtroPersona = $@"bibo:authorList@@@rdf:member@@@foaf:name={tupla.Item3}";
+                            }
+
+                            int numOrganizacion = 1;
+                            if (dicOrganizaciones.ContainsKey(tupla.Item2))
+                            {
+                                numOrganizacion = dicOrganizaciones[tupla.Item2];
+                            }
+                            else if (dicOrganizaciones.ContainsKey(orgExterna) && string.IsNullOrEmpty(tupla.Item2))
+                            {
+                                numOrganizacion = dicOrganizaciones[orgExterna];
+                            }
+
+                            if (tupla.Item5 != null)
+                            {
+                                userUrl = tupla.Item5;
+                            }
+
+                            <li>
+                                <a href="@userUrl" name="@filtroPersona">@nombreFirma</a>
+                                <sup>@numOrganizacion</sup>
+                            </li>
+
+                        }
+
+
+
+
+                    }
+                </ul>
+            </div>
+            <div class="list-wrap colleges">
+                <ul>
+                    @{
+                        foreach (KeyValuePair<string, int> item in dicOrganizaciones)
+                        {
+                            <li>
+                                <sup>@item.Value</sup>
+                                <a href="javascript: void(0);">@item.Key</a>
+                            </li>
+                        }
+                    }
+                </ul>
+            </div>
+            <div class="description-wrap">
+                <div class="desc" style="display: -webkit-box;">
+                    <p about="@pDocument.GNOSSID" property="@pDocument.GetPropertyURI(nameof(pDocument.Bibo_abstract))">@pDocument.Bibo_abstract</p>
+                </div>
+                <p class="moreResults showMore">
+                    <a href="javascript: void(0);" class="ver-mas" style="display: flex;">@Html.Translate("VER_MAS")</a>
+                    <a href="javascript: void(0);" class="ver-menos" style="display: none;">@Html.Translate("VER_MENOS")</a>
+                </p>
+            </div>
+            <div class="list-wrap tags">
+                <div class="label">@Html.Translate("AREAS_TEMATICAS")</div>
+                <ul>
+                    @{
+                        int contadorAreaConocimiento = 0;
+                        if (pDocument.Roh_hasKnowledgeArea != null && pDocument.Roh_hasKnowledgeArea.Count > 0)
+                        {
+                            foreach (CategoryPath area in pDocument.Roh_hasKnowledgeArea)
+                            {
+                                if (area != null && area.Roh_categoryNode != null && area.Roh_categoryNode.Count > 0)
+                                {
+                                    Concept concept = area.Roh_categoryNode.LastOrDefault(); // TODO: Implementar lógica por si vienen desordenadas las categorías.
+
+                                    //foreach (Concept concept in area.Roh_categoryNode)
+                                    //{
+                                    if (concept != null && !string.IsNullOrEmpty(concept.Skos_prefLabel) && contadorAreaConocimiento < 3)
+                                    {
+                                        contadorAreaConocimiento++;
+                                        <li>
+                                            <a href="@Comunidad.Url/@Html.Translate("PUBLICACIONES_URL")?roh:hasKnowledgeArea@("@@@")roh:categoryNode=@concept.GNOSSID">
+                                                <span about="@concept.GNOSSID" property="@concept.GetPropertyURI(nameof(concept.Skos_prefLabel))" class="texto">@concept.Skos_prefLabel</span>
+                                            </a>
+                                        </li>
+                                    }
+                                    else if (concept != null && !string.IsNullOrEmpty(concept.Skos_prefLabel))
+                                    {
+                                        contadorAreaConocimiento++;
+                                        <li class="ocultar" style="display: none;">
+                                            <a href="@Comunidad.Url/@Html.Translate("PUBLICACIONES_URL")?roh:hasKnowledgeArea@("@@@")roh:categoryNode=@concept.GNOSSID">
+                                                <span about="@concept.GNOSSID" property="@concept.GetPropertyURI(nameof(concept.Skos_prefLabel))" class="texto">@concept.Skos_prefLabel</span>
+                                            </a>
+                                        </li>
+                                    }
+                                    //}
+                                }
+                            }
+                        }
+                    }
+                </ul>
+                @{
+                    if (contadorAreaConocimiento > 3)
+                    {
+                        <p class="moreResults">
+                            <a href="javascript: void(0);" class="ver-mas" style="display: flex;">@Html.Translate("VER_MAS")</a>
+                            <a href="javascript: void(0);" class="ver-menos" style="display: none;">@Html.Translate("VER_MENOS")</a>
+                        </p>
+                    }
+                }
+            </div>
+            <div class="list-wrap tags">
+                <div class="label">@Html.Translate("ETIQUETAS")</div>
+                <ul>
+                    @{
+                        int contadorCategorias = 0;
+                        if (pDocument.Vivo_freeTextKeyword != null && pDocument.Vivo_freeTextKeyword.Count > 0)
+                        {
+                            pDocument.Vivo_freeTextKeyword = pDocument.Vivo_freeTextKeyword.OrderBy(x => x.Roh_keyWordConcept == null).ThenBy(x => x.Roh_title).ToList();
+
+                            foreach (KeyWord etiquetas in pDocument.Vivo_freeTextKeyword)
+                            {
+                                if (!string.IsNullOrEmpty(etiquetas.Roh_title) && contadorCategorias < 3)
+                                {
+                                    contadorCategorias++;
+                                    <li>
+                                        <a href="@Comunidad.Url/@Html.Translate("PUBLICACIONES_URL")?vivo:freeTextKeyword@@@@@@roh:title=@etiquetas.Roh_title">
+                                            <span about="@pDocument.GNOSSID" property="@pDocument.GetPropertyURI(nameof(pDocument.Vivo_freeTextKeyword))" class="texto">@etiquetas.Roh_title</span>
+                                        </a>
+
+                                        @if (etiquetas.Roh_keyWordConcept != null)
+                                        {
+                                            string tituloMesh = string.Empty;
+                                            string urlMesh = string.Empty;
+                                            Dictionary<string, string> dicSnomed = new Dictionary<string, string>();
+
+                                            if (!string.IsNullOrEmpty(etiquetas.Roh_keyWordConcept.Roh_title))
+                                            {
+                                                tituloMesh = etiquetas.Roh_keyWordConcept.Roh_title;
+                                            }
+                                            if(!string.IsNullOrEmpty(etiquetas.Roh_keyWordConcept.Roh_url))
+                                            {
+                                                urlMesh = etiquetas.Roh_keyWordConcept.Roh_url;
+                                            }
+
+                                            if (etiquetas.Roh_keyWordConcept.Roh_match != null && etiquetas.Roh_keyWordConcept.Roh_match.Any())
+                                            {
+                                                foreach(KeyWordConcept match in etiquetas.Roh_keyWordConcept.Roh_match)
+                                                {
+                                                    if (!string.IsNullOrEmpty(match.Roh_url) && !string.IsNullOrEmpty(match.Roh_title))
+                                                    {
+                                                        dicSnomed["https://snomedbrowser.com/Codes/Details/" + match.Roh_url] = match.Roh_title;
+                                                    }
+                                                }
+                                            }
+
+                                            <span class="material-icons link" onmouseover="tooltipMatching('@etiquetas.Roh_keyWordConcept.Roh_title', '@etiquetas.Roh_keyWordConcept.Roh_url', '@JsonConvert.SerializeObject(dicSnomed)', this)">link</span>
+                                        }
+                                    </li>
+                                }
+                                else if (!string.IsNullOrEmpty(etiquetas.Roh_title))
+                                {
+                                    contadorCategorias++;
+                                    <li class="ocultar" style="display: none;">
+                                        <a href="@Comunidad.Url/@Html.Translate("PUBLICACIONES_URL")?vivo:freeTextKeyword@@@@@@roh:title=@etiquetas.Roh_title">
+                                            <span about="@pDocument.GNOSSID" property="@pDocument.GetPropertyURI(nameof(pDocument.Vivo_freeTextKeyword))" class="texto">@etiquetas.Roh_title</span>
+                                        </a>
+
+                                        @if (etiquetas.Roh_keyWordConcept != null)
+                                        {
+                                            string tituloMesh = string.Empty;
+                                            string urlMesh = string.Empty;
+                                            Dictionary<string, string> dicSnomed = new Dictionary<string, string>();
+
+                                            if (!string.IsNullOrEmpty(etiquetas.Roh_keyWordConcept.Roh_title))
+                                            {
+                                                tituloMesh = etiquetas.Roh_keyWordConcept.Roh_title;
+                                            }
+                                            if(!string.IsNullOrEmpty(etiquetas.Roh_keyWordConcept.Roh_url))
+                                            {
+                                                urlMesh = etiquetas.Roh_keyWordConcept.Roh_url;
+                                            }
+
+                                            if (etiquetas.Roh_keyWordConcept.Roh_match != null && etiquetas.Roh_keyWordConcept.Roh_match.Any())
+                                            {
+                                                foreach(KeyWordConcept match in etiquetas.Roh_keyWordConcept.Roh_match)
+                                                {
+                                                    if (!string.IsNullOrEmpty(match.Roh_url) && !string.IsNullOrEmpty(match.Roh_title))
+                                                    {
+                                                        dicSnomed["https://snomedbrowser.com/Codes/Details/" + match.Roh_url] = match.Roh_title;
+                                                    }
+                                                }
+                                            }
+
+                                            <span class="material-icons link" onmouseover="tooltipMatching('@etiquetas.Roh_keyWordConcept.Roh_title', '@etiquetas.Roh_keyWordConcept.Roh_url', '@JsonConvert.SerializeObject(dicSnomed)', this)">link</span>
+                                        }
+                                    </li>
+                                }
+                            }
+                        }
+                        else
+                        {
+                            <li>
+                                <a>
+                                    <span class="texto">---</span>
+                                </a>
+                            </li>
+                        }
+                    }
+                </ul>
+                @{
+                    if (contadorCategorias > 3)
+                    {
+                        <p class="moreResults">
+                            <a href="javascript: void(0);" class="ver-mas" style="display: flex;">@Html.Translate("VER_MAS")</a>
+                            <a href="javascript: void(0);" class="ver-menos" style="display: none;">@Html.Translate("VER_MENOS")</a>
+                        </p>
+                    }
+                }
+            </div>
+            @if (pDocument.Bibo_doi != "")
+            {
+                <div class="group-wrap">
+                    <div class="bloque">
+                        <div class="label">@Html.Translate("DOI")</div>
+                        <div class="value">
+                            @{
+                //foreach (var el in @pDocument.Bibo_identifier)
+                                //{
+                                //    if (el.Foaf_primaryTopic != null && el.Foaf_primaryTopic.Dc_title != null && el.Foaf_primaryTopic.Dc_title[0] != null && el.Foaf_primaryTopic.Dc_title[0] == "DOI")
+                                //    {
+                                //        <a href="https://doi.org/@el.Dc_title" target="_blank">@el.Dc_title</a>
+                                //    }
+                                //}
+                            }
+                            <a href="https://doi.org/@pDocument.Bibo_doi" target="_blank" about="@pDocument.GNOSSID" property="@pDocument.GetPropertyURI(nameof(pDocument.Bibo_doi))">@pDocument.Bibo_doi</a>
+                        </div>
+                    </div>
+                </div>
+            }
+
+            <div class="list-wrap website">
+                <div class="label">@Html.Translate("WEBS")</div>
+                <ul>
+
+                    <li>
+                        <a about="@pDocument.GNOSSID" property="@pDocument.GetPropertyURI(nameof(pDocument.Vcard_url))" target="_blank" href="@pDocument.Vcard_url">@pDocument.Vcard_url</a>
+                    </li>
+                    @{
+                        /* if (pDocument.Vcard_url.Count > 0)
+                        {
+                        foreach (var item in pDocument.Vcard_url)
+                        {
+                        string web = item;
+
+
+                        if (web.Contains(","))
+                        {
+                        foreach (var el in item.Split(","))
+                        {
+                        string webi = el;
+                        webi = el;
+                        if (webi.Contains("scopus"))
+                        webi = "SCOPUS";
+                        <li>
+                        <a about="@pDocument.GNOSSID" property="@pDocument.GetPropertyURI(nameof(pDocument.Vcard_url))" target="_blank" href="@el">@webi</a>
+                        </li>
+                        }
+                        }
+                        else
+                        {
+                        if (web.Contains("scopus"))
+                        web = "SCOPUS";
+
+                        <li>
+            <a about="@pDocument.GNOSSID" property="@pDocument.GetPropertyURI(nameof(pDocument.Vcard_url))" target="_blank" href="@item">@web</a>
+                        </li>
+                        }
+
+                        }
+
+                        }
+                        else
+                        {
+                        <li>
+                        <a>---</a>
+                        </li>
+                        }*/
+                    }
+                </ul>
+                @*<p class="moreResults">
+                    <a href="javascript: void(0);" class="ver-mas" style="display: flex;">@Html.Translate("VER_MAS")</a>
+                    <a href="javascript: void(0);" class="ver-menos" style="display: none;">@Html.Translate("VER_MENOS")</a>
+                    </p>*@
+            </div>
+        </div>
+        <div class="contenido-ficha contenido-publicacion">
+            <div class="tab-paneles-ficha">
+                <div class="tabs">
+                    <ul class="nav nav-tabs" id="navegacion-recurso" role="tablist">
+                        <li class="nav-item" role="presentation">
+                            <!-- Relacionados -->
+                            <a class="nav-link active" id="relacionados-tab" data-toggle="tab" href="#relacionados-panel" role="tab" aria-controls="relacionados-panel" aria-selected="true">
+                                <div class="bloque">
+                                    <div class="label">@Html.Translate("RELACIONADOS")</div>
+                                    <!-- <div class="data">@pDocument.Roh_reviewsNumber</div> -->
+                                </div>
+                            </a>
+                        </li>
+                        @{
+                            /*
+                            <li class="nav-item" role="presentation">
+                            <!-- Citas -->
+                            <a class="nav-link" id="citas-tab" data-toggle="tab" href="#citas-panel" role="tab" aria-controls="citas-panel" >
+                            <div class="bloque">
+                            <div class="label">@Html.Translate("CITAS")</div>
+                            <div class="data">@pDocument.Roh_citationLoadedCount</div>
+                            </div>
+                            </a>
+                            </li>
+                            */
+                        }
+                        <li class="nav-item" role="presentation">
+                            <!-- Referencias -->
+                            <a class="nav-link" id="referencias-tab" data-toggle="tab" href="#referencias-panel" role="tab" aria-controls="referencias-panel">
+                                <div class="bloque">
+                                    <div class="label">@Html.Translate("REFERENCIAS")</div>
+                                    <div class="data">@pDocument.Roh_references.Count</div>
+                                </div>
+                            </a>
+                        </li>
+                        @if (!IdentidadActual.IsGuestUser) 
+                        {
+                            <li class="nav-item" role="presentation">
+                                <!-- Referencias -->
+                                <a class="nav-link" id="annotations-tab" data-toggle="tab" href="#annotations-panel" role="tab" aria-controls="annotations-panel">
+                                    <div class="bloque">
+                                        <div class="label">@Html.Translate("MIS_NOTAS")</div>
+                                        <div class="data">0</div>
+                                    </div>
+                                </a>
+                            </li>
+                        }
+						<li class="nav-item" role="presentation" id="linked-panel-li">
+							<!-- Referencias -->
+							<a class="nav-link" id="linked-tab" data-toggle="tab" href="#linked-panel" role="tab" aria-controls="linked-panel">
+								<div class="bloque">
+									<div class="label">@Html.Translate("ROS_VINCULADOS")</div>
+									<div class="data">@pDocument.Roh_linkedCount</div>
+								</div>
+							</a>
+						</li>
+                    </ul>
+                </div>
+                <div class="tab-content" id="paneles-recurso">
+
+                    <div class="tab-pane fade show active" id="relacionados-panel" role="tabpanel" aria-labelledby="relacionados-tab">
+                        <div class="row" id="contenedorBuscadorRelacionados">
+                        </div>
+                    </div>
+
+                    @{
+                        /*
+                        <div class="tab-pane fade" id="citas-panel" role="tabpanel" aria-labelledby="citas-tab">
+                        <div class="row" id="contenedorBuscadorCitas">
+                        <!-- <div class="col col-12 col-grafo mb-5">
+                        <div class="wrapCol" id="graficaBuscadorCitas" style="width: 1224px; height: 500px;"></div>
+                        </div> -->
+                        <div class="col col-12 col-section-title font-weight-bold searcherTitle">
+                        <div class="wrapCol">
+                        <p>@Html.Translate("CITAS")</p>
+                        </div>
+                        </div>
+                        </div>
+                        </div>
+                        */
+                    }
+
+                    <div class="tab-pane fade" id="referencias-panel" role="tabpanel" aria-labelledby="referencias-tab">
+                        <div class="row">
+                            <div class="col col-12 col-contenido">
+                                <div class="wrapCol">
+                                    <div class="resource-list listView resource-list-buscador">
+                                        <div class="resource-list-wrap">
+
+                                            @foreach (var reference in pDocument.Roh_references)
+                                            {
+                                                string fecha = string.Empty;
+                                                if (reference.Dct_issued != null)
+                                                {
+                                                    fecha = reference.Dct_issued.ToString().Split('/')[2].Split(' ')[0];
+                                                }
+                                                string url = reference.Bibo_doi != "" ? "//doi.org/" + reference.Bibo_doi : "";
+                                                string urlInternalDoc = "";
+                                                string cssArticle = "";
+
+                                                if (pDocument.Roh_i_doc_references != null)
+                                                {
+                                                    Document doc = pDocument.Roh_i_doc_references.FirstOrDefault(x => x.Bibo_doi == reference.Bibo_doi);
+                                                    if (doc != null)
+                                                    {
+                                                        cssArticle = " success ";
+                                                        urlInternalDoc = doc.URL;
+                                                    }
+                                                }
+
+                                                <article class="resource @cssArticle publicacion">
+                                                    <div class="wrap">
+                                                        <div class="middle-wrap">
+                                                            <div class="title-wrap">
+                                                                <h2 class="resource-title">
+                                                                    @if (!string.IsNullOrEmpty(urlInternalDoc))
+                                                                    {
+                                                                        <a href="@urlInternalDoc" about="@reference.GNOSSID" property="@reference.GetPropertyURI(nameof(reference.Roh_title))">@reference.Roh_title</a>
+                                                                    }
+                                                                    else if (string.IsNullOrEmpty(url))
+                                                                    {
+                                                                        <span about="@reference.GNOSSID" property="@reference.GetPropertyURI(nameof(reference.Roh_title))">@reference.Roh_title</span>
+                                                                    }
+                                                                    else
+                                                                    {
+                                                                        <a href="@url" target="_blank" about="@reference.GNOSSID" property="@reference.GetPropertyURI(nameof(reference.Roh_title))">@reference.Roh_title</a>
+                                                                    }
+                                                                </h2>
+                                                            </div>
+                                                            <div class="content-wrap">
+                                                                <div class="description-wrap counted">
+
+                                                                    <h3 about="@reference.GNOSSID" property="@reference.GetPropertyURI(nameof(reference.Roh_hasPublicationVenueText))"><span about="@reference.GNOSSID" property="@reference.GetPropertyURI(nameof(reference.Dct_issued))">@fecha</span> @reference.Roh_hasPublicationVenueText</h3>
+                                                                    <div class="list-wrap authors">
+                                                                        <ul>
+                                                                            @foreach (ReferenceAuthor author in @reference.Roh_authorList)
+                                                                            {
+                                                                                <li about="@author.GNOSSID" property="@author.GetPropertyURI(nameof(author.Foaf_name))">
+                                                                                    @author.Foaf_name
+                                                                                </li>
+                                                                            }
+                                                                        </ul>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </article>
+                                            }
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    @if (!IdentidadActual.IsGuestUser) 
+                    {
+                        <div class="tab-pane fade" id="annotations-panel" role="tabpanel" aria-labelledby="annotations-tab">
+                            <div class="row">
+                                <div class="col col-12 header-listado">
+                                    <div class="h1-container">
+                                        <h2>@Html.Translate("MIS_NOTAS_PRIVADAS")
+                                            <span class="numResultados">0</span>
+                                        </h2>
+                                    </div>
+                                </div>
+                                <div class="col col-12 col-contenido">
+                                    <div class="wrapCol">
+                                        <div class="resource-list listView resource-list-buscador">
+                                            <div class="resource-list-wrap">
+                                         
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    }
+
+                    <div class="tab-pane fade" id="linked-panel" role="tabpanel" aria-labelledby="linked-tab">
+                        <!-- <div class="row">
+                            <div class="col col-12 header-listado">
+                                <div class="h1-container">
+                                    <h2>@Html.Translate("ROS_VINCULADOS")
+                                        <span class="numResultados">0</span>
+                                    </h2>
+                                </div>
+                            </div>
+                        </div> -->
+                        <div class="row" id="contenedorBuscadorResearchObjectsLinked">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@if (!IdentidadActual.IsGuestUser) 
+{
+    
+
+
+    <div id="modal-eliminar-anotacion-confirmacion" class="modal modal-top fade modal-edicion" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <p class="modal-title"><span class="material-icons">delete</span>@Html.Translate("BORRAR_ANOTACIONES")</p>
+                    <span class="material-icons cerrar" data-dismiss="modal" aria-label="Close">close</span>
+                </div>
+                <div class="modal-body">
+                    <div class="formulario-edicion">
+                        <div class="custom-form-row">
+                            <div class="form-group full-group">
+                                <label class="control-label d-block">@Html.Translate("CONFIRMACION_BORRAR_ANOTACIONES")</label>
+                                <div class="form-actions">
+                                    <a href="javascript: borrarOferta()" class="btn btn-primary uppercase">@Html.Translate("BORRAR")</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="modal-nueva-anotacion" class="modal modal-top fade modal-edicion" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <p class="modal-title"><span class="material-icons">send</span>@Html.Translate("ANOTACION")</p>
+                    <span class="material-icons cerrar" data-dismiss="modal" aria-label="Close">close</span>
+                </div>
+                <div class="modal-body">
+                    <div class="formulario-edicion">
+                        <div class="custom-form-row">
+                            <div class="form-group full-group">
+                                <label class="control-label d-block">@Html.Translate("INTRODUCE_UNA_ANOTACION")</label>
+                                <textarea class="w-100" id="areaTextoComentario"> </textarea>
+                                <div class="form-actions">
+                                    <a href="javascript: nuevaAnotacion('areaTextoComentario')" class="btn btn-primary uppercase">@Html.Translate("ENVIAR")</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="modal-editar-anotacion" class="modal modal-top fade modal-edicion" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <p class="modal-title"><span class="material-icons">send</span>@Html.Translate("ANOTACION")</p>
+                    <span class="material-icons cerrar" data-dismiss="modal" aria-label="Close">close</span>
+                </div>
+                <div class="modal-body">
+                    <div class="formulario-edicion">
+                        <div class="custom-form-row">
+                            <div class="form-group full-group">
+                                <label class="control-label d-block">@Html.Translate("INTRODUCE_UNA_ANOTACION")</label>
+                                <textarea class="w-100 textareaInput" id="areaTextoComentarioEditar"> </textarea>
+                                <div class="form-actions">
+                                    <a href="javascript:void(0)" id="btn-modal-editar-anotacion" data-dismiss="modal" class="btn btn-primary uppercase">@Html.Translate("ENVIAR")</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="modal-citar-publicacion" class="modal modal-top fade modal-edicion" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <p class="modal-title"><span class="material-icons">send</span>@Html.Translate("CITA_ESTA_PUBLICACION")</p>
+                    <span class="material-icons cerrar" data-dismiss="modal" aria-label="Close">close</span>
+                </div>
+                <div class="modal-body">
+                    <div class="formulario-edicion">
+                        <div class="custom-form-row">
+                            <div class="form-group full-group">
+                                <label class="control-label d-block">@Html.Translate("ELIGE_FORMATO_CITA")</label>
+                                <select id="idSelectorFormatoCita" class="js-select2 select2-hidden-accessible" dependency="" data-select-search="true" tabindex="-1" aria-hidden="true">
+                                    <option value="-">-</option>
+                                    <option value="APA">APA</option>
+                                    <option value="BIBTEX">BibTeX</option>
+                                    <option value="CHICAGO">Chicago</option>
+                                    <option value="CSE">CSE</option>
+                                    <option value="IEEE">IEEE</option>
+                                    <option value="MLA">MLA</option>
+                                </select>
+                                <div id="idContenedorResultadoCita" style="display: none">
+                                    <div id="idTextoCita"></div>
+                                    <div class="form-actions">
+                                        <a class="btn btn-primary" id="btnCopiarCita">@Html.Translate("COPIAR")</a>
+                                    </div>
+                                </div>
+                                <label class="control-label d-block">@Html.Translate("ELIGE_DESCARGA_CITA")</label>
+                                <select id="idSelectorDescargaCita" class="js-select2 select2-hidden-accessible" dependency="" data-select-search="true" tabindex="-1" aria-hidden="true">
+                                    <option value="-">-</option>
+                                    <option value="BIBTEX">BibTeX (.bib)</option>
+                                    <option value="REFMAN">RefMan (.ris)</option>
+                                </select>
+                                <div class="form-actions" style="display: none">
+                                    <a class="btn btn-primary" id="btnDescargarCita">@Html.Translate("DESCARGAR")</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="modal-vinvular-ro-old" class="modal modal-top modal-wide fade" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <p class="modal-title"><span class="material-icons">link</span>@Html.Translate("VINCULAR_RO")</p>
+                    <span class="material-icons cerrar" data-dismiss="modal" aria-label="Close">close</span>
+                </div>
+                <div class="modal-body">
+                    <div>
+                        <div class="row contenedorBuscadorResearchObjectsModal" id="contenedorBuscadorResearchObjectsModal">
+                            <div class="col col-12 col-section-title font-weight-bold">
+                                <div class="wrapCol">
+                                    <p></p>
+                                </div>
+                            </div>
+                            <div class="col col-12 col-section-title font-weight-bold searcherTitle">
+                                <div class="wrapCol">
+                                    <p>@Html.Translate("LISTADO_RESEARCHOBJECTS")</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="footer pb-2 w-100 mt-5 text-center">
+
+                            <a href="javascript:cargarMasRO()" class="btn btn-primary uppercase">@Html.Translate("CARGAR_MAS")</a>
+                        </div>
+                        <div class="pb-2 w-100"> </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="modal-vinvular-ro" data-backdrop="static"  class="modal modal-top fade modal-vinvular-ro" tabindex="-1" role="dialog">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content modal-content-height">
+                    <div class="modal-header">
+                        <p class="modal-title"><span class="material-icons">label</span>@Html.Translate("VILCULAR_ROS")</p>
+                        <span class="material-icons cerrar" data-dismiss="modal" aria-label="Close">close</span>
+                    </div>
+                    <div class="modal-body">
+                        <div class="formulario-edicion">
+                            <div class="custom-form-row mb-0">
+                                <div class="form-group full-group">
+                                    <label class="control-label d-block">@Html.Translate("VILCULAR_ROS")</label>
+                                    <small class="pb-2 d-inline-block">@Html.Translate("TEXTO_EXPLICATIVO_VINCULAR_ROS")</small>
+                                    <input placeholder="@Html.Translate("TECLEA_E_INTRODUCE_AUTOCOMPLETADO")" type="text" name="" id="tagsSearchModalCluster" class="form-control not-outline">
+                                    <div class="ac_results" style="position: absolute;width: 100%;display: none;">
+                                        <ul>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="list-wrap tags">
+                                <ul>
+                                </ul>
+                            </div>
+                            <!-- <div class="form-actions">
+                                <a href="javascript: void(0);" class="btn btn-primary uppercase btnclosemodal" data-dismiss="modal">@Html.Translate("GUARDAR")</a>
+                            </div> -->
+                        </div>
+                        <div class="row px-3">
+                            <div class="col col-12 col-contenido">
+                                <div class="wrapCol">
+                                    <div class="title_list">
+                                        <h2>@Html.Translate("ROS_VINCULADOS")</h2>
+                                    </div>
+                                    <div class="resource-list listView resource-list-buscador">
+                                        <div class="resource-list-wrap">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+}
+
+
+@if (!IdentidadActual.IsGuestUser)
+{
+    <script type="text/javascript">
+
+        // Constantes
+        var annIdRO = "@pDocument.GNOSSID";
+        var annIdUser = "@currentId";
+        var annRdfType = "@pDocument.RdfType";
+        var annOntology = "document";
+
+        // Variable que servirá para indicar qué anotación se va a modificar / borrar
+        let idCurrentAnnotation = null;
+
+        // Creamos el objeto de las anotaciones
+        var anotaciones = new CargarAnotaciones(annIdRO, annIdUser, annRdfType, annOntology);
+
+        /**
+         * Función que crea la notificación 
+         * param idEle, string con el id del textArea para obtener el texto introducido
+         */
+        function nuevaAnotacion(idEle) {
+
+            // Obtenemos el texto
+            let texto = document.getElementById(idEle).value
+
+            $("#modal-nueva-anotacion").modal("hide")
+
+            if (texto != "") {
+                anotaciones.newUpdateAnnotation(texto).then((data) => {
+                    document.getElementById(idEle).value = ""
+                    anotaciones.loadInRo().then((data) => {
+           
+                            // Ahora pintamos los datos si hay elementos
+                            anotaciones.printItems("annotations-tab", "annotations-panel", null, () => {
+                                // Comportamiento Ver Más / Ver Menos
+                                comportamientoVerMasVerMenos.init();
+                            })
+                        
+                    })
+                })
+            }
+        }
+
+        /**
+         * Funcion que muestra todo el texto de la descripcion de una anotacion
+         * param id, id de la anotacion
+         * param text, texto de la anotacion
+         */
+        function readMoreAnotacion(idAnnotation,text){
+            $(document.getElementById(idAnnotation)).find("div.desc p").html(text);  
+        }
+        /**
+         * Función que modifica la notificación 
+         * param idEle, string con el id del textArea para obtener el texto introducido
+         * param idCurrentAnnotation, string con el id de la anotación para modificar la misma
+         */
+        function updateAnotacion(idCurrentAnnotation, oldText) {
+
+            let modal = document.getElementById("modal-editar-anotacion")
+            let modalTextArea = modal.getElementsByClassName("textareaInput")
+            modalTextArea[0].value = oldText.replaceAll("<br />", "\n").replaceAll("&gt",">").replaceAll("&lt","<").replaceAll("&quot","\"").replaceAll("&apos","\'").replaceAll("&amp","&");
+
+            $(modal).modal("show")
+
+            // Evento para el botón de guardado
+            $(modal).find("#btn-modal-editar-anotacion").off("click").on("click", function () {
+
+                // modal.getElementsByClassName("textareaInput")
+                $(modal).modal("hide")
+                // Obtenemos el texto
+                let texto = modal.getElementsByClassName("textareaInput")[0].value
+
+                if (texto != "") {
+                    anotaciones.newUpdateAnnotation(texto, idCurrentAnnotation).then((data) => {
+                        modal.getElementsByClassName("textareaInput")[0].value = ""
+                        anotaciones.loadInRo().then((data) => {
+                            if (data.length > 0) {
+                                // Ahora pintamos los datos si hay elementos
+                                anotaciones.printItems("annotations-tab", "annotations-panel", null, () => {
+                                    // Comportamiento Ver Más / Ver Menos
+                                    comportamientoVerMasVerMenos.init();
+                                })
+                            }
+                        })
+                    })
+                }
+            });
+
+        }
+        function borrarAnotacion(idCurrentAnnotation) {
+            anotaciones.deleteAnnotation(idCurrentAnnotation).then((data) => {
+                anotaciones.loadInRo().then((data) => {
+                
+                    // Ahora pintamos los datos si hay elementos
+                    anotaciones.printItems("annotations-tab", "annotations-panel", null, () => {
+                        // Comportamiento Ver Más / Ver Menos
+                        comportamientoVerMasVerMenos.init();
+                    })
+                
+                })
+            })
+        }
+
+
+        $(function () {
+            // Obtiene las notas y las pinta
+            anotaciones.loadInRo().then((data) => {
+                    // Para que se selecione la pestaña de anotaciones si esta seleccionada
+                    var hash = location.hash.replace(/^#/, '');  // ^ means starting, meaning only match the first hash
+                    if (hash) {
+                        $('.nav-tabs a[href="#' + hash + '"]').tab('show');
+
+                    } 
+
+                    // Change hash for page-reload
+                    $('.nav-tabs a').on('shown.bs.tab', function (e) {
+                        window.location.hash = e.target.hash;
+                    })           
+                    // Ahora pintamos los datos si hay elementos
+                    anotaciones.printItems("annotations-tab", "annotations-panel", null, () => {
+                        // Comportamiento Ver Más / Ver Menos
+                        comportamientoVerMasVerMenos.init();
+                    })
+                
+            })
+        });
+
+
+    </script>
+}
+
+
+
+
+<!-- JAVASCRIPT -->
+<script type="text/javascript">
+
+    var depuracion = false;
+    const localUrlBase = "https://localhost:44321/"
+    const currentId = "@currentId"
+    const docId = "@pDocument.GNOSSID"
+
+
+    ///////////////////////////////////
+    //// Funciones para vincular ROs
+    ///////////////////////////////////
+
+    const urlSearchLinked = new URL(url_servicio_externo + "RosVinculados/SearchROs")
+    const urlLoadLinked = new URL(url_servicio_externo + "RosVinculados/LoadRosLinked")
+    const urlDel = new URL(url_servicio_externo+"RosVinculados/DeleteLinked")
+    const urlAddRo = new URL(url_servicio_externo+"RosVinculados/AddLink")
+
+
+
+    /**
+    * Clase que contiene la funcionalidad del modal de los TAGS para el Cluster
+    */
+    class ModalSearchTagsVinculados {
+        constructor() {
+            this.body = $('body')
+            this.modal = this.body.find('#modal-vinvular-ro')
+            this.inputSearch = this.modal.find('#tagsSearchModalCluster')
+            this.results = this.modal.find('.ac_results')
+            this.resultsUl = this.results.find('ul')
+            this.addedROs = []
+            this.excludedItems = []
+            this.loadedResources = []
+            this.timeWaitingForUserToType = 750; // Esperar 0.75 segundos a si el usuario ha dejado de escribir para iniciar búsqueda
+            this.tagsWrappper = this.modal.find('.resource-list-wrap')
+            // this.ignoreKeysToBuscador = [37, 38, 39, 40, 46, 8, 32, 91, 17, 18, 20, 36, 18, 27]
+            this.ignoreKeysToBuscador = [37, 38, 39, 40, 8, 32, 91, 17, 18, 20, 36, 18, 27]
+
+            // Inicializa la funcionalidad del buscador de TAGS
+            this.inputSearchEnter()
+
+
+            this.excludedItems.push(docId)
+
+            /* if (window.location.hostname == 'depuracion.net' || window.location.hostname.includes("localhost")) {
+                var urlSTAGS = new URL(url_servicio_externo + 'servicioexterno/' + uriSearchTags)
+            } */
+        }
+
+        /**
+         * Inicia la funcionalidad del modal
+         */
+        init() {
+
+            let _self = this
+
+            this.modal.modal('show')
+            this.cargarROsVinculados()
+
+            // Se ejecuta cuando el modal se cierra
+            $("#modal-vinvular-ro").on("hidden.bs.modal", function () {
+                _self.cerrarVincularRO()
+            })
+        }
+
+        /**
+         * Método para terminar de vincular los ROs
+         */
+        cerrarVincularRO() {
+            $("#modal-vinvular-ro").modal("hide")
+            MontarResultadosScroll.destroyScroll()
+            $(document.querySelector("#navegacion-recurso .active")).click()
+            // $(document.querySelector('#navegacion-recurso .active')).tab('show')
+        }
+
+
+        /**
+         * Método que carga los ROs vinculados
+         */
+        cargarROsVinculados() {
+
+            let _self = this
+
+            let arg = {};
+            arg.pIdROId = docId;
+            arg.lang = "@idiomaUsuario";
+
+            MostrarUpdateProgress();
+            $.get(urlLoadLinked.toString(), arg, function (data) {
+                if (data.length > 0) 
+                {
+                    _self.printAllLinkedROs(data)
+                    _self.addedROs = data.map(e => e.entityID)
+                    _self.loadedResources = data
+                    _self.excludedItems = data.map(e => e.entityID)
+                }
+                OcultarUpdateProgress()
+            });
+        }
+
+        /**
+         * Método que carga los ROs vinculados
+         */
+        printAllLinkedROs(data) {
+
+            let _self = this
+
+            // var currentSec = "none!!!";
+
+            data = data.sort((a, b) => {
+                if (a.roType < b.roType) {
+                    return -1
+                }
+                if (a.roType > b.roType) {
+                    return 1
+                }
+                return 0
+            })
+
+
+            let ros = data.map(ro => {
+                var $ro = $(_self.generateHtmlItem(ro))
+                _self.deleteEvent($ro, ro)
+                return $ro
+            })
+
+            // Pinta el resultado
+            // $("#linked-panel .col-contenido .resource-list-wrap").html(ros)
+            this.tagsWrappper.html(ros)
+
+            comportamientoVerMasVerMenos.init()
+
+        }
+
+        /**
+         * Método que obtiene el html a pintar de un RO
+         */
+        generateHtmlItem(ro) {
+            let htmlRes = ""
+            // if (currentSec != ro.roType) 
+            // {
+            //     currentSec = ro.roType
+            // }
+
+            if (ro.roType == "") 
+            {
+                ro.roTypeTitle = "@Html.Translate("PUBLICACION")"
+            }
+
+            let htmlMenu = ""
+
+            // Creamos el método de borrado dependiendo de si el vínculo es desde el RO o está relacionado desde otro RO
+            // let link = ""
+            // if (ro.origin) 
+            // {
+            //     link = "javascript:modalSearchTagsVinculados.deleteLink('"+ ro.entityID +"', docId)"
+            // } else {
+            //     link = "javascript:modalSearchTagsVinculados.deleteLink(docId, '"+ ro.entityID +"')"
+            // }
+            
+
+            // Generamos la url
+            let nameUrlRo = cleanStringUrlLikeGnoss(ro.title)
+            let urlResource = "@Comunidad.Url/@Html.GetText("URLSEM", "RECURSO")/" + nameUrlRo + "/" + ro.entityID.split("_")[1]
+
+
+            // Pinto "mostrar más" si la descripción contiene un texto largo
+            let showMore = ""
+            if (ro.description.trim() != "" && ro.description.length > 60) {
+                showMore = `<p class="moreResults showMore">
+                                <a href="javascript: void(0);" class="ver-mas" style="display: flex;">@Html.Translate("VER_MAS")</a>
+                                <a href="javascript: void(0);" class="ver-menos" style="display: none;">@Html.Translate("VER_MENOS")</a>
+                            </p>`
+            }
+
+            let classIcon = "visibility_off"
+            if (ro.isValidated) {
+                classIcon = "visibility"
+            }
+
+            // Genero el HTML final
+            htmlRes += `<article class="resource rolinked">
+                <div class="wrap">
+                    <div class="row pb-0">
+
+                        <div class="col">
+                            <div class="middle-wrap">
+                                <div class="title-wrap">
+                                    <h4 class="resource-title ${classIcon}">
+                                        <a href="${urlResource}" target="_blank" about="${ro.entityID}" property="http://w3id.org/roh/title">${ro.title}</a>
+                                    </h4>
+                                </div>
+                                <div class="content-wrap">
+                                    <div class="description-wrap counted">
+                                        <!-- <div><b about="${ro.entityID}" property="http://purl.org/dc/terms/issued">${ro.fecha}</b></div> -->
+                                        <h3>
+                                            <span about="${ro.entityID}" property="http://purl.org/dc/terms/issued">${ro.fecha}</span> 
+                                            <!-- ${ro.roTypeTitle} -->
+                                        </h3>
+                                        <!-- <div class="description-wrap">
+                                            <div class="desc" style="display: -webkit-box;">
+                                                <p about="${ro.entityID}" property="http://purl.org/ontology/bibo/abstract">${ro.description}</p>
+                                            </div>
+                                            ${showMore}
+                                        </div> -->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="acciones-wrap">
+                            <ul class="no-list-style">
+                                <li>
+                                    <a href="#" class="texto-gris-claro link-delete">
+                                        <span style="width:1px; height:1px; opacity: .01; display:inline-block">Eliminar</span>
+                                        <span class="material-icons-outlined">delete</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </article>`
+
+            return htmlRes
+        }
+
+
+        /**
+         * Funcionalidad para cuando se introduce un valor en el buscador
+         */
+        inputSearchEnter() {
+            let _self = this
+            this.inputSearch.off('keyup').on('keyup', function(e) {
+                let inputVal = this.value
+
+                if (inputVal.length <= 1) 
+                {
+                    _self.hiddenResults()
+                }
+                else {
+                    // Valida si el valor introducirdo en el input es 'válido'
+                    if (_self.validarKeyPulsada(e) == true) {
+                        // Limpia el 'time' para reinicializar la espera para iniciar la búsqueda de TAGS
+                        clearTimeout(_self.timer)
+                        // Espera 0.5s para realizar la búsqueda de TAGS
+                        _self.timer = setTimeout(function () {
+                            _self.hiddenResults()
+
+                            _self.searchCall(inputVal).then((data) => {
+                                // Muestra el selector 
+                                _self.results.show()
+                                if (data.length > 0) {
+                                    // Pinta los resultados
+                                    let resultHTML = data.map(e => {
+                                        return '<li class="ac_even" data-id="'+ e.entityID +'">' + e.title + '</li>'
+                                    })
+                                    _self.resultsUl.html(resultHTML.join(''))
+                                    _self.addTagClick()
+
+                                } else {
+                                    _self.mostrarPanelSinResultados()
+                                }
+                                
+                            })
+
+                        }, _self.timeWaitingForUserToType);
+                    }               
+                }
+            })
+        }
+
+        /**
+         * Oculta y borra los resultados del API
+         */
+        hiddenResults() {
+            this.resultsUl.html('')
+            this.results.hide()
+        }
+
+        /**
+         * Muestra un texto "sin resultados" cuando no hay resultados del API
+         */
+        mostrarPanelSinResultados() {
+            this.resultsUl.html('<li>Sin resultados</li>')
+        }
+
+        /**
+         * Método que genera un inicia el evento de añadir el tag (al hacer 'click') cuando se 
+         * ha seleccionado un elemento de la lista de opciones disponibles 
+         */
+        addTagClick() {
+            let _self = this
+            // Evento para el click
+            this.resultsUl.off('click').on('click', 'li', function(e) {
+                let texto = $(this).text()
+                let idItem = $(this).data('id')
+
+
+                if (texto != "Sin resultados") {
+
+                    // Añadir nuevo RO
+                    _self.addROVinculado(idItem).then(saved => {
+
+                        if (saved) {
+
+                            // Añadir el RO a las listas
+                            // Seleccionamos el objeto del RO
+                            let cro = _self.loadedResources.find(ro => {
+                                return ro.entityID == idItem
+                            })
+
+                            // Pinta el RO
+                            var item = $(_self.generateHtmlItem(cro))
+                            _self.tagsWrappper.append(item)
+                            _self.deleteEvent(item, cro)
+                        }
+                        _self.hiddenResults() // Vacía los resultados de la búsqueda
+                        _self.inputSearch.val('') // Vacía el campo de búsqueda
+                    })
+
+                }
+
+            })
+            // Delete list item  
+        }
+
+
+        /**
+         * Función para añadir los ROs vinculados y realizar la llamada ajax
+         */
+        addROVinculado(id) {
+
+            let arg = {};
+            arg.resourceRO = docId;
+            arg.pIdROId = id;
+            arg.pIdGnossUser = currentId;
+            MostrarUpdateProgress();
+            return new Promise((resolve, reject) => {
+                $.post(urlAddRo.toString(), arg, function (data) {
+                    OcultarUpdateProgress()
+                    resolve(data)
+                    // cargarROsVinculados()
+                });
+            })
+
+            // cerrarVincularRO()
+        }
+
+        /**
+         * Añade un tag al modal
+         * @@param texto, texto del tag a añadir
+         */
+        deleteEvent(item, ro) {
+            var _self = this
+
+            
+            this.addedROs.push(ro.entityID)
+            this.excludedItems.push(ro.entityID)
+
+            item.off('click').on('click', '.link-delete', function(e) {
+
+                if (ro.origin) 
+                {
+                    _self.deleteLink(ro.entityID, docId)
+                } else {
+                    _self.deleteLink(docId, ro.entityID)
+                }
+
+                let cid = ro.entityID
+                item.remove()
+                _self.addedROs = _self.addedROs.filter(id => id != cid)
+                _self.excludedItems = _self.excludedItems.filter(id => id != cid)
+            })
+        }
+
+        /**
+         * Remove all tags html
+         */
+        removeTags() {
+            this.tagsWrappper.html('')
+        }
+
+        /**
+         * Método que genera un evento para el botón "guardar" y devuelve el número de TAGS añadidas
+         * @@return promise (array) con la lista de resultados 
+         */
+        closeBtnClick() {
+            let _self = this
+            return new Promise((resolve, reject) => {
+
+                this.modal.find('.btnclosemodal').off('click').on('click', function(e) {
+                
+                    let result = new Array()
+                    _self.tagsWrappper.find('li .texto').each((i, item) => {
+                        result.push(item.innerText)
+                    })
+                    resolve(result)
+                })
+            })
+        }
+
+
+        /**
+         * Comprobará la tecla pulsada, y si no se encuentra entre las excluidas, dará lo introducido por válido devolviendo true
+         * Si se pulsa una tecla de las excluidas, devolverá false y por lo tanto el metabuscador no debería iniciarse
+         * @@param {any} event: Evento o tecla pulsada en el teclado
+         * @@return bool, devuelve si la tecla pulsada es válida o no
+         */
+        validarKeyPulsada (event) {
+            const keyPressed = this.ignoreKeysToBuscador.find(key => key == event.keyCode);
+            if (keyPressed) {
+                return false
+            }
+            return true;
+        }
+
+        /**
+         * Realiza la petición ajax (GET) para buscar los ROs sugeridos en el input
+         * @@param {string} inputVal: Texto para la búsqueda
+         * @@return promise (array) con la lista de resultados 
+         */
+        searchCall (inputVal) {
+            var _self = this
+            // Set the url parameters
+            // this.url.searchParams.set('tagInput', inputVal)
+            let args = {
+                text: inputVal,
+                pIdGnossUser: currentId,
+                listItemsRelated: _self.excludedItems
+            }
+
+            return new Promise((resolve) => {
+                $.post(urlSearchLinked.toString(), args , function (data) {
+                    _self.loadedResources = data;
+                    resolve(data.filter(itm => !_self.addedROs.includes(itm.entityID)))
+                });
+            })
+        }
+
+
+        /**
+         * Método que borra un RO vinculado
+         * @@param {string} idResource: Id del recurso sobre el que borrar
+         * @@param {string} idLink: Id del recurso a borrar 
+         */
+        deleteLink(idResource, idLink) {
+
+            var _self = this
+
+            let arg = {};
+            arg.resourceRO = idResource;
+            arg.pIdROId = idLink;
+            arg.pIdGnossUser = currentId;
+            $.post(urlDel.toString(), arg, function (data) {
+                // _self.cargarROsVinculados()
+            });
+        }
+    }
+
+    var modalSearchTagsVinculados = new ModalSearchTagsVinculados()
+
+
+    /**
+     * Función para iniciar la vinculación de ROs 
+     */
+    function startVincularRo() {
+        
+        modalSearchTagsVinculados.init()
+        return;
+    }
+
+    /**
+     * Función que cargar más ROs
+     */
+    function cargarMasRO() {
+        MostrarUpdateProgress();
+        MontarResultadosScroll.launchCallWaypoint(() => {
+            OcultarUpdateProgress()
+        })
+    }
+
+
+    function short(a, b) {
+        return a - b
+    }
+
+
+
+    ////////////////////////////////////////////////
+    //// Funciones para la ficha del documento
+    ////////////////////////////////////////////////
+
+
+    tooltipsImpactFactor();
+
+
+    // Datos cabeceras de las fichas.
+    var url = url_servicio_externo+"Hercules/GetDatosCabeceraDocumento"
+    if (depuracion) {
+        url = localUrlBase + "Hercules/GetDatosCabeceraDocumento"
+    }
+    var arg = {};
+    arg.pIdDocumento = "@pDocument.GNOSSID";
+    $.get(url, arg, function (data) {
+        $("#relacionados-tab div div.data").text(data["numRelacionados"]);
+    });
+
+
+    // Datos gráfica referencias.
+    function CargarGraficaReferencias(pIdDocumento, parametros) {
+        var url = url_servicio_externo+"Hercules/DatosGraficaReferencias"
+        if (depuracion) {
+            url = localUrlBase + "Hercules/DatosGraficaReferencias"
+        }
+        var arg = {};
+        arg.pIdDocumento = pIdDocumento;
+        arg.pParametros = parametros;
+        $('#graficaBuscadorReferencias').empty();
+        $.get(url, arg, function (data) {
+            $('#graficaBuscadorReferencias').empty();
+
+            var cy = window.cy = cytoscape({
+                // Contenedor
+                container: document.getElementById('graficaBuscadorReferencias'),
+                // Layout
+                layout: {
+                    name: 'cose',
+                    idealEdgeLength: 100,
+                    nodeOverlap: 20,
+                    refresh: 20,
+                    padding: 30,
+                    randomize: false,
+                    componentSpacing: 100,
+                    nodeRepulsion: 400000,
+                    edgeElasticity: 100,
+                    nestingFactor: 5,
+                    gravity: 80,
+                    numIter: 1000,
+                    initialTemp: 200,
+                    coolingFactor: 0.95,
+                    minTemp: 1.0
+
+                }, pan: { x: 350, y: 50 },
+                // Estilos
+                style: [{
+                    "selector": "node",
+                    "style": {
+
+                        "width": "mapData(score, 0, 25, 30, 70)",
+                        "height": "mapData(score, 0, 25, 30, 70)",
+                        "content": "data(name)",
+                        "font-size": "12px",
+                        "font-family": 'Roboto',
+                        "font-color": "#999999",
+                        "background-color": "#c2c2c2",
+
+                        "text-outline-width": "0px",
+
+                        "overlay-padding": "6px",
+                        "z-index": "10"
+                    }
+                }, {
+                    "selector": "edge",
+                    "style": {
+                        "curve-style": "haystack",
+                        "haystack-radius": "0.5",
+                        "opacity": "0.4",
+                        "line-color": "#E1E1E1",
+                        "width": "mapData(weight, 0, 10, 0, 10)",
+                        "overlay-padding": "1px",
+                        "font-family": 'Arial Black',
+                        "font-color": 'black'
+                    }
+                }],
+                // Datos
+                elements: data
+            });
+            cy.zoomingEnabled(false);
+
+            var array = []
+            var nodos = cy.nodes()
+
+            //Quita el nombre de la publicación.
+            array.push(nodos[0]._private.data.name);
+            cy.nodes()[0]._private.data.name = "";
+
+            cy.nodes()[0].style({
+                'border-width': '2px',
+                'border-color': 'black',
+                'shape': 'circle'
+            });
+
+            var f = cy.nodes().length
+
+            for (i = 1; i < cy.nodes().length; i++) { //starts loop
+                array.push(nodos[i]._private.data.name);
+                //cy.nodes()[i]._private.data.name="";
+                cy.nodes()[i].style({
+                    'background-color': 'white',
+                    'background-image': 'https://cdn.iconscout.com/icon/free/png-256/user-1648810-1401302.png',
+                    'background-fit': 'cover',
+                    'border-width': '2px',
+                    'border-color': 'rgb(4,184,209)',
+                    'shape': 'circle'
+                })
+            };
+
+            cy.on('mouseover', 'edges', function (event) {
+                $('#numRelaciones').text('(' + event.target.id().split("~")[2] + ')');
+            });
+
+            cy.on('click', 'node', function (e) {
+                e = e.target;
+                var indice = cy.nodes().indexOf(e)
+                if (e._private.data.name === "") {
+                    e._private.data.name = array[indice]
+                    //nodo proyect.
+                    if (indice === 0) {
+                        e.style('border-color', 'rgb(12,121,212)')
+                    }
+                    else {
+                        e.style('border-color', 'rgb(4,184,209)')
+                    }
+                }
+                else {
+                    e._private.data.name = ""
+                    if (indice == 0) e.style('border-color', 'black');
+                    else e.style('border-color', 'grey');
+                }
+            })
+        });
+    }
+
+
+    // Datos gráfica citas.
+    //function CargarGraficaCitas(pIdDocumento, parametros) {
+    //    var url = url_servicio_externo+"Hercules/DatosGraficaCitas"
+    //    if (depuracion) {
+    //        url = localUrlBase + "Hercules/DatosGraficaCitas"
+    //    }
+    //    var arg = {};
+    //    arg.pIdDocumento = pIdDocumento;
+    //    arg.pParametros = parametros;
+    //    $('#graficaBuscadorCitas').empty();
+    //    $.get(url, arg, function (data) {
+    //        $('#graficaBuscadorCitas').empty();
+
+    //        var cy = window.cy = cytoscape({
+    //            // Contenedor
+    //            container: document.getElementById('graficaBuscadorCitas'),
+    //            // Layout
+    //            layout: {
+    //                name: 'cose',
+    //                idealEdgeLength: 100,
+    //                nodeOverlap: 20,
+    //                refresh: 20,
+    //                padding: 30,
+    //                randomize: false,
+    //                componentSpacing: 100,
+    //                nodeRepulsion: 400000,
+    //                edgeElasticity: 100,
+    //                nestingFactor: 5,
+    //                gravity: 80,
+    //                numIter: 1000,
+    //                initialTemp: 200,
+    //                coolingFactor: 0.95,
+    //                minTemp: 1.0
+
+    //            }, pan: { x: 350, y: 50 },
+    //            // Estilos
+    //            style: [{
+    //                "selector": "node",
+    //                "style": {
+
+    //                    "width": "mapData(score, 0, 25, 30, 70)",
+    //                    "height": "mapData(score, 0, 25, 30, 70)",
+    //                    "content": "data(name)",
+    //                    "font-size": "12px",
+    //                    "font-family": 'Roboto',
+    //                    "font-color": "#999999",
+    //                    "background-color": "#c2c2c2",
+
+    //                    "text-outline-width": "0px",
+
+    //                    "overlay-padding": "6px",
+    //                    "z-index": "10"
+    //                }
+    //            }, {
+    //                "selector": "edge",
+    //                "style": {
+    //                    "curve-style": "haystack",
+    //                    "haystack-radius": "0.5",
+    //                    "opacity": "0.4",
+    //                    "line-color": "#E1E1E1",
+    //                    "width": "mapData(weight, 0, 10, 0, 10)",
+    //                    "overlay-padding": "1px",
+    //                    "font-family": 'Arial Black',
+    //                    "font-color": 'black'
+    //                }
+    //            }],
+    //            // Datos
+    //            elements: data
+    //        });
+    //        cy.zoomingEnabled(false);
+
+    //        var array = []
+    //        var nodos = cy.nodes()
+
+    //        //Quita el nombre de la publicación.
+    //        array.push(nodos[0]._private.data.name);
+    //        cy.nodes()[0]._private.data.name = "";
+
+    //        cy.nodes()[0].style({
+    //            'border-width': '2px',
+    //            'border-color': 'black',
+    //            'shape': 'circle'
+    //        });
+
+    //        var f = cy.nodes().length
+
+    //        for (i = 1; i < cy.nodes().length; i++) { //starts loop
+    //            array.push(nodos[i]._private.data.name);
+    //            //cy.nodes()[i]._private.data.name="";
+    //            cy.nodes()[i].style({
+    //                'background-color': 'white',
+    //                'background-image': 'https://cdn.iconscout.com/icon/free/png-256/user-1648810-1401302.png',
+    //                'background-fit': 'cover',
+    //                'border-width': '2px',
+    //                'border-color': 'rgb(4,184,209)',
+    //                'shape': 'circle'
+    //            })
+    //        };
+
+    //        cy.on('mouseover', 'edges', function (event) {
+    //            $('#numRelaciones').text('(' + event.target.id().split("~")[2] + ')');
+    //        });
+
+    //        cy.on('click', 'node', function (e) {
+    //            e = e.target;
+    //            var indice = cy.nodes().indexOf(e)
+    //            if (e._private.data.name === "") {
+    //                e._private.data.name = array[indice]
+    //                //nodo proyect.
+    //                if (indice === 0) {
+    //                    e.style('border-color', 'rgb(12,121,212)')
+    //                }
+    //                else {
+    //                    e.style('border-color', 'rgb(4,184,209)')
+    //                }
+    //            }
+    //            else {
+    //                e._private.data.name = ""
+    //                if (indice == 0) e.style('border-color', 'black');
+    //                else e.style('border-color', 'grey');
+    //            }
+    //        })
+    //    });
+    //}
+
+
+    // Comportamiento página proyecto
+    var similitaryDocs=null;
+    var comportamientoPaginaDocumento = {
+        tabActive: null,
+        init: function () {
+            this.config();
+            $('#relacionados-tab').click();
+            return;
+        },
+        config: function () {
+            var that = this;
+
+            // $('#relacionados-tab').unbind().click(function (e) {
+            $('#relacionados-tab').unbind().on('click', function (e) {
+                e.preventDefault();
+                that.tabActive = "relacionados";
+
+                var urlGetSimilarity = url_servicio_externo+'Similarity/GetSimilaritiesDocument?pIdDocument='+$('h1').attr('about');
+                $.get(urlGetSimilarity, null, function(data) {
+                    similitaryDocs=data;
+                    var filterSearch="searchRelacionadosDocumentoIn=<x>@@@@@@1000";
+                    var num=1000;
+                    for (let i = 0; i < data.length; i++) {
+                        filterSearch+="@@@@@@@@<http://gnoss/"+data[i].key.toUpperCase()+">@@@@@@"+num;
+                        num--;
+                    }
+
+
+                    buscadorPersonalizado.init("@Html.Translate("RELACIONADOS")", "#contenedorBuscadorRelacionados", filterSearch, null, "rdf:type=document", "@Comunidad.Url", "@Comunidad.Key.ToString()",null, function() {
+                        $('#panNumResultados').hide();
+                    });
+
+                });
+
+
+            });
+
+            // $('#relacionados-tab').unbind().click(function (e) {
+            $('#linked-tab').unbind().on('click', function (e) {
+                e.preventDefault();
+                that.tabActive = "linked";
+
+                buscadorPersonalizado.orders=null;
+                // Realmente no funciona correctamente, he tenido que crear un botón para cargar más.
+                // Inicia
+                buscadorPersonalizado.init("@Html.Translate("LISTADO_RESEARCHOBJECTS_DOCUMENTOS_VINCULADOS")", "#contenedorBuscadorResearchObjectsLinked", "linkedROs=http://gnoss/@pDocument.GNOSSID.Split('_')[1].ToUpper()", "dct:issued", "rdf:type=researchobject|rdf:type=document", "@Comunidad.Url", "@Comunidad.Key.ToString()");
+
+
+            });
+            return;
+        }
+    };
+
+    function CompletadaCargaRecursosSimilitud() {
+        if(similitaryDocs!=null)
+        {
+            for (let i = 0; i < similitaryDocs.length; i++) {
+                var article=$('#resource_'+similitaryDocs[i].key.toLowerCase());
+                if(article.length)
+                {
+                    article.find('div.list-wrap.tags ul li a span').each(function() {
+                        var item = $(this);
+                        var itemText = item.text();
+                        if(similitaryDocs[i].value[itemText]!=undefined)
+                        {
+                            $(this).attr('style','color:var(--c-primario');
+                        }
+                    });
+                }
+            }
+        }
+
+    }
+
+
+    $(function () {
+        comportamientoPaginaDocumento.init();
+    });
+
+    // Acciones a llevar a cabo en el filtrado.
+    function accionFiltrado() {
+        if(comportamientoPaginaDocumento.tabActive == "referencias")
+        {
+            //var parametros = ObtenerHash2();
+            //CargarGraficaReferencias("@pDocument.GNOSSID.Split('_')[1].ToUpper()", parametros);
+        } else if (comportamientoPaginaDocumento.tabActive == "citas")
+        {
+            //var parametros = ObtenerHash2();
+            //CargarGraficaCitas("@pDocument.GNOSSID.Split('_')[1].ToUpper()", parametros);
+        }
+    }
+
+
+    // Ejecuta cuando la página está cargada
+    $( document ).ready(function() {
+
+        // cargarROsVinculados()
+        // showLinkedROsSearch()
+
+    });
+
+
+
+
+
+</script>
+
+@functions {
+    public class RDFPropertyAttribute : Attribute
+    {
+        public RDFPropertyAttribute(string pRDFA)
+        {
+            mRDFA = pRDFA;
+        }
+        protected string mRDFA;
+        public string RDFProperty
+        {
+            get { return mRDFA; }
+        }
+    }
+
+    [AttributeUsage(AttributeTargets.All, AllowMultiple = true)]
+    public class LABELAttribute : Attribute
+    {
+        private GnossOCBase.LanguageEnum IdiomaDefecto = GnossOCBase.LanguageEnum.es;
+        private GnossOCBase.LanguageEnum midioma;
+        private string mlabel;
+        public LABELAttribute(GnossOCBase.LanguageEnum idioma, string label)
+        {
+            mlabel = label;
+            midioma = idioma;
+        }
+        public string LABEL(GnossOCBase.LanguageEnum pLang)
+        {
+            if (midioma.Equals(pLang))
+            {
+                return mlabel;
+            }
+            return "";
+        }
+    }
+
+    public class GnossOCBase
+    {
+        public enum LanguageEnum
+        {
+            es,
+            en,
+            pt,
+            ca,
+            eu,
+            gl,
+            fr,
+            de,
+            it,
+        }
+        internal List<string> prefList = new List<string>();
+        internal string mGNOSSID;
+        internal string mURL;
+        internal Guid resourceID;
+        internal Guid articleID;
+        private static List<string> NoEnIdiomas = new List<string> { "N�o", "Non", "Ez", "Nein", "No" };
+        public List<string> tagList = new List<string>();
+        public GnossOCBase()
+        {
+            prefList.Add("xmlns:foaf=\"http://xmlns.com/foaf/0.1/\"");
+            prefList.Add("xmlns:vivo=\"http://vivoweb.org/ontology/core#\"");
+            prefList.Add("xmlns:rdfs=\"http://www.w3.org/2000/01/rdf-schema#\"");
+            prefList.Add("xmlns:owl=\"http://www.w3.org/2002/07/owl#\"");
+            prefList.Add("xmlns:bibo=\"http://purl.org/ontology/bibo/\"");
+            prefList.Add("xmlns:roh=\"http://w3id.org/roh/\"");
+            prefList.Add("xmlns:dct=\"http://purl.org/dc/terms/\"");
+            prefList.Add("xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\"");
+            prefList.Add("xmlns:xsd=\"http://www.w3.org/2001/XMLSchema#\"");
+            prefList.Add("xmlns:obo=\"http://purl.obolibrary.org/obo/\"");
+            prefList.Add("xmlns:vcard=\"https://www.w3.org/2006/vcard/ns#\"");
+            prefList.Add("xmlns:dc=\"http://purl.org/dc/elements/1.1/\"");
+            prefList.Add("xmlns:gn=\"http://www.geonames.org/ontology#\"");
+
+            this.resourceID = Guid.NewGuid();
+            this.articleID = Guid.NewGuid();
+        }
+
+        public string GNOSSID
+        {
+            get { return mGNOSSID; }
+            set
+            {
+                this.mGNOSSID = value;
+                var GnossIDSplit = this.mGNOSSID.Split('_');
+                Guid nuevoResource = Guid.Parse(GnossIDSplit[GnossIDSplit.Count() - 2]);
+                Guid nuevoArticle = Guid.Parse(GnossIDSplit.Last());
+                if (!this.ResourceID.Equals(nuevoResource))
+                {
+                    this.resourceID = nuevoResource;
+                }
+                if (!this.ArticleID.Equals(nuevoArticle))
+                {
+                    this.articleID = nuevoArticle;
+                }
+            }
+        }
+        public string URL
+        {
+            get { return mURL; }
+        }
+
+        public Guid ResourceID
+        {
+            get { return resourceID; }
+            set
+            {
+                this.resourceID = value;
+                string primeraParte = this.mGNOSSID.Substring(0, this.mGNOSSID.LastIndexOf('/') + 1);
+                string antiguoGuid = this.mGNOSSID.Substring(this.mGNOSSID.LastIndexOf('/') + 1, this.mGNOSSID.LastIndexOf('_'));
+                string ultimaParte = this.mGNOSSID.Substring(this.mGNOSSID.LastIndexOf('_') + 1);
+                if (!antiguoGuid.Equals(this.resourceID.ToString()))
+                {
+                    this.mGNOSSID = $"{primeraParte}{this.resourceID.ToString()}{ultimaParte}";
+                }
+            }
+        }
+
+        public Guid ArticleID
+        {
+            get { return articleID; }
+            set
+            {
+                this.articleID = value;
+                string primeraParte = this.mGNOSSID.Substring(0, this.mGNOSSID.LastIndexOf('_') + 1);
+                string antiguoGuid = this.mGNOSSID.Substring(this.mGNOSSID.LastIndexOf('_') + 1);
+                if (!antiguoGuid.Equals(this.articleID.ToString()))
+                {
+                    this.mGNOSSID = $"{primeraParte}{this.articleID.ToString()}";
+                }
+            }
+        }
+
+        public static string GetPropertyValueSemCms(SemanticPropertyModel pProperty)
+        {
+            if (pProperty != null && pProperty.PropertyValues.Count > 0)
+            {
+                return pProperty.PropertyValues[0].Value;
+            }
+            return "";
+        }
+
+        public static int? GetNumberIntPropertyValueSemCms(SemanticPropertyModel pProperty)
+        {
+            if (pProperty != null && pProperty.PropertyValues.Count > 0 && !string.IsNullOrEmpty(pProperty.PropertyValues[0].Value))
+            {
+                return int.Parse(pProperty.PropertyValues[0].Value);
+            }
+            return 0;
+        }
+
+        public static int? GetNumberIntPropertyMultipleValueSemCms(SemanticPropertyModel.PropertyValue pProperty)
+        {
+            if (pProperty != null && !string.IsNullOrEmpty(pProperty.Value))
+            {
+                return int.Parse(pProperty.Value);
+            }
+            return 0;
+        }
+
+        public static float? GetNumberFloatPropertyValueSemCms(SemanticPropertyModel pProperty)
+        {
+            if (pProperty != null && pProperty.PropertyValues.Count > 0 && !string.IsNullOrEmpty(pProperty.PropertyValues[0].Value))
+            {
+                return float.Parse(pProperty.PropertyValues[0].Value.Replace('.', ','));
+            }
+            return 0;
+        }
+
+        public static DateTime? GetDateValuePropertySemCms(SemanticPropertyModel pProperty)
+        {
+            string stringDate = GetPropertyValueSemCms(pProperty);
+            if (!string.IsNullOrEmpty(stringDate))
+            {
+                int year = 0;
+                int month = 0;
+                int day = 0;
+                if (stringDate.Contains('/'))
+                {
+                    day = int.Parse(stringDate.Split('/')[0]);
+                    month = int.Parse(stringDate.Split('/')[1]);
+                    year = int.Parse(stringDate.Split('/')[2].Split(' ')[0]);
+                }
+                else
+                {
+                    year = int.Parse(stringDate.Substring(0, 4));
+                    month = int.Parse(stringDate.Substring(4, 2));
+                    day = int.Parse(stringDate.Substring(6, 2));
+                }
+                if (stringDate.Length == 14)
+                {
+                    if (month == 0 || day == 0)
+                    {
+                        return new DateTime(year);
+                    }
+                    else
+                    {
+                        int hour = int.Parse(stringDate.Substring(8, 2));
+                        int minute = int.Parse(stringDate.Substring(10, 2));
+                        int second = int.Parse(stringDate.Substring(12, 2));
+                        return new DateTime(year, month, day, hour, minute, second);
+                    }
+                }
+                else
+                {
+                    return new DateTime(year, month, day);
+                }
+            }
+            return null;
+        }
+
+        public static bool GetBooleanPropertyValueSemCms(SemanticPropertyModel pProperty)
+        {
+            bool resultado = false;
+            if (pProperty != null && pProperty.PropertyValues.Count > 0 && !string.IsNullOrEmpty(pProperty.PropertyValues[0].Value))
+            {
+                if (!bool.TryParse(pProperty.PropertyValues[0].Value, out resultado))
+                {
+                    resultado = !NoEnIdiomas.Contains(pProperty.PropertyValues[0].Value);
+                }
+            }
+            return resultado;
+        }
+
+        internal virtual void GetProperties()
+        {
+        }
+
+        internal virtual void GetEntities()
+        {
+        }
+
+        internal string GetExtension(string file)
+        {
+            return file.Substring(file.LastIndexOf('.'));
+        }
+
+
+        public string GetPropertyURI(string nombrePropiedad)
+        {
+            Type type = this.GetType();
+            PropertyInfo mInfo = type.GetProperty(nombrePropiedad);
+            if (mInfo != null)
+            {
+                Attribute attr = Attribute.GetCustomAttribute(mInfo, typeof(RDFPropertyAttribute));
+                if (attr != null)
+                {
+                    return ((RDFPropertyAttribute)attr).RDFProperty;
+                }
+            }
+            return "";
+        }
+
+
+
+        public string GetLabel(string nombrePropiedad, LanguageEnum pLang)
+        {
+            Type type = this.GetType();
+            PropertyInfo mInfo = type.GetProperty(nombrePropiedad);
+
+            if (mInfo != null)
+            {
+                Attribute[] attr = Attribute.GetCustomAttributes(mInfo, typeof(LABELAttribute));
+                {
+                    foreach (Attribute atributo in attr)
+                    {
+                        if (atributo != null)
+                        {
+                            if (!((LABELAttribute)atributo).LABEL(pLang).Equals(""))
+                            {
+                                return ((LABELAttribute)atributo).LABEL(pLang);
+                            }
+                        }
+                    }
+                }
+            }
+
+            return "";
+        }
+
+        public int GetID() { return 0; }
+    }
+
+    public class Document : GnossOCBase
+    {
+
+        public Document() : base() { }
+
+        public Document(SemanticResourceModel pSemCmsModel, LanguageEnum idiomaUsuario) : base()
+        {
+            this.mGNOSSID = pSemCmsModel.RootEntities[0].Entity.Uri;
+            //this.Roh_suggestedKnowledgeArea = new List<CategoryPath>();
+            //SemanticPropertyModel propRoh_suggestedKnowledgeArea = pSemCmsModel.GetPropertyByPath("http://w3id.org/roh/suggestedKnowledgeArea");
+            //if (propRoh_suggestedKnowledgeArea != null && propRoh_suggestedKnowledgeArea.PropertyValues.Count > 0)
+            //{
+            //    foreach (SemanticPropertyModel.PropertyValue propValue in propRoh_suggestedKnowledgeArea.PropertyValues)
+            //    {
+            //        if (propValue.RelatedEntity != null)
+            //        {
+            //            CategoryPath roh_suggestedKnowledgeArea = new CategoryPath(propValue.RelatedEntity, idiomaUsuario);
+            //            this.Roh_suggestedKnowledgeArea.Add(roh_suggestedKnowledgeArea);
+            //        }
+            //    }
+            //}
+            //SemanticPropertyModel propVcard_hasCountryName = pSemCmsModel.GetPropertyByPath("https://www.w3.org/2006/vcard/ns#hasCountryName");
+            //if (propVcard_hasCountryName != null && propVcard_hasCountryName.PropertyValues.Count > 0)
+            //{
+            //    this.Vcard_hasCountryName = new Feature(propVcard_hasCountryName.PropertyValues[0].RelatedEntity, idiomaUsuario);
+            //}
+            //SemanticPropertyModel propRoh_presentedAtOrganizer = pSemCmsModel.GetPropertyByPath("http://w3id.org/roh/presentedAtOrganizer");
+            //if (propRoh_presentedAtOrganizer != null && propRoh_presentedAtOrganizer.PropertyValues.Count > 0)
+            //{
+            //    this.Roh_presentedAtOrganizer = new Organization(propRoh_presentedAtOrganizer.PropertyValues[0].RelatedEntity, idiomaUsuario);
+            //}
+            //SemanticPropertyModel propRoh_supportType = pSemCmsModel.GetPropertyByPath("http://w3id.org/roh/supportType");
+            //if (propRoh_supportType != null && propRoh_supportType.PropertyValues.Count > 0)
+            //{
+            //    this.Roh_supportType = new DocumentFormat(propRoh_supportType.PropertyValues[0].RelatedEntity, idiomaUsuario);
+            //}
+            //SemanticPropertyModel propRoh_presentedAtOrganizerType = pSemCmsModel.GetPropertyByPath("http://w3id.org/roh/presentedAtOrganizerType");
+            //if (propRoh_presentedAtOrganizerType != null && propRoh_presentedAtOrganizerType.PropertyValues.Count > 0)
+            //{
+            //    this.Roh_presentedAtOrganizerType = new OrganizationType(propRoh_presentedAtOrganizerType.PropertyValues[0].RelatedEntity, idiomaUsuario);
+            //}
+            //SemanticPropertyModel propRoh_presentedAtType = pSemCmsModel.GetPropertyByPath("http://w3id.org/roh/presentedAtType");
+            //if (propRoh_presentedAtType != null && propRoh_presentedAtType.PropertyValues.Count > 0)
+            //{
+            //    this.Roh_presentedAtType = new EventType(propRoh_presentedAtType.PropertyValues[0].RelatedEntity, idiomaUsuario);
+            //}
+            //SemanticPropertyModel propRoh_presentedAtOrganizerHasCountryName = pSemCmsModel.GetPropertyByPath("http://w3id.org/roh/presentedAtOrganizerHasCountryName");
+            //if (propRoh_presentedAtOrganizerHasCountryName != null && propRoh_presentedAtOrganizerHasCountryName.PropertyValues.Count > 0)
+            //{
+            //    this.Roh_presentedAtOrganizerHasCountryName = new Feature(propRoh_presentedAtOrganizerHasCountryName.PropertyValues[0].RelatedEntity, idiomaUsuario);
+            //}
+            //this.Vcard_hasLanguage = new List<Language>();
+            //SemanticPropertyModel propVcard_hasLanguage = pSemCmsModel.GetPropertyByPath("https://www.w3.org/2006/vcard/ns#hasLanguage");
+            //if (propVcard_hasLanguage != null && propVcard_hasLanguage.PropertyValues.Count > 0)
+            //{
+            //    foreach (SemanticPropertyModel.PropertyValue propValue in propVcard_hasLanguage.PropertyValues)
+            //    {
+            //        if (propValue.RelatedEntity != null)
+            //        {
+            //            Language vcard_hasLanguage = new Language(propValue.RelatedEntity, idiomaUsuario);
+            //            this.Vcard_hasLanguage.Add(vcard_hasLanguage);
+            //        }
+            //    }
+            //}
+            this.Bibo_authorList = new List<BFO_0000023>();
+            SemanticPropertyModel propBibo_authorList = pSemCmsModel.GetPropertyByPath("http://purl.org/ontology/bibo/authorList");
+            if (propBibo_authorList != null && propBibo_authorList.PropertyValues.Count > 0)
+            {
+                foreach (SemanticPropertyModel.PropertyValue propValue in propBibo_authorList.PropertyValues)
+                {
+                    if (propValue.RelatedEntity != null)
+                    {
+                        BFO_0000023 bibo_authorList = new BFO_0000023(propValue.RelatedEntity, idiomaUsuario);
+                        this.Bibo_authorList.Add(bibo_authorList);
+                    }
+                }
+            }
+            //SemanticPropertyModel propRoh_project = pSemCmsModel.GetPropertyByPath("http://w3id.org/roh/project");
+            //if (propRoh_project != null && propRoh_project.PropertyValues.Count > 0)
+            //{
+            //    this.Roh_project = new Project(propRoh_project.PropertyValues[0].RelatedEntity, idiomaUsuario);
+            //}
+            //SemanticPropertyModel propRoh_presentedAtGeographicFocus = pSemCmsModel.GetPropertyByPath("http://w3id.org/roh/presentedAtGeographicFocus");
+            //if (propRoh_presentedAtGeographicFocus != null && propRoh_presentedAtGeographicFocus.PropertyValues.Count > 0)
+            //{
+            //    this.Roh_presentedAtGeographicFocus = new GeographicRegion(propRoh_presentedAtGeographicFocus.PropertyValues[0].RelatedEntity, idiomaUsuario);
+            //}
+            //this.Roh_isProducedBy = new List<Group>();
+            //SemanticPropertyModel propRoh_isProducedBy = pSemCmsModel.GetPropertyByPath("http://w3id.org/roh/isProducedBy");
+            //if (propRoh_isProducedBy != null && propRoh_isProducedBy.PropertyValues.Count > 0)
+            //{
+            //    foreach (SemanticPropertyModel.PropertyValue propValue in propRoh_isProducedBy.PropertyValues)
+            //    {
+            //        if (propValue.RelatedEntity != null)
+            //        {
+            //            Group roh_isProducedBy = new Group(propValue.RelatedEntity, idiomaUsuario);
+            //            this.Roh_isProducedBy.Add(roh_isProducedBy);
+            //        }
+            //    }
+            //}
+            //SemanticPropertyModel propRoh_presentedAtOrganizerHasRegion = pSemCmsModel.GetPropertyByPath("http://w3id.org/roh/presentedAtOrganizerHasRegion");
+            //if (propRoh_presentedAtOrganizerHasRegion != null && propRoh_presentedAtOrganizerHasRegion.PropertyValues.Count > 0)
+            //{
+            //    this.Roh_presentedAtOrganizerHasRegion = new Feature(propRoh_presentedAtOrganizerHasRegion.PropertyValues[0].RelatedEntity, idiomaUsuario);
+            //}
+            //this.Roh_externalKnowledgeArea = new List<CategoryPath>();
+            //SemanticPropertyModel propRoh_externalKnowledgeArea = pSemCmsModel.GetPropertyByPath("http://w3id.org/roh/externalKnowledgeArea");
+            //if (propRoh_externalKnowledgeArea != null && propRoh_externalKnowledgeArea.PropertyValues.Count > 0)
+            //{
+            //    foreach (SemanticPropertyModel.PropertyValue propValue in propRoh_externalKnowledgeArea.PropertyValues)
+            //    {
+            //        if (propValue.RelatedEntity != null)
+            //        {
+            //            CategoryPath roh_externalKnowledgeArea = new CategoryPath(propValue.RelatedEntity, idiomaUsuario);
+            //            this.Roh_externalKnowledgeArea.Add(roh_externalKnowledgeArea);
+            //        }
+            //    }
+            //}
+            //this.Roh_userKnowledgeArea = new List<CategoryPath>();
+            //SemanticPropertyModel propRoh_userKnowledgeArea = pSemCmsModel.GetPropertyByPath("http://w3id.org/roh/userKnowledgeArea");
+            //if (propRoh_userKnowledgeArea != null && propRoh_userKnowledgeArea.PropertyValues.Count > 0)
+            //{
+            //    foreach (SemanticPropertyModel.PropertyValue propValue in propRoh_userKnowledgeArea.PropertyValues)
+            //    {
+            //        if (propValue.RelatedEntity != null)
+            //        {
+            //            CategoryPath roh_userKnowledgeArea = new CategoryPath(propValue.RelatedEntity, idiomaUsuario);
+            //            this.Roh_userKnowledgeArea.Add(roh_userKnowledgeArea);
+            //        }
+            //    }
+            //}
+            this.Roh_references = new List<Reference>();
+            SemanticPropertyModel propRoh_references = pSemCmsModel.GetPropertyByPath("http://w3id.org/roh/references");
+            if (propRoh_references != null && propRoh_references.PropertyValues.Count > 0)
+            {
+                foreach (SemanticPropertyModel.PropertyValue propValue in propRoh_references.PropertyValues)
+                {
+                    if (propValue.RelatedEntity != null)
+                    {
+                        Reference roh_references = new Reference(propValue.RelatedEntity, idiomaUsuario);
+                        this.Roh_references.Add(roh_references);
+                    }
+                }
+            }
+            //SemanticPropertyModel propDc_type = pSemCmsModel.GetPropertyByPath("http://purl.org/dc/elements/1.1/type");
+            //if (propDc_type != null && propDc_type.PropertyValues.Count > 0)
+            //{
+            //    this.Dc_type = new PublicationType(propDc_type.PropertyValues[0].RelatedEntity, idiomaUsuario);
+            //}
+            //SemanticPropertyModel propRoh_presentedAtHasCountryName = pSemCmsModel.GetPropertyByPath("http://w3id.org/roh/presentedAtHasCountryName");
+            //if (propRoh_presentedAtHasCountryName != null && propRoh_presentedAtHasCountryName.PropertyValues.Count > 0)
+            //{
+            //    this.Roh_presentedAtHasCountryName = new Feature(propRoh_presentedAtHasCountryName.PropertyValues[0].RelatedEntity, idiomaUsuario);
+            //}
+            //SemanticPropertyModel propRoh_presentedAtSeminarType = pSemCmsModel.GetPropertyByPath("http://w3id.org/roh/presentedAtSeminarType");
+            //if (propRoh_presentedAtSeminarType != null && propRoh_presentedAtSeminarType.PropertyValues.Count > 0)
+            //{
+            //    this.Roh_presentedAtSeminarType = new SeminarEventType(propRoh_presentedAtSeminarType.PropertyValues[0].RelatedEntity, idiomaUsuario);
+            //}
+            //this.Bibo_identifier = new List<fDocument>();
+            //SemanticPropertyModel propBibo_identifier = pSemCmsModel.GetPropertyByPath("http://purl.org/ontology/bibo/identifier");
+            //if (propBibo_identifier != null && propBibo_identifier.PropertyValues.Count > 0)
+            //{
+            //    foreach (SemanticPropertyModel.PropertyValue propValue in propBibo_identifier.PropertyValues)
+            //    {
+            //        if (propValue.RelatedEntity != null)
+            //        {
+            //            fDocument bibo_identifier = new fDocument(propValue.RelatedEntity, idiomaUsuario);
+            //            this.Bibo_identifier.Add(bibo_identifier);
+            //        }
+            //    }
+            //}
+            //this.Roh_i_doc_references = new List<Document>();
+            //SemanticPropertyModel propRoh_i_doc_references = pSemCmsModel.GetPropertyByPath("http://w3id.org/roh/i_doc_references");
+            //if (propRoh_i_doc_references != null && propRoh_i_doc_references.PropertyValues.Count > 0)
+            //{
+            //    foreach (SemanticPropertyModel.PropertyValue propValue in propRoh_i_doc_references.PropertyValues)
+            //    {
+            //        if (propValue.RelatedEntity != null)
+            //        {
+            //            Document roh_i_doc_references = new Document(propValue.RelatedEntity, idiomaUsuario);
+            //            this.Roh_i_doc_references.Add(roh_i_doc_references);
+            //        }
+            //    }
+            //}
+            //SemanticPropertyModel propVcard_hasRegion = pSemCmsModel.GetPropertyByPath("https://www.w3.org/2006/vcard/ns#hasRegion");
+            //if (propVcard_hasRegion != null && propVcard_hasRegion.PropertyValues.Count > 0)
+            //{
+            //    this.Vcard_hasRegion = new Feature(propVcard_hasRegion.PropertyValues[0].RelatedEntity, idiomaUsuario);
+            //}
+            this.Roh_hasMetric = new List<PublicationMetric>();
+            SemanticPropertyModel propRoh_hasMetric = pSemCmsModel.GetPropertyByPath("http://w3id.org/roh/hasMetric");
+            if (propRoh_hasMetric != null && propRoh_hasMetric.PropertyValues.Count > 0)
+            {
+                foreach (SemanticPropertyModel.PropertyValue propValue in propRoh_hasMetric.PropertyValues)
+                {
+                    if (propValue.RelatedEntity != null)
+                    {
+                        PublicationMetric roh_hasMetric = new PublicationMetric(propValue.RelatedEntity, idiomaUsuario);
+                        this.Roh_hasMetric.Add(roh_hasMetric);
+                    }
+                }
+            }
+            this.Roh_hasKnowledgeArea = new List<CategoryPath>();
+            SemanticPropertyModel propRoh_hasKnowledgeArea = pSemCmsModel.GetPropertyByPath("http://w3id.org/roh/hasKnowledgeArea");
+            if (propRoh_hasKnowledgeArea != null && propRoh_hasKnowledgeArea.PropertyValues.Count > 0)
+            {
+                foreach (SemanticPropertyModel.PropertyValue propValue in propRoh_hasKnowledgeArea.PropertyValues)
+                {
+                    if (propValue.RelatedEntity != null)
+                    {
+                        CategoryPath roh_hasKnowledgeArea = new CategoryPath(propValue.RelatedEntity, idiomaUsuario);
+                        this.Roh_hasKnowledgeArea.Add(roh_hasKnowledgeArea);
+                    }
+                }
+            }
+            //SemanticPropertyModel propRoh_presentedAtHasRegion = pSemCmsModel.GetPropertyByPath("http://w3id.org/roh/presentedAtHasRegion");
+            //if (propRoh_presentedAtHasRegion != null && propRoh_presentedAtHasRegion.PropertyValues.Count > 0)
+            //{
+            //    this.Roh_presentedAtHasRegion = new Feature(propRoh_presentedAtHasRegion.PropertyValues[0].RelatedEntity, idiomaUsuario);
+            //}
+            SemanticPropertyModel propVivo_hasPublicationVenue = pSemCmsModel.GetPropertyByPath("http://vivoweb.org/ontology/core#hasPublicationVenue");
+            if (propVivo_hasPublicationVenue != null && propVivo_hasPublicationVenue.PropertyValues.Count > 0)
+            {
+                this.Vivo_hasPublicationVenue = new MainDocument(propVivo_hasPublicationVenue.PropertyValues[0].RelatedEntity, idiomaUsuario);
+            }
+            this.Roh_hasPublicationVenueJournalText = GetPropertyValueSemCms(pSemCmsModel.GetPropertyByPath("http://w3id.org/roh/hasPublicationVenueJournalText"));
+            //this.Roh_enrichedKnowledgeArea = new List<CategoryPath>();
+            //SemanticPropertyModel propRoh_enrichedKnowledgeArea = pSemCmsModel.GetPropertyByPath("http://w3id.org/roh/enrichedKnowledgeArea");
+            //if (propRoh_enrichedKnowledgeArea != null && propRoh_enrichedKnowledgeArea.PropertyValues.Count > 0)
+            //{
+            //    foreach (SemanticPropertyModel.PropertyValue propValue in propRoh_enrichedKnowledgeArea.PropertyValues)
+            //    {
+            //        if (propValue.RelatedEntity != null)
+            //        {
+            //            CategoryPath roh_enrichedKnowledgeArea = new CategoryPath(propValue.RelatedEntity, idiomaUsuario);
+            //            this.Roh_enrichedKnowledgeArea.Add(roh_enrichedKnowledgeArea);
+            //        }
+            //    }
+            //}
+            this.Roh_impactIndexInYear = GetNumberFloatPropertyValueSemCms(pSemCmsModel.GetPropertyByPath("http://w3id.org/roh/impactIndexInYear"));
+            this.Roh_isbn = GetPropertyValueSemCms(pSemCmsModel.GetPropertyByPath("http://w3id.org/roh/isbn"));
+            this.Roh_presentedAtLocality = GetPropertyValueSemCms(pSemCmsModel.GetPropertyByPath("http://w3id.org/roh/presentedAtLocality"));
+            this.Roh_presentedAtGeographicFocusOther = GetPropertyValueSemCms(pSemCmsModel.GetPropertyByPath("http://w3id.org/roh/presentedAtGeographicFocusOther"));
+            this.Roh_presentedAtSeminarTypeOther = GetPropertyValueSemCms(pSemCmsModel.GetPropertyByPath("http://w3id.org/roh/presentedAtSeminarTypeOther"));
+            this.Roh_presentedAtEnd = GetDateValuePropertySemCms(pSemCmsModel.GetPropertyByPath("http://w3id.org/roh/presentedAtEnd"));
+            this.Roh_presentedAtStart = GetDateValuePropertySemCms(pSemCmsModel.GetPropertyByPath("http://w3id.org/roh/presentedAtStart"));
+            this.Bibo_abstract = GetPropertyValueSemCms(pSemCmsModel.GetPropertyByPath("http://purl.org/ontology/bibo/abstract"));
+            this.Roh_presentedAtOrganizerTypeOther = GetPropertyValueSemCms(pSemCmsModel.GetPropertyByPath("http://w3id.org/roh/presentedAtOrganizerTypeOther"));
+            this.Roh_wosCitationCount = GetNumberIntPropertyValueSemCms(pSemCmsModel.GetPropertyByPath("http://w3id.org/roh/wosCitationCount"));
+            this.Roh_presentedAtWithExternalAdmissionsCommittee = GetBooleanPropertyValueSemCms(pSemCmsModel.GetPropertyByPath("http://w3id.org/roh/presentedAtWithExternalAdmissionsCommittee"));
+            this.Bibo_issue = GetPropertyValueSemCms(pSemCmsModel.GetPropertyByPath("http://purl.org/ontology/bibo/issue"));
+            this.Dct_issued = GetDateValuePropertySemCms(pSemCmsModel.GetPropertyByPath("http://purl.org/dc/terms/issued"));
+            this.Roh_typeOthers = GetPropertyValueSemCms(pSemCmsModel.GetPropertyByPath("http://w3id.org/roh/typeOthers"));
+            this.Roh_crisIdentifier = GetPropertyValueSemCms(pSemCmsModel.GetPropertyByPath("http://w3id.org/roh/crisIdentifier"));
+            this.Roh_linkedCount = GetNumberIntPropertyValueSemCms(pSemCmsModel.GetPropertyByPath("http://w3id.org/roh/linkedCount"));
+            this.Vcard_url = GetPropertyValueSemCms(pSemCmsModel.GetPropertyByPath("https://www.w3.org/2006/vcard/ns#url"));
+            SemanticPropertyModel propRoh_userKeywords = pSemCmsModel.GetPropertyByPath("http://w3id.org/roh/userKeywords");
+            this.Roh_userKeywords = new List<string>();
+            if (propRoh_userKeywords != null && propRoh_userKeywords.PropertyValues.Count > 0)
+            {
+                foreach (SemanticPropertyModel.PropertyValue propValue in propRoh_userKeywords.PropertyValues)
+                {
+                    this.Roh_userKeywords.Add(propValue.Value);
+                }
+            }
+            this.Roh_scopusCitationCount = GetNumberIntPropertyValueSemCms(pSemCmsModel.GetPropertyByPath("http://w3id.org/roh/scopusCitationCount"));
+            this.Bibo_publisher = GetPropertyValueSemCms(pSemCmsModel.GetPropertyByPath("http://purl.org/ontology/bibo/publisher"));
+            this.Roh_legalDeposit = GetPropertyValueSemCms(pSemCmsModel.GetPropertyByPath("http://w3id.org/roh/legalDeposit"));
+            this.Roh_hasFile = GetPropertyValueSemCms(pSemCmsModel.GetPropertyByPath("http://w3id.org/roh/hasFile"));
+            this.Roh_publicationTitle = GetPropertyValueSemCms(pSemCmsModel.GetPropertyByPath("http://w3id.org/roh/publicationTitle"));
+            this.Vcard_locality = GetPropertyValueSemCms(pSemCmsModel.GetPropertyByPath("https://www.w3.org/2006/vcard/ns#locality"));
+            this.Roh_reviewsNumber = GetNumberIntPropertyValueSemCms(pSemCmsModel.GetPropertyByPath("http://w3id.org/roh/reviewsNumber"));
+            SemanticPropertyModel propRoh_externalKeywords = pSemCmsModel.GetPropertyByPath("http://w3id.org/roh/externalKeywords");
+            this.Roh_externalKeywords = new List<string>();
+            if (propRoh_externalKeywords != null && propRoh_externalKeywords.PropertyValues.Count > 0)
+            {
+                foreach (SemanticPropertyModel.PropertyValue propValue in propRoh_externalKeywords.PropertyValues)
+                {
+                    this.Roh_externalKeywords.Add(propValue.Value);
+                }
+            }
+            this.Bibo_presentedAt = GetPropertyValueSemCms(pSemCmsModel.GetPropertyByPath("http://purl.org/ontology/bibo/presentedAt"));
+            this.Roh_presentedAtTypeOther = GetPropertyValueSemCms(pSemCmsModel.GetPropertyByPath("http://w3id.org/roh/presentedAtTypeOther"));
+            this.Roh_inrecsCitationCount = GetNumberIntPropertyValueSemCms(pSemCmsModel.GetPropertyByPath("http://w3id.org/roh/inrecsCitationCount"));
+            this.Bibo_pmid = GetPropertyValueSemCms(pSemCmsModel.GetPropertyByPath("http://purl.org/ontology/bibo/pmid"));
+            this.Vivo_freeTextKeyword = new List<KeyWord>();
+            SemanticPropertyModel propVivo_freeTextKeyword = pSemCmsModel.GetPropertyByPath("http://vivoweb.org/ontology/core#freeTextKeyword");
+            if (propVivo_freeTextKeyword != null && propVivo_freeTextKeyword.PropertyValues.Count > 0)
+            {
+                foreach (SemanticPropertyModel.PropertyValue propValue in propVivo_freeTextKeyword.PropertyValues)
+                {
+                    if (propValue.RelatedEntity != null)
+                    {
+                        KeyWord vivo_freeTextKeyword = new KeyWord(propValue.RelatedEntity, idiomaUsuario);
+                        this.Vivo_freeTextKeyword.Add(vivo_freeTextKeyword);
+                    }
+                }
+            }
+            this.Bibo_handle = GetPropertyValueSemCms(pSemCmsModel.GetPropertyByPath("http://purl.org/ontology/bibo/handle"));
+            this.Roh_hasPublicationVenueText = GetPropertyValueSemCms(pSemCmsModel.GetPropertyByPath("http://w3id.org/roh/hasPublicationVenueText"));
+            this.Roh_presentedAtOrganizerTitle = GetPropertyValueSemCms(pSemCmsModel.GetPropertyByPath("http://w3id.org/roh/presentedAtOrganizerTitle"));
+            this.Bibo_doi = GetPropertyValueSemCms(pSemCmsModel.GetPropertyByPath("http://purl.org/ontology/bibo/doi"));
+            SemanticPropertyModel propRoh_suggestedKeywords = pSemCmsModel.GetPropertyByPath("http://w3id.org/roh/suggestedKeywords");
+            this.Roh_suggestedKeywords = new List<string>();
+            if (propRoh_suggestedKeywords != null && propRoh_suggestedKeywords.PropertyValues.Count > 0)
+            {
+                foreach (SemanticPropertyModel.PropertyValue propValue in propRoh_suggestedKeywords.PropertyValues)
+                {
+                    this.Roh_suggestedKeywords.Add(propValue.Value);
+                }
+            }
+            this.Bibo_volume = GetPropertyValueSemCms(pSemCmsModel.GetPropertyByPath("http://purl.org/ontology/bibo/volume"));
+            SemanticPropertyModel propRoh_enrichedKeywords = pSemCmsModel.GetPropertyByPath("http://w3id.org/roh/enrichedKeywords");
+            this.Roh_enrichedKeywords = new List<string>();
+            if (propRoh_enrichedKeywords != null && propRoh_enrichedKeywords.PropertyValues.Count > 0)
+            {
+                foreach (SemanticPropertyModel.PropertyValue propValue in propRoh_enrichedKeywords.PropertyValues)
+                {
+                    this.Roh_enrichedKeywords.Add(propValue.Value);
+                }
+            }
+            this.Roh_quartile = GetNumberIntPropertyValueSemCms(pSemCmsModel.GetPropertyByPath("http://w3id.org/roh/quartile"));
+            this.Bibo_issn = GetPropertyValueSemCms(pSemCmsModel.GetPropertyByPath("http://purl.org/ontology/bibo/issn"));
+            this.Bibo_pageStart = GetPropertyValueSemCms(pSemCmsModel.GetPropertyByPath("http://purl.org/ontology/bibo/pageStart"));
+            this.Roh_congressProceedingsPublication = GetBooleanPropertyValueSemCms(pSemCmsModel.GetPropertyByPath("http://w3id.org/roh/congressProceedingsPublication"));
+            this.Roh_presentedAtOrganizerLocality = GetPropertyValueSemCms(pSemCmsModel.GetPropertyByPath("http://w3id.org/roh/presentedAtOrganizerLocality"));
+            this.Bibo_pageEnd = GetPropertyValueSemCms(pSemCmsModel.GetPropertyByPath("http://purl.org/ontology/bibo/pageEnd"));
+            this.Roh_collection = GetPropertyValueSemCms(pSemCmsModel.GetPropertyByPath("http://w3id.org/roh/collection"));
+            SemanticPropertyModel propRoh_scientificActivityDocument = pSemCmsModel.GetPropertyByPath("http://w3id.org/roh/scientificActivityDocument");
+            if (propRoh_scientificActivityDocument != null && propRoh_scientificActivityDocument.PropertyValues.Count > 0)
+            {
+                this.Roh_scientificActivityDocument = new ScientificActivityDocument(propRoh_scientificActivityDocument.PropertyValues[0].RelatedEntity, idiomaUsuario);
+            }
+            this.Roh_isValidated = GetBooleanPropertyValueSemCms(pSemCmsModel.GetPropertyByPath("http://w3id.org/roh/isValidated"));
+            this.Roh_citationCount = GetNumberIntPropertyValueSemCms(pSemCmsModel.GetPropertyByPath("http://w3id.org/roh/citationCount")).Value;
+            this.Roh_title = GetPropertyValueSemCms(pSemCmsModel.GetPropertyByPath("http://w3id.org/roh/title"));
+            this.Roh_impactIndex = new List<ImpactIndex>();
+            SemanticPropertyModel propRoh_impactIndex = pSemCmsModel.GetPropertyByPath("http://w3id.org/roh/impactIndex");
+            if (propRoh_impactIndex != null && propRoh_impactIndex.PropertyValues.Count > 0)
+            {
+                foreach (SemanticPropertyModel.PropertyValue propValue in propRoh_impactIndex.PropertyValues)
+                {
+                    if (propValue.RelatedEntity != null)
+                    {
+                        ImpactIndex roh_impactIndex = new ImpactIndex(propValue.RelatedEntity, idiomaUsuario);
+                        this.Roh_impactIndex.Add(roh_impactIndex);
+                    }
+                }
+            }
+        }
+
+
+        public virtual string RdfType { get { return "http://purl.org/ontology/bibo/Document"; } }
+        public virtual string RdfsLabel { get { return "http://purl.org/ontology/bibo/Document"; } }
+        //[RDFProperty("http://w3id.org/roh/suggestedKnowledgeArea")]
+        //public List<CategoryPath> Roh_suggestedKnowledgeArea { get; set; }
+
+        //[LABEL(LanguageEnum.es, "https://www.w3.org/2006/vcard/ns#hasCountryName")]
+        //[RDFProperty("https://www.w3.org/2006/vcard/ns#hasCountryName")]
+        //public Feature Vcard_hasCountryName { get; set; }
+        //public string IdVcard_hasCountryName { get; set; }
+
+        //[RDFProperty("http://w3id.org/roh/presentedAtOrganizer")]
+        //public Organization Roh_presentedAtOrganizer { get; set; }
+        //public string IdRoh_presentedAtOrganizer { get; set; }
+
+        //[LABEL(LanguageEnum.es, "http://w3id.org/roh/supportType")]
+        //[RDFProperty("http://w3id.org/roh/supportType")]
+        //public DocumentFormat Roh_supportType { get; set; }
+        //public string IdRoh_supportType { get; set; }
+
+        //[RDFProperty("http://w3id.org/roh/presentedAtOrganizerType")]
+        //public OrganizationType Roh_presentedAtOrganizerType { get; set; }
+        //public string IdRoh_presentedAtOrganizerType { get; set; }
+
+        //[RDFProperty("http://w3id.org/roh/presentedAtType")]
+        //public EventType Roh_presentedAtType { get; set; }
+        //public string IdRoh_presentedAtType { get; set; }
+
+        //[RDFProperty("http://w3id.org/roh/presentedAtOrganizerHasCountryName")]
+        //public Feature Roh_presentedAtOrganizerHasCountryName { get; set; }
+        //public string IdRoh_presentedAtOrganizerHasCountryName { get; set; }
+
+        //[LABEL(LanguageEnum.es, "https://www.w3.org/2006/vcard/ns#hasLanguage")]
+        //[RDFProperty("https://www.w3.org/2006/vcard/ns#hasLanguage")]
+        //public List<Language> Vcard_hasLanguage { get; set; }
+        //public List<string> IdsVcard_hasLanguage { get; set; }
+
+        [RDFProperty("http://purl.org/ontology/bibo/authorList")]
+        public List<BFO_0000023> Bibo_authorList { get; set; }
+
+        //[LABEL(LanguageEnum.es, "http://w3id.org/roh/project")]
+        //[RDFProperty("http://w3id.org/roh/project")]
+        //public Project Roh_project { get; set; }
+        //public string IdRoh_project { get; set; }
+
+        //[RDFProperty("http://w3id.org/roh/presentedAtGeographicFocus")]
+        //public GeographicRegion Roh_presentedAtGeographicFocus { get; set; }
+        //public string IdRoh_presentedAtGeographicFocus { get; set; }
+
+        //[LABEL(LanguageEnum.es, "http://w3id.org/roh/isProducedBy")]
+        //[RDFProperty("http://w3id.org/roh/isProducedBy")]
+        //public List<Group> Roh_isProducedBy { get; set; }
+        //public List<string> IdsRoh_isProducedBy { get; set; }
+
+        //[RDFProperty("http://w3id.org/roh/presentedAtOrganizerHasRegion")]
+        //public Feature Roh_presentedAtOrganizerHasRegion { get; set; }
+        //public string IdRoh_presentedAtOrganizerHasRegion { get; set; }
+
+        //[RDFProperty("http://w3id.org/roh/externalKnowledgeArea")]
+        //public List<CategoryPath> Roh_externalKnowledgeArea { get; set; }
+
+        //[RDFProperty("http://w3id.org/roh/userKnowledgeArea")]
+        //public List<CategoryPath> Roh_userKnowledgeArea { get; set; }
+
+        [RDFProperty("http://w3id.org/roh/references")]
+        public List<Reference> Roh_references { get; set; }
+
+        //[LABEL(LanguageEnum.es, "http://purl.org/dc/elements/1.1/type")]
+        //[RDFProperty("http://purl.org/dc/elements/1.1/type")]
+        //public PublicationType Dc_type { get; set; }
+        //public string IdDc_type { get; set; }
+
+        //[RDFProperty("http://w3id.org/roh/presentedAtHasCountryName")]
+        //public Feature Roh_presentedAtHasCountryName { get; set; }
+        //public string IdRoh_presentedAtHasCountryName { get; set; }
+
+        //[RDFProperty("http://w3id.org/roh/presentedAtSeminarType")]
+        //public SeminarEventType Roh_presentedAtSeminarType { get; set; }
+        //public string IdRoh_presentedAtSeminarType { get; set; }
+
+        //[RDFProperty("http://purl.org/ontology/bibo/identifier")]
+        //public List<fDocument> Bibo_identifier { get; set; }
+
+        [LABEL(LanguageEnum.es, "http://w3id.org/roh/i_doc_references")]
+        [RDFProperty("http://w3id.org/roh/i_doc_references")]
+        public List<Document> Roh_i_doc_references { get; set; }
+        public List<string> IdsRoh_i_doc_references { get; set; }
+
+        //[LABEL(LanguageEnum.es, "https://www.w3.org/2006/vcard/ns#hasRegion")]
+        //[RDFProperty("https://www.w3.org/2006/vcard/ns#hasRegion")]
+        //public Feature Vcard_hasRegion { get; set; }
+        //public string IdVcard_hasRegion { get; set; }
+
+        [RDFProperty("http://w3id.org/roh/hasMetric")]
+        public List<PublicationMetric> Roh_hasMetric { get; set; }
+
+        [RDFProperty("http://w3id.org/roh/hasKnowledgeArea")]
+        public List<CategoryPath> Roh_hasKnowledgeArea { get; set; }
+
+        //[RDFProperty("http://w3id.org/roh/presentedAtHasRegion")]
+        //public Feature Roh_presentedAtHasRegion { get; set; }
+        //public string IdRoh_presentedAtHasRegion { get; set; }
+
+        [LABEL(LanguageEnum.es, "http://vivoweb.org/ontology/core#hasPublicationVenue")]
+        [RDFProperty("http://vivoweb.org/ontology/core#hasPublicationVenue")]
+        public MainDocument Vivo_hasPublicationVenue { get; set; }
+        public string IdVivo_hasPublicationVenue { get; set; }
+
+        [RDFProperty("http://w3id.org/roh/hasPublicationVenueJournalText")]
+        public string Roh_hasPublicationVenueJournalText { get; set; }
+
+        //[RDFProperty("http://w3id.org/roh/enrichedKnowledgeArea")]
+        //public List<CategoryPath> Roh_enrichedKnowledgeArea { get; set; }
+
+        [RDFProperty("http://w3id.org/roh/impactIndexInYear")]
+        public float? Roh_impactIndexInYear { get; set; }
+
+        [RDFProperty("http://w3id.org/roh/isbn")]
+        public string Roh_isbn { get; set; }
+
+        [RDFProperty("http://w3id.org/roh/presentedAtLocality")]
+        public string Roh_presentedAtLocality { get; set; }
+
+        [RDFProperty("http://w3id.org/roh/presentedAtGeographicFocusOther")]
+        public string Roh_presentedAtGeographicFocusOther { get; set; }
+
+        [RDFProperty("http://w3id.org/roh/presentedAtSeminarTypeOther")]
+        public string Roh_presentedAtSeminarTypeOther { get; set; }
+
+        [RDFProperty("http://w3id.org/roh/presentedAtEnd")]
+        public DateTime? Roh_presentedAtEnd { get; set; }
+
+        [RDFProperty("http://w3id.org/roh/presentedAtStart")]
+        public DateTime? Roh_presentedAtStart { get; set; }
+
+        [RDFProperty("http://purl.org/ontology/bibo/abstract")]
+        public string Bibo_abstract { get; set; }
+
+        [RDFProperty("http://w3id.org/roh/presentedAtOrganizerTypeOther")]
+        public string Roh_presentedAtOrganizerTypeOther { get; set; }
+
+        [RDFProperty("http://w3id.org/roh/wosCitationCount")]
+        public int? Roh_wosCitationCount { get; set; }
+
+        [RDFProperty("http://w3id.org/roh/presentedAtWithExternalAdmissionsCommittee")]
+        public bool Roh_presentedAtWithExternalAdmissionsCommittee { get; set; }
+
+        [RDFProperty("http://purl.org/ontology/bibo/issue")]
+        public string Bibo_issue { get; set; }
+
+        [RDFProperty("http://purl.org/dc/terms/issued")]
+        public DateTime? Dct_issued { get; set; }
+
+        [RDFProperty("http://w3id.org/roh/typeOthers")]
+        public string Roh_typeOthers { get; set; }
+
+        [RDFProperty("http://w3id.org/roh/crisIdentifier")]
+        public string Roh_crisIdentifier { get; set; }
+
+        [RDFProperty("http://w3id.org/roh/linkedCount")]
+        public int? Roh_linkedCount { get; set; }
+
+        [RDFProperty("https://www.w3.org/2006/vcard/ns#url")]
+        public string Vcard_url { get; set; }
+
+        [RDFProperty("http://w3id.org/roh/userKeywords")]
+        public List<string> Roh_userKeywords { get; set; }
+
+        [RDFProperty("http://w3id.org/roh/scopusCitationCount")]
+        public int? Roh_scopusCitationCount { get; set; }
+
+        [RDFProperty("http://purl.org/ontology/bibo/publisher")]
+        public string Bibo_publisher { get; set; }
+
+        [RDFProperty("http://w3id.org/roh/legalDeposit")]
+        public string Roh_legalDeposit { get; set; }
+
+        [RDFProperty("http://w3id.org/roh/hasFile")]
+        public string Roh_hasFile { get; set; }
+
+        [RDFProperty("http://w3id.org/roh/publicationTitle")]
+        public string Roh_publicationTitle { get; set; }
+
+        [RDFProperty("https://www.w3.org/2006/vcard/ns#locality")]
+        public string Vcard_locality { get; set; }
+
+        [RDFProperty("http://w3id.org/roh/reviewsNumber")]
+        public int? Roh_reviewsNumber { get; set; }
+
+        [RDFProperty("http://w3id.org/roh/externalKeywords")]
+        public List<string> Roh_externalKeywords { get; set; }
+
+        [RDFProperty("http://purl.org/ontology/bibo/presentedAt")]
+        public string Bibo_presentedAt { get; set; }
+
+        [RDFProperty("http://w3id.org/roh/presentedAtTypeOther")]
+        public string Roh_presentedAtTypeOther { get; set; }
+
+        [RDFProperty("http://w3id.org/roh/inrecsCitationCount")]
+        public int? Roh_inrecsCitationCount { get; set; }
+
+        [RDFProperty("http://purl.org/ontology/bibo/pmid")]
+        public string Bibo_pmid { get; set; }
+
+        [RDFProperty("http://vivoweb.org/ontology/core#freeTextKeyword")]
+        public List<KeyWord> Vivo_freeTextKeyword { get; set; }
+
+        [RDFProperty("http://purl.org/ontology/bibo/handle")]
+        public string Bibo_handle { get; set; }
+
+        [RDFProperty("http://w3id.org/roh/hasPublicationVenueText")]
+        public string Roh_hasPublicationVenueText { get; set; }
+
+        [RDFProperty("http://w3id.org/roh/presentedAtOrganizerTitle")]
+        public string Roh_presentedAtOrganizerTitle { get; set; }
+
+        [RDFProperty("http://purl.org/ontology/bibo/doi")]
+        public string Bibo_doi { get; set; }
+
+        [RDFProperty("http://w3id.org/roh/suggestedKeywords")]
+        public List<string> Roh_suggestedKeywords { get; set; }
+
+        [RDFProperty("http://purl.org/ontology/bibo/volume")]
+        public string Bibo_volume { get; set; }
+
+        [RDFProperty("http://w3id.org/roh/enrichedKeywords")]
+        public List<string> Roh_enrichedKeywords { get; set; }
+
+        [RDFProperty("http://w3id.org/roh/quartile")]
+        public int? Roh_quartile { get; set; }
+
+        [RDFProperty("http://purl.org/ontology/bibo/issn")]
+        public string Bibo_issn { get; set; }
+
+        [RDFProperty("http://purl.org/ontology/bibo/pageStart")]
+        public string Bibo_pageStart { get; set; }
+
+        [RDFProperty("http://w3id.org/roh/congressProceedingsPublication")]
+        public bool Roh_congressProceedingsPublication { get; set; }
+
+        [RDFProperty("http://w3id.org/roh/presentedAtOrganizerLocality")]
+        public string Roh_presentedAtOrganizerLocality { get; set; }
+
+        [RDFProperty("http://purl.org/ontology/bibo/pageEnd")]
+        public string Bibo_pageEnd { get; set; }
+
+        [RDFProperty("http://w3id.org/roh/collection")]
+        public string Roh_collection { get; set; }
+
+        [LABEL(LanguageEnum.es, "http://w3id.org/roh/scientificActivityDocument")]
+        [RDFProperty("http://w3id.org/roh/scientificActivityDocument")]
+        public ScientificActivityDocument Roh_scientificActivityDocument { get; set; }
+        public string IdRoh_scientificActivityDocument { get; set; }
+
+        [RDFProperty("http://w3id.org/roh/isValidated")]
+        public bool Roh_isValidated { get; set; }
+
+        [RDFProperty("http://w3id.org/roh/citationCount")]
+        public int Roh_citationCount { get; set; }
+
+        [RDFProperty("http://w3id.org/roh/title")]
+        public string Roh_title { get; set; }
+
+        [RDFProperty("http://w3id.org/roh/impactIndex")]
+        public List<ImpactIndex> Roh_impactIndex { get; set; }
+    }
+	
+	public class ScientificActivityDocument  : GnossOCBase
+    {
+
+        public ScientificActivityDocument () : base() { }
+
+        public ScientificActivityDocument (SemanticEntityModel pSemCmsModel, LanguageEnum idiomaUsuario) : base()
+        {
+            this.mGNOSSID = pSemCmsModel.Entity.Uri;
+			this.mURL = pSemCmsModel.Properties.FirstOrDefault(p => p.PropertyValues.Any(prop => prop.DownloadUrl != null))?.FirstPropertyValue.DownloadUrl;
+			this.Dc_title = new Dictionary<LanguageEnum,string>();
+			this.Dc_title.Add(idiomaUsuario , GetPropertyValueSemCms(pSemCmsModel.GetPropertyByPath("http://purl.org/dc/elements/1.1/title")));
+			
+			this.Dc_identifier = GetPropertyValueSemCms(pSemCmsModel.GetPropertyByPath("http://purl.org/dc/elements/1.1/identifier"));
+			this.Bibo_abstract = new Dictionary<LanguageEnum,string>();
+			this.Bibo_abstract.Add(idiomaUsuario , GetPropertyValueSemCms(pSemCmsModel.GetPropertyByPath("http://purl.org/ontology/bibo/abstract")));
+
+        }
+
+        public virtual string RdfType { get { return "http://w3id.org/roh/ScientificActivityDocument"; } }
+		public virtual string RdfsLabel { get { return "http://w3id.org/roh/ScientificActivityDocument"; } }
+		[LABEL(LanguageEnum.es,"http://purl.org/dc/elements/1.1/title")]
+		[RDFProperty("http://purl.org/dc/elements/1.1/title")]
+		public  Dictionary<LanguageEnum,string> Dc_title { get; set;}
+
+		[LABEL(LanguageEnum.es,"http://purl.org/dc/elements/1.1/identifier")]
+		[RDFProperty("http://purl.org/dc/elements/1.1/identifier")]
+		public  string Dc_identifier { get; set;}
+
+		[LABEL(LanguageEnum.es,"http://purl.org/ontology/bibo/abstract")]
+		[RDFProperty("http://purl.org/ontology/bibo/abstract")]
+		public  Dictionary<LanguageEnum,string> Bibo_abstract { get; set;}
+
+    }
+	
+
+    public class PublicationMetric : GnossOCBase
+    {
+
+        public PublicationMetric() : base() { }
+
+        public PublicationMetric(SemanticEntityModel pSemCmsModel, LanguageEnum idiomaUsuario) : base()
+        {
+            this.mGNOSSID = pSemCmsModel.Entity.Uri;
+            this.mURL = pSemCmsModel.Properties.FirstOrDefault(p => p.PropertyValues.Any(prop => prop.DownloadUrl != null))?.FirstPropertyValue.DownloadUrl;
+            this.Roh_metricName = GetPropertyValueSemCms(pSemCmsModel.GetPropertyByPath("http://w3id.org/roh/metricName"));
+            this.Roh_citationCount = GetNumberIntPropertyValueSemCms(pSemCmsModel.GetPropertyByPath("http://w3id.org/roh/citationCount")).Value;
+        }
+
+        public virtual string RdfType { get { return "http://w3id.org/roh/PublicationMetric"; } }
+        public virtual string RdfsLabel { get { return "http://w3id.org/roh/PublicationMetric"; } }
+
+        [RDFProperty("http://w3id.org/roh/metricName")]
+        public string Roh_metricName { get; set; }
+
+        [RDFProperty("http://w3id.org/roh/citationCount")]
+        public int Roh_citationCount { get; set; }
+    }
+
+    public class BFO_0000023 : GnossOCBase
+    {
+
+        public BFO_0000023() : base() { }
+
+        public BFO_0000023(SemanticEntityModel pSemCmsModel, LanguageEnum idiomaUsuario) : base()
+        {
+            this.mGNOSSID = pSemCmsModel.Entity.Uri;
+            this.mURL = pSemCmsModel.Properties.FirstOrDefault(p => p.PropertyValues.Any(prop => prop.DownloadUrl != null))?.FirstPropertyValue.DownloadUrl;
+            this.Foaf_nick = GetPropertyValueSemCms(pSemCmsModel.GetPropertyByPath("http://xmlns.com/foaf/0.1/nick"));
+            SemanticPropertyModel propRdf_member = pSemCmsModel.GetPropertyByPath("http://www.w3.org/1999/02/22-rdf-syntax-ns#member");
+            if (propRdf_member != null && propRdf_member.PropertyValues.Count > 0)
+            {
+                this.Rdf_member = new Person(propRdf_member.PropertyValues[0].RelatedEntity, idiomaUsuario);
+            }
+            this.Rdf_comment = GetNumberIntPropertyValueSemCms(pSemCmsModel.GetPropertyByPath("http://www.w3.org/1999/02/22-rdf-syntax-ns#comment")).Value;
+        }
+
+        public virtual string RdfType { get { return "http://purl.obolibrary.org/obo/BFO_0000023"; } }
+        public virtual string RdfsLabel { get { return "http://purl.obolibrary.org/obo/BFO_0000023"; } }
+
+        [RDFProperty("http://xmlns.com/foaf/0.1/nick")]
+        public string Foaf_nick { get; set; }
+
+        [LABEL(LanguageEnum.es, "http://www.w3.org/1999/02/22-rdf-syntax-ns#member")]
+        [RDFProperty("http://www.w3.org/1999/02/22-rdf-syntax-ns#member")]
+        public Person Rdf_member { get; set; }
+        public string IdRdf_member { get; set; }
+
+        [RDFProperty("http://www.w3.org/1999/02/22-rdf-syntax-ns#comment")]
+        public int Rdf_comment { get; set; }
+    }
+
+
+    public class Person : GnossOCBase
+    {
+
+        public Person() : base() { }
+
+        public Person(SemanticEntityModel pSemCmsModel, LanguageEnum idiomaUsuario) : base()
+        {
+            this.mGNOSSID = pSemCmsModel.Entity.Uri;
+            this.mURL = pSemCmsModel.Properties.FirstOrDefault(p => p.PropertyValues.Any(prop => prop.DownloadUrl != null))?.FirstPropertyValue.DownloadUrl;
+            SemanticPropertyModel propRoh_hasRole = pSemCmsModel.GetPropertyByPath("http://w3id.org/roh/hasRole");
+            if (propRoh_hasRole != null && propRoh_hasRole.PropertyValues.Count > 0)
+            {
+                this.Roh_hasRole = new Organization(propRoh_hasRole.PropertyValues[0].RelatedEntity, idiomaUsuario);
+            }
+            this.Foaf_firstName = GetPropertyValueSemCms(pSemCmsModel.GetPropertyByPath("http://xmlns.com/foaf/0.1/firstName"));
+            this.Foaf_name = GetPropertyValueSemCms(pSemCmsModel.GetPropertyByPath("http://xmlns.com/foaf/0.1/name"));
+            this.Foaf_lastName = GetPropertyValueSemCms(pSemCmsModel.GetPropertyByPath("http://xmlns.com/foaf/0.1/lastName"));
+            this.Roh_gnossUser = GetPropertyValueSemCms(pSemCmsModel.GetPropertyByPath("http://w3id.org/roh/gnossUser"));
+            SemanticPropertyModel propRoh_cvOf = pSemCmsModel.GetPropertyByPath("http://w3id.org/roh/cvOf");
+            if (propRoh_cvOf != null && propRoh_cvOf.PropertyValues.Count > 0)
+            {
+                this.Roh_cvOf = new CV(propRoh_cvOf.PropertyValues[0].RelatedEntity, idiomaUsuario);
+            }
+        }
+
+        public virtual string RdfType { get { return "http://xmlns.com/foaf/0.1/Person"; } }
+        public virtual string RdfsLabel { get { return "http://xmlns.com/foaf/0.1/Person"; } }
+        [LABEL(LanguageEnum.es, "http://w3id.org/roh/hasRole")]
+        [RDFProperty("http://w3id.org/roh/hasRole")]
+        public Organization Roh_hasRole { get; set; }
+        public string IdRoh_hasRole { get; set; }
+
+
+        [LABEL(LanguageEnum.es, "Usuario Gnoss")]
+        [RDFProperty("http://w3id.org/roh/gnossUser")]
+        public string Roh_gnossUser { get; set; }
+
+        [LABEL(LanguageEnum.es, "http://xmlns.com/foaf/0.1/firstName")]
+        [RDFProperty("http://xmlns.com/foaf/0.1/firstName")]
+        public string Foaf_firstName { get; set; }
+
+        [LABEL(LanguageEnum.es, "http://xmlns.com/foaf/0.1/name")]
+        [RDFProperty("http://xmlns.com/foaf/0.1/name")]
+        public string Foaf_name { get; set; }
+
+        [LABEL(LanguageEnum.es, "http://xmlns.com/foaf/0.1/lastName")]
+        [RDFProperty("http://xmlns.com/foaf/0.1/lastName")]
+        public string Foaf_lastName { get; set; }
+
+        [LABEL(LanguageEnum.es, "http://w3id.org/roh/cvOf")]
+        [RDFProperty("http://w3id.org/roh/cvOf")]
+        public CV Roh_cvOf { get; set; }
+    }
+
+    public class CV : GnossOCBase
+    {
+
+        public CV() : base() { }
+
+        public CV(SemanticEntityModel pSemCmsModel, LanguageEnum idiomaUsuario) : base()
+        {
+            this.mGNOSSID = pSemCmsModel.Entity.Uri;
+            this.mURL = pSemCmsModel.Properties.FirstOrDefault(p => p.PropertyValues.Any(prop => prop.DownloadUrl != null))?.FirstPropertyValue.DownloadUrl;
+        }
+
+        public virtual string RdfType { get { return "http://w3id.org/roh/CV"; } }
+        public virtual string RdfsLabel { get { return "http://w3id.org/roh/CV"; } }
+    }
+
+    public class Organization : GnossOCBase
+    {
+
+        public Organization() : base() { }
+
+
+        public Organization(SemanticEntityModel pSemCmsModel, LanguageEnum idiomaUsuario) : base()
+        {
+            this.mGNOSSID = pSemCmsModel.Entity.Uri;
+            this.mURL = pSemCmsModel.Properties.FirstOrDefault(p => p.PropertyValues.Any(prop => prop.DownloadUrl != null))?.FirstPropertyValue.DownloadUrl;
+            this.Roh_title = GetPropertyValueSemCms(pSemCmsModel.GetPropertyByPath("http://w3id.org/roh/title"));
+        }
+
+        public virtual string RdfType { get { return "http://xmlns.com/foaf/0.1/Organization"; } }
+        public virtual string RdfsLabel { get { return "http://xmlns.com/foaf/0.1/Organization"; } }
+
+        [LABEL(LanguageEnum.es, "http://w3id.org/roh/title")]
+        [RDFProperty("http://w3id.org/roh/title")]
+        public string Roh_title { get; set; }
+    }
+    public class MainDocument : GnossOCBase
+    {
+
+        public MainDocument() : base() { }
+
+        public MainDocument(SemanticResourceModel pSemCmsModel, LanguageEnum idiomaUsuario) : base()
+        {
+            this.mGNOSSID = pSemCmsModel.RootEntities[0].Entity.Uri;
+            SemanticPropertyModel propRoh_format = pSemCmsModel.GetPropertyByPath("http://w3id.org/roh/format");
+            if (propRoh_format != null && propRoh_format.PropertyValues.Count > 0)
+            {
+                //this.Roh_format = new DocumentFormat(propRoh_format.PropertyValues[0].RelatedEntity, idiomaUsuario);
+            }
+            this.Roh_title = GetPropertyValueSemCms(pSemCmsModel.GetPropertyByPath("http://w3id.org/roh/title"));
+            this.Bibo_isbn = GetPropertyValueSemCms(pSemCmsModel.GetPropertyByPath("http://purl.org/ontology/bibo/isbn"));
+            this.Bibo_editor = GetPropertyValueSemCms(pSemCmsModel.GetPropertyByPath("http://purl.org/ontology/bibo/editor"));
+            this.Bibo_issn = GetPropertyValueSemCms(pSemCmsModel.GetPropertyByPath("http://purl.org/ontology/bibo/issn"));
+            this.Roh_crisIdentifier = GetPropertyValueSemCms(pSemCmsModel.GetPropertyByPath("http://w3id.org/roh/crisIdentifier"));
+        }
+
+        public MainDocument(SemanticEntityModel pSemCmsModel, LanguageEnum idiomaUsuario) : base()
+        {
+            this.mGNOSSID = pSemCmsModel.Entity.Uri;
+            this.mURL = pSemCmsModel.Properties.FirstOrDefault(p => p.PropertyValues.Any(prop => prop.DownloadUrl != null))?.FirstPropertyValue.DownloadUrl;
+            SemanticPropertyModel propRoh_format = pSemCmsModel.GetPropertyByPath("http://w3id.org/roh/format");
+            if (propRoh_format != null && propRoh_format.PropertyValues.Count > 0)
+            {
+                //this.Roh_format = new DocumentFormat(propRoh_format.PropertyValues[0].RelatedEntity, idiomaUsuario);
+            }
+            this.Roh_title = GetPropertyValueSemCms(pSemCmsModel.GetPropertyByPath("http://w3id.org/roh/title"));
+            this.Bibo_isbn = GetPropertyValueSemCms(pSemCmsModel.GetPropertyByPath("http://purl.org/ontology/bibo/isbn"));
+            this.Bibo_editor = GetPropertyValueSemCms(pSemCmsModel.GetPropertyByPath("http://purl.org/ontology/bibo/editor"));
+            this.Bibo_issn = GetPropertyValueSemCms(pSemCmsModel.GetPropertyByPath("http://purl.org/ontology/bibo/issn"));
+            this.Roh_crisIdentifier = GetPropertyValueSemCms(pSemCmsModel.GetPropertyByPath("http://w3id.org/roh/crisIdentifier"));
+        }
+
+        public virtual string RdfType
+        {
+            get { return "http://w3id.org/roh/MainDocument"; }
+        }
+        public virtual string RdfsLabel
+        {
+            get { return "http://w3id.org/roh/MainDocument"; }
+        }
+
+        [LABEL(LanguageEnum.es, "Título de la publicación principal")]
+        [RDFProperty("http://w3id.org/roh/title")]
+        public string Roh_title { get; set; }
+
+        [LABEL(LanguageEnum.es, "ISBN")]
+        [RDFProperty("http://purl.org/ontology/bibo/isbn")]
+        public string Bibo_isbn { get; set; }
+
+        [LABEL(LanguageEnum.es, "Editorial")]
+        [RDFProperty("http://purl.org/ontology/bibo/editor")]
+        public string Bibo_editor { get; set; }
+
+        [LABEL(LanguageEnum.es, "ISSN")]
+        [RDFProperty("http://purl.org/ontology/bibo/issn")]
+        public string Bibo_issn { get; set; }
+
+        [LABEL(LanguageEnum.es, "Identificador de la publicación principal")]
+        [RDFProperty("http://w3id.org/roh/crisIdentifier")]
+        public string Roh_crisIdentifier { get; set; }    }
+
+
+    public class ReferenceSource : GnossOCBase
+    {
+
+        public ReferenceSource() : base() { }
+
+        public ReferenceSource(SemanticEntityModel pSemCmsModel, LanguageEnum idiomaUsuario) : base()
+        {
+            this.mGNOSSID = pSemCmsModel.Entity.Uri;
+            this.mURL = pSemCmsModel.Properties.FirstOrDefault(p => p.PropertyValues.Any(prop => prop.DownloadUrl != null))?.FirstPropertyValue.DownloadUrl;
+            this.Dc_title = new Dictionary<LanguageEnum, string>
+            ();
+            this.Dc_title.Add(idiomaUsuario, GetPropertyValueSemCms(pSemCmsModel.GetPropertyByPath("http://purl.org/dc/elements/1.1/title")));
+
+            this.Dc_identifier = GetPropertyValueSemCms(pSemCmsModel.GetPropertyByPath("http://purl.org/dc/elements/1.1/identifier"));
+        }
+
+        public virtual string RdfType
+        {
+            get { return "http://purl.org/ontology/bibo/ReferenceSource"; }
+        }
+        public virtual string RdfsLabel
+        {
+            get { return "http://purl.org/ontology/bibo/ReferenceSource"; }
+        }
+        [LABEL(LanguageEnum.es, "Fuente de referencia")]
+        [RDFProperty("http://purl.org/dc/elements/1.1/title")]
+        public Dictionary<LanguageEnum, string> Dc_title { get; set; }
+
+        [LABEL(LanguageEnum.es, "http://purl.org/dc/elements/1.1/identifier")]
+        [RDFProperty("http://purl.org/dc/elements/1.1/identifier")]
+        public string Dc_identifier { get; set; }
+    }
+
+    public class ImpactIndexCategory : GnossOCBase
+    {
+
+        public ImpactIndexCategory() : base() { }
+
+        public ImpactIndexCategory(SemanticEntityModel pSemCmsModel, LanguageEnum idiomaUsuario) : base()
+        {
+            this.mGNOSSID = pSemCmsModel.Entity.Uri;
+            this.mURL = pSemCmsModel.Properties.FirstOrDefault(p => p.PropertyValues.Any(prop => prop.DownloadUrl != null))?.FirstPropertyValue.DownloadUrl;
+            this.Dc_title = new Dictionary<LanguageEnum, string>
+            ();
+            this.Dc_title.Add(idiomaUsuario, GetPropertyValueSemCms(pSemCmsModel.GetPropertyByPath("http://purl.org/dc/elements/1.1/title")));
+
+            this.Dc_identifier = GetPropertyValueSemCms(pSemCmsModel.GetPropertyByPath("http://purl.org/dc/elements/1.1/identifier"));
+        }
+
+        public virtual string RdfType
+        {
+            get { return "http://w3id.org/roh/ImpactIndexCategory"; }
+        }
+        public virtual string RdfsLabel
+        {
+            get { return "http://w3id.org/roh/ImpactIndexCategory"; }
+        }
+        [LABEL(LanguageEnum.es, "Categoría del índice de impacto")]
+        [RDFProperty("http://purl.org/dc/elements/1.1/title")]
+        public Dictionary<LanguageEnum, string>
+        Dc_title
+        { get; set; }
+
+        [LABEL(LanguageEnum.es, "Identificador de la categor�a del �ndice de impacto")]
+        [RDFProperty("http://purl.org/dc/elements/1.1/identifier")]
+        public string Dc_identifier { get; set; }
+    }
+
+    public class CategoryPath : GnossOCBase
+    {
+
+        public CategoryPath() : base() { }
+
+        public CategoryPath(SemanticEntityModel pSemCmsModel, LanguageEnum idiomaUsuario) : base()
+        {
+            this.mGNOSSID = pSemCmsModel.Entity.Uri;
+            this.mURL = pSemCmsModel.Properties.FirstOrDefault(p => p.PropertyValues.Any(prop => prop.DownloadUrl != null))?.FirstPropertyValue.DownloadUrl;
+            this.Roh_categoryNode = new List<Concept>();
+            SemanticPropertyModel propRoh_categoryNode = pSemCmsModel.GetPropertyByPath("http://w3id.org/roh/categoryNode");
+            if (propRoh_categoryNode != null && propRoh_categoryNode.PropertyValues.Count > 0)
+            {
+                foreach (SemanticPropertyModel.PropertyValue propValue in propRoh_categoryNode.PropertyValues)
+                {
+                    if (propValue.RelatedEntity != null)
+                    {
+                        Concept roh_categoryNode = new Concept(propValue.RelatedEntity, idiomaUsuario);
+                        this.Roh_categoryNode.Add(roh_categoryNode);
+                    }
+                }
+            }
+        }
+
+        public virtual string RdfType { get { return "http://w3id.org/roh/CategoryPath"; } }
+        public virtual string RdfsLabel { get { return "http://w3id.org/roh/CategoryPath"; } }
+
+        [LABEL(LanguageEnum.es, "http://w3id.org/roh/categoryNode")]
+        [RDFProperty("http://w3id.org/roh/categoryNode")]
+        public List<Concept> Roh_categoryNode { get; set; }
+        public List<string> IdsRoh_categoryNode { get; set; }
+    }
+
+    public class Concept : GnossOCBase
+    {
+
+        public Concept() : base() { }
+
+        public Concept(SemanticEntityModel pSemCmsModel, LanguageEnum idiomaUsuario) : base()
+        {
+            this.mGNOSSID = pSemCmsModel.Entity.Uri;
+            this.mURL = pSemCmsModel.Properties.FirstOrDefault(p => p.PropertyValues.Any(prop => prop.DownloadUrl != null))?.FirstPropertyValue.DownloadUrl;
+            this.Skos_broader = new List<Concept>();
+            SemanticPropertyModel propSkos_broader = pSemCmsModel.GetPropertyByPath("http://www.w3.org/2008/05/skos#broader");
+            if (propSkos_broader != null && propSkos_broader.PropertyValues.Count > 0)
+            {
+                foreach (SemanticPropertyModel.PropertyValue propValue in propSkos_broader.PropertyValues)
+                {
+                    if (propValue.RelatedEntity != null)
+                    {
+                        Concept skos_broader = new Concept(propValue.RelatedEntity, idiomaUsuario);
+                        this.Skos_broader.Add(skos_broader);
+                    }
+                }
+            }
+            this.Skos_narrower = new List<Concept>();
+            SemanticPropertyModel propSkos_narrower = pSemCmsModel.GetPropertyByPath("http://www.w3.org/2008/05/skos#narrower");
+            if (propSkos_narrower != null && propSkos_narrower.PropertyValues.Count > 0)
+            {
+                foreach (SemanticPropertyModel.PropertyValue propValue in propSkos_narrower.PropertyValues)
+                {
+                    if (propValue.RelatedEntity != null)
+                    {
+                        Concept skos_narrower = new Concept(propValue.RelatedEntity, idiomaUsuario);
+                        this.Skos_narrower.Add(skos_narrower);
+                    }
+                }
+            }
+            this.Skos_symbol = GetPropertyValueSemCms(pSemCmsModel.GetPropertyByPath("http://www.w3.org/2008/05/skos#symbol"));
+            this.Dc_identifier = GetPropertyValueSemCms(pSemCmsModel.GetPropertyByPath("http://purl.org/dc/elements/1.1/identifier"));
+            this.Skos_prefLabel = GetPropertyValueSemCms(pSemCmsModel.GetPropertyByPath("http://www.w3.org/2008/05/skos#prefLabel"));
+            this.Dc_source = GetPropertyValueSemCms(pSemCmsModel.GetPropertyByPath("http://purl.org/dc/elements/1.1/source"));
+        }
+
+        public virtual string RdfType
+        {
+            get { return "http://www.w3.org/2008/05/skos#Concept"; }
+        }
+        public virtual string RdfsLabel
+        {
+            get { return "http://www.w3.org/2008/05/skos#Concept"; }
+        }
+
+        [LABEL(LanguageEnum.es, "Genérico")]
+        [RDFProperty("http://www.w3.org/2008/05/skos#broader")]
+        public List<Concept> Skos_broader { get; set; }
+
+        [LABEL(LanguageEnum.es, "Específico")]
+        [RDFProperty("http://www.w3.org/2008/05/skos#narrower")]
+        public List<Concept> Skos_narrower { get; set; }
+
+        [LABEL(LanguageEnum.es, "Símbolo")]
+        [RDFProperty("http://www.w3.org/2008/05/skos#symbol")]
+        public string Skos_symbol { get; set; }
+
+        [LABEL(LanguageEnum.es, "Identificador")]
+        [RDFProperty("http://purl.org/dc/elements/1.1/identifier")]
+        public string Dc_identifier { get; set; }
+
+        [LABEL(LanguageEnum.es, "Etiqueta preferente")]
+        [RDFProperty("http://www.w3.org/2008/05/skos#prefLabel")]
+        public string Skos_prefLabel { get; set; }
+
+        [LABEL(LanguageEnum.es, "Fuente")]
+        [RDFProperty("http://purl.org/dc/elements/1.1/source")]
+        public string Dc_source { get; set; }
+    }
+    public class Reference : GnossOCBase
+    {
+
+        public Reference() : base() { }
+
+        public Reference(SemanticEntityModel pSemCmsModel, LanguageEnum idiomaUsuario) : base()
+        {
+            this.mGNOSSID = pSemCmsModel.Entity.Uri;
+            this.mURL = pSemCmsModel.Properties.FirstOrDefault(p => p.PropertyValues.Any(prop => prop.DownloadUrl != null))?.FirstPropertyValue.DownloadUrl;
+            this.Roh_authorList = new List<ReferenceAuthor>();
+            SemanticPropertyModel propRoh_authorList = pSemCmsModel.GetPropertyByPath("http://w3id.org/roh/authorList");
+            if (propRoh_authorList != null && propRoh_authorList.PropertyValues.Count > 0)
+            {
+                foreach (SemanticPropertyModel.PropertyValue propValue in propRoh_authorList.PropertyValues)
+                {
+                    if (propValue.RelatedEntity != null)
+                    {
+                        ReferenceAuthor roh_authorList = new ReferenceAuthor(propValue.RelatedEntity, idiomaUsuario);
+                        this.Roh_authorList.Add(roh_authorList);
+                    }
+                }
+            }
+            this.Roh_hasPublicationVenueText = GetPropertyValueSemCms(pSemCmsModel.GetPropertyByPath("http://w3id.org/roh/hasPublicationVenueText"));
+            this.Bibo_doi = GetPropertyValueSemCms(pSemCmsModel.GetPropertyByPath("http://purl.org/ontology/bibo/doi"));
+            this.Dct_issued = GetDateValuePropertySemCms(pSemCmsModel.GetPropertyByPath("http://purl.org/dc/terms/issued"));
+            this.Vcard_url = GetPropertyValueSemCms(pSemCmsModel.GetPropertyByPath("https://www.w3.org/2006/vcard/ns#url"));
+            this.Roh_title = GetPropertyValueSemCms(pSemCmsModel.GetPropertyByPath("http://w3id.org/roh/title"));
+        }
+
+        public virtual string RdfType { get { return "http://w3id.org/roh/Reference"; } }
+        public virtual string RdfsLabel { get { return "http://w3id.org/roh/Reference"; } }
+
+        [RDFProperty("http://w3id.org/roh/authorList")]
+        public List<ReferenceAuthor> Roh_authorList { get; set; }
+
+        [RDFProperty("http://w3id.org/roh/hasPublicationVenueText")]
+        public string Roh_hasPublicationVenueText { get; set; }
+
+        [RDFProperty("http://purl.org/ontology/bibo/doi")]
+        public string Bibo_doi { get; set; }
+
+        [RDFProperty("http://purl.org/dc/terms/issued")]
+        public DateTime? Dct_issued { get; set; }
+
+        [RDFProperty("https://www.w3.org/2006/vcard/ns#url")]
+        public string Vcard_url { get; set; }
+
+        [RDFProperty("http://w3id.org/roh/title")]
+        public string Roh_title { get; set; }
+
+        [RDFProperty("http://w3id.org/roh/i_doc")]
+        public Document Roh_i_doc { get; set; }
+
+    }
+
+    public class ReferenceAuthor : GnossOCBase
+    {
+
+        public ReferenceAuthor() : base() { }
+
+        public ReferenceAuthor(SemanticEntityModel pSemCmsModel, LanguageEnum idiomaUsuario) : base()
+        {
+            this.mGNOSSID = pSemCmsModel.Entity.Uri;
+            this.mURL = pSemCmsModel.Properties.FirstOrDefault(p => p.PropertyValues.Any(prop => prop.DownloadUrl != null))?.FirstPropertyValue.DownloadUrl;
+            this.Roh_semanticScholarId = GetPropertyValueSemCms(pSemCmsModel.GetPropertyByPath("http://w3id.org/roh/semanticScholarId"));
+            this.Foaf_name = GetPropertyValueSemCms(pSemCmsModel.GetPropertyByPath("http://xmlns.com/foaf/0.1/name"));
+        }
+
+        public virtual string RdfType { get { return "http://w3id.org/roh/ReferenceAuthor"; } }
+        public virtual string RdfsLabel { get { return "http://w3id.org/roh/ReferenceAuthor"; } }
+
+        [RDFProperty("http://w3id.org/roh/semanticScholarId")]
+        public string Roh_semanticScholarId { get; set; }
+
+        [RDFProperty("http://xmlns.com/foaf/0.1/name")]
+        public string Foaf_name { get; set; }
+    }
+
+    public class KeyWord : GnossOCBase
+    {
+
+        public KeyWord() : base() { }
+
+        public KeyWord(SemanticEntityModel pSemCmsModel, LanguageEnum idiomaUsuario) : base()
+        {
+            this.mGNOSSID = pSemCmsModel.Entity.Uri;
+            this.mURL = pSemCmsModel.Properties.FirstOrDefault(p => p.PropertyValues.Any(prop => prop.DownloadUrl != null))?.FirstPropertyValue.DownloadUrl;
+            SemanticPropertyModel propRoh_keyWordConcept = pSemCmsModel.GetPropertyByPath("http://w3id.org/roh/keyWordConcept");
+            if (propRoh_keyWordConcept != null && propRoh_keyWordConcept.PropertyValues.Count > 0)
+            {
+                this.Roh_keyWordConcept = new KeyWordConcept(propRoh_keyWordConcept.PropertyValues[0].RelatedEntity, idiomaUsuario);
+            }
+            this.Roh_title = GetPropertyValueSemCms(pSemCmsModel.GetPropertyByPath("http://w3id.org/roh/title"));
+        }
+
+        public virtual string RdfType { get { return "http://w3id.org/roh/KeyWord"; } }
+        public virtual string RdfsLabel { get { return "http://w3id.org/roh/KeyWord"; } }
+
+        [RDFProperty("http://w3id.org/roh/keyWordConcept")]
+        public KeyWordConcept Roh_keyWordConcept { get; set; }
+        public string IdRoh_keyWordConcept { get; set; }
+
+        [RDFProperty("http://w3id.org/roh/title")]
+        public string Roh_title { get; set; }
+    }
+
+    public class KeyWordConcept : GnossOCBase
+    {
+
+        public KeyWordConcept() : base() { }
+
+        public KeyWordConcept(SemanticResourceModel pSemCmsModel, LanguageEnum idiomaUsuario) : base()
+        {
+            this.mGNOSSID = pSemCmsModel.RootEntities[0].Entity.Uri;
+            this.Roh_broaders = new List<KeyWordConcept>();
+            SemanticPropertyModel propRoh_broaders = pSemCmsModel.GetPropertyByPath("http://w3id.org/roh/broaders");
+            if (propRoh_broaders != null && propRoh_broaders.PropertyValues.Count > 0)
+            {
+                foreach (SemanticPropertyModel.PropertyValue propValue in propRoh_broaders.PropertyValues)
+                {
+                    if (propValue.RelatedEntity != null)
+                    {
+                        KeyWordConcept roh_broaders = new KeyWordConcept(propValue.RelatedEntity, idiomaUsuario);
+                        this.Roh_broaders.Add(roh_broaders);
+                    }
+                }
+            }
+            this.Skos_closeMatch = new List<KeyWordConcept>();
+            SemanticPropertyModel propSkos_closeMatch = pSemCmsModel.GetPropertyByPath("http://www.w3.org/2008/05/skos#closeMatch");
+            if (propSkos_closeMatch != null && propSkos_closeMatch.PropertyValues.Count > 0)
+            {
+                foreach (SemanticPropertyModel.PropertyValue propValue in propSkos_closeMatch.PropertyValues)
+                {
+                    if (propValue.RelatedEntity != null)
+                    {
+                        KeyWordConcept skos_closeMatch = new KeyWordConcept(propValue.RelatedEntity, idiomaUsuario);
+                        this.Skos_closeMatch.Add(skos_closeMatch);
+                    }
+                }
+            }
+            this.Skos_exactMatch = new List<KeyWordConcept>();
+            SemanticPropertyModel propSkos_exactMatch = pSemCmsModel.GetPropertyByPath("http://www.w3.org/2008/05/skos#exactMatch");
+            if (propSkos_exactMatch != null && propSkos_exactMatch.PropertyValues.Count > 0)
+            {
+                foreach (SemanticPropertyModel.PropertyValue propValue in propSkos_exactMatch.PropertyValues)
+                {
+                    if (propValue.RelatedEntity != null)
+                    {
+                        KeyWordConcept skos_exactMatch = new KeyWordConcept(propValue.RelatedEntity, idiomaUsuario);
+                        this.Skos_exactMatch.Add(skos_exactMatch);
+                    }
+                }
+            }
+            this.Roh_relatedTo = new List<KeyWordConcept>();
+            SemanticPropertyModel propRoh_relatedTo = pSemCmsModel.GetPropertyByPath("http://w3id.org/roh/relatedTo");
+            if (propRoh_relatedTo != null && propRoh_relatedTo.PropertyValues.Count > 0)
+            {
+                foreach (SemanticPropertyModel.PropertyValue propValue in propRoh_relatedTo.PropertyValues)
+                {
+                    if (propValue.RelatedEntity != null)
+                    {
+                        KeyWordConcept roh_relatedTo = new KeyWordConcept(propValue.RelatedEntity, idiomaUsuario);
+                        this.Roh_relatedTo.Add(roh_relatedTo);
+                    }
+                }
+            }
+            this.Roh_match = new List<KeyWordConcept>();
+            SemanticPropertyModel propRoh_match = pSemCmsModel.GetPropertyByPath("http://w3id.org/roh/match");
+            if (propRoh_match != null && propRoh_match.PropertyValues.Count > 0)
+            {
+                foreach (SemanticPropertyModel.PropertyValue propValue in propRoh_match.PropertyValues)
+                {
+                    if (propValue.RelatedEntity != null)
+                    {
+                        KeyWordConcept roh_match = new KeyWordConcept(propValue.RelatedEntity, idiomaUsuario);
+                        this.Roh_match.Add(roh_match);
+                    }
+                }
+            }
+            this.Roh_qualifiers = new List<KeyWordConcept>();
+            SemanticPropertyModel propRoh_qualifiers = pSemCmsModel.GetPropertyByPath("http://w3id.org/roh/qualifiers");
+            if (propRoh_qualifiers != null && propRoh_qualifiers.PropertyValues.Count > 0)
+            {
+                foreach (SemanticPropertyModel.PropertyValue propValue in propRoh_qualifiers.PropertyValues)
+                {
+                    if (propValue.RelatedEntity != null)
+                    {
+                        KeyWordConcept roh_qualifiers = new KeyWordConcept(propValue.RelatedEntity, idiomaUsuario);
+                        this.Roh_qualifiers.Add(roh_qualifiers);
+                    }
+                }
+            }
+            this.Roh_url = GetPropertyValueSemCms(pSemCmsModel.GetPropertyByPath("http://w3id.org/roh/url"));
+            this.Roh_type = GetPropertyValueSemCms(pSemCmsModel.GetPropertyByPath("http://w3id.org/roh/type"));
+            this.Roh_title = GetPropertyValueSemCms(pSemCmsModel.GetPropertyByPath("http://w3id.org/roh/title"));
+        }
+
+        public KeyWordConcept(SemanticEntityModel pSemCmsModel, LanguageEnum idiomaUsuario) : base()
+        {
+            this.mGNOSSID = pSemCmsModel.Entity.Uri;
+            this.mURL = pSemCmsModel.Properties.FirstOrDefault(p => p.PropertyValues.Any(prop => prop.DownloadUrl != null))?.FirstPropertyValue.DownloadUrl;
+            this.Roh_broaders = new List<KeyWordConcept>();
+            SemanticPropertyModel propRoh_broaders = pSemCmsModel.GetPropertyByPath("http://w3id.org/roh/broaders");
+            if (propRoh_broaders != null && propRoh_broaders.PropertyValues.Count > 0)
+            {
+                foreach (SemanticPropertyModel.PropertyValue propValue in propRoh_broaders.PropertyValues)
+                {
+                    if (propValue.RelatedEntity != null)
+                    {
+                        KeyWordConcept roh_broaders = new KeyWordConcept(propValue.RelatedEntity, idiomaUsuario);
+                        this.Roh_broaders.Add(roh_broaders);
+                    }
+                }
+            }
+            this.Skos_closeMatch = new List<KeyWordConcept>();
+            SemanticPropertyModel propSkos_closeMatch = pSemCmsModel.GetPropertyByPath("http://www.w3.org/2008/05/skos#closeMatch");
+            if (propSkos_closeMatch != null && propSkos_closeMatch.PropertyValues.Count > 0)
+            {
+                foreach (SemanticPropertyModel.PropertyValue propValue in propSkos_closeMatch.PropertyValues)
+                {
+                    if (propValue.RelatedEntity != null)
+                    {
+                        KeyWordConcept skos_closeMatch = new KeyWordConcept(propValue.RelatedEntity, idiomaUsuario);
+                        this.Skos_closeMatch.Add(skos_closeMatch);
+                    }
+                }
+            }
+            this.Skos_exactMatch = new List<KeyWordConcept>();
+            SemanticPropertyModel propSkos_exactMatch = pSemCmsModel.GetPropertyByPath("http://www.w3.org/2008/05/skos#exactMatch");
+            if (propSkos_exactMatch != null && propSkos_exactMatch.PropertyValues.Count > 0)
+            {
+                foreach (SemanticPropertyModel.PropertyValue propValue in propSkos_exactMatch.PropertyValues)
+                {
+                    if (propValue.RelatedEntity != null)
+                    {
+                        KeyWordConcept skos_exactMatch = new KeyWordConcept(propValue.RelatedEntity, idiomaUsuario);
+                        this.Skos_exactMatch.Add(skos_exactMatch);
+                    }
+                }
+            }
+            this.Roh_relatedTo = new List<KeyWordConcept>();
+            SemanticPropertyModel propRoh_relatedTo = pSemCmsModel.GetPropertyByPath("http://w3id.org/roh/relatedTo");
+            if (propRoh_relatedTo != null && propRoh_relatedTo.PropertyValues.Count > 0)
+            {
+                foreach (SemanticPropertyModel.PropertyValue propValue in propRoh_relatedTo.PropertyValues)
+                {
+                    if (propValue.RelatedEntity != null)
+                    {
+                        KeyWordConcept roh_relatedTo = new KeyWordConcept(propValue.RelatedEntity, idiomaUsuario);
+                        this.Roh_relatedTo.Add(roh_relatedTo);
+                    }
+                }
+            }
+            this.Roh_match = new List<KeyWordConcept>();
+            SemanticPropertyModel propRoh_match = pSemCmsModel.GetPropertyByPath("http://w3id.org/roh/match");
+            if (propRoh_match != null && propRoh_match.PropertyValues.Count > 0)
+            {
+                foreach (SemanticPropertyModel.PropertyValue propValue in propRoh_match.PropertyValues)
+                {
+                    if (propValue.RelatedEntity != null)
+                    {
+                        KeyWordConcept roh_match = new KeyWordConcept(propValue.RelatedEntity, idiomaUsuario);
+                        this.Roh_match.Add(roh_match);
+                    }
+                }
+            }
+            this.Roh_qualifiers = new List<KeyWordConcept>();
+            SemanticPropertyModel propRoh_qualifiers = pSemCmsModel.GetPropertyByPath("http://w3id.org/roh/qualifiers");
+            if (propRoh_qualifiers != null && propRoh_qualifiers.PropertyValues.Count > 0)
+            {
+                foreach (SemanticPropertyModel.PropertyValue propValue in propRoh_qualifiers.PropertyValues)
+                {
+                    if (propValue.RelatedEntity != null)
+                    {
+                        KeyWordConcept roh_qualifiers = new KeyWordConcept(propValue.RelatedEntity, idiomaUsuario);
+                        this.Roh_qualifiers.Add(roh_qualifiers);
+                    }
+                }
+            }
+            this.Roh_url = GetPropertyValueSemCms(pSemCmsModel.GetPropertyByPath("http://w3id.org/roh/url"));
+            this.Roh_type = GetPropertyValueSemCms(pSemCmsModel.GetPropertyByPath("http://w3id.org/roh/type"));
+            this.Roh_title = GetPropertyValueSemCms(pSemCmsModel.GetPropertyByPath("http://w3id.org/roh/title"));
+        }
+
+        public virtual string RdfType { get { return "http://w3id.org/roh/KeyWordConcept"; } }
+        public virtual string RdfsLabel { get { return "http://w3id.org/roh/KeyWordConcept"; } }
+        [RDFProperty("http://w3id.org/roh/broaders")]
+        public List<KeyWordConcept> Roh_broaders { get; set; }
+        public List<string> IdsRoh_broaders { get; set; }
+
+        [RDFProperty("http://www.w3.org/2008/05/skos#closeMatch")]
+        public List<KeyWordConcept> Skos_closeMatch { get; set; }
+        public List<string> IdsSkos_closeMatch { get; set; }
+
+        [RDFProperty("http://www.w3.org/2008/05/skos#exactMatch")]
+        public List<KeyWordConcept> Skos_exactMatch { get; set; }
+        public List<string> IdsSkos_exactMatch { get; set; }
+
+        [RDFProperty("http://w3id.org/roh/relatedTo")]
+        public List<KeyWordConcept> Roh_relatedTo { get; set; }
+        public List<string> IdsRoh_relatedTo { get; set; }
+
+        [RDFProperty("http://w3id.org/roh/match")]
+        public List<KeyWordConcept> Roh_match { get; set; }
+        public List<string> IdsRoh_match { get; set; }
+
+        [RDFProperty("http://w3id.org/roh/qualifiers")]
+        public List<KeyWordConcept> Roh_qualifiers { get; set; }
+        public List<string> IdsRoh_qualifiers { get; set; }
+
+        [RDFProperty("http://w3id.org/roh/url")]
+        public string Roh_url { get; set; }
+
+        [RDFProperty("http://w3id.org/roh/type")]
+        public string Roh_type { get; set; }
+
+        [RDFProperty("http://w3id.org/roh/title")]
+        public string Roh_title { get; set; }
+    }
+
+    public class ImpactIndex : GnossOCBase
+    {
+
+        public ImpactIndex() : base() { }
+
+        public ImpactIndex(SemanticEntityModel pSemCmsModel, LanguageEnum idiomaUsuario) : base()
+        {
+            this.mGNOSSID = pSemCmsModel.Entity.Uri;
+            this.mURL = pSemCmsModel.Properties.FirstOrDefault(p => p.PropertyValues.Any(prop => prop.DownloadUrl != null))?.FirstPropertyValue.DownloadUrl;
+            SemanticPropertyModel propRoh_impactSource = pSemCmsModel.GetPropertyByPath("http://w3id.org/roh/impactSource");
+            if (propRoh_impactSource != null && propRoh_impactSource.PropertyValues.Count > 0)
+            {
+                this.Roh_impactSource = new ReferenceSource(propRoh_impactSource.PropertyValues[0].RelatedEntity, idiomaUsuario);
+            }
+            this.Roh_impactIndexInYear = GetNumberFloatPropertyValueSemCms(pSemCmsModel.GetPropertyByPath("http://w3id.org/roh/impactIndexInYear"));
+            this.Roh_impactSourceOther = GetPropertyValueSemCms(pSemCmsModel.GetPropertyByPath("http://w3id.org/roh/impactSourceOther"));
+            this.Roh_journalNumberInCat = GetNumberIntPropertyValueSemCms(pSemCmsModel.GetPropertyByPath("http://w3id.org/roh/journalNumberInCat"));
+            this.Roh_impactIndexCategory = GetPropertyValueSemCms(pSemCmsModel.GetPropertyByPath("http://w3id.org/roh/impactIndexCategory"));
+            this.Roh_publicationPosition = GetNumberIntPropertyValueSemCms(pSemCmsModel.GetPropertyByPath("http://w3id.org/roh/publicationPosition"));
+            this.Roh_quartile = GetNumberIntPropertyValueSemCms(pSemCmsModel.GetPropertyByPath("http://w3id.org/roh/quartile"));
+        }
+
+        public virtual string RdfType { get { return "http://w3id.org/roh/ImpactIndex"; } }
+        public virtual string RdfsLabel { get { return "http://w3id.org/roh/ImpactIndex"; } }
+
+        [LABEL(LanguageEnum.es, "Fuente de impacto")]
+        [RDFProperty("http://w3id.org/roh/impactSource")]
+        public ReferenceSource Roh_impactSource { get; set; }
+
+        [RDFProperty("http://w3id.org/roh/impactIndexInYear")]
+        public float? Roh_impactIndexInYear { get; set; }
+
+        [RDFProperty("http://w3id.org/roh/impactSourceOther")]
+        public string Roh_impactSourceOther { get; set; }
+
+        [RDFProperty("http://w3id.org/roh/journalNumberInCat")]
+        public int? Roh_journalNumberInCat { get; set; }
+
+        [RDFProperty("http://w3id.org/roh/impactIndexCategory")]
+        public string Roh_impactIndexCategory { get; set; }
+
+        [RDFProperty("http://w3id.org/roh/publicationPosition")]
+        public int? Roh_publicationPosition { get; set; }
+
+        [RDFProperty("http://w3id.org/roh/quartile")]
+        public int? Roh_quartile { get; set; }
+    }
+}

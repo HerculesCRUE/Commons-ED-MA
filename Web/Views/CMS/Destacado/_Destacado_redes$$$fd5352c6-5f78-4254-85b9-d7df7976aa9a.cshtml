@@ -1,0 +1,49 @@
+@model CMSComponentHot
+@{ CommunityModel Comunidad = Html.GetComunidad();
+    UserIdentityModel IdentidadActual = Html.GetIdentidadActual();
+    string urlPersonalizacion = Html.GetBaseUrlContent() + "/imagenes/proyectos/personalizacion/" + Comunidad.Key.ToString();
+	string urlJS = $"{urlPersonalizacion}/theme/redes.js?v={Html.Translate("VERSION_CSS_JS")}";
+    Html.GetListaJS().Add(urlJS);
+}
+<input type="hidden" id="USUARIOFIGSHARE" value="@Html.Translate("IDENTIFICADOR_FIGSHARE")"/>
+<input type="hidden" id="TOKENFIGSHARE" value="@Html.Translate("TOKEN_FIGSHARE")"/>
+<input type="hidden" id="USUARIOGITHUB" value="@Html.Translate("IDENTIFICADOR_GITHUB")"/>
+<input type="hidden" id="TOKENGITHUB" value="@Html.Translate("TOKEN_GITHUB")"/>
+<input type="hidden" id="ORCID" value="@Html.Translate("IDENTIFICADOR_ORCID")"/>
+<input type="hidden" id="RESEARCHERID" value="@Html.Translate("IDENTIFICADOR_WOS")"/>
+<input type="hidden" id="SCOPUSID" value="@Html.Translate("IDENTIFICADOR_SCOPUS")"/>
+<input type="hidden" id="SEMANTICSCHOLARID" value="@Html.Translate("IDENTIFICADOR_SEMANTICSCHOLAR")"/>
+<input type="hidden" id="USEMATCHING" value="@Html.Translate("MATCHING")"/>
+
+<input type="hidden" id="PLACEHOLDER_USUARIOFIGSHARE" value="@Html.Translate("PLACEHOLDER_IDENTIFICADOR_FIGSHARE")"/>
+<input type="hidden" id="PLACEHOLDER_TOKENFIGSHARE" value="@Html.Translate("PLACEHOLDER_TOKEN_FIGSHARE")"/>
+<input type="hidden" id="PLACEHOLDER_USUARIOGITHUB" value="@Html.Translate("PLACEHOLDER_IDENTIFICADOR_GITHUB")"/>
+<input type="hidden" id="PLACEHOLDER_TOKENGITHUB" value="@Html.Translate("PLACEHOLDER_TOKEN_GITHUB")"/>
+
+<input type="hidden" id="AYUDA_MATCHING" value="@Html.Translate("AYUDA_MATCHING")"/>
+
+<div class="row">
+    <div class="col col-12 col-breadcrumb">
+        <ul>
+            <li>
+                <a  href="@Comunidad.Url">Home</a>
+            </li>
+            <li>
+                @Html.Translate("FUENTES_EXTERNAS_INFORMACION")
+            </li>
+        </ul>
+    </div>
+    <div class="col col-12 col-contenido">
+        <div class="wrapCol">
+            <form class="formulario-edicion background-blanco">
+                <h2>@Html.Translate("FUENTES_EXTERNAS_INFORMACION")</h2>
+                <fieldset>
+                    
+                </fieldset>
+                <a onclick="GuardarDatos()" href="javascript: void(0);" class="btn btn-primary uppercase">
+                    @Html.Translate("GUARDAR")
+                </a>
+            </form>
+        </div>
+    </div>
+</div>

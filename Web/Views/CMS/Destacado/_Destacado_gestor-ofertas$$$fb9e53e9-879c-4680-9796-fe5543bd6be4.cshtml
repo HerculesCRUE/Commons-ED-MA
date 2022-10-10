@@ -1,0 +1,304 @@
+@model CMSComponentHot
+@{
+    CommunityModel Comunidad = Html.GetComunidad();
+    UserIdentityModel IdentidadActual = Html.GetIdentidadActual();
+    Guid currentId = Guid.Empty;
+    string currentIdstr = string.Empty;
+
+    
+    if (IdentidadActual != null)
+    {
+        currentId = IdentidadActual.KeyUser;
+        if (currentId != Guid.Empty)
+        {
+            currentIdstr = currentId.ToString().ToUpper();
+        }
+    }
+
+}
+
+@if (Model != null)
+{
+
+    <div class="col col-12 col-breadcrumb">
+        <ul>
+            <li>
+                <a href="@Comunidad.Url">Home</a>
+            </li>
+            <li>
+                @Model.Title
+            </li>
+        </ul>
+    </div>
+
+    @if (!IdentidadActual.IsGuestUser)
+    {
+
+        <div class="col col-12">
+            <div class="wrapCol mt-4">
+                <div class="row edicionRecurso edicionOfertaTecnologica" id="ofertaListOtri" data-title="@Html.Translate("GESTOR_OFERTAS_TECNOLOGICAS")">
+
+                </div>
+            </div>
+        </div>
+
+
+
+        <div id="modal-eliminar-oferta-confirmacion" class="modal modal-top fade modal-edicion" tabindex="-1" role="dialog">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <p class="modal-title"><span class="material-icons">delete</span>@Html.Translate("BORRAR_OFERTA")</p>
+                        <span class="material-icons cerrar" data-dismiss="modal" aria-label="Close">close</span>
+                    </div>
+                    <div class="modal-body">
+                        <div class="formulario-edicion">
+                            <div class="custom-form-row">
+                                <div class="form-group full-group">
+                                    <label class="control-label d-block">@Html.Translate("CONFIRMACION_BORRAR_OFERTA")</label>
+                                    <div class="form-actions">
+                                        <a href="javascript: cambiarEstadoOfertas.borrarOferta()" class="btn btn-primary uppercase">@Html.Translate("BORRAR")</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+        <div id="modal-enviar-comentario" class="modal modal-top fade modal-edicion" tabindex="-1" role="dialog">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <p class="modal-title"><span class="material-icons">send</span>@Html.Translate("COMENTARIO")</p>
+                        <span class="material-icons cerrar" data-dismiss="modal" aria-label="Close">close</span>
+                    </div>
+                    <div class="modal-body">
+                        <div class="formulario-edicion">
+                            <div class="custom-form-row">
+                                <div class="form-group full-group">
+                                    <label class="control-label d-block">@Html.Translate("INTRODUCE_UN_COMENTARIO")</label>
+                                    <textarea class="w-100" id="areaTextoComentario"> </textarea>
+                                    <div class="form-actions">
+                                        <a href="javascript: cambiarEstadoOfertas.sendModal(document.getElementById('areaTextoComentario').value)" class="btn btn-primary uppercase">@Html.Translate("ENVIAR")</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+
+        <!-- JAVASCRIPT -->
+        <script type="text/javascript">
+
+            const pIdGnossUser = "@IdentidadActual.KeyUser"
+            const ERROR_IDS_VACIO = "@Html.Translate("ERROR_IDS_VACIO")"
+
+
+            // Selectores seleccionados
+            var currentsSelected = []
+            var currentsIds = []
+
+
+            // Langs para el constructor
+            const arrLang = {
+                "ENVIAR_REVISION": "@Html.Translate("ENVIAR_REVISION")",
+                "ENVIAR_BORRADOR": "@Html.Translate("ENVIAR_BORRADOR")",
+                "MEJORAR": "@Html.Translate("MEJORAR")",
+                "VALIDAR": "@Html.Translate("VALIDAR")",
+                "DENEGAR": "@Html.Translate("DENEGAR")",
+                "ARCHIVAR": "@Html.Translate("ARCHIVAR")",
+                "BORRAR": "@Html.Translate("BORRAR")",
+            }
+
+            var offerList = new OfferList(arrLang)
+
+
+            // Carga las ofertas
+            $(document).ready(function () {
+                comportamientoOfertasOtri.init("@currentIdstr", "ofertaListOtri")
+            });
+
+
+            var currentId = ""
+
+            // Datos gráfica áreas temáticas
+            function borrarOferta() {
+                var url = url_servicio_externo + "Ofertas/BorrarOferta"
+                var arg = {};
+                arg.pIdOfferId = currentId
+                $.get(url, arg, function (data) {
+                    window.location = "@Comunidad.Url/@Html.Translate("OFERTA_URL")"
+                });
+            }
+
+            /**
+            * Función que se llama cuando se cargan los recursos (las ofertas tecnológicas)
+            * Éste método se encarga de añadir el menú de opciones y las acciones 'rápidas'
+            */
+            function gOTecnEndLoadedResources() {
+
+                if(true)
+                {       
+                    $("#ofertaListOtri article.resource h2.resource-title").attr("tagert","_blank")
+                    // stepsOffer.data.pPersons = $('#ofertaListOtri article.resource').toArray().map(e => {return $(e).attr('id')})
+                    
+                    $("#ofertaListOtri article.resource").each((i, e) => {
+
+                        try {
+                            cId = e.id.split('_')[1]
+                            if (!currentsIds.includes(cId)) {
+                                currentsIds.push(cId)
+                            }
+                        } catch (e) {}
+
+                        let materialIcon = e.querySelector(".custom-checkbox-resource .material-icons")
+                        if (materialIcon == null) {
+
+                            if (e.dataset.estadores == "http://gnoss.com/items/offerstate_002") {
+                                e.innerHTML = `<div class="custom-control custom-checkbox-resource add">
+                                    <span class="material-icons">add</span>
+                                </div>` + e.innerHTML
+                            }
+                        }
+                    })
+
+
+
+                    // Pintar menus
+                    if (document.querySelector("#ofertaListOtri .header-contenido .acciones-listado") == null) {
+
+                        // Genero el elemento del dom para los menús
+                        let menus = document.createElement('div')
+                        menus.classList.add('acciones-listado')
+                        menus.innerHTML += `<div class="wrap">
+                            <div class="descargar dropdown">
+                                <a class="dropdown-toggle" data-toggle="dropdown">
+                                    <span class="material-icons">check</span>
+                                    <span class="texto">@Html.Translate("SELECCIONAR_EN_REVISION")</span>
+                                </a>
+                                <div class="dropdown-menu basic-dropdown dropdown-menu-right">
+                                    <a href="javascript: seleccionarTodos()" class="item-dropdown">@Html.Translate("SELECCIONAR_TODOS")</a>
+                                    <a href="javascript: deseleccionarTodos()" class="item-dropdown">@Html.Translate("DESELECCIONAR_TODOS")</a>
+                                </div>
+                            </div>
+                            <div class="ordenar dropdown dropdown-select">
+                                <a class="dropdown-toggle" data-toggle="dropdown">
+                                    <span class="material-icons">send</span>
+                                    <span class="texto">@Html.Translate("ENVIAR_A")</span>
+                                </a>
+                                <div class="dropdown-menu basic-dropdown dropdown-menu-right">
+                                    <a class="item-dropdown" href="javascript:cambiarEstadoOfertas.sendAll(currentsSelected,'http://gnoss.com/items/offerstate_001', 'http://gnoss.com/items/offerstate_002')">
+                                        <span class="material-icons">send</span>
+                                        <span class="texto">@Html.Translate("REVISION")</span>
+                                    </a>
+                                    <a class="item-dropdown" href="javascript:cambiarEstadoOfertas.sendAll(currentsSelected,'http://gnoss.com/items/offerstate_003', 'http://gnoss.com/items/offerstate_002')">
+                                        <span class="material-icons">send</span>
+                                        <span class="texto">@Html.Translate("VALIDAR")</span>
+                                    </a>
+                                    <a class="item-dropdown" href="javascript:cambiarEstadoOfertas.sendAll(currentsSelected,'http://gnoss.com/items/offerstate_004', 'http://gnoss.com/items/offerstate_002')">
+                                        <span class="material-icons">send</span>
+                                        <span class="texto">@Html.Translate("DENEGAR")</span>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>`
+
+                        // Añado los elementos después del elemento deseado
+                        insertAfter(menus ,document.querySelector("#ofertaListOtri .header-contenido .h1-container"))
+                    }
+                    
+
+
+
+                    // Init the checkboxes
+                    checkboxResources.init()
+
+                    // Añade o quita los elementos seleccionados
+                    currentsIds.forEach(idDocument => {
+
+                        $("#resource_" + idDocument).on("DOMSubtreeModified", function(e) {
+
+                            let selector = $(this).find(".custom-checkbox-resource")
+
+                            if ($(selector).text().trim() == "done")
+                            {
+                                let element = $(this)
+                                if (!currentsSelected.includes(idDocument)) {
+                                    currentsSelected.push(idDocument)
+                                }
+
+                            } else
+                            {
+                                // Borrar oferta del array de seleciconados
+                                currentsSelected = currentsSelected.filter(item => item != idDocument)
+                            }
+                        }); 
+
+                    })
+                }
+
+                offerList.loadActionsOffer(currentsIds)
+            }
+
+
+
+            /**
+            * Función que añade a seleccionados todos los items cargados (En revisión)
+            */
+            function seleccionarTodos() {
+
+
+                // Añade o quita los elementos seleccionados
+                currentsIds.forEach(idDocument => {
+
+                    let item = document.getElementById("resource_" + idDocument)
+
+                    let selector = item.getElementsByClassName("custom-checkbox-resource")
+                    if (selector && selector.length > 0) {
+                        selector[0].classList.remove('add')
+                        selector[0].classList.add('done')
+                        item.classList.add('seleccionado')
+                        selector[0].getElementsByClassName("material-icons")[0].innerText = "done"
+                    }
+
+                })
+            }
+
+
+            /**
+            * Función que elimina a seleccionados todos los items cargados (En revisión)
+            */
+            function deseleccionarTodos() {
+
+
+                // Añade o quita los elementos seleccionados
+                currentsIds.forEach(idDocument => {
+
+                    let item = document.getElementById("resource_" + idDocument)
+
+                    let selector = item.getElementsByClassName("custom-checkbox-resource")
+                    if (selector && selector.length > 0) {
+                        selector[0].classList.add('add')
+                        selector[0].classList.remove('done')
+                        item.classList.remove('seleccionado')
+                        selector[0].getElementsByClassName("material-icons")[0].innerText = "add"
+                    }
+
+                })
+            }
+
+
+        </script>
+    }
+
+
+}

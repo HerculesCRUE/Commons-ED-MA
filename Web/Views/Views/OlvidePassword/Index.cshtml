@@ -1,0 +1,61 @@
+@*[security|||olvidepassword/index.cshtml|||hercules]*@
+@model OlvidePasswordViewModel
+@{
+    Html.SetBodyClass("layout03 myGnoss");
+}
+
+
+<div id="col02" class="col">
+    <div class="panel-centrado">
+        <h1>@Html.GetText("SOLICITARCAMBIOPASSWORD", "PASSWORDOLVIDADO")</h1>
+        <div class="fieldset">
+            <fieldset class="busquedaEstandar">
+                <div class="fieldsetContent">
+                    <div class="texto-gris-medio">
+                        @Html.Raw(Html.GetText("SOLICITARCAMBIOPASSWORD", "INFO"))
+                    </div>
+                    <div class="form-group">
+                        <label for="userLogin" class="control-label">@Html.GetText("SOLICITARCAMBIOPASSWORD", "NOMBREUSU") </label>
+                        <input placeholder="@Html.GetText("LOGIN", "CONTRASE�A")" type="text" value="" id="userLogin" class="form-control">
+                    </div>
+                    <div id="lblError" class="error-wrap">
+                        <p class="ko"></p>
+                    </div>
+                </div>
+            </fieldset>
+        </div>
+        <div class="fieldset actionButtons">
+            <fieldset>
+                <div class="fieldsetContent">
+                    <input type="button" value="@Html.GetText("SOLICITARCAMBIOPASSWORD", "ENVIAR")" class="submit principal btn btn-primary" id="btnEnviar">
+                </div>
+            </fieldset>
+        </div>
+    </div>
+</div>
+
+
+<script type="text/javascript" language="javascript">
+    $(document).ready(function () {
+        $('#btnEnviar').click(function() {
+
+            if ($('#userLogin').val() == "") {
+                $('#lblError').html('@Html.GetText("SOLICITARCAMBIOPASSWORD", "INTRODUCENOMBREUSU")');
+                $('#lblError').show();
+            }
+            else {
+                MostrarUpdateProgress();
+                $('#lblError').hide();
+                var dataPost = {
+                    User: $('#userLogin').val()
+                }
+
+                GnossPeticionAjax('@Model.Url', dataPost, true).fail(function () {
+                    $('#lblError').html('@Html.GetText("SOLICITARCAMBIOPASSWORD", "NOPOSIBLECAMBIO", Html.GetNombreProyectoEcosistema())');
+                    $('#lblError').show();
+                    OcultarUpdateProgress();
+                });
+            }
+        })
+    })
+</script>

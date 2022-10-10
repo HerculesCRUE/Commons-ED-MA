@@ -1,0 +1,92 @@
+@model ResultadoModel
+@if (Model != null)
+{
+    string clasePrincipal = "listadoRecursos";
+    string claseResource = "resource-list listView";
+
+    if (Model.MapView)
+    {
+        clasePrincipal = "fichaMapa";
+        claseResource = "resource-list mapView";
+    }
+    
+    <div class="@clasePrincipal">
+        <div>
+            @if (Model.NumeroResultadosTotal != -1)
+            {
+                <div id="numResultadosRemover">
+                    <strong>@Model.NumeroResultadosTotal</strong>
+                </div>
+            }
+            <div class="@claseResource">
+                @if (Model.ListaResultados != null && Model.ListaResultados.Count > 0)
+                {
+                    foreach (ObjetoBuscadorModel resultado in Model.ListaResultados)
+                    {
+                        if (resultado is CommunityModel)
+                        {
+                            @Html.PartialView("_ResultadoComunidad", (CommunityModel)resultado)
+                        }
+                        if (resultado is BlogModel)
+                        {
+                            @Html.PartialView("_ResultadoBlog", (BlogModel)resultado)
+                        }
+                        else if (resultado is ResourceModel)
+                        {
+                            if (Model.TipoBusqueda == ResultadoModel.TiposBusquedaMVC.Contribuciones)
+                            { 
+                                @Html.PartialView("_ResultadoRecursoContribuciones", (ResourceModel)resultado)
+                            }
+                            else if (Model.TipoBusqueda == ResultadoModel.TiposBusquedaMVC.EditarRecursosPerfil)
+                            { 
+                                @Html.PartialView("_ResultadoRecursoMisRecursos", (ResourceModel)resultado)
+                            }
+                            else
+                            {
+                                @Html.PartialView("_ResultadoRecurso", (ResourceModel)resultado)
+                            }
+                        }
+                        else if (resultado is ProfileModel)
+                        {
+                            @Html.PartialView("_ResultadoPerfil", (ProfileModel)resultado)
+                        }
+                        else if (resultado is GroupCardModel)
+                        {
+                            @Html.PartialView("_ResultadoGrupo", (GroupCardModel)resultado)
+                        }
+                        else if (resultado is MessageModel)
+                        {
+                            @Html.PartialView("_ResultadoMensaje", (MessageModel)resultado)
+                        }
+                        else if (resultado is CommentSearchModel)
+                        {
+                            if (Model.TipoBusqueda == ResultadoModel.TiposBusquedaMVC.Contribuciones)
+                            { 
+                                @Html.PartialView("_ResultadoComentarioContribuciones", (CommentSearchModel)resultado)}
+                            else
+                            {
+                                @Html.PartialView("_ResultadoComentario", (CommentSearchModel)resultado)
+                            }
+                        }
+                        else if (resultado is InvitationModel)
+                        {
+                            @Html.PartialView("_ResultadoInvitacion", (InvitationModel)resultado)
+                        }
+                        else if (resultado is ContactModel)
+                        {
+                            @Html.PartialView("_ResultadoContacto", (ContactModel)resultado)
+                        }
+                        else if (resultado is PaginaCMSModel)
+                        {
+                            @Html.PartialView("_ResultadoPaginaCMS", (PaginaCMSModel)resultado)
+                        }
+                    }
+                }
+                else
+                {
+                    <p>@Model.TextoSinResultados</p>
+                }
+            </div>           
+        </div>
+    </div>
+}

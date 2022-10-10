@@ -1,0 +1,33 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+  </PropertyGroup>
+  <ItemGroup>
+	  <PackageReference Include="EnterpriseLibrary.Data.NetCore" Version="6.3.2" />
+	  <PackageReference Include="GnossApiWrapper.NetCore" Version="1.0.4" />
+	  <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+	<Reference Include="Es.Riam.Gnoss.Web.MVC.Models, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>Libraries\Es.Riam.Gnoss.Web.MVC.Models.dll</HintPath>
+    </Reference>
+	<Reference Include="Es.Riam.Util, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>Libraries\Es.Riam.Util.dll</HintPath>
+    </Reference>
+	<Reference Include="Es.Riam.Semantica.dll, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>Libraries\Es.Riam.Semantica.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    
+    <Content Include="Libraries\Es.Riam.Gnoss.Web.MVC.Models.dll" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Libraries\Es.Riam.Semantica.dll" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Libraries\Es.Riam.Util.dll" />
+  </ItemGroup>
+  
+</Project>

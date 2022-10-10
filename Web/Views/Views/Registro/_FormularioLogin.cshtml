@@ -1,0 +1,147 @@
+@*[security|||registro/_formulariologin.cshtml|||hercules]*@
+@{
+
+
+    CommunityModel Comunidad = Html.GetComunidad();    
+}
+<main role="main">
+    <div class="container">
+        <div class="row">
+            <div id="col01" class="col">
+                <div class="form formtheme01 formularioRegistroUsuarios panel-centrado">
+                    <h1>@Html.Translate("INI_SESSION") <strong>Hércules</strong></h1>
+                    <div class="box box01">
+                        <form method="post" id="formPaginaLogin" action="@Html.GetUrlActionLogin()">
+                            <div class="fieldset fieldset01">
+                                <fieldset>
+                                    <div class="fieldsetContent">
+                                        <div class="form-group">
+                                            <label for="usuario_Login" class="control-label">@Html.Translate("EMAIL")</label>
+                                            <input placeholder="@Html.GetText("LOGIN", "NOMBREUSUARIOOCORREO")" type="text" name="usuario" id="usuario_Login" class="form-control not-outline">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="password_login" class="control-label">@Html.Translate("PASS")</label>
+                                            <input placeholder="@Html.GetText("LOGIN", "CONTRASEÑA")" type="password" name="password" id="password_login" class="form-control not-outline">
+                                        </div>
+
+                                        <div id="loginError" class="error-wrap">
+                                            <div class="ko">
+                                                <p id="mensajeError">@Html.GetText("LOGIN", "CLAVEERRONEA")</p>
+                                            </div>
+                                        </div>
+                                        <div id="loginErrorAutenticacionExterna" class="error-wrap">
+                                            <div class="ko">
+                                                <p>@Html.GetText("LOGIN", "AUTENTICACIONEXTERNA")</p>
+                                            </div>
+                                        </div>
+                                        <div id="logintwice" class="error-wrap">
+                                            <div class="ko">
+                                                <p id="mensajeErrorLoginTwice">@Html.GetText("LOGIN", "LOGINTWICE", Html.GetSessionTimeout())</p>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </fieldset>
+                            </div>
+                            <div class="fieldset actionButtons fieldset03 actionButtons">
+                                <fieldset>
+                                    <div class="fieldsetContent">
+                                        @{
+                                            string funcion = "if(validarCampos()){MostrarUpdateProgress();}else{ $('#loginError .ko').show();return false;}";
+                                        }
+                                        <a id="olvide_password" class="olvidaste-password" href="@Comunidad.Url/@Html.GetText("URLSEM", "OLVIDEPASSWORD")">@Html.GetText("INICIO", "OLVIDOPASSWORD")</a>
+                                        <div id="acceder_sesion">
+                                            <input class="principal submit btn btn-primary" type="submit" onclick="@funcion" title="@Html.GetText("COMMON", "INICIARSESION")" value="@Html.GetText("COMMON", "INICIARSESION")" class="principal submit" />
+                                        </div>
+										<div>
+											@{											
+												string urlLoginSAML = Html.GetUrlActionLogin().Replace("/login?", "/loginsaml?").Replace("http://", "https://");
+												urlLoginSAML += "&returnUrl=" + Comunidad.Url;
+											}
+											<a href="@urlLoginSAML">Login CAS</a>
+										</div>
+                                    </div>
+                                </fieldset>
+                            </div>
+                        </form>
+
+                        <script type="text/javascript">
+                            $(document).ready(function () {
+
+                                // Elimina elementos no deseados.
+                                $('div.formularioRegistroUsuarios').children("h2").remove();
+                                $('#col01').addClass("col");
+                                $('.box02').remove();
+
+                                if (ObtenerHash() == '#error') {
+                                    mostrarErrores('generico');
+                                } else if (ObtenerHash().indexOf('&') > 0) {
+                                    var mensajeError = ObtenerHash().split('&')[1];
+                                    if (mensajeError != '') {
+                                        mostrarErrores('mensaje', mensajeError);
+                                    }
+                                } else if (document.location.href.endsWith('logintwice')) {
+                                    mostrarErrores('logintwice');
+                                }
+                                if (ObtenerHash() == '#errorAutenticacionExterna') {
+                                    $('#loginErrorAutenticacionExterna .ko').show();
+                                }
+
+                                $('#formPaginaLogin').prop('action', $('#inpt_UrlLogin').val());
+                                $('#usuario_Login').focus();
+                                $('#usuario_Login').keydown(function (event) {
+                                    if (event.which || event.keyCode) {
+                                        if ((event.which == 13) || (event.keyCode == 13)) {
+                                            return false;
+                                        }
+                                    }
+                                });
+                                $('#password_login').keydown(function (event) {
+                                    if (event.which || event.keyCode) {
+                                        if ((event.which == 13) || (event.keyCode == 13)) {
+                                            if ($('#usuario_Login').val() == "" || $('#password_login').val() == "") {
+                                                $('#loginError .ko').css('display', 'block');
+                                                return false;
+                                            }
+                                        }
+                                    }
+                                });
+                            }); function validarCampos() {
+                                return ($('#usuario_Login').val() != '' && $('#password_login').val() != '')
+                            }
+
+                            function mostrarErrores(error, mensajeError = "") {
+                                $('.ko').hide();
+                                var password = $('#usuario_Login').parent();
+                                var email = $('#password_login').parent();
+
+                                password.addClass('invalid');
+                                email.addClass('invalid');
+
+                                switch (error) {
+                                    case 'generico':
+                                        $('#loginError .ko').show();
+                                        break;
+                                    case 'mensaje':
+                                        $('#loginError .ko').show();
+                                        $('#mensajeError').text(mensajeError);
+                                        break;
+                                    case 'logintwice':
+                                        $('#logintwice .ko').show();
+                                        break;
+                                    case 'autenticacion':
+                                        $('#loginErrorAutenticacionExterna .ko').show();
+                                        break;
+                                    default:
+                                        break;
+                                }
+
+                                return false;
+                            }
+                        </script>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>

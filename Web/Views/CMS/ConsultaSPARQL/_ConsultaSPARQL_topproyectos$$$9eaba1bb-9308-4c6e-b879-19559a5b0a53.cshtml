@@ -1,0 +1,120 @@
+@using System.Reflection
+@model CMSComponentQuerySPARQL
+@{
+    CommunityModel Comunidad = Html.GetComunidad();
+    UserIdentityModel IdentidadActual = Html.GetIdentidadActual();
+
+    System.Data.DataTable col = Model.DataSetResult.Tables[0];
+    listaProyects = new List<Proyect>();
+    @foreach (System.Data.DataRow fila in Model.DataSetResult.Tables[0].Rows)
+    {
+        Proyect proyect = new Proyect(fila);
+        listaProyects.Add(proyect);
+    }
+
+
+}
+
+
+@if (Model != null)
+{
+
+
+	<div class="grupo-top">
+		<div class="wrapCol grupo-proyectos">
+			<h2 class="section-title">@Html.Translate("TOP_PROYECTOS")</h2>
+			<div class="resource-list proyectos con-borde">
+				@foreach (Proyect proyect in listaProyects)
+				{
+					<article class="resource resource-grupo">
+						<div class="user-miniatura">
+							@{
+                                string urlProyect =Comunidad.Url+"/"+Html.GetText("URLSEM", "RECURSO")+"/"+ Es.Riam.Util.UtilCadenas.EliminarCaracteresUrlSem(proyect.title)+"/"+proyect.id.Split('_')[1];
+                            }
+							<div class="imagen-usuario-wrap">
+								<a href="@urlProyect" target="_blank" >
+									<div class="imagen sinImagen">
+										<span class="material-icons">work</span>
+									</div>
+								</a>
+							</div>
+							<div class="nombre-usuario-wrap">
+								<a href="@urlProyect" target="_blank">
+									<p class="nombre">@proyect.title</p>
+									<p class="nombre-completo">@proyect.tituloOrg</p>
+								</a>
+							</div>
+						</div>
+					</article>
+				}
+
+				<a href="@Comunidad.Url/@Html.Translate("PROJECTS_URL")" target="_blank" class="ver-mas ver-mas-icono con-icono-after">@Html.Translate("VER_TODOS")</a>
+			</div>
+		</div>
+	</div>
+
+}
+
+
+
+
+@functions
+{
+    public static List<Proyect> listaProyects = new List<Proyect>();
+
+    public class Proyect
+    {
+        public string id { get; set; }
+        public string title { get; set; }
+        public string tituloOrg { get; set; }
+        public string numDoc { get; set; }
+
+        public Proyect()
+        {
+            id = "";
+            title = "";
+            tituloOrg = "";
+            numDoc = "";
+        }
+
+        public Proyect(System.Data.DataRow fila)
+        {
+
+            try
+            {
+                this.id = fila["project"].ToString();
+                this.title = fila["title"].ToString();
+                this.numDoc = fila["numDoc"].ToString();
+
+            } catch (Exception e ) {}
+
+            try
+            {
+                if (!fila.IsNull("tituloOrg"))
+                {
+                    this.tituloOrg = fila["tituloOrg"].ToString();
+                }
+
+            } catch (Exception e ) {}
+
+
+        }
+
+
+        private string GetFecha(string fecha)
+        {
+            if (!string.IsNullOrEmpty(fecha) && fecha.Length == 14)
+            {
+                string anio = fecha.Substring(0, 4);
+                string mes = fecha.Substring(4, 2);
+                string dia = fecha.Substring(6, 2);
+                string hora = fecha.Substring(8, 2);
+                string min = fecha.Substring(10, 2);
+                string segs = fecha.Substring(12, 2);
+                fecha = dia + "/" + mes + "/" + anio + " " + hora + ":" + min + ":" + segs;
+            }
+            return fecha;
+        }
+
+    }
+}

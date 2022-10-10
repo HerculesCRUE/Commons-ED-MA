@@ -1,0 +1,11 @@
+@using Es.Riam.Gnoss.Web.MVC.Models;
+@model CMSComponentSearch
+@if (Model != null)
+{     
+	<div class="resource-list listView">
+	@foreach (ResourceModel fichaModel in Model.Resultado.ListaResultados)
+	{
+		@Html.PartialView(Model.ViewNameResources, fichaModel)
+	}
+	</div>
+}

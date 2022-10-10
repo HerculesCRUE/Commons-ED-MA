@@ -1,0 +1,246 @@
+@using System.Linq;
+@using System.Collections;
+@model CMSComponentQuerySPARQL
+@{ CommunityModel Comunidad = Html.GetComunidad();
+    UserIdentityModel IdentidadActual = Html.GetIdentidadActual();
+}
+
+@if (Model != null)
+{
+    // Html.ObtenerUrlDeDoc()
+    System.Data.DataTable col = Model.DataSetResult.Tables[0];
+    listaClusters = new List<Cluster>();
+    @foreach (System.Data.DataRow fila in Model.DataSetResult.Tables[0].Rows)
+    {
+        if (listaClusters.Count > 0 && listaClusters.Exists(e => e.id == fila["cluster"].ToString()))
+        {
+            listaClusters.Find(e => e.id == fila["cluster"].ToString()).AddPerfil(fila);
+        } else {
+            Cluster cluster = new Cluster(fila);
+            listaClusters.Add(cluster);
+        }
+    }
+
+    @if (!IdentidadActual.IsGuestUser)
+    {
+        <div class="row">
+            <div class="col col-12 col-breadcrumb">
+                <ul>
+                    <li>
+                        <a href="@Comunidad.Url">Home</a>
+                    </li>
+                    <li>
+                        @Model.Title
+                    </li>
+                </ul>
+            </div>
+            <div class="col col-12 col-xl-9 header-listado">
+                <div class="h1-container">
+                    <h1>@Model.Title <span class="numResultados">@listaClusters.Count</span></h1>
+                </div>
+            </div>
+            <div class="col col-12 col-xl-9 col-contenido">
+                <div class="wrapCol">
+                    <div class="resource-list listView resource-list-cluster">
+                        <div class="resource-list-wrap">
+
+
+                            @foreach (Cluster cluster in listaClusters)
+                            {
+                                <article class="resource cluster">
+                                    <div class="wrap">
+                                        <div class="row">
+                                            <div class="col">
+                                                <div class="middle-wrap">
+                                                    <div class="title-wrap">
+                                                        <h2 class="resource-title">
+                                                            @{
+                                                                string urlCom =Comunidad.Url+"/"+Html.GetText("URLSEM", "RECURSO")+"/"+ Es.Riam.Util.UtilCadenas.EliminarCaracteresUrlSem(cluster.title)+"/"+cluster.id.Split('_')[1];
+                                                            }
+                                                            <a href="@urlCom" target="_blank">@cluster.title</a>
+                                                        </h2>
+                                                    </div>
+                                                    <div class="content-wrap">
+                                                        <div class="description-wrap counted">
+                                                            <div class="list-wrap">
+                                                                <ul>
+                                                                    <li class="font-weight-bold">@cluster.fecha</li>
+                                                                </ul>
+                                                            </div>
+                                                            @foreach (Perfil profile in cluster.profiles) 
+                                                            {
+                                                                <div class="list-wrap authors">
+                                                                    <div class="label">@profile.title</div>
+
+                                                                    @if (profile.researchers.Count > 0) {
+                                                                        <ul>
+                                                                        @foreach (User user in profile.researchers.Distinct()) 
+                                                                        {
+                                                                            if (user.id != "" && user.name != "" && !user.id.StartsWith("http://gnoss"))
+                                                                            {
+                                                                                string url =Comunidad.Url+
+                                                                                "/"+Html.GetText("URLSEM", "RECURSO")+"/"+ Es.Riam.Util.UtilCadenas.EliminarCaracteresUrlSem(user.name)+"/"+user.id;
+                                                                                <li>
+                                                                                    <a href="@url" target="_blank">@user.name</a>
+                                                                                </li>    
+                                                                            }
+                                                                                
+                                                                        }
+                                                                        </ul>
+                                                                    }
+                                                                    
+                                                                </div>
+                                                            }
+                                                            <div class="desc" style="overflow: hidden; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; text-overflow: ellipsis;">
+                                                                <p>@cluster.description</p>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-auto">
+                                                <div class="acciones-ficha-wrap">
+                                                    <ul class="no-list-style d-flex">
+                                                        <li>
+                                                            <a class="btn btn-outline-grey d-none d-xl-flex" target="_blank" href="@Comunidad.Url/nuevo-cluster?id=@cluster.id">
+                                                                <span class="material-icons">edit</span>
+                                                                <span>Editar</span>
+                                                            </a>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </article>
+
+                            }
+
+                        </div>
+                    </div>
+                    @*<div class="cargando">
+                        <p class="loading">Cargando resultados...</p>
+                    </div>*@
+                </div>
+            </div>
+        </div>
+    }
+
+
+}
+
+@functions
+{
+    public static List<Cluster> listaClusters = new List<Cluster>();
+
+    public class Cluster
+    {
+        public string id { get; set; }
+        public string fecha { get; set; }
+        public string description { get; set; }
+        public string title { get; set; }
+        public List<Perfil> profiles { get; set; }
+
+        public Cluster()
+        {
+            id = "";
+            fecha = "";
+            description = "";
+            title = "";
+            profiles = new();
+        }
+
+        public Cluster(System.Data.DataRow fila)
+        {
+            Perfil nperfil = new();
+            nperfil.researchers = new();
+            // Add perfil
+            this.profiles = new();
+
+            try
+            {
+                if (!fila.IsNull("perfil"))
+                {
+                    nperfil.id = fila["perfil"].ToString();
+                    if (!fila.IsNull("perfilTitle"))
+                    {
+                        nperfil.title = fila["perfilTitle"].ToString();
+                    }
+                    if (!fila.IsNull("perfilUsers"))
+                    {
+                        var researchers = fila["perfilUsers"].ToString().Split(",").ToList();
+                        nperfil.researchers = researchers.Select(e => new User() {  id= e.Split('@')[1].Replace("http://gnoss/",""), name= e.Split('@')[0]}).ToList();
+                    }
+                }
+
+            } catch(Exception e) { }
+
+            try
+            {
+                if (!fila.IsNull("description"))
+                {
+                    this.description = fila["description"].ToString();
+                }
+            } catch(Exception e) { }
+
+
+            this.profiles.Add(nperfil);
+
+            this.id = fila["cluster"].ToString();
+            this.fecha = GetFecha(fila["fecha"].ToString());
+            this.title = fila["title"].ToString();
+        }
+
+        public void AddPerfil (System.Data.DataRow fila) 
+        {
+            Perfil nperfil = new();
+            nperfil.researchers = new();
+            try
+            {
+                if (!fila.IsNull("perfil"))
+                {
+                    nperfil.id = fila["perfil"].ToString();
+                    if (!fila.IsNull("perfilTitle"))
+                    {
+                        nperfil.title = fila["perfilTitle"].ToString();
+                    }
+                    if (!fila.IsNull("perfilUsers"))
+                    {
+                        var researchers = fila["perfilUsers"].ToString().Split(",").ToList();
+                        nperfil.researchers = researchers.Select(e => new User() {  id= e.Split('@')[1].Replace("http://gnoss/",""), name= e.Split('@')[0]}).ToList();
+                }
+                    this.profiles.Add(nperfil);
+                }
+            }
+            catch (Exception e) { }
+        }
+
+        private string GetFecha(string fecha)
+        {
+            if (!string.IsNullOrEmpty(fecha) && fecha.Length == 14)
+            {
+                string anio = fecha.Substring(0, 4);
+                string mes = fecha.Substring(4, 2);
+                string dia = fecha.Substring(6, 2);
+                string hora = fecha.Substring(8, 2);
+                string min = fecha.Substring(10, 2);
+                string segs = fecha.Substring(12, 2);
+                fecha = dia + "/" + mes + "/" + anio + " " + hora + ":" + min + ":" + segs;
+            }
+            return fecha;
+        }
+    }
+    
+    public class Perfil
+    {
+        public string id { get; set; }
+        public string title { get; set; }
+        public List<User> researchers { get; set; }
+    }
+
+    public class User
+    {
+        public string id { get; set; }
+        public string name { get; set; }
+    }
+}

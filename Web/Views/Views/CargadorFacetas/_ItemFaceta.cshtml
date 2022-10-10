@@ -1,0 +1,44 @@
+@model FacetItemModel
+@if (Model != null)
+{
+    <li>
+        @{ string clase = "faceta";
+            if (Model.Selected)
+            {
+                clase += " applied con-subfaceta";
+            }
+            else
+            {
+                clase += " con-subfaceta ocultarSubFaceta";
+            }
+        }
+        <a rel="nofollow" href="@Model.Filter" class="@clase" name="@Model.Name" title="@Model.Tittle">
+            @if (Model.FacetItemlist != null && Model.FacetItemlist.Count > 0)
+            {
+                if (Model.Selected)
+                {
+                    <span class="desplegarSubFaceta">
+                        <span class="material-icons">remove</span>
+                    </span>
+                }
+                else
+                {
+                    <span class="desplegarSubFaceta">
+                        <span class="material-icons">add</span>
+                    </span> 
+                }
+            }
+            <span class="textoFaceta">@Model.Tittle</span>
+            <span class="num-resultados">@(Model.Number >= 0?"(" + Model.Number + ")":"")</span>
+        </a>
+        @if (Model.FacetItemlist != null && Model.FacetItemlist.Count > 0)
+        {
+            <ul>
+                @foreach (FacetItemModel item in Model.FacetItemlist)
+                {
+                    @Html.PartialView("_ItemFaceta", item)
+                }
+            </ul>
+        }
+    </li>
+}

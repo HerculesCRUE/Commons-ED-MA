@@ -1,0 +1,14 @@
+@{ CommunityModel Comunidad = Html.GetComunidad();
+    UserIdentityModel IdentidadActual = Html.GetIdentidadActual();
+    string avisoCookies = Html.GetCookiesWarning();
+    UserProfileModel perfil = Html.GetPerfil();
+}
+
+<div class="col col-12 col-breadcrumb">
+    <ul>
+        <li>
+            <a href="@Comunidad.Url">@Html.Translate("HOME")</a>
+        </li>
+        <li>@Html.GetTituloPagina()</li>
+    </ul>
+</div>

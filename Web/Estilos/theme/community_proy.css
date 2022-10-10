@@ -1,0 +1,781 @@
+.highlight {
+    background-color: lightyellow;
+}
+
+.facetas-wrap .fechaDesdeHasta .filtroFacetaFecha {
+	width: calc(50% - 6px);
+}
+
+.candado-wrapper { padding-left: 14px; }
+.candado::before { content: 'lock'; font-size: 1.4rem; /*color: #ababab;*/ }
+.candado-activo::before { content: 'lock_open'; font-size: 1.4rem;/* color: #00a8ff; */}
+.manage-history-wrapper { padding-left: 14px; color: var(--c-texto-claro); }
+.verified-wrapper { padding-left: 14px; color: var(--c-texto-claro); }
+
+
+/**
+ * Folder and file css for research Object code item
+ */
+
+.gitHubFolder {
+    padding: 5px;
+    border: 1px solid var(--c-gris-borde);
+    margin-top: 10px;
+}
+
+.gitHubFolder .title {
+    font-size: 1.3rem;
+    margin-bottom: 4px;
+    background-color: var(--c-gris-fondo);
+    padding: 2px 10px;
+}
+
+.gitHubFolder .title a {
+    color: var(--c-texto);
+}
+
+.gitHubFolder .link {
+    padding: 2px 10px;
+}
+
+ul.folderStructure {
+    list-style: none;
+    padding-left: 10px;
+}
+
+ul.folderStructure > li {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    padding: 3px 0;
+}
+
+ul.folderStructure > li span {
+    width: 20px;
+    height: 20px;
+    display: block;
+    margin-right: 5px;
+    background-size: contain;
+}
+
+ul.folderStructure > li.folder span {
+	background-image: url(resources/iconos/folder-1.svg);
+}
+
+ul.folderStructure > li.file span {
+	background-image: url(resources/iconos/file-icon.svg);
+}
+
+
+/*
+ Readme file
+*/
+.gitHubReadmeMDFIle {
+    padding: 0px;
+    border: 1px solid var(--c-gris-borde);
+    margin-top: 15px;
+}
+
+.gitHubReadmeMDFIle .filename {
+    font-size: 1rem;
+    margin-bottom: 4px;
+    border-bottom: 1px solid var(--c-gris-fondo);
+    padding: 8px 12px;
+}
+
+.gitHubReadmeMDFIle .file-text {
+    padding: 16px 30px;
+}
+
+
+/*
+ Markdown style body
+*/
+
+.markdown-body>*:first-child {
+    margin-top: 0 !important;
+}
+
+.markdown-body h1, .markdown-body h2, .markdown-body h3, .markdown-body h4, .markdown-body h5, .markdown-body h6 {
+    margin-top: 24px;
+    margin-bottom: 16px;
+    font-weight: 600;
+    line-height: 1.25;
+}
+
+.markdown-body h1 {
+    padding-bottom: .3em;
+    font-size: 2em;
+    border-bottom: 1px solid var(--c-gris-borde);
+}
+
+.markdown-body h2 {
+    padding-bottom: .3em;
+    font-size: 1.5em;
+    border-bottom: 1px solid var(--c-gris-borde);
+}
+
+.markdown-body h3 {
+    font-size: 1.25em;
+}
+
+.markdown-body h4 {
+    font-size: 1em;
+}
+
+.markdown-body h5 {
+    font-size: .875em;
+}
+
+.markdown-body hr, .markdown-body .rule {
+    box-sizing: content-box;
+    overflow: hidden;
+    background: transparent;
+    height: .25em;
+    padding: 0;
+    margin: 24px 0;
+    background-color: var(--c-gris-borde);
+    border: 0;
+}
+
+.markdown-body .highlight pre {
+    margin-bottom: 0;
+    word-break: normal;
+}
+
+.markdown-body p, .markdown-body blockquote, .markdown-body ul, .markdown-body ol, .markdown-body dl, .markdown-body table, .markdown-body pre, .markdown-body details {
+    margin-top: 0;
+    margin-bottom: 16px;
+}
+
+
+.markdown-body .highlight pre, .markdown-body pre {
+    word-wrap: normal;
+    font-family: ui-monospace,SFMono-Regular,SF Mono,Menlo,Consolas,Liberation Mono,monospace;
+    padding: 16px;
+    overflow: auto;
+    font-size: 85%;
+    line-height: 1.45;
+    background-color: var(--c-gris-fondo);
+    border-radius: 6px;
+}
+
+
+/*
+ Tooltip code
+*/
+
+.code-lang-tooltip.tooltip .tooltip-inner {
+    max-width: 230px; 
+}
+
+/*
+ Dots of languages of programming
+*/
+
+.code-tooltip .value {
+    overflow: hidden;
+    white-space:nowrap;
+    text-overflow: ellipsis;
+    width: 100%;
+}
+
+.group-wrap.div4 .bloque.code-tooltip {
+    max-width: calc(100% / 4);
+}
+
+/*
+ Header navegation hidden
+*/
+
+#navegacion-recurso-fixed {
+    display: none;
+}
+
+body.listado #navegacion-recurso-fixed, body.homeComunidad #navegacion-recurso-fixed {
+    display: flex;
+}
+
+header .row .col.col02 .col-buscador {
+    display: block;
+}
+
+.icono-work.con-icono-before:before { content: 'work'; }
+.icono-group.con-icono-before:before { content: 'groups'; }
+.icono-offer.con-icono-before:before { content: 'engineering'; }
+
+a.faceta.applied{
+	font-weight: 700!important;
+}
+
+/* Cluster */
+.edicionCluster .formulario-edicion .panel-heading .conteditborrbtn {
+    display: inline-flex;
+    font-size: 15px;
+    font-weight: 400;
+    position: absolute;
+    top: -5px;
+    right: 0;
+}
+
+.edicionCluster .formulario-edicion .panel-heading .btn {
+    display: inline-flex !important;
+    font-size: 15px;
+    font-weight: 400;
+    position: relative !important;
+    top: initial !important;
+    right: initial !important;
+    margin-left: 5px;
+}
+
+.edicionCluster .modal-apc-listado-saved {
+    max-height: 250px;
+}
+
+.edicionCluster .modal-apc-listado-saved input.at-input:disabled + label{
+    text-decoration:line-through
+}
+
+.edicionCluster .modal-apc-listado-saved label .cluster{
+    font-style: italic;
+    padding-left: 20px;
+}
+
+.edicionCluster .modal-apc-listado-saved label .cluster::before {
+    content: "-";
+    display: inline;
+    width: 6px;
+    height: 6px;
+    left: -4px;
+    padding-right: 21px;
+}
+
+
+/* Fin edición cluster */
+
+/* Estilos para la cabecera */
+.user-miniatura .imagen-usuario-wrap .imagen span{
+    color: var(--c-blanco);
+}
+
+.graph-controls-menu {
+    display: flex;
+    position: relative;
+    flex-direction: column;
+    flex-wrap: nowrap;
+}
+
+
+/* Estilos para los usuarios de oferta tecnológica */
+
+.edicionOfertaTecnologica .resource-list.listView:not(.list-con-checks) .resource .wrap {
+    margin-left: 35px;
+}
+
+.edicionOfertaTecnologica .resource-list.resource-list-buscador .resource .wrap .title-wrap {
+    padding-left: 0;
+}
+
+.edicionOfertaTecnologica .resource-list.resource-list-buscador .resource .wrap .description-wrap {
+    padding-left: 0;
+}
+
+.edicionOfertaTecnologica .resource-list.listView .resource.publicacion .wrap > .middle-wrap,
+.edicionOfertaTecnologica .resource-list.listView .resource.proyecto .wrap > .middle-wrap {
+    padding-left: 35px;
+    width: 100%;
+}
+
+.edicionoferta .user-miniatura .imagen-usuario-wrap .imagen .material-icons {
+    color: #000;
+    font-size: 45px;
+}
+
+.resource.seleccionado .user-miniatura .imagen-usuario-wrap span.material-icons {
+    color: var(--c-primario);
+}
+
+body.listado.vista-grafico #navegacion-recurso-fixed, body.homeComunidad #navegacion-recurso-fixed {
+    display: none;
+}
+
+.edicionoferta .user-miniatura .imagen-usuario-wrap .imagen.con-material-icons {
+    overflow: hidden;
+    height: 40px;
+    width: 45px;
+    border-radius: 50%;
+    justify-content: center;
+    align-items: center;
+    display: flex;
+}
+
+.edicionOfertaTecnologica .botonera.bottom {
+    bottom: 0;
+    top: initial;
+    position: relative;
+    float: right;
+    margin-top: 15px;
+}
+
+/* Ocultar faceta "estado de la oferta" y "responsable de la oferta" en el listado */
+body.comunidad.listado.buscador-ofertas-tecnologicas #in_schema_availability---dc_title,
+body.comunidad.listado.buscador-ofertas-tecnologicas #in_schema_offeredBy---foaf_name {
+    display: none;
+}
+
+/* Ocultar estado "estado de la oferta" en el listado */
+body.comunidad.listado.buscador-ofertas-tecnologicas .resource-list.resource-list-buscador .resource .middle-wrap .title-wrap .indicador,
+body.comunidad.listado.buscador-ofertas-tecnologicas .resource-list.resource-list-buscador .resource .middle-wrap .title-wrap .acciones-recurso-listado {
+    display: none;
+}
+
+
+/* Fin Estilos para los usuarios de oferta tecnológica */
+
+/* Estilos para la ficha de oferta tecnológica */
+.fichaRecurso-ofertas-tecnologicas .resource-list-wrap .user-miniatura .imagen-usuario-wrap .imagen span {
+    color: var(--c-texto);
+    margin-top: -10px;
+    font-size: 3rem;
+}
+
+.resource.offer .desc div, .fichaRecurso-ofertas-tecnologicas .desc div {
+    font-size: 1rem;
+    font-weight: 300;
+    line-height: 1.47;
+    /*color: var(--c-texto-claro);*/
+    margin-bottom: 15px;
+    color: #444;
+}
+
+.fichaRecurso-ofertas-tecnologicas .desc div {
+    color: var(--c-texto-claro);
+}
+
+.resource.offer .desc li, .fichaRecurso-ofertas-tecnologicas .desc li {
+    color: #444;
+    font-size: 1rem;
+    font-weight: 300;
+    line-height: 1.47;
+}
+
+.fichaRecurso-ofertas-tecnologicas .desc li {
+    color: var(--c-texto-claro);
+    margin-bottom: 0;
+}
+
+/* Fin Estilos para la ficha de oferta tecnológica */
+
+
+/**
+ * Home MA
+ */
+
+.home-ma .buscador-container .info-recursos .item a.titulo {
+    font-size: 13px;
+    font-weight: 400;
+    letter-spacing: .26px;
+    color: var(--c-texto-claro);
+    text-decoration: none;
+    display: block;
+    transition: all ease .3s;
+}
+
+.home-ma .buscador-container .info-recursos .item a.titulo:hover {
+    color: var(--c-primario);
+    text-decoration: underline;
+}
+
+
+.home-ma .buscador-container .info-recursos .item {
+    flex: 0 0 calc(100% / 6 - 16px);
+    margin: 0 8px;
+}
+
+/** 
+@media (min-width: 992px) {
+    .home-ma .buscador-container {
+        left: calc(20% / 2);
+        width: 80%;
+    }
+}
+*/
+
+
+.pchild-0 > * {
+    padding: 0 !important;
+}
+
+/* Ficha grupos y personas - grafica */
+.home-ma .buscador-container .info-recursos .item {
+    transition: opacity ease 0.3s;
+}
+
+
+body.homeComunidad #col01 {
+    margin-top: 0;
+}
+
+
+.dataSetLabels .labelContainer.tachado {
+    text-decoration: line-through;
+    opacity: 0.5;
+    transition: all ease 0.3s;
+}
+
+.grafico-wrap .chartLegend {
+    top: 10px;
+}
+.grafico-wrap .chart-publicaciones {
+    height: 400px;
+}
+.grafico-wrap .chartLegend .dataSetLabels {
+    background-color: var(--c-gris-fondo);
+}
+@media (min-width: 1200px) {
+    header .row .col.col03 > ul li.buscar a span {
+        display: none;
+    }
+    .listado.scrolling header .col03 ul li:not(.nuevo) {
+        display: flex;
+        margin:0;
+    }
+}
+
+.home-ma .destacado .box.content .group.contenido.lista {
+    margin-top: 1rem;
+    font-size: 13px;
+    font-weight: 400;
+    letter-spacing: .26px;
+    color: var(--c-texto-claro);
+}
+
+.home-ma .destacado .box.content .group.contenido.lista ul {
+    list-style: none;
+    padding-left: 0;
+}
+
+.home-ma .destacado .box.content .group.contenido.lista .material-icons {
+    font-size: 21px;
+}
+
+.home-ma .destacado .box.content .group.contenido.lista a {
+    line-height: 21px;
+    display: inline-block;
+    padding-left: 5px;
+    vertical-align: super;
+    color: var(--c-texto-claro);
+
+}
+
+.home-ma .destacado .box.content .group.contenido.lista a:hover {
+    color: var(--c-primario);
+
+}
+
+
+/**
+ * End Home MA
+ */
+
+
+/*
+* Buscador Ofertas tecnológicas
+*/
+
+/*.home-ma .destacado .box.content .group.contenido {
+    height: 96px;
+    -webkit-line-clamp: 5;
+}*/
+
+
+.buscador-ofertas-tecnologicas .resource-list.resource-list-buscador .resource .middle-wrap,
+.gestorOfertaTech .resource-list.resource-list-buscador .resource .middle-wrap {
+    margin-bottom: 0;
+        flex: calc(100% - 42px);
+}
+
+.buscador-ofertas-tecnologicas .resource-list .resource.offer .middle-wrap .title-wrap .resource-title:before,
+.gestorOfertaTech .edicionOfertaTecnologica .resource-list .resource.offer .middle-wrap .title-wrap .resource-title:before {
+    content: '';
+}
+
+.buscador-ofertas-tecnologicas .resource-list.listView .resource .wrap,
+.gestorOfertaTech .edicionOfertaTecnologica  .resource-list.listView .resource .wrap {
+    display: flex;
+    flex-wrap: wrap;
+    border-bottom: 0;
+    justify-content: center;
+    /* width: 100%; */
+}
+
+
+.buscador-ofertas-tecnologicas .resource-list.listView .resource .wrap > div,
+.gestorOfertaTech .edicionOfertaTecnologica .resource-list.listView .resource .wrap > div 
+{
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--c-negro);
+    padding: 10px 0;
+    padding-bottom: 0;
+    align-self: flex-start;
+}
+
+
+.buscador-ofertas-tecnologicas .resource-list.listView .resource .wrap,
+.gestorOfertaTech .edicionOfertaTecnologica .resource-list.listView .resource .wrap {
+    display: flex;
+    flex-wrap: wrap;
+    border-bottom: 0;
+}
+
+.buscador-ofertas-tecnologicas .resource-list.listView:not(.list-con-checks) .resource .wrap,
+.gestorOfertaTech .edicionOfertaTecnologica .resource-list.listView:not(.list-con-checks) .resource .wrap {
+    margin-left: 35px;
+}
+
+.noMiniUser .user-miniatura {
+    display: none;
+}
+
+
+
+/* ETIQUETAS */
+/*.panFiltros { padding-bottom: 15px; width: 100%; }*/
+/*.panFiltros { padding-bottom: 10px; width: 100%; margin-bottom: -3px; }
+.panFiltros ul { margin: 0; padding: 0; display: inline-flex; flex-wrap: wrap; }
+.panFiltros ul li { margin-right: 3px; margin-bottom: 3px; background: #6d6d6d; list-style: none; height: 38px; line-height: 38px; padding-left: 23px; font-weight: 500; color: var(--c-blanco); font-size: 1rem; position: relative; padding-right: 54px; border: 0; }
+.panFiltros ul li.borrarFiltros-wrap { margin-right: 5px; margin-bottom: 2px; background: transparent; padding-left: 0px; padding-right: 0px; border: 0; }
+.panFiltros ul li a { font-size: 0; position: absolute; top: 0; right: 0; bottom: 0; }
+.panFiltros ul li a:before { font-family: 'Material Icons'; content: '\E5CD'; display: block; font-size: 1.5rem; color: var(--c-blanco); height: 38px; line-height: 38px; width: 38px; text-align: center; background: rgba(0,0,0,.2); }
+.panFiltros ul li a:hover { text-decoration: none; }
+.panFiltros .borrarFiltros { display: inline-flex; align-items: center; color: var(--c-blanco); font-size: 0; height: 38px; line-height: 38px; padding: 0; text-decoration: none; white-space: nowrap; vertical-align: middle; background-color: var(--c-negro); opacity: 0.1; position: relative; margin-left: 10px; }
+.panFiltros .borrarFiltros:after { content: ''; width: 21px; height: 21px; background-color: var(--c-negro); transform: rotate(45deg) skew(15deg, 15deg); position: absolute; top: 8px; left: -10px; }
+.panFiltros .borrarFiltros:before { content: '\E5CD'; font-family: 'Material Icons'; font-size: 1.5rem; }*/
+/*  */
+
+/* ETIQUETAS PARA MENSAJERIA */
+/*.divFiltros { padding: 0; padding-top: 20px; width: 100%; }
+.divFiltros ul { margin: 0; padding: 0; display: inline-flex; flex-wrap: wrap; }
+.divFiltros ul li { margin-right: 5px; margin-bottom: 2px; background: #6d6d6d; list-style: none; height: 38px; line-height: 38px; padding-left: 23px; font-weight: 500; color: var(--c-blanco); font-size: 1rem; position: relative; padding-right: 54px; border: 0; }
+.divFiltros ul li.borrarFiltros-wrap { margin-right: 5px; margin-bottom: 2px; background: transparent; padding-left: 0px; padding-right: 0px; border: 0; }
+.divFiltros ul li a { font-size: 0; position: absolute; top: 0; right: 0; bottom: 0; }
+.divFiltros ul li a:before { font-family: 'Material Icons'; content: '\E5CD'; display: block; font-size: 1.5rem; color: var(--c-blanco); height: 38px; line-height: 38px; width: 38px; text-align: center; background: rgba(0,0,0,.2); }
+.divFiltros ul li a:hover { text-decoration: none; }
+.divFiltros .borrarFiltros { display: inline-flex; align-items: center; color: var(--c-blanco); font-size: 0; height: 38px; line-height: 38px; padding: 0; text-decoration: none; white-space: nowrap; vertical-align: middle; background-color: var(--c-negro); opacity: 0.1; position: relative; margin-left: 10px; }
+.divFiltros .borrarFiltros:after { content: ''; width: 21px; height: 21px; background-color: var(--c-negro); transform: rotate(45deg) skew(15deg, 15deg); position: absolute; top: 8px; left: -10px; }
+.divFiltros .borrarFiltros:before { content: '\E5CD'; font-family: 'Material Icons'; font-size: 1.5rem; }*/
+/**/
+
+
+
+/* PAGINADOR LISTADO */
+/*.panNavegador { margin-top: 115px; padding-right: 52px; }
+.panNavegador .pagination { align-items: center; justify-content: flex-end; }
+.panNavegador .pagination li { border: 1px solid rgba(86, 106, 116, 0.24); margin-right: 1px; padding: 2px 11px; }
+.panNavegador .pagination li a { font-size: 0.875rem; font-weight: 300; color: var(--c-negro); white-space: nowrap; }
+.panNavegador .pagination li .actual { font-weight: 500; }
+
+@media (max-width: 767px) {
+    .panNavegador { padding: 0 8px; }
+}*/
+/**/
+
+.tooltip.cuartiles > .tooltip-inner { max-width: 1000px; }
+
+.tooltip > .tooltip-inner table tr td {
+    font-size: .933rem;
+    font-weight: 300;
+    color: var(--c-texto-claro);
+	padding-right:10px
+}
+.tooltip > .tooltip-inner table tr th {
+    font-size: .933rem;
+    font-weight: 600;
+    color: var(--c-texto-claro);
+	padding-right:10px
+}
+
+.quartileTooltip,.impactFactorTooltip {
+    line-height: 24px;
+    margin-left: 10px;
+    color: var(--c-texto-claro);
+    cursor: pointer;
+}
+
+.impactFactorTooltip:before {
+    content: 'show_chart';
+    font-family: 'Material Icons';
+    font-size: 1.6rem;
+}
+
+.quartileTooltip p,.impactFactorTooltip p {
+    padding-left: 5px;
+    margin-bottom: 0;
+}
+.tab-paneles-alertas .nav-tabs .nav-item .nav-link .badge {
+    width: fit-content;
+    padding-left: 10px;
+    padding-right: 10px;
+}
+.tab-paneles-alertas .resource-list .resource .middle-wrap .title-wrap .resource-title a {
+    vertical-align: unset;
+}
+.resource-list .resource .middle-wrap .title-wrap .resource-title:before {
+    top: 0px;
+}
+
+#modal-posible-duplicidad .title-wrap .btn-secondary{
+	height: 23px;
+	margin-right: 15px;
+}
+
+.acciones-listado.acciones-curriculum .gestionar-duplicados{
+	height: 30px;
+	margin-right: 15px;
+}
+
+span.informationTooltip::after {
+    content: '\e88e';
+}
+.infoTooltipMargin {
+    margin: 5px;
+}
+
+/* CITAS */
+div#idTextoCita {
+    border: 1px solid var(--c-gris-borde);
+    padding: 10px 20px;
+    margin-top: 5%;
+}
+
+/**
+* Anotaciones
+*/
+
+.resource-list .resource.resource-annotation .middle-wrap .title-wrap .resource-title:before {
+    content: 'edit_note';
+}
+.bloque-id{
+    padding-left: 10px;
+}
+
+/**
+* ROs vinculados
+*/
+
+
+.contenedorBuscadorResearchObjectsModal .listadoRecursos .resource h2.resource-title::after {
+    display: flex;
+    content: "+";
+    width: 22px;
+    height: 22px;
+    position: absolute;
+    left: -66px;
+    /* background: #28a745; */
+    border: 1px solid #6666;
+    color: #666;
+    align-content: center;
+    justify-content: center;
+    flex-wrap: nowrap;
+    font-size: 1.3rem;
+    top: -2px;
+    transition: all ease 0.3;
+}
+
+.contenedorBuscadorResearchObjectsModal .resource-list.listView .resource .wrap {
+    margin-left: 70px;
+}
+
+.contenedorBuscadorResearchObjectsModal .listadoRecursos .resource h2.resource-title:hover::after {
+    border: 1px solid var(--c-primario);
+    color: var(--c-primario);
+}
+
+
+.resource-list .resource.rolinked .middle-wrap .content-wrap .description-wrap .desc {
+    overflow: hidden;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    text-overflow: ellipsis;
+}
+
+/*.resource-list .resource.rolinked .middle-wrap .title-wrap .resource-title:before {
+    content: 'link';
+}*/
+
+
+div.row.upper-row div.menu-logo-wrapper > div.menu-toggle > a.texto-blanco {
+    display: flex;
+}
+
+.modal-vinvular-ro .resource-list .resource .middle-wrap .title-wrap .resource-title.visibility_off:before {
+    content: 'visibility_off';
+}
+
+.modal-vinvular-ro .resource-list .resource .middle-wrap .title-wrap .resource-title.visibility:before {
+    content: 'visibility';
+}
+
+.modal-vinvular-ro .title_list {
+    margin: auto -7px;
+}
+
+
+
+/** 
+ * HOME ED 
+ */
+
+/* Default */
+.menuLateral.usuario .menuUsuario .group-collapse ul li.liDefault:after {
+    content: "\e2c8";
+}
+
+.menuLateral.usuario .menuUsuario .group-collapse ul li.liCluster:after {
+    content: 'workspaces';
+    font-family: 'Material Icons';
+    background: var(--c-texto-claro);
+    color: var(--c-blanco) !important;
+    border-radius: 50%;
+    font-size: 16px;
+    height: 20px;
+    width: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    top: 1px;
+}
+
+.menuLateral.usuario .menuUsuario .group-collapse ul li.liConfiguracion:after {
+    content: "settings";
+}
+
+.menuLateral.usuario .menuUsuario .group-collapse ul li.liOffer:after {
+    content: "engineering";
+}
+
+.menuLateral.usuario .menuUsuario .group-collapse ul li.liIndicadores:after {
+    content: "bar_chart";
+}
+
+.menuLateral.usuario .cabeceraUsuario .imagen-usuario.default {
+    background-size: contain;
+    background-repeat: no-repeat;
+}
+
+/**
+ * Alertas en general (También en la HomeED)
+ */
+
+.tab-paneles-alertas .resource-list .resource .middle-wrap .title-wrap .resource-title {
+    font-size: 1rem;
+}
+
+.tab-paneles-alertas .resource-list .resource .wrap {
+    padding-bottom: 0px;
+}
+
+div#toast-container{
+	margin-top: 75px;
+}

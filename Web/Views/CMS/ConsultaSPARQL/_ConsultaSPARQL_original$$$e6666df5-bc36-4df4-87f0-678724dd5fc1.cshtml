@@ -1,0 +1,13 @@
+@model CMSComponentQuerySPARQL
+@if (Model != null)
+{
+    foreach (System.Data.DataRow fila in Model.DataSetResult.Tables[0].Rows)
+    {
+        for(int i=0;i<Model.DataSetResult.Tables[0].Columns.Count;i++)
+        {
+            string NombreColumna=Model.DataSetResult.Tables[0].Columns[i].ColumnName;
+            string ValorColumna=fila[i].ToString();
+            <p>@NombreColumna: @ValorColumna</p>
+        }        
+    }
+}

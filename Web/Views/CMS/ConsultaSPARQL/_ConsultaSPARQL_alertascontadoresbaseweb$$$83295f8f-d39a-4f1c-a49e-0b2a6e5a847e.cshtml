@@ -1,0 +1,76 @@
+@model CMSComponentQuerySPARQL
+@if (Model != null)
+{
+    CommunityModel Comunidad = Html.GetComunidad();
+    string versionCSS = ViewBag.Version;
+    if (Comunidad.VersionCSS.HasValue)
+    {
+        versionCSS += "-" + Comunidad.VersionCSS.Value.ToString();
+    }
+    string urlPersonalizacion = Html.GetBaseUrlContent() + "/imagenes/proyectos/personalizacion/" + Comunidad.Key.ToString();
+
+    Dictionary<string, int> dicNumAlertas = new Dictionary<string, int>();
+    dicNumAlertas.Add("Publication", 0);
+    dicNumAlertas.Add("Proyecto", 0);
+    dicNumAlertas.Add("Datos", 0);
+    int numTotalAlertas = 0;
+
+    foreach (System.Data.DataRow fila in Model.DataSetResult.Tables[0].Rows)
+    {
+        string tipo = fila["type"].ToString();
+        string numNot= fila["numNot"].ToString();
+        int val = 0;
+        int.TryParse(numNot,out val);
+        if (dicNumAlertas.ContainsKey(tipo))
+        {
+            dicNumAlertas[tipo] += val;
+            numTotalAlertas += val;
+        }
+    }
+<script type="text/javascript" src="@urlPersonalizacion/theme/alertas.js?v=@Html.Translate("VERSION_CSS_JS")"></script>
+    <div class="wrapCol">
+        <div class="header-contenido">
+            <div class="h1-container">
+                <h1>Alertas <span class="numResultados">@numTotalAlertas</span></h1>
+            </div>
+        </div>
+        <div class="tab-paneles-alertas">
+            <ul class="nav nav-tabs" id="navegacion-alertas" role="tablist">
+                <li class="nav-item" role="presentation">
+                    <a class="nav-link active" id="incorporar-tab" data-toggle="tab" href="#incorporar-panel" role="tab" aria-controls="incorporar-panel" aria-selected="true" rel="Publication">Incorporar a CV <span class="badge">@dicNumAlertas["Publication"]</span></a>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <a class="nav-link" id="validar-tab" data-toggle="tab" href="#validar-panel" role="tab" aria-controls="validar-panel" aria-selected="true" rel="Proyecto">Validar enriquecimiento <span class="badge">@dicNumAlertas["Proyecto"]</span></a>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <a class="nav-link" id="notificaciones-tab" data-toggle="tab" href="#notificaciones-panel" role="tab" aria-controls="notificaciones-panel" aria-selected="true" rel="Datos">Notificaciones Universidad <span class="badge">@dicNumAlertas["Datos"]</span></a>
+                </li>
+            </ul>
+            <div class="tab-content" id="paneles-alertas">
+                <div class="tab-pane fade show active" id="incorporar-panel" role="tabpanel" aria-labelledby="incorporar-tab">
+                    <div class="resource-list listView resource-list-cv">
+                        <div class="resource-list-wrap">
+
+
+
+
+
+                        </div>
+
+                    </div>
+                </div>
+                <div class="tab-pane fade show" id="validar-panel" role="tabpanel" aria-labelledby="validar-tab">
+                    <div class="resource-list listView resource-list-enriquecimiento">
+                        <div class="resource-list-wrap">
+                       </div>
+                        <p class="moreResults">
+                            <a href="javascript: void(0);" class="ver-mas" style="display: flex;">Ver m�s</a>
+                            <a href="javascript: void(0);" class="ver-menos" style="display: none;">Ver menos</a>
+                        </p>
+                    </div>
+                </div>
+           </div>
+        </div>
+    </div>
+
+}

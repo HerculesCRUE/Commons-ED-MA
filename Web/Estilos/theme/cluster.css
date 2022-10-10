@@ -1,0 +1,68 @@
+.section-steps.show {
+	transform: scale(1);
+	max-height: initial;
+}
+
+.edicionCluster .step-progress__circle {
+	position: relative
+}
+
+.section-steps {
+	transform: scale(0);
+	max-height: 0px;
+}
+
+.categoria-wrap .categoria .custom-checkbox .custom-control-input.selected ~ .custom-control-label {
+	font-weight: 500;
+}
+
+.custom-checkbox.themed.primary .custom-control-input.selected ~ .custom-control-label,
+.custom-radio.themed.primary .custom-control-input.selected ~ .custom-control-label {
+	color: var(--c-primario);
+}
+
+.edicionCluster .grafico-wrap {
+	background-color: var(--c-gris-fondo);
+	margin-bottom: 16px;
+	height: 100%;
+	padding: 24px 20px;
+	min-height: 200px;
+	position: relative;
+}
+
+.edicionCluster .grafico-wrap .graph-controls {
+	position: absolute;
+	top: 24px;
+	right: 20px;
+	z-index: 200;
+}
+
+.edicionCluster .formulario-edicion .tab-content .row {
+	margin-left: 0;
+	margin-right: 0;
+	margin-bottom: 20px;
+}
+
+.edicionCluster .resource-list.resource-list-buscador .resource .custom-control.custom-checkbox {
+	position: relative; 
+	top: initial; 
+	left: initial; 
+}
+
+.edicionCluster .resource-list.listView .resource .wrap .description-wrap {
+	padding-left: 0;
+}
+
+.edicionCluster .resource-list .resource .user-perfil {
+	padding-left: 0;
+}
+
+.edicionCluster .formulario-edicion .botonera {
+    position: absolute;
+    top: -77px;
+    right: 0;
+}
+
+.modal-anadir-topicos .formulario-edicion .form-group .control-label {
+    line-height: 38px;
+}

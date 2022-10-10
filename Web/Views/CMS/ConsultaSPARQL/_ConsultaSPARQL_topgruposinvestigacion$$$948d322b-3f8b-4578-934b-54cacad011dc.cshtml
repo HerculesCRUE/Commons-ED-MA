@@ -1,0 +1,120 @@
+@using System.Reflection
+@model CMSComponentQuerySPARQL
+@{
+    CommunityModel Comunidad = Html.GetComunidad();
+    UserIdentityModel IdentidadActual = Html.GetIdentidadActual();
+
+    System.Data.DataTable col = Model.DataSetResult.Tables[0];
+    listaGroups = new List<Group>();
+    @foreach (System.Data.DataRow fila in Model.DataSetResult.Tables[0].Rows)
+    {
+        Group group = new Group(fila);
+        listaGroups.Add(group);
+    }
+
+
+}
+
+
+@if (Model != null)
+{
+
+
+	<div class="grupo-top">
+		<div class="wrapCol grupo-investigacion">
+			<h2 class="section-title">@Html.Translate("TOP_GRUPOS_INVESTIGACION")</h2>
+			<div class="resource-list usuarios con-borde">
+				@foreach (Group group in listaGroups)
+				{
+					<article class="resource resource-grupo">
+						<div class="user-miniatura">
+							@{
+                                string urlGroup =Comunidad.Url+"/"+Html.GetText("URLSEM", "RECURSO")+"/"+ Es.Riam.Util.UtilCadenas.EliminarCaracteresUrlSem(group.title)+"/"+group.id.Split('_')[1];
+                            }
+							<div class="imagen-usuario-wrap">
+								<a href="@urlGroup" target="_blank" >
+									<div class="imagen sinImagen">
+										<span class="material-icons">business</span>
+									</div>
+								</a>
+							</div>
+							<div class="nombre-usuario-wrap">
+								<a href="@urlGroup" target="_blank">
+									<p class="nombre">@group.title</p>
+									<p class="nombre-completo">@group.tituloOrg</p>
+								</a>
+							</div>
+						</div>
+					</article>
+				}
+
+				<a href="@Comunidad.Url/@Html.Translate("GRUPOS_URL")" target="_blank" class="ver-mas ver-mas-icono con-icono-after">@Html.Translate("VER_TODOS")</a>
+			</div>
+		</div>
+	</div>
+
+}
+
+
+
+
+@functions
+{
+    public static List<Group> listaGroups = new List<Group>();
+
+    public class Group
+    {
+        public string id { get; set; }
+        public string title { get; set; }
+        public string tituloOrg { get; set; }
+        public string numDoc { get; set; }
+
+        public Group()
+        {
+            id = "";
+            title = "";
+            tituloOrg = "";
+            numDoc = "";
+        }
+
+        public Group(System.Data.DataRow fila)
+        {
+
+            try
+            {
+                this.id = fila["group"].ToString();
+                this.title = fila["title"].ToString();
+                this.numDoc = fila["numDoc"].ToString();
+
+            } catch (Exception e ) {}
+
+            try
+            {
+                if (!fila.IsNull("tituloOrg"))
+                {
+                    this.tituloOrg = fila["tituloOrg"].ToString();
+                }
+
+            } catch (Exception e ) {}
+
+
+        }
+
+
+        private string GetFecha(string fecha)
+        {
+            if (!string.IsNullOrEmpty(fecha) && fecha.Length == 14)
+            {
+                string anio = fecha.Substring(0, 4);
+                string mes = fecha.Substring(4, 2);
+                string dia = fecha.Substring(6, 2);
+                string hora = fecha.Substring(8, 2);
+                string min = fecha.Substring(10, 2);
+                string segs = fecha.Substring(12, 2);
+                fecha = dia + "/" + mes + "/" + anio + " " + hora + ":" + min + ":" + segs;
+            }
+            return fecha;
+        }
+
+    }
+}

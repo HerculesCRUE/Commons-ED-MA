@@ -1,0 +1,236 @@
+@*[security|||busqueda/index.cshtml|||hercules]*@
+@model SearchViewModel
+@{
+    CommunityModel Comunidad = Html.GetComunidad();
+    UserIdentityModel IdentidadActual = Html.GetIdentidadActual();
+    string jsExtra = Html.GetJSExtra();
+
+    string nombrePestanyaActual = Model.PageName;
+    string htmlResultados = Model.HTMLResourceList;
+    string htmlFacetas = Model.HTMLFaceted;
+    Dictionary<string, string> listaFiltrosOrden = Model.FilterOrderList;
+    string FiltroOrdenSeleccionado = Model.FilterOrderSelected;
+
+    Html.SetBodyClass("layout02 comunidad listado"); // Clases del body por defecto.
+
+    Html.SetPintarH1(false);
+
+    if (Comunidad.ProyectType == CommunityModel.TypeProyect.Catalogo || Comunidad.ProyectType == CommunityModel.TypeProyect.CatalogoNoSocial)
+    {
+        Html.SetBodyClass(Html.GetBodyClass() + " listadoCatalogo ");
+    }
+
+    if (IdentidadActual.IsProyectAdmin && ViewContext.RouteData.Values["admin"] != null && ViewContext.RouteData.Values["admin"].Equals("true"))
+    {
+        Html.GetListaCSS().Add(Html.GetBaseUrlStatic() + "/cssNuevo/administracion.css?v=" + Html.GetVersion());
+    }
+}
+
+<div class="row">
+	
+	<input type="hidden" id="PUBLICACIONES_URL" value="@Html.Translate("PUBLICACIONES_URL")"/>
+	<input type="hidden" id="PERSONAL_INVESTIGADOR_URL" value="@Html.Translate("PERSONAL_INVESTIGADOR_URL")"/>
+	<input type="hidden" id="PROYECTOS_URL" value="@Html.Translate("PROYECTOS_URL")"/>
+	<input type="hidden" id="GRUPOS_URL" value="@Html.Translate("GRUPOS_URL")"/>
+	<input type="hidden" id="RESEARCH_OBJECTS_URL" value="@Html.Translate("RESEARCH_OBJECTS_URL")"/>
+	<input type="hidden" id="OFERTAS_URL" value="@Html.Translate("OFERTAS_URL")"/>
+	<input type="hidden" id="ANOTACIONES_URL" value="@Html.Translate("ANOTACIONES_URL")"/>
+
+
+    <!-- Ruta de páginas -->
+    <div class="col col-12 col-breadcrumb">
+        <ul>
+            <li>
+                <a href="@Comunidad.Url">Home</a>
+            </li>
+            <li>@nombrePestanyaActual</li>
+        </ul>
+    </div>
+
+    <div class="col col-12 col-xl-3 col-facetas col-lateral izquierda">
+        <!-- Facetas -->
+        <div class="wrapCol">
+            <div class="header-facetas">
+                <p>Filtros</p>
+                <a href="javascript: void(0);" class="cerrar">
+                    <span class="material-icons">close</span>
+                </a>
+            </div>
+            <div id="panFacetas" class="facetas-wrap pmd-scrollbar mCustomScrollbar" data-mcs-theme="minimal-dark">
+
+                @if (Model.FacetedVisible)
+                {
+                    if (string.IsNullOrEmpty(htmlFacetas) && Model.JSONFaceted != null)
+                    {
+						//Usado para depurar vistas
+                        @Html.PartialView("../CargadorFacetas/CargarFacetas", Model.JSONFaceted);
+                    }
+                    else
+                    {
+						//Usado en el servidor
+                        @Html.Raw(htmlFacetas);
+                    }
+                }
+
+            </div>
+        </div>
+    </div>
+
+    <div class="col col-12 col-xl-9 col-contenido derecha">
+        <div class="wrapCol">
+            <div class="col-buscador">
+                <form method="post" id="formCajaBusqueda" action="javascript:void(0)">
+                    <fieldset style="display: block">
+                        <legend class="nota">facetas</legend>
+                        <div class="finderUtils" id="divCajaBusqueda">
+                            <div class="group finderSection">
+                                <label for="finderSection" class="">Encontrar</label>
+                                <input type="text" id="finderSection" class="not-outline finderSectionText autocompletar ac_input" autocomplete="off" placeholder="Buscar en sección">
+                                <input title="Encontrar" type="button" class="findAction" id="inputLupa">
+                                <input type="hidden" value="" class="inpt_urlPaginaActual">
+                                <input type="hidden" value="sioc_t:Tag|foaf:firstName" class="inpt_facetasBusqPag">
+                                <input type="hidden" class="inpt_parametros">
+                                <a href="javascript: void(0);" class="btn-filtrar-movil">
+                                    <span class="material-icons">filter_list</span>
+                                </a>
+                            </div>
+                        </div>
+                    </fieldset>
+                </form>
+            </div>
+            <div class="header-contenido">
+                <!-- Número de resultados -->
+                <div class="h1-container">
+                    <h1>@nombrePestanyaActual <span id="panNumResultados" class="numResultados"></span></h1>
+                </div>
+
+                <!-- Desplegables derecha -->
+                <div class="acciones-listado">
+                    <div class="wrap">
+                        <!-- Filtros de ordenación -->
+                        @if (listaFiltrosOrden != null && listaFiltrosOrden.Count > 0)
+                        {
+    						@* Opciones de Ordenar los resultados obtenidos *@
+    						<div id="panel-orderBy" class="ordenar dropdown dropdown-select">
+    							@* La ordenación debe estar "activa". Por defecto se ordena por fecha
+    							<a class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+    								<span class="material-icons">swap_vert</span>
+    								<span class="texto">@Html.GetText("BANDEJAENTRADA", "ORDENADOPOR")</span>
+    							</a>
+    							*@
+    							@* Coger por defecto la primera opción*@
+    							<a class="dropdown-toggle active" data-toggle="dropdown" aria-expanded="false">
+    								<span class="material-icons">swap_vert</span>                                        
+    								<span class="texto">@FiltroOrdenSeleccionado</span>                                                                                                                                
+    							</a>
+
+    							<div class="dropdown-menu basic-dropdown dropdown-menu-right" style="will-change: transform;">
+    								@foreach (string filtro in listaFiltrosOrden.Keys)
+    								{
+    									string activo = (@FiltroOrdenSeleccionado == filtro ? "activeView" : "");									
+    									<a class="item-dropdown @activo" data-orderBy="@listaFiltrosOrden[filtro]" data-order="orden|desc">
+    										<span class="material-icons">swap_vert</span>
+    										<span class="texto">@filtro</span> 
+    									</a>
+    								}
+    							</div>
+    						</div>
+                        }
+                    </div>
+                </div>
+
+                <!-- Etiquetas de filtros -->
+                <div class="etiquetas" id="panFiltros">
+                    <ul class="facetedSearch tags" id="panListadoFiltros">
+                        <li class="borrarFiltros-wrap">
+                            <a class="borrarFiltros" href="#" onclick="event.preventDefault();LimpiarFiltros();">Borrar</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Resultados -->
+            <div class="resource-list listView resource-list-buscador">
+                <div id="panResultados" class="resource-list-wrap">
+                    @if (string.IsNullOrEmpty(htmlResultados) && Model.JSONResourceList != null)
+                    {
+						//Usado para depurar vistas
+                        @Html.PartialView("../CargadorResultados/CargarResultados", Model.JSONResourceList);
+                    }
+                    else
+                    {
+						//Usado en el servidor
+                        @Html.Raw(htmlResultados)
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section javascript{
+    <script type="text/javascript">
+
+        @Html.Raw(jsExtra)
+
+		@if (htmlFacetas == null && htmlResultados == null && Model.JSONResourceList==null && Model.JSONFaceted==null)
+        {
+            <text>
+					$(document).ready(function () {
+						FiltrarPorFacetas(filtrosDeInicio);
+					});
+			</text>
+		}
+		
+		$(document).ready(function () {
+			$('#inputLupa').unbind().click(function (event) {				
+				var urlPaginaActual = $('.inpt_urlPaginaActual').val();
+				var search='search';
+				if(document.location.pathname.endsWith(GetText("PUBLICACIONES_URL")))
+				{
+					search='searcherPublications';
+				}
+				else if(document.location.pathname.endsWith(GetText("PERSONAL_INVESTIGADOR_URL")))
+				{
+					search='searcherPersons';
+				}
+				else if(document.location.pathname.endsWith(GetText("PROYECTOS_URL")))
+				{
+					search='searcherProjects';
+				}
+				else if(document.location.pathname.endsWith(GetText("GRUPOS_URL")))
+				{
+					search='searcherGroups';
+				}
+				else if(document.location.pathname.endsWith(GetText("RESEARCH_OBJECTS_URL")))
+				{
+					search='searcherPublications';
+				}
+				else if(document.location.pathname.endsWith(GetText("OFERTAS_URL")))
+				{
+					search='searcherOffers';
+				}
+				else if(document.location.pathname.endsWith(GetText("ANOTACIONES_URL")))
+				{
+					search='searcherAnnotations';
+				}
+								
+				window.location.href = urlPaginaActual + "?" + search + "=" + encodeURIComponent($('#finderSection').val()); 
+			});
+		});
+
+
+
+
+
+        @if (!string.IsNullOrEmpty(Html.GetJSMapa()))
+        {
+            @Html.Raw(Html.GetJSMapa())
+        }
+
+        @if (!string.IsNullOrEmpty(Html.GetJSGraficos()))
+        {
+            @Html.Raw(Html.GetJSGraficos())
+        }
+    </script>
+}

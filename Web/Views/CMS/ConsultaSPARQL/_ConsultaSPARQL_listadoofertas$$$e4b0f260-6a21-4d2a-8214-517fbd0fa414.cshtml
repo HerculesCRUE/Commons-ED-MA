@@ -1,0 +1,563 @@
+@using System.Linq;
+@using System.Collections;
+@model CMSComponentQuerySPARQL
+@{
+    CommunityModel Comunidad = Html.GetComunidad();
+    UserIdentityModel IdentidadActual = Html.GetIdentidadActual();
+    int numItems = 0;
+}
+
+@if (Model != null)
+{
+    // Html.ObtenerUrlDeDoc()
+    System.Data.DataTable col = Model.DataSetResult.Tables[0];
+    listaOfertas = new List<Offer>();
+    @foreach (System.Data.DataRow fila in Model.DataSetResult.Tables[0].Rows)
+    {
+        // Busca que la oferta no se haya cargado antes (debido a algún union en el que coincida)
+        if (listaOfertas.FindAll(e => e.id == fila["oferta"].ToString()).Count == 0)
+        {
+            Offer oferta = new Offer(fila);
+            listaOfertas.Add(oferta);
+        } else
+        {
+            var oferta = listaOfertas.Find(e => e.id == fila["oferta"].ToString());
+            oferta.Editar(fila);
+        }
+    }
+
+    foreach (Offer oferta in listaOfertas)
+    {
+        TipoUser typeUser = TipoUser.otro;
+        if (oferta.actUser == oferta.members)
+        {
+            typeUser = TipoUser.actUser;
+        } else if (oferta.isOtriManager == "true")
+        {
+            typeUser = TipoUser.isOtriManager;
+        }else if (oferta.isIp == "true")
+        {
+            typeUser = TipoUser.ip;
+        }
+
+        if (mostrar(oferta.availability, typeUser))
+        {
+            numItems++;
+        } 
+    }
+
+
+    @if (!IdentidadActual.IsGuestUser)
+    {
+        <div class="row">
+            <div class="col col-12 col-breadcrumb">
+                <ul>
+                    <li>
+                        <a href="@Comunidad.Url">Home</a>
+                    </li>
+                    <li>
+                        @Model.Title
+                    </li>
+                </ul>
+            </div>
+            <div class="col col-12 col-xl-9 header-listado">
+                <div class="h1-container">
+                    <h1>@Model.Title <span class="numResultados">@numItems</span></h1>
+                </div>
+            </div>
+            <div class="col col-12 col-xl-9 col-contenido">
+                <div class="wrapCol">
+                    <div class="resource-list listView resource-list-oferta">
+                        <div class="resource-list-wrap">
+
+
+                            @foreach (Offer oferta in listaOfertas)
+                            {
+                                TipoUser typeUser = TipoUser.otro;
+                                if (oferta.actUser == oferta.members)
+                                {
+                                    typeUser = TipoUser.actUser;
+                                } else if (oferta.isOtriManager == "true")
+                                {
+                                     typeUser = TipoUser.isOtriManager;
+                                }else if (oferta.isIp == "true")
+                                {
+                                     typeUser = TipoUser.ip;
+                                }
+
+                                if (mostrar(oferta.availability, typeUser))
+                                { 
+                                    <article class="resource offer" data-id="@oferta.id" id="oferta_@oferta.id" typeof="sioc_t:Item" xmlns:owl="http://www.w3.org/2002/07/owl#" xmlns:sioc_t="http://rdfs.org/sioc/types#" xmlns:foaf="http://xmlns.com/foaf/0.1/" xmlns:dcterms="http://purl.org/dc/terms/" xmlns:sioc="http://rdfs.org/sioc/ns#">
+                                        <div class="wrap">
+                                            <div class="middle-wrap">
+                                                <div class="title-wrap">
+                                                    <h2 class="resource-title">
+                                                        @{
+                                                            string urlCom =Comunidad.Url+"/"+Html.GetText("URLSEM", "RECURSO")+"/"+ Es.Riam.Util.UtilCadenas.EliminarCaracteresUrlSem(oferta.title)+"/"+oferta.id.Split('_')[1];
+                                                        }
+                                                        <a href="@urlCom">@oferta.title</a>
+                                                    </h2>
+                                                    <span class="indicador @oferta.colorEstado" data-id="@oferta.availability">@oferta.estadoDisp</span>
+                                                            
+                                                    <div class="acciones-recurso-listado">
+                                                        <div class="dropdown">
+                                                            <a href="#" class="dropdown-toggle" role="button" id="dropdownMasOpciones" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                                <span class="material-icons">more_vert</span>
+                                                            </a>
+                                                            <div class="dropdown-menu basic-dropdown dropdown-icons dropdown-menu-right" aria-labelledby="dropdownMasOpciones" style="will-change: transform;">
+                                                                <p class="dropdown-title">Acciones</p>
+                                                                <ul class="no-list-style">
+                                                                
+                                                                    @{
+
+                                                                        if (oferta.actUser == oferta.members || oferta.isOtriManager == "true" || oferta.isIp == "true")
+                                                                        {
+                                                                            <li>
+                                                                                <a class="item-dropdown" href="@Comunidad.Url/nueva-oferta-tecnologica?id=@oferta.id">
+                                                                                    <span class="material-icons">create</span>
+                                                                                    <span class="texto">@Html.Translate("EDITAR")</span>
+                                                                                </a>
+                                                                            </li>
+                                                                        }
+
+                                                                        string HtmlRes = "";
+                                                                        List<Tuple<string, string>> estados = new();
+                                                                        string idEstadoOFerta = "";
+                                                                        string txtEnviar = "";
+
+                                                                        var estadoAct = getEstado(oferta.availability);
+
+                                                                        switch (estadoAct) 
+                                                                        {
+                                                                            case Estado.Borrador:
+                                                                            // Es el creador de la oferta
+                                                                                // Puede pasar la oferta a revisión
+                                                                                if (oferta.actUser == oferta.members) 
+                                                                                {
+                                                                                    idEstadoOFerta = "http://gnoss.com/items/offerstate_002";
+                                                                                    txtEnviar = Html.Translate("ENVIAR_REVISION");
+                                                                                    estados.Add(new Tuple<string, string>( idEstadoOFerta, txtEnviar ));
+
+                                                                                }
+                                                                                break;
+                                                                            case Estado.Revision:
+                                                                            // Es el creador de la oferta
+                                                                                // Puede pasar la oferta a borrador
+                                                                                if (oferta.actUser == oferta.members || oferta.isOtriManager == "true") 
+                                                                                {
+                                                                                    idEstadoOFerta = "http://gnoss.com/items/offerstate_001";
+                                                                                    txtEnviar = Html.Translate("ENVIAR_BORRADOR");
+                                                                                    estados.Add(new Tuple<string, string>( idEstadoOFerta, txtEnviar ));
+
+                                                                                }
+                                                                                    // Es el gestor otri
+                                                                                // Puede pasar la oferta a borrador
+                                                                                if (oferta.isOtriManager == "true")
+                                                                                {
+                                                                                    idEstadoOFerta = "http://gnoss.com/items/offerstate_003";
+                                                                                    txtEnviar = Html.Translate("VALIDAR");
+                                                                                    estados.Add(new Tuple<string, string>( idEstadoOFerta, txtEnviar ));
+
+                                                                                    idEstadoOFerta = "http://gnoss.com/items/offerstate_004";
+                                                                                    txtEnviar = Html.Translate("DENEGAR");
+                                                                                    estados.Add(new Tuple<string, string>( idEstadoOFerta, txtEnviar ));
+                                                                                }
+                                                                                break;
+                                                                            case Estado.Validada:
+                                                                                if (oferta.isOtriManager == "true")
+                                                                                {
+                                                                                    idEstadoOFerta = "http://gnoss.com/items/offerstate_005";
+                                                                                    txtEnviar = Html.Translate("ARCHIVAR");
+                                                                                    estados.Add(new Tuple<string, string>( idEstadoOFerta, txtEnviar ));
+
+                                                                                    idEstadoOFerta = "http://gnoss.com/items/offerstate_001";
+                                                                                    txtEnviar = Html.Translate("ENVIAR_BORRADOR");
+                                                                                    estados.Add(new Tuple<string, string>( idEstadoOFerta, txtEnviar ));
+                                                                                }
+                                                                                break;
+                                                                            case Estado.Denegada:
+                                                                                if (oferta.actUser == oferta.members) 
+                                                                                {
+                                                                                    idEstadoOFerta = "http://gnoss.com/items/offerstate_001";
+                                                                                    txtEnviar = Html.Translate("ENVIAR_BORRADOR");
+                                                                                    estados.Add(new Tuple<string, string>( idEstadoOFerta, txtEnviar ));
+
+                                                                                }
+                                                                                if (oferta.isOtriManager == "true")
+                                                                                {
+                                                                                    idEstadoOFerta = "http://gnoss.com/items/offerstate_005";
+                                                                                    txtEnviar = Html.Translate("ARCHIVAR");
+                                                                                    estados.Add(new Tuple<string, string>( idEstadoOFerta, txtEnviar ));
+                                                                                }
+                                                                                break;
+
+                                                                        }
+
+
+                                                                        foreach (var e in estados)
+                                                                        {
+                                                                            <li>
+                                                                                <a class="item-dropdown" href="javascript:cambiarEstado('@oferta.id','@e.Item1', '@oferta.availability')">
+                                                                                    <span class="material-icons">send</span>
+                                                                                    <span class="texto">@e.Item2</span>
+                                                                                </a>
+                                                                            </li>
+                                                                        }
+
+                                                                        if ((oferta.actUser == oferta.members || oferta.isOtriManager == "true" || oferta.isIp == "true") && (estadoAct.Equals(Estado.Borrador) || estadoAct.Equals(Estado.Revision)))
+                                                                        {
+                                                                            <li>
+                                                                                <a class="item-dropdown" href="javascript: void(0)" data-toggle="modal" data-target="#modal-eliminar-oferta-confirmacion">
+                                                                                    <span class="material-icons">delete</span>
+                                                                                    <span class="texto" onclick="currentId='@oferta.id'" >@Html.Translate("BORRAR")</span>
+                                                                                </a>
+                                                                            </li>
+                                                                        } 
+                                                                    }
+                                                                </ul>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="content-wrap">
+                                                    <div class="description-wrap counted">
+                                                        <div class="list-wrap offers">
+                                                            <ul>
+                                                                <li>
+                                                                    @oferta.fecha
+                                                                </li>
+                                                        
+                                                                <li>
+                                                                    @oferta.matureState
+                                                                </li>
+                                                                <li>
+                                                                    <span class="indicador">@oferta.framingSector</span>
+                                                                </li>
+                                                            </ul>
+                                                        </div>
+                                                        <div class="desc">
+                                                            <p>@Html.Raw(oferta.description)</p>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </article>
+
+                                }
+
+
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+        <div id="modal-eliminar-oferta-confirmacion" class="modal modal-top fade modal-edicion" tabindex="-1" role="dialog">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <p class="modal-title"><span class="material-icons">send</span>@Html.Translate("BORRAR_OFERTA")</p>
+                        <span class="material-icons cerrar" data-dismiss="modal" aria-label="Close">close</span>
+                    </div>
+                    <div class="modal-body">
+                        <div class="formulario-edicion">
+                            <div class="custom-form-row">
+                                <div class="form-group full-group">
+                                    <label class="control-label d-block">@Html.Translate("CONFIRMACION_BORRAR_OFERTA")</label>
+                                    <div class="form-actions">
+                                        <a href="javascript: borrarOferta()" class="btn btn-primary uppercase">@Html.Translate("BORRAR")</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+
+
+        <!-- JAVASCRIPT -->
+        <script type="text/javascript">
+
+            var currentId = ""
+
+            // Datos gráfica áreas temáticas
+            function borrarOferta() {
+
+                // Convierte el id en un guid
+                currentId = currentId.includes('_') ? currentId.split('_')[1] : currentId
+
+                var url = url_servicio_externo + "Ofertas/BorrarOferta"
+                var arg = {};
+                arg.pIdOfferId = currentId
+                $.get(url, arg, function (data) {
+                    window.location = "@Comunidad.Url/@Html.Translate("OFERTA_URL")"
+                });
+            }
+
+            // Datos gráfica áreas temáticas
+            function cambiarEstado(id, estado, estadoActual) {
+
+                id = id.includes('_') ? id.split('_')[1] : id
+
+                var url = url_servicio_externo + "Ofertas/CambiarEstado"
+                var arg = {};
+                arg.pIdOfferId = id
+                arg.estado = estado
+                arg.estadoActual = estadoActual
+                arg.pIdGnossUser = "@IdentidadActual.KeyUser"
+                $.post(url, arg, function (data) {
+                    location.reload()
+                });
+            }
+
+        </script>
+
+
+
+    }
+
+
+}
+
+@functions
+{
+    public static List<Offer> listaOfertas = new List<Offer>();
+
+    public class Offer
+    {
+        public string id { get; set; }
+        public string fecha { get; set; }
+        public string description { get; set; }
+        public string title { get; set; }
+        public string descriptor { get; set; }
+        public string author { get; set; }
+        public string estadoDisp { get; set; }
+        public string matureState { get; set; }
+        public string framingSector { get; set; }
+        public string availability { get; set; }
+        public string colorEstado { get; set; }
+        public string actUser { get; set; }
+        public string members { get; set; }
+        public string isOtriManager { get; set; }
+        public string isIp { get; set; }
+        public string otherResearcher { get; set; }
+
+        public Offer()
+        {
+            id = "";
+            fecha = "";
+            description = "";
+            title = "";
+            author = "";
+            estadoDisp = "";
+            colorEstado = "";
+            availability = "";
+            framingSector = "";
+            matureState = "";
+            actUser = "";
+            members = "";
+            isOtriManager = "";
+            isIp = "";
+            otherResearcher = "";
+        }
+
+        public Offer(System.Data.DataRow fila)
+        {
+
+            try
+            {
+                this.id = fila["oferta"].ToString();
+                this.fecha = GetFecha(fila["fecha"].ToString());
+                this.title = fila["title"].ToString();
+                this.description = fila["description"].ToString();
+                this.author = fila["author"].ToString();
+                this.estadoDisp = fila["estadoDisp"].ToString();
+                this.colorEstado = fila["colorEstado"].ToString();
+                this.availability = fila["availability"].ToString();
+                this.framingSector = fila["framingSector"].ToString();
+                this.matureState = fila["matureState"].ToString();
+                this.actUser = fila["actUser"].ToString();
+                this.members = fila["members"].ToString();
+
+            } catch (Exception e ) {}
+
+            try
+            {
+                if (!fila.IsNull("isOtriManager"))
+                {
+                    this.isOtriManager = fila["isOtriManager"].ToString();
+                }
+                if (!fila.IsNull("isIp"))
+                {
+                    this.isIp = fila["isIp"].ToString();
+                }
+                if (!fila.IsNull("otherResearcher"))
+                {
+                    this.otherResearcher = fila["otherResearcher"].ToString();
+                }
+
+            } catch (Exception e ) {}
+
+
+        }
+
+        public void Editar(System.Data.DataRow fila)
+        {
+
+
+            try
+            {
+                if (!fila.IsNull("isOtriManager"))
+                {
+                    this.isOtriManager = fila["isOtriManager"].ToString() != "" ? fila["isOtriManager"].ToString() : this.isOtriManager;
+                }
+                if (!fila.IsNull("isIp"))
+                {
+                    this.isIp = fila["isIp"].ToString() != "" ? fila["isIp"].ToString() : this.isIp;
+                }
+                if (!fila.IsNull("otherResearcher"))
+                {
+                    this.isIp = fila["otherResearcher"].ToString() != "" ? fila["otherResearcher"].ToString() : this.isIp;
+                }
+
+            } catch (Exception e ) {}
+
+
+        }
+
+
+        private string GetFecha(string fecha)
+        {
+            if (!string.IsNullOrEmpty(fecha) && fecha.Length == 14)
+            {
+                string anio = fecha.Substring(0, 4);
+                string mes = fecha.Substring(4, 2);
+                string dia = fecha.Substring(6, 2);
+                string hora = fecha.Substring(8, 2);
+                string min = fecha.Substring(10, 2);
+                string segs = fecha.Substring(12, 2);
+                fecha = dia + "/" + mes + "/" + anio + " " + hora + ":" + min + ":" + segs;
+            }
+            return fecha;
+        }
+
+    }
+
+    enum TipoUser
+    {
+        ip,
+        isOtriManager,
+        actUser,
+        otro
+    }
+
+
+    enum Estado
+    {
+        Borrador,
+        Revision,
+        Validada,
+        Denegada,
+        Archivada,
+    }
+
+    private bool mostrar (string estadoStr, TipoUser tipoUser)
+    {
+        var estado = getEstado(estadoStr);
+
+        switch (tipoUser) {
+            case TipoUser.ip:
+                switch (estado)
+                {
+                    case Estado.Archivada:
+                        return false;
+                        break;
+                    default:
+                        return true;
+                        break;
+                }
+                break;
+
+            case TipoUser.isOtriManager:
+
+                switch (estado)
+                {
+                    case Estado.Borrador:
+                        return false;
+                        break;
+                    case Estado.Archivada:
+                        return false;
+                        break;
+                    default:
+                        return true;
+                        break;
+                }
+                break;
+
+            case TipoUser.actUser:
+                switch (estado)
+                {
+                    case Estado.Archivada:
+                        return false;
+                        break;
+                    default:
+                        return true;
+                        break;
+                }
+                break;
+
+            default:
+                switch (estado)
+                {
+                    case Estado.Archivada:
+                        return false;
+                        break;
+                    default:
+                        return true;
+                        break;
+                }
+                break;
+        }
+    }
+
+    private Estado getEstado (string estado)
+    {
+        switch (estado)
+        {
+            case "http://gnoss.com/items/offerstate_001":
+                return Estado.Borrador;
+                break;
+            
+            case "http://gnoss.com/items/offerstate_002":
+                return Estado.Revision;
+                break;
+
+                
+            case "http://gnoss.com/items/offerstate_003":
+                return Estado.Validada;
+                break;
+
+                
+            case "http://gnoss.com/items/offerstate_004":
+                return Estado.Denegada;
+                break;
+
+                
+            case "http://gnoss.com/items/offerstate_005":
+                return Estado.Archivada;
+                break;
+
+            default:
+                return Estado.Borrador;
+                break;
+        }
+    }
+}

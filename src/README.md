@@ -7,3 +7,4 @@ Contiene los servicios web y back que proporcionan funcionalidad propia de los p
 El listado de componentes es:
 
 - [Hercules.Commons.Load](./Hercules.Commons.Load). Desarrollo del proceso de carga de los datos iniciales, en formato XML.
+- [Hercules.CommonsEDMA.Login](./Hercules.CommonsEDMA.Login). Descripción de la configuración del Servicio de Login con SAML
