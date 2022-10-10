@@ -1,6 +1,7 @@
 const uriSaveOffer = "Ofertas/SaveOffer"
 const uriLoadOffer = "Ofertas/LoadOffer"
 const uriLoadUsersGroup = "Ofertas/LoadUsersGroup"
+// const uriSearchTags = "Cluster/SearchTags"
 const uriLoadTaxonomiesOffer = "Ofertas/GetThesaurus"
 // STEP 3
 const uriLoadLineResearchs = "Ofertas/LoadLineResearchs"
