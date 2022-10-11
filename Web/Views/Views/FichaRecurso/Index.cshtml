@@ -1,6 +1,8 @@
 @*[security|||ficharecurso/index.cshtml|||hercules]*@
 @model ResourceViewModel
-
+@{
+    CommunityModel Comunidad = Html.GetComunidad();
+}
 @{      
 	Context.Response.StatusCode=404;
 	<div class="row">
