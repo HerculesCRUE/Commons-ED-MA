@@ -274,6 +274,10 @@ namespace Harvester
                                 {
 
                                 }
+                                if (persona.Ciclos != null && persona.Ciclos.Any())
+                                {
+
+                                }
 
                                 string idGnossPersona = persona.Cargar(harvesterServices, pConfig, mResourceApi, "person", pDicIdentificadores, pDicRutas, pRabbitConf, true);
                                 pDicIdentificadores["person"].Add(idGnossPersona);
