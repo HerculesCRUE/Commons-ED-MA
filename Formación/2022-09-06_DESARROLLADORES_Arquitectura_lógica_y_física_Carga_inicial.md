@@ -13,7 +13,7 @@
 
 - Proceso de carga (https://confluence.um.es/confluence/display/HERCULES/Proceso+de+carga+inicial+de+datos+para+la+UMU)
 - Servicio OAI-PMH (https://confluence.um.es/confluence/pages/viewpage.action?pageId=416055407)
-- OAI-PMH GitHub (https://github.com/HerculesCRUE/HerculesED/tree/main/src/Hercules.ED.OAI_PMH)
+- OAI-PMH GitHub (https://github.com/HerculesCRUE/Commons-ED-MA/tree/main/src/Hercules.CommonsEDMA.OAI_PMH)
 - Harvester GitHub (https://github.com/HerculesCRUE/Commons-ED-MA/tree/main/src/Hercules.CommonsEDMA.Harvester)
 - Web CVN (https://cvn.fecyt.es/editor/index.html?locale=spa#INDEX)
 - Web FECYT (http://fecyt.es)
