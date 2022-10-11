@@ -76,7 +76,7 @@ Para ello, se utiliza el método Disambiguate, el cual requiere de dos parametro
 En este proceso, se detecta los items iguales o que tengan un alto umbral de similaridad y se relacionan entre ellos mediante IDs.
 Como resultado del proceso, el motor devolverá un diccionario cuya clave es el item a desambiguar y como valor una lista de sus equivalencias.
 Posteriormente, el servicio encargado de fuentes externas procederá a la carga de datos.
-Para más información sobre el servicio de fuentes externas mirar en el siguiente repositorio [Hercules.ED.ResearcherObjectLoad](https://github.com/HerculesCRUE/Commons-ED-MA/tree/main/src/Hercules.ED.ResearcherObjectLoad).
+Para más información sobre el servicio de fuentes externas mirar en el siguiente repositorio [Hercules.ED.ResearcherObjectLoad](https://github.com/HerculesCRUE/HerculesED/tree/main/src/Hercules.ED.ResearcherObjectLoad).
 
 
 ## Dependencias
