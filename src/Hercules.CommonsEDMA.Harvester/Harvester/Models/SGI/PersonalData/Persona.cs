@@ -82,10 +82,10 @@ namespace OAI_PMH.Models.SGI.PersonalData
 
             List<string> crisIdentifiersImpartedAcademicBBDD = ObtenerDataCrisIdentifier(pResourceApi, this.Id, "impartedacademictraining");
             List<string> crisIdentifiersImpartedAcademicSGI = new List<string>();
-
+            List<ImpartedAcademicTrainingBBDD> listaImpartedAcademicCargar = ObtenerImpartedAcademicSGI(pRabbitConf, this.FormacionAcademicaImpartida, pHarvesterServices, pConfig, pResourceApi, pDicIdentificadores, pDicRutas);
             // Cargar --> Academic Degree que estén en listaImpartedacademictrainingSGI y no en listaImpartedacademictrainingBBDD.   
             List<string> listaImpartedAcademicCargarCrisIdentifiers = crisIdentifiersImpartedAcademicSGI.Except(crisIdentifiersImpartedAcademicBBDD).ToList();
-            //List<ImpartedAcademicBBDD> listaImpartedAcademicCargar = listaImpartedAcademicSGI.Where(x => listaImpartedAcademicCargarCrisIdentifiers.Contains(x.crisIdentifier)).ToList();
+            //List<ImpartedAcademicTrainingBBDD> listaImpartedAcademicCargar = listaImpartedAcademicSGI.Where(x => listaImpartedAcademicCargarCrisIdentifiers.Contains(x.crisIdentifier)).ToList();
             //List<ComplexOntologyResource> listaImpartedAcademicOntology = GetImpartedAcademic(listaImpartedAcademicCargar, pResourceApi, pIdGnoss);
             //CargarDatos(listaImpartedAcademicOntology, pResourceApi);
 
@@ -1147,8 +1147,18 @@ namespace OAI_PMH.Models.SGI.PersonalData
 
             return listaTesis;
         }
+        public List<ImpartedAcademicTrainingBBDD> ObtenerImpartedAcademicSGI(RabbitServiceWriterDenormalizer pRabbitConf, List<FormacionAcademicaImpartida> pListaImpartedAcademicSGI, IHarvesterServices pHarvesterServices, ReadConfig pConfig, ResourceApi pResourceApi, Dictionary<string, HashSet<string>> pDicIdentificadores, Dictionary<string, Dictionary<string, string>> pDicRutas)
+        {
+            List<ImpartedAcademicTrainingBBDD> listaImpartedAcademic = new List<ImpartedAcademicTrainingBBDD>();
 
+            foreach (FormacionAcademicaImpartida item in pListaImpartedAcademicSGI)
+            {
+                ImpartedAcademicTrainingBBDD impartedAcademic = new ImpartedAcademicTrainingBBDD();
+                listaImpartedAcademic.Add(impartedAcademic);
+            }
 
+            return listaImpartedAcademic;
+        }
         public List<TesisBBDD> ObtenerTesisSGI(RabbitServiceWriterDenormalizer pRabbitConf, List<Tesis> pListaTesisSGI, IHarvesterServices pHarvesterServices, ReadConfig pConfig, ResourceApi pResourceApi, Dictionary<string, HashSet<string>> pDicIdentificadores, Dictionary<string, Dictionary<string, string>> pDicRutas)
         {
             List<TesisBBDD> listaTesis = new List<TesisBBDD>();
