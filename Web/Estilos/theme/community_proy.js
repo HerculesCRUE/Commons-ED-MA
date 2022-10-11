@@ -2075,7 +2075,7 @@ function GetSexenios(pIdUsuario) {
     arg.subcomite = "";
     arg.idInvestigador = pIdUsuario;
     mostrarNotificacion("info", "Obteniendo datos de sexenios en proceso. Tardará unos minutos.");
-    $.get(url, arg, function (data) {
+    $.post(url, arg, function (data) {
     }).fail(function (jqXHR, textStatus, errorThrown) {
         console.log("Error al obtener los sexenios");
         var fecha = jqXHR.responseText.split("-");
@@ -2104,7 +2104,7 @@ function GetAcreditaciones(pIdUsuario) {
     arg.categoria_acreditacion = "";
     arg.idInvestigador = pIdUsuario;
     mostrarNotificacion("info", "Obteniendo datos de las acreditaciones en proceso. Tardará unos minutos.");
-    $.get(url, arg, function (data) {
+    $.post(url, arg, function (data) {
     }).fail(function (jqXHR, textStatus, errorThrown) {
         console.log("Error al obtener las acreditaciones");
         var fecha = jqXHR.responseText.split("-");
