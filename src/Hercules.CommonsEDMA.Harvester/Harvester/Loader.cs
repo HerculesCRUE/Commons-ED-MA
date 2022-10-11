@@ -270,11 +270,7 @@ namespace Harvester
                             Persona persona = Persona.GetPersonaSGI(harvesterServices, _Config, id, pDicRutas);                            
                             if (persona != null && !string.IsNullOrEmpty(persona.Nombre))
                             {
-                                if (persona.SeminariosCursos != null && persona.SeminariosCursos.Any())
-                                {
-
-                                }
-                                if (persona.Ciclos != null && persona.Ciclos.Any())
+                                if (persona.FormacionAcademicaImpartida != null && persona.FormacionAcademicaImpartida.Any())
                                 {
 
                                 }

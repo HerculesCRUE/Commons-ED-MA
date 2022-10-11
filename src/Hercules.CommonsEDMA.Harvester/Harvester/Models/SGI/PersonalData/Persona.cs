@@ -82,10 +82,16 @@ namespace OAI_PMH.Models.SGI.PersonalData
 
             List<string> crisIdentifiersImpartedAcademicBBDD = ObtenerDataCrisIdentifier(pResourceApi, this.Id, "impartedacademictraining");
             List<string> crisIdentifiersImpartedAcademicSGI = new List<string>();
-            List<ImpartedAcademicTrainingBBDD> listaImpartedAcademicCargar = ObtenerImpartedAcademicSGI(pRabbitConf, this.FormacionAcademicaImpartida, pHarvesterServices, pConfig, pResourceApi, pDicIdentificadores, pDicRutas);
+            List<ImpartedAcademicTrainingBBDD> listaImpartedAcademicCargarSGI = ObtenerImpartedAcademicSGI(pRabbitConf, this.FormacionAcademicaImpartida, pHarvesterServices, pConfig, pResourceApi, pDicIdentificadores, pDicRutas);
+            foreach (ImpartedAcademicTrainingBBDD tesisAux in listaImpartedAcademicCargarSGI)
+            {
+                crisIdentifiersImpartedAcademicSGI.Add(tesisAux.crisIdentifier);
+            }
+
+            // TODO: Mapear al objeto de carga a BBDD.
             // Cargar --> Academic Degree que estén en listaImpartedacademictrainingSGI y no en listaImpartedacademictrainingBBDD.   
             List<string> listaImpartedAcademicCargarCrisIdentifiers = crisIdentifiersImpartedAcademicSGI.Except(crisIdentifiersImpartedAcademicBBDD).ToList();
-            //List<ImpartedAcademicTrainingBBDD> listaImpartedAcademicCargar = listaImpartedAcademicSGI.Where(x => listaImpartedAcademicCargarCrisIdentifiers.Contains(x.crisIdentifier)).ToList();
+            List<ImpartedAcademicTrainingBBDD> listaImpartedAcademicCargar = listaImpartedAcademicCargarSGI.Where(x => listaImpartedAcademicCargarCrisIdentifiers.Contains(x.crisIdentifier)).ToList();
             //List<ComplexOntologyResource> listaImpartedAcademicOntology = GetImpartedAcademic(listaImpartedAcademicCargar, pResourceApi, pIdGnoss);
             //CargarDatos(listaImpartedAcademicOntology, pResourceApi);
 
@@ -1201,6 +1207,92 @@ namespace OAI_PMH.Models.SGI.PersonalData
             foreach (FormacionAcademicaImpartida item in pListaImpartedAcademicSGI)
             {
                 ImpartedAcademicTrainingBBDD impartedAcademic = new ImpartedAcademicTrainingBBDD();
+
+                string tituloTrabajo = RemoveDiacritics(item.TitulacionUniversitaria);
+                tituloTrabajo = tituloTrabajo.Replace(" ", "-");
+                impartedAcademic.crisIdentifier = $@"{item.Id}___{tituloTrabajo}";
+                impartedAcademic.title = item.TitulacionUniversitaria;
+                impartedAcademic.teaches = item.NombreAsignaturaCurso;
+                
+                //impartedAcademic.start = item.FechaInicio;
+                //impartedAcademic.end = item.FechaFinalizacion;                
+
+                if (item.EntidadRealizacion != null && !string.IsNullOrEmpty(item.EntidadRealizacion.EntidadRef))
+                {
+                    Dictionary<string, string> dicOrganizaciones = Empresa.ObtenerOrganizacionesBBDD(new HashSet<string>() { item.EntidadRealizacion.EntidadRef }, pResourceApi);
+                    Dictionary<string, string> dicOrganizacionesCargadas = new Dictionary<string, string>();
+                    foreach (KeyValuePair<string, string> organizacion in dicOrganizaciones)
+                    {
+                        Empresa organizacionAux = Empresa.GetOrganizacionSGI(pHarvesterServices, pConfig, "Organizacion_" + organizacion.Key, pDicRutas);
+                        if (organizacionAux != null)
+                        {
+                            impartedAcademic.promotedByTitle = organizacionAux.Nombre;
+
+                            if (string.IsNullOrEmpty(organizacion.Value))
+                            {
+                                string idGnoss = organizacionAux.Cargar(pHarvesterServices, pConfig, pResourceApi, "organization", pDicIdentificadores, pDicRutas, pRabbitConf);
+                                pDicIdentificadores["organization"].Add(idGnoss);
+                                dicOrganizacionesCargadas[organizacion.Key] = idGnoss;
+                            }
+                            else
+                            {
+                                dicOrganizacionesCargadas[organizacion.Key] = organizacion.Value;
+                            }
+
+                            impartedAcademic.promotedBy = dicOrganizacionesCargadas[item.EntidadRealizacion.EntidadRef];
+                        }
+                    }
+                }
+
+                if (item.TipoDocente != null && !string.IsNullOrEmpty(item.TipoDocente.Nombre))
+                {
+                    impartedAcademic.teachingType = TeachingType(item.TipoDocente.Nombre, pResourceApi);
+                }
+
+                impartedAcademic.numberECTSHours = item.NumHorasCreditos.Value;
+                impartedAcademic.frequency = item.FrecuenciaActividad.Value;
+
+                if (item.TipoPrograma != null && !string.IsNullOrEmpty(item.TipoPrograma.Nombre))
+                {
+                    impartedAcademic.programType = ProgramType(item.TipoPrograma.Nombre, pResourceApi);
+                    if (impartedAcademic.programType.Contains("OTHERS"))
+                    {
+                        impartedAcademic.programTypeOther = item.TipoPrograma.Nombre;
+                    }
+                }
+
+                if (item.TipoDocencia != null && !string.IsNullOrEmpty(item.TipoDocencia.Nombre))
+                {
+                    impartedAcademic.modalityTeachingType = ModalityTeachingType(item.TipoDocencia.Nombre, pResourceApi);
+                    if (impartedAcademic.modalityTeachingType.Contains("OTHERS"))
+                    {
+                        impartedAcademic.modalityTeachingTypeOther = item.TipoDocencia.Nombre;
+                    }
+                }
+
+                impartedAcademic.department = item.Departamento;
+
+                if (item.TipoAsignatura != null && !string.IsNullOrEmpty(item.TipoAsignatura.Nombre))
+                {
+                    impartedAcademic.courseType = CourseType(item.TipoAsignatura.Nombre, pResourceApi);
+                    if (impartedAcademic.courseType.Contains("OTHERS"))
+                    {
+                        impartedAcademic.courseTypeOther = item.TipoAsignatura.Nombre;
+                    }
+                }
+
+                impartedAcademic.course = item.Curso;
+
+                if (item.TipoHorasCreditos != null && !string.IsNullOrEmpty(item.TipoHorasCreditos.Nombre))
+                {
+                    impartedAcademic.hoursCreditsECTSType = HoursCreditsECTSType(item.TipoHorasCreditos.Nombre, pResourceApi);
+                }
+
+                // TODO: Idioma
+
+                impartedAcademic.competencies = item.Competencias;
+                impartedAcademic.professionalCategory = item.CategoriaProfesional;
+
                 listaImpartedAcademic.Add(impartedAcademic);
             }
 
@@ -1255,20 +1347,23 @@ namespace OAI_PMH.Models.SGI.PersonalData
                     foreach (KeyValuePair<string, string> organizacion in dicOrganizaciones)
                     {
                         Empresa organizacionAux = Empresa.GetOrganizacionSGI(pHarvesterServices, pConfig, "Organizacion_" + organizacion.Key, pDicRutas);
-                        tesis.promotedByTitle = organizacionAux.Nombre;
-
-                        if (string.IsNullOrEmpty(organizacion.Value))
+                        if (organizacionAux != null)
                         {
-                            string idGnoss = organizacionAux.Cargar(pHarvesterServices, pConfig, pResourceApi, "organization", pDicIdentificadores, pDicRutas, pRabbitConf);
-                            pDicIdentificadores["organization"].Add(idGnoss);
-                            dicOrganizacionesCargadas[organizacion.Key] = idGnoss;
-                        }
-                        else
-                        {
-                            dicOrganizacionesCargadas[organizacion.Key] = organizacion.Value;
-                        }
+                            tesis.promotedByTitle = organizacionAux.Nombre;
 
-                        tesis.promotedBy = dicOrganizacionesCargadas[item.EntidadRealizacion.EntidadRef];
+                            if (string.IsNullOrEmpty(organizacion.Value))
+                            {
+                                string idGnoss = organizacionAux.Cargar(pHarvesterServices, pConfig, pResourceApi, "organization", pDicIdentificadores, pDicRutas, pRabbitConf);
+                                pDicIdentificadores["organization"].Add(idGnoss);
+                                dicOrganizacionesCargadas[organizacion.Key] = idGnoss;
+                            }
+                            else
+                            {
+                                dicOrganizacionesCargadas[organizacion.Key] = organizacion.Value;
+                            }
+
+                            tesis.promotedBy = dicOrganizacionesCargadas[item.EntidadRealizacion.EntidadRef];
+                        }
                     }
                 }
 
@@ -1323,20 +1418,23 @@ namespace OAI_PMH.Models.SGI.PersonalData
                     foreach (KeyValuePair<string, string> organizacion in dicOrganizaciones)
                     {
                         Empresa organizacionAux = Empresa.GetOrganizacionSGI(pHarvesterServices, pConfig, "Organizacion_" + organizacion.Key, pDicRutas);
-                        curso.promotedByTitle = organizacionAux.Nombre;
-
-                        if (string.IsNullOrEmpty(organizacion.Value))
+                        if (organizacionAux != null)
                         {
-                            string idGnoss = organizacionAux.Cargar(pHarvesterServices, pConfig, pResourceApi, "organization", pDicIdentificadores, pDicRutas, pRabbitConf);
-                            pDicIdentificadores["organization"].Add(idGnoss);
-                            dicOrganizacionesCargadas[organizacion.Key] = idGnoss;
-                        }
-                        else
-                        {
-                            dicOrganizacionesCargadas[organizacion.Key] = organizacion.Value;
-                        }
+                            curso.promotedByTitle = organizacionAux.Nombre;
 
-                        curso.promotedBy = dicOrganizacionesCargadas[item.EntidadOrganizacionEvento.EntidadRef];
+                            if (string.IsNullOrEmpty(organizacion.Value))
+                            {
+                                string idGnoss = organizacionAux.Cargar(pHarvesterServices, pConfig, pResourceApi, "organization", pDicIdentificadores, pDicRutas, pRabbitConf);
+                                pDicIdentificadores["organization"].Add(idGnoss);
+                                dicOrganizacionesCargadas[organizacion.Key] = idGnoss;
+                            }
+                            else
+                            {
+                                dicOrganizacionesCargadas[organizacion.Key] = organizacion.Value;
+                            }
+
+                            curso.promotedBy = dicOrganizacionesCargadas[item.EntidadOrganizacionEvento.EntidadRef];
+                        }
                     }
                 }
 
@@ -1370,20 +1468,23 @@ namespace OAI_PMH.Models.SGI.PersonalData
                     foreach (KeyValuePair<string, string> organizacion in dicOrganizaciones)
                     {
                         Empresa organizacionAux = Empresa.GetOrganizacionSGI(pHarvesterServices, pConfig, "Organizacion_" + organizacion.Key, pDicRutas);
-                        ciclo.entidadTitulacionTitulo = organizacionAux.Nombre;
-
-                        if (string.IsNullOrEmpty(organizacion.Value))
+                        if (organizacionAux != null)
                         {
-                            string idGnoss = organizacionAux.Cargar(pHarvesterServices, pConfig, pResourceApi, "organization", pDicIdentificadores, pDicRutas, pRabbitConf);
-                            pDicIdentificadores["organization"].Add(idGnoss);
-                            dicOrganizacionesCargadas[organizacion.Key] = idGnoss;
-                        }
-                        else
-                        {
-                            dicOrganizacionesCargadas[organizacion.Key] = organizacion.Value;
-                        }
+                            ciclo.entidadTitulacionTitulo = organizacionAux.Nombre;
 
-                        ciclo.entidadTitulacion = dicOrganizacionesCargadas[item.EntidadTitulacion.EntidadRef];
+                            if (string.IsNullOrEmpty(organizacion.Value))
+                            {
+                                string idGnoss = organizacionAux.Cargar(pHarvesterServices, pConfig, pResourceApi, "organization", pDicIdentificadores, pDicRutas, pRabbitConf);
+                                pDicIdentificadores["organization"].Add(idGnoss);
+                                dicOrganizacionesCargadas[organizacion.Key] = idGnoss;
+                            }
+                            else
+                            {
+                                dicOrganizacionesCargadas[organizacion.Key] = organizacion.Value;
+                            }
+
+                            ciclo.entidadTitulacion = dicOrganizacionesCargadas[item.EntidadTitulacion.EntidadRef];
+                        }
                     }
                 }
 
@@ -1441,15 +1542,142 @@ namespace OAI_PMH.Models.SGI.PersonalData
                 .Normalize(NormalizationForm.FormC);
         }
 
+        private static string HoursCreditsECTSType(string hoursCreditsECTSType, ResourceApi pResourceApi)
+        {
+            string id = pResourceApi.GraphsUrl + "items/hourscreditsectstype_";
+            switch (hoursCreditsECTSType)
+            {
+                case "Creditos":
+                    id += "000";
+                    break;
+                case "Horas":
+                    id += "010";
+                    break;
+                default:
+                    return null;
+            }
+            return id;
+        }
+
+        private static string CourseType(string courseType, ResourceApi pResourceApi)
+        {
+            string id = pResourceApi.GraphsUrl + "items/coursetype_";
+            switch (courseType.ToLower())
+            {
+                case "troncal":
+                    id += "000";
+                    break;
+                case "optativa":
+                    id += "020";
+                    break;
+                case "obligatoria":
+                    id += "010";
+                    break;
+                case "libre configuración":
+                    id += "030";
+                    break;
+                case "doctorado/a":
+                    id += "050";
+                    break;
+                default:
+                    id += "OTHERS";
+                    break;
+            }
+            return id;
+        }
+
+        private static string ModalityTeachingType(string modalityTeachingType, ResourceApi pResourceApi)
+        {
+            string id = pResourceApi.GraphsUrl + "items/modalityteachingtype_";
+            switch (modalityTeachingType.ToLower())
+            {
+                case "clínico":
+                    id += "060";
+                    break;
+                case "prácticas de laboratorio":
+                    id += "700";
+                    break;
+                case "práctica (aula-problemas)":
+                    id += "705";
+                    break;
+                case "teórica presencial":
+                    id += "840";
+                    break;
+                case "virtual":
+                    id += "860";
+                    break;
+                default:
+                    id += "OTHERS";
+                    break;
+            }
+            return id;
+        }
+
+        private static string ProgramType(string programType, ResourceApi pResourceApi)
+        {
+            string id = pResourceApi.GraphsUrl + "items/programtype_";
+            switch (programType.ToLower())
+            {
+                case "arquitectura":
+                    id += "020";
+                    break;
+                case "arquitectura técnica":
+                    id += "030";
+                    break;
+                case "diplomatura":
+                    id += "240";
+                    break;
+                case "doctorado/a":
+                    id += "250";
+                    break;
+                case "ingeniería":
+                    id += "420";
+                    break;
+                case "ingeniería técnica":
+                    id += "430";
+                    break;
+                case "licenciatura":
+                    id += "470";
+                    break;
+                case "máster oficial":
+                    id += "480";
+                    break;
+                default:
+                    id += "OTHERS";
+                    break;
+            }
+            return id;
+        }
+
+        private static string TeachingType(string teachingtype, ResourceApi pResourceApi)
+        {
+            string id = pResourceApi.GraphsUrl + "items/teachingtype_";
+            switch (teachingtype.ToLower())
+            {
+                case "docencia internacional":
+                    id += "014";
+                    break;
+                case "docencia oficial":
+                    id += "015";
+                    break;
+                case "docencia no oficial":
+                    id += "016";
+                    break;
+                default:
+                    return null;
+            }
+            return id;
+        }
+
         private static string PrizeType(ResourceApi pResourceApi, string premio)
         {
             string id = pResourceApi.GraphsUrl + "items/prizetype_";
-            switch (premio)
+            switch (premio.ToLower())
             {
-                case "Premio extraordinario de licenciatura":
+                case "premio extraordinario de licenciatura":
                     id += "000";
                     break;
-                case "Premio fin de carrera":
+                case "premio fin de carrera":
                     id += "010";
                     break;
                 default:
@@ -1462,15 +1690,15 @@ namespace OAI_PMH.Models.SGI.PersonalData
         private static string UniversityDegreeType(ResourceApi pResourceApi, string tipoTitulacion)
         {
             string id = pResourceApi.GraphsUrl + "items/universitydegreetype_";
-            switch (tipoTitulacion)
+            switch (tipoTitulacion.ToLower())
             {
-                case "Doctor":
+                case "doctor":
                     id += "940";
                     break;
-                case "Titulado medio":
+                case "titulado medio":
                     id += "950";
                     break;
-                case "Titulado superior":
+                case "titulado superior":
                     id += "960";
                     break;
                 default:
@@ -1518,11 +1746,9 @@ namespace OAI_PMH.Models.SGI.PersonalData
                 case "trabajo conducente a la obtención de dea":
                     id += "071";
                     break;
-                case "texto de otros":
+                default:
                     id += "OTHERS";
                     break;
-                default:
-                    return null;
             }
             return id;
         }

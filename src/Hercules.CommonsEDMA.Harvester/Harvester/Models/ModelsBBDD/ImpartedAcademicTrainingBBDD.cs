@@ -25,8 +25,8 @@ namespace Harvester.Models.ModelsBBDD
         public string hasCountryName { get; set; } // Feature (Secundaria)
         public string hasRegion { get; set; } // Feature (Secundaria)
         public string teachingType { get; set; } // TeachingType (Secundaria)
-        public float numberECTSHours { get; set; }
-        public float frequency { get; set; }
+        public double numberECTSHours { get; set; }
+        public double frequency { get; set; }
         public string programType { get; set; } // ProgramType (Secundaria)
         public string programTypeOther { get; set; }
         public string modalityTeachingType { get; set; } // ModalityTeachingType (Secundaria)
