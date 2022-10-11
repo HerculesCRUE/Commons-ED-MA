@@ -13,3 +13,4 @@ El listado de componentes es:
 - [Hercules.CommonsEDMA.Harvester](./Hercules.CommonsEDMA.Harvester). Servicio encargado de la carga de datos (investigadores, publicaciones, ROs, etc) desde Hércules SGI - Sistema de Gestión de Investigación (SGI).
 - [Hercules.CommonsEDMA.ServicioExterno](./Hercules.CommonsEDMA.ServicioExterno). Servicio Web con funciones propias del proyecto: ofertas, cluster, gráficas y búsqueda.
 - [Hercules.CommonsEDMA.DoiRabbitConsume](./Hercules.CommonsEDMA.DoiRabbitConsume). Servicio de Rabbit.
+- [Hercules.CommonsEDMA.Harvester](./Hercules.CommonsEDMA.Harvester). Servicio encargado de la carga de datos (investigadores, publicaciones, ROs, etc) desde Hércules SGI - Sistema de Gestión de Investigación (SGI).
