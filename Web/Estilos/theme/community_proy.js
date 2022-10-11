@@ -2066,6 +2066,65 @@ function PedirFuentesExternas() {
     //mostrarNotificacion("success", "Obteniendo datos de fuentes externas en proceso. Tardará unos minutos.");
 }
 
+function GetSexenios(pIdUsuario) {
+    var url = url_servicio_editorcv + "Sexenios/ConseguirSexenios";
+    var arg = {};
+    arg.comite = "";
+    arg.periodo = "";
+    arg.perfil_tecnologico = "";
+    arg.subcomite = "";
+    arg.idInvestigador = pIdUsuario;
+    mostrarNotificacion("info", "Obteniendo datos de sexenios en proceso. Tardará unos minutos.");
+    $.get(url, arg, function (data) {
+    }).fail(function (jqXHR, textStatus, errorThrown) {
+        console.log("Error al obtener los sexenios");
+        var fecha = jqXHR.responseText.split("-");
+        if (fecha.length == 3) {
+            var horas_restantes = (24 - (new Date().getHours()));
+        } else {
+            console.log(jqXHR);
+            mostrarNotificacion("error", "Error al obtener los sexenios");
+        }
+    }).success(function (data) {
+        console.log("Sexenios obtenidas");        
+    }
+    );
+}
+
+function PedirSexenio() {
+    GetSexenios($('.inpt_usuarioID').attr('value'));
+    menusLateralesManagement.init();
+}
+
+function GetAcreditaciones(pIdUsuario) {
+    var url = url_servicio_editorcv + "Acreditaciones/ConseguirAcreditaciones";
+    var arg = {};
+    arg.comision = "";
+    arg.tipo_acreditacion = "";
+    arg.categoria_acreditacion = "";
+    arg.idInvestigador = pIdUsuario;
+    mostrarNotificacion("info", "Obteniendo datos de las acreditaciones en proceso. Tardará unos minutos.");
+    $.get(url, arg, function (data) {
+    }).fail(function (jqXHR, textStatus, errorThrown) {
+        console.log("Error al obtener las acreditaciones");
+        var fecha = jqXHR.responseText.split("-");
+        if (fecha.length == 3) {
+            var horas_restantes = (24 - (new Date().getHours()));
+        } else {
+            console.log(jqXHR);
+            mostrarNotificacion("error", "Error al obtener las acreditaciones");
+        }
+    }).success(function (data) {
+        console.log("Acreditaciones obtenidas");        
+    }
+    );
+}
+
+function PedirAcreditacion() {
+    GetAcreditaciones($('.inpt_usuarioID').attr('value'));
+    menusLateralesManagement.init();
+}
+
 
 menusLateralesManagement.montarMenuLateralMetabuscador= function () {
 	var that = this;
