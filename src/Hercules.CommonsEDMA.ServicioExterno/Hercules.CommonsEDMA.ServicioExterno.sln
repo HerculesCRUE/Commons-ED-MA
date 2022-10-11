@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.2.32616.157
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Hercules.CommonsEDMA.ServicioExterno", "Hercules.CommonsEDMA.ServicioExterno\Hercules.CommonsEDMA.ServicioExterno.csproj", "{BBEBB3DE-09A4-4084-ABF0-32494803030E}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{BBEBB3DE-09A4-4084-ABF0-32494803030E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BBEBB3DE-09A4-4084-ABF0-32494803030E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BBEBB3DE-09A4-4084-ABF0-32494803030E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BBEBB3DE-09A4-4084-ABF0-32494803030E}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {2C5DFC71-C82A-4712-98AF-3FEF356C75AA}
+	EndGlobalSection
+EndGlobal

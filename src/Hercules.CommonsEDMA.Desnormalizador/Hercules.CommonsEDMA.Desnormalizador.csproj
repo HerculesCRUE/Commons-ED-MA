@@ -1,0 +1,52 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net6.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="Models\Actualizadores\w1u0yj25.pyz~" />
+    <None Remove="Models\CV\Libraries\Es.Riam.Gnoss.Web.MVC.Models.dll" />
+    <None Remove="Models\CV\Libraries\Es.Riam.Semantica.dll" />
+    <None Remove="Models\CV\Libraries\Es.Riam.Util.dll" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="Models\CV\Libraries\Es.Riam.Gnoss.Web.MVC.Models.dll" />
+    <Content Include="Models\CV\Libraries\Es.Riam.Semantica.dll" />
+    <Content Include="Models\CV\Libraries\Es.Riam.Util.dll" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="dotNetRDF" Version="2.7.2" />
+    <PackageReference Include="GnossApiWrapper.NetCore" Version="6.0.6" />
+    <PackageReference Include="Microsoft.AspNet.WebApi.Client" Version="5.2.9" />
+    <PackageReference Include="Quartz" Version="3.4.0" />
+    <PackageReference Include="RabbitMQ.Client" Version="6.2.4" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="Es.Riam.Gnoss.Web.MVC.Models">
+      <HintPath>Models\CV\Libraries\Es.Riam.Gnoss.Web.MVC.Models.dll</HintPath>
+    </Reference>
+    <Reference Include="Es.Riam.Semantica">
+      <HintPath>Models\CV\Libraries\Es.Riam.Semantica.dll</HintPath>
+    </Reference>
+    <Reference Include="Es.Riam.Util">
+      <HintPath>Models\CV\Libraries\Es.Riam.Util.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="appsettings.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Config\ConfigOAuth\OAuthV3.config">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
+  <ProjectExtensions><VisualStudio><UserProperties appsettings_1json__JsonSchema="" /></VisualStudio></ProjectExtensions>
+
+</Project>

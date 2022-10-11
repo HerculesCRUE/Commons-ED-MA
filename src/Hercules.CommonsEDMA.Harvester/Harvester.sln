@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31912.275
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Harvester", "Harvester\Harvester.csproj", "{FEE8234C-9D4E-41DB-AB3A-A202DBC0B6BB}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "hercules", "ClasesGeneradas\hercules.csproj", "{134B24D9-A459-45E9-983A-EF0A99385084}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{FEE8234C-9D4E-41DB-AB3A-A202DBC0B6BB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FEE8234C-9D4E-41DB-AB3A-A202DBC0B6BB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FEE8234C-9D4E-41DB-AB3A-A202DBC0B6BB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FEE8234C-9D4E-41DB-AB3A-A202DBC0B6BB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{134B24D9-A459-45E9-983A-EF0A99385084}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{134B24D9-A459-45E9-983A-EF0A99385084}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{134B24D9-A459-45E9-983A-EF0A99385084}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{134B24D9-A459-45E9-983A-EF0A99385084}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {559ABECE-4776-4833-9FC6-8386604F9D2C}
+	EndGlobalSection
+EndGlobal

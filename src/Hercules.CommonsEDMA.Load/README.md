@@ -25,7 +25,7 @@ Una vez preparada los ficheros necesarios para la carga de entidades secundarias
 
 Es necesario que los ficheros XML ofrecidos por la universidad estén en el directorio de ./Dataset/UMU
 
-También hay que guardar el excel de las taxonomias (Hércules-ED_Taxonomías.xlsx) y el de datos adicionales de las personas (personas_hercules.xlsx) en ./Dataset
+También hay que guardar el excel de las taxonomias (Hércules-CommonsEDMA_Taxonomías.xlsx) y el de datos adicionales de las personas (personas_hercules.xlsx) en ./Dataset
 
 Dependencias
 ============
