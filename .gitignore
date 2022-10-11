@@ -349,7 +349,10 @@ MigrationBackup/
 # Ionide (cross platform F# VS Code tools) working folder
 .ionide/
 ObjetosDeConocimiento/Document/document.pprj
+
+# Config file
 src/DesnormalizadorHercules/Config/OAuthV3.config
-src/Hercules.ED.Desnormalizador/Config/OAuthV3.config
-src/Hercules.ED.EditorCV/EditorCV/Config/configOAuth/OAuthV3.config
-src/Hercules.ED.Desnormalizador/Config/configOAuth/OAuthV3.config
+src/Hercules.CommonsEDMA.Desnormalizador/Config/OAuthV3.config
+src/Hercules.CommonsEDMA.EditorCV/EditorCV/Config/configOAuth/OAuthV3.config
+src/Hercules.CommonsEDMA.Desnormalizador/Config/configOAuth/OAuthV3.config
+src/Hercules.CommonsEDMA.ServicioExterno/Hercules.CommonsEDMA.ServicioExterno/Config/ConfigOAuth/OAuthV3.config
