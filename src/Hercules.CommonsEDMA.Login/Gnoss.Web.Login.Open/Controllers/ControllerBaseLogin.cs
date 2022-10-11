@@ -113,7 +113,7 @@ namespace Gnoss.Web.Login
                 path = Request.Path.Value.Substring(0, Request.Path.Value.LastIndexOf("/"));
             }
 
-            string dominio = $"{Request.Scheme}://{Request.Host}{path}";
+            string dominio = $"https://{Request.Host}{path}";
             return dominio;
         }
         /// <summary>
