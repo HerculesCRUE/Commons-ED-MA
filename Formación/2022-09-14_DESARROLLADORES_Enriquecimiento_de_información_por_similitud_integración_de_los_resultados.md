@@ -33,7 +33,7 @@ Para ello se obtienen todos los datos de la BBDD y del servicio de similaridad, 
 Estos datos se explotan dentro de las fichas de las publicaciones dentro de la pestaña de relacionados.
 
 ### Ficha de publicación
-Al entrar en la ficha o pulsar sobre la pestaña de relacionados se hace una petición al [servicio externo](https://github.com/HerculesCRUE/HerculesMA/tree/main/src/Hercules.MA.ServicioExterno) 
+Al entrar en la ficha o pulsar sobre la pestaña de relacionados se hace una petición al [servicio externo](https://github.com/HerculesCRUE/CommonsED-MA/tree/main/src/Hercules.CommonsEDMA.ServicioExterno) 
 
 ### Servicio externo
 La petición llega al método 'GetSimilaritiesDocument' del controlador 'SimilarityController' pasando como parámetro el ID de la publiación {URL_SERVICIO_EXTERNO}/Similarity/GetSimilaritiesDocument?pIdDocument={ID_PUBLICACIÓN}. Esta petición nos devuelve los IDs de las publicaciones relacionadas junto con las etiquetas y su peso en la relación.
