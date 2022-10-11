@@ -114,7 +114,6 @@ namespace Gnoss.Web.Login
             }
 
             string dominio = $"{Request.Scheme}://{Request.Host}{path}";
-            dominio = $"https://{Request.Host}{path}";
             return dominio;
         }
         /// <summary>
