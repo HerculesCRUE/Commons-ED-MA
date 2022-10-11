@@ -145,6 +145,8 @@ namespace OAI_PMH.Models.SGI.PersonalData
             List<string> listaIdsCiclosBorrar = ObtenerDataByCrisIdentifiers(listaCiclosBorrarCrisIdentifiers, pResourceApi, "academicdegree");
             BorrarRecursos(listaIdsCiclosBorrar, pResourceApi, "academicdegree");
             #endregion
+        
+            // TODO: QUEDARÍAN DOCTORADOS, FORMACIÓN ESPECIALIZADA Y POSGRADO
         }
 
         public static void BorrarRecursos(List<string> pListaGnossId, ResourceApi pResourceApi, string pOntology)

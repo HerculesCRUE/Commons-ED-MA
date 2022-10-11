@@ -1730,7 +1730,7 @@ namespace Harvester
                 case "Creditos":
                     id += "000";
                     break;
-                case "No competitivo":
+                case "Horas":
                     id += "010";
                     break;
                 default:
