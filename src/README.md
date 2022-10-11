@@ -11,3 +11,4 @@ El listado de componentes es:
 - [Hercules.CommonsEDMA.Login](./Hercules.CommonsEDMA.Login). Descripción de la configuración del Servicio de Login con SAML
 - [Hercules.CommonsEDMA.OAI_PMH](./Hercules.CommonsEDMA.OAI_PMH). Servicio OAI-PMH para recolección de datos desde los sistemas de la universidad, Hércules SGI y otros.
 - [Hercules.CommonsEDMA.Harvester](./Hercules.CommonsEDMA.Harvester). Servicio encargado de la carga de datos (investigadores, publicaciones, ROs, etc) desde Hércules SGI - Sistema de Gestión de Investigación (SGI).
+- [Hercules.CommonsEDMA.ServicioExterno](./Hercules.CommonsEDMA.ServicioExterno). Servicio Web con funciones propias del proyecto: ofertas, cluster, gráficas y búsqueda.

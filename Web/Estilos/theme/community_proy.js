@@ -959,7 +959,74 @@ tooltipsAccionesRecursos.getTooltipQuotes= function () {
 	});
 }
 
+tooltipsAccionesRecursos.getTooltipHindex= function () {
+	var that = this;	
+    $(".hindex").each(function () {
+			var scopusInt=$(this).data('scopus');
+			var wosInt=$(this).data('wos');
+			var herculesInt=$(this).data('hercules');
 
+			var htmlScopus = "";
+			if(typeof scopusInt !== "undefined" && scopusInt != "" && scopusInt != "0"){
+				htmlScopus=`
+				<li>					
+					<span class="texto">SCOPUS</span>
+					<span class="num-resultado">${scopusInt}</span>					
+				</li>`;
+			}
+			
+			var htmlWos = "";
+			if(typeof wosInt !== "undefined" && wosInt != "" && wosInt != "0"){
+				htmlWos=`
+				<li>					
+					<span class="texto">WOS</span>
+					<span class="num-resultado">${wosInt}</span>					
+				</li>`;
+			}
+			
+			var htmlHercules = "";
+			if(typeof herculesInt !== "undefined" && herculesInt != "" && herculesInt != "0"){
+				htmlHercules=`
+				<li>					
+					<span class="texto">Hercules</span>
+					<span class="num-resultado">${herculesInt}</span>					
+				</li>`;
+			}
+			
+		
+			
+			var html=`<p class="tooltip-title">Fuente de citas</p>
+                <ul class="no-list-style">
+				${htmlScopus}				
+                ${htmlWos}
+                ${htmlHercules}
+			
+                </ul>`;
+				
+			if((typeof scopusInt !== "undefined" && scopusInt != "" && scopusInt != "0") || (typeof wosInt !== "undefined" && wosInt != "" && wosInt != "0") || (typeof htmlHercules !== "undefined" && htmlHercules != "" && htmlHercules != "0"))
+			{
+				$(this).tooltip({
+					html: true,
+					placement: 'bottom',
+					template: '<div class="tooltip background-blanco citas" role="tooltip"><div class="tooltip-arrow"></div><div class="tooltip-inner"></div></div>',
+					title: html
+				});
+			} else {
+				$(this).tooltip({
+					html: true,
+					placement: 'bottom',
+					template: '<div class="tooltip background-blanco citas" role="tooltip"><div class="tooltip-arrow"></div><div class="tooltip-inner"></div></div>',
+					title: `<p class="tooltip-title">Fuente de citas</p>
+		                <span class="material-icons cerrar">close</span>
+		                <ul class="no-list-style">
+		                    <li>
+		                        <span class="texto">No hay datos</span>
+		                    </li>
+		                </ul>`
+				});
+			}
+	});
+}
 var montarTooltipCode = {
 	// Init the function
     init: function () {
@@ -1971,6 +2038,7 @@ function GetFuentesExternas(pIdUsuario) {
     var url = url_servicio_externo + "FuentesExternas/InsertToQueue";
     var arg = {};
     arg.pUserId = pIdUsuario;
+    mostrarNotificacion("info", "Obteniendo datos de fuentes externas en proceso. Tardará unos minutos.");
     $.get(url, arg, function (data) {
     }).fail(function (jqXHR, textStatus, errorThrown) {
         console.log("Error al obtener las fuentes externas");
@@ -1987,7 +2055,7 @@ function GetFuentesExternas(pIdUsuario) {
 
     }).success(function (data) {
         console.log("Fuentes externas obtenidas");
-        mostrarNotificacion("info", "Obteniendo datos de fuentes externas en proceso. Tardará unos minutos.");
+        
     }
     );
 }
@@ -2095,6 +2163,7 @@ function tooltipsImpactFactor()
 tooltipsAccionesRecursos.lanzar = function () {
     montarTooltip.lanzar(this.info_resource, '', 'background-gris grupos');
     montarTooltip.lanzar(this.quotes, this.getTooltipQuotes(), 'background-blanco citas');
+    montarTooltip.lanzar($(".hindex"),this.getTooltipHindex(),'background-blanco citas');
     montarTooltip.lanzar(this.block, 'Bloqueado', 'background-gris-oscuro');
     montarTooltip.lanzar(this.visible, 'Visible', 'background-gris-oscuro');
     montarTooltip.lanzar(this.oculto, 'Oculto', 'background-gris-oscuro');

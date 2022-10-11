@@ -104,11 +104,11 @@
                         @{
                             if (pPerson.Roh_h_index != null && pPerson.Roh_h_index > 0 && !string.IsNullOrEmpty(pPerson.GNOSSID))
                             {
-                                <span id="numPublicacionesCab" about="@pPerson.GNOSSID" property="@pPerson.GetPropertyURI(nameof(pPerson.Roh_h_index))" class="nombre">@pPerson.Roh_h_index @Html.Translate("INDICE_H")</span>
+                                <span id="numPublicacionesCab" about="@pPerson.GNOSSID" property="@pPerson.GetPropertyURI(nameof(pPerson.Roh_h_index))" class="nombre hindex" data-hercules="@pPerson.Roh_h_index">@pPerson.Roh_h_index @Html.Translate("INDICE_H")</span>
                             }
                             else
                             {
-                                <span id="numPublicacionesCab">--- @Html.Translate("INDICE_H") &nbsp;</span>
+                                <span id="numPublicacionesCab" class="hindex">--- @Html.Translate("INDICE_H") &nbsp;</span>
                             }
                         }
                     </div>                    
