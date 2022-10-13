@@ -185,7 +185,9 @@ var buscadorPersonalizado = {
 }
 
 
-// Clase para trabajar en las gráficas de los colaboradores
+/** 
+ * Clase para trabajar en las gráficas de los colaboradores en las diferentes fichas
+ */
 class CargarGraficaProjectoObj {
     /**
      * Constructor
@@ -207,7 +209,7 @@ class CargarGraficaProjectoObj {
      * Llama a la función externa de "AjustarGraficaArania"
      */
     actualizarGraficaColaboradores = () => {
-        AjustarGraficaArania(this.dataCB, this.idContenedorCB, this.typesOcultar, this.showRelation);
+        AjustarGraficaArania(this.dataCB, this.idContenedorCB, this.typesOcultar, this.showRelation)
     }
 
     /**
@@ -223,26 +225,26 @@ class CargarGraficaProjectoObj {
         //     url = localUrlBase + "Hercules/DatosGraficaColaboradoresGrupo";
         // }
         
-        var self = this;
-        arg.pParametros = parametros;
-        arg.pMax = $('#numColaboradores').val();
-        $('#' + idContenedor).empty();
+        var self = this
+        arg.pParametros = parametros
+        arg.pMax = $('#numColaboradores').val()
+        $('#' + idContenedor).empty()
         if (mostrarCargando) {
-            MostrarUpdateProgress();
+            MostrarUpdateProgress()
         }
 
-        let optionsRelations = ["relation_project", "relation_document"];
+        this.typesOcultar = ["relation_project", "relation_document"]
 
         $.get(this.url, arg, function (data) {
             // Establecer los valores en la variable externa
-            self.dataCB = data;
-            self.idContenedorCB = idContenedor;
+            self.dataCB = data
+            self.idContenedorCB = idContenedor
 
-            self.actualizarGraficaColaboradores();
+            self.actualizarGraficaColaboradores()
             if (mostrarCargando) {
-                OcultarUpdateProgress();
+                OcultarUpdateProgress()
             }
-        });
+        })
 
     }
 
@@ -254,13 +256,13 @@ class CargarGraficaProjectoObj {
     actualizarTypesOcultar = (type, id) => {
 
         if (this.typesOcultar.includes(type)) {
-            this.typesOcultar.splice(this.typesOcultar.indexOf(type), 1);
+            this.typesOcultar.splice(this.typesOcultar.indexOf(type), 1)
             document.getElementById(id).classList.add('tachado')
         } else {
             this.typesOcultar.push(type)
             document.getElementById(id).classList.remove('tachado')
         }
-        this.actualizarGraficaColaboradores();
+        this.actualizarGraficaColaboradores()
     }
 
 }
@@ -470,171 +472,187 @@ function PintarGraficaArania(data,idContenedor) {
 
 	// Se crea el objeto
 	$('#'+idContenedor).empty();
-	var cy = window.cy = cytoscape({
-		// Contenedor
-		container: document.getElementById(idContenedor),
-		// Layout
-		layout: {
-			name: 'cose',
-			idealEdgeLength: 100,
-			nodeOverlap: 20,
-			refresh: 20,
-			fit:true,
-			padding: 30,
-			randomize: false,
-			componentSpacing: 100,
-			nodeRepulsion: 400000,
-			edgeElasticity: 100,
-			nestingFactor: 5,
-			gravity: 80,
-			numIter: 1000,
-			initialTemp: 200,
-			coolingFactor: 0.95,
-			minTemp: 1.0
 
-		},
-		// Estilos
-		style: [{
-			"selector": "node",
-			"style": {
-				//"width": "mapData(score, 0, 10, 45, 90)",
-				//"height": "mapData(score, 0, 10, 45, 90)",
-				"content": "data(name)",
-				"font-size": "12px",
-				"font-family": 'Roboto',
-				//"font-color": "#999999",
-				"background-color": "#b2cff7",
-				"text-outline-width": "0px",
-				"overlay-padding": "6px",
-				"z-index": "10"
-			}
-		}, {
-			"selector": "edge",
-			"style": {
-				"curve-style": "haystack",
-				"content": "data(name)",
-				"font-size": "24px",
-				"font-family": 'Roboto',
-				//"font-color": "#999999",
-				"background-color": "#b2cff7",
-				"haystack-radius": "0.5",
-				"opacity": "0.5",
-				"line-color": "#E1E1E1",
-				"width": "mapData(weight, 0, 10, 3, 13)",
+	// Inicializamos la variable de la gráfica
+	var cy = window.cy = null
+	try {
+		// intentamos inicializar la gráfica
+		cy = window.cy = cytoscape({
+			// Contenedor
+			container: document.getElementById(idContenedor),
+			// Layout
+			layout: {
+				name: 'cose',
+				idealEdgeLength: 100,
+				nodeOverlap: 20,
+				refresh: 20,
+				fit:true,
+				padding: 30,
+				randomize: false,
+				componentSpacing: 100,
+				nodeRepulsion: 400000,
+				edgeElasticity: 100,
+				nestingFactor: 5,
+				gravity: 80,
+				numIter: 1000,
+				initialTemp: 200,
+				coolingFactor: 0.95,
+				minTemp: 1.0
 
-				"overlay-padding": "1px",
-				"z-index": "11"
-			}
-		}],
-		// Zoom
-		userZoomingEnabled: false,
-		minZoom: 0.5,
-		maxZoom: 2.0,
-		// Datos
-		elements: data
-	});
+			},
+			// Estilos
+			style: [{
+				"selector": "node",
+				"style": {
+					//"width": "mapData(score, 0, 10, 45, 90)",
+					//"height": "mapData(score, 0, 10, 45, 90)",
+					"content": "data(name)",
+					"font-size": "12px",
+					"font-family": 'Roboto',
+					//"font-color": "#999999",
+					"background-color": "#b2cff7",
+					"text-outline-width": "0px",
+					"overlay-padding": "6px",
+					"z-index": "10"
+				}
+			}, {
+				"selector": "edge",
+				"style": {
+					"curve-style": "haystack",
+					"content": "data(name)",
+					"font-size": "24px",
+					"font-family": 'Roboto',
+					//"font-color": "#999999",
+					"background-color": "#b2cff7",
+					"haystack-radius": "0.5",
+					"opacity": "0.5",
+					"line-color": "#E1E1E1",
+					"width": "mapData(weight, 0, 10, 3, 13)",
+
+					"overlay-padding": "1px",
+					"z-index": "11"
+				}
+			}],
+			// Zoom
+			userZoomingEnabled: false,
+			minZoom: 0.5,
+			maxZoom: 2.0,
+			// Datos
+			elements: data
+		});
+	} catch (error) {
+		// ocultamos el "update progress en el caso de que haya habido un error en la carga de la gráfica"
+		OcultarUpdateProgress();
+		let element = document.getElementById(idContenedor)
+		element.classList.add("d-none")
+		element.closest(".chart-wrap").classList.add("d-none")
+		
+	}
+
 	//cy.nodes(ele=>ele._private.edges.length == 0 && ele._private.data.type !="icon_ip")
 	var arrayNodes = [];
-	var nodos = cy.nodes();
 
-	for (i = 0; i < cy.nodes().length; i++) { //starts loop
-		arrayNodes.push(nodos[i]._private.data.name);                
-		switch (nodos[i]._private.data.type) {
-			case 'icon_ip':
-				cy.nodes()[i].style({
-					'background-color': '#b2cff7',
-					'background-image': 'https://cdn.iconscout.com/icon/free/png-256/user-1912184-1617653.png',
-					'background-fit': 'cover',
-					'border-width': '0px',
-					'border-color': '#b2cff7',
-					'shape': 'ellipse'
-				})                        
-				break;
-			case 'icon_member':
-				cy.nodes()[i].style({
-					'background-color': '#b2cff7',
-					'border-width': '0px',
-					'border-color': '#b2cff7',
-					'shape': 'ellipse'
-				})
-				break;
-			case 'icon_project':
-				cy.nodes()[i].style({
-					'background-color': '#b2cff7',
-					'background-image': 'https://cdn.iconscout.com/icon/free/png-256/briefcase-446-460356.png',
-					'background-width': '65%',
-					'background-height': '65%',
-					'border-width': '0px',
-					'border-color': '#b2cff7',
-					'shape': 'ellipse'
-				})
-				break;
-			default:
-				nodos[i].style({
-					'border-width': '0px',
-					'border-color': '#b2cff7',
-					'background-color': '#b2cff7',
-					'shape': 'ellipse'
-				});
-				break;
-		}
-	};
-	cy.nodes(ele=>ele._private.edges.length == 0 && ele._private.data.type !="icon_ip").remove()
-	var arrayEdges = [];
-	var edges = cy.edges();
+	if (cy) {	
+		var nodos = cy.nodes();
+		for (i = 0; i < cy.nodes().length; i++) { //starts loop
+			arrayNodes.push(nodos[i]._private.data.name);                
+			switch (nodos[i]._private.data.type) {
+				case 'icon_ip':
+					cy.nodes()[i].style({
+						'background-color': '#b2cff7',
+						'background-image': 'https://cdn.iconscout.com/icon/free/png-256/user-1912184-1617653.png',
+						'background-fit': 'cover',
+						'border-width': '0px',
+						'border-color': '#b2cff7',
+						'shape': 'ellipse'
+					})                        
+					break;
+				case 'icon_member':
+					cy.nodes()[i].style({
+						'background-color': '#b2cff7',
+						'border-width': '0px',
+						'border-color': '#b2cff7',
+						'shape': 'ellipse'
+					})
+					break;
+				case 'icon_project':
+					cy.nodes()[i].style({
+						'background-color': '#b2cff7',
+						'background-image': 'https://cdn.iconscout.com/icon/free/png-256/briefcase-446-460356.png',
+						'background-width': '65%',
+						'background-height': '65%',
+						'border-width': '0px',
+						'border-color': '#b2cff7',
+						'shape': 'ellipse'
+					})
+					break;
+				default:
+					nodos[i].style({
+						'border-width': '0px',
+						'border-color': '#b2cff7',
+						'background-color': '#b2cff7',
+						'shape': 'ellipse'
+					});
+					break;
+			}
+		};
+		cy.nodes(ele=>ele._private.edges.length == 0 && ele._private.data.type !="icon_ip").remove()
+		var arrayEdges = [];
+		var edges = cy.edges();
 
-	for (i = 0; i < cy.edges().length; i++) { //starts loop
-		var data=edges[i]._private.data.id.split('~');	
-		arrayEdges.push(data[data.length-1]);
-		edges[i]._private.data.name = "";
-		switch (edges[i]._private.data.type) {
-			case 'relation_document':
-				edges[i].style({
-					"line-color": "#f8abab"
-				})
-				break;
-			case 'relation_project':
-				edges[i].style({
-					"line-color": "#b2cff7"
-				})
-				break;
-			default:
-				edges[i].style({
-					"line-color": "#E1E1E1"
-				})
-				break;
-		}
-	};
+		for (i = 0; i < cy.edges().length; i++) { //starts loop
+			var data=edges[i]._private.data.id.split('~');	
+			arrayEdges.push(data[data.length-1]);
+			edges[i]._private.data.name = "";
+			switch (edges[i]._private.data.type) {
+				case 'relation_document':
+					edges[i].style({
+						"line-color": "#f8abab"
+					})
+					break;
+				case 'relation_project':
+					edges[i].style({
+						"line-color": "#b2cff7"
+					})
+					break;
+				default:
+					edges[i].style({
+						"line-color": "#E1E1E1"
+					})
+					break;
+			}
+		};
 
-	cy.on('click', 'node', function (e) {
-		e = e.target;
-		var indice = cy.nodes().indexOf(e);
-		if (e._private.data.name === "") {
-			e._private.data.name = arrayNodes[indice];
-		}
-		else {
-			e._private.data.name = "";
-		}
-	})
+		cy.on('click', 'node', function (e) {
+			e = e.target;
+			var indice = cy.nodes().indexOf(e);
+			if (e._private.data.name === "") {
+				e._private.data.name = arrayNodes[indice];
+			}
+			else {
+				e._private.data.name = "";
+			}
+		})
 
-	cy.on('click', 'edge', function (e) {
-		e = e.target;
-		var indice = cy.edges().indexOf(e);
-		if (e._private.data.name === "") {
-			e._private.data.name = arrayEdges[indice];
-		}
-		else {
-			e._private.data.name = "";
-		}
-	});
+		cy.on('click', 'edge', function (e) {
+			e = e.target;
+			var indice = cy.edges().indexOf(e);
+			if (e._private.data.name === "") {
+				e._private.data.name = arrayEdges[indice];
+			}
+			else {
+				e._private.data.name = "";
+			}
+		});
 
-	
-	// Colocar los elementos huérfanos a la derecha
-	cy.ready(function(event) {		
-		if (repintar ) {
-			 PintarGraficaArania(currentData,idContenedor);
-		}
-    });
+		
+		// Colocar los elementos huérfanos a la derecha
+		cy.ready(function(event) {		
+			if (repintar ) {
+				PintarGraficaArania(currentData,idContenedor);
+			}
+		});
+	}
 }
 
 
