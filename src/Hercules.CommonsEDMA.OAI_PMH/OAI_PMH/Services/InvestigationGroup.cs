@@ -99,7 +99,14 @@ namespace OAI_PMH.Services
             client.AddDefaultHeader("Authorization", "Bearer " + accessToken);
             var request = new RestRequest(Method.GET);
             IRestResponse response = client.Execute(request);
-            lineas = JsonConvert.DeserializeObject<List<LineaClasificacion>>(response.Content);
+            try
+            {
+                lineas = JsonConvert.DeserializeObject<List<LineaClasificacion>>(response.Content);
+            }
+            catch (Exception)
+            {
+                return null;
+            }
             return lineas;
         }
 
@@ -117,7 +124,14 @@ namespace OAI_PMH.Services
             client.AddDefaultHeader("Authorization", "Bearer " + accessToken);
             var request = new RestRequest(Method.GET);
             IRestResponse response = client.Execute(request);
-            lineas = JsonConvert.DeserializeObject<List<LineaInvestigacion>>(response.Content);
+            try
+            {
+                lineas = JsonConvert.DeserializeObject<List<LineaInvestigacion>>(response.Content);
+            }
+            catch (Exception)
+            {
+                return null;
+            }
             return lineas;
         }
 
@@ -135,7 +149,14 @@ namespace OAI_PMH.Services
             client.AddDefaultHeader("Authorization", "Bearer " + accessToken);
             var request = new RestRequest(Method.GET);
             IRestResponse response = client.Execute(request);
-            palabras = JsonConvert.DeserializeObject<List<GrupoPalabraClave>>(response.Content);
+            try
+            {
+                palabras = JsonConvert.DeserializeObject<List<GrupoPalabraClave>>(response.Content);
+            }
+            catch (Exception)
+            {
+                return null;
+            }
             return palabras;
         }
 
@@ -153,7 +174,14 @@ namespace OAI_PMH.Services
             client.AddDefaultHeader("Authorization", "Bearer " + accessToken);
             var request = new RestRequest(Method.GET);
             IRestResponse response = client.Execute(request);
-            investigadores = JsonConvert.DeserializeObject<List<string>>(response.Content);
+            try
+            {
+                investigadores = JsonConvert.DeserializeObject<List<string>>(response.Content);
+            }
+            catch (Exception)
+            {
+                return null;
+            }
             return investigadores;
         }
 
@@ -171,7 +199,14 @@ namespace OAI_PMH.Services
             client.AddDefaultHeader("Authorization", "Bearer " + accessToken);
             var request = new RestRequest(Method.GET);
             IRestResponse response = client.Execute(request);
-            investigadores = JsonConvert.DeserializeObject<List<string>>(response.Content);
+            try
+            {
+                investigadores = JsonConvert.DeserializeObject<List<string>>(response.Content);
+            }
+            catch (Exception)
+            {
+                return null;
+            }
             return investigadores;
         }
 
@@ -185,11 +220,18 @@ namespace OAI_PMH.Services
         {
             string accessToken = Token.CheckToken(pConfig);
             List<GrupoEquipo> grupoEquipo = new();
-            RestClient client = new(pConfig.GetUrlBaseGrupos() + "grupos/" + id + "/miembrosequipo"); 
+            RestClient client = new(pConfig.GetUrlBaseGrupos() + "grupos/" + id + "/miembrosequipo");
             client.AddDefaultHeader("Authorization", "Bearer " + accessToken);
             var request = new RestRequest(Method.GET);
             IRestResponse response = client.Execute(request);
-            grupoEquipo = JsonConvert.DeserializeObject<List<GrupoEquipo>>(response.Content);
+            try
+            {
+                grupoEquipo = JsonConvert.DeserializeObject<List<GrupoEquipo>>(response.Content);
+            }
+            catch (Exception)
+            {
+                return null;
+            }
             return grupoEquipo;
         }
     }
