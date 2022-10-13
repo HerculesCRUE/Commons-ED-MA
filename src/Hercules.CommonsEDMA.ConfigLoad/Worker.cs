@@ -104,7 +104,6 @@ namespace Hercules.CommonsEDMA.ConfigLoad
             {
                 string contenidoOriginal = File.ReadAllText(file);
                 string contenidoModificado = contenidoOriginal;
-                contenidoModificado=contenidoModificado.Replace(configService.ObtenerUrlContentBase(), configService.ObtenerUrlContentInstalacion());
                 contenidoModificado=contenidoModificado.Replace(configService.ObtenerUrlServiciosBase(), configService.ObtenerUrlServiciosInstalacion());
                 if (contenidoOriginal != contenidoModificado)
                 {

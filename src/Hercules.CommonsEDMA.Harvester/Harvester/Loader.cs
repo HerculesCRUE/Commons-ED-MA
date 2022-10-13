@@ -270,11 +270,6 @@ namespace Harvester
                             Persona persona = Persona.GetPersonaSGI(harvesterServices, _Config, id, pDicRutas);                            
                             if (persona != null && !string.IsNullOrEmpty(persona.Nombre))
                             {
-                                if (persona.FormacionEspecializada != null && persona.FormacionEspecializada.Any())
-                                {
-
-                                }
-
                                 string idGnossPersona = persona.Cargar(harvesterServices, pConfig, mResourceApi, "person", pDicIdentificadores, pDicRutas, pRabbitConf, true);
                                 pDicIdentificadores["person"].Add(idGnossPersona);
                             }

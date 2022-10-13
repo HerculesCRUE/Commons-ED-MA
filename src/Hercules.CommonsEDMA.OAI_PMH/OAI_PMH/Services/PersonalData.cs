@@ -179,78 +179,77 @@ namespace OAI_PMH.Services
         /// <returns>Devuelve la persona</returns>
         public static Persona GetPersona(string id, ConfigService pConfig)
         {
-            string accessToken = Token.CheckToken(pConfig);
             string identifier = id.Split('_')[1];
             List<Thread> hilos = new List<Thread>();
 
             Persona dataPersona = new();
             hilos.Add(new Thread(() =>
-                dataPersona = GetDatosPersona(identifier, pConfig, accessToken)
+                dataPersona = GetDatosPersona(identifier, pConfig)
             ));
 
             DatosPersonales datosPersonales = null;
             hilos.Add(new Thread(() =>
-                datosPersonales = GetDatosPersonales(identifier, pConfig, accessToken)
+                datosPersonales = GetDatosPersonales(identifier, pConfig)
             ));
 
             DatosContacto datosContacto = null;
             hilos.Add(new Thread(() =>
-                datosContacto = GetDatosContacto(identifier, pConfig, accessToken)
+                datosContacto = GetDatosContacto(identifier, pConfig)
             ));
 
             Vinculacion vinculacion = null;
             hilos.Add(new Thread(() =>
-                vinculacion = GetVinculacion(identifier, pConfig, accessToken)
+                vinculacion = GetVinculacion(identifier, pConfig)
             ));
 
             DatosAcademicos datosAcademicos = null;
             hilos.Add(new Thread(() =>
-                datosAcademicos = GetDatosAcademicos(identifier, pConfig, accessToken)
+                datosAcademicos = GetDatosAcademicos(identifier, pConfig)
             ));
 
             Fotografia fotografia = null;
             hilos.Add(new Thread(() =>
-                fotografia = GetFotografia(identifier, pConfig, accessToken)
+                fotografia = GetFotografia(identifier, pConfig)
             ));
 
             Sexenio sexenio = null;
             hilos.Add(new Thread(() =>
-                sexenio = GetSexenios(identifier, pConfig, accessToken)
+                sexenio = GetSexenios(identifier, pConfig)
             ));
 
             List<FormacionAcademicaImpartida> listaFormacionAcademica = null;
             hilos.Add(new Thread(() =>
-                listaFormacionAcademica = DocentActivity.GetAcademicFormationProvided(identifier, pConfig, accessToken)
+                listaFormacionAcademica = DocentActivity.GetAcademicFormationProvided(identifier, pConfig)
             ));
 
             List<SeminariosCursos> listaSeminarios = null;
             hilos.Add(new Thread(() =>
-                listaSeminarios = DocentActivity.GetSeminars(identifier, pConfig, accessToken)
+                listaSeminarios = DocentActivity.GetSeminars(identifier, pConfig)
             ));
 
             List<Tesis> listaTesis = null;
             hilos.Add(new Thread(() =>
-                listaTesis = DocentActivity.GetTesis(identifier, pConfig, accessToken)
+                listaTesis = DocentActivity.GetTesis(identifier, pConfig)
             ));
 
             List<Ciclos> listaCiclos = null;
             hilos.Add(new Thread(() =>
-                listaCiclos = AcademicFormation.GetFormacionAcademicaCiclos(identifier, pConfig, accessToken)
+                listaCiclos = AcademicFormation.GetFormacionAcademicaCiclos(identifier, pConfig)
             ));
 
             List<Doctorados> listaDoctorados = null;
             hilos.Add(new Thread(() =>
-                listaDoctorados = AcademicFormation.GetFormacionAcademicaDoctorados(identifier, pConfig, accessToken)
+                listaDoctorados = AcademicFormation.GetFormacionAcademicaDoctorados(identifier, pConfig)
             ));
 
             List<FormacionEspecializada> listaEspecializada = null;
             hilos.Add(new Thread(() =>
-                listaEspecializada = AcademicFormation.GetFormacionAcademicaEspecializada(identifier, pConfig, accessToken)
+                listaEspecializada = AcademicFormation.GetFormacionAcademicaEspecializada(identifier, pConfig)
             ));
 
             List<Posgrado> listaPosgrado = null;
             hilos.Add(new Thread(() =>
-                listaPosgrado = AcademicFormation.GetFormacionAcademicaPosgrado(identifier, pConfig, accessToken)
+                listaPosgrado = AcademicFormation.GetFormacionAcademicaPosgrado(identifier, pConfig)
             ));
 
             // Inicio hilos.
@@ -290,8 +289,9 @@ namespace OAI_PMH.Services
         /// <param name="pConfig">ConfigService</param>
         /// <param name="accessToken">Token de acceso</param>
         /// <returns>Devuelve el objeto persona.</returns>
-        private static Persona GetDatosPersona(string id, ConfigService pConfig, string accessToken)
+        private static Persona GetDatosPersona(string id, ConfigService pConfig)
         {
+            string accessToken = Token.CheckToken(pConfig);
             RestClient client = new(pConfig.GetUrlBasePersona() + "personas/" + id);
             client.AddDefaultHeader("Authorization", "Bearer " + accessToken);
             var request = new RestRequest(Method.GET);
@@ -311,8 +311,9 @@ namespace OAI_PMH.Services
         /// <param name="pConfig">ConfigService</param>
         /// <param name="accessToken">Token de acceso</param>
         /// <returns>Devuelve los datos personales de la persona</returns>
-        private static DatosPersonales GetDatosPersonales(string id, ConfigService pConfig, string accessToken)
+        private static DatosPersonales GetDatosPersonales(string id, ConfigService pConfig)
         {
+            string accessToken = Token.CheckToken(pConfig);
             DatosPersonales datosPersonales = new();
             RestClient client = new(pConfig.GetUrlBasePersona() + "datos-personales/persona/" + id);
             client.AddDefaultHeader("Authorization", "Bearer " + accessToken);
@@ -329,8 +330,9 @@ namespace OAI_PMH.Services
             return datosPersonales;
         }
 
-        private static DatosContacto GetDatosContacto(string id, ConfigService pConfig, string accessToken)
+        private static DatosContacto GetDatosContacto(string id, ConfigService pConfig)
         {
+            string accessToken = Token.CheckToken(pConfig);
             DatosContacto datosContacto = new();
             RestClient client = new(pConfig.GetUrlBasePersona() + "datos-contacto/persona/" + id);
             client.AddDefaultHeader("Authorization", "Bearer " + accessToken);
@@ -347,8 +349,9 @@ namespace OAI_PMH.Services
             return datosContacto;
         }
 
-        private static Vinculacion GetVinculacion(string id, ConfigService pConfig, string accessToken)
+        private static Vinculacion GetVinculacion(string id, ConfigService pConfig)
         {
+            string accessToken = Token.CheckToken(pConfig);
             Vinculacion vinculacion = new();
             RestClient client = new(pConfig.GetUrlBasePersona() + "vinculaciones/persona/" + id);
             client.AddDefaultHeader("Authorization", "Bearer " + accessToken);
@@ -365,8 +368,9 @@ namespace OAI_PMH.Services
             return vinculacion;
         }
 
-        private static VinculacionCategoriaProfesional GetVinculacionCategoriaProfesional(string id, ConfigService pConfig, string accessToken)
+        private static VinculacionCategoriaProfesional GetVinculacionCategoriaProfesional(string id, ConfigService pConfig)
         {
+            string accessToken = Token.CheckToken(pConfig);
             VinculacionCategoriaProfesional vinculacion = new();
             RestClient client = new(pConfig.GetUrlBasePersona() + "vinculaciones/persona/" + id + "/vinculaciones-categorias-profesionales");
             client.AddDefaultHeader("Authorization", "Bearer " + accessToken);
@@ -383,8 +387,9 @@ namespace OAI_PMH.Services
             return vinculacion;
         }
 
-        private static DatosAcademicos GetDatosAcademicos(string id, ConfigService pConfig, string accessToken)
+        private static DatosAcademicos GetDatosAcademicos(string id, ConfigService pConfig)
         {
+            string accessToken = Token.CheckToken(pConfig);
             DatosAcademicos datosAcademicos = new();
             RestClient client = new(pConfig.GetUrlBasePersona() + "datos-academicos/persona/" + id);
             client.AddDefaultHeader("Authorization", "Bearer " + accessToken);
@@ -401,8 +406,9 @@ namespace OAI_PMH.Services
             return datosAcademicos;
         }
 
-        private static Fotografia GetFotografia(string id, ConfigService pConfig, string accessToken)
+        private static Fotografia GetFotografia(string id, ConfigService pConfig)
         {
+            string accessToken = Token.CheckToken(pConfig);
             Fotografia fotografia = new();
             RestClient client = new(pConfig.GetUrlBasePersona() + "personas/" + id + "/fotografia");
             client.AddDefaultHeader("Authorization", "Bearer " + accessToken);
@@ -419,8 +425,9 @@ namespace OAI_PMH.Services
             return fotografia;
         }
 
-        private static Sexenio GetSexenios(string id, ConfigService pConfig, string accessToken)
+        private static Sexenio GetSexenios(string id, ConfigService pConfig)
         {
+            string accessToken = Token.CheckToken(pConfig);
             Sexenio sexenios = new();
             RestClient client = new(pConfig.GetUrlBasePersona() + "sexenios/persona/" + id);
             client.AddDefaultHeader("Authorization", "Bearer " + accessToken);

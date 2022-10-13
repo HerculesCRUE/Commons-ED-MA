@@ -24,6 +24,7 @@ namespace OAI_PMH.Models.SGI.Project
         public override ComplexOntologyResource ToRecurso(IHarvesterServices pHarvesterServices, ReadConfig pConfig, ResourceApi pResourceApi, Dictionary<string, HashSet<string>> pDicIdentificadores, Dictionary<string, Dictionary<string, string>> pDicRutas, RabbitServiceWriterDenormalizer pRabbitConf, bool pFusionarPersona = false, string pIdPersona = null)
         {
             ProjectOntology.Project proyecto = CrearProjectOntology(pHarvesterServices, pConfig, pResourceApi, pDicIdentificadores, pDicRutas, pRabbitConf);
+            pResourceApi.ChangeOntoly("project");
             return proyecto.ToGnossApiResource(pResourceApi, null);
         }
 
@@ -65,10 +66,10 @@ namespace OAI_PMH.Models.SGI.Project
             {
                 if (string.IsNullOrEmpty(item.Value))
                 {
-                    Persona personaAux = Persona.GetPersonaSGI(pHarvesterServices, pConfig, item.Key, pDicRutas);
+                    Persona personaAux = Persona.GetPersonaSGI(pHarvesterServices, pConfig, "Persona_" + item.Key, pDicRutas);
                     string idGnoss = personaAux.Cargar(pHarvesterServices, pConfig, pResourceApi, "person", pDicIdentificadores, pDicRutas, pRabbitConf, true);
                     pDicIdentificadores["person"].Add(idGnoss);
-                    dicPersonasBBDD[item.Key] = idGnoss;
+                    dicPersonasCargadas[item.Key] = idGnoss;
                 }
                 else
                 {
@@ -115,7 +116,7 @@ namespace OAI_PMH.Models.SGI.Project
             {
                 if (string.IsNullOrEmpty(item.Value))
                 {
-                    Empresa organizacionAux = Empresa.GetOrganizacionSGI(pHarvesterServices, pConfig, item.Key, pDicRutas);
+                    Empresa organizacionAux = Empresa.GetOrganizacionSGI(pHarvesterServices, pConfig, "Organizacion_" + item.Key, pDicRutas);
                     string idGnoss = organizacionAux.Cargar(pHarvesterServices, pConfig, pResourceApi, "organization", pDicIdentificadores, pDicRutas, pRabbitConf);
                     pDicIdentificadores["organization"].Add(idGnoss);
                     dicOrganizacionesCargadas[item.Key] = idGnoss;
@@ -208,26 +209,26 @@ namespace OAI_PMH.Models.SGI.Project
             }
 
             // Añado las entidades financiadoras que no existan en BBDD
-            //if (pProyecto.EntidadesFinanciadoras != null && pProyecto.EntidadesFinanciadoras.Any())
-            //{
-            //    project.Roh_grantedBy = new List<ProjectOntology.OrganizationAux>();
+            if (this.EntidadesFinanciadoras != null && this.EntidadesFinanciadoras.Any())
+            {
+                project.Roh_grantedBy = new List<ProjectOntology.OrganizationAux>();
 
-            //    foreach (ProyectoEntidadFinanciadora entidadFinanciadora in pProyecto.EntidadesFinanciadoras)
-            //    {
-            //        project.Roh_grantedBy.Add(CrearEntidadOrganizationAux(entidadFinanciadora.EntidadRef));
-            //    }
-            //}
+                foreach (ProyectoEntidadFinanciadora entidadFinanciadora in this.EntidadesFinanciadoras)
+                {
+                    project.Roh_grantedBy.Add(CrearEntidadOrganizationAux(dicOrganizacionesCargadas[entidadFinanciadora.EntidadRef], pResourceApi));
+                }
+            }
 
             // Añado las entidades gestoras que no existan en BBDD. Se coge la primera porque en la ontología es 0..1
-            //if (this.EntidadesGestoras != null && this.EntidadesGestoras.Any())
-            //{
-            //    project.Roh_participates = new List<ProjectOntology.OrganizationAux>();
+            if (this.EntidadesGestoras != null && this.EntidadesGestoras.Any())
+            {
+                project.Roh_participates = new List<ProjectOntology.OrganizationAux>();
 
-            //    foreach (ProyectoEntidadGestora entidadGestora in this.EntidadesGestoras)
-            //    {
-            //        project.Roh_participates.Add(CrearEntidadOrganizationAux(entidadGestora.EntidadRef));
-            //    }
-            //}
+                foreach (ProyectoEntidadGestora entidadGestora in this.EntidadesGestoras)
+                {
+                    project.Roh_participates.Add(CrearEntidadOrganizationAux(dicOrganizacionesCargadas[entidadGestora.EntidadRef], pResourceApi));
+                }
+            }
 
             // Se añade las entidades participación que no existan en BBDD.
             if (this.EntidadesConvocantes != null && this.EntidadesConvocantes.Any())
@@ -416,6 +417,58 @@ namespace OAI_PMH.Models.SGI.Project
             }
 
             return dicProyectosBBDD;
+        }
+
+        private static ProjectOntology.OrganizationAux CrearEntidadOrganizationAux(string pGnossId, ResourceApi pResourceApi)
+        {
+            OrganizacionBBDD organizacionBBDD = GetOrganizacionBBDD(pGnossId, pResourceApi);
+
+            // Asignación.
+            ProjectOntology.OrganizationAux organizationAux = new ProjectOntology.OrganizationAux();
+            organizationAux.IdRoh_organization = pGnossId;
+            organizationAux.Roh_organizationTitle = organizacionBBDD.title;
+            organizationAux.Vcard_locality = organizacionBBDD.locality;
+
+            return organizationAux;
+        }
+
+        public static OrganizacionBBDD GetOrganizacionBBDD(string pIdGnoss, ResourceApi pResourceApi)
+        {
+            SparqlObject resultadoQuery = null;
+            StringBuilder select = new StringBuilder(), where = new StringBuilder();
+
+            // Consulta sparql.
+            select.Append("SELECT ?crisIdentifier ?titulo ?localidad ");
+            where.Append("WHERE { ");
+            where.Append($@"<{pIdGnoss}> <http://w3id.org/roh/crisIdentifier> ?crisIdentifier. ");
+            where.Append($@"<{pIdGnoss}> <http://w3id.org/roh/title> ?titulo. ");
+            where.Append($@"OPTIONAL{{<{pIdGnoss}> <https://www.w3.org/2006/vcard/ns#locality> ?localidad. }}");
+            where.Append("} ");
+
+            resultadoQuery = pResourceApi.VirtuosoQuery(select.ToString(), where.ToString(), "organization");
+
+            if (resultadoQuery != null && resultadoQuery.results != null && resultadoQuery.results.bindings != null && resultadoQuery.results.bindings.Count > 0)
+            {
+                foreach (Dictionary<string, SparqlObject.Data> fila in resultadoQuery.results.bindings)
+                {
+                    OrganizacionBBDD organizacion = new OrganizacionBBDD();
+                    if (!string.IsNullOrEmpty(fila["crisIdentifier"].value))
+                    {
+                        organizacion.crisIdentifier = fila["crisIdentifier"].value;
+                    }
+                    if (!string.IsNullOrEmpty(fila["titulo"].value))
+                    {
+                        organizacion.title = fila["titulo"].value;
+                    }
+                    if (fila.ContainsKey("localidad") && !string.IsNullOrEmpty(fila["localidad"].value))
+                    {
+                        organizacion.locality = fila["localidad"].value;
+                    }
+                    return organizacion;
+                }
+            }
+
+            return null;
         }
 
         /// <summary>

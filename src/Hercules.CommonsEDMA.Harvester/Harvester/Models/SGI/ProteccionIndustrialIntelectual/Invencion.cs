@@ -20,6 +20,7 @@ namespace OAI_PMH.Models.SGI.ProteccionIndustrialIntelectual
         public override ComplexOntologyResource ToRecurso(IHarvesterServices pHarvesterServices, ReadConfig pConfig, ResourceApi pResourceApi, Dictionary<string, HashSet<string>> pDicIdentificadores, Dictionary<string, Dictionary<string, string>> pDicRutas, RabbitServiceWriterDenormalizer pRabbitConf, bool pFusionarPersona = false, string pIdPersona = null)
         {
             PatentOntology.Patent patente = CrearPatentOntology(pHarvesterServices, pConfig, pResourceApi, pDicIdentificadores, pDicRutas, pRabbitConf);
+            pResourceApi.ChangeOntoly("patent");
             return patente.ToGnossApiResource(pResourceApi, null);
         }
 
@@ -70,7 +71,7 @@ namespace OAI_PMH.Models.SGI.ProteccionIndustrialIntelectual
             {
                 if (string.IsNullOrEmpty(item.Value))
                 {
-                    Persona personaAux = Persona.GetPersonaSGI(pHarvesterServices, pConfig, item.Key, pDicRutas);
+                    Persona personaAux = Persona.GetPersonaSGI(pHarvesterServices, pConfig, "Persona_" + item.Key, pDicRutas);
                     if (personaAux != null)
                     {
                         string idGnoss = personaAux.Cargar(pHarvesterServices, pConfig, pResourceApi, "person", pDicIdentificadores, pDicRutas, pRabbitConf);
@@ -91,9 +92,9 @@ namespace OAI_PMH.Models.SGI.ProteccionIndustrialIntelectual
             foreach (Inventor inventor in this.inventores)
             {    
                 PatentOntology.PersonAux persona = new PatentOntology.PersonAux();
-                if (dicPersonasBBDD.ContainsKey(inventor.inventorRef) && !string.IsNullOrEmpty(dicPersonasBBDD[inventor.inventorRef]))
+                if (dicPersonasCargadas.ContainsKey(inventor.inventorRef) && !string.IsNullOrEmpty(dicPersonasCargadas[inventor.inventorRef]))
                 {
-                    persona.IdRdf_member = dicPersonasBBDD[inventor.inventorRef];
+                    persona.IdRdf_member = dicPersonasCargadas[inventor.inventorRef];
                     listaPersonas.Add(persona);
                 } 
             }

@@ -82,7 +82,7 @@ namespace OAI_PMH.Models.SGI
             else
             {
                 // Carga.
-                resource = ToRecurso(pHarvesterServices, pConfig, pResourceApi, pDicIdentificadores, pDicRutas, pRabbitConf);
+                resource = ToRecurso(pHarvesterServices, pConfig, pResourceApi, pDicIdentificadores, pDicRutas, pRabbitConf);                
                 pResourceApi.LoadComplexSemanticResource(resource, false, false);
                 gnossId = resource.GnossId;
             }

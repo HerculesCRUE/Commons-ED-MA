@@ -19,6 +19,7 @@ namespace Harvester.Models.SGI.Autorizaciones
         public override ComplexOntologyResource ToRecurso(IHarvesterServices pHarvesterServices, ReadConfig pConfig, ResourceApi pResourceApi, Dictionary<string, HashSet<string>> pDicIdentificadores, Dictionary<string, Dictionary<string, string>> pDicRutas, RabbitServiceWriterDenormalizer pRabbitConf, bool pFusionarPersona = false, string pIdPersona = null)
         {
             ProjectAuthorization autorizacion = CrearAutorizationOntology(pHarvesterServices, pConfig, pResourceApi, pDicIdentificadores, pDicRutas);
+            pResourceApi.ChangeOntoly("projectauthorization");
             return autorizacion.ToGnossApiResource(pResourceApi, null);
         }
 
