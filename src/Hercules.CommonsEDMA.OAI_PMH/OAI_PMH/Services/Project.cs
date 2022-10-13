@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace OAI_PMH.Services
@@ -39,23 +40,62 @@ namespace OAI_PMH.Services
             string accessToken = Token.CheckToken(pConfig);
             string identifier = id.Split('_')[1];
             Proyecto proyecto = new();
+            List<Thread> hilos = new List<Thread>();
             RestClient client = new(pConfig.GetUrlBaseProyecto() + "proyectos/" + identifier);
             client.AddDefaultHeader("Authorization", "Bearer " + accessToken);
             var request = new RestRequest(Method.GET);
             IRestResponse response = client.Execute(request);
             var json = JObject.Parse(response.Content);
             proyecto = JsonConvert.DeserializeObject<Proyecto>(json.ToString());
-            proyecto.Contexto = GetContexto(identifier, pConfig);
-            proyecto.Equipo = GetEquipo(identifier, pConfig);
-            proyecto.EntidadesGestoras = GetEntidadesGestoras(identifier, pConfig);
-            proyecto.EntidadesConvocantes = GetEntidadesConvocantes(identifier, pConfig);
-            proyecto.EntidadesFinanciadoras = GetEntidadesFinanciadoras(identifier, pConfig);
-            proyecto.ResumenAnualidades = GetAnualidades(identifier, pConfig);
-            proyecto.PresupuestosTotales = GetPresupuestosProyecto(identifier, pConfig);
-            proyecto.ProyectoClasificacion = GetProyectoClasificaciones(identifier, pConfig);
-            proyecto.AreasConocimiento = GetAreasConocimiento(identifier, pConfig);
-            proyecto.PalabrasClaves = GetPalabrasClave(identifier, pConfig);
-            proyecto.NotificacionProyectoExternoCVN = GetNotificacionProyectoExternoCVN(identifier, pConfig);
+            ContextoProyecto contexto = null;
+            hilos.Add(new Thread(() => contexto = GetContexto(identifier, pConfig)));
+            List<ProyectoEquipo> equipo = null;
+            hilos.Add(new Thread(() =>  equipo = GetEquipo(identifier, pConfig)));
+            List<ProyectoEntidadGestora> entidadesGestoras = null;
+            hilos.Add(new Thread(() => entidadesGestoras = GetEntidadesGestoras(identifier, pConfig)));
+            List<ProyectoEntidadConvocante> entidadesConvocantes = null;
+            hilos.Add(new Thread(() => entidadesConvocantes = GetEntidadesConvocantes(identifier, pConfig)));
+            List<ProyectoEntidadFinanciadora> entidadesFinanciadoras = null;
+            hilos.Add(new Thread(() => entidadesFinanciadoras = GetEntidadesFinanciadoras(identifier, pConfig)));
+            List<ProyectoAnualidadResumen> resumenAnualidades = null;
+            hilos.Add(new Thread(() => resumenAnualidades = GetAnualidades(identifier, pConfig)));
+            ProyectoPresupuestoTotales presupuestosTotales = null;
+            hilos.Add(new Thread(() => presupuestosTotales = GetPresupuestosProyecto(identifier, pConfig)));
+            List<ProyectoClasificacion> proyectoClasificaciones = null;
+            hilos.Add(new Thread(() => proyectoClasificaciones = GetProyectoClasificaciones(identifier, pConfig)));
+            List<ProyectoAreaConocimiento> areaConocimiento = null;
+            hilos.Add(new Thread(() => areaConocimiento = GetAreasConocimiento(identifier, pConfig)));
+            List<PalabraClave> palabrasClave = null;
+            hilos.Add(new Thread(() => palabrasClave = GetPalabrasClave(identifier, pConfig)));
+            List<NotificacionProyectoExternoCVN> notificacionProyectoExternoCVN = null;
+            hilos.Add(new Thread(()=> notificacionProyectoExternoCVN = GetNotificacionProyectoExternoCVN(identifier, pConfig)));
+
+
+            // Inicio hilos.
+            foreach (Thread th in hilos)
+            {
+                th.Start();
+            }
+
+            // Espero a que estén listos.
+            foreach (Thread th in hilos)
+            {
+                th.Join();
+            }
+            proyecto.Contexto = contexto;
+            proyecto.Equipo = equipo;
+            proyecto.EntidadesGestoras = entidadesGestoras;
+            proyecto.EntidadesConvocantes = entidadesConvocantes;
+            proyecto.EntidadesFinanciadoras = entidadesFinanciadoras;
+            proyecto.ResumenAnualidades = resumenAnualidades;
+            proyecto.PresupuestosTotales = presupuestosTotales;
+            proyecto.ProyectoClasificacion = proyectoClasificaciones;
+            proyecto.AreasConocimiento = areaConocimiento;
+            proyecto.PalabrasClaves = palabrasClave;
+            proyecto.NotificacionProyectoExternoCVN = notificacionProyectoExternoCVN;
+
+
+
             return proyecto;
         }
 
