@@ -332,7 +332,7 @@
                         <div id="recuperar-sexenios-acreditaciones" class="collapse show">
                             <ul class="pmd-sidebar-nav">
                                 <li class="liSexenio">
-                                    <a href="#" onclick="PedirSexenio()">@Html.Translate("RECUPERAR_SEXENIOS")</a>
+                                    <a href="#" data-toggle="modal" data-target="#modal-sexenios">@Html.Translate("RECUPERAR_SEXENIOS")</a>
                                 </li>
                                 <li class="liAcreditacion">
                                     <a href="#" onclick="PedirAcreditacion()">@Html.Translate("RECUPERAR_ACREDITACIONES")</a>
@@ -517,6 +517,87 @@
             }
         }
 
+        <div id="modal-sexenios" class="modal modal-top fade modal-sexenios" tabindex="-1" role="dialog">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <p class="modal-title">
+                            <span class="material-icons">send</span>
+                            @Html.Translate("RECUPERAR_SEXENIOS")
+                        </p>
+                        <span class="material-icons cerrar" data-dismiss="modal" aria-label="Close">close</span>
+                    </div>
+                    <div class="modal-body">
+                        <div class="alert">
+                            <p class="alert-title">@Html.Translate("PERIODO_FORMATO")</p>
+                            <ul>
+                                <li>@Html.Translate("PERIODO_INFO1")</li>
+                                <li>@Html.Translate("PERIODO_INFO2")</li>
+                                <li>@Html.Translate("PERIODO_INFO3")</li>
+                            </ul>
+                        </div>
+                        <div class="custom-form-row">
+                            <div class="form-group full-group">
+                                <label class="control-label d-block">@Html.Translate("COMITE")</label>
+                                <select id="idSelectorComite" class="js-select2 select2-hidden-accessible" data-minimum-results-for-search="Infinity" dependency="" data-select-search="true" tabindex="-1" aria-hidden="true">
+                                    <option value="2">2: @Html.Translate("QUIMICA")</option>
+                                    <option value="3">3: @Html.Translate("BIOLOGIA_CELULAR")</option>
+                                    <option value="4">4: @Html.Translate("CIENCIAS_BIOMEDICAS")</option>
+                                    <option value="5">5: @Html.Translate("CIENCIAS_NATURALEZA")</option>
+                                    <option value="7">7: @Html.Translate("INGENIERIAS_COMUNICACION")</option>
+                                    <option value="8">8: @Html.Translate("ARQUITECTURA_URBANISMO")</option>
+                                    <option value="9">9: @Html.Translate("CIENCIAS_SOCIALES_POLITICAS")</option>
+                                    <option value="10">10: @Html.Translate("CIENCIAS_EDUCACION")</option>
+                                    <option value="11">11: @Html.Translate("CIENCIAS_ECONOMICAS")</option>
+                                    <option value="12">12: @Html.Translate("DERECHO_JURISPRUDENCIA")</option>
+                                    <option value="13">13: @Html.Translate("HISTORIA_GEOGRAFIA")</option>
+                                    <option value="14">14: @Html.Translate("FILOSOFIA_FILOLOGIA")</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="custom-form-row">
+                            <div class="form-group full-group">
+                                <label class="control-label d-block">@Html.Translate("PERIODO")</label>
+                                <input id="labelPeriodo" placeholder="@Html.Translate("INTRODUCE_PERIODO")" onfocus="" type="text" class="form-control not-outline">
+                            </div>
+                        </div>
+                        <div class="custom-form-row" style="flex-flow: column; display: none;" id="perfilTecnologicoForm">
+                            <div class="form-group full-group">
+                                <label class="control-label d-block">@Html.Translate("PERFIL_TECNOLOGICO")</label>
+                            </div>
+                            <div class="custom-control themed little custom-radio">
+                                <input type="radio" id="yesRadio" name="perfilTecnologico" class="custom-control-input">
+                                <label class="custom-control-label" for="yesRadio">
+                                    <label class="control-label d-block" for="yesRadio">@Html.Translate("SI")</label>
+                                </label>
+                            </div>
+                            <div class="custom-control themed little custom-radio">
+                                <input type="radio" id="noRadio" name="perfilTecnologico" class="custom-control-input">
+                                <label class="custom-control-label" for="noRadio">
+                                    <label class="control-label d-block" for="noRadio">@Html.Translate("NO")</label>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="custom-form-row" style="display: none;" id="subcomiteForm">
+                            <div class="form-group full-group">
+                                <label class="control-label d-block">@Html.Translate("SUBCOMITE")</label>
+                                <select id="idSelectorSubcomite" class="js-select2 select2-hidden-accessible" dependency="" data-select-search="true" tabindex="-1" aria-hidden="true">
+                                    <option value="1">1: @Html.Translate("CIENCIAS_SOCIALES")</option>
+                                    <option value="2">2: @Html.Translate("CIENCIAS_POLITICAS")</option>
+                                    <option value="3">3: @Html.Translate("CIENCIAS_COMPORTAMIENTO")</option>
+                                    <option value="4">4: @Html.Translate("ESTUDIOS_GENERO")</option>
+                                    <option value="5">5: @Html.Translate("ANTROPOLOGIA_SOCIAL")</option>
+                                    <option value="6">6: @Html.Translate("OTROS")</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-actions">
+                            <a class="btn btn-primary" id="btnPedirSexenio">@Html.Translate("Recuperar")</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
         <div id="modal-resultados" class="modal modal-top fade modal-resultados modal-resultados-paginado" tabindex="-1" role="dialog">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
