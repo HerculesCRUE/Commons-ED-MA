@@ -288,13 +288,51 @@
                             <div class="row">
                                 <div class="col col-12 col-section-title font-weight-bold">
                                     <div class="wrapCol">
-                                        <p>Grafo de relaciones con otros participantes</p>
+                                        <div class="chart-wrap">
+                                            <div class="contenido-grafico container">
+                                                <p>@Html.Translate("GRAFO_RELACIONES_OTROS_PARTICIPANTES")</p>
+                                                <div class="row">
+                                                    <div class="col col-12 col-md-12">
+                                                        <div class="grafico-wrap">
+                                                            <div class="graph-controls">
+                                                                <div class="graph-controls-menu">
+                                                                    <ul class="no-list-style d-flex align-items-center mb-2">
+                                                                        
+                                                                    </ul>
+                                                                    <ul class="no-list-style d-flex align-items-center" style="margin:0 auto;">
+                                                                        <li onclick="zoomCyOut()" class="control zoomout-control zoomOut" id="zoomOut">
+                                                                            <span class="material-icons">zoom_out</span>
+                                                                        </li>
+                                                                        <li onclick="zoomCyIn()" class="control zoomin-control zoomIn" id="zoomIn">
+                                                                            <span class="material-icons">zoom_in</span>
+                                                                        </li>
+                                                                    </ul>
+                                                                </div>
+                                                            </div>
+                                                            <div class="chartLegend">
+                                                                <div class="dataSetLabels">
+                                                                    <div id="actualizarTypesOcultar_relation_document" class="labelContainer" onclick="newGrafCluster.actualizarTypesOcultar('relation_document', 'actualizarTypesOcultar_relation_document')">
+                                                                        <div style="background-color: #f8abab;"></div>
+                                                                        <p class="dataSetLabel">@Html.Translate("DOCUMENTOS")</p>
+                                                                    </div>
+                                                                    <div id="actualizarTypesOcultar_relation_project" class="labelContainer" onclick="newGrafCluster.actualizarTypesOcultar('relation_project', 'actualizarTypesOcultar_relation_project')">
+                                                                        <div style="background-color: #b2cff7;"></div>
+                                                                        <p class="dataSetLabel">@Html.Translate("PROYECTOS")</p>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="wrapCol" id="colaboratorsgraph" style="width: 100%; height: 500px;">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                                 <div class="col col-12 col-grafo mb-5">
-                                    <div class="wrapCol" id="colaboratorsgraph" style="height: 500px;">
-                                        
-                                    </div>
+                                    
+                                    
                                 </div>
                                 <div class="col col-12 col-contenido derecha">
                                     <div class="wrapCol">
@@ -437,92 +475,27 @@
 
     const persons = [@Html.Raw(String.Join(", ", persons.Select(p => '"' + p.Value.GNOSSID.Split('_')[1].ToUpper() + '"')))]
 
-
-    // Clase para las trabajar en las gráficas de los colaboradores en el cluster
-    class CargarGraficaProjectoObj {
-        dataCB = {};
-        dataSE = {};
-        idContenedorCB = "";
-        idContenedorSE = "";
-        typesOcultar = [];
-        typesOcultarSE = [];
-        showRelation = true;    
-        showRelationSE = true;
-
-        actualizarGraficaColaboradores = () => {
-            AjustarGraficaArania(this.dataCB, this.idContenedorCB, this.typesOcultar, this.showRelation);
-        };
-        
-        actualizarGraficaSeleccionados = () => {
-            AjustarGraficaArania(this.dataSE, this.idContenedorSE, this.typesOcultarSE, this.showRelationSE);
-        };
-
-        CargarGraficaColaboradores = (cluster, idContenedor, mostrarCargando = false) => {
-            var url = url_servicio_externo + "Cluster/DatosGraficaColaboradoresCluster";
-            var self = this;
-            $('#' + idContenedor).empty();
-            if (mostrarCargando) {
-                MostrarUpdateProgress();
-            }
-
-            let optionsRelations = ["relation_project", "relation_document"];
-            cluster.seleccionados=false;
-            $.post(url, cluster, function (data) {
-                // Establecer los valores en la variable externa
-                self.dataCB = data;
-                self.idContenedorCB = idContenedor;
-
-                self.actualizarGraficaColaboradores();
-                if (mostrarCargando) {
-                    OcultarUpdateProgress();
-                }
-            });
-        };
-        
-        CargarGraficaSeleccionados = (cluster, idContenedor, mostrarCargando = false) => {
-            var url = url_servicio_externo + "Cluster/DatosGraficaColaboradoresCluster";
-            var self = this;
-            $('#' + idContenedor).empty();
-            if (mostrarCargando) {
-                MostrarUpdateProgress();
-            }
-
-            let optionsRelations = ["relation_project", "relation_document"];
-            cluster.seleccionados=true;
-            $.post(url, cluster, function (data) {
-                // Establecer los valores en la variable externa
-                self.dataSE = data;
-                self.idContenedorSE = idContenedor;
-
-                self.actualizarGraficaSeleccionados();
-                if (mostrarCargando) {
-                    OcultarUpdateProgress();
-                }
-            });
-        };
-    };
-
     // Creamos un nuevo objeto
-    var newGrafProj = new CargarGraficaProjectoObj();
+    var newGrafCluster = new CargarGraficaProjectoClusterObj();
 
 
     // Función a la que se llama para seleccionar qué elementos de las relaciones mostrar
     function actualizarTypesOcultar(type) {
         if (type == "relation_todas") {
-            newGrafProj.typesOcultar = [];
+            newGrafCluster.typesOcultar = [];
         } else {
-            newGrafProj.typesOcultar = [type];
+            newGrafCluster.typesOcultar = [type];
         }
-        newGrafProj.actualizarGraficaColaboradores();
+        newGrafCluster.actualizarGraficaColaboradores();
     }
 
     function actualizarTypesOcultarSE(type) {
         if (type == "relation_todas") {
-            newGrafProj.typesOcultarSE = [];
+            newGrafCluster.typesOcultarSE = [];
         } else {
-            newGrafProj.typesOcultarSE = [type];
+            newGrafCluster.typesOcultarSE = [type];
         }
-        newGrafProj.actualizarGraficaSeleccionados();
+        newGrafCluster.actualizarGraficaSeleccionados();
     }
 
 
@@ -569,14 +542,16 @@
                 e.preventDefault();
                 that.tabActive = "participantes";
                 var parametros = ObtenerHash2() + '&' + buscadorPersonalizado.filtro
-                newGrafProj.CargarGraficaColaboradores({pPersons: persons}, 'colaboratorsgraph', true)
-            });
+                newGrafCluster.CargarGraficaColaboradores({pPersons: persons, seleccionados: false}, 'colaboratorsgraph', true)
+            })
 
             $('#temas-investigacion-tab').unbind().click(function (e) {
                 e.preventDefault();
                 that.tabActive = "topics";
                 CargarGraficaAreasTematicas({pPersons: persons}, "topicsgraph");
-            });
+            })
+
+
             return;
         }
     };

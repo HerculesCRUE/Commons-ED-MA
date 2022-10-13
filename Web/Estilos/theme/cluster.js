@@ -1399,8 +1399,8 @@ class CargarGraficaProjectoClusterObj {
 	dataSE = {};
 	idContenedorCB = "";
 	idContenedorSE = "";
-	typesOcultar = [];
-	typesOcultarSE = [];
+	typesOcultar = ["relation_project", "relation_document"];
+	typesOcultarSE = ["relation_project", "relation_document"];
 	showRelation = true;	
 	showRelationSE = true;
 
@@ -1455,13 +1455,36 @@ class CargarGraficaProjectoClusterObj {
 			}
 		});
 	};
+
+	
+
+	/**
+	 * Función a la que se llama para seleccionar qué elementos de las relaciones mostrar
+	 * @param type, Indica si cierto tipo de elemento de las relaciones en la gráfica se debe ocultar o no
+     * @param id, Id del html que ha lanzado la acción para darle el efecto de "tachado"
+	 */
+	actualizarTypesOcultar = (type, id) => {
+
+        if (this.typesOcultar.includes(type)) {
+            this.typesOcultar.splice(this.typesOcultar.indexOf(type), 1)
+            document.getElementById(id).classList.add('tachado')
+        } else {
+            this.typesOcultar.push(type)
+            document.getElementById(id).classList.remove('tachado')
+        }
+        this.actualizarGraficaColaboradores()
+    }
 };
 
-// Creamos un nuevo objeto
+/**
+ * Creamos un nuevo objeto
+ */
 var newGrafProjClust = new CargarGraficaProjectoClusterObj();
 
 
-// Función a la que se llama para seleccionar qué elementos de las relaciones mostrar
+/**
+ * Función a la que se llama para seleccionar qué elementos de las relaciones mostrar
+ */
 function actualizarTypesClusterOcultar(type) {
 	if (type == "relation_todas") {
 		newGrafProjClust.typesOcultar = [];
@@ -1471,7 +1494,9 @@ function actualizarTypesClusterOcultar(type) {
 	newGrafProjClust.actualizarGraficaColaboradores();
 }
 
-// Función a la que se llama para seleccionar qué elementos de las relaciones mostrar en los investigadores seleccionados
+/**
+ * Función a la que se llama para seleccionar qué elementos de las relaciones mostrar en los investigadores seleccionados
+ */
 function actualizarTypesClusterOcultarSE(type) {
 	if (type == "relation_todas") {
 		newGrafProjClust.typesOcultarSE = [];
@@ -1482,12 +1507,16 @@ function actualizarTypesClusterOcultarSE(type) {
 }
 
 
-// función para actualizar la gráfica de colaboradores
+/**
+ * función para actualizar la gráfica de colaboradores
+ */
 function ActualizarGraficaClusterolaboradoresCluster(typesOcultar = [], showRelation = true) {
 	AjustarGraficaArania(dataCB, idContenedorCB, typesOcultar, showRelation);
 }
 
-// Objeto para el funcionamiento de los usuarios disponibles para los clusters
+/**
+ * Objeto para el funcionamiento de los usuarios disponibles para los clusters
+ */
 var comportamientoPopupCluster = {
 	tabActive: null,
 
@@ -1614,8 +1643,8 @@ var comportamientoPopupCluster = {
 };
 
 /**
-* Clase que contiene la funcionalidad del modal de los TAGS para el Cluster
-*/
+ * Clase que contiene la funcionalidad del modal de los TAGS para el Cluster
+ */
 class ModalSearchTags {
 	constructor() {
 		this.body = $('body')
@@ -1804,7 +1833,9 @@ class ModalSearchTags {
 	}
 }
 
-// función que se llama cuando se cargan los investigadores en el cluster
+/**
+ * Función que se llama cuando se cargan los investigadores en el cluster
+ */
 function CompletadaCargaRecursosCluster()
 {	
 	if(typeof stepsCls != 'undefined' && stepsCls!=null && stepsCls.data!=null)
@@ -2006,7 +2037,9 @@ function CompletadaCargaRecursosCluster()
 }
 
 
-// Función que se llama cuando se cargan las facetas de los investigadores en el cluster
+/**
+ * Función que se llama cuando se cargan las facetas de los investigadores en el cluster
+ */
 function CompletadaCargaFacetasCluster()
 {	
 	if(typeof stepsCls != 'undefined' && stepsCls!=null && stepsCls.data!=null)

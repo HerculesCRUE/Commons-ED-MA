@@ -1,5 +1,5 @@
 /**
- * Clase Text field
+ * Clase Text field, le da la funcionalidad a cada editor de texto wysiwyg
  */
 class TextField {
 

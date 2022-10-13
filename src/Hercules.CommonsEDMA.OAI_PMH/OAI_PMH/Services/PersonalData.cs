@@ -275,10 +275,6 @@ namespace OAI_PMH.Services
             persona.FormacionAcademicaImpartida = listaFormacionAcademica;
             persona.SeminariosCursos = listaSeminarios;
             persona.Tesis = listaTesis;
-            if(persona.Tesis != null && persona.Tesis.Any())
-            {
-
-            }
             persona.Ciclos = listaCiclos;
             persona.Doctorados = listaDoctorados;
             persona.FormacionEspecializada = listaEspecializada;
@@ -322,7 +318,14 @@ namespace OAI_PMH.Services
             client.AddDefaultHeader("Authorization", "Bearer " + accessToken);
             var request = new RestRequest(Method.GET);
             IRestResponse response = client.Execute(request);
-            datosPersonales = JsonConvert.DeserializeObject<DatosPersonales>(response.Content);
+            try
+            {
+                datosPersonales = JsonConvert.DeserializeObject<DatosPersonales>(response.Content);
+            }
+            catch
+            {
+                return null;
+            }
             return datosPersonales;
         }
 
@@ -333,7 +336,14 @@ namespace OAI_PMH.Services
             client.AddDefaultHeader("Authorization", "Bearer " + accessToken);
             var request = new RestRequest(Method.GET);
             IRestResponse response = client.Execute(request);
-            datosContacto = JsonConvert.DeserializeObject<DatosContacto>(response.Content);
+            try
+            {
+                datosContacto = JsonConvert.DeserializeObject<DatosContacto>(response.Content);
+            }
+            catch
+            {
+                return null;
+            }
             return datosContacto;
         }
 
@@ -362,7 +372,14 @@ namespace OAI_PMH.Services
             client.AddDefaultHeader("Authorization", "Bearer " + accessToken);
             var request = new RestRequest(Method.GET);
             IRestResponse response = client.Execute(request);
-            vinculacion = JsonConvert.DeserializeObject<VinculacionCategoriaProfesional>(response.Content);
+            try
+            {
+                vinculacion = JsonConvert.DeserializeObject<VinculacionCategoriaProfesional>(response.Content);
+            }
+            catch
+            {
+                return null;
+            }
             return vinculacion;
         }
 
@@ -373,7 +390,14 @@ namespace OAI_PMH.Services
             client.AddDefaultHeader("Authorization", "Bearer " + accessToken);
             var request = new RestRequest(Method.GET);
             IRestResponse response = client.Execute(request);
-            datosAcademicos = JsonConvert.DeserializeObject<DatosAcademicos>(response.Content);
+            try
+            {
+                datosAcademicos = JsonConvert.DeserializeObject<DatosAcademicos>(response.Content);
+            }
+            catch
+            {
+                return null;
+            }
             return datosAcademicos;
         }
 
@@ -384,7 +408,14 @@ namespace OAI_PMH.Services
             client.AddDefaultHeader("Authorization", "Bearer " + accessToken);
             var request = new RestRequest(Method.GET);
             IRestResponse response = client.Execute(request);
-            fotografia = JsonConvert.DeserializeObject<Fotografia>(response.Content);
+            try
+            {
+                fotografia = JsonConvert.DeserializeObject<Fotografia>(response.Content);
+            }
+            catch
+            {
+                return null;
+            }
             return fotografia;
         }
 
@@ -395,7 +426,14 @@ namespace OAI_PMH.Services
             client.AddDefaultHeader("Authorization", "Bearer " + accessToken);
             var request = new RestRequest(Method.GET);
             IRestResponse response = client.Execute(request);
-            sexenios = JsonConvert.DeserializeObject<Sexenio>(response.Content);
+            try
+            {
+                sexenios = JsonConvert.DeserializeObject<Sexenio>(response.Content);
+            }
+            catch
+            {
+                return null;
+            }
             return sexenios;
         }
     }
