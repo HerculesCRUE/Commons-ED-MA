@@ -16,9 +16,6 @@ namespace Hercules.CommonsEDMA.ConfigLoad.Models.Services
         private string urlServiciosBase { get; set; }
         private string urlServiciosInstalacion { get; set; }
 
-        private string urlContentBase { get; set; }
-        private string urlContentInstalacion { get; set; }
-
         /// <summary>
         /// Constructor.
         /// </summary>
@@ -126,41 +123,6 @@ namespace Hercules.CommonsEDMA.ConfigLoad.Models.Services
             }
             return urlServiciosInstalacion;
         }
-
-        public string ObtenerUrlContentBase()
-        {
-            if (string.IsNullOrEmpty(urlContentBase))
-            {
-                IDictionary environmentVariables = Environment.GetEnvironmentVariables();
-                if (environmentVariables.Contains("urlContentBase"))
-                {
-                    urlContentBase = environmentVariables["urlContentBase"] as string;
-                }
-                else
-                {
-                    urlContentBase = _configuration["urlContentBase"];
-                }
-            }
-            return urlContentBase;
-        }
-
-        public string ObtenerUrlContentInstalacion()
-        {
-            if (string.IsNullOrEmpty(urlContentInstalacion))
-            {
-                IDictionary environmentVariables = Environment.GetEnvironmentVariables();
-                if (environmentVariables.Contains("urlContentInstalacion"))
-                {
-                    urlContentInstalacion = environmentVariables["urlContentInstalacion"] as string;
-                }
-                else
-                {
-                    urlContentInstalacion = _configuration["urlContentInstalacion"];
-                }
-            }
-            return urlContentInstalacion;
-        }
-
 
         public string ObtenerNombreCortoComunidad()
         {            
