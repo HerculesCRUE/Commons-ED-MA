@@ -109,7 +109,7 @@ Archivo js encargado de sobrescribir parte del funcionamiento de community.js y 
 
 ## Relaciones:
 ### Se relaciona con los servicios:
-- **Hercules.CommonsEDMA.ServicioExterno**: Servicio encargado de diversas utilidades relacionadas mayormente a peticiones desde las fichas de los diferentes recursos, asistentes en MA y otras funcionalidades.
+- [**Hercules.CommonsEDMA.ServicioExterno**](https://github.com/HerculesCRUE/Commons-ED-MA/blob/main/src/Hercules.CommonsEDMA.ServicioExterno): Servicio encargado de diversas utilidades relacionadas mayormente a peticiones desde las fichas de los diferentes recursos, asistentes en MA y otras funcionalidades.
 
 ---
 # community.css
@@ -294,7 +294,7 @@ JS común a todas las fichas con buscadores, es necesario para realizar las peti
 ### Se relaciona con los servicios:
 - **Servicio de resultados**
 - **Servicio de facetas**
-- **Hercules.CommonsEDMA.ServicioExterno**: Servicio encargado de diversas utilidades relacionadas mayormente a peticiones desde las fichas de los diferentes recursos, asistentes en MA y otras funcionalidades.
+- [**Hercules.CommonsEDMA.ServicioExterno**](https://github.com/HerculesCRUE/Commons-ED-MA/blob/main/src/Hercules.CommonsEDMA.ServicioExterno): Servicio encargado de diversas utilidades relacionadas mayormente a peticiones desde las fichas de los diferentes recursos, asistentes en MA y otras funcionalidades.
 
 ### Se relaciona con otros archivos js:
 - Es llamado desde **offer.js**
@@ -411,7 +411,7 @@ Js para crear y editar las ofertas tecnológicas, así mismo servirá para la ge
 ### Se relaciona con los servicios: 
 - **Servicio de resultados**
 - **Servicio de facetas**
-- **Hercules.CommonsEDMA.ServicioExterno**: Servicio encargado de diversas utilidades relacionadas mayormente a peticiones desde las fichas de los diferentes recursos, asistentes en MA y otras funcionalidades.
+- [**Hercules.CommonsEDMA.ServicioExterno**](https://github.com/HerculesCRUE/Commons-ED-MA/blob/main/src/Hercules.CommonsEDMA.ServicioExterno): Servicio encargado de diversas utilidades relacionadas mayormente a peticiones desde las fichas de los diferentes recursos, asistentes en MA y otras funcionalidades.
 
 ---
 # redes.js
@@ -426,7 +426,7 @@ Js encargado del funcionamiento para la página de configuración de los Researc
 - [**_Destacado_redes$$$fd5352c6-5f78-4254-85b9-d7df7976aa9a.cshtml**](https://github.com/HerculesCRUE/Commons-ED-MA/blob/main/Web/Views/CMS/Destacado/_Destacado_redes$$$fd5352c6-5f78-4254-85b9-d7df7976aa9a.cshtml#) 
 
 ### Se relaciona con los servicios: 
-- **Hercules.CommonsEDMA.ServicioExterno**: Servicio encargado de diversas utilidades relacionadas mayormente a peticiones desde las fichas de los diferentes recursos, asistentes en MA y otras funcionalidades.
+- [**Hercules.CommonsEDMA.ServicioExterno**](https://github.com/HerculesCRUE/Commons-ED-MA/blob/main/src/Hercules.CommonsEDMA.ServicioExterno): Servicio encargado de diversas utilidades relacionadas mayormente a peticiones desde las fichas de los diferentes recursos, asistentes en MA y otras funcionalidades.
 
 ---
 
