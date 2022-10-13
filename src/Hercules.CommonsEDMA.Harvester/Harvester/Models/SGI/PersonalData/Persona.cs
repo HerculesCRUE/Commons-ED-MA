@@ -97,7 +97,7 @@ namespace OAI_PMH.Models.SGI.PersonalData
 
             // Elimitar --> Academic Degree que estén en listaImpartedacademictrainingBBDD y no en listaImpartedacademictrainingSGI.
             List<string> listaImpartedAcademicBorrarCrisIdentifiers = crisIdentifiersImpartedAcademicBBDD.Except(crisIdentifiersImpartedAcademicSGI).ToList();
-            List<string> listaIdsImpartedAcademicBorrar = ObtenerDataByCrisIdentifiers(listaTesisBorrarCrisIdentifiers, pResourceApi, "impartedacademictraining");
+            List<string> listaIdsImpartedAcademicBorrar = ObtenerDataByCrisIdentifiers(listaImpartedAcademicBorrarCrisIdentifiers, pResourceApi, "impartedacademictraining");
             BorrarRecursos(listaIdsImpartedAcademicBorrar, pResourceApi, "impartedacademictraining");
             #endregion
 
