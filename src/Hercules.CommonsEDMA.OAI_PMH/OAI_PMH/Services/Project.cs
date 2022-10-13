@@ -37,39 +37,44 @@ namespace OAI_PMH.Services
 
         public static Proyecto GetProyecto(string id, ConfigService pConfig)
         {
-            string accessToken = Token.CheckToken(pConfig);
             string identifier = id.Split('_')[1];
-            Proyecto proyecto = new();
             List<Thread> hilos = new List<Thread>();
-            RestClient client = new(pConfig.GetUrlBaseProyecto() + "proyectos/" + identifier);
-            client.AddDefaultHeader("Authorization", "Bearer " + accessToken);
-            var request = new RestRequest(Method.GET);
-            IRestResponse response = client.Execute(request);
-            var json = JObject.Parse(response.Content);
-            proyecto = JsonConvert.DeserializeObject<Proyecto>(json.ToString());
+
+            Proyecto proyectoAux = null;
+            hilos.Add(new Thread(() => proyectoAux = GetDatosProyecto(identifier, pConfig)));
+
             ContextoProyecto contexto = null;
             hilos.Add(new Thread(() => contexto = GetContexto(identifier, pConfig)));
+
             List<ProyectoEquipo> equipo = null;
-            hilos.Add(new Thread(() =>  equipo = GetEquipo(identifier, pConfig)));
+            hilos.Add(new Thread(() => equipo = GetEquipo(identifier, pConfig)));
+
             List<ProyectoEntidadGestora> entidadesGestoras = null;
             hilos.Add(new Thread(() => entidadesGestoras = GetEntidadesGestoras(identifier, pConfig)));
+
             List<ProyectoEntidadConvocante> entidadesConvocantes = null;
             hilos.Add(new Thread(() => entidadesConvocantes = GetEntidadesConvocantes(identifier, pConfig)));
+
             List<ProyectoEntidadFinanciadora> entidadesFinanciadoras = null;
             hilos.Add(new Thread(() => entidadesFinanciadoras = GetEntidadesFinanciadoras(identifier, pConfig)));
+
             List<ProyectoAnualidadResumen> resumenAnualidades = null;
             hilos.Add(new Thread(() => resumenAnualidades = GetAnualidades(identifier, pConfig)));
+
             ProyectoPresupuestoTotales presupuestosTotales = null;
             hilos.Add(new Thread(() => presupuestosTotales = GetPresupuestosProyecto(identifier, pConfig)));
+
             List<ProyectoClasificacion> proyectoClasificaciones = null;
             hilos.Add(new Thread(() => proyectoClasificaciones = GetProyectoClasificaciones(identifier, pConfig)));
+
             List<ProyectoAreaConocimiento> areaConocimiento = null;
             hilos.Add(new Thread(() => areaConocimiento = GetAreasConocimiento(identifier, pConfig)));
+
             List<PalabraClave> palabrasClave = null;
             hilos.Add(new Thread(() => palabrasClave = GetPalabrasClave(identifier, pConfig)));
-            List<NotificacionProyectoExternoCVN> notificacionProyectoExternoCVN = null;
-            hilos.Add(new Thread(()=> notificacionProyectoExternoCVN = GetNotificacionProyectoExternoCVN(identifier, pConfig)));
 
+            List<NotificacionProyectoExternoCVN> notificacionProyectoExternoCVN = null;
+            hilos.Add(new Thread(() => notificacionProyectoExternoCVN = GetNotificacionProyectoExternoCVN(identifier, pConfig)));
 
             // Inicio hilos.
             foreach (Thread th in hilos)
@@ -82,6 +87,8 @@ namespace OAI_PMH.Services
             {
                 th.Join();
             }
+
+            Proyecto proyecto = proyectoAux;
             proyecto.Contexto = contexto;
             proyecto.Equipo = equipo;
             proyecto.EntidadesGestoras = entidadesGestoras;
@@ -94,8 +101,27 @@ namespace OAI_PMH.Services
             proyecto.PalabrasClaves = palabrasClave;
             proyecto.NotificacionProyectoExternoCVN = notificacionProyectoExternoCVN;
 
+            return proyecto;
+        }
 
-
+        public static Proyecto GetDatosProyecto(string id, ConfigService pConfig)
+        {
+            string accessToken = Token.CheckToken(pConfig);
+            Proyecto proyecto = new();
+            List<Thread> hilos = new List<Thread>();
+            RestClient client = new(pConfig.GetUrlBaseProyecto() + "proyectos/" + id);
+            client.AddDefaultHeader("Authorization", "Bearer " + accessToken);
+            var request = new RestRequest(Method.GET);
+            IRestResponse response = client.Execute(request);
+            var json = JObject.Parse(response.Content);
+            try
+            {
+                proyecto = JsonConvert.DeserializeObject<Proyecto>(json.ToString());
+            }
+            catch
+            {
+                return null;
+            }
             return proyecto;
         }
 

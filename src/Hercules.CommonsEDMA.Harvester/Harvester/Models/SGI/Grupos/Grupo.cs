@@ -20,6 +20,7 @@ namespace OAI_PMH.Models.SGI.GruposInvestigacion
         public override ComplexOntologyResource ToRecurso(IHarvesterServices pHarvesterServices, ReadConfig pConfig, ResourceApi pResourceApi, Dictionary<string, HashSet<string>> pDicIdentificadores, Dictionary<string, Dictionary<string, string>> pDicRutas, RabbitServiceWriterDenormalizer pRabbitConf, bool pFusionarPersona = false, string pIdPersona = null)
         {
             GroupOntology.Group grupo = CrearGroupOntology(pHarvesterServices, pConfig, pResourceApi, pDicIdentificadores, pDicRutas, pRabbitConf);
+            pResourceApi.ChangeOntoly("group");
             return grupo.ToGnossApiResource(pResourceApi, null);
         }
 

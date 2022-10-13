@@ -40,6 +40,7 @@ namespace OAI_PMH.Models.SGI.PersonalData
                 FusionarPersonas(persona, personaAux);
             }
 
+            pResourceApi.ChangeOntoly("person");
             return persona.ToGnossApiResource(pResourceApi, null);
         }
 

@@ -22,6 +22,7 @@ namespace OAI_PMH.Models.SGI.Organization
         public override ComplexOntologyResource ToRecurso(IHarvesterServices pHarvesterServices, ReadConfig pConfig, ResourceApi pResourceApi, Dictionary<string, HashSet<string>> pDicIdentificadores, Dictionary<string, Dictionary<string, string>> pDicRutas, RabbitServiceWriterDenormalizer pRabbitConf, bool pFusionarPersona = false, string pIdPersona = null)
         {
             OrganizationOntology.Organization proyecto = CrearOrganizationOntology(pHarvesterServices, pConfig, pResourceApi, pDicIdentificadores, pDicRutas);
+            pResourceApi.ChangeOntoly("organization");
             return proyecto.ToGnossApiResource(pResourceApi, null);
         }
 

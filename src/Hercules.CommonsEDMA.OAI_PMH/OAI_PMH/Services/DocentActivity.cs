@@ -34,8 +34,9 @@ namespace OAI_PMH.Services
             }
             return idDictionary;
         }
-        public static List<Tesis> GetTesis(string id, ConfigService pConfig, string accessToken)
+        public static List<Tesis> GetTesis(string id, ConfigService pConfig)
         {
+            string accessToken = Token.CheckToken(pConfig);
             string identifier = id.Replace("\"", "");
             RestClient client = new(pConfig.GetUrlBaseActividadDocente() + "actividad-docente/" + identifier + "?tipoActividad=\"030.040.000.000\"");
             client.AddDefaultHeader("Authorization", "Bearer " + accessToken);
@@ -73,8 +74,9 @@ namespace OAI_PMH.Services
             }
             return idDictionary;
         }
-        public static List<FormacionAcademicaImpartida> GetAcademicFormationProvided(string id, ConfigService pConfig, string accessToken)
+        public static List<FormacionAcademicaImpartida> GetAcademicFormationProvided(string id, ConfigService pConfig)
         {
+            string accessToken = Token.CheckToken(pConfig);
             string identifier = id.Replace("\"", "");
             RestClient client = new(pConfig.GetUrlBaseActividadDocente() + "actividad-docente/" + identifier + "?tipoActividad=\"030.010.000.000\"");
             client.AddDefaultHeader("Authorization", "Bearer " + accessToken);
@@ -112,8 +114,9 @@ namespace OAI_PMH.Services
             }
             return idDictionary;
         }
-        public static List<SeminariosCursos> GetSeminars(string id, ConfigService pConfig, string accessToken)
+        public static List<SeminariosCursos> GetSeminars(string id, ConfigService pConfig)
         {
+            string accessToken = Token.CheckToken(pConfig);
             string identifier = id.Replace("\"", "");
             RestClient client = new(pConfig.GetUrlBaseActividadDocente() + "actividad-docente/" + identifier + "?tipoActividad=\"030.060.000.000\"");
             client.AddDefaultHeader("Authorization", "Bearer " + accessToken);

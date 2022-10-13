@@ -76,8 +76,8 @@ namespace Harvester
                         CargarDatosSGI(rabbitServiceWriterDenormalizer);
 
                         // Fecha de la última actualización.
-                        //string fecha = "1500-01-01T00:00:00Z";
-                        string fecha = LeerFicheroFecha(_Config);
+                        string fecha = "1500-01-01T00:00:00Z";
+                        //string fecha = LeerFicheroFecha(_Config);
 
                         // Genero los ficheros con los datos a procesar desde la fecha.
                         GuardarIdentificadores(_Config, "Organizacion", fecha);
@@ -270,11 +270,6 @@ namespace Harvester
                             Persona persona = Persona.GetPersonaSGI(harvesterServices, _Config, id, pDicRutas);                            
                             if (persona != null && !string.IsNullOrEmpty(persona.Nombre))
                             {
-                                if (persona.FormacionEspecializada != null && persona.FormacionEspecializada.Any())
-                                {
-
-                                }
-
                                 string idGnossPersona = persona.Cargar(harvesterServices, pConfig, mResourceApi, "person", pDicIdentificadores, pDicRutas, pRabbitConf, true);
                                 pDicIdentificadores["person"].Add(idGnossPersona);
                             }

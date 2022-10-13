@@ -35,8 +35,9 @@ namespace OAI_PMH.Services
             }
             return idDictionary;
         }
-        public static List<Ciclos> GetFormacionAcademicaCiclos(string id, ConfigService pConfig, string accessToken)
+        public static List<Ciclos> GetFormacionAcademicaCiclos(string id, ConfigService pConfig)
         {
+            string accessToken = Token.CheckToken(pConfig);
             string identifier = id.Replace("\"", "");
             RestClient client = new(pConfig.GetUrlBaseFormacionAcademica() + "formacion/" + identifier + "?tipoFormacion=\"020.010.010.000\"");
             client.AddDefaultHeader("Authorization", "Bearer " + accessToken);
@@ -74,8 +75,9 @@ namespace OAI_PMH.Services
             }
             return idDictionary;
         }
-        public static List<Doctorados> GetFormacionAcademicaDoctorados(string id, ConfigService pConfig, string accessToken)
+        public static List<Doctorados> GetFormacionAcademicaDoctorados(string id, ConfigService pConfig)
         {
+            string accessToken = Token.CheckToken(pConfig);
             string identifier = id.Replace("\"", "");
             RestClient client = new(pConfig.GetUrlBaseFormacionAcademica() + "formacion/" + identifier + "?tipoFormacion=\"020.010.020.000\"");
             client.AddDefaultHeader("Authorization", "Bearer " + accessToken);
@@ -113,8 +115,9 @@ namespace OAI_PMH.Services
             }
             return idDictionary;
         }
-        public static List<Posgrado> GetFormacionAcademicaPosgrado(string id, ConfigService pConfig, string accessToken)
+        public static List<Posgrado> GetFormacionAcademicaPosgrado(string id, ConfigService pConfig)
         {
+            string accessToken = Token.CheckToken(pConfig);
             string identifier = id.Replace("\"", "");
             RestClient client = new(pConfig.GetUrlBaseFormacionAcademica() + "formacion/" + identifier + "?tipoFormacion=\"020.010.030.000\"");
             client.AddDefaultHeader("Authorization", "Bearer " + accessToken);
@@ -152,8 +155,9 @@ namespace OAI_PMH.Services
             }
             return idDictionary;
         }
-        public static List<FormacionEspecializada> GetFormacionAcademicaEspecializada(string id, ConfigService pConfig, string accessToken)
+        public static List<FormacionEspecializada> GetFormacionAcademicaEspecializada(string id, ConfigService pConfig)
         {
+            string accessToken = Token.CheckToken(pConfig);
             string identifier = id.Replace("\"", "");
             RestClient client = new(pConfig.GetUrlBaseFormacionAcademica() + "formacion/" + identifier + "?tipoFormacion=\"020.020.000.000\"");
             client.AddDefaultHeader("Authorization", "Bearer " + accessToken);
