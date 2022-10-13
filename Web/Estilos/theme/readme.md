@@ -12,14 +12,20 @@
 # annotations.js
 Archivo encargado de la funcionalidad de las anotaciones.
 
-Contiene las siguientes clases y funciones:
-
+## Clases y funciones:
 - **Clase CargarAnotaciones**: Clase que se encarga de cargar y pintar las anotaciones en los diferentes ROs
 
 ## Relaciones:
-Este archivo se relaciona con 
+
+### Se relaciona con las vistas: 
 - [**document.cshtml**](https://github.com/HerculesCRUE/Commons-ED-MA/blob/main/Web/Views/Recursos/document.cshtml) - Ficha de las publicaciones
 - [**researchobject.cshtml**](https://github.com/HerculesCRUE/Commons-ED-MA/blob/main/Web/Views/Recursos/researchobject.cshtml) - Ficha de los Research Objects
+
+
+### Se relaciona con los servicios: 
+- **Servicio de resultados**
+- **Servicio de facetas**
+- [**Hercules.CommonsEDMA.ServicioExterno**](https://github.com/HerculesCRUE/Commons-ED-MA/blob/main/src/Hercules.CommonsEDMA.ServicioExterno): Servicio encargado de diversas utilidades relacionadas mayormente a peticiones desde las fichas de los diferentes recursos, asistentes en MA y otras funcionalidades.
 
 ---
 # cluster.css
