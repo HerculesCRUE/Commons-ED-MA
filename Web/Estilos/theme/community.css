@@ -1504,7 +1504,9 @@ body:not(.listado) header .row.community-row { display: none; }
 .importar-cvn .menuLateral.usuario.clonado { display: block; width: 100%; max-width: 100%; background-color: var(--c-blanco); border: 1px solid var(--c-gris-borde); }
 
 .menuLateral.usuario .menuUsuario .group-collapse ul li a .numResultados { font-weight: 500; }
-.menuLateral.usuario .menuUsuario .group-collapse ul li.liPublicacion:after { content: '\e666'; }
+.menuLateral.usuario .menuUsuario .group-collapse ul li.liPublicacion:after,
+.menuLateral.usuario .menuUsuario .group-collapse ul li.liSexenio:after,
+.menuLateral.usuario .menuUsuario .group-collapse ul li.liAcreditacion:after { content: '\e666'; }
 .menuLateral.usuario .menuUsuario .group-collapse ul li.liOtros:after { content: '\ef42'; }
 .menuLateral.usuario .menuUsuario .group-collapse ul li.liAnadir:after { content: '\ea20'; }
 /**/
