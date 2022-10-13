@@ -964,13 +964,18 @@ tooltipsAccionesRecursos.getTooltipHindex= function () {
     $(".hindex").each(function () {
 
 			var htmlSources = "";
-            $(this).parent().find(".source").each((i)=>{
-                
-              
+            var list =$(this).parent().find(".source");
+            list.sort((a,b)=>{
+                if($(a).data("source")=="WOS"){ return -1}
+                if($(b).data("source")=="WOS"){return 1}
+                if($(a).data("source")=="SCOPUS"){return -1}
+                return 0;
+            })
+            list.each((i)=>{
                     htmlSources+=`
                     <li>					
-                        <span class="texto">${$($(".source")[i]).data('source')}</span>
-                        <span class="num-resultado">${$($(".source")[i]).data('value')}</span>					
+                        <span class="texto">${$(list[i]).data('source')}</span>
+                        <span class="num-resultado">${$(list[i]).data('value')}</span>					
                     </li>`
                 
             });
