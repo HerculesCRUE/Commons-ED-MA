@@ -77,7 +77,7 @@ namespace OAI_PMH.Models.SGI.PersonalData
             BorrarRecursos(listaIdsTesisBorrar, pResourceApi, "thesissupervision");
             #endregion
 
-            #region --- IMPARTED ACADEMIC TRAINING (TODO)
+            #region --- IMPARTED ACADEMIC TRAINING TODO: REVISAR PROPIEDADES
             pResourceApi.ChangeOntoly("impartedacademictraining");
 
             List<string> crisIdentifiersImpartedAcademicBBDD = ObtenerDataCrisIdentifier(pResourceApi, this.Id, "impartedacademictraining");
@@ -88,12 +88,11 @@ namespace OAI_PMH.Models.SGI.PersonalData
                 crisIdentifiersImpartedAcademicSGI.Add(tesisAux.crisIdentifier);
             }
 
-            // TODO: Mapear al objeto de carga a BBDD.
             // Cargar --> Academic Degree que estén en listaImpartedacademictrainingSGI y no en listaImpartedacademictrainingBBDD.   
             List<string> listaImpartedAcademicCargarCrisIdentifiers = crisIdentifiersImpartedAcademicSGI.Except(crisIdentifiersImpartedAcademicBBDD).ToList();
             List<ImpartedAcademicTrainingBBDD> listaImpartedAcademicCargar = listaImpartedAcademicCargarSGI.Where(x => listaImpartedAcademicCargarCrisIdentifiers.Contains(x.crisIdentifier)).ToList();
-            //List<ComplexOntologyResource> listaImpartedAcademicOntology = GetImpartedAcademic(listaImpartedAcademicCargar, pResourceApi, pIdGnoss);
-            //CargarDatos(listaImpartedAcademicOntology, pResourceApi);
+            List<ComplexOntologyResource> listaImpartedAcademicOntology = GetImpartedAcademic(listaImpartedAcademicCargar, pResourceApi, pIdGnoss);
+            CargarDatos(listaImpartedAcademicOntology, pResourceApi);
 
             // Elimitar --> Academic Degree que estén en listaImpartedacademictrainingBBDD y no en listaImpartedacademictrainingSGI.
             List<string> listaImpartedAcademicBorrarCrisIdentifiers = crisIdentifiersImpartedAcademicBBDD.Except(crisIdentifiersImpartedAcademicSGI).ToList();
@@ -471,6 +470,65 @@ namespace OAI_PMH.Models.SGI.PersonalData
             return listaCiclosDevolver;
         }
 
+        public List<ComplexOntologyResource> GetImpartedAcademic(List<ImpartedAcademicTrainingBBDD> pImpartedAcademicList, ResourceApi pResourceApi, string pIdGnoss)
+        {
+            List<ComplexOntologyResource> listaImpartedDevolver = new List<ComplexOntologyResource>();
+
+            foreach (ImpartedAcademicTrainingBBDD impartedAcademic in pImpartedAcademicList)
+            {
+                ImpartedacademictrainingOntology.ImpartedAcademicTraining academicDevolver = new ImpartedacademictrainingOntology.ImpartedAcademicTraining();
+
+                academicDevolver.IdRoh_owner = pIdGnoss;
+                academicDevolver.Roh_crisIdentifier = impartedAcademic.crisIdentifier;
+                academicDevolver.Roh_title = impartedAcademic.title;
+                academicDevolver.IdRoh_degreeType = impartedAcademic.degreeType;
+                academicDevolver.Roh_teaches = impartedAcademic.teaches;
+                academicDevolver.Vivo_start = impartedAcademic.start;
+                academicDevolver.Vivo_end = impartedAcademic.end;
+                academicDevolver.Roh_promotedByTitle = impartedAcademic.promotedByTitle;
+                academicDevolver.IdRoh_promotedBy = impartedAcademic.promotedBy;
+                academicDevolver.IdRoh_promotedByType = impartedAcademic.promotedByType;
+                academicDevolver.Roh_promotedByTypeOther = impartedAcademic.promotedByTypeOther;
+                academicDevolver.Roh_center = impartedAcademic.center;
+                academicDevolver.Vcard_locality = impartedAcademic.locality;
+                academicDevolver.IdVcard_hasCountryName = impartedAcademic.hasCountryName;
+                academicDevolver.IdRoh_teachingType = impartedAcademic.teachingType;
+                academicDevolver.Roh_numberECTSHours = (float)impartedAcademic.numberECTSHours;
+                academicDevolver.Roh_frequency = (float)impartedAcademic.frequency;
+                academicDevolver.IdRoh_programType = impartedAcademic.programType;
+                academicDevolver.Roh_programTypeOther = impartedAcademic.programTypeOther;
+                academicDevolver.Roh_department = impartedAcademic.department;
+                academicDevolver.IdRoh_courseType = impartedAcademic.courseType;
+                academicDevolver.Roh_courseTypeOther = impartedAcademic.courseTypeOther;
+                academicDevolver.Roh_course = impartedAcademic.course;
+                academicDevolver.IdRoh_hoursCreditsECTSType = impartedAcademic.hoursCreditsECTSType;
+                academicDevolver.IdVcard_hasLanguage = impartedAcademic.hasLanguage;
+                academicDevolver.Roh_competencies = impartedAcademic.competencies;
+                academicDevolver.Roh_professionalCategory = impartedAcademic.professionalCategory;
+                academicDevolver.Roh_qualification = impartedAcademic.qualification;
+                academicDevolver.Roh_maxQualification = impartedAcademic.maxQualification;
+                academicDevolver.IdRoh_evaluatedBy = impartedAcademic.evaluatedBy;
+                academicDevolver.IdRoh_evaluatedByType = impartedAcademic.evaluatedByType;
+                academicDevolver.Roh_evaluatedByTypeOther = impartedAcademic.evaluatedByTypeOther;
+                academicDevolver.Roh_evaluatedByLocality = impartedAcademic.evaluatedByLocality;
+                academicDevolver.IdRoh_evaluatedByHasCountryName = impartedAcademic.evaluatedByHasCountryName;
+                academicDevolver.IdRoh_evaluatedByHasRegion = impartedAcademic.hasRegion;
+                academicDevolver.Roh_financedByTitle = impartedAcademic.financedByTitle;
+                academicDevolver.IdRoh_financedBy = impartedAcademic.financedBy;
+                academicDevolver.IdRoh_financedByType = impartedAcademic.financedByType;
+                academicDevolver.Roh_financedByTypeOther = impartedAcademic.financedByTypeOther;
+                academicDevolver.IdRoh_financedByHasCountryName = impartedAcademic.financedByHasCountryName;
+                academicDevolver.IdRoh_financedByHasRegion = impartedAcademic.financedByHasRegion;
+                academicDevolver.IdRoh_callType = impartedAcademic.callType;
+                academicDevolver.Roh_callTypeOther = impartedAcademic.callTypeOther;
+                academicDevolver.IdVivo_geographicFocus = impartedAcademic.geographicFocus;
+                academicDevolver.Roh_geographicFocusOther = impartedAcademic.geographicFocusOther;
+
+                listaImpartedDevolver.Add(academicDevolver.ToGnossApiResource(pResourceApi, null));
+            }
+
+            return listaImpartedDevolver;
+        }
 
         public List<ComplexOntologyResource> GetCursosSupervision(List<ImpartedCoursesSeminarsBBDD> pTesisList, ResourceApi pResourceApi, string pIdGnoss)
         {
