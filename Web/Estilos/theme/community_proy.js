@@ -979,10 +979,7 @@ tooltipsAccionesRecursos.getTooltipHindex= function () {
                     </li>`
                 
             });
-			
-
-		
-			
+					
 			var html=`<p class="tooltip-title">Fuente de citas</p>
                 <ul class="no-list-style">
 				${htmlSources}				
