@@ -24,7 +24,7 @@ namespace OAI_PMH.Services
             IRestResponse response = client.Execute(request);
             if (!String.IsNullOrEmpty(response.Content))
             {
-                var sinComillas= response.Content[1..^1].Replace("\"", "");
+                var sinComillas = response.Content[1..^1].Replace("\"", "");
 
                 idList = sinComillas.Split(',').ToList();
                 foreach (string id in idList)
@@ -59,7 +59,14 @@ namespace OAI_PMH.Services
             var request = new RestRequest(Method.GET);
             IRestResponse response = client.Execute(request);
             string datosLimpios = response.Content;
-            datosContacto = JsonConvert.DeserializeObject<DatosContacto>(datosLimpios);
+            try
+            {
+                datosContacto = JsonConvert.DeserializeObject<DatosContacto>(datosLimpios);
+            }
+            catch (Exception)
+            {
+                return null;
+            }
             return datosContacto;
         }
 
@@ -72,7 +79,14 @@ namespace OAI_PMH.Services
             var request = new RestRequest(Method.GET);
             IRestResponse response = client.Execute(request);
             string datosLimpios = response.Content;
-            datos = JsonConvert.DeserializeObject<EmpresaClasificacion>(datosLimpios);
+            try
+            {
+                datos = JsonConvert.DeserializeObject<EmpresaClasificacion>(datosLimpios);
+            }
+            catch (Exception)
+            {
+                return null;
+            }
             return datos;
         }
 
@@ -84,7 +98,14 @@ namespace OAI_PMH.Services
             client.AddDefaultHeader("Authorization", "Bearer " + accessToken);
             var request = new RestRequest(Method.GET);
             IRestResponse response = client.Execute(request);
-            tiposIdentificador = JsonConvert.DeserializeObject<List<TipoIdentificador>>(response.Content);
+            try
+            {
+                tiposIdentificador = JsonConvert.DeserializeObject<List<TipoIdentificador>>(response.Content);
+            }
+            catch (Exception)
+            {
+                return null;
+            }
             return tiposIdentificador;
         }
 
@@ -96,7 +117,14 @@ namespace OAI_PMH.Services
             client.AddDefaultHeader("Authorization", "Bearer " + accessToken);
             var request = new RestRequest(Method.GET);
             IRestResponse response = client.Execute(request);
-            datosTipoEmpresa = JsonConvert.DeserializeObject<DatosTipoEmpresa>(response.Content);
+            try
+            {
+                datosTipoEmpresa = JsonConvert.DeserializeObject<DatosTipoEmpresa>(response.Content);
+            }
+            catch (Exception)
+            {
+                return null;
+            }
             return datosTipoEmpresa;
         }
     }

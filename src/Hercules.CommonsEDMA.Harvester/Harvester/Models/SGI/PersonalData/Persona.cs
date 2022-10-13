@@ -144,8 +144,72 @@ namespace OAI_PMH.Models.SGI.PersonalData
             List<string> listaIdsCiclosBorrar = ObtenerDataByCrisIdentifiers(listaCiclosBorrarCrisIdentifiers, pResourceApi, "academicdegree");
             BorrarRecursos(listaIdsCiclosBorrar, pResourceApi, "academicdegree");
             #endregion
-        
-            // TODO: QUEDARÍAN DOCTORADOS, FORMACIÓN ESPECIALIZADA Y POSGRADO
+
+            #region --- DOCTORADOS TODO: REVISAR PROPIEDADES
+            pResourceApi.ChangeOntoly("academicdegree");
+            List<string> crisIdentifiersDoctoradosBBDD = ObtenerDataCrisIdentifier(pResourceApi, this.Id, "academicdegree");
+            List<string> crisIdentifiersDoctoradosSGI = new List<string>();
+            List<DoctoradosBBDD> listaDoctoradosSGI = ObtenerDoctoradosSGI(pRabbitConf, this.Doctorados, pHarvesterServices, pConfig, pResourceApi, pDicIdentificadores, pDicRutas);
+            foreach (DoctoradosBBDD doctoradosAux in listaDoctoradosSGI)
+            {
+                crisIdentifiersCyclesSGI.Add(doctoradosAux.crisIdentifier);
+            }
+
+            // Cargar --> Ciclos que estén en listaCiclosSGI y no en listaCiclosBBDD.    
+            List<string> listaDoctoradosCargarCrisIdentifiers = crisIdentifiersDoctoradosSGI.Except(crisIdentifiersDoctoradosBBDD).ToList();
+            List<DoctoradosBBDD> listaDoctoradosCargar = listaDoctoradosSGI.Where(x => listaDoctoradosCargarCrisIdentifiers.Contains(x.crisIdentifier)).ToList();
+            List<ComplexOntologyResource> listaDoctoradosOntology = GetDoctorates(listaDoctoradosCargar, pResourceApi, pIdGnoss);
+            CargarDatos(listaDoctoradosOntology, pResourceApi);
+
+            // Elimitar --> Tesis que estén en listaTesisBBDD y no en listaTesisSGI.
+            List<string> listaDoctoradosBorrarCrisIdentifiers = crisIdentifiersDoctoradosBBDD.Except(crisIdentifiersDoctoradosSGI).ToList();
+            List<string> listaIdsDoctoradosBorrar = ObtenerDataByCrisIdentifiers(listaDoctoradosBorrarCrisIdentifiers, pResourceApi, "academicdegree");
+            BorrarRecursos(listaIdsDoctoradosBorrar, pResourceApi, "academicdegree");
+            #endregion
+
+            #region --- POSGRADO TODO: REVISAR PROPIEDADES
+            pResourceApi.ChangeOntoly("academicdegree");
+            List<string> crisIdentifiersPosgradoBBDD = ObtenerDataCrisIdentifier(pResourceApi, this.Id, "academicdegree");
+            List<string> crisIdentifiersPosgradoSGI = new List<string>();
+            List<PosgradoBBDD> listaPosgradosSGI = ObtenerPosgradosSGI(pRabbitConf, this.Posgrado, pHarvesterServices, pConfig, pResourceApi, pDicIdentificadores, pDicRutas);
+            foreach (PosgradoBBDD posgradosAux in listaPosgradosSGI)
+            {
+                crisIdentifiersPosgradoSGI.Add(posgradosAux.crisIdentifier);
+            }
+
+            // Cargar --> Ciclos que estén en listaCiclosSGI y no en listaCiclosBBDD.    
+            List<string> listaPosgradosCargarCrisIdentifiers = crisIdentifiersPosgradoSGI.Except(crisIdentifiersPosgradoBBDD).ToList();
+            List<PosgradoBBDD> listaPosgradosCargar = listaPosgradosSGI.Where(x => listaPosgradosCargarCrisIdentifiers.Contains(x.crisIdentifier)).ToList();
+            List<ComplexOntologyResource> listaPosgradosOntology = GetPosgrados(listaPosgradosCargar, pResourceApi, pIdGnoss);
+            CargarDatos(listaPosgradosOntology, pResourceApi);
+
+            // Elimitar --> Tesis que estén en listaTesisBBDD y no en listaTesisSGI.
+            List<string> listaPosgradosBorrarCrisIdentifiers = crisIdentifiersPosgradoBBDD.Except(crisIdentifiersPosgradoSGI).ToList();
+            List<string> listaIdsPosgradosBorrar = ObtenerDataByCrisIdentifiers(listaPosgradosBorrarCrisIdentifiers, pResourceApi, "academicdegree");
+            BorrarRecursos(listaIdsPosgradosBorrar, pResourceApi, "academicdegree");
+            #endregion
+
+            #region --- FORMACIÓN ESPECIALIZADA TODO: REVISAR PROPIEDADES
+            pResourceApi.ChangeOntoly("academicdegree");
+            List<string> crisIdentifiersEspecializadaBBDD = ObtenerDataCrisIdentifier(pResourceApi, this.Id, "academicdegree");
+            List<string> crisIdentifiersEspecializadaSGI = new List<string>();
+            List<FormacionEspecializadaBBDD> listaEspecializadaSGI = ObtenerFormacionEspecializadaSGI(pRabbitConf, this.FormacionEspecializada, pHarvesterServices, pConfig, pResourceApi, pDicIdentificadores, pDicRutas);
+            foreach (FormacionEspecializadaBBDD formacionEspecializadaAux in listaEspecializadaSGI)
+            {
+                crisIdentifiersEspecializadaSGI.Add(formacionEspecializadaAux.crisIdentifier);
+            }
+
+            // Cargar --> Ciclos que estén en listaCiclosSGI y no en listaCiclosBBDD.    
+            List<string> listaEspecializadaCargarCrisIdentifiers = crisIdentifiersEspecializadaSGI.Except(crisIdentifiersEspecializadaBBDD).ToList();
+            List<FormacionEspecializadaBBDD> listaEspecializadaCargar = listaEspecializadaSGI.Where(x => listaEspecializadaCargarCrisIdentifiers.Contains(x.crisIdentifier)).ToList();
+            List<ComplexOntologyResource> listaEspecializadaOntology = GetFormacionEspecializada(listaEspecializadaCargar, pResourceApi, pIdGnoss);
+            CargarDatos(listaPosgradosOntology, pResourceApi);
+
+            // Elimitar --> Tesis que estén en listaTesisBBDD y no en listaTesisSGI.
+            List<string> listaEspecializadaBorrarCrisIdentifiers = crisIdentifiersEspecializadaBBDD.Except(crisIdentifiersEspecializadaSGI).ToList();
+            List<string> listaIdsEspecializadaBorrar = ObtenerDataByCrisIdentifiers(listaEspecializadaBorrarCrisIdentifiers, pResourceApi, "academicdegree");
+            BorrarRecursos(listaIdsEspecializadaBorrar, pResourceApi, "academicdegree");
+            #endregion
         }
 
         public static void BorrarRecursos(List<string> pListaGnossId, ResourceApi pResourceApi, string pOntology)
@@ -469,6 +533,107 @@ namespace OAI_PMH.Models.SGI.PersonalData
 
             return listaCiclosDevolver;
         }
+
+        public List<ComplexOntologyResource> GetDoctorates(List<DoctoradosBBDD> pDoctoratesList, ResourceApi pResourceApi, string pIdGnoss)
+        {
+            List<ComplexOntologyResource> listaDoctoradosDevolver = new List<ComplexOntologyResource>();
+
+            foreach (DoctoradosBBDD doctorado in pDoctoratesList)
+            {
+                AcademicdegreeOntology.AcademicDegree doctoradosDevolver = new AcademicdegreeOntology.AcademicDegree();
+
+                doctoradosDevolver.IdRoh_owner = pIdGnoss;
+                doctoradosDevolver.Roh_title = doctorado.nombreTitulo;
+                doctoradosDevolver.Roh_crisIdentifier = doctorado.crisIdentifier;
+                doctoradosDevolver.Roh_conductedByTitle = doctorado.entidadTitulacionTitulo;
+                doctoradosDevolver.IdRoh_conductedBy = doctorado.entidadTitulacion;
+                doctoradosDevolver.Dct_issued = doctorado.fechaTitulacion;
+
+                doctoradosDevolver.IdRoh_deaEntity = doctorado.entidadTitDEA;
+                doctoradosDevolver.Roh_deaEntityTitle = doctorado.entidadTitDEATitulo;
+                doctoradosDevolver.Roh_deaDate = doctorado.obtencionDEA;
+                doctoradosDevolver.Roh_thesisTitle = doctorado.tituloTesis;
+                doctoradosDevolver.Roh_qualification = doctorado.calificacionObtenida;
+
+                doctoradosDevolver.Roh_directorNick = doctorado.firmaDirector;
+                doctoradosDevolver.Roh_directorName = doctorado.nombreDirector;
+                doctoradosDevolver.Roh_directorFirstSurname = doctorado.primApeDirector;
+                doctoradosDevolver.Roh_directorSecondSurname = doctorado.segunApeDirector;
+
+                // TODO: CoDirectores
+
+                doctoradosDevolver.Roh_europeanDoctorate = doctorado.doctoradoEuropeo;
+                doctoradosDevolver.Roh_europeanDoctorateDate = doctorado.fechaDoctorado;
+
+                doctoradosDevolver.Roh_qualityMention = doctorado.mencionCalidad;
+
+                doctoradosDevolver.Roh_doctorExtraordinaryAward = doctorado.premioExtraordinarioDoctor;
+                doctoradosDevolver.Roh_doctorExtraordinaryAwardDate = doctorado.fechaPremioDoctor;
+
+                doctoradosDevolver.Roh_approvedDegree = doctorado.tituloHomologado;
+                doctoradosDevolver.Roh_approvedDate = doctorado.fechaHomologado;
+
+                listaDoctoradosDevolver.Add(doctoradosDevolver.ToGnossApiResource(pResourceApi, null));
+            }
+
+            return listaDoctoradosDevolver;
+        }
+
+        public List<ComplexOntologyResource> GetPosgrados(List<PosgradoBBDD> pPosgradosList, ResourceApi pResourceApi, string pIdGnoss)
+        {
+            List<ComplexOntologyResource> listaPosgradosDevolver = new List<ComplexOntologyResource>();
+
+            foreach (PosgradoBBDD posgrado in pPosgradosList)
+            {
+                AcademicdegreeOntology.AcademicDegree posgradosDevolver = new AcademicdegreeOntology.AcademicDegree();
+
+                posgradosDevolver.IdRoh_owner = pIdGnoss;
+                posgradosDevolver.Roh_title = posgrado.nombreTitulo;
+                posgradosDevolver.Roh_crisIdentifier = posgrado.crisIdentifier;
+                posgradosDevolver.Roh_conductedByTitle = posgrado.entidadTitulacionTitulo;
+                posgradosDevolver.IdRoh_conductedBy = posgrado.entidadTitulacion;
+                posgradosDevolver.Dct_issued = posgrado.fechaTitulacion;
+
+                posgradosDevolver.IdRoh_formationType = posgrado.tipoFormacion;
+                posgradosDevolver.Roh_qualification = posgrado.calificacionObtenida;
+                posgradosDevolver.Roh_approvedDegree = posgrado.tituloHomologado;
+                posgradosDevolver.Roh_approvedDate = posgrado.fechaHomologacion;
+
+                listaPosgradosDevolver.Add(posgradosDevolver.ToGnossApiResource(pResourceApi, null));
+            }
+
+            return listaPosgradosDevolver;
+        }
+
+        public List<ComplexOntologyResource> GetFormacionEspecializada(List<FormacionEspecializadaBBDD> pEspecializadaList, ResourceApi pResourceApi, string pIdGnoss)
+        {
+            List<ComplexOntologyResource> listaPosgradosDevolver = new List<ComplexOntologyResource>();
+
+            foreach (FormacionEspecializadaBBDD formacionEspecializada in pEspecializadaList)
+            {
+                AcademicdegreeOntology.AcademicDegree formEspDevolver = new AcademicdegreeOntology.AcademicDegree();
+
+                formEspDevolver.IdRoh_owner = pIdGnoss;
+                formEspDevolver.Roh_title = formacionEspecializada.nombreTitulo;
+                formEspDevolver.Roh_crisIdentifier = formacionEspecializada.crisIdentifier;
+                formEspDevolver.Roh_conductedByTitle = formacionEspecializada.entidadTitulacionTitulo;
+                formEspDevolver.IdRoh_conductedBy = formacionEspecializada.entidadTitulacion;
+                formEspDevolver.Dct_issued = formacionEspecializada.fechaFinalizacion;
+
+                formEspDevolver.Roh_durationHours = formacionEspecializada.duracionHoras;
+                formEspDevolver.IdRoh_formationType = formacionEspecializada.tipoFormacion;
+                formEspDevolver.Roh_goals = formacionEspecializada.objetivosEntidad;
+                formEspDevolver.Roh_trainerNick = formacionEspecializada.firma;
+                formEspDevolver.Roh_trainerName = formacionEspecializada.nombre;
+                formEspDevolver.Roh_trainerFirstSurname = formacionEspecializada.primApe;
+                formEspDevolver.Roh_trainerSecondSurname = formacionEspecializada.segunApe;
+
+                listaPosgradosDevolver.Add(formEspDevolver.ToGnossApiResource(pResourceApi, null));
+            }
+
+            return listaPosgradosDevolver;
+        }
+
 
         public List<ComplexOntologyResource> GetImpartedAcademic(List<ImpartedAcademicTrainingBBDD> pImpartedAcademicList, ResourceApi pResourceApi, string pIdGnoss)
         {
@@ -1273,7 +1438,7 @@ namespace OAI_PMH.Models.SGI.PersonalData
                 impartedAcademic.crisIdentifier = $@"{item.Id}___{tituloTrabajo}";
                 impartedAcademic.title = item.TitulacionUniversitaria;
                 impartedAcademic.teaches = item.NombreAsignaturaCurso;
-                
+
                 //impartedAcademic.start = item.FechaInicio;
                 //impartedAcademic.end = item.FechaFinalizacion;                
 
@@ -1358,6 +1523,7 @@ namespace OAI_PMH.Models.SGI.PersonalData
 
             return listaImpartedAcademic;
         }
+
         public List<TesisBBDD> ObtenerTesisSGI(RabbitServiceWriterDenormalizer pRabbitConf, List<Tesis> pListaTesisSGI, IHarvesterServices pHarvesterServices, ReadConfig pConfig, ResourceApi pResourceApi, Dictionary<string, HashSet<string>> pDicIdentificadores, Dictionary<string, Dictionary<string, string>> pDicRutas)
         {
             List<TesisBBDD> listaTesis = new List<TesisBBDD>();
@@ -1548,7 +1714,7 @@ namespace OAI_PMH.Models.SGI.PersonalData
                     }
                 }
 
-                
+
                 ciclo.fechaTitulacion = item.FechaTitulacion;
 
                 // TODO: NOTA MEDIA
@@ -1582,6 +1748,249 @@ namespace OAI_PMH.Models.SGI.PersonalData
             return listaCiclos;
         }
 
+        public List<DoctoradosBBDD> ObtenerDoctoradosSGI(RabbitServiceWriterDenormalizer pRabbitConf, List<Doctorados> pListaDoctoradosSGI, IHarvesterServices pHarvesterServices, ReadConfig pConfig, ResourceApi pResourceApi, Dictionary<string, HashSet<string>> pDicIdentificadores, Dictionary<string, Dictionary<string, string>> pDicRutas)
+        {
+            List<DoctoradosBBDD> listaDoctorados = new List<DoctoradosBBDD>();
+
+            foreach (Doctorados item in pListaDoctoradosSGI)
+            {
+                DoctoradosBBDD doctorado = new DoctoradosBBDD();
+
+                string tituloTrabajo = RemoveDiacritics(item.ProgramaDoctorado.ToLower());
+                tituloTrabajo = tituloTrabajo.Replace(" ", "-");
+                doctorado.crisIdentifier = $@"{item.Id}___{tituloTrabajo}";
+
+                doctorado.nombreTitulo = item.ProgramaDoctorado;
+
+                if (item.EntidadTitulacion != null && !string.IsNullOrEmpty(item.EntidadTitulacion.EntidadRef))
+                {
+                    Dictionary<string, string> dicOrganizaciones = Empresa.ObtenerOrganizacionesBBDD(new HashSet<string>() { item.EntidadTitulacion.EntidadRef }, pResourceApi);
+                    Dictionary<string, string> dicOrganizacionesCargadas = new Dictionary<string, string>();
+                    foreach (KeyValuePair<string, string> organizacion in dicOrganizaciones)
+                    {
+                        Empresa organizacionAux = Empresa.GetOrganizacionSGI(pHarvesterServices, pConfig, "Organizacion_" + organizacion.Key, pDicRutas);
+                        if (organizacionAux != null)
+                        {
+                            doctorado.entidadTitulacionTitulo = organizacionAux.Nombre;
+
+                            if (string.IsNullOrEmpty(organizacion.Value))
+                            {
+                                string idGnoss = organizacionAux.Cargar(pHarvesterServices, pConfig, pResourceApi, "organization", pDicIdentificadores, pDicRutas, pRabbitConf);
+                                pDicIdentificadores["organization"].Add(idGnoss);
+                                dicOrganizacionesCargadas[organizacion.Key] = idGnoss;
+                            }
+                            else
+                            {
+                                dicOrganizacionesCargadas[organizacion.Key] = organizacion.Value;
+                            }
+
+                            doctorado.entidadTitulacion = dicOrganizacionesCargadas[item.EntidadTitulacion.EntidadRef];
+                        }
+                    }
+                }
+
+                doctorado.fechaTitulacion = item.FechaTitulacion;
+
+                // TODO: Ciudad, Pais, CCAA
+
+                if (item.EntidadTitulacionDEA != null && !string.IsNullOrEmpty(item.EntidadTitulacionDEA.EntidadRef))
+                {
+                    Dictionary<string, string> dicOrganizaciones = Empresa.ObtenerOrganizacionesBBDD(new HashSet<string>() { item.EntidadTitulacionDEA.EntidadRef }, pResourceApi);
+                    Dictionary<string, string> dicOrganizacionesCargadas = new Dictionary<string, string>();
+                    foreach (KeyValuePair<string, string> organizacion in dicOrganizaciones)
+                    {
+                        Empresa organizacionAux = Empresa.GetOrganizacionSGI(pHarvesterServices, pConfig, "Organizacion_" + organizacion.Key, pDicRutas);
+                        if (organizacionAux != null)
+                        {
+                            doctorado.entidadTitDEATitulo = organizacionAux.Nombre;
+
+                            if (string.IsNullOrEmpty(organizacion.Value))
+                            {
+                                string idGnoss = organizacionAux.Cargar(pHarvesterServices, pConfig, pResourceApi, "organization", pDicIdentificadores, pDicRutas, pRabbitConf);
+                                pDicIdentificadores["organization"].Add(idGnoss);
+                                dicOrganizacionesCargadas[organizacion.Key] = idGnoss;
+                            }
+                            else
+                            {
+                                dicOrganizacionesCargadas[organizacion.Key] = organizacion.Value;
+                            }
+
+                            doctorado.entidadTitDEA = dicOrganizacionesCargadas[item.EntidadTitulacionDEA.EntidadRef];
+                        }
+                    }
+                }
+
+                doctorado.obtencionDEA = item.FechaTitulacionDEA;
+                doctorado.tituloTesis = item.TituloTesis;
+                doctorado.calificacionObtenida = item.CalificacionObtenida;
+
+                Persona director = GetPersonaSGI(pHarvesterServices, pConfig, "Persona_" + item.DirectorTesis, pDicRutas);
+                if (director != null)
+                {
+                    doctorado.nombreDirector = director.Nombre;
+                    doctorado.primApeDirector = director.Apellidos;
+                    doctorado.firmaDirector = director.Nombre + " " + director.Apellidos;
+                }
+
+                if (item.CoDirectorTesis != null && !string.IsNullOrEmpty(item.CoDirectorTesis.PersonaRef))
+                {
+                    Persona codirectorSGI = GetPersonaSGI(pHarvesterServices, pConfig, "Persona_" + item.CoDirectorTesis.PersonaRef, pDicRutas);
+                    if (codirectorSGI != null)
+                    {
+                        DoctoradosBBDD.Codirector codirector = new DoctoradosBBDD.Codirector();
+                        codirector.firstName = codirectorSGI.Nombre;
+                        codirector.secondFamilyName = codirectorSGI.Apellidos;
+                        codirector.nick = codirectorSGI.Nombre + " " + codirectorSGI.Apellidos;
+                        codirector.comment = 1;
+                        doctorado.codirectorTesis = new List<DoctoradosBBDD.Codirector>() { codirector };
+                    }
+                }
+
+                doctorado.doctoradoEuropeo = item.DoctoradoEuropeo != null ? (bool)item.DoctoradoEuropeo : false;
+                doctorado.fechaDoctorado = item.FechaMencionDoctoradoEuropeo;
+                doctorado.mencionCalidad = item.MencionCalidad != null ? (bool)item.MencionCalidad : false;
+                doctorado.premioExtraordinarioDoctor = item.PremioExtraordinarioDoctor != null ? (bool)item.PremioExtraordinarioDoctor : false;
+                doctorado.fechaPremioDoctor = item.FechaPremioExtraordinarioDoctor;
+                doctorado.tituloHomologado = item.TituloHomologado != null ? (bool)item.TituloHomologado : false;
+                doctorado.fechaHomologado = item.FechaHomologacion;
+
+                listaDoctorados.Add(doctorado);
+            }
+
+            return listaDoctorados;
+        }
+
+        public List<PosgradoBBDD> ObtenerPosgradosSGI(RabbitServiceWriterDenormalizer pRabbitConf, List<Posgrado> pListaPosgradosSGI, IHarvesterServices pHarvesterServices, ReadConfig pConfig, ResourceApi pResourceApi, Dictionary<string, HashSet<string>> pDicIdentificadores, Dictionary<string, Dictionary<string, string>> pDicRutas)
+        {
+            List<PosgradoBBDD> listaPosgrados = new List<PosgradoBBDD>();
+
+            foreach (Posgrado item in pListaPosgradosSGI)
+            {
+                PosgradoBBDD posgrado = new PosgradoBBDD();
+
+                string tituloTrabajo = RemoveDiacritics(item.NombreTituloPosgrado.ToLower());
+                tituloTrabajo = tituloTrabajo.Replace(" ", "-");
+                posgrado.crisIdentifier = $@"{item.Id}___{tituloTrabajo}";
+
+                posgrado.nombreTitulo = item.NombreTituloPosgrado;
+
+                if (item.EntidadTitulacion != null && !string.IsNullOrEmpty(item.EntidadTitulacion.EntidadRef))
+                {
+                    Dictionary<string, string> dicOrganizaciones = Empresa.ObtenerOrganizacionesBBDD(new HashSet<string>() { item.EntidadTitulacion.EntidadRef }, pResourceApi);
+                    Dictionary<string, string> dicOrganizacionesCargadas = new Dictionary<string, string>();
+                    foreach (KeyValuePair<string, string> organizacion in dicOrganizaciones)
+                    {
+                        Empresa organizacionAux = Empresa.GetOrganizacionSGI(pHarvesterServices, pConfig, "Organizacion_" + organizacion.Key, pDicRutas);
+                        if (organizacionAux != null)
+                        {
+                            posgrado.entidadTitulacionTitulo = organizacionAux.Nombre;
+
+                            if (string.IsNullOrEmpty(organizacion.Value))
+                            {
+                                string idGnoss = organizacionAux.Cargar(pHarvesterServices, pConfig, pResourceApi, "organization", pDicIdentificadores, pDicRutas, pRabbitConf);
+                                pDicIdentificadores["organization"].Add(idGnoss);
+                                dicOrganizacionesCargadas[organizacion.Key] = idGnoss;
+                            }
+                            else
+                            {
+                                dicOrganizacionesCargadas[organizacion.Key] = organizacion.Value;
+                            }
+
+                            posgrado.entidadTitulacion = dicOrganizacionesCargadas[item.EntidadTitulacion.EntidadRef];
+                        }
+                    }
+                }
+
+                posgrado.fechaTitulacion = item.FechaTitulacion;
+
+                // TODO: Ciudad, Pais, CCAA
+
+                if (item.TipoFormacionHomologada != null && !string.IsNullOrEmpty(item.TipoFormacionHomologada.Nombre))
+                {
+                    posgrado.tipoFormacion = FormationType(item.TipoFormacionHomologada.Nombre, pResourceApi);
+                }
+
+                posgrado.calificacionObtenida = item.CalificacionObtenida;
+                posgrado.tituloHomologado = item.TituloHomologado != null ? (bool)item.TituloHomologado : false;
+                posgrado.fechaHomologacion = item.FechaHomologacion;
+
+                listaPosgrados.Add(posgrado);
+            }
+
+            return listaPosgrados;
+        }
+
+        public List<FormacionEspecializadaBBDD> ObtenerFormacionEspecializadaSGI(RabbitServiceWriterDenormalizer pRabbitConf, List<FormacionEspecializada> pListaEspecializadaSGI, IHarvesterServices pHarvesterServices, ReadConfig pConfig, ResourceApi pResourceApi, Dictionary<string, HashSet<string>> pDicIdentificadores, Dictionary<string, Dictionary<string, string>> pDicRutas)
+        {
+            List<FormacionEspecializadaBBDD> listaFormEspecializada = new List<FormacionEspecializadaBBDD>();
+
+            foreach (FormacionEspecializada item in pListaEspecializadaSGI)
+            {
+                FormacionEspecializadaBBDD formEspecializada = new FormacionEspecializadaBBDD();
+
+                string tituloTrabajo = RemoveDiacritics(item.NombreTitulo.ToLower());
+                tituloTrabajo = tituloTrabajo.Replace(" ", "-");
+                formEspecializada.crisIdentifier = $@"{item.Id}___{tituloTrabajo}";
+
+                formEspecializada.nombreTitulo = item.NombreTitulo;
+
+                if (item.EntidadTitulacion != null && !string.IsNullOrEmpty(item.EntidadTitulacion.EntidadRef))
+                {
+                    Dictionary<string, string> dicOrganizaciones = Empresa.ObtenerOrganizacionesBBDD(new HashSet<string>() { item.EntidadTitulacion.EntidadRef }, pResourceApi);
+                    Dictionary<string, string> dicOrganizacionesCargadas = new Dictionary<string, string>();
+                    foreach (KeyValuePair<string, string> organizacion in dicOrganizaciones)
+                    {
+                        Empresa organizacionAux = Empresa.GetOrganizacionSGI(pHarvesterServices, pConfig, "Organizacion_" + organizacion.Key, pDicRutas);
+                        if (organizacionAux != null)
+                        {
+                            formEspecializada.entidadTitulacionTitulo = organizacionAux.Nombre;
+
+                            if (string.IsNullOrEmpty(organizacion.Value))
+                            {
+                                string idGnoss = organizacionAux.Cargar(pHarvesterServices, pConfig, pResourceApi, "organization", pDicIdentificadores, pDicRutas, pRabbitConf);
+                                pDicIdentificadores["organization"].Add(idGnoss);
+                                dicOrganizacionesCargadas[organizacion.Key] = idGnoss;
+                            }
+                            else
+                            {
+                                dicOrganizacionesCargadas[organizacion.Key] = organizacion.Value;
+                            }
+
+                            formEspecializada.entidadTitulacion = dicOrganizacionesCargadas[item.EntidadTitulacion.EntidadRef];
+                        }
+                    }
+                }
+
+                formEspecializada.fechaFinalizacion = item.FechaTitulacion;
+
+                // TODO: Ciudad, Pais, CCAA
+
+                formEspecializada.duracionHoras = item.DuracionTitulacion.Value;
+
+                if (item.TipoFormacion != null && !string.IsNullOrEmpty(item.TipoFormacion.Nombre))
+                {
+                    formEspecializada.tipoFormacion = FormationType(item.TipoFormacion.Nombre, pResourceApi);
+                }
+
+                formEspecializada.objetivosEntidad = item.Objetivos;
+
+                if (!string.IsNullOrEmpty(item.ResponsableFormacion))
+                {
+                    formEspecializada.firma = item.ResponsableFormacion;
+                    if (item.ResponsableFormacion.Contains(" "))
+                    {
+                        formEspecializada.nombre = item.ResponsableFormacion.Split(" ")[0];
+                        formEspecializada.primApe = item.ResponsableFormacion.Split(" ")[1];
+                    }
+                }
+
+                listaFormEspecializada.Add(formEspecializada);
+            }
+
+            return listaFormEspecializada;
+        }
+
+
         static string RemoveDiacritics(string text)
         {
             var normalizedString = text.Normalize(NormalizationForm.FormD);
@@ -1600,6 +2009,35 @@ namespace OAI_PMH.Models.SGI.PersonalData
             return stringBuilder
                 .ToString()
                 .Normalize(NormalizationForm.FormC);
+        }
+
+        private static string FormationType(string tipoFormacion, ResourceApi pResourceApi)
+        {
+            string id = pResourceApi.GraphsUrl + "items/formationtype_";
+            switch (tipoFormacion.ToLower())
+            {
+                case "máster":
+                    id += "034";
+                    break;
+                case "master":
+                    id += "034";
+                    break;
+                case "postgrado":
+                    id += "050";
+                    break;
+                case "posgrado":
+                    id += "050";
+                    break;
+                case "extensión universitaria":
+                    id += "178";
+                    break;
+                case "especialidad":
+                    id += "179";
+                    break;
+                default:
+                    return null;
+            }
+            return id;
         }
 
         private static string HoursCreditsECTSType(string hoursCreditsECTSType, ResourceApi pResourceApi)
