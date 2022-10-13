@@ -962,48 +962,29 @@ tooltipsAccionesRecursos.getTooltipQuotes= function () {
 tooltipsAccionesRecursos.getTooltipHindex= function () {
 	var that = this;	
     $(".hindex").each(function () {
-			var scopusInt=$(this).data('scopus');
-			var wosInt=$(this).data('wos');
-			var herculesInt=$(this).data('hercules');
 
-			var htmlScopus = "";
-			if(typeof scopusInt !== "undefined" && scopusInt != "" && scopusInt != "0"){
-				htmlScopus=`
-				<li>					
-					<span class="texto">SCOPUS</span>
-					<span class="num-resultado">${scopusInt}</span>					
-				</li>`;
-			}
+			var htmlSources = "";
+            $(this).parent().find(".source").each((i)=>{
+                
+              
+                    htmlSources+=`
+                    <li>					
+                        <span class="texto">${$($(".source")[i]).data('source')}</span>
+                        <span class="num-resultado">${$($(".source")[i]).data('value')}</span>					
+                    </li>`
+                
+            });
 			
-			var htmlWos = "";
-			if(typeof wosInt !== "undefined" && wosInt != "" && wosInt != "0"){
-				htmlWos=`
-				<li>					
-					<span class="texto">WOS</span>
-					<span class="num-resultado">${wosInt}</span>					
-				</li>`;
-			}
-			
-			var htmlHercules = "";
-			if(typeof herculesInt !== "undefined" && herculesInt != "" && herculesInt != "0"){
-				htmlHercules=`
-				<li>					
-					<span class="texto">Hercules</span>
-					<span class="num-resultado">${herculesInt}</span>					
-				</li>`;
-			}
-			
+
 		
 			
 			var html=`<p class="tooltip-title">Fuente de citas</p>
                 <ul class="no-list-style">
-				${htmlScopus}				
-                ${htmlWos}
-                ${htmlHercules}
-			
+				${htmlSources}				
+       
                 </ul>`;
 				
-			if((typeof scopusInt !== "undefined" && scopusInt != "" && scopusInt != "0") || (typeof wosInt !== "undefined" && wosInt != "" && wosInt != "0") || (typeof htmlHercules !== "undefined" && htmlHercules != "" && htmlHercules != "0"))
+			if((typeof htmlSources !== "undefined" && htmlSources != "" && htmlSources != "0"))
 			{
 				$(this).tooltip({
 					html: true,
@@ -2159,15 +2140,17 @@ function tooltipsImpactFactor()
 		});
 	});	
 }	
-
-tooltipsAccionesRecursos.lanzar = function () {
-    montarTooltip.lanzar(this.info_resource, '', 'background-gris grupos');
-    montarTooltip.lanzar(this.quotes, this.getTooltipQuotes(), 'background-blanco citas');
-    montarTooltip.lanzar($(".hindex"),this.getTooltipHindex(),'background-blanco citas');
-    montarTooltip.lanzar(this.block, 'Bloqueado', 'background-gris-oscuro');
-    montarTooltip.lanzar(this.visible, 'Visible', 'background-gris-oscuro');
-    montarTooltip.lanzar(this.oculto, 'Oculto', 'background-gris-oscuro');
-}
+$(document).ready(e=>{
+    tooltipsAccionesRecursos.lanzar = function () {
+        montarTooltip.lanzar(this.info_resource, '', 'background-gris grupos');
+        montarTooltip.lanzar(this.quotes, this.getTooltipQuotes(), 'background-blanco citas');
+        montarTooltip.lanzar($(".hindex"),this.getTooltipHindex(),'background-blanco citas');
+        montarTooltip.lanzar(this.block, 'Bloqueado', 'background-gris-oscuro');
+        montarTooltip.lanzar(this.visible, 'Visible', 'background-gris-oscuro');
+        montarTooltip.lanzar(this.oculto, 'Oculto', 'background-gris-oscuro');
+    }
+    tooltipsAccionesRecursos.lanzar();
+});
 
 function tooltipMatching (pTextoMesh, pUrlMesh, pDicSnomed, pElemento) {
 

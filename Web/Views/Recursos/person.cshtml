@@ -104,7 +104,10 @@
                         @{
                             if (pPerson.Roh_h_index != null && pPerson.Roh_h_index > 0 && !string.IsNullOrEmpty(pPerson.GNOSSID))
                             {
-                                <span id="numPublicacionesCab" about="@pPerson.GNOSSID" property="@pPerson.GetPropertyURI(nameof(pPerson.Roh_h_index))" class="nombre hindex" data-hercules="@pPerson.Roh_h_index">@pPerson.Roh_h_index @Html.Translate("INDICE_H")</span>
+                                @foreach (HIndex hIndex in pPerson.Roh_hIndex){
+                                    <input type="hidden" class="source" data-source="@hIndex.Roh_citationSource" data-value="@hIndex.Roh_h_index"/>
+                                }
+                                <span id="numPublicacionesCab" about="@pPerson.GNOSSID" property="@pPerson.GetPropertyURI(nameof(pPerson.Roh_h_index))" class="nombre hindex"  data-hercules="@pPerson.Roh_h_index">@pPerson.Roh_h_index @Html.Translate("INDICE_H")</span>
                             }
                             else
                             {
@@ -1385,6 +1388,19 @@
                     }
                 }
             }
+            this.Roh_hIndex = new List<HIndex>();
+            SemanticPropertyModel propRoh_h_index = pSemCmsModel.GetPropertyByPath("http://w3id.org/roh/hIndex");
+            if (propRoh_h_index != null && propRoh_h_index.PropertyValues.Count > 0)
+            {
+                foreach (SemanticPropertyModel.PropertyValue propValue in propRoh_h_index.PropertyValues)
+                {
+                    if (propValue.RelatedEntity != null)
+                    {
+                        HIndex roh_h_index = new HIndex(propValue.RelatedEntity, idiomaUsuario);
+                        this.Roh_hIndex.Add(roh_h_index);
+                    }
+                }
+            }
             this.Vivo_hasResearchArea = new List<CategoryPath>();
             SemanticPropertyModel propVivo_hasResearchArea = pSemCmsModel.GetPropertyByPath("http://vivoweb.org/ontology/core#hasResearchArea");
             if (propVivo_hasResearchArea != null && propVivo_hasResearchArea.PropertyValues.Count > 0)
@@ -1708,6 +1724,10 @@
         [LABEL(LanguageEnum.es, "http://xmlns.com/foaf/0.1/lastName")]
         [RDFProperty("http://xmlns.com/foaf/0.1/lastName")]
         public string Foaf_lastName { get; set; }
+
+        [LABEL(LanguageEnum.es, "http://w3id.org/roh/hIndex")]
+        [RDFProperty("http://w3id.org/roh/roHIndex")]
+        public List<HIndex> Roh_hIndex { get; set; }
     }
 
     public class Department : GnossOCBase
@@ -1970,6 +1990,44 @@
         [LABEL(LanguageEnum.es, "Número de tesis dirigidas")]
         [RDFProperty("http://w3id.org/roh/directedThesisNumber")]
         public int? Roh_directedThesisNumber { get; set; }
+    }
+
+
+    public class HIndex : GnossOCBase
+    {
+
+        public HIndex() : base() { }
+
+        public HIndex(SemanticResourceModel pSemCmsModel, LanguageEnum idiomaUsuario) : base()
+        {
+            this.mGNOSSID = pSemCmsModel.RootEntities[0].Entity.Uri;
+            this.Roh_citationSource = GetPropertyValueSemCms(pSemCmsModel.GetPropertyByPath("http://w3id.org/roh/citationSource"));
+            this.Roh_h_index = GetNumberIntPropertyValueSemCms(pSemCmsModel.GetPropertyByPath("http://w3id.org/roh/h-index"));
+        }
+
+        public HIndex(SemanticEntityModel pSemCmsModel, LanguageEnum idiomaUsuario) : base()
+        {
+            this.mGNOSSID = pSemCmsModel.Entity.Uri;
+            this.Roh_citationSource = GetPropertyValueSemCms(pSemCmsModel.GetPropertyByPath("http://w3id.org/roh/citationSource"));
+            this.Roh_h_index = GetNumberIntPropertyValueSemCms(pSemCmsModel.GetPropertyByPath("http://w3id.org/roh/h-index"));
+        }
+
+        public virtual string RdfType
+        {
+            get { return "http://w3id.org/roh/HIndex"; }
+        }
+        public virtual string RdfsLabel
+        {
+            get { return "http://w3id.org/roh/HIndex"; }
+        }
+        
+        [LABEL(LanguageEnum.es, "http://w3id.org/roh/citationSource")]
+        [RDFProperty("http://w3id.org/roh/citationSource")]
+        public string Roh_citationSource { get; set; }
+
+        [LABEL(LanguageEnum.es, "http://w3id.org/roh/h-index")]
+        [RDFProperty("http://w3id.org/roh/h-index")]
+        public int? Roh_h_index { get; set; }
     }
 
     public class BFO_0000023 : GnossOCBase

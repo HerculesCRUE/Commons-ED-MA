@@ -1254,7 +1254,7 @@
 								{
 									foreach (CustomSemanticPropertiesModel item in Model.ViewSettings.CustomSemanticProperties)
 									{
-										string idQuery = "HIndex";
+										string idQuery = "HIndexSource";
 										if (item.Id == idQuery && item.Rows != null && item.Rows.Count > 0)
 										{
 											string propiedad = "hIndex";
@@ -1263,11 +1263,40 @@
 												if (row.ContainsKey(propiedad))
 												{
 													<span class="material-icons">tag</span>
-													<span class="texto">@row[propiedad] Índice H</span>
+													<span class="hindex texto">@row[propiedad] Índice H</span>
 												}
 											}
 										}
-									}
+									     idQuery = "HIndex";
+                                        string hIndex ="";
+										if (item.Id == idQuery && item.Rows != null && item.Rows.Count > 0)
+										{
+											string propiedad = "hIndex";
+											foreach (Dictionary<string, string> row in item.Rows)
+											{
+												if (row.ContainsKey(propiedad))
+												{
+                                                    hIndex=row[propiedad];
+												}
+											}
+										}
+                                         idQuery = "HIndex";
+                                        string source ="";
+										if (item.Id == idQuery && item.Rows != null && item.Rows.Count > 0)
+										{
+											string propiedad = "source";
+											foreach (Dictionary<string, string> row in item.Rows)
+											{
+												if (row.ContainsKey(propiedad))
+												{
+                                                    source=row[propiedad];
+                                                     <input type="hidden" class="source" data-source="@source" data-value="@hIndex.Roh_hIndex"/>
+												}
+											}
+										}
+
+                                    }
+
 								}
 							}
 						</div>
