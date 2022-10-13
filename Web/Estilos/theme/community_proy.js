@@ -14,6 +14,7 @@ $(document).ready(function () {
 	}
 	montarTooltipCode.init();
 	cargarCVId.init();
+    comportamientoMenuLateral.init();
 });
 var cvUrl = ""
 
@@ -2048,34 +2049,50 @@ function PedirFuentesExternas() {
     menusLateralesManagement.init();
     //mostrarNotificacion("success", "Obteniendo datos de fuentes externas en proceso. Tardará unos minutos.");
 }
-
-function GetSexenios(pIdUsuario) {
+function GetSexenios(comite, periodo, perfil, subcomite, pIdUsuario) {
     var url = url_servicio_editorcv + "Sexenios/ConseguirSexenios";
-    var arg = {};
-    arg.comite = "";
-    arg.periodo = "";
-    arg.perfil_tecnologico = "";
-    arg.subcomite = "";
-    arg.idInvestigador = pIdUsuario;
+    var formData = new FormData();
+    formData.append('comite', comite);
+    formData.append('periodo', periodo);
+    formData.append('perfil_tecnologico', perfil);
+    formData.append('subcomite', subcomite);
+    formData.append('idInvestigador', pIdUsuario);
     mostrarNotificacion("info", "Obteniendo datos de sexenios en proceso. Tardará unos minutos.");
-    $.post(url, arg, function (data) {
-    }).fail(function (jqXHR, textStatus, errorThrown) {
-        console.log("Error al obtener los sexenios");
-        var fecha = jqXHR.responseText.split("-");
-        if (fecha.length == 3) {
-            var horas_restantes = (24 - (new Date().getHours()));
-        } else {
-            console.log(jqXHR);
+    $.ajax({
+        url: url,
+        type: 'POST',
+        data: formData,
+        cache: false,
+        processData: false,
+        enctype: 'multipart/form-data',
+        contentType: false,
+        success: function (response) {
+            console.log("Sexenios obtenidos");
+        },
+        fail: function (jqXHR, textStatus, errorThrown) {
+            console.log("Error al obtener los sexenios");
+            var fecha = jqXHR.responseText.split("-");
+            if (fecha.length == 3) {
+                var horas_restantes = (24 - (new Date().getHours()));
+            } else {
+                console.log(jqXHR);
+                mostrarNotificacion("error", "Error al obtener los sexenios");
+            }
+        },
+        error: function (response) {
             mostrarNotificacion("error", "Error al obtener los sexenios");
         }
-    }).success(function (data) {
-        console.log("Sexenios obtenidas");        
-    }
-    );
+    });
+    $('#modal-sexenios').modal('hide');
 }
 
 function PedirSexenio() {
-    GetSexenios($('.inpt_usuarioID').attr('value'));
+    var comite = $('#idSelectorComite option:selected').val();
+    var periodo = $('#labelPeriodo').val();
+    var perfil = $('#idSelectorComite option:selected').val() == "8" ? $("#yesRadio").prop("checked") : "";
+    var subcomite = $('#idSelectorComite option:selected').val() == "9" ? $('#idSelectorSubcomite option:selected').val() : "";
+    var investigador = $('.inpt_usuarioID').attr('value');
+    GetSexenios(comite, periodo, perfil, subcomite, investigador);
     menusLateralesManagement.init();
 }
 
@@ -2099,16 +2116,30 @@ function GetAcreditaciones(pIdUsuario) {
         }
     }).success(function (data) {
         console.log("Acreditaciones obtenidas");        
-    }
-    );
+    });
 }
 
 function PedirAcreditacion() {
     GetAcreditaciones($('.inpt_usuarioID').attr('value'));
     menusLateralesManagement.init();
 }
-
-
+var comportamientoMenuLateral = {
+    init: function () {
+        $("#noRadio").prop("checked", true);
+        $("#btnPedirSexenio").click(function () {
+            PedirSexenio();
+        });
+        $("#idSelectorComite").on("change", function () {
+            $("#perfilTecnologicoForm").hide();
+            $("#subcomiteForm").hide();
+            if ($('#idSelectorComite option:selected').val() == "8") {
+                $("#perfilTecnologicoForm").show();
+            } else if ($('#idSelectorComite option:selected').val() == "9") {
+                $("#subcomiteForm").show();
+            }
+        });
+    }
+}
 menusLateralesManagement.montarMenuLateralMetabuscador= function () {
 	var that = this;
 	var container = that.main.find('.container');
