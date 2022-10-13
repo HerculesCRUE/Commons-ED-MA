@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+  <OAI-PMH xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.openarchives.org/OAI/2.0/ http://www.openarchives.org/OAI/2.0/OAI-PMH.xsd" xmlns="http://www.openarchives.org/OAI/2.0/">
+    <responseDate>2021-12-01T12:11:17Z</responseDate>
+    <request verb="GetRecord" identifier="Organizacion_S2816021" metadataPrefix="EDMA">http://herc-as-front-desa.atica.um.es/oai-pmh-xml/OAI_PMH</request>
+    <GetRecord>
+      <record>
+        <header>
+          <identifier>Organizacion_S2816021</identifier>
+          <datestamp>2021-12-01T12:11:17Z</datestamp>
+          <setSpec>Organizacion</setSpec>
+        </header>
+        <metadata>
+          <Empresa xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+            <Id>S2816021</Id>
+            <Nombre>MINISTERIO DE JUSTICIA</Nombre>
+            <RazonSocial>MINISTERIO DE JUSTICIA</RazonSocial>
+            <TipoIdentificador>
+              <Id>C</Id>
+              <Nombre>CODIGO DE IDENTIFICACION FISCAL</Nombre>
+            </TipoIdentificador>
+            <NumeroIdentificacion>S2816021F</NumeroIdentificacion>
+            <DatosEconomicos>true</DatosEconomicos>
+            <DatosContacto />
+          </Empresa>
+        </metadata>
+      </record>
+    </GetRecord>
+  </OAI-PMH>

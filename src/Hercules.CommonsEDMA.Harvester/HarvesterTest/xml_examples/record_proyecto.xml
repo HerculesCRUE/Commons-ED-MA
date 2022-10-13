@@ -1,0 +1,335 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+  <OAI-PMH xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.openarchives.org/OAI/2.0/ http://www.openarchives.org/OAI/2.0/OAI-PMH.xsd" xmlns="http://www.openarchives.org/OAI/2.0/">
+    <responseDate>2021-11-24T11:23:27Z</responseDate>
+    <request verb="GetRecord" identifier="Proyecto_2" metadataPrefix="EDMA">http://herc-as-front-desa.atica.um.es/oai-pmh-xml/OAI_PMH</request>
+    <GetRecord>
+      <record>
+        <header>
+          <identifier>Proyecto_2</identifier>
+          <datestamp>2021-11-24T11:23:27Z</datestamp>
+          <setSpec>Proyecto</setSpec>
+        </header>
+        <metadata>
+          <Proyecto xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+            <CreatedBy>00391433</CreatedBy>
+            <CreationDate>2021-02-01T10:00:00Z</CreationDate>
+            <LastModifiedBy>00391433</LastModifiedBy>
+            <LastModifiedDate>2021-08-20T10:00:00Z</LastModifiedDate>
+            <Id>2</Id>
+            <ConvocatoriaId>3</ConvocatoriaId>
+            <Estado>
+              <Id>2</Id>
+              <ProyectoId>2</ProyectoId>
+              <Estado>BORRADOR</Estado>
+              <FechaEstado>2021-01-31T23:00:00Z</FechaEstado>
+            </Estado>
+            <Titulo>Título proyecto CGF/OPE2</Titulo>
+            <Acronimo>PCGFOPE2</Acronimo>
+            <CodigoExterno>PCGFOPE2</CodigoExterno>
+            <FechaInicio>2021-01-31T23:00:00Z</FechaInicio>
+            <FechaFin>2023-12-05T22:59:59Z</FechaFin>
+            <FechaFinDefinitiva>2023-12-06T22:59:59Z</FechaFinDefinitiva>
+            <UnidadGestionRef>2</UnidadGestionRef>
+            <ModeloEjecucion>
+              <Id>1</Id>
+              <Nombre>Subvención</Nombre>
+              <Descripcion>Subvención</Descripcion>
+              <Activo>true</Activo>
+            </ModeloEjecucion>
+            <Finalidad>
+              <Id>22</Id>
+              <Nombre>Proyectos Unión  Europea</Nombre>
+              <Iva>0</Iva>
+            </Finalidad>
+            <AmbitoGeografico>
+              <Id>5</Id>
+              <Nombre>Europeo</Nombre>
+              <Activo>true</Activo>
+            </AmbitoGeografico>
+            <Confidencial>false</Confidencial>
+            <ClasificacionCVN>COMPETITIVOS</ClasificacionCVN>
+            <Coordinado>true</Coordinado>
+            <Colaborativo xsi:nil="true" />
+            <CoordinadorExterno>false</CoordinadorExterno>
+            <Timesheet>true</Timesheet>
+            <PermitePaquetesTrabajo>true</PermitePaquetesTrabajo>
+            <CosteHora>true</CosteHora>
+            <TipoHorasAnuales>REAL</TipoHorasAnuales>
+            <Observaciones />
+            <Anualidades>true</Anualidades>
+            <ImportePresupuesto xsi:nil="true" />
+            <ImporteConcedido xsi:nil="true" />
+            <ImportePresupuestoSocios xsi:nil="true" />
+            <ImporteConcedidoSocios xsi:nil="true" />
+            <TotalImportePresupuesto xsi:nil="true" />
+            <TotalImporteConcedido xsi:nil="true" />
+            <Activo>true</Activo>
+            <Contexto>
+              <Id>2</Id>
+              <CreatedBy>00391433</CreatedBy>
+              <CreationDate>2021-02-01T10:00:00Z</CreationDate>
+              <LastModifiedBy>00391433</LastModifiedBy>
+              <LastModifiedDate>2021-08-20T10:00:00Z</LastModifiedDate>
+              <ResultadosPrevistos>Resultados previstos del proyecto con título Título proyecto CGF/OPE2</ResultadosPrevistos>
+            </Contexto>
+            <Equipo>
+              <ProyectoEquipo>
+                <Id>3</Id>
+                <CreatedBy>00391433</CreatedBy>
+                <CreationDate>2021-03-02T10:00:00Z</CreationDate>
+                <LastModifiedBy>00391433</LastModifiedBy>
+                <LastModifiedDate>2021-03-02T10:00:00Z</LastModifiedDate>
+                <ProyectoId>2</ProyectoId>
+                <PersonaRef>48734989</PersonaRef>
+                <RolProyecto>
+                  <Id>1</Id>
+                  <Abreviatura>IP</Abreviatura>
+                  <Nombre>Investigador/a principal</Nombre>
+                  <Descripcion>Investigador/a principal</Descripcion>
+                  <RolPrincipal>true</RolPrincipal>
+                  <Orden>PRIMARIO</Orden>
+                  <Equipo>INVESTIGACION</Equipo>
+                  <Activo>true</Activo>
+                </RolProyecto>
+                <HorasDedicacion xsi:nil="true" />
+              </ProyectoEquipo>
+              <ProyectoEquipo>
+                <Id>4</Id>
+                <CreatedBy>00391433</CreatedBy>
+                <CreationDate>2021-08-19T08:37:32Z</CreationDate>
+                <LastModifiedBy>00391433</LastModifiedBy>
+                <LastModifiedDate>2021-08-19T08:37:32Z</LastModifiedDate>
+                <ProyectoId>2</ProyectoId>
+                <PersonaRef>77504284</PersonaRef>
+                <RolProyecto>
+                  <Id>6</Id>
+                  <Abreviatura>PAS</Abreviatura>
+                  <Nombre>PAS E.I.</Nombre>
+                  <Descripcion>PAS E.I.</Descripcion>
+                  <RolPrincipal>false</RolPrincipal>
+                  <Equipo>INVESTIGACION</Equipo>
+                  <Activo>true</Activo>
+                </RolProyecto>
+                <HorasDedicacion xsi:nil="true" />
+              </ProyectoEquipo>
+              <ProyectoEquipo>
+                <Id>12</Id>
+                <CreatedBy>00391433</CreatedBy>
+                <CreationDate>2021-09-03T10:00:00Z</CreationDate>
+                <LastModifiedBy>00391433</LastModifiedBy>
+                <LastModifiedDate>2021-09-03T10:00:00Z</LastModifiedDate>
+                <ProyectoId>2</ProyectoId>
+                <PersonaRef>21066937</PersonaRef>
+                <RolProyecto>
+                  <Id>13</Id>
+                  <Abreviatura>PRASC</Abreviatura>
+                  <Nombre>Profesorado Asociado</Nombre>
+                  <Descripcion>Profesorado Asociado</Descripcion>
+                  <RolPrincipal>false</RolPrincipal>
+                  <Equipo>INVESTIGACION</Equipo>
+                  <Activo>true</Activo>
+                </RolProyecto>
+                <HorasDedicacion xsi:nil="true" />
+              </ProyectoEquipo>
+              <ProyectoEquipo>
+                <Id>10</Id>
+                <CreatedBy>00391433</CreatedBy>
+                <CreationDate>2021-09-03T10:00:00Z</CreationDate>
+                <LastModifiedBy>00391433</LastModifiedBy>
+                <LastModifiedDate>2021-09-03T10:00:00Z</LastModifiedDate>
+                <ProyectoId>2</ProyectoId>
+                <PersonaRef>16059000</PersonaRef>
+                <RolProyecto>
+                  <Id>3</Id>
+                  <Abreviatura>PDI</Abreviatura>
+                  <Nombre>PDI – UMU</Nombre>
+                  <Descripcion>PDI – UMU miembro E.I.</Descripcion>
+                  <RolPrincipal>false</RolPrincipal>
+                  <Equipo>INVESTIGACION</Equipo>
+                  <Activo>true</Activo>
+                </RolProyecto>
+                <FechaInicio>2021-02-01T10:00:00Z</FechaInicio>
+                <FechaFin>2021-03-31T23:59:59Z</FechaFin>
+                <HorasDedicacion xsi:nil="true" />
+              </ProyectoEquipo>
+              <ProyectoEquipo>
+                <Id>11</Id>
+                <CreatedBy>00391433</CreatedBy>
+                <CreationDate>2021-09-03T10:00:00Z</CreationDate>
+                <LastModifiedBy>00391433</LastModifiedBy>
+                <LastModifiedDate>2021-09-03T10:00:00Z</LastModifiedDate>
+                <ProyectoId>2</ProyectoId>
+                <PersonaRef>16059000</PersonaRef>
+                <RolProyecto>
+                  <Id>3</Id>
+                  <Abreviatura>PDI</Abreviatura>
+                  <Nombre>PDI – UMU</Nombre>
+                  <Descripcion>PDI – UMU miembro E.I.</Descripcion>
+                  <RolPrincipal>false</RolPrincipal>
+                  <Equipo>INVESTIGACION</Equipo>
+                  <Activo>true</Activo>
+                </RolProyecto>
+                <FechaInicio>2021-05-01T00:00:00Z</FechaInicio>
+                <HorasDedicacion xsi:nil="true" />
+              </ProyectoEquipo>
+            </Equipo>
+            <EntidadesGestoras>
+              <ProyectoEntidadGestora>
+                <Id>2</Id>
+                <CreatedBy>00391433</CreatedBy>
+                <CreationDate>2021-08-20T07:45:49Z</CreationDate>
+                <LastModifiedBy>00391433</LastModifiedBy>
+                <LastModifiedDate>2021-08-20T07:45:49Z</LastModifiedDate>
+                <ProyectoId>2</ProyectoId>
+                <EntidadRef>S2816021</EntidadRef>
+              </ProyectoEntidadGestora>
+            </EntidadesGestoras>
+            <EntidadesConvocantes>
+              <ProyectoEntidadConvocante>
+                <Id>2</Id>
+                <EntidadRef>00090577</EntidadRef>
+                <ProgramaConvocatoria>
+                  <Id>27</Id>
+                  <Nombre>Energía segura, limpia y eficiente</Nombre>
+                  <Padre>
+                    <Id>25</Id>
+                    <Nombre>Retos sociales</Nombre>
+                    <Padre>
+                      <Id>22</Id>
+                      <Nombre>Horizonte 2020</Nombre>
+                      <Descripcion>Programa Marco de Investigación e Innovación de la UE 2014-2020</Descripcion>
+                    </Padre>
+                  </Padre>
+                </ProgramaConvocatoria>
+              </ProyectoEntidadConvocante>
+              <ProyectoEntidadConvocante>
+                <Id>6</Id>
+                <EntidadRef>A2800358</EntidadRef>
+                <Programa>
+                  <Id>97</Id>
+                  <Nombre>Consorcios de Investigación Empresarial Nacional</Nombre>
+                  <Padre>
+                    <Id>90</Id>
+                    <Nombre>Proyectos IDI</Nombre>
+                    <Padre>
+                      <Id>13</Id>
+                      <Nombre>Retos de la sociedad</Nombre>
+                      <Padre>
+                        <Id>1</Id>
+                        <Nombre>Plan Estatal 2017-2020</Nombre>
+                        <Descripcion>Plan Estatal de Investigación Científica y Técnica y de Innovación 2017-2020</Descripcion>
+                      </Padre>
+                    </Padre>
+                  </Padre>
+                </Programa>
+              </ProyectoEntidadConvocante>
+              <ProyectoEntidadConvocante>
+                <Id>7</Id>
+                <EntidadRef>A2801789</EntidadRef>
+                <Programa>
+                  <Id>86</Id>
+                  <Nombre>PROGRAMA LIFE B</Nombre>
+                  <Descripcion>PROGRAMA LIFE B</Descripcion>
+                  <Padre>
+                    <Id>79</Id>
+                    <Nombre>PROGRAMA LIFE</Nombre>
+                    <Descripcion>PROGRAMA EUROPEO LIFE PARA LA CONSERVACIÓN DEL MEDIO AMBIENTE Y ACCIÓN POR EL CLIMA</Descripcion>
+                  </Padre>
+                </Programa>
+              </ProyectoEntidadConvocante>
+            </EntidadesConvocantes>
+            <EntidadesFinanciadoras>
+              <ProyectoEntidadFinanciadora>
+                <Id>2</Id>
+                <CreatedBy>00391433</CreatedBy>
+                <CreationDate>2021-02-01T10:00:00Z</CreationDate>
+                <LastModifiedBy>00391433</LastModifiedBy>
+                <LastModifiedDate>2021-02-01T10:00:00Z</LastModifiedDate>
+                <ProyectoId>2</ProyectoId>
+                <EntidadRef>G0021150</EntidadRef>
+                <FuenteFinanciacion />
+                <TipoFinanciacion>
+                  <Id>1</Id>
+                  <Nombre>Subvención</Nombre>
+                  <Activo>true</Activo>
+                </TipoFinanciacion>
+                <PorcentajeFinanciacion>100</PorcentajeFinanciacion>
+                <ImporteFinanciacion xsi:nil="true" />
+                <Ajena>false</Ajena>
+              </ProyectoEntidadFinanciadora>
+              <ProyectoEntidadFinanciadora>
+                <Id>3</Id>
+                <CreatedBy>00391433</CreatedBy>
+                <CreationDate>2021-02-01T10:00:00Z</CreationDate>
+                <LastModifiedBy>00391433</LastModifiedBy>
+                <LastModifiedDate>2021-02-01T10:00:00Z</LastModifiedDate>
+                <ProyectoId>2</ProyectoId>
+                <EntidadRef>00058228</EntidadRef>
+                <FuenteFinanciacion />
+                <TipoFinanciacion>
+                  <Id>2</Id>
+                  <Nombre>Préstamo</Nombre>
+                  <Activo>true</Activo>
+                </TipoFinanciacion>
+                <PorcentajeFinanciacion>20</PorcentajeFinanciacion>
+                <ImporteFinanciacion xsi:nil="true" />
+                <Ajena>true</Ajena>
+              </ProyectoEntidadFinanciadora>
+              <ProyectoEntidadFinanciadora>
+                <Id>8</Id>
+                <CreatedBy>00391433</CreatedBy>
+                <CreationDate>2021-09-03T10:00:00Z</CreationDate>
+                <LastModifiedBy>00391433</LastModifiedBy>
+                <LastModifiedDate>2021-09-03T10:00:00Z</LastModifiedDate>
+                <ProyectoId>2</ProyectoId>
+                <EntidadRef>A1160062</EntidadRef>
+                <TipoFinanciacion>
+                  <Id>2</Id>
+                  <Nombre>Préstamo</Nombre>
+                  <Activo>true</Activo>
+                </TipoFinanciacion>
+                <PorcentajeFinanciacion xsi:nil="true" />
+                <ImporteFinanciacion>50000</ImporteFinanciacion>
+                <Ajena>true</Ajena>
+              </ProyectoEntidadFinanciadora>
+            </EntidadesFinanciadoras>
+            <ResumenAnualidades>
+              <ProyectoAnualidadResumen>
+                <Id>3</Id>
+                <Anio>2021</Anio>
+                <FechaInicio>2020-12-31T23:00:00Z</FechaInicio>
+                <FechaFin>2021-12-31T22:59:59Z</FechaFin>
+                <TotalGastosPresupuesto>10300</TotalGastosPresupuesto>
+                <TotalGastosConcedido>10500</TotalGastosConcedido>
+                <TotalIngresos>0</TotalIngresos>
+                <Presupuestar>true</Presupuestar>
+                <EnviadoSGE>false</EnviadoSGE>
+              </ProyectoAnualidadResumen>
+              <ProyectoAnualidadResumen>
+                <Id>4</Id>
+                <Anio>2022</Anio>
+                <FechaInicio>2021-12-31T23:00:00Z</FechaInicio>
+                <FechaFin>2022-12-31T22:59:59Z</FechaFin>
+                <TotalGastosPresupuesto>15000</TotalGastosPresupuesto>
+                <TotalGastosConcedido>16000</TotalGastosConcedido>
+                <TotalIngresos>0</TotalIngresos>
+                <Presupuestar>true</Presupuestar>
+                <EnviadoSGE>false</EnviadoSGE>
+              </ProyectoAnualidadResumen>
+              <ProyectoAnualidadResumen>
+                <Id>5</Id>
+                <Anio>2023</Anio>
+                <FechaInicio>2022-12-31T23:00:00Z</FechaInicio>
+                <FechaFin>2023-12-31T22:59:59Z</FechaFin>
+                <TotalGastosPresupuesto>3500</TotalGastosPresupuesto>
+                <TotalGastosConcedido>3600</TotalGastosConcedido>
+                <TotalIngresos>0</TotalIngresos>
+                <Presupuestar>true</Presupuestar>
+                <EnviadoSGE>false</EnviadoSGE>
+              </ProyectoAnualidadResumen>
+            </ResumenAnualidades>
+          </Proyecto>
+        </metadata>
+      </record>
+    </GetRecord>
+  </OAI-PMH>

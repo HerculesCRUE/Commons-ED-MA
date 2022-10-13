@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+  <OAI-PMH xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.openarchives.org/OAI/2.0/ http://www.openarchives.org/OAI/2.0/OAI-PMH.xsd" xmlns="http://www.openarchives.org/OAI/2.0/">
+    <responseDate>2021-11-24T11:21:48Z</responseDate>
+    <request verb="GetRecord" identifier="Persona_34898526" metadataPrefix="EDMA">http://herc-as-front-desa.atica.um.es/oai-pmh-xml/OAI_PMH</request>
+    <GetRecord>
+      <record>
+        <header>
+          <identifier>Persona_34898526</identifier>
+          <datestamp>2021-11-24T11:21:48Z</datestamp>
+          <setSpec>Persona</setSpec>
+        </header>
+        <metadata>
+          <Persona xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+            <Id>34898526</Id>
+            <Nombre>SUSANA</Nombre>
+            <Apellidos>VIÑAS VILLA</Apellidos>
+            <Sexo>
+              <Id>M</Id>
+              <Nombre>Mujer</Nombre>
+            </Sexo>
+            <NumeroDocumento>34898526M</NumeroDocumento>
+            <TipoDocumento>
+              <Id>D</Id>
+              <Nombre>DOCUMENTO NACIONAL DE IDENTIDAD</Nombre>
+            </TipoDocumento>
+            <PersonalPropio>false</PersonalPropio>
+            <Activo>true</Activo>
+            <DatosPersonales>
+              <FechaNacimiento>1975-05-10T00:00:00</FechaNacimiento>
+            </DatosPersonales>
+            <DatosContacto>
+              <ComAutonomaContacto>
+                <Id>07</Id>
+                <Nombre>COMUNIDAD AUTONOMA DE CASTILLA Y LEON</Nombre>
+                <PaisId>011</PaisId>
+              </ComAutonomaContacto>
+              <ProvinciaContacto>
+                <Id>09</Id>
+                <Nombre>BURGOS</Nombre>
+                <ComunidadAutonomaId>07</ComunidadAutonomaId>
+              </ProvinciaContacto>
+              <CiudadContacto>BURGOS</CiudadContacto>
+              <CodigoPostalContacto>09193</CodigoPostalContacto>
+              <Emails />
+              <Telefonos>
+                <string>682206546</string>
+              </Telefonos>
+              <Moviles>
+                <string>682206546</string>
+              </Moviles>
+            </DatosContacto>
+          </Persona>
+        </metadata>
+      </record>
+    </GetRecord>
+  </OAI-PMH>

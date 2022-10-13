@@ -4790,7 +4790,7 @@ namespace Hercules.CommonsEDMA.Load
         /// <param name="pSource">Nombre del tesáuro.</param>
         private static void ObtenerTesauroResearchArea(ref List<SecondaryResource> pListaRecursosCargar, string pSource)
         {
-            DataSet ds = LeerDatosExcel($"Dataset{Path.DirectorySeparatorChar}Hércules-ED_Taxonomías_v1.36.xlsx");
+            DataSet ds = LeerDatosExcel($"Dataset{Path.DirectorySeparatorChar}Hércules-CommonsEDMA_Taxonomías_v1.36.xlsx");
 
             //Recorremos las filas
             List<Concept> listConcepts = new List<Concept>();

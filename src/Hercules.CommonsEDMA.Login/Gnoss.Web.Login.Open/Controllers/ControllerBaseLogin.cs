@@ -107,13 +107,7 @@ namespace Gnoss.Web.Login
         }
         protected string ObtenerDominioIP()
         {
-            string path = null;
-            if (Request.Path.HasValue)
-            {
-                path = Request.Path.Value.Substring(0, Request.Path.Value.LastIndexOf("/"));
-            }
-
-            string dominio = $"{Request.Scheme}://{Request.Host}{path}";
+            string dominio = $"https://{Request.Host}/login";
             return dominio;
         }
         /// <summary>

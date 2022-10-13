@@ -1,0 +1,227 @@
+@using Es.Riam.Gnoss.Web.MVC.Models;
+@model CMSComponentSearch
+@if (Model != null)
+{ 
+    <div class="ListadoRecursos" id="@Model.Key">
+        <script type="text/javascript">
+            var Filtro = '@Model.Filter';
+            $(document).ready(function () {              
+
+                $('#@Model.Key .paginadorResultados .indiceNavegacion').unbind("click");
+                $('#@Model.Key .paginadorResultados .indiceNavegacion').click(function (event) {
+                    event.preventDefault();
+                    var pag = $(this).attr("name");
+                    Buscar(pag, '@Model.Key.ToString()');
+                });
+            });
+
+            function Buscar(pPagina, pIdComponente) {
+                MostrarUpdateProgress();
+
+                var args = {};
+                args.ComponentKey = pIdComponente;
+                args.filtro = "";
+                args.paginaBusqueda = pPagina;
+
+                var urlAction = '@Model.UrlSearcherCMS';
+
+                GnossPeticionAjax(
+                    urlAction,
+                    args,
+                    true
+                ).done(function (response) {
+                    var panel = $('#' + pIdComponente + '.ListadoRecursos');
+                    panel.replaceWith(response);
+                    OcultarUpdateProgress();
+                }).fail(function (response) {
+                    var panel = $('#' + pIdComponente + '.ListadoRecursos');
+                    panel.replaceWith(response);
+                    OcultarUpdateProgress();
+                }).always(function () {
+                    OcultarUpdateProgress();
+                });
+                return false;
+            }
+        </script>
+        <div class="group-title">
+            <h2>@Model.Title</h2>
+        </div>
+
+        <div class="finderUtils">           
+            @if (Model.Resultado.NumeroResultadosTotal > 0)
+            {
+                <div class="group filterSpace">
+                    <p id="panNumResultados">
+                        <strong>@Model.Resultado.NumeroResultadosTotal</strong>
+                        @Html.GetText("LISTARECURSOS", "NUMERORESULTADOS")
+                    </p>
+                </div>
+            }
+        </div>
+        <div class="listadoRecursos">
+            <div class="resource-list listView">
+                @foreach (ResourceModel fichaModel in Model.Resultado.ListaResultados)
+                {
+                    @Html.PartialView(Model.ViewNameResources, fichaModel)
+                }
+            </div>
+            @{
+                //Paginador
+                int numTotal = Model.Resultado.NumeroResultadosTotal;
+                int numResultadosPagina = Model.Resultado.NumeroResultadosPagina;
+                int PaginaActual = Model.Resultado.NumeroPaginaActual;
+
+                int NUM_PAG_INICIO = 3;
+                int NUM_PAG_PROX_CENTRO = 2;
+                int NUM_PAG_FIN = 3;
+
+                int numPaginas = (int)Math.Ceiling((double)numTotal / (double)numResultadosPagina);
+
+
+                if (numPaginas > 1)
+                {
+                <div id="navegadorRemover">
+                    <div class="paginadorResultados">
+                        <div class="pag">
+                            @if (PaginaActual == 1)
+                            {
+                                <span class="indiceNavegacion deshabilitado primeraPagina">@Html.GetText("COMMON", "PAGANTERIOR")</span>
+                            }
+                            else
+                            {
+                                int pag = PaginaActual - 1;
+                                <a href="#" name="@pag" class="indiceNavegacion primeraPagina">@Html.GetText("COMMON", "PAGANTERIOR")</a>
+                            }
+
+                            @{
+                            //INICIO
+                            for (int i = 1; i <= NUM_PAG_INICIO; i++)
+                            {
+                                if (i > numPaginas) //Hemos excedio el número máximo de páginas, así que dejamos de pintar.
+                                {
+                                    break;
+                                }
+
+                                if (i == PaginaActual)
+                                {
+                                <span class="actual indiceNavegacion">@i </span>
+                                }
+                                else
+                                {
+                                <a href="#" name="@i" class="indiceNavegacion filtro">@i </a>
+                                }
+                            }
+
+                            if (numPaginas > NUM_PAG_INICIO) //Continuamos si ha más páginas que las que ya hemos pintado
+                            {
+                                int inicioRango = PaginaActual - NUM_PAG_PROX_CENTRO;
+                                int finRango = PaginaActual + NUM_PAG_PROX_CENTRO;
+
+                                if (PaginaActual < (NUM_PAG_INICIO + NUM_PAG_PROX_CENTRO + 1))
+                                {
+                                    inicioRango = NUM_PAG_INICIO + 1;
+                                    if (PaginaActual <= NUM_PAG_INICIO) //En el rango de las primeras
+                                    {
+                                        finRango = PaginaActual + NUM_PAG_INICIO + NUM_PAG_PROX_CENTRO - 1;
+                                    }
+                                    else
+                                    {
+                                        finRango = NUM_PAG_INICIO + (2 * NUM_PAG_PROX_CENTRO) + 1; //Ultimo número de la serie.
+                                    }
+                                }
+                                else if (PaginaActual > (numPaginas - NUM_PAG_FIN - NUM_PAG_PROX_CENTRO))
+                                {
+                                    finRango = numPaginas - NUM_PAG_FIN;
+                                    if (PaginaActual > numPaginas - NUM_PAG_FIN) //En el rango de las últimas
+                                    {
+                                        inicioRango = PaginaActual - NUM_PAG_FIN - NUM_PAG_PROX_CENTRO + 1;//finRango - (pNumPaginas - PaginaActual + 1);
+                                    }
+                                    else
+                                    {
+                                        inicioRango = numPaginas - (NUM_PAG_FIN + (2 * NUM_PAG_PROX_CENTRO)); //Ultimo número de la serie empezando atrás.
+                                    }
+
+                                    //Avanzamos el inicio de la zona final para que no agrege páginas ya pintadas
+                                    while (inicioRango <= NUM_PAG_INICIO)
+                                    {
+                                        inicioRango++;
+                                    }
+                                }
+
+                                if (inicioRango > (NUM_PAG_INICIO + 1))
+                                {
+                                <span class="separador">...</span>
+                                }
+
+
+                                for (int i = inicioRango; i <= finRango; i++)
+                                {
+                                    if (i > numPaginas) //Hemos excedio el número máximo de páginas, así que dejamos de pintar.
+                                    {
+                                        break;
+                                    }
+
+                                    if (i == PaginaActual)
+                                    {
+                                <span class="actual indiceNavegacion">@i </span>                            
+                                    }
+                                    else
+                                    {
+                                <a href="#" name="@i" class="indiceNavegacion filtro">@i </a>
+                                    }
+                                }
+
+                                if (finRango < numPaginas)
+                                {
+                                    //Continuamos si ha más páginas que las que ya hemos pintado
+                                    inicioRango = numPaginas - NUM_PAG_FIN + 1;
+
+                                    if ((inicioRango - 1) > finRango)
+                                    {
+                                <span class="separador">...</span>
+                                    }
+
+                                    //Avanzamos el inicio de la zona final para que no agrege páginas ya pintadas
+                                    while (inicioRango <= finRango)
+                                    {
+                                        inicioRango++;
+                                    }
+
+                                    finRango = numPaginas;
+
+                                    for (int i = inicioRango; i <= finRango; i++)
+                                    {
+                                        if (i > numPaginas) //Hemos excedio el número máximo de páginas, así que dejamos de pintar.
+                                        {
+                                            break;
+                                        }
+
+                                        if (i == PaginaActual)
+                                        {
+                                <span class="actual indiceNavegacion">@i </span>
+                                        }
+                                        else
+                                        {
+                                <a href="#" name="@i" class="indiceNavegacion filtro">@i </a>
+                                        }
+                                    }
+                                }
+                            }
+                            if (PaginaActual == numPaginas)
+                            {
+                                <span class="indiceNavegacion deshabilitado ultimaPagina">@Html.GetText("COMMON", "PAGSIGUIENTE")</span>
+                            }
+                            else
+                            {
+                                int pag = PaginaActual + 1;
+                                <a href="#" name="@pag" class="indiceNavegacion ultimaPagina">@Html.GetText("COMMON", "PAGSIGUIENTE")</a>
+                            }
+                            }
+                        </div>
+                    </div>
+                </div>
+                }
+            }
+        </div>
+    </div>   
+}

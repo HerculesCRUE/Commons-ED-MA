@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+  <OAI-PMH xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.openarchives.org/OAI/2.0/ http://www.openarchives.org/OAI/2.0/OAI-PMH.xsd" xmlns="http://www.openarchives.org/OAI/2.0/">
+    <responseDate>2021-11-24T11:13:05Z</responseDate>
+    <request verb="ListIdentifiers" metadataPrefix="EDMA" from="2021-10-01T00:00:00Z" until="2021-11-24T11:13:04Z" set="Proyecto">http://herc-as-front-desa.atica.um.es/oai-pmh-xml/OAI_PMH</request>
+    <ListIdentifiers>
+      <header>
+        <identifier>Proyecto_1</identifier>
+        <datestamp>2021-11-24T11:13:06Z</datestamp>
+        <setSpec>Proyecto</setSpec>
+      </header>
+      <header>
+        <identifier>Proyecto_2</identifier>
+        <datestamp>2021-11-24T11:13:06Z</datestamp>
+        <setSpec>Proyecto</setSpec>
+      </header>
+    </ListIdentifiers>
+  </OAI-PMH>

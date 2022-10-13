@@ -1,0 +1,12 @@
+{
+  "profiles": {
+    "Hercules.CommonsEDMA.ServicioExterno": {
+      "commandName": "Project",
+      "launchBrowser": true,
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      },
+      "applicationUrl": "https://localhost:58740;http://localhost:58741"
+    }
+  }
+}
