@@ -67,9 +67,12 @@ namespace OAI_PMH.Models.SGI.Project
                 if (string.IsNullOrEmpty(item.Value))
                 {
                     Persona personaAux = Persona.GetPersonaSGI(pHarvesterServices, pConfig, "Persona_" + item.Key, pDicRutas);
-                    string idGnoss = personaAux.Cargar(pHarvesterServices, pConfig, pResourceApi, "person", pDicIdentificadores, pDicRutas, pRabbitConf, true);
-                    pDicIdentificadores["person"].Add(idGnoss);
-                    dicPersonasCargadas[item.Key] = idGnoss;
+                    if (personaAux != null)
+                    {
+                        string idGnoss = personaAux.Cargar(pHarvesterServices, pConfig, pResourceApi, "person", pDicIdentificadores, pDicRutas, pRabbitConf, true);
+                        pDicIdentificadores["person"].Add(idGnoss);
+                        dicPersonasCargadas[item.Key] = idGnoss;
+                    }
                 }
                 else
                 {
@@ -235,8 +238,11 @@ namespace OAI_PMH.Models.SGI.Project
             {
                 ProyectoEntidadConvocante entidadConvocante = this.EntidadesConvocantes[0];
                 OrganizacionBBDD empresa = Empresa.GetOrganizacionBBDD(pHarvesterServices, pConfig, pResourceApi, dicOrganizaciones[entidadConvocante.EntidadRef]);
-                project.Roh_conductedByTitle = empresa.title;
-                project.IdRoh_conductedBy = dicOrganizaciones[entidadConvocante.EntidadRef];
+                if (empresa != null)
+                {
+                    project.Roh_conductedByTitle = empresa.title;
+                    project.IdRoh_conductedBy = dicOrganizaciones[entidadConvocante.EntidadRef];
+                }
             }
 
             // Número de investigadores. TODO: ¿Actuales?

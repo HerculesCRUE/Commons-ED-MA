@@ -5,6 +5,7 @@ using RestSharp;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 
 namespace OAI_PMH.Services
 {
@@ -59,29 +60,60 @@ namespace OAI_PMH.Services
             var request = new RestRequest(Method.GET);
             IRestResponse response = client.Execute(request);
             Grupo grupo = new Grupo();
+            List<Thread> hilos = new();
+            List<GrupoEquipo> equipo = null;
+            List<string> ingestigadoresPrincipales = null;
+            List<string> investigadoresPrincipalesMaxParticipacion = null;
+            List<GrupoPalabraClave> palabrasClave = null;
+            List<LineaClasificacion> lineasClasificacion = null;
+            List<LineaInvestigacion> lineasInvestigacion = new();
             try
             {
                 grupo = JsonConvert.DeserializeObject<Grupo>(response.Content);
-                grupo.equipo = GetGrupoEquipo(identifier, pConfig);
-                grupo.investigadoresPrincipales = GetInvestigadoresPrincipales(identifier, pConfig);
-                grupo.investigadoresPrincipalesMaxParticipacion = GetInvestigadoresPrincipalesMax(identifier, pConfig);
-                grupo.palabrasClave = GetPalabrasClave(identifier, pConfig);
-                grupo.lineasClasificacion = GetLineasClasificacion(identifier, pConfig);
-                if (grupo.lineasClasificacion != null && grupo.lineasClasificacion.Any())
-                {
-                    grupo.lineasInvestigacion = new List<LineaInvestigacion>();
 
-                    foreach (LineaClasificacion linea in grupo.lineasClasificacion)
+                hilos.Add(new(() => equipo = GetGrupoEquipo(identifier, pConfig)));
+
+                hilos.Add(new(() => ingestigadoresPrincipales = GetInvestigadoresPrincipales(identifier, pConfig)));
+                
+                hilos.Add(new(() => investigadoresPrincipalesMaxParticipacion = GetInvestigadoresPrincipalesMax(identifier, pConfig)));
+               
+                hilos.Add(new(() => palabrasClave = GetPalabrasClave(identifier, pConfig)));
+                
+                hilos.Add(new(() => { lineasClasificacion = GetLineasClasificacion(identifier, pConfig); 
+                
+                if (lineasClasificacion != null && lineasClasificacion.Any())
+                {
+                  
+                    foreach (LineaClasificacion linea in lineasClasificacion)
                     {
-                        grupo.lineasInvestigacion.AddRange(GetLineasInvestigacion(identifier, pConfig));
+                       lineasInvestigacion.AddRange(GetLineasInvestigacion(identifier, pConfig));
                     }
                 }
+                }));
             }
             catch (Exception e)
             {
                 throw new Exception(e.Message);
             }
+            // Inicio hilos.
+            foreach (Thread th in hilos)
+            {
+                th.Start();
+            }
 
+            // Espero a que estén listos.
+            foreach (Thread th in hilos)
+            {
+                th.Join();
+            }
+            grupo.equipo = equipo;
+            grupo.investigadoresPrincipales = ingestigadoresPrincipales;
+            grupo.investigadoresPrincipalesMaxParticipacion = investigadoresPrincipalesMaxParticipacion;
+            grupo.palabrasClave = palabrasClave;
+            grupo.lineasClasificacion = lineasClasificacion;
+            grupo.lineasInvestigacion = lineasInvestigacion;
+
+            
             return grupo;
         }
 

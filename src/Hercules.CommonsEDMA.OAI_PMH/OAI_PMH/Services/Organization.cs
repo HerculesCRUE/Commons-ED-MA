@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace OAI_PMH.Services
@@ -40,13 +41,27 @@ namespace OAI_PMH.Services
             string accessToken = Token.CheckToken(pConfig);
             string identifier = id.Split('_')[1];
             Empresa empresa = new();
+            List<Thread> hilos = new();
             RestClient client = new(pConfig.GetUrlBaseOrganizacion() + "empresas/" + identifier);
             client.AddDefaultHeader("Authorization", "Bearer " + accessToken);
             var request = new RestRequest(Method.GET);
             IRestResponse response = client.Execute(request);
             var json = JObject.Parse(response.Content);
             empresa = JsonConvert.DeserializeObject<Empresa>(json.ToString());
-            empresa.DatosContacto = GetDatosContacto(identifier, pConfig);
+            DatosContacto datosContacto = null;
+            hilos.Add(new Thread(() => datosContacto = GetDatosContacto(identifier, pConfig)));
+            // Inicio hilos.
+            foreach (Thread th in hilos)
+            {
+                th.Start();
+            }
+
+            // Espero a que estén listos.
+            foreach (Thread th in hilos)
+            {
+                th.Join();
+            }
+            empresa.DatosContacto = datosContacto;
             return empresa;
         }
 
