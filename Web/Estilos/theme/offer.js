@@ -2585,7 +2585,6 @@ class ModalCategoryCreator {
 
 
 
-
 /**
  * Función que se llama cuando se cargan los investigadores
  */
@@ -3152,7 +3151,6 @@ function CompletadaCargaRecursosPIIOfertas()
 
 
 
-
 /**
  * Comportamiento listado investigadores de la oferta
  */
@@ -3456,7 +3454,6 @@ var comportamientoMisOfertas = {
 		return;
 	}
 };
-
 
 
 /** 
@@ -3818,8 +3815,6 @@ class OfferList {
 function insertAfter(newNode, existingNode) {
     existingNode.parentNode.insertBefore(newNode, existingNode.nextSibling);
 }
-
-
 
 
 /**
