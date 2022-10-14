@@ -74,7 +74,7 @@ namespace OAI_PMH.Models.SGI.PersonalData
 
             // Eliminación.
             List<string> listaTesisBorrarCrisIdentifiers = crisIdentifiersTesisBBDD.Except(crisIdentifiersTesisSGI).ToList();
-            List<string> listaIdsTesisBorrar = ObtenerDataByCrisIdentifiers(listaTesisBorrarCrisIdentifiers, pResourceApi, "thesissupervision");
+            List<string> listaIdsTesisBorrar = ObtenerDataByCrisIdentifiers(listaTesisBorrarCrisIdentifiers, pResourceApi, "thesissupervision", "030.040.000.000");
             BorrarRecursos(listaIdsTesisBorrar, pResourceApi, "thesissupervision");
             #endregion
 
@@ -97,7 +97,7 @@ namespace OAI_PMH.Models.SGI.PersonalData
 
             // Eliminación.
             List<string> listaImpartedAcademicBorrarCrisIdentifiers = crisIdentifiersImpartedAcademicBBDD.Except(crisIdentifiersImpartedAcademicSGI).ToList();
-            List<string> listaIdsImpartedAcademicBorrar = ObtenerDataByCrisIdentifiers(listaImpartedAcademicBorrarCrisIdentifiers, pResourceApi, "impartedacademictraining");
+            List<string> listaIdsImpartedAcademicBorrar = ObtenerDataByCrisIdentifiers(listaImpartedAcademicBorrarCrisIdentifiers, pResourceApi, "impartedacademictraining", "030.010.000.000");
             BorrarRecursos(listaIdsImpartedAcademicBorrar, pResourceApi, "impartedacademictraining");
             #endregion
 
@@ -120,7 +120,7 @@ namespace OAI_PMH.Models.SGI.PersonalData
 
             // Eliminación.
             List<string> listaCursosBorrarCrisIdentifiers = crisIdentifiersCursosBBDD.Except(crisIdentifiersCursosSGI).ToList();
-            List<string> listaIdsCursosBorrar = ObtenerDataByCrisIdentifiers(listaCursosBorrarCrisIdentifiers, pResourceApi, "impartedcoursesseminars");
+            List<string> listaIdsCursosBorrar = ObtenerDataByCrisIdentifiers(listaCursosBorrarCrisIdentifiers, pResourceApi, "impartedcoursesseminars", "030.060.000.000");
             BorrarRecursos(listaIdsCursosBorrar, pResourceApi, "impartedcoursesseminars");
             #endregion
 
@@ -142,7 +142,7 @@ namespace OAI_PMH.Models.SGI.PersonalData
 
             // Eliminación.
             List<string> listaCiclosBorrarCrisIdentifiers = crisIdentifiersCyclesBBDD.Except(crisIdentifiersCyclesSGI).ToList();
-            List<string> listaIdsCiclosBorrar = ObtenerDataByCrisIdentifiers(listaCiclosBorrarCrisIdentifiers, pResourceApi, "academicdegree");
+            List<string> listaIdsCiclosBorrar = ObtenerDataByCrisIdentifiers(listaCiclosBorrarCrisIdentifiers, pResourceApi, "academicdegree", "020.010.010.000");
             BorrarRecursos(listaIdsCiclosBorrar, pResourceApi, "academicdegree");
             #endregion
 
@@ -164,7 +164,7 @@ namespace OAI_PMH.Models.SGI.PersonalData
 
             // Eliminación.
             List<string> listaDoctoradosBorrarCrisIdentifiers = crisIdentifiersDoctoradosBBDD.Except(crisIdentifiersDoctoradosSGI).ToList();
-            List<string> listaIdsDoctoradosBorrar = ObtenerDataByCrisIdentifiers(listaDoctoradosBorrarCrisIdentifiers, pResourceApi, "academicdegree");
+            List<string> listaIdsDoctoradosBorrar = ObtenerDataByCrisIdentifiers(listaDoctoradosBorrarCrisIdentifiers, pResourceApi, "academicdegree", "020.010.020.000");
             BorrarRecursos(listaIdsDoctoradosBorrar, pResourceApi, "academicdegree");
             #endregion
 
@@ -186,7 +186,7 @@ namespace OAI_PMH.Models.SGI.PersonalData
 
             // Eliminación.
             List<string> listaPosgradosBorrarCrisIdentifiers = crisIdentifiersPosgradoBBDD.Except(crisIdentifiersPosgradoSGI).ToList();
-            List<string> listaIdsPosgradosBorrar = ObtenerDataByCrisIdentifiers(listaPosgradosBorrarCrisIdentifiers, pResourceApi, "academicdegree");
+            List<string> listaIdsPosgradosBorrar = ObtenerDataByCrisIdentifiers(listaPosgradosBorrarCrisIdentifiers, pResourceApi, "academicdegree", "020.010.030.000");
             BorrarRecursos(listaIdsPosgradosBorrar, pResourceApi, "academicdegree");
             #endregion
 
@@ -208,7 +208,7 @@ namespace OAI_PMH.Models.SGI.PersonalData
 
             // Eliminación.
             List<string> listaEspecializadaBorrarCrisIdentifiers = crisIdentifiersEspecializadaBBDD.Except(crisIdentifiersEspecializadaSGI).ToList();
-            List<string> listaIdsEspecializadaBorrar = ObtenerDataByCrisIdentifiers(listaEspecializadaBorrarCrisIdentifiers, pResourceApi, "academicdegree");
+            List<string> listaIdsEspecializadaBorrar = ObtenerDataByCrisIdentifiers(listaEspecializadaBorrarCrisIdentifiers, pResourceApi, "academicdegree", "020.020.000.000");
             BorrarRecursos(listaIdsEspecializadaBorrar, pResourceApi, "academicdegree");
             #endregion
         }
@@ -224,7 +224,7 @@ namespace OAI_PMH.Models.SGI.PersonalData
             }
         }
 
-        public static List<string> ObtenerDataByCrisIdentifiers(List<string> pListaCrisIdentifiers, ResourceApi pResourceApi, string pOntology)
+        public static List<string> ObtenerDataByCrisIdentifiers(List<string> pListaCrisIdentifiers, ResourceApi pResourceApi, string pOntology, string pCvnCode)
         {
             List<string> listaTesis = new List<string>();
 
@@ -234,6 +234,7 @@ namespace OAI_PMH.Models.SGI.PersonalData
             select = $@"SELECT * ";
             where = $@"WHERE {{                        
                         ?s <http://w3id.org/roh/crisIdentifier> ?crisIdentifier. 
+                        ?s <http://w3id.org/roh/cvnCode> '{pCvnCode}'.
                         FILTER(?crisIdentifier in ('{string.Join("', '", pListaCrisIdentifiers.Select(x => x))}'))
                     }}";
 
