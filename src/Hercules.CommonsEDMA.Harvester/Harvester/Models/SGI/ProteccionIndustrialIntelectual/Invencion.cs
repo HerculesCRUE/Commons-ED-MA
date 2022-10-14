@@ -57,6 +57,9 @@ namespace OAI_PMH.Models.SGI.ProteccionIndustrialIntelectual
             // CrisIdentifier
             patente.Roh_crisIdentifier = this.id.ToString();
 
+            // Validate.
+            patente.Roh_isValidated = true;
+
             // Título
             patente.Roh_title = this.titulo;
 

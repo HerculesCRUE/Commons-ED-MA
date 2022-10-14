@@ -115,6 +115,9 @@ namespace OAI_PMH.Models.SGI.GruposInvestigacion
             // Crisidentifier.
             groupOntology.Roh_crisIdentifier = this.id.ToString();
 
+            // Validate.
+            groupOntology.Roh_isValidated = true;
+
             // Nombre del grupo.
             groupOntology.Roh_title = this.nombre;
 

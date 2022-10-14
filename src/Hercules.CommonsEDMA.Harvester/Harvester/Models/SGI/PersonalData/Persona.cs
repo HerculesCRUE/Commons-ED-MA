@@ -58,7 +58,7 @@ namespace OAI_PMH.Models.SGI.PersonalData
         {
             #region --- TESIS
             pResourceApi.ChangeOntoly("thesissupervision");
-            List<string> crisIdentifiersTesisBBDD = ObtenerDataCrisIdentifier(pResourceApi, this.Id, "thesissupervision");
+            List<string> crisIdentifiersTesisBBDD = ObtenerDataCrisIdentifier(pResourceApi, this.Id, "thesissupervision", "030.040.000.000");
             List<string> crisIdentifiersTesisSGI = new List<string>();
             List<TesisBBDD> listaTesisSGI = ObtenerTesisSGI(pRabbitConf, this.Tesis, pHarvesterServices, pConfig, pResourceApi, pDicIdentificadores, pDicRutas);
             foreach (TesisBBDD tesisAux in listaTesisSGI)
@@ -81,7 +81,7 @@ namespace OAI_PMH.Models.SGI.PersonalData
             #region --- IMPARTED ACADEMIC TRAINING TODO: REVISAR PROPIEDADES
             pResourceApi.ChangeOntoly("impartedacademictraining");
 
-            List<string> crisIdentifiersImpartedAcademicBBDD = ObtenerDataCrisIdentifier(pResourceApi, this.Id, "impartedacademictraining");
+            List<string> crisIdentifiersImpartedAcademicBBDD = ObtenerDataCrisIdentifier(pResourceApi, this.Id, "impartedacademictraining", "030.010.000.000");
             List<string> crisIdentifiersImpartedAcademicSGI = new List<string>();
             List<ImpartedAcademicTrainingBBDD> listaImpartedAcademicCargarSGI = ObtenerImpartedAcademicSGI(pRabbitConf, this.FormacionAcademicaImpartida, pHarvesterServices, pConfig, pResourceApi, pDicIdentificadores, pDicRutas);
             foreach (ImpartedAcademicTrainingBBDD tesisAux in listaImpartedAcademicCargarSGI)
@@ -103,7 +103,7 @@ namespace OAI_PMH.Models.SGI.PersonalData
 
             #region --- CURSES AND SEMINARS TODO: REVISAR PROPIEDADES
             pResourceApi.ChangeOntoly("impartedcoursesseminars");
-            List<string> crisIdentifiersCursosBBDD = ObtenerDataCrisIdentifier(pResourceApi, this.Id, "impartedcoursesseminars");
+            List<string> crisIdentifiersCursosBBDD = ObtenerDataCrisIdentifier(pResourceApi, this.Id, "impartedcoursesseminars", "030.060.000.000");
             List<ImpartedCoursesSeminarsBBDD> listaCursosSGI = ObtenerCursosSGI(pRabbitConf, this.SeminariosCursos, pHarvesterServices, pConfig, pResourceApi, pDicIdentificadores, pDicRutas);
 
             List<string> crisIdentifiersCursosSGI = new List<string>();
@@ -126,7 +126,7 @@ namespace OAI_PMH.Models.SGI.PersonalData
 
             #region --- CICLOS TODO: REVISAR PROPIEDADES
             pResourceApi.ChangeOntoly("academicdegree");
-            List<string> crisIdentifiersCyclesBBDD = ObtenerDataCrisIdentifier(pResourceApi, this.Id, "academicdegree");
+            List<string> crisIdentifiersCyclesBBDD = ObtenerDataCrisIdentifier(pResourceApi, this.Id, "academicdegree", "020.010.010.000");
             List<string> crisIdentifiersCyclesSGI = new List<string>();
             List<CiclosBBDD> listaCiclosSGI = ObtenerCiclosSGI(pRabbitConf, this.Ciclos, pHarvesterServices, pConfig, pResourceApi, pDicIdentificadores, pDicRutas);
             foreach (CiclosBBDD ciclosAux in listaCiclosSGI)
@@ -148,7 +148,7 @@ namespace OAI_PMH.Models.SGI.PersonalData
 
             #region --- DOCTORADOS TODO: REVISAR PROPIEDADES
             pResourceApi.ChangeOntoly("academicdegree");
-            List<string> crisIdentifiersDoctoradosBBDD = ObtenerDataCrisIdentifier(pResourceApi, this.Id, "academicdegree");
+            List<string> crisIdentifiersDoctoradosBBDD = ObtenerDataCrisIdentifier(pResourceApi, this.Id, "academicdegree", "020.010.020.000");
             List<string> crisIdentifiersDoctoradosSGI = new List<string>();
             List<DoctoradosBBDD> listaDoctoradosSGI = ObtenerDoctoradosSGI(pRabbitConf, this.Doctorados, pHarvesterServices, pConfig, pResourceApi, pDicIdentificadores, pDicRutas);
             foreach (DoctoradosBBDD doctoradosAux in listaDoctoradosSGI)
@@ -170,7 +170,7 @@ namespace OAI_PMH.Models.SGI.PersonalData
 
             #region --- POSGRADO TODO: REVISAR PROPIEDADES
             pResourceApi.ChangeOntoly("academicdegree");
-            List<string> crisIdentifiersPosgradoBBDD = ObtenerDataCrisIdentifier(pResourceApi, this.Id, "academicdegree");
+            List<string> crisIdentifiersPosgradoBBDD = ObtenerDataCrisIdentifier(pResourceApi, this.Id, "academicdegree", "020.010.030.000");
             List<string> crisIdentifiersPosgradoSGI = new List<string>();
             List<PosgradoBBDD> listaPosgradosSGI = ObtenerPosgradosSGI(pRabbitConf, this.Posgrado, pHarvesterServices, pConfig, pResourceApi, pDicIdentificadores, pDicRutas);
             foreach (PosgradoBBDD posgradosAux in listaPosgradosSGI)
@@ -192,7 +192,7 @@ namespace OAI_PMH.Models.SGI.PersonalData
 
             #region --- FORMACIÓN ESPECIALIZADA TODO: REVISAR PROPIEDADES
             pResourceApi.ChangeOntoly("academicdegree");
-            List<string> crisIdentifiersEspecializadaBBDD = ObtenerDataCrisIdentifier(pResourceApi, this.Id, "academicdegree");
+            List<string> crisIdentifiersEspecializadaBBDD = ObtenerDataCrisIdentifier(pResourceApi, this.Id, "academicdegree", "020.020.000.000");
             List<string> crisIdentifiersEspecializadaSGI = new List<string>();
             List<FormacionEspecializadaBBDD> listaEspecializadaSGI = ObtenerFormacionEspecializadaSGI(pRabbitConf, this.FormacionEspecializada, pHarvesterServices, pConfig, pResourceApi, pDicIdentificadores, pDicRutas);
             foreach (FormacionEspecializadaBBDD formacionEspecializadaAux in listaEspecializadaSGI)
@@ -516,6 +516,7 @@ namespace OAI_PMH.Models.SGI.PersonalData
                 AcademicdegreeOntology.AcademicDegree ciclosDevolver = new AcademicdegreeOntology.AcademicDegree();
 
                 ciclosDevolver.IdRoh_owner = pIdGnoss;
+                ciclosDevolver.Roh_cvnCode = "020.010.010.000";
                 ciclosDevolver.Roh_title = ciclo.nombreTitulo;
                 ciclosDevolver.Roh_crisIdentifier = ciclo.crisIdentifier;
                 ciclosDevolver.Roh_conductedByTitle = ciclo.entidadTitulacionTitulo;
@@ -545,6 +546,7 @@ namespace OAI_PMH.Models.SGI.PersonalData
                 AcademicdegreeOntology.AcademicDegree doctoradosDevolver = new AcademicdegreeOntology.AcademicDegree();
 
                 doctoradosDevolver.IdRoh_owner = pIdGnoss;
+                doctoradosDevolver.Roh_cvnCode = "020.010.020.000";
                 doctoradosDevolver.Roh_title = doctorado.nombreTitulo;
                 doctoradosDevolver.Roh_crisIdentifier = doctorado.crisIdentifier;
                 doctoradosDevolver.Roh_conductedByTitle = doctorado.entidadTitulacionTitulo;
@@ -590,6 +592,7 @@ namespace OAI_PMH.Models.SGI.PersonalData
                 AcademicdegreeOntology.AcademicDegree posgradosDevolver = new AcademicdegreeOntology.AcademicDegree();
 
                 posgradosDevolver.IdRoh_owner = pIdGnoss;
+                posgradosDevolver.Roh_cvnCode = "020.010.030.000";
                 posgradosDevolver.Roh_title = posgrado.nombreTitulo;
                 posgradosDevolver.Roh_crisIdentifier = posgrado.crisIdentifier;
                 posgradosDevolver.Roh_conductedByTitle = posgrado.entidadTitulacionTitulo;
@@ -616,6 +619,7 @@ namespace OAI_PMH.Models.SGI.PersonalData
                 AcademicdegreeOntology.AcademicDegree formEspDevolver = new AcademicdegreeOntology.AcademicDegree();
 
                 formEspDevolver.IdRoh_owner = pIdGnoss;
+                formEspDevolver.Roh_cvnCode = "020.020.000.000";
                 formEspDevolver.Roh_title = formacionEspecializada.nombreTitulo;
                 formEspDevolver.Roh_crisIdentifier = formacionEspecializada.crisIdentifier;
                 formEspDevolver.Roh_conductedByTitle = formacionEspecializada.entidadTitulacionTitulo;
@@ -646,6 +650,7 @@ namespace OAI_PMH.Models.SGI.PersonalData
                 ImpartedacademictrainingOntology.ImpartedAcademicTraining academicDevolver = new ImpartedacademictrainingOntology.ImpartedAcademicTraining();
 
                 academicDevolver.IdRoh_owner = pIdGnoss;
+                academicDevolver.Roh_cvnCode = "030.010.000.000";
                 academicDevolver.Roh_crisIdentifier = impartedAcademic.crisIdentifier;
                 academicDevolver.Roh_title = impartedAcademic.title;
                 academicDevolver.IdRoh_degreeType = impartedAcademic.degreeType;
@@ -706,6 +711,7 @@ namespace OAI_PMH.Models.SGI.PersonalData
                 ImpartedcoursesseminarsOntology.ImpartedCoursesSeminars courseDevolver = new ImpartedcoursesseminarsOntology.ImpartedCoursesSeminars();
 
                 courseDevolver.IdRoh_owner = pIdGnoss;
+                courseDevolver.Roh_cvnCode = "030.060.000.000";
                 courseDevolver.Roh_crisIdentifier = curso.crisIdentifiers;
                 courseDevolver.Roh_title = curso.title;
                 courseDevolver.IdRoh_eventType = curso.eventType;
@@ -1398,7 +1404,7 @@ namespace OAI_PMH.Models.SGI.PersonalData
             return listaTesis;
         }
 
-        public List<string> ObtenerDataCrisIdentifier(ResourceApi pResourceApi, string pCrisIdentfierPerson, string pOntology)
+        public List<string> ObtenerDataCrisIdentifier(ResourceApi pResourceApi, string pCrisIdentfierPerson, string pOntology, string pCvnCode)
         {
             List<string> listaDevolver = new List<string>();
 
@@ -1410,7 +1416,8 @@ namespace OAI_PMH.Models.SGI.PersonalData
             where = $@"WHERE {{ 
                                 ?s <http://w3id.org/roh/owner> ?persona.
                                 ?persona <http://w3id.org/roh/crisIdentifier> '{pCrisIdentfierPerson}'.
-                                ?s <http://w3id.org/roh/crisIdentifier> ?crisIdentifier.                        
+                                ?s <http://w3id.org/roh/crisIdentifier> ?crisIdentifier.
+                                ?s <http://w3id.org/roh/cvnCode> '{pCvnCode}'.
                             }}";
 
             resultadoQuery = pResourceApi.VirtuosoQueryMultipleGraph(select, where, new List<string>() { "person", pOntology });

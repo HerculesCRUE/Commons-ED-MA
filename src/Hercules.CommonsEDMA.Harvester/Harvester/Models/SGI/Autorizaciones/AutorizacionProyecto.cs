@@ -56,7 +56,7 @@ namespace Harvester.Models.SGI.Autorizaciones
         {
             ProjectAuthorization autorizacion = new ProjectAuthorization();
             autorizacion.Roh_crisIdentifier = this.entidadRef;
-            autorizacion.Roh_title = this.tituloProyecto;
+            autorizacion.Roh_title = this.tituloProyecto;            
             autorizacion.IdRoh_owner = Persona.ObtenerPersonasBBDD(new HashSet<string>() { this.solicitanteRef }, pResourceApi)[this.solicitanteRef];
             return autorizacion;
         }
