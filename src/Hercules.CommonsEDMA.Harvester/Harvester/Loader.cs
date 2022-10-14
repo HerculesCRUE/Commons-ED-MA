@@ -70,8 +70,6 @@ namespace Harvester
 
                     if (time.HasValue)
                     {
-                        Thread.Sleep((time.Value.UtcDateTime - DateTimeOffset.UtcNow));
-
                         // Carga de datos.
                         CargarDatosSGI(rabbitServiceWriterDenormalizer);
 
@@ -93,6 +91,9 @@ namespace Harvester
 
                         // Carga de datos.
                         CargarDatosSGI(rabbitServiceWriterDenormalizer);
+
+                        // Sleep.
+                        Thread.Sleep((time.Value.UtcDateTime - DateTimeOffset.UtcNow));
                     }
                 }
                 catch (Exception)

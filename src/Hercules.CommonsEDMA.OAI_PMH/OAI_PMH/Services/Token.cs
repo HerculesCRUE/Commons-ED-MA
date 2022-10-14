@@ -27,8 +27,10 @@ namespace OAI_PMH.Services
                 try
                 {
                     token = GetToken(pConfig, pTokenGestor, pTokenPii);
-                }catch(Exception ex)
+                }
+                catch (Exception ex)
                 {
+                    Console.WriteLine(ex.Message);
                     Thread.Sleep(5000);
                 }
             }
