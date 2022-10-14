@@ -138,7 +138,7 @@ namespace OAI_PMH.Models.SGI.GruposInvestigacion
             {
                 if (string.IsNullOrEmpty(item.Value))
                 {
-                    Persona personaAux = Persona.GetPersonaSGI(pHarvesterServices, pConfig, item.Key, pDicRutas);
+                    Persona personaAux = Persona.GetPersonaSGI(pHarvesterServices, pConfig, "Persona_" + item.Key, pDicRutas);
                     if (personaAux != null)
                     {
                         string idGnoss = personaAux.Cargar(pHarvesterServices, pConfig, pResourceApi, "person", pDicIdentificadores, pDicRutas, pRabbitConf, true);

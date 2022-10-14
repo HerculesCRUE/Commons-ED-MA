@@ -45,13 +45,13 @@ $(document).ready(function () {
 
 
 /**
- * Constructor de la clase StepsOffer, se encargará de la funcionalidad principal del creador de ofertas tecnológicas, 
- * controlando los 'steps' y todo el proceso de validación, llamadas ajax al servicio externo, guardado y carga de las
+ * Clase StepsOffer, se encargará del asistente de creación y edición de las ofertas tecnológicas, controlando la funcionalidad del
+ * mismo, controlando los pasos del asistentes y todo el proceso de validación, llamadas ajax al servicio externo, guardado y carga de las
  * ofertas tecnológicas, etc...
  */
 class StepsOffer {
 	/**
-	 * Constructor de la clase StepsOffer
+	 * Constructor de la clase StepsOffer, establece la configuración y los elementos de la página necesarios para el funcionamiento del asistente.
 	 */
 	constructor() {
 		var _self = this
@@ -2096,9 +2096,18 @@ class StepsOffer {
 }
 
 
-
+/**
+ * Clase ModalCategoryCreator, encargada de la creación de diferentes modales de tipo category, que se crearán dinamicamente a petición
+ * para el uso en la sección de ofertas tecnológicas
+ */
 class ModalCategoryCreator {
 
+	/**
+	 * Inicia la generación del html para las diferentes taxonomías
+	 * @param itemRelatedId, Elemento sobre el que se llama, con literales necesarios para la traducción
+	 * @param id, string con el id para el modal
+	 * @param crearOferta, Nodo html para insertar el modal en el html
+	 */
 	constructor (itemRelatedId, id, crearOferta) {
 
 		this.modal = undefined
@@ -3144,7 +3153,9 @@ function CompletadaCargaRecursosPIIOfertas()
 
 
 
-// Comportamiento listado investigadores de la oferta
+/**
+ * Comportamiento listado investigadores de la oferta
+ */
 var comportamientoPopupOferta = {
 	tabActive: null,
 
@@ -3279,7 +3290,9 @@ var comportamientoPopupOferta = {
 };
 
 
-// Comportamiento listado Proyectos de la oferta
+/**
+ * Comportamiento listado Proyectos de la oferta
+ */
 var comportamientoProyectosOferta = {
 	tabActive: null,
 
@@ -3323,7 +3336,9 @@ var comportamientoProyectosOferta = {
 };
 
 
-// Comportamiento listado publicaciones de la oferta
+/**
+ * Comportamiento listado publicaciones de la oferta
+ */
 var comportamientoPublicacionesOferta = {
 	tabActive: null,
 
@@ -3362,7 +3377,9 @@ var comportamientoPublicacionesOferta = {
 };
 
 
-// Comportamiento listado PII de la oferta
+/**
+ * Comportamiento listado PII de la oferta
+ */
 var comportamientoPIIOferta = {
 	tabActive: null,
 
@@ -3401,7 +3418,9 @@ var comportamientoPIIOferta = {
 };
 
 
-// Comportamiento listado Ofertas del gestor otri
+/**
+ * Comportamiento listado Ofertas del gestor otri
+ */
 var comportamientoOfertasOtri = {
 	tabActive: null,
 
@@ -3419,7 +3438,9 @@ var comportamientoOfertasOtri = {
 };
 
 
-// Comportamiento listado Ofertas del gestor otri
+/**
+ * Comportamiento listado Ofertas del gestor otri
+ */
 var comportamientoMisOfertas = {
 	tabActive: null,
 
@@ -3435,7 +3456,6 @@ var comportamientoMisOfertas = {
 		return;
 	}
 };
-
 
 
 
