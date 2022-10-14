@@ -182,86 +182,99 @@ namespace OAI_PMH.Services
             string identifier = id.Split('_')[1];
             List<Thread> hilos = new List<Thread>();
 
-            Persona dataPersona = new();
-            hilos.Add(new Thread(() =>
-                dataPersona = GetDatosPersona(identifier, pConfig)
-            ));
+            Persona dataPersona = GetDatosPersona(identifier, pConfig);
 
             DatosPersonales datosPersonales = null;
-            hilos.Add(new Thread(() =>
-                datosPersonales = GetDatosPersonales(identifier, pConfig)
-            ));
-
             DatosContacto datosContacto = null;
-            hilos.Add(new Thread(() =>
-                datosContacto = GetDatosContacto(identifier, pConfig)
-            ));
-
             Vinculacion vinculacion = null;
-            hilos.Add(new Thread(() =>
-                vinculacion = GetVinculacion(identifier, pConfig)
-            ));
-
             DatosAcademicos datosAcademicos = null;
-            hilos.Add(new Thread(() =>
-                datosAcademicos = GetDatosAcademicos(identifier, pConfig)
-            ));
-
             Fotografia fotografia = null;
-            hilos.Add(new Thread(() =>
-                fotografia = GetFotografia(identifier, pConfig)
-            ));
-
             Sexenio sexenio = null;
-            hilos.Add(new Thread(() =>
-                sexenio = GetSexenios(identifier, pConfig)
-            ));
-
             List<FormacionAcademicaImpartida> listaFormacionAcademica = null;
-            hilos.Add(new Thread(() =>
-                listaFormacionAcademica = DocentActivity.GetAcademicFormationProvided(identifier, pConfig)
-            ));
-
             List<SeminariosCursos> listaSeminarios = null;
-            hilos.Add(new Thread(() =>
-                listaSeminarios = DocentActivity.GetSeminars(identifier, pConfig)
-            ));
-
             List<Tesis> listaTesis = null;
-            hilos.Add(new Thread(() =>
-                listaTesis = DocentActivity.GetTesis(identifier, pConfig)
-            ));
-
             List<Ciclos> listaCiclos = null;
-            hilos.Add(new Thread(() =>
-                listaCiclos = AcademicFormation.GetFormacionAcademicaCiclos(identifier, pConfig)
-            ));
-
             List<Doctorados> listaDoctorados = null;
-            hilos.Add(new Thread(() =>
-                listaDoctorados = AcademicFormation.GetFormacionAcademicaDoctorados(identifier, pConfig)
-            ));
-
             List<FormacionEspecializada> listaEspecializada = null;
-            hilos.Add(new Thread(() =>
-                listaEspecializada = AcademicFormation.GetFormacionAcademicaEspecializada(identifier, pConfig)
-            ));
-
             List<Posgrado> listaPosgrado = null;
-            hilos.Add(new Thread(() =>
-                listaPosgrado = AcademicFormation.GetFormacionAcademicaPosgrado(identifier, pConfig)
-            ));
 
-            // Inicio hilos.
-            foreach (Thread th in hilos)
+            if (dataPersona.Activo.HasValue && dataPersona.Activo.Value)
             {
-                th.Start();
-            }
+                hilos.Add(new Thread(() =>
+                    datosPersonales = GetDatosPersonales(identifier, pConfig)
+                ));
 
-            // Espero a que estén listos.
-            foreach (Thread th in hilos)
-            {
-                th.Join();
+
+                hilos.Add(new Thread(() =>
+                    datosContacto = GetDatosContacto(identifier, pConfig)
+                ));
+
+
+                hilos.Add(new Thread(() =>
+                    vinculacion = GetVinculacion(identifier, pConfig)
+                ));
+
+
+                hilos.Add(new Thread(() =>
+                    datosAcademicos = GetDatosAcademicos(identifier, pConfig)
+                ));
+
+
+                hilos.Add(new Thread(() =>
+                    fotografia = GetFotografia(identifier, pConfig)
+                ));
+
+
+                hilos.Add(new Thread(() =>
+                    sexenio = GetSexenios(identifier, pConfig)
+                ));
+
+
+                hilos.Add(new Thread(() =>
+                    listaFormacionAcademica = DocentActivity.GetAcademicFormationProvided(identifier, pConfig)
+                ));
+
+
+                hilos.Add(new Thread(() =>
+                    listaSeminarios = DocentActivity.GetSeminars(identifier, pConfig)
+                ));
+
+
+                hilos.Add(new Thread(() =>
+                    listaTesis = DocentActivity.GetTesis(identifier, pConfig)
+                ));
+
+
+                hilos.Add(new Thread(() =>
+                    listaCiclos = AcademicFormation.GetFormacionAcademicaCiclos(identifier, pConfig)
+                ));
+
+
+                hilos.Add(new Thread(() =>
+                    listaDoctorados = AcademicFormation.GetFormacionAcademicaDoctorados(identifier, pConfig)
+                ));
+
+
+                hilos.Add(new Thread(() =>
+                    listaEspecializada = AcademicFormation.GetFormacionAcademicaEspecializada(identifier, pConfig)
+                ));
+
+
+                hilos.Add(new Thread(() =>
+                    listaPosgrado = AcademicFormation.GetFormacionAcademicaPosgrado(identifier, pConfig)
+                ));
+
+                // Inicio hilos.
+                foreach (Thread th in hilos)
+                {
+                    th.Start();
+                }
+
+                // Espero a que estén listos.
+                foreach (Thread th in hilos)
+                {
+                    th.Join();
+                }
             }
 
             Persona persona = dataPersona;

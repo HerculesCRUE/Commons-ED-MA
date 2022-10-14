@@ -66,13 +66,13 @@ namespace OAI_PMH.Models.SGI.PersonalData
                 crisIdentifiersTesisSGI.Add(tesisAux.crisIdentifier);
             }
 
-            // Cargar --> Tesis que estén en listaTesisSGI y no en listaTesisBBDD.    
+            // Carga.
             List<string> listaTesisCargarCrisIdentifiers = crisIdentifiersTesisSGI.Except(crisIdentifiersTesisBBDD).ToList();
             List<TesisBBDD> listaTesisCargar = listaTesisSGI.Where(x => listaTesisCargarCrisIdentifiers.Contains(x.crisIdentifier)).ToList();
             List<ComplexOntologyResource> listaTesisOntology = GetThesisSupervision(listaTesisCargar, pResourceApi, pIdGnoss);
             CargarDatos(listaTesisOntology, pResourceApi);
 
-            // Elimitar --> Tesis que estén en listaTesisBBDD y no en listaTesisSGI.
+            // Eliminación.
             List<string> listaTesisBorrarCrisIdentifiers = crisIdentifiersTesisBBDD.Except(crisIdentifiersTesisSGI).ToList();
             List<string> listaIdsTesisBorrar = ObtenerDataByCrisIdentifiers(listaTesisBorrarCrisIdentifiers, pResourceApi, "thesissupervision");
             BorrarRecursos(listaIdsTesisBorrar, pResourceApi, "thesissupervision");
@@ -89,13 +89,13 @@ namespace OAI_PMH.Models.SGI.PersonalData
                 crisIdentifiersImpartedAcademicSGI.Add(tesisAux.crisIdentifier);
             }
 
-            // Cargar --> Academic Degree que estén en listaImpartedacademictrainingSGI y no en listaImpartedacademictrainingBBDD.   
+            // Carga.
             List<string> listaImpartedAcademicCargarCrisIdentifiers = crisIdentifiersImpartedAcademicSGI.Except(crisIdentifiersImpartedAcademicBBDD).ToList();
             List<ImpartedAcademicTrainingBBDD> listaImpartedAcademicCargar = listaImpartedAcademicCargarSGI.Where(x => listaImpartedAcademicCargarCrisIdentifiers.Contains(x.crisIdentifier)).ToList();
             List<ComplexOntologyResource> listaImpartedAcademicOntology = GetImpartedAcademic(listaImpartedAcademicCargar, pResourceApi, pIdGnoss);
             CargarDatos(listaImpartedAcademicOntology, pResourceApi);
 
-            // Elimitar --> Academic Degree que estén en listaImpartedacademictrainingBBDD y no en listaImpartedacademictrainingSGI.
+            // Eliminación.
             List<string> listaImpartedAcademicBorrarCrisIdentifiers = crisIdentifiersImpartedAcademicBBDD.Except(crisIdentifiersImpartedAcademicSGI).ToList();
             List<string> listaIdsImpartedAcademicBorrar = ObtenerDataByCrisIdentifiers(listaImpartedAcademicBorrarCrisIdentifiers, pResourceApi, "impartedacademictraining");
             BorrarRecursos(listaIdsImpartedAcademicBorrar, pResourceApi, "impartedacademictraining");
@@ -112,13 +112,13 @@ namespace OAI_PMH.Models.SGI.PersonalData
                 crisIdentifiersCursosSGI.Add(cursoAux.crisIdentifiers);
             }
 
-            // Cargar --> Cursos que estén en listaCursosSGI y no en listaCursosBBDD.           
+            // Carga.
             List<string> listaCursosCargarCrisIdentifiers = crisIdentifiersCursosSGI.Except(crisIdentifiersCursosBBDD).ToList();
             List<ImpartedCoursesSeminarsBBDD> listaCursosCargar = listaCursosSGI.Where(x => listaCursosCargarCrisIdentifiers.Contains(x.crisIdentifiers)).ToList();
             List<ComplexOntologyResource> listaCursosOntology = GetCursosSupervision(listaCursosCargar, pResourceApi, pIdGnoss);
             CargarDatos(listaTesisOntology, pResourceApi);
 
-            // Elimitar --> Cursos que estén en listaCursosBBDD y no en listaCursosSGI.
+            // Eliminación.
             List<string> listaCursosBorrarCrisIdentifiers = crisIdentifiersCursosBBDD.Except(crisIdentifiersCursosSGI).ToList();
             List<string> listaIdsCursosBorrar = ObtenerDataByCrisIdentifiers(listaCursosBorrarCrisIdentifiers, pResourceApi, "impartedcoursesseminars");
             BorrarRecursos(listaIdsCursosBorrar, pResourceApi, "impartedcoursesseminars");
@@ -134,13 +134,13 @@ namespace OAI_PMH.Models.SGI.PersonalData
                 crisIdentifiersCyclesSGI.Add(ciclosAux.crisIdentifier);
             }
 
-            // Cargar --> Ciclos que estén en listaCiclosSGI y no en listaCiclosBBDD.    
+            // Carga.
             List<string> listaCiclosCargarCrisIdentifiers = crisIdentifiersCyclesSGI.Except(crisIdentifiersCyclesBBDD).ToList();
             List<CiclosBBDD> listaCiclosCargar = listaCiclosSGI.Where(x => listaCiclosCargarCrisIdentifiers.Contains(x.crisIdentifier)).ToList();
             List<ComplexOntologyResource> listaCiclosOntology = GetCycles(listaCiclosCargar, pResourceApi, pIdGnoss);
             CargarDatos(listaCiclosOntology, pResourceApi);
 
-            // Elimitar --> Tesis que estén en listaTesisBBDD y no en listaTesisSGI.
+            // Eliminación.
             List<string> listaCiclosBorrarCrisIdentifiers = crisIdentifiersCyclesBBDD.Except(crisIdentifiersCyclesSGI).ToList();
             List<string> listaIdsCiclosBorrar = ObtenerDataByCrisIdentifiers(listaCiclosBorrarCrisIdentifiers, pResourceApi, "academicdegree");
             BorrarRecursos(listaIdsCiclosBorrar, pResourceApi, "academicdegree");
@@ -156,13 +156,13 @@ namespace OAI_PMH.Models.SGI.PersonalData
                 crisIdentifiersCyclesSGI.Add(doctoradosAux.crisIdentifier);
             }
 
-            // Cargar --> Ciclos que estén en listaCiclosSGI y no en listaCiclosBBDD.    
+            // Carga.
             List<string> listaDoctoradosCargarCrisIdentifiers = crisIdentifiersDoctoradosSGI.Except(crisIdentifiersDoctoradosBBDD).ToList();
             List<DoctoradosBBDD> listaDoctoradosCargar = listaDoctoradosSGI.Where(x => listaDoctoradosCargarCrisIdentifiers.Contains(x.crisIdentifier)).ToList();
             List<ComplexOntologyResource> listaDoctoradosOntology = GetDoctorates(listaDoctoradosCargar, pResourceApi, pIdGnoss);
             CargarDatos(listaDoctoradosOntology, pResourceApi);
 
-            // Elimitar --> Tesis que estén en listaTesisBBDD y no en listaTesisSGI.
+            // Eliminación.
             List<string> listaDoctoradosBorrarCrisIdentifiers = crisIdentifiersDoctoradosBBDD.Except(crisIdentifiersDoctoradosSGI).ToList();
             List<string> listaIdsDoctoradosBorrar = ObtenerDataByCrisIdentifiers(listaDoctoradosBorrarCrisIdentifiers, pResourceApi, "academicdegree");
             BorrarRecursos(listaIdsDoctoradosBorrar, pResourceApi, "academicdegree");
@@ -178,13 +178,13 @@ namespace OAI_PMH.Models.SGI.PersonalData
                 crisIdentifiersPosgradoSGI.Add(posgradosAux.crisIdentifier);
             }
 
-            // Cargar --> Ciclos que estén en listaCiclosSGI y no en listaCiclosBBDD.    
+            // Carga.
             List<string> listaPosgradosCargarCrisIdentifiers = crisIdentifiersPosgradoSGI.Except(crisIdentifiersPosgradoBBDD).ToList();
             List<PosgradoBBDD> listaPosgradosCargar = listaPosgradosSGI.Where(x => listaPosgradosCargarCrisIdentifiers.Contains(x.crisIdentifier)).ToList();
             List<ComplexOntologyResource> listaPosgradosOntology = GetPosgrados(listaPosgradosCargar, pResourceApi, pIdGnoss);
             CargarDatos(listaPosgradosOntology, pResourceApi);
 
-            // Elimitar --> Tesis que estén en listaTesisBBDD y no en listaTesisSGI.
+            // Eliminación.
             List<string> listaPosgradosBorrarCrisIdentifiers = crisIdentifiersPosgradoBBDD.Except(crisIdentifiersPosgradoSGI).ToList();
             List<string> listaIdsPosgradosBorrar = ObtenerDataByCrisIdentifiers(listaPosgradosBorrarCrisIdentifiers, pResourceApi, "academicdegree");
             BorrarRecursos(listaIdsPosgradosBorrar, pResourceApi, "academicdegree");
@@ -200,13 +200,13 @@ namespace OAI_PMH.Models.SGI.PersonalData
                 crisIdentifiersEspecializadaSGI.Add(formacionEspecializadaAux.crisIdentifier);
             }
 
-            // Cargar --> Ciclos que estén en listaCiclosSGI y no en listaCiclosBBDD.    
+            // Carga.
             List<string> listaEspecializadaCargarCrisIdentifiers = crisIdentifiersEspecializadaSGI.Except(crisIdentifiersEspecializadaBBDD).ToList();
             List<FormacionEspecializadaBBDD> listaEspecializadaCargar = listaEspecializadaSGI.Where(x => listaEspecializadaCargarCrisIdentifiers.Contains(x.crisIdentifier)).ToList();
             List<ComplexOntologyResource> listaEspecializadaOntology = GetFormacionEspecializada(listaEspecializadaCargar, pResourceApi, pIdGnoss);
             CargarDatos(listaPosgradosOntology, pResourceApi);
 
-            // Elimitar --> Tesis que estén en listaTesisBBDD y no en listaTesisSGI.
+            // Eliminación.
             List<string> listaEspecializadaBorrarCrisIdentifiers = crisIdentifiersEspecializadaBBDD.Except(crisIdentifiersEspecializadaSGI).ToList();
             List<string> listaIdsEspecializadaBorrar = ObtenerDataByCrisIdentifiers(listaEspecializadaBorrarCrisIdentifiers, pResourceApi, "academicdegree");
             BorrarRecursos(listaIdsEspecializadaBorrar, pResourceApi, "academicdegree");
@@ -470,6 +470,7 @@ namespace OAI_PMH.Models.SGI.PersonalData
                 ThesissupervisionOntology.ThesisSupervision tesisDevolver = new ThesissupervisionOntology.ThesisSupervision();
 
                 tesisDevolver.IdRoh_owner = pIdGnoss;
+                tesisDevolver.Roh_cvnCode = "030.040.000.000";
                 tesisDevolver.Roh_crisIdentifier = tesis.crisIdentifier;
                 tesisDevolver.IdRoh_projectCharacterType = tesis.projectCharacterType;
                 tesisDevolver.Roh_projectCharacterTypeOther = tesis.projectCharacterTypeOther;
