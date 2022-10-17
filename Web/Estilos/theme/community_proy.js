@@ -2100,31 +2100,51 @@ function PedirSexenio() {
     menusLateralesManagement.init();
 }
 
-function GetAcreditaciones(pIdUsuario) {
+function GetAcreditaciones(comision, tipo, categoria, pIdUsuario) {
     var url = url_servicio_editorcv + "Acreditaciones/ConseguirAcreditaciones";
-    var arg = {};
-    arg.comision = "";
-    arg.tipo_acreditacion = "";
-    arg.categoria_acreditacion = "";
-    arg.idInvestigador = pIdUsuario;
+    var formData = new FormData();
+    formData.append('comision', comision);
+    formData.append('tipo_acreditacion', tipo);
+    formData.append('categoria_acreditacion', categoria);
+    formData.append('idInvestigador', pIdUsuario);
     mostrarNotificacion("info", "Obteniendo datos de las acreditaciones en proceso. Tardará unos minutos.");
-    $.post(url, arg, function (data) {
-    }).fail(function (jqXHR, textStatus, errorThrown) {
-        console.log("Error al obtener las acreditaciones");
-        var fecha = jqXHR.responseText.split("-");
-        if (fecha.length == 3) {
-            var horas_restantes = (24 - (new Date().getHours()));
-        } else {
-            console.log(jqXHR);
-            mostrarNotificacion("error", "Error al obtener las acreditaciones");
+    $.ajax({
+        url: url,
+        type: 'POST',
+        data: formData,
+        cache: false,
+        processData: false,
+        enctype: 'multipart/form-data',
+        contentType: false,
+        success: function (response) {
+            console.log("Acreditaciones obtenidas");
+        },
+        fail: function (jqXHR, textStatus, errorThrown) {
+            console.log("Error al obtener las acreditaciones");
+            var fecha = jqXHR.responseText.split("-");
+            if (fecha.length == 3) {
+                var horas_restantes = (24 - (new Date().getHours()));
+            } else {
+                console.log(jqXHR);
+                mostrarNotificacion("error", "Error al obtener las acreditaciones");
+            }
+        },
+        error: function (response) {
+            mostrarNotificacion("error", "Error al obtener los acreditaciones");
         }
-    }).success(function (data) {
-        console.log("Acreditaciones obtenidas");        
     });
+    $('#modal-acreditaciones').modal('hide');
+    $("#modal-acreditaciones #idSelectorComision").val("2").change();
+    $("#modal-acreditaciones #idSelectorComision").val("1").change();
+    $("#modal-acreditaciones #idSelectorComision").val("1").change();
 }
 
 function PedirAcreditacion() {
-    GetAcreditaciones($('.inpt_usuarioID').attr('value'));
+    var comision = $('#idSelectorComision option:selected').val();
+    var tipo = $('#idSelectorTipoAcreditacion option:selected').val();
+    var categoria = $('#idSelectorComision option:selected').val() == "21" ? $('#idSelectorCategoria option:selected').val() : "";
+    var investigador = $('.inpt_usuarioID').attr('value');
+    GetAcreditaciones(comision, tipo, categoria, investigador);
     menusLateralesManagement.init();
 }
 var comportamientoMenuLateral = {
@@ -2133,6 +2153,9 @@ var comportamientoMenuLateral = {
         $("#btnPedirSexenio").click(function () {
             PedirSexenio();
         });
+        $("#btnPedirAcreditaciones").click(function () {
+            PedirAcreditacion();
+        });
         $("#idSelectorComite").on("change", function () {
             $("#perfilTecnologicoForm").hide();
             $("#subcomiteForm").hide();
@@ -2140,6 +2163,12 @@ var comportamientoMenuLateral = {
                 $("#perfilTecnologicoForm").show();
             } else if ($('#idSelectorComite option:selected').val() == "9") {
                 $("#subcomiteForm").show();
+            }
+        });
+        $("#idSelectorComision").on("change", function () {
+            $("#categoriaForm").hide();
+            if ($('#idSelectorComision option:selected').val() == "21") {
+                $("#categoriaForm").show();
             }
         });
     }
