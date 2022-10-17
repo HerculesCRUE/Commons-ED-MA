@@ -2084,6 +2084,10 @@ function GetSexenios(comite, periodo, perfil, subcomite, pIdUsuario) {
         }
     });
     $('#modal-sexenios').modal('hide');
+    $("#modal-sexenios #idSelectorComite").val("2").change();
+    $("#modal-sexenios #labelPeriodo").val("");
+    $("#modal-sexenios #yesRadio").prop("checked", false);
+    $("#modal-sexenios #idSelectorSubcomite").val("1").change();
 }
 
 function PedirSexenio() {
