@@ -25,7 +25,7 @@
                            href="#externas-panel" role="tab" aria-controls="externas-panel"
                            aria-selected="false">
                             Novedades de fuentes externas <span class="badge">
-                                @listaNotificaciones.Count(x => string.IsNullOrEmpty(x.desencadenante) && (!string.IsNullOrEmpty(x.titulo) || !string.IsNullOrEmpty(x.mensaje) || x.tipoNotificacion.Equals("loadExternalSource")))
+                                @listaNotificaciones.Count(x => string.IsNullOrEmpty(x.desencadenante) && (!string.IsNullOrEmpty(x.titulo) || !string.IsNullOrEmpty(x.mensaje) || x.tipoNotificacion.Equals("loadExternalSource") || x.tipoNotificacion.Equals("recuperarSexenios")))
                             </span>
                         </a>
                     </li>
@@ -48,7 +48,7 @@
                                 @foreach (Notification notification in listaNotificaciones.Where(x => string.IsNullOrEmpty(x.desencadenante)))
                                 {
 									//Si no tiene titulo, no tiene mensaje y no es de tipo "loadExternalSource" no la muestro
-									if(string.IsNullOrEmpty(notification.titulo) && string.IsNullOrEmpty(notification.mensaje) && !notification.tipoNotificacion.Equals("loadExternalSource")){
+									if(string.IsNullOrEmpty(notification.titulo) && string.IsNullOrEmpty(notification.mensaje) && !notification.tipoNotificacion.Equals("loadExternalSource") && !notification.tipoNotificacion.Equals("recuperarSexenios")){
 										continue;
 									}
                                     notification.desencadenante = Html.Translate("NOTIFICACION_SE");
@@ -98,7 +98,21 @@
 										@notification.fecha @Html.Raw(" - ")
                                         @Html.Translate("NOTIFICACION_FIN_FUENTES_EXTERNAS") @notification.titulo
                                         @Html.Raw(FinArticle)
-									}
+									} 
+                                    else if (notification.tipoNotificacion == "recuperarSexenios")
+                                    {
+                                        @Html.Raw(InicioArticle)
+										@notification.fecha @Html.Raw(" - ")
+                                        if (notification.mensaje.StartsWith("http")) 
+                                        {
+                                            @Html.Translate("NOTIFICACION_SEXENIOS_OBTENIDOS") @notification.mensaje 
+                                        }
+                                        else
+                                        {
+                                            @Html.Translate(notification.mensaje)
+                                        }
+                                        @Html.Raw(FinArticle)
+                                    }
                                     else
                                     {
                                         if (notification.entidad != null && notification.entidad.Split('_').Length > 2 && notification.cv.Split('_').Length > 2)
