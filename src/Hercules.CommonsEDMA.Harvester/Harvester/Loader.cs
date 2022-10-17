@@ -235,7 +235,7 @@ namespace Harvester
                 i++;
                 pDicRutas[pSet][directorioPendientes] += fichero.Substring(fichero.LastIndexOf("\\"));
                 List<string> idsACargar = File.ReadAllLines(fichero).Distinct().ToList();
-                Console.WriteLine($"Procesando fichero de {pSet} {i}/{idsACargar.Count}");
+                
                 if (File.Exists(pDicRutas[pSet][directorioPendientes]))
                 {
                     List<string> listaIdsCargados = File.ReadAllLines(pDicRutas[pSet][directorioPendientes]).Distinct().ToList();
@@ -249,6 +249,7 @@ namespace Harvester
 
                 idsACargar.Sort();
 
+                Console.WriteLine($"Procesando fichero de {pSet} {i}/{idsACargar.Count}");
                 foreach (string id in idsACargar)
                 {
                     switch (pSet)

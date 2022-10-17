@@ -112,10 +112,10 @@ namespace OAI_PMH.Services
             RestClient client = new(pConfig.GetUrlBaseProyecto() + "proyectos/" + id);
             client.AddDefaultHeader("Authorization", "Bearer " + accessToken);
             var request = new RestRequest(Method.GET);
-            IRestResponse response = client.Execute(request);
-            var json = JObject.Parse(response.Content);
+            IRestResponse response = client.Execute(request);            
             try
             {
+                var json = JObject.Parse(response.Content);
                 proyecto = JsonConvert.DeserializeObject<Proyecto>(json.ToString());
             }
             catch

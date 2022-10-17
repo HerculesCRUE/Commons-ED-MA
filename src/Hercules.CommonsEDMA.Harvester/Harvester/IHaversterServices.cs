@@ -9,6 +9,7 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 using System.Xml.Serialization;
@@ -110,7 +111,7 @@ namespace Harvester
                         header.Attribute(nameSpace + "status");
                         identifierRecord.Identifier = header.Element(nameSpace + "identifier").Value;
                         identifierRecord.Date = DateTime.Parse(header.Element(nameSpace + "datestamp").Value);
-                        identifierRecord.Set = header.Element(nameSpace + "setSpec").Value;                        
+                        identifierRecord.Set = header.Element(nameSpace + "setSpec").Value;
                     }
 
                     var metadataList = record.Descendants(nameSpace + "metadata");
@@ -130,20 +131,30 @@ namespace Harvester
         }
         public string GetRecord(string id, ReadConfig pConfig, string file = null)
         {
-            try
+            int contador = 1;
+            while (true)
             {
-                string uri = $@"{pConfig.GetUrlOaiPmh()}?verb=GetRecord&identifier=" + id + "&metadataPrefix=EDMA";
-                WebRequest wrGETURL = WebRequest.Create(uri);
-                Stream stream = wrGETURL.GetResponse().GetResponseStream();
-                XDocument XMLresponse = XDocument.Load(stream);
-                XNamespace nameSpace = XMLresponse.Root.GetDefaultNamespace();
-                string record = XMLresponse.Root.Element(nameSpace + "GetRecord").Descendants(nameSpace + "metadata").First().FirstNode.ToString();
-                record = record.Replace("xmlns=\"" + nameSpace + "\"", "");
-                return record;
-            }
-            catch (Exception)
-            {
-                return null;
+                try
+                {
+                    string uri = $@"{pConfig.GetUrlOaiPmh()}?verb=GetRecord&identifier=" + id + "&metadataPrefix=EDMA";
+                    WebRequest wrGETURL = WebRequest.Create(uri);
+                    Stream stream = wrGETURL.GetResponse().GetResponseStream();
+                    XDocument XMLresponse = XDocument.Load(stream);
+                    XNamespace nameSpace = XMLresponse.Root.GetDefaultNamespace();
+                    string record = XMLresponse.Root.Element(nameSpace + "GetRecord").Descendants(nameSpace + "metadata").First().FirstNode.ToString();
+                    record = record.Replace("xmlns=\"" + nameSpace + "\"", "");
+                    return record;
+                }
+                catch (Exception)
+                {
+                    contador++;
+                    Thread.Sleep(5000);
+                }
+
+                if (contador > 3)
+                {
+                    return null;
+                }
             }
         }
     }

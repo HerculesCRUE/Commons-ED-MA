@@ -116,7 +116,7 @@ namespace OAI_PMH.Models.SGI.PersonalData
             List<string> listaCursosCargarCrisIdentifiers = crisIdentifiersCursosSGI.Except(crisIdentifiersCursosBBDD).ToList();
             List<ImpartedCoursesSeminarsBBDD> listaCursosCargar = listaCursosSGI.Where(x => listaCursosCargarCrisIdentifiers.Contains(x.crisIdentifiers)).ToList();
             List<ComplexOntologyResource> listaCursosOntology = GetCursosSupervision(listaCursosCargar, pResourceApi, pIdGnoss);
-            CargarDatos(listaTesisOntology, pResourceApi);
+            CargarDatos(listaCursosOntology, pResourceApi);
 
             // Eliminación.
             List<string> listaCursosBorrarCrisIdentifiers = crisIdentifiersCursosBBDD.Except(crisIdentifiersCursosSGI).ToList();
@@ -204,7 +204,7 @@ namespace OAI_PMH.Models.SGI.PersonalData
             List<string> listaEspecializadaCargarCrisIdentifiers = crisIdentifiersEspecializadaSGI.Except(crisIdentifiersEspecializadaBBDD).ToList();
             List<FormacionEspecializadaBBDD> listaEspecializadaCargar = listaEspecializadaSGI.Where(x => listaEspecializadaCargarCrisIdentifiers.Contains(x.crisIdentifier)).ToList();
             List<ComplexOntologyResource> listaEspecializadaOntology = GetFormacionEspecializada(listaEspecializadaCargar, pResourceApi, pIdGnoss);
-            CargarDatos(listaPosgradosOntology, pResourceApi);
+            CargarDatos(listaEspecializadaOntology, pResourceApi);
 
             // Eliminación.
             List<string> listaEspecializadaBorrarCrisIdentifiers = crisIdentifiersEspecializadaBBDD.Except(crisIdentifiersEspecializadaSGI).ToList();
@@ -1542,8 +1542,11 @@ namespace OAI_PMH.Models.SGI.PersonalData
                 impartedAcademic.numberECTSHours = item.NumHorasCreditos.Value;
                 crisIdentifier += $@"{impartedAcademic.numberECTSHours}___";
 
-                impartedAcademic.frequency = item.FrecuenciaActividad.Value;
-                crisIdentifier += $@"{impartedAcademic.frequency}___";
+                if (item.FrecuenciaActividad.HasValue)
+                {
+                    impartedAcademic.frequency = item.FrecuenciaActividad.Value;
+                    crisIdentifier += $@"{impartedAcademic.frequency}___";
+                }
 
                 if (item.TipoPrograma != null && !string.IsNullOrEmpty(item.TipoPrograma.Nombre))
                 {
@@ -2070,8 +2073,11 @@ namespace OAI_PMH.Models.SGI.PersonalData
 
                 // TODO: Ciudad, Pais, CCAA
 
-                formEspecializada.duracionHoras = item.DuracionTitulacion.Value;
-                crisIdentifier += $@"{formEspecializada.duracionHoras}___";
+                if (item.DuracionTitulacion.HasValue)
+                {
+                    formEspecializada.duracionHoras = item.DuracionTitulacion.Value;
+                    crisIdentifier += $@"{formEspecializada.duracionHoras}___";
+                }                
 
                 if (item.TipoFormacion != null && !string.IsNullOrEmpty(item.TipoFormacion.Nombre))
                 {
