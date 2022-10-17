@@ -335,7 +335,7 @@
                                     <a href="#" data-toggle="modal" data-target="#modal-sexenios">@Html.Translate("RECUPERAR_SEXENIOS")</a>
                                 </li>
                                 <li class="liAcreditacion">
-                                    <a href="#" onclick="PedirAcreditacion()">@Html.Translate("RECUPERAR_ACREDITACIONES")</a>
+                                    <a href="#" data-toggle="modal" data-target="#modal-acreditaciones">@Html.Translate("RECUPERAR_ACREDITACIONES")</a>
                                 </li>
                             </ul>
                         </div>
@@ -593,6 +593,62 @@
                         </div>
                         <div class="form-actions">
                             <a class="btn btn-primary" id="btnPedirSexenio">@Html.Translate("Recuperar")</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="modal-acreditaciones" class="modal modal-top fade modal-acreditaciones" tabindex="-1" role="dialog">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <p class="modal-title">
+                            <span class="material-icons">send</span>
+                            @Html.Translate("RECUPERAR_ACREDITACIONES")
+                        </p>
+                        <span class="material-icons cerrar" data-dismiss="modal" aria-label="Close">close</span>
+                    </div>
+                    <div class="modal-body">
+                        <div class="custom-form-row">
+                            <div class="form-group full-group">
+                                <label class="control-label d-block">@Html.Translate("COMISION")</label>
+                                <select id="idSelectorComision" class="js-select2 select2-hidden-accessible" data-minimum-results-for-search="Infinity" dependency="" data-select-search="true" tabindex="-1" aria-hidden="true">
+                                    <option value="2">2: @Html.Translate("FISICA")</option>
+                                    <option value="3">3: @Html.Translate("QUIMICA")</option>
+                                    <option value="4">4: @Html.Translate("CIENCIAS_NATURALEZA")</option>
+                                    <option value="5">5: @Html.Translate("BIOLOGIA_CELULAR")</option>
+                                    <option value="7">7: @Html.Translate("MEDICINA_CLINICA")</option>
+                                    <option value="8">8: @Html.Translate("OTRAS_ESPECIALIDADES")</option>
+                                    <option value="11">11: @Html.Translate("INGENIERIA_ELECTRICA")</option>
+                                    <option value="12">12: @Html.Translate("INGENIERIA_INFORMATICA")</option>
+                                    <option value="15">15: @Html.Translate("CIENCIAS_ECONOMICAS_EMPRESARIALES")</option>
+                                    <option value="16">16: @Html.Translate("CIENCIAS_ECONOMICAS_EMPRESARIALES")</option>
+                                    <option value="18">18: @Html.Translate("CIENCIAS_COMPORTAMIENTO")</option>
+                                    <option value="19">19: @Html.Translate("CIENCIAS_SOCIALES")</option>
+                                    <option value="21">21: @Html.Translate("FILOLOGIA_LINGUISTICA")</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="custom-form-row">
+                            <div class="form-group full-group">
+                                <label class="control-label d-block">@Html.Translate("TIPO_ACREDITACION")</label>
+                                <select id="idSelectorTipoAcreditacion" class="js-select2 select2-hidden-accessible" data-minimum-results-for-search="Infinity" dependency="" data-select-search="true" tabindex="-1" aria-hidden="true">
+                                    <option value="1">1: @Html.Translate("TITULARIDAD")</option>
+                                    <option value="2">2: @Html.Translate("CATEDRA")</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="custom-form-row" style="display: none;" id="categoriaForm">
+                            <div class="form-group full-group">
+                                <label class="control-label d-block">@Html.Translate("CATEGORIA_ACREDITACION")</label>
+                                <select id="idSelectorCategoria" class="js-select2 select2-hidden-accessible" data-minimum-results-for-search="Infinity" dependency="" data-select-search="true" tabindex="-1" aria-hidden="true">
+                                    <option value="1">1: @Html.Translate("DOCENCIA")</option>
+                                    <option value="2">2: @Html.Translate("INVESTIGACION")</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-actions">
+                            <a class="btn btn-primary" id="btnPedirAcreditaciones">@Html.Translate("Recuperar")</a>
                         </div>
                     </div>
                 </div>
