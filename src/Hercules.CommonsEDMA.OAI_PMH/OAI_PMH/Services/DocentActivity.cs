@@ -15,7 +15,7 @@ namespace OAI_PMH.Services
         {
             Dictionary<string, DateTime> idDictionary = new();
             List<string> idList = new();
-            RestClient client = new(pConfig.GetUrlBaseActividadDocente() + "actividad-docente/modificados-ids?q=fechaModificacion=ge=\"" + from + "\"" + ";tipoActividad=\"030.040.000.000\"");
+            RestClient client = new(pConfig.GetConfigSGI() + "/api/sgp/actividad-docente/modificados-ids?q=fechaModificacion=ge=\"" + from + "\"" + ";tipoActividad=\"030.040.000.000\"");
             client.AddDefaultHeader("Authorization", "Bearer " + accessToken);
             var request = new RestRequest(Method.GET);
             IRestResponse response = client.Execute(request);
@@ -38,7 +38,7 @@ namespace OAI_PMH.Services
         {
             string accessToken = Token.CheckToken(pConfig);
             string identifier = id.Replace("\"", "");
-            RestClient client = new(pConfig.GetUrlBaseActividadDocente() + "actividad-docente/" + identifier + "?tipoActividad=\"030.040.000.000\"");
+            RestClient client = new(pConfig.GetConfigSGI() + "/api/sgp/actividad-docente/" + identifier + "?tipoActividad=\"030.040.000.000\"");
             client.AddDefaultHeader("Authorization", "Bearer " + accessToken);
             var request = new RestRequest(Method.GET);
             IRestResponse response = client.Execute(request);
@@ -55,7 +55,7 @@ namespace OAI_PMH.Services
         {
             Dictionary<string, DateTime> idDictionary = new();
             List<string> idList = new();
-            RestClient client = new(pConfig.GetUrlBaseActividadDocente() + "actividad-docente/modificados-ids?q=fechaModificacion=ge=\"" + from + "\"" + ";tipoActividad=\"030.010.000.000\"");
+            RestClient client = new(pConfig.GetConfigSGI() + "/api/sgp/actividad-docente/modificados-ids?q=fechaModificacion=ge=\"" + from + "\"" + ";tipoActividad=\"030.010.000.000\"");
             client.AddDefaultHeader("Authorization", "Bearer " + accessToken);
             var request = new RestRequest(Method.GET);
             IRestResponse response = client.Execute(request);
@@ -78,7 +78,7 @@ namespace OAI_PMH.Services
         {
             string accessToken = Token.CheckToken(pConfig);
             string identifier = id.Replace("\"", "");
-            RestClient client = new(pConfig.GetUrlBaseActividadDocente() + "actividad-docente/" + identifier + "?tipoActividad=\"030.010.000.000\"");
+            RestClient client = new(pConfig.GetConfigSGI() + "/api/sgp/actividad-docente/" + identifier + "?tipoActividad=\"030.010.000.000\"");
             client.AddDefaultHeader("Authorization", "Bearer " + accessToken);
             var request = new RestRequest(Method.GET);
             IRestResponse response = client.Execute(request);
@@ -95,7 +95,7 @@ namespace OAI_PMH.Services
         {
             Dictionary<string, DateTime> idDictionary = new();
             List<string> idList = new();
-            RestClient client = new(pConfig.GetUrlBaseActividadDocente() + "actividad-docente/modificados-ids?q=fechaModificacion=ge=\"" + from + "\"" + ";tipoActividad=\"030.060.000.000\"");
+            RestClient client = new(pConfig.GetConfigSGI() + "/api/sgp/actividad-docente/modificados-ids?q=fechaModificacion=ge=\"" + from + "\"" + ";tipoActividad=\"030.060.000.000\"");
             client.AddDefaultHeader("Authorization", "Bearer " + accessToken);
             var request = new RestRequest(Method.GET);
             IRestResponse response = client.Execute(request);
@@ -118,7 +118,7 @@ namespace OAI_PMH.Services
         {
             string accessToken = Token.CheckToken(pConfig);
             string identifier = id.Replace("\"", "");
-            RestClient client = new(pConfig.GetUrlBaseActividadDocente() + "actividad-docente/" + identifier + "?tipoActividad=\"030.060.000.000\"");
+            RestClient client = new(pConfig.GetConfigSGI() + "/api/sgp/actividad-docente/" + identifier + "?tipoActividad=\"030.060.000.000\"");
             client.AddDefaultHeader("Authorization", "Bearer " + accessToken);
             var request = new RestRequest(Method.GET);
             IRestResponse response = client.Execute(request);

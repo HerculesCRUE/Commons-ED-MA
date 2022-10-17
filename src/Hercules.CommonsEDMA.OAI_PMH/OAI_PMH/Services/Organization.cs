@@ -19,7 +19,7 @@ namespace OAI_PMH.Services
             string accessToken = Token.CheckToken(pConfig);
             Dictionary<string, DateTime> idDictionary = new();
             List<string> idList = new();
-            RestClient client = new(pConfig.GetUrlBaseOrganizacion() + "empresas/modificadas-ids?q=fechaModificacion=ge=" + from);
+            RestClient client = new(pConfig.GetConfigSGI() + "/api/sgemp/empresas/modificadas-ids?q=fechaModificacion=ge=" + from);
             client.AddDefaultHeader("Authorization", "Bearer " + accessToken);
             var request = new RestRequest(Method.GET);
             IRestResponse response = client.Execute(request);
@@ -42,7 +42,7 @@ namespace OAI_PMH.Services
             string identifier = id.Split('_')[1];
             Empresa empresa = new();
             List<Thread> hilos = new();
-            RestClient client = new(pConfig.GetUrlBaseOrganizacion() + "empresas/" + identifier);
+            RestClient client = new(pConfig.GetConfigSGI() + "/api/sgemp/empresas/" + identifier);
             client.AddDefaultHeader("Authorization", "Bearer " + accessToken);
             var request = new RestRequest(Method.GET);
             IRestResponse response = client.Execute(request);
@@ -69,7 +69,7 @@ namespace OAI_PMH.Services
         {
             string accessToken = Token.CheckToken(pConfig);
             DatosContacto datosContacto = new();
-            RestClient client = new(pConfig.GetUrlBaseOrganizacion() + "datos-contacto/empresa/" + id);
+            RestClient client = new(pConfig.GetConfigSGI() + "/api/sgemp/datos-contacto/empresa/" + id);
             client.AddDefaultHeader("Authorization", "Bearer " + accessToken);
             var request = new RestRequest(Method.GET);
             IRestResponse response = client.Execute(request);
@@ -89,7 +89,7 @@ namespace OAI_PMH.Services
         {
             string accessToken = Token.CheckToken(pConfig);
             EmpresaClasificacion datos = new();
-            RestClient client = new(pConfig.GetUrlBaseOrganizacion() + "empresas-clasificaciones/empresa/" + id);
+            RestClient client = new(pConfig.GetConfigSGI() + "/api/sgemp/empresas-clasificaciones/empresa/" + id);
             client.AddDefaultHeader("Authorization", "Bearer " + accessToken);
             var request = new RestRequest(Method.GET);
             IRestResponse response = client.Execute(request);
@@ -109,7 +109,7 @@ namespace OAI_PMH.Services
         {
             string accessToken = Token.CheckToken(pConfig);
             List<TipoIdentificador> tiposIdentificador = new();
-            RestClient client = new(pConfig.GetUrlBaseOrganizacion() + "/tipos-identificador");
+            RestClient client = new(pConfig.GetConfigSGI() + "/api/sgemp/tipos-identificador");
             client.AddDefaultHeader("Authorization", "Bearer " + accessToken);
             var request = new RestRequest(Method.GET);
             IRestResponse response = client.Execute(request);
@@ -128,7 +128,7 @@ namespace OAI_PMH.Services
         {
             string accessToken = Token.CheckToken(pConfig);
             DatosTipoEmpresa datosTipoEmpresa = new();
-            RestClient client = new(pConfig.GetUrlBaseOrganizacion() + "datos-tipo-empresa/empresa/" + id);
+            RestClient client = new(pConfig.GetConfigSGI() + "/api/sgemp/datos-tipo-empresa/empresa/" + id);
             client.AddDefaultHeader("Authorization", "Bearer " + accessToken);
             var request = new RestRequest(Method.GET);
             IRestResponse response = client.Execute(request);
