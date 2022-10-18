@@ -35,7 +35,7 @@
                            aria-selected="true">
                             @Html.Translate("OTRAS_NOTIFICACIONES") <span class="badge">
                                 @listaNotificaciones.Count(x => !string.IsNullOrEmpty(x.desencadenante) && x.desencadenante != @Html.Translate("NOTIFICACION_SE")
-								 && (!string.IsNullOrEmpty(x.titulo) || !string.IsNullOrEmpty(x.mensaje)))
+                                 && (!string.IsNullOrEmpty(x.titulo) || !string.IsNullOrEmpty(x.mensaje)))
                             </span>
                         </a>
                     </li>
@@ -47,12 +47,13 @@
 
                                 @foreach (Notification notification in listaNotificaciones.Where(x => string.IsNullOrEmpty(x.desencadenante)))
                                 {
-									//Si no tiene titulo, no tiene mensaje y no es de tipo "loadExternalSource" no la muestro
-									if(string.IsNullOrEmpty(notification.titulo) && string.IsNullOrEmpty(notification.mensaje) && !notification.tipoNotificacion.Equals("loadExternalSource") && !notification.tipoNotificacion.Equals("recuperarSexenios") && !notification.tipoNotificacion.Equals("recuperarAcreditaciones")){
-										continue;
-									}
+                                    //Si no tiene titulo, no tiene mensaje y no es de tipo "loadExternalSource" no la muestro
+                                    if (string.IsNullOrEmpty(notification.titulo) && string.IsNullOrEmpty(notification.mensaje) && !notification.tipoNotificacion.Equals("loadExternalSource") && !notification.tipoNotificacion.Equals("recuperarSexenios") && !notification.tipoNotificacion.Equals("recuperarAcreditaciones"))
+                                    {
+                                        continue;
+                                    }
                                     notification.desencadenante = Html.Translate("NOTIFICACION_SE");
-                                    
+
                                     if (!string.IsNullOrEmpty(notification.trigger) && notification.trigger.Split('_').Length > 2)
                                     {
                                         notification.trigger = Comunidad.Url + "/" + Html.Translate("NOTIFICACION_RECURSO_URL") + "/" + Html.Translate("NOTIFICACION_PERSONA") + "/" + notification.trigger.Split('_')[1];
@@ -62,113 +63,8 @@
                                         notification.trigger = "";
                                     }
 
-                                    if (notification.tipoNotificacion == "delete")
-                                    {
-                                        @Html.Raw(InicioArticle)
-                                        @notification.fecha @Html.Raw(" - ")
-                                        @Html.Raw(ComprobarTrigger(notification));
-                                        @Html.Translate("NOTIFICACION_TE_HA_RETIRADO") @Notification.GetTextNotificationCvnCode(Html, notification.cvnCode) @notification.titulo
-                                        @Html.Raw(FinArticle)
-                                    }
-									else if(notification.tipoNotificacion == "editOferta"){
-										string url = "";
-										if (notification.entidad != null && notification.entidad.Split('_').Length > 2){
-											url = Comunidad.Url + "/" + @Html.Translate("NOTIFICACION_RECURSO_URL") + "/oferta/" + notification.entidad.Split('_')[1] ;
-										}
-                                        bool ponerUrl = true;
-                                        if (string.IsNullOrEmpty(notification.entidad.Split('_')[1]))
-                                        {
-                                            ponerUrl = false;
-                                        }
-										@Html.Raw(InicioArticle)
-										@notification.fecha @Html.Raw(" - ")
-										@Html.Raw(ComprobarTrigger(notification));
-                                        if (ponerUrl)
-                                        {
-                                            @Html.Translate("NOTIFICACION_EDIT_OFERTA") <a target=blank class="a-alertas" href=@url>@notification.name</a> @Html.Translate("NOTIFICACION_EDIT_OFERTA_MENSAJE") @notification.mensaje
-                                        }
-                                        else
-                                        {
-                                            @Html.Translate("NOTIFICACION_EDIT_OFERTA") @notification.name @Html.Translate("NOTIFICACION_EDIT_OFERTA_MENSAJE") @notification.mensaje
-                                        }
-                                        @Html.Raw(FinArticle)
-									}
-									else if(notification.tipoNotificacion == "loadExternalSource"){
-										@Html.Raw(InicioArticle)
-										@notification.fecha @Html.Raw(" - ")
-                                        @Html.Translate("NOTIFICACION_FIN_FUENTES_EXTERNAS") @notification.titulo
-                                        @Html.Raw(FinArticle)
-									} 
-                                    else if (notification.tipoNotificacion == "recuperarSexenios")
-                                    {
-                                        @Html.Raw(InicioArticle)
-										@notification.fecha @Html.Raw(" - ")
-                                        if (notification.mensaje.StartsWith("http")) 
-                                        {
-                                            @Html.Translate("NOTIFICACION_SEXENIOS_OBTENIDOS") <a target=blank class="a-alertas" href=@notification.mensaje>@notification.mensaje</a>
-                                        }
-                                        else
-                                        {
-                                            @Html.Translate(notification.mensaje)
-                                        }
-                                        @Html.Raw(FinArticle)
-                                    }
-                                    else if (notification.tipoNotificacion == "recuperarAcreditaciones")
-                                    {
-                                        @Html.Raw(InicioArticle)
-										@notification.fecha @Html.Raw(" - ")
-                                        if (notification.mensaje.StartsWith("http")) 
-                                        {
-                                            @Html.Translate("NOTIFICACION_ACREDITACIONES_OBTENIDAS") <a target=blank class="a-alertas" href=@notification.mensaje>@notification.mensaje</a>
-                                        }
-                                        else
-                                        {
-                                            @Html.Translate(notification.mensaje)
-                                        }
-                                        @Html.Raw(FinArticle)
-                                    }
-                                    else
-                                    {
-                                        if (notification.entidad != null && notification.entidad.Split('_').Length > 2 && notification.cv.Split('_').Length > 2)
-                                        {
-                                            string url = Comunidad.Url + "/" + @Html.Translate("NOTIFICACION_RECURSO_URL") + "/cv/" + notification.cv.Split('_')[1] + "?tab=" + notification.propiedadCV + "&id=" + notification.entidad.Split('_')[1] + "&section=" + notification.seccionCV;
-                                            bool ponerUrl = true;
-                                            if (string.IsNullOrEmpty(notification.propiedadCV) || string.IsNullOrEmpty(notification.entidad.Split('_')[1]) || string.IsNullOrEmpty(notification.seccionCV))
-                                            {
-                                                ponerUrl = false;
-                                            }
-                                            if (notification.tipoNotificacion == "create")
-                                            {
-                                                @Html.Raw(InicioArticle)
-												@notification.fecha @Html.Raw(" - ")
-												@Html.Raw(ComprobarTrigger(notification));
-                                                if (ponerUrl)
-                                                {
-                                                    @Html.Translate("NOTIFICACION_TE_HA_ANADIDO") @Notification.GetTextNotificationCvnCode(Html, notification.cvnCode) <a target=blank class="a-alertas" href=@url>@notification.titulo</a>
-                                                }
-                                                else
-                                                {
-                                                    @Html.Translate("NOTIFICACION_TE_HA_ANADIDO") @Notification.GetTextNotificationCvnCode(Html, notification.cvnCode) @notification.titulo
-                                                }
-                                                @Html.Raw(FinArticle)
-                                            }
-                                            if (notification.tipoNotificacion == "edit")
-                                            {
-                                                @Html.Raw(InicioArticle)
-                                                @notification.fecha @Html.Raw(" - ")
-                                                @Html.Raw(ComprobarTrigger(notification));
-                                                if (ponerUrl)
-                                                {
-                                                    @Html.Translate("NOTIFICACION_HA_EDITADO") @Notification.GetTextNotificationCvnCode(Html, notification.cvnCode) <a target=blank class="a-alertas" href=@url>@notification.titulo</a>
-                                                }
-                                                else
-                                                {
-                                                    @Html.Translate("NOTIFICACION_HA_EDITADO") @Notification.GetTextNotificationCvnCode(Html, notification.cvnCode) @notification.titulo
-                                                }
-                                                @Html.Raw(FinArticle)
-                                            }
-                                        }
-                                    }
+                                    @Html.Raw(InsertaNotificacion(notification));
+
                                 }
                             </div>
                         </div>
@@ -179,10 +75,11 @@
 
                                 @foreach (Notification notification in listaNotificaciones.Where(x => !string.IsNullOrEmpty(x.desencadenante) && x.desencadenante != Html.Translate("NOTIFICACION_SE")))
                                 {
-									//Si no tiene titulo o mensaje no la muestro
-									if(string.IsNullOrEmpty(notification.titulo) && string.IsNullOrEmpty(notification.mensaje)){
-										continue;
-									}
+                                    //Si no tiene titulo o mensaje no la muestro
+                                    if (string.IsNullOrEmpty(notification.titulo) && string.IsNullOrEmpty(notification.mensaje))
+                                    {
+                                        continue;
+                                    }
                                     if (!string.IsNullOrEmpty(notification.trigger) && notification.trigger.Split('_').Length > 2)
                                     {
                                         notification.trigger = Comunidad.Url + "/" + Html.Translate("NOTIFICACION_RECURSO_URL") + "/" + Html.Translate("NOTIFICACION_PERSONA") + "/" + notification.trigger.Split('_')[1];
@@ -190,92 +87,6 @@
                                     else
                                     {
                                         notification.trigger = "";
-                                    }
-
-                                    if (notification.tipoNotificacion == "delete")
-                                    {
-                                        @Html.Raw(InicioArticle)
-                                        @notification.fecha @Html.Raw(" - ")
-                                        @Html.Raw(ComprobarTrigger(notification));
-                                        @Html.Translate("NOTIFICACION_TE_HA_RETIRADO") @Notification.GetTextNotificationCvnCode(Html, notification.cvnCode) @notification.titulo
-                                        @Html.Raw(FinArticle)
-                                    }
-									else if(notification.tipoNotificacion == "editOferta"){
-										string url = "";
-										if (notification.entidad != null && notification.entidad.Split('_').Length > 2){
-											url = Comunidad.Url + "/" + @Html.Translate("NOTIFICACION_RECURSO_URL") + "/oferta/" + notification.entidad.Split('_')[1] ;
-										}
-                                        bool ponerUrl = true;
-                                        if (string.IsNullOrEmpty(notification.entidad.Split('_')[1]))
-                                        {
-                                            ponerUrl = false;
-                                        }
-										@Html.Raw(InicioArticle)
-										@notification.fecha @Html.Raw(" - ")
-										@Html.Raw(ComprobarTrigger(notification));
-                                        if (ponerUrl)
-                                        {
-                                            @Html.Translate("NOTIFICACION_EDIT_OFERTA") <a target=blank class="a-alertas" href=@url>@notification.name</a> @Html.Translate("NOTIFICACION_EDIT_OFERTA_MENSAJE") @notification.mensaje
-                                        }
-                                        else
-                                        {
-                                            @Html.Translate("NOTIFICACION_EDIT_OFERTA") @notification.name @Html.Translate("NOTIFICACION_EDIT_OFERTA_MENSAJE") @notification.mensaje
-                                        }
-                                        @Html.Raw(FinArticle)
-									}
-									else if(notification.tipoNotificacion == "loadExternalSource"){
-										@Html.Raw(InicioArticle)
-										@notification.fecha @Html.Raw(" - ")
-                                        @Html.Translate("NOTIFICACION_FIN_FUENTES_EXTERNAS") @notification.titulo
-                                        @Html.Raw(FinArticle)
-									}
-									else if(notification.tipoNotificacion == "loadCV"){
-										@Html.Raw(InicioArticle)
-										@notification.fecha @Html.Raw(" - ")
-                                        @Html.Translate("NOTIFICACION_FIN_CARGA_CV")
-                                        @Html.Raw(FinArticle)
-									}
-                                    else
-                                    {
-                                        if (notification.entidad != null && notification.entidad.Split('_').Length > 2 && notification.cv.Split('_').Length > 2)
-                                        {
-                                            string url = Comunidad.Url + "/" + @Html.Translate("NOTIFICACION_RECURSO_URL") + "/cv/" + notification.cv.Split('_')[1] + "?tab=" + notification.propiedadCV + "&id=" + notification.entidad.Split('_')[1] + "&section=" + notification.seccionCV;
-                                            bool ponerUrl = true;
-                                            if (string.IsNullOrEmpty(notification.propiedadCV) || string.IsNullOrEmpty(notification.entidad.Split('_')[1]) || string.IsNullOrEmpty(notification.seccionCV))
-                                            {
-                                                ponerUrl = false;
-                                            }
-                                            if (notification.tipoNotificacion == "create")
-                                            {
-                                                @Html.Raw(InicioArticle)
-												@notification.fecha @Html.Raw(" - ")
-												@Html.Raw(ComprobarTrigger(notification));
-                                                if (ponerUrl)
-                                                {
-                                                    @Html.Translate("NOTIFICACION_TE_HA_ANADIDO") @Notification.GetTextNotificationCvnCode(Html, notification.cvnCode) <a target=blank class="a-alertas" href=@url>@notification.titulo</a>
-                                                }
-                                                else
-                                                {
-                                                    @Html.Translate("NOTIFICACION_TE_HA_ANADIDO") @Notification.GetTextNotificationCvnCode(Html, notification.cvnCode) @notification.titulo
-                                                }
-                                                @Html.Raw(FinArticle)
-                                            }
-                                            if (notification.tipoNotificacion == "edit")
-                                            {
-                                                @Html.Raw(InicioArticle)
-                                                @notification.fecha @Html.Raw(" - ")
-                                                @Html.Raw(ComprobarTrigger(notification));
-                                                if (ponerUrl)
-                                                {
-                                                    @Html.Translate("NOTIFICACION_HA_EDITADO") @Notification.GetTextNotificationCvnCode(Html, notification.cvnCode) <a target=blank class="a-alertas" href=@url>@notification.titulo</a>
-                                                }
-                                                else
-                                                {
-                                                    @Html.Translate("NOTIFICACION_HA_EDITADO") @Notification.GetTextNotificationCvnCode(Html, notification.cvnCode) @notification.titulo
-                                                }
-                                                @Html.Raw(FinArticle)
-                                            }
-                                        }
                                     }
                                 }
                             </div>
@@ -291,17 +102,123 @@
 {
     public static List<Notification> listaNotificaciones = new List<Notification>();
     public string InicioArticle = $@"
-                                    <article class=""resource"">
-                                        <div class=""wrap"">
-                                            <div class=""middle-wrap"">
-                                                <div class=""title-wrap"">
-                                                    <h2 class=""resource-title"">";
+                        <article class=""resource"">
+                            <div class=""wrap"">
+                                <div class=""middle-wrap"">
+                                    <div class=""title-wrap"">
+                                        <h2 class=""resource-title"">";
     public string FinArticle = $@"
-                                                    </h2>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </article>";
+                                        </h2>
+                                    </div>
+                                </div>
+                            </div>
+                        </article>";
+
+    public string InsertaNotificacion(Notification notification)
+    {
+        if (notification.tipoNotificacion == "delete")
+        {
+            return GetNotification(notification, ComprobarTrigger(notification) + " " + Html.Translate("NOTIFICACION_TE_HA_RETIRADO") + " " + Notification.GetTextNotificationCvnCode(Html, notification.cvnCode) + " " + notification.titulo);
+        }
+        else if (notification.tipoNotificacion == "editOferta")
+        {
+            string url = "";
+            if (notification.entidad != null && notification.entidad.Split('_').Length > 2)
+            {
+                url = Html.GetComunidad().Url + "/" + Html.Translate("NOTIFICACION_RECURSO_URL") + "/oferta/" + notification.entidad.Split('_')[1];
+            }
+            bool ponerUrl = true;
+            if (string.IsNullOrEmpty(notification.entidad.Split('_')[1]))
+            {
+                ponerUrl = false;
+            }
+
+            if (ponerUrl)
+            {
+                return GetNotification(notification, ComprobarTrigger(notification) + " " + Html.Translate("NOTIFICACION_EDIT_OFERTA") + " <a target=blank class=\"a-alertas\" href=" + url + ">" + notification.name + "</a> " + Html.Translate("NOTIFICACION_EDIT_OFERTA_MENSAJE") + " " + notification.mensaje);
+            }
+            else
+            {
+                return GetNotification(notification, ComprobarTrigger(notification) + " " + Html.Translate("NOTIFICACION_EDIT_OFERTA") + " " + notification.name + " " + Html.Translate("NOTIFICACION_EDIT_OFERTA_MENSAJE") + " " + notification.mensaje);
+            }
+        }
+        else if (notification.tipoNotificacion == "loadExternalSource")
+        {
+            return GetNotification(notification, Html.Translate("NOTIFICACION_FIN_FUENTES_EXTERNAS") + " " + notification.titulo);
+        }
+        else if (notification.tipoNotificacion == "loadCV")
+        {
+            return GetNotification(notification, Html.Translate("NOTIFICACION_FIN_CARGA_CV"));
+        }
+        else if (notification.tipoNotificacion == "recuperarSexenios")
+        {
+            if (notification.mensaje.StartsWith("http"))
+            {
+                return GetNotification(notification, Html.Translate("NOTIFICACION_SEXENIOS_OBTENIDOS") + " <a target=blank class=\"a-alertas\" href=" + notification.mensaje + ">" + notification.mensaje + "</a>");
+            }
+            else
+            {
+                return GetNotification(notification, Html.Translate(notification.mensaje));
+            }
+        }
+        else if (notification.tipoNotificacion == "recuperarAcreditaciones")
+        {
+            if (notification.mensaje.StartsWith("http"))
+            {
+                return GetNotification(notification, Html.Translate("NOTIFICACION_ACREDITACIONES_OBTENIDAS") + "<a target=blank class=\"a-alertas\" href=" + notification.mensaje + ">" + notification.mensaje + "</a>");
+            }
+            else
+            {
+                return GetNotification(notification, Html.Translate(notification.mensaje));
+            }
+        }
+        else
+        {
+            if (notification.entidad != null && notification.entidad.Split('_').Length > 2 && notification.cv.Split('_').Length > 2)
+            {
+                string url = Html.GetComunidad().Url + "/" + Html.Translate("NOTIFICACION_RECURSO_URL") + "/cv/" + notification.cv.Split('_')[1] + "?tab=" + notification.propiedadCV + "&id=" + notification.entidad.Split('_')[1] + "&section=" + notification.seccionCV;
+                bool ponerUrl = true;
+                if (string.IsNullOrEmpty(notification.propiedadCV) || string.IsNullOrEmpty(notification.entidad.Split('_')[1]) || string.IsNullOrEmpty(notification.seccionCV))
+                {
+                    ponerUrl = false;
+                }
+                if (notification.tipoNotificacion == "create")
+                {
+                    if (ponerUrl)
+                    {
+                        return GetNotification(notification, ComprobarTrigger(notification) + " " + Html.Translate("NOTIFICACION_TE_HA_ANADIDO") + " " + Notification.GetTextNotificationCvnCode(Html, notification.cvnCode) + " <a target=blank class=\"a-alertas\" href=" + url + ">" + notification.titulo + "</a>");
+                    }
+                    else
+                    {
+                        return GetNotification(notification, ComprobarTrigger(notification) + " " + Html.Translate("NOTIFICACION_TE_HA_ANADIDO") + " " + Notification.GetTextNotificationCvnCode(Html, notification.cvnCode) + " " + notification.titulo);
+                    }
+                }
+                if (notification.tipoNotificacion == "edit")
+                {
+                    if (ponerUrl)
+                    {
+                        return GetNotification(notification, ComprobarTrigger(notification) + " " + Html.Translate("NOTIFICACION_HA_EDITADO") + " " + Notification.GetTextNotificationCvnCode(Html, notification.cvnCode) + " <a target=blank class=\"a-alertas\" href=" + url + ">" + notification.titulo + "</a>");
+                    }
+                    else
+                    {
+                        return GetNotification(notification, Html.Translate("NOTIFICACION_HA_EDITADO") + " " + Notification.GetTextNotificationCvnCode(Html, notification.cvnCode) + " " + notification.titulo);
+                    }
+                }
+            }
+        }
+        return "";
+    }
+
+    public string GetNotification(Notification notification, string datos)
+    {
+        string notificacion = InicioArticle;
+        notificacion += notification.fecha + " - ";
+        notificacion += datos;
+
+        notificacion += FinArticle;
+        return notificacion;
+    }
+
     public string ComprobarTrigger(Notification notification)
     {
         if (!string.IsNullOrEmpty(notification.trigger))
@@ -395,9 +312,9 @@
             return null;
         }
 
-		private string GetSeccionNotificationCvnCode(string cvnCode)
-        {	
-			if (cvnCode.Equals("060.010.010.000"))
+        private string GetSeccionNotificationCvnCode(string cvnCode)
+        {
+            if (cvnCode.Equals("060.010.010.000"))
             {
                 return "http://w3id.org/roh/scientificPublications";
             }
@@ -410,8 +327,8 @@
                 return "http://w3id.org/roh/worksSubmittedSeminars";
             }
 
-            return "";            
-		}
+            return "";
+        }
 
         public static string GetTextNotificationCvnCode(IHtmlHelper Html, string cvnCode)
         {
