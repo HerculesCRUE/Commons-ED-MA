@@ -16,6 +16,7 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Xml.Serialization;
 using Utilidades;
@@ -2063,7 +2064,16 @@ namespace OAI_PMH.Models.SGI.PersonalData
                 return pText;
             }
 
-            string text = pText.ToLower();
+            string text = pText.Trim().ToLower();
+
+            const string removeChars = "?&^$#@!()+-,:;<>’\'\"._*";
+            StringBuilder sb = new StringBuilder(text.Length);
+            foreach (char x in text.Where(c => !removeChars.Contains(c)))
+            {
+                sb.Append(x);
+            }
+
+            text = sb.ToString();
             text = text.Replace(" ","-");
 
             var normalizedString = text.Normalize(NormalizationForm.FormD);

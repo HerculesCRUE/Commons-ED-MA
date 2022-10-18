@@ -404,52 +404,6 @@ namespace Harvester
         }
 
         /// <summary>
-        /// Obtiene el listado de recursos mediante el crisidentifier.
-        /// </summary>
-        /// <param name="pListaIds">IDs a consultar.</param>
-        /// <param name="pOntologia">Ontología.</param>
-        /// <returns></returns>
-        private static Dictionary<string, string> GetDataBBDD(List<string> pListaIds, string pOntologia)
-        {
-            List<List<string>> listas = SplitList(pListaIds, 1000).ToList();
-
-            Dictionary<string, string> dicDevolver = new Dictionary<string, string>();
-
-            foreach (List<string> listaItem in listas)
-            {
-                List<string> listaAux = new List<string>();
-                foreach (string item in listaItem)
-                {
-                    if (item.Contains("_"))
-                    {
-                        listaAux.Add(item.Split("_")[1]);
-                    }
-                    else
-                    {
-                        listaAux.Add(item);
-                    }
-                }
-
-                string selectPerson = $@"{mPrefijos} SELECT DISTINCT ?s ?crisIdentifier ";
-                string wherePerson = $@"WHERE {{ 
-                            ?s roh:crisIdentifier ?crisIdentifier. 
-                            FILTER(?crisIdentifier in ('{string.Join("', '", listaAux.Select(x => x))}')) }}";
-
-                SparqlObject resultadoQueryPerson = mResourceApi.VirtuosoQuery(selectPerson, wherePerson, pOntologia);
-
-                if (resultadoQueryPerson != null && resultadoQueryPerson.results != null && resultadoQueryPerson.results.bindings != null && resultadoQueryPerson.results.bindings.Count > 0)
-                {
-                    foreach (Dictionary<string, SparqlObject.Data> fila in resultadoQueryPerson.results.bindings)
-                    {
-                        dicDevolver.Add(fila["crisIdentifier"].value, fila["s"].value);
-                    }
-                }
-            }
-
-            return dicDevolver;
-        }
-
-        /// <summary>
         /// Divide una lista en listas pequeñas.
         /// </summary>
         /// <typeparam name="T"></typeparam>
