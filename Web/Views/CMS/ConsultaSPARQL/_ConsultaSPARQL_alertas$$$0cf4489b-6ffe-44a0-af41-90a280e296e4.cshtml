@@ -229,6 +229,12 @@
                                         @Html.Translate("NOTIFICACION_FIN_FUENTES_EXTERNAS") @notification.titulo
                                         @Html.Raw(FinArticle)
 									}
+									else if(notification.tipoNotificacion == "loadCV"){
+										@Html.Raw(InicioArticle)
+										@notification.fecha @Html.Raw(" - ")
+                                        @Html.Translate("NOTIFICACION_FIN_CARGA_CV")
+                                        @Html.Raw(FinArticle)
+									}
                                     else
                                     {
                                         if (notification.entidad != null && notification.entidad.Split('_').Length > 2 && notification.cv.Split('_').Length > 2)
