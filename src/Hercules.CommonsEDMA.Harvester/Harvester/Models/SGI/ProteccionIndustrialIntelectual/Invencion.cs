@@ -17,6 +17,18 @@ namespace OAI_PMH.Models.SGI.ProteccionIndustrialIntelectual
     /// </summary>
     public class Invencion : SGI_Base
     {
+        /// <summary>
+        /// Crea el objeto ComplexOntologyResource para ser cargado.
+        /// </summary>
+        /// <param name="pHarvesterServices"></param>
+        /// <param name="pConfig"></param>
+        /// <param name="pResourceApi"></param>
+        /// <param name="pDicIdentificadores"></param>
+        /// <param name="pDicRutas"></param>
+        /// <param name="pRabbitConf"></param>
+        /// <param name="pFusionarPersona"></param>
+        /// <param name="pIdPersona"></param>
+        /// <returns></returns>
         public override ComplexOntologyResource ToRecurso(IHarvesterServices pHarvesterServices, ReadConfig pConfig, ResourceApi pResourceApi, Dictionary<string, HashSet<string>> pDicIdentificadores, Dictionary<string, Dictionary<string, string>> pDicRutas, RabbitServiceWriterDenormalizer pRabbitConf, bool pFusionarPersona = false, string pIdPersona = null)
         {
             PatentOntology.Patent patente = CrearPatentOntology(pHarvesterServices, pConfig, pResourceApi, pDicIdentificadores, pDicRutas, pRabbitConf);
@@ -24,6 +36,11 @@ namespace OAI_PMH.Models.SGI.ProteccionIndustrialIntelectual
             return patente.ToGnossApiResource(pResourceApi, null);
         }
 
+        /// <summary>
+        /// Obtiene los IDs de BBDD mediante el crisidentifier.
+        /// </summary>
+        /// <param name="pResourceApi"></param>
+        /// <returns></returns>
         public override string ObtenerIDBBDD(ResourceApi pResourceApi)
         {
             Dictionary<string, string> respuesta = ObtenerPatenteBBDD(new HashSet<string>() { id.ToString() }, pResourceApi);
@@ -35,9 +52,20 @@ namespace OAI_PMH.Models.SGI.ProteccionIndustrialIntelectual
         }
 
         public override void ToRecursoAdicional(IHarvesterServices pHarvesterServices, ReadConfig pConfig, ResourceApi pResourceApi, Dictionary<string, HashSet<string>> pDicIdentificadores, Dictionary<string, Dictionary<string, string>> pDicRutas, RabbitServiceWriterDenormalizer pRabbitConf, string pIdGnoss)
-        {           
+        {     
+            // No necesario para esta clase.
         }
 
+        /// <summary>
+        /// Crea el objeto Patent para ser cargado.
+        /// </summary>
+        /// <param name="pHarvesterServices"></param>
+        /// <param name="pConfig"></param>
+        /// <param name="pResourceApi"></param>
+        /// <param name="pDicIdentificadores"></param>
+        /// <param name="pDicRutas"></param>
+        /// <param name="pRabbitConf"></param>
+        /// <returns></returns>
         public PatentOntology.Patent CrearPatentOntology(IHarvesterServices pHarvesterServices, ReadConfig pConfig, ResourceApi pResourceApi, Dictionary<string, HashSet<string>> pDicIdentificadores, Dictionary<string, Dictionary<string, string>> pDicRutas, RabbitServiceWriterDenormalizer pRabbitConf)
         {
             HashSet<string> listaIdsPersonas = new HashSet<string>();
@@ -107,6 +135,12 @@ namespace OAI_PMH.Models.SGI.ProteccionIndustrialIntelectual
             return patente;
         }
 
+        /// <summary>
+        /// Obtiene los IDs de los recursos de invenciones cargados en BBDD mediante el crisidentifier.
+        /// </summary>
+        /// <param name="pListaIds"></param>
+        /// <param name="pResourceApi"></param>
+        /// <returns></returns>
         public static Dictionary<string, string> ObtenerPatenteBBDD(HashSet<string> pListaIds, ResourceApi pResourceApi)
         {
             List<List<string>> listaPatentes = SplitList(pListaIds.ToList(), 1000).ToList();
@@ -153,6 +187,14 @@ namespace OAI_PMH.Models.SGI.ProteccionIndustrialIntelectual
             return dicPatentesBBDD;
         }
 
+        /// <summary>
+        /// Obtiene los datos de las invenciones del SGI.
+        /// </summary>
+        /// <param name="pHarvesterServices"></param>
+        /// <param name="pConfig"></param>
+        /// <param name="pId"></param>
+        /// <param name="pDicRutas"></param>
+        /// <returns></returns>
         public static Invencion GetInvencionSGI(IHarvesterServices pHarvesterServices, ReadConfig pConfig, string pId, Dictionary<string, Dictionary<string, string>> pDicRutas)
         {
             // Obtención de datos en bruto.

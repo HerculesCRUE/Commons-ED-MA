@@ -16,6 +16,18 @@ namespace Harvester.Models.SGI.Autorizaciones
 {
     public class Autorizacion : SGI_Base
     {
+        /// <summary>
+        /// Crea el objeto ComplexOntologyResource para ser cargado.
+        /// </summary>
+        /// <param name="pHarvesterServices"></param>
+        /// <param name="pConfig"></param>
+        /// <param name="pResourceApi"></param>
+        /// <param name="pDicIdentificadores"></param>
+        /// <param name="pDicRutas"></param>
+        /// <param name="pRabbitConf"></param>
+        /// <param name="pFusionarPersona"></param>
+        /// <param name="pIdPersona"></param>
+        /// <returns></returns>
         public override ComplexOntologyResource ToRecurso(IHarvesterServices pHarvesterServices, ReadConfig pConfig, ResourceApi pResourceApi, Dictionary<string, HashSet<string>> pDicIdentificadores, Dictionary<string, Dictionary<string, string>> pDicRutas, RabbitServiceWriterDenormalizer pRabbitConf, bool pFusionarPersona = false, string pIdPersona = null)
         {
             ProjectAuthorization autorizacion = CrearAutorizationOntology(pHarvesterServices, pConfig, pResourceApi, pDicIdentificadores, pDicRutas);
@@ -25,13 +37,23 @@ namespace Harvester.Models.SGI.Autorizaciones
 
         public override string ObtenerIDBBDD(ResourceApi pResourceApi)
         {
+            // No necesario para esta clase.
             return string.Empty;
         }
 
         public override void ToRecursoAdicional(IHarvesterServices pHarvesterServices, ReadConfig pConfig, ResourceApi pResourceApi, Dictionary<string, HashSet<string>> pDicIdentificadores, Dictionary<string, Dictionary<string, string>> pDicRutas, RabbitServiceWriterDenormalizer pRabbitConf, string pIdGnoss)
         {
+            // No necesario para esta clase.
         }
 
+        /// <summary>
+        /// Obtiene los datos de las Autorizaciones del SGI.
+        /// </summary>
+        /// <param name="pHarvesterServices"></param>
+        /// <param name="pConfig"></param>
+        /// <param name="pId"></param>
+        /// <param name="pDicRutas"></param>
+        /// <returns></returns>
         public static Autorizacion GetAutorizacionSGI(IHarvesterServices pHarvesterServices, ReadConfig pConfig, string pId, Dictionary<string, Dictionary<string, string>> pDicRutas)
         {
             // Obtención de datos en bruto.
@@ -52,6 +74,15 @@ namespace Harvester.Models.SGI.Autorizaciones
             return autorizacion;
         }
 
+        /// <summary>
+        /// Crea el objeto ProjectAuthorization.
+        /// </summary>
+        /// <param name="pHarvesterServices"></param>
+        /// <param name="pConfig"></param>
+        /// <param name="pResourceApi"></param>
+        /// <param name="pDicIdentificadores"></param>
+        /// <param name="pDicRutas"></param>
+        /// <returns></returns>
         public ProjectAuthorization CrearAutorizationOntology(IHarvesterServices pHarvesterServices, ReadConfig pConfig, ResourceApi pResourceApi, Dictionary<string, HashSet<string>> pDicIdentificadores, Dictionary<string, Dictionary<string, string>> pDicRutas)
         {
             ProjectAuthorization autorizacion = new ProjectAuthorization();

@@ -21,6 +21,18 @@ namespace OAI_PMH.Models.SGI.Project
     /// </summary>
     public class Proyecto : SGI_Base
     {
+        /// <summary>
+        /// Crea el objeto ComplexOntologyResource para ser cargado.
+        /// </summary>
+        /// <param name="pHarvesterServices"></param>
+        /// <param name="pConfig"></param>
+        /// <param name="pResourceApi"></param>
+        /// <param name="pDicIdentificadores"></param>
+        /// <param name="pDicRutas"></param>
+        /// <param name="pRabbitConf"></param>
+        /// <param name="pFusionarPersona"></param>
+        /// <param name="pIdPersona"></param>
+        /// <returns></returns>
         public override ComplexOntologyResource ToRecurso(IHarvesterServices pHarvesterServices, ReadConfig pConfig, ResourceApi pResourceApi, Dictionary<string, HashSet<string>> pDicIdentificadores, Dictionary<string, Dictionary<string, string>> pDicRutas, RabbitServiceWriterDenormalizer pRabbitConf, bool pFusionarPersona = false, string pIdPersona = null)
         {
             ProjectOntology.Project proyecto = CrearProjectOntology(pHarvesterServices, pConfig, pResourceApi, pDicIdentificadores, pDicRutas, pRabbitConf);
@@ -28,6 +40,11 @@ namespace OAI_PMH.Models.SGI.Project
             return proyecto.ToGnossApiResource(pResourceApi, null);
         }
 
+        /// <summary>
+        /// Obtiene los IDs de BBDD mediante el crisidentifier.
+        /// </summary>
+        /// <param name="pResourceApi"></param>
+        /// <returns></returns>
         public override string ObtenerIDBBDD(ResourceApi pResourceApi)
         {
             Dictionary<string, string> respuesta = ObtenerProyectoBBDD(new HashSet<string>() { Id.ToString() }, pResourceApi);
@@ -40,8 +57,19 @@ namespace OAI_PMH.Models.SGI.Project
 
         public override void ToRecursoAdicional(IHarvesterServices pHarvesterServices, ReadConfig pConfig, ResourceApi pResourceApi, Dictionary<string, HashSet<string>> pDicIdentificadores, Dictionary<string, Dictionary<string, string>> pDicRutas, RabbitServiceWriterDenormalizer pRabbitConf, string pIdGnoss)
         {
+            // No es necesario en esta clase.
         }
 
+        /// <summary>
+        /// Crea el objeto proyecto para ser cargado.
+        /// </summary>
+        /// <param name="pHarvesterServices"></param>
+        /// <param name="pConfig"></param>
+        /// <param name="pResourceApi"></param>
+        /// <param name="pDicIdentificadores"></param>
+        /// <param name="pDicRutas"></param>
+        /// <param name="pRabbitConf"></param>
+        /// <returns></returns>
         public ProjectOntology.Project CrearProjectOntology(IHarvesterServices pHarvesterServices, ReadConfig pConfig, ResourceApi pResourceApi, Dictionary<string, HashSet<string>> pDicIdentificadores, Dictionary<string, Dictionary<string, string>> pDicRutas, RabbitServiceWriterDenormalizer pRabbitConf)
         {
             #region --- Obtenemos los IDs de las personas del proyecto.
@@ -359,6 +387,14 @@ namespace OAI_PMH.Models.SGI.Project
             return project;
         }
 
+        /// <summary>
+        /// Obtiene los dato de los proyectos de SGI.
+        /// </summary>
+        /// <param name="pHarvesterServices"></param>
+        /// <param name="pConfig"></param>
+        /// <param name="pId"></param>
+        /// <param name="pDicRutas"></param>
+        /// <returns></returns>
         public static Proyecto GetProyectoSGI(IHarvesterServices pHarvesterServices, ReadConfig pConfig, string pId, Dictionary<string, Dictionary<string, string>> pDicRutas)
         {
             // Obtención de datos en bruto.
@@ -379,6 +415,12 @@ namespace OAI_PMH.Models.SGI.Project
             return proyecto;
         }
 
+        /// <summary>
+        /// Obtiene los proyectos de BBDD mediante el crisidentifiers.
+        /// </summary>
+        /// <param name="pListaIds"></param>
+        /// <param name="pResourceApi"></param>
+        /// <returns></returns>
         public static Dictionary<string, string> ObtenerProyectoBBDD(HashSet<string> pListaIds, ResourceApi pResourceApi)
         {
             List<List<string>> listaProyecto = SplitList(pListaIds.ToList(), 1000).ToList();
@@ -425,6 +467,12 @@ namespace OAI_PMH.Models.SGI.Project
             return dicProyectosBBDD;
         }
 
+        /// <summary>
+        /// Crea el objeto OrganizationAux para ser cargado.
+        /// </summary>
+        /// <param name="pGnossId"></param>
+        /// <param name="pResourceApi"></param>
+        /// <returns></returns>
         private static ProjectOntology.OrganizationAux CrearEntidadOrganizationAux(string pGnossId, ResourceApi pResourceApi)
         {
             OrganizacionBBDD organizacionBBDD = GetOrganizacionBBDD(pGnossId, pResourceApi);
@@ -438,6 +486,12 @@ namespace OAI_PMH.Models.SGI.Project
             return organizationAux;
         }
 
+        /// <summary>
+        /// Obtiene datos adicionales de las organizaciones.
+        /// </summary>
+        /// <param name="pIdGnoss"></param>
+        /// <param name="pResourceApi"></param>
+        /// <returns></returns>
         public static OrganizacionBBDD GetOrganizacionBBDD(string pIdGnoss, ResourceApi pResourceApi)
         {
             SparqlObject resultadoQuery = null;
