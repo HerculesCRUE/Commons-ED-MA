@@ -16,7 +16,7 @@ namespace OAI_PMH.Services
             string accessToken = Token.CheckToken(pConfig);
             Dictionary<string, DateTime> idDictionary = new();
             List<string> idList = new();
-            RestClient client = new(pConfig.GetUrlBaseFormacionAcademica() + "formacion/modificados-ids?q=fechaModificacion=ge=\"" + from + "\"" + ";tipoFormacion=\"020.010.010.000\"");
+            RestClient client = new(pConfig.GetConfigSGI() + "/api/sgp/formacion/modificados-ids?q=fechaModificacion=ge=\"" + from + "\"" + ";tipoFormacion=\"020.010.010.000\"");
             client.AddDefaultHeader("Authorization", "Bearer " + accessToken);
             var request = new RestRequest(Method.GET);
             IRestResponse response = client.Execute(request);
@@ -39,7 +39,7 @@ namespace OAI_PMH.Services
         {
             string accessToken = Token.CheckToken(pConfig);
             string identifier = id.Replace("\"", "");
-            RestClient client = new(pConfig.GetUrlBaseFormacionAcademica() + "formacion/" + identifier + "?tipoFormacion=\"020.010.010.000\"");
+            RestClient client = new(pConfig.GetConfigSGI() + "/api/sgp/formacion/" + identifier + "?tipoFormacion=\"020.010.010.000\"");
             client.AddDefaultHeader("Authorization", "Bearer " + accessToken);
             var request = new RestRequest(Method.GET);
             IRestResponse response = client.Execute(request);
@@ -56,7 +56,7 @@ namespace OAI_PMH.Services
         {
             Dictionary<string, DateTime> idDictionary = new();
             List<string> idList = new();
-            RestClient client = new(pConfig.GetUrlBaseFormacionAcademica() + "formacion/modificados-ids?q=fechaModificacion=ge=\"" + from + "\"" + ";tipoFormacion=\"020.010.020.000\"");
+            RestClient client = new(pConfig.GetConfigSGI() + "/api/sgp/formacion/modificados-ids?q=fechaModificacion=ge=\"" + from + "\"" + ";tipoFormacion=\"020.010.020.000\"");
             client.AddDefaultHeader("Authorization", "Bearer " + accessToken);
             var request = new RestRequest(Method.GET);
             IRestResponse response = client.Execute(request);
@@ -79,7 +79,7 @@ namespace OAI_PMH.Services
         {
             string accessToken = Token.CheckToken(pConfig);
             string identifier = id.Replace("\"", "");
-            RestClient client = new(pConfig.GetUrlBaseFormacionAcademica() + "formacion/" + identifier + "?tipoFormacion=\"020.010.020.000\"");
+            RestClient client = new(pConfig.GetConfigSGI() + "/api/sgp/formacion/" + identifier + "?tipoFormacion=\"020.010.020.000\"");
             client.AddDefaultHeader("Authorization", "Bearer " + accessToken);
             var request = new RestRequest(Method.GET);
             IRestResponse response = client.Execute(request);
@@ -96,7 +96,7 @@ namespace OAI_PMH.Services
         {
             Dictionary<string, DateTime> idDictionary = new();
             List<string> idList = new();
-            RestClient client = new(pConfig.GetUrlBaseFormacionAcademica() + "formacion/modificados-ids?q=fechaModificacion=ge=\"" + from + "\"" + ";tipoFormacion=\"020.010.030.000\"");
+            RestClient client = new(pConfig.GetConfigSGI() + "/api/sgp/formacion/modificados-ids?q=fechaModificacion=ge=\"" + from + "\"" + ";tipoFormacion=\"020.010.030.000\"");
             client.AddDefaultHeader("Authorization", "Bearer " + accessToken);
             var request = new RestRequest(Method.GET);
             IRestResponse response = client.Execute(request);
@@ -119,7 +119,7 @@ namespace OAI_PMH.Services
         {
             string accessToken = Token.CheckToken(pConfig);
             string identifier = id.Replace("\"", "");
-            RestClient client = new(pConfig.GetUrlBaseFormacionAcademica() + "formacion/" + identifier + "?tipoFormacion=\"020.010.030.000\"");
+            RestClient client = new(pConfig.GetConfigSGI() + "/api/sgp/formacion/" + identifier + "?tipoFormacion=\"020.010.030.000\"");
             client.AddDefaultHeader("Authorization", "Bearer " + accessToken);
             var request = new RestRequest(Method.GET);
             IRestResponse response = client.Execute(request);
@@ -136,7 +136,7 @@ namespace OAI_PMH.Services
         {
             Dictionary<string, DateTime> idDictionary = new();
             List<string> idList = new();
-            RestClient client = new(pConfig.GetUrlBaseFormacionAcademica() + "formacion/modificados-ids?q=fechaModificacion=ge=\"" + from + "\"" + ";tipoFormacion=\"020.020.000.000\"");
+            RestClient client = new(pConfig.GetConfigSGI() + "/api/sgp/formacion/modificados-ids?q=fechaModificacion=ge=\"" + from + "\"" + ";tipoFormacion=\"020.020.000.000\"");
             client.AddDefaultHeader("Authorization", "Bearer " + accessToken);
             var request = new RestRequest(Method.GET);
             IRestResponse response = client.Execute(request);
@@ -159,7 +159,7 @@ namespace OAI_PMH.Services
         {
             string accessToken = Token.CheckToken(pConfig);
             string identifier = id.Replace("\"", "");
-            RestClient client = new(pConfig.GetUrlBaseFormacionAcademica() + "formacion/" + identifier + "?tipoFormacion=\"020.020.000.000\"");
+            RestClient client = new(pConfig.GetConfigSGI() + "/api/sgp/formacion/" + identifier + "?tipoFormacion=\"020.020.000.000\"");
             client.AddDefaultHeader("Authorization", "Bearer " + accessToken);
             var request = new RestRequest(Method.GET);
             IRestResponse response = client.Execute(request);

@@ -17,7 +17,7 @@ namespace OAI_PMH.Services
             string accessToken = Token.CheckToken(pConfig);
             Dictionary<string, DateTime> idDictionary = new();
             List<string> idList = new();
-            RestClient client = new(pConfig.GetUrlBaseProduccionCientifica() + "producciones-cientificas/estado?q=fechaEstado=ge=\"" + from + "\"");
+            RestClient client = new(pConfig.GetConfigSGI() + "/api/sgiprc/producciones-cientificas/estado?q=fechaEstado=ge=\"" + from + "\"");
             client.AddDefaultHeader("Authorization", "Bearer " + accessToken);
             var request = new RestRequest(Method.GET);
             IRestResponse response = client.Execute(request);
@@ -42,7 +42,7 @@ namespace OAI_PMH.Services
             string accessToken = Token.CheckToken(pConfig);
             Dictionary<string, DateTime> idDictionary = new();
             List<string> idList = new();
-            RestClient client = new(pConfig.GetUrlBaseProduccionCientifica() + "producciones-cientificas/estado?q=fechaEstado=ge=\"" + from + "\"");
+            RestClient client = new(pConfig.GetConfigSGI() + "/api/sgiprc/producciones-cientificas/estado?q=fechaEstado=ge=\"" + from + "\"");
             client.AddDefaultHeader("Authorization", "Bearer " + accessToken);
             var request = new RestRequest(Method.GET);
             IRestResponse response = client.Execute(request);

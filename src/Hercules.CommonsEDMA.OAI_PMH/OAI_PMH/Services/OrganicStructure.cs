@@ -14,7 +14,7 @@ namespace OAI_PMH.Services
             string accessToken = Token.CheckToken(pConfig);
             Dictionary<string, DateTime> idDictionary = new();
             List<string> idList = new();
-            RestClient client = new(pConfig.GetUrlBaseEstructuraOrganica() + "empresas/modificadas-ids?q=padreId=na=\"" + parentId + "\"");
+            RestClient client = new(pConfig.GetConfigSGI() + "/api/sgo/empresas/modificadas-ids?q=padreId=na=\"" + parentId + "\"");
             client.AddDefaultHeader("Authorization", "Bearer " + accessToken);
             var request = new RestRequest(Method.GET);
             IRestResponse response = client.Execute(request);

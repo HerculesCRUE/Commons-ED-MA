@@ -10,7 +10,7 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers
         // Archivo de configuración.
         public static IConfigurationRoot configuracion;
         private string RabbitConnectionString { get; set; }
-        private string QueueRabbit { get; set; }
+        private string FuentesExternasQueueRabbit { get; set; }
         private string DenormalizerQueueRabbit { get; set; }
         private string DoiQueueRabbit { get; set; }
         private string UrlSimilarity { get; set; }
@@ -46,14 +46,14 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers
             if (string.IsNullOrEmpty(RabbitConnectionString))
             {
                 IDictionary environmentVariables = Environment.GetEnvironmentVariables();
-                string rabbitConnectionString = "";
-                if (environmentVariables.Contains("colaFuentesExternas"))
+                string rabbitConnectionString = string.Empty;
+                if (environmentVariables.Contains("RabbitMQ"))
                 {
-                    rabbitConnectionString = environmentVariables["colaFuentesExternas"] as string;
+                    rabbitConnectionString = environmentVariables["RabbitMQ"] as string;
                 }
                 else
                 {
-                    rabbitConnectionString = configuracion["RabbitMQ:colaFuentesExternas"];
+                    rabbitConnectionString = configuracion.GetConnectionString("RabbitMQ");
                 }
                 RabbitConnectionString = rabbitConnectionString;
             }
@@ -64,23 +64,23 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers
         /// Obtiene la el nombre de la cola Rabbit de configuración.
         /// </summary>
         /// <returns>Nombre de la cola Rabbit.</returns>
-        public string GetQueueRabbit()
+        public string GetFuentesExternasQueueRabbit()
         {
-            if (string.IsNullOrEmpty(QueueRabbit))
+            if (string.IsNullOrEmpty(FuentesExternasQueueRabbit))
             {
                 IDictionary environmentVariables = Environment.GetEnvironmentVariables();
                 string queue = "";
-                if (environmentVariables.Contains("QueueRabbit"))
+                if (environmentVariables.Contains("FuentesExternasQueueRabbit"))
                 {
-                    queue = environmentVariables["QueueRabbit"] as string;
+                    queue = environmentVariables["FuentesExternasQueueRabbit"] as string;
                 }
                 else
                 {
-                    queue = configuracion["QueueRabbit"];
+                    queue = configuracion["FuentesExternasQueueRabbit"];
                 }
-                QueueRabbit = queue;
+                FuentesExternasQueueRabbit = queue;
             }
-            return QueueRabbit;
+            return FuentesExternasQueueRabbit;
         }
 
         /// <summary>

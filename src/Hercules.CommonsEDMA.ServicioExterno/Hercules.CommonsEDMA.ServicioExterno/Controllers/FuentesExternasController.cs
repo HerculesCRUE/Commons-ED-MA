@@ -55,24 +55,24 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers
 
                     // Publicaciones.
                     List<string> listaDatos = new List<string>() { "investigador", orcid, ultimaFechaMod, idGnoss };
-                    rabbitMQService.PublishMessage(listaDatos, _Configuracion.GetQueueRabbit());
+                    rabbitMQService.PublishMessage(listaDatos, _Configuracion.GetFuentesExternasQueueRabbit());
 
                     // Zenodo
                     List<string> listaDatosZenodo = new List<string>() { "zenodo", orcid };
-                    rabbitMQService.PublishMessage(listaDatosZenodo, _Configuracion.GetQueueRabbit());
+                    rabbitMQService.PublishMessage(listaDatosZenodo, _Configuracion.GetFuentesExternasQueueRabbit());
 
                     // FigShare
                     if (dicIDs.ContainsKey("usuarioFigshare") && dicIDs.ContainsKey("tokenFigshare"))
                     {
                         List<string> listaDatosFigShare = new List<string>() { "figshare", dicIDs["tokenFigshare"] };
-                        rabbitMQService.PublishMessage(listaDatosFigShare, _Configuracion.GetQueueRabbit());
+                        rabbitMQService.PublishMessage(listaDatosFigShare, _Configuracion.GetFuentesExternasQueueRabbit());
                     }
 
                     // GitHub
                     if (dicIDs.ContainsKey("usuarioGitHub") && dicIDs.ContainsKey("tokenGitHub"))
                     {
                         List<string> listaDatosGitHub = new List<string>() { "github", dicIDs["usuarioGitHub"], dicIDs["tokenGitHub"] };
-                        rabbitMQService.PublishMessage(listaDatosGitHub, _Configuracion.GetQueueRabbit());
+                        rabbitMQService.PublishMessage(listaDatosGitHub, _Configuracion.GetFuentesExternasQueueRabbit());
                     }
                 }
             }
