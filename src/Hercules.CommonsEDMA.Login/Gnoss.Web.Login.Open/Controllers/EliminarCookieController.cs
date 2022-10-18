@@ -137,7 +137,7 @@ namespace Gnoss.Web.Login
             }
 
             IDictionary environmentVariables = Environment.GetEnvironmentVariables();
-            if (environmentVariables.Contains("Saml2_IdPMetadata"))
+            if (environmentVariables.Contains("Saml2_IdPMetadata") && !string.IsNullOrEmpty(environmentVariables["Saml2_IdPMetadata"] as string))
             {
                 Response.Redirect(Url.Content(@$"~/{mConfigServiceSAML.GetUrlServiceInDomain()}Auth/Logout"));
             }
