@@ -30,6 +30,9 @@
     <None Update="Utilidades\paises.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Update="Utilidades\paises.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="Utilidades\prefijos.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

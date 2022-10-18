@@ -24,7 +24,7 @@
                         <a class="nav-link active" id="externas-tab" data-toggle="tab"
                            href="#externas-panel" role="tab" aria-controls="externas-panel"
                            aria-selected="false">
-                            Novedades de fuentes externas <span class="badge">
+                            @Html.Translate("NOVEDADES_PUBLICACIONES_RO") <span class="badge">
                                 @listaNotificaciones.Count(x => string.IsNullOrEmpty(x.desencadenante) && (!string.IsNullOrEmpty(x.titulo) || !string.IsNullOrEmpty(x.mensaje) || x.tipoNotificacion.Equals("loadExternalSource") || x.tipoNotificacion.Equals("recuperarSexenios") || x.tipoNotificacion.Equals("recuperarAcreditaciones")))
                             </span>
                         </a>
@@ -33,7 +33,7 @@
                         <a class="nav-link" id="otras-tab" data-toggle="tab"
                            href="#otras-panel" role="tab" aria-controls="otras-panel"
                            aria-selected="true">
-                            Otras notificaciones <span class="badge">
+                            @Html.Translate("OTRAS_NOTIFICACIONES") <span class="badge">
                                 @listaNotificaciones.Count(x => !string.IsNullOrEmpty(x.desencadenante) && x.desencadenante != @Html.Translate("NOTIFICACION_SE")
 								 && (!string.IsNullOrEmpty(x.titulo) || !string.IsNullOrEmpty(x.mensaje)))
                             </span>
@@ -227,6 +227,12 @@
 										@Html.Raw(InicioArticle)
 										@notification.fecha @Html.Raw(" - ")
                                         @Html.Translate("NOTIFICACION_FIN_FUENTES_EXTERNAS") @notification.titulo
+                                        @Html.Raw(FinArticle)
+									}
+									else if(notification.tipoNotificacion == "loadCV"){
+										@Html.Raw(InicioArticle)
+										@notification.fecha @Html.Raw(" - ")
+                                        @Html.Translate("NOTIFICACION_FIN_CARGA_CV")
                                         @Html.Raw(FinArticle)
 									}
                                     else

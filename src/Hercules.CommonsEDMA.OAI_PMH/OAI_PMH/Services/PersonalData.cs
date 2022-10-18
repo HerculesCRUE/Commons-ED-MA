@@ -26,7 +26,7 @@ namespace OAI_PMH.Services
 
             #region --- Personal Data
             List<string> idList = new();
-            RestClient client = new(pConfig.GetUrlBasePersona() + "personas/modificadas-ids?q=fechaModificacion=ge=\"" + from + "\"");
+            RestClient client = new(pConfig.GetConfigSGI() + "/api/sgp/personas/modificadas-ids?q=fechaModificacion=ge=\"" + from + "\"");
             client.AddDefaultHeader("Authorization", "Bearer " + accessToken);
             var request = new RestRequest(Method.GET);
             IRestResponse response = client.Execute(request);
@@ -305,7 +305,7 @@ namespace OAI_PMH.Services
         private static Persona GetDatosPersona(string id, ConfigService pConfig)
         {
             string accessToken = Token.CheckToken(pConfig);
-            RestClient client = new(pConfig.GetUrlBasePersona() + "personas/" + id);
+            RestClient client = new(pConfig.GetConfigSGI() + "/api/sgp/personas/" + id);
             client.AddDefaultHeader("Authorization", "Bearer " + accessToken);
             var request = new RestRequest(Method.GET);
             IRestResponse response = client.Execute(request);
@@ -328,7 +328,7 @@ namespace OAI_PMH.Services
         {
             string accessToken = Token.CheckToken(pConfig);
             DatosPersonales datosPersonales = new();
-            RestClient client = new(pConfig.GetUrlBasePersona() + "datos-personales/persona/" + id);
+            RestClient client = new(pConfig.GetConfigSGI() + "/api/sgp/datos-personales/persona/" + id);
             client.AddDefaultHeader("Authorization", "Bearer " + accessToken);
             var request = new RestRequest(Method.GET);
             IRestResponse response = client.Execute(request);
@@ -347,7 +347,7 @@ namespace OAI_PMH.Services
         {
             string accessToken = Token.CheckToken(pConfig);
             DatosContacto datosContacto = new();
-            RestClient client = new(pConfig.GetUrlBasePersona() + "datos-contacto/persona/" + id);
+            RestClient client = new(pConfig.GetConfigSGI() + "/api/sgp/datos-contacto/persona/" + id);
             client.AddDefaultHeader("Authorization", "Bearer " + accessToken);
             var request = new RestRequest(Method.GET);
             IRestResponse response = client.Execute(request);
@@ -366,7 +366,7 @@ namespace OAI_PMH.Services
         {
             string accessToken = Token.CheckToken(pConfig);
             Vinculacion vinculacion = new();
-            RestClient client = new(pConfig.GetUrlBasePersona() + "vinculaciones/persona/" + id);
+            RestClient client = new(pConfig.GetConfigSGI() + "/api/sgp/vinculaciones/persona/" + id);
             client.AddDefaultHeader("Authorization", "Bearer " + accessToken);
             var request = new RestRequest(Method.GET);
             IRestResponse response = client.Execute(request);
@@ -385,7 +385,7 @@ namespace OAI_PMH.Services
         {
             string accessToken = Token.CheckToken(pConfig);
             VinculacionCategoriaProfesional vinculacion = new();
-            RestClient client = new(pConfig.GetUrlBasePersona() + "vinculaciones/persona/" + id + "/vinculaciones-categorias-profesionales");
+            RestClient client = new(pConfig.GetConfigSGI() + "/api/sgp/vinculaciones/persona/" + id + "/vinculaciones-categorias-profesionales");
             client.AddDefaultHeader("Authorization", "Bearer " + accessToken);
             var request = new RestRequest(Method.GET);
             IRestResponse response = client.Execute(request);
@@ -404,7 +404,7 @@ namespace OAI_PMH.Services
         {
             string accessToken = Token.CheckToken(pConfig);
             DatosAcademicos datosAcademicos = new();
-            RestClient client = new(pConfig.GetUrlBasePersona() + "datos-academicos/persona/" + id);
+            RestClient client = new(pConfig.GetConfigSGI() + "/api/sgp/datos-academicos/persona/" + id);
             client.AddDefaultHeader("Authorization", "Bearer " + accessToken);
             var request = new RestRequest(Method.GET);
             IRestResponse response = client.Execute(request);
@@ -423,7 +423,7 @@ namespace OAI_PMH.Services
         {
             string accessToken = Token.CheckToken(pConfig);
             Fotografia fotografia = new();
-            RestClient client = new(pConfig.GetUrlBasePersona() + "personas/" + id + "/fotografia");
+            RestClient client = new(pConfig.GetConfigSGI() + "/api/sgp/personas/" + id + "/fotografia");
             client.AddDefaultHeader("Authorization", "Bearer " + accessToken);
             var request = new RestRequest(Method.GET);
             IRestResponse response = client.Execute(request);
@@ -442,7 +442,7 @@ namespace OAI_PMH.Services
         {
             string accessToken = Token.CheckToken(pConfig);
             Sexenio sexenios = new();
-            RestClient client = new(pConfig.GetUrlBasePersona() + "sexenios/persona/" + id);
+            RestClient client = new(pConfig.GetConfigSGI() + "/api/sgp/sexenios/persona/" + id);
             client.AddDefaultHeader("Authorization", "Bearer " + accessToken);
             var request = new RestRequest(Method.GET);
             IRestResponse response = client.Execute(request);

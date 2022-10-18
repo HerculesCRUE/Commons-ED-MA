@@ -106,7 +106,7 @@ namespace OAI_PMH.Services
 
         private static string GetToken(ConfigService pConfig, bool pTokenGestor, bool pTokenPii)
         {
-            Uri url = new Uri(pConfig.GetUrlBaseToken());
+            Uri url = new Uri(pConfig.GetConfigSGI() + "/auth/realms/sgi/protocol/openid-connect/token");
             FormUrlEncodedContent content = null;
             if (pTokenGestor)
             {
@@ -140,7 +140,7 @@ namespace OAI_PMH.Services
 
         private static string RefreshToken(ConfigService pConfig)
         {
-            Uri url = new Uri(pConfig.GetUrlBaseToken());
+            Uri url = new Uri(pConfig.GetConfigSGI() + "/auth/realms/sgi/protocol/openid-connect/token");
             var content = new FormUrlEncodedContent(new[]
             {
                 new KeyValuePair<string, string>("client_id", "front"),
