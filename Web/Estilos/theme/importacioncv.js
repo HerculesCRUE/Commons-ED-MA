@@ -142,6 +142,7 @@ var importarCVN = {
 		if($('#titleMascaraBlanca').length == 0){
 			$('#mascaraBlanca').find('.wrap.popup').append('<br><div id="titleMascaraBlanca"></div>');
 			$('#mascaraBlanca').find('.wrap.popup').append('<div id="workMascaraBlanca"></div>');
+			$('#mascaraBlanca').find('.wrap.popup').append('<div id="subworkMascaraBlanca"></div>');
 		}
 	
 		var that=this;
@@ -158,11 +159,22 @@ var importarCVN = {
 				type: 'GET',
 				success: function ( response ) {
 					if(response != null && response != ''){
-						if(response.subTotalWorks == null || response.subTotalWorks == 0 || response.subActualWork==response.subTotalWorks){
+						if(response.subActualWork > response.subTotalWorks){
+							response.subActualWork = response.subTotalWorks;
+						}
+						if(response.actualSubWorks > response.actualSubTotalWorks){
+							response.actualSubWorks = response.actualSubTotalWorks;
+						}
+						
+						if(response.subTotalWorks == null || response.subTotalWorks == 0){
 							$('#titleMascaraBlanca').text(`${GetText(response.actualWorkTitle)}`);
 						}
 						else{
 							$('#titleMascaraBlanca').text(`${GetText(response.actualWorkTitle)}` + " (" +  response.subActualWork + '/' + response.subTotalWorks + ")");
+							
+							if(response.actualWorkSubtitle != null && response.actualSubWorks != null && response.actualSubTotalWorks){
+								$('#subworkMascaraBlanca').text(`${GetText(response.actualWorkSubtitle)}` + " (" +  response.actualSubWorks + '/' + response.actualSubTotalWorks + ")");
+							}
 						}
 						//Si no hay pasos maximos no muestro la lista
 						if(response.totalWorks != 0){
@@ -312,6 +324,7 @@ var importarCVN = {
 		if($('#titleMascaraBlanca').length == 0){
 			$('#mascaraBlanca').find('.wrap.popup').append('<br><div id="titleMascaraBlanca"></div>');
 			$('#mascaraBlanca').find('.wrap.popup').append('<div id="workMascaraBlanca"></div>');
+			$('#mascaraBlanca').find('.wrap.popup').append('<div id="subworkMascaraBlanca"></div>');
 		}
 		
 		//Actualizo el estado cada 500 milisegundos
@@ -321,11 +334,22 @@ var importarCVN = {
 				type: 'GET',
 				success: function ( response ) {
 					if(response != null && response != ''){
-						if(response.subTotalWorks == null || response.subTotalWorks == 0 || response.subActualWork==response.subTotalWorks){
-							$('#titleMascaraBlanca').text(`${GetText(response.actualWorkTitle)}`);
+						if(response.subActualWork > response.subTotalWorks){
+							response.subActualWork = response.subTotalWorks;
+						}
+						if(response.actualSubWorks > response.actualSubTotalWorks){
+							response.actualSubWorks = response.actualSubTotalWorks;
+						}
+						
+						if(response.subTotalWorks == null || response.subTotalWorks == 0){
+							$('#titleMascaraBlanca').text(`${GetText(response.actualWorkTitle)}`);							
 						}
 						else{
 							$('#titleMascaraBlanca').text(`${GetText(response.actualWorkTitle)}` + " (" +  response.subActualWork + '/' + response.subTotalWorks + ")");
+							
+							if(response.actualWorkSubtitle != null && response.actualSubWorks != null && response.actualSubTotalWorks){
+								$('#subworkMascaraBlanca').text(`${GetText(response.actualWorkSubtitle)}` + " (" +  response.actualSubWorks + '/' + response.actualSubTotalWorks + ")");
+							}
 						}
 						//Si no hay pasos maximos no muestro la lista
 						if(response.totalWorks != 0){
@@ -348,6 +372,7 @@ var importarCVN = {
 				clearInterval(intervalStatus);
 				$('#titleMascaraBlanca').remove();
 				$('#workMascaraBlanca').remove();
+				$('#subworkMascaraBlanca').remove();
 				
 				OcultarUpdateProgress();
 				if(urlUserCV != null && urlUserCV != '')
@@ -359,6 +384,7 @@ var importarCVN = {
 				clearInterval(intervalStatus);
 				$('#titleMascaraBlanca').remove();
 				$('#workMascaraBlanca').remove();
+				$('#subworkMascaraBlanca').remove();
 				
 				var msg = '';
 				if (jqXHR.status === 0) {

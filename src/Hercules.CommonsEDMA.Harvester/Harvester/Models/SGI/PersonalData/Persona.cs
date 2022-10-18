@@ -74,7 +74,7 @@ namespace OAI_PMH.Models.SGI.PersonalData
 
             // Eliminación.
             List<string> listaTesisBorrarCrisIdentifiers = crisIdentifiersTesisBBDD.Except(crisIdentifiersTesisSGI).ToList();
-            List<string> listaIdsTesisBorrar = ObtenerDataByCrisIdentifiers(listaTesisBorrarCrisIdentifiers, pResourceApi, "thesissupervision");
+            List<string> listaIdsTesisBorrar = ObtenerDataByCrisIdentifiers(listaTesisBorrarCrisIdentifiers, pResourceApi, "thesissupervision", "030.040.000.000");
             BorrarRecursos(listaIdsTesisBorrar, pResourceApi, "thesissupervision");
             #endregion
 
@@ -97,7 +97,7 @@ namespace OAI_PMH.Models.SGI.PersonalData
 
             // Eliminación.
             List<string> listaImpartedAcademicBorrarCrisIdentifiers = crisIdentifiersImpartedAcademicBBDD.Except(crisIdentifiersImpartedAcademicSGI).ToList();
-            List<string> listaIdsImpartedAcademicBorrar = ObtenerDataByCrisIdentifiers(listaImpartedAcademicBorrarCrisIdentifiers, pResourceApi, "impartedacademictraining");
+            List<string> listaIdsImpartedAcademicBorrar = ObtenerDataByCrisIdentifiers(listaImpartedAcademicBorrarCrisIdentifiers, pResourceApi, "impartedacademictraining", "030.010.000.000");
             BorrarRecursos(listaIdsImpartedAcademicBorrar, pResourceApi, "impartedacademictraining");
             #endregion
 
@@ -116,11 +116,11 @@ namespace OAI_PMH.Models.SGI.PersonalData
             List<string> listaCursosCargarCrisIdentifiers = crisIdentifiersCursosSGI.Except(crisIdentifiersCursosBBDD).ToList();
             List<ImpartedCoursesSeminarsBBDD> listaCursosCargar = listaCursosSGI.Where(x => listaCursosCargarCrisIdentifiers.Contains(x.crisIdentifiers)).ToList();
             List<ComplexOntologyResource> listaCursosOntology = GetCursosSupervision(listaCursosCargar, pResourceApi, pIdGnoss);
-            CargarDatos(listaTesisOntology, pResourceApi);
+            CargarDatos(listaCursosOntology, pResourceApi);
 
             // Eliminación.
             List<string> listaCursosBorrarCrisIdentifiers = crisIdentifiersCursosBBDD.Except(crisIdentifiersCursosSGI).ToList();
-            List<string> listaIdsCursosBorrar = ObtenerDataByCrisIdentifiers(listaCursosBorrarCrisIdentifiers, pResourceApi, "impartedcoursesseminars");
+            List<string> listaIdsCursosBorrar = ObtenerDataByCrisIdentifiers(listaCursosBorrarCrisIdentifiers, pResourceApi, "impartedcoursesseminars", "030.060.000.000");
             BorrarRecursos(listaIdsCursosBorrar, pResourceApi, "impartedcoursesseminars");
             #endregion
 
@@ -142,7 +142,7 @@ namespace OAI_PMH.Models.SGI.PersonalData
 
             // Eliminación.
             List<string> listaCiclosBorrarCrisIdentifiers = crisIdentifiersCyclesBBDD.Except(crisIdentifiersCyclesSGI).ToList();
-            List<string> listaIdsCiclosBorrar = ObtenerDataByCrisIdentifiers(listaCiclosBorrarCrisIdentifiers, pResourceApi, "academicdegree");
+            List<string> listaIdsCiclosBorrar = ObtenerDataByCrisIdentifiers(listaCiclosBorrarCrisIdentifiers, pResourceApi, "academicdegree", "020.010.010.000");
             BorrarRecursos(listaIdsCiclosBorrar, pResourceApi, "academicdegree");
             #endregion
 
@@ -164,7 +164,7 @@ namespace OAI_PMH.Models.SGI.PersonalData
 
             // Eliminación.
             List<string> listaDoctoradosBorrarCrisIdentifiers = crisIdentifiersDoctoradosBBDD.Except(crisIdentifiersDoctoradosSGI).ToList();
-            List<string> listaIdsDoctoradosBorrar = ObtenerDataByCrisIdentifiers(listaDoctoradosBorrarCrisIdentifiers, pResourceApi, "academicdegree");
+            List<string> listaIdsDoctoradosBorrar = ObtenerDataByCrisIdentifiers(listaDoctoradosBorrarCrisIdentifiers, pResourceApi, "academicdegree", "020.010.020.000");
             BorrarRecursos(listaIdsDoctoradosBorrar, pResourceApi, "academicdegree");
             #endregion
 
@@ -186,7 +186,7 @@ namespace OAI_PMH.Models.SGI.PersonalData
 
             // Eliminación.
             List<string> listaPosgradosBorrarCrisIdentifiers = crisIdentifiersPosgradoBBDD.Except(crisIdentifiersPosgradoSGI).ToList();
-            List<string> listaIdsPosgradosBorrar = ObtenerDataByCrisIdentifiers(listaPosgradosBorrarCrisIdentifiers, pResourceApi, "academicdegree");
+            List<string> listaIdsPosgradosBorrar = ObtenerDataByCrisIdentifiers(listaPosgradosBorrarCrisIdentifiers, pResourceApi, "academicdegree", "020.010.030.000");
             BorrarRecursos(listaIdsPosgradosBorrar, pResourceApi, "academicdegree");
             #endregion
 
@@ -204,11 +204,11 @@ namespace OAI_PMH.Models.SGI.PersonalData
             List<string> listaEspecializadaCargarCrisIdentifiers = crisIdentifiersEspecializadaSGI.Except(crisIdentifiersEspecializadaBBDD).ToList();
             List<FormacionEspecializadaBBDD> listaEspecializadaCargar = listaEspecializadaSGI.Where(x => listaEspecializadaCargarCrisIdentifiers.Contains(x.crisIdentifier)).ToList();
             List<ComplexOntologyResource> listaEspecializadaOntology = GetFormacionEspecializada(listaEspecializadaCargar, pResourceApi, pIdGnoss);
-            CargarDatos(listaPosgradosOntology, pResourceApi);
+            CargarDatos(listaEspecializadaOntology, pResourceApi);
 
             // Eliminación.
             List<string> listaEspecializadaBorrarCrisIdentifiers = crisIdentifiersEspecializadaBBDD.Except(crisIdentifiersEspecializadaSGI).ToList();
-            List<string> listaIdsEspecializadaBorrar = ObtenerDataByCrisIdentifiers(listaEspecializadaBorrarCrisIdentifiers, pResourceApi, "academicdegree");
+            List<string> listaIdsEspecializadaBorrar = ObtenerDataByCrisIdentifiers(listaEspecializadaBorrarCrisIdentifiers, pResourceApi, "academicdegree", "020.020.000.000");
             BorrarRecursos(listaIdsEspecializadaBorrar, pResourceApi, "academicdegree");
             #endregion
         }
@@ -224,7 +224,7 @@ namespace OAI_PMH.Models.SGI.PersonalData
             }
         }
 
-        public static List<string> ObtenerDataByCrisIdentifiers(List<string> pListaCrisIdentifiers, ResourceApi pResourceApi, string pOntology)
+        public static List<string> ObtenerDataByCrisIdentifiers(List<string> pListaCrisIdentifiers, ResourceApi pResourceApi, string pOntology, string pCvnCode)
         {
             List<string> listaTesis = new List<string>();
 
@@ -234,6 +234,7 @@ namespace OAI_PMH.Models.SGI.PersonalData
             select = $@"SELECT * ";
             where = $@"WHERE {{                        
                         ?s <http://w3id.org/roh/crisIdentifier> ?crisIdentifier. 
+                        ?s <http://w3id.org/roh/cvnCode> '{pCvnCode}'.
                         FILTER(?crisIdentifier in ('{string.Join("', '", pListaCrisIdentifiers.Select(x => x))}'))
                     }}";
 
@@ -358,6 +359,10 @@ namespace OAI_PMH.Models.SGI.PersonalData
                     persona.Vcard_email.Add(item.email);
                 }
             }
+            else
+            {
+                // No tiene correo la persona.
+            }
 
             // Dirección de contacto.
             if (!string.IsNullOrEmpty(this.DatosContacto?.PaisContacto?.Nombre) || !string.IsNullOrEmpty(this.DatosContacto?.ComAutonomaContacto?.Nombre)
@@ -469,9 +474,11 @@ namespace OAI_PMH.Models.SGI.PersonalData
             {
                 ThesissupervisionOntology.ThesisSupervision tesisDevolver = new ThesissupervisionOntology.ThesisSupervision();
 
+                // CrisIdentifier
+                tesisDevolver.Roh_crisIdentifier = tesis.crisIdentifier;
+
                 tesisDevolver.IdRoh_owner = pIdGnoss;
                 tesisDevolver.Roh_cvnCode = "030.040.000.000";
-                tesisDevolver.Roh_crisIdentifier = tesis.crisIdentifier;
                 tesisDevolver.IdRoh_projectCharacterType = tesis.projectCharacterType;
                 tesisDevolver.Roh_projectCharacterTypeOther = tesis.projectCharacterTypeOther;
                 tesisDevolver.Roh_title = tesis.title;
@@ -501,6 +508,7 @@ namespace OAI_PMH.Models.SGI.PersonalData
                     tesisDevolver.Roh_codirector = new List<ThesissupervisionOntology.PersonAux>() { personaAux };
                 }
 
+
                 listaTesisDevolver.Add(tesisDevolver.ToGnossApiResource(pResourceApi, null));
             }
 
@@ -515,21 +523,36 @@ namespace OAI_PMH.Models.SGI.PersonalData
             {
                 AcademicdegreeOntology.AcademicDegree ciclosDevolver = new AcademicdegreeOntology.AcademicDegree();
 
+                string crisIdentifier = string.Empty;
+
                 ciclosDevolver.IdRoh_owner = pIdGnoss;
                 ciclosDevolver.Roh_cvnCode = "020.010.010.000";
+                crisIdentifier += $@"{ciclosDevolver.Roh_cvnCode}___";
+
                 ciclosDevolver.Roh_title = ciclo.nombreTitulo;
-                ciclosDevolver.Roh_crisIdentifier = ciclo.crisIdentifier;
+                crisIdentifier += $@"{RemoveDiacritics(ciclosDevolver.Roh_title)}___";
+
                 ciclosDevolver.Roh_conductedByTitle = ciclo.entidadTitulacionTitulo;
+                crisIdentifier += $@"{RemoveDiacritics(ciclosDevolver.Roh_conductedByTitle)}___";
+
                 ciclosDevolver.IdRoh_conductedBy = ciclo.entidadTitulacion;
                 ciclosDevolver.Dct_issued = ciclo.fechaTitulacion;
                 ciclosDevolver.IdRoh_universityDegreeType = ciclo.titulacionUni;
                 ciclosDevolver.Roh_universityDegreeTypeOther = ciclo.titulacionUniOtros;
+                crisIdentifier += $@"{RemoveDiacritics(ciclosDevolver.Roh_universityDegreeTypeOther)}___";
+
                 ciclosDevolver.Roh_foreignTitle = ciclo.tituloExtranjero;
+                crisIdentifier += $@"{RemoveDiacritics(ciclosDevolver.Roh_foreignTitle)}___";
+
                 ciclosDevolver.Roh_approvedDegree = ciclo.tituloHomologado;
                 ciclosDevolver.Roh_approvedDate = ciclo.fechaHomologacion;
                 // NOTA MEDIA TODO
                 ciclosDevolver.IdRoh_prize = ciclo.premio;
                 ciclosDevolver.Roh_prizeOther = ciclo.premioOther;
+                crisIdentifier += $@"{RemoveDiacritics(ciclosDevolver.Roh_prizeOther)}___";
+
+                // CrisIdentifier
+                ciclosDevolver.Roh_crisIdentifier = crisIdentifier;
 
                 listaCiclosDevolver.Add(ciclosDevolver.ToGnossApiResource(pResourceApi, null));
             }
@@ -545,35 +568,30 @@ namespace OAI_PMH.Models.SGI.PersonalData
             {
                 AcademicdegreeOntology.AcademicDegree doctoradosDevolver = new AcademicdegreeOntology.AcademicDegree();
 
+                // CrisIdentifier
+                doctoradosDevolver.Roh_crisIdentifier = doctorado.crisIdentifier;
+
                 doctoradosDevolver.IdRoh_owner = pIdGnoss;
                 doctoradosDevolver.Roh_cvnCode = "020.010.020.000";
                 doctoradosDevolver.Roh_title = doctorado.nombreTitulo;
-                doctoradosDevolver.Roh_crisIdentifier = doctorado.crisIdentifier;
                 doctoradosDevolver.Roh_conductedByTitle = doctorado.entidadTitulacionTitulo;
                 doctoradosDevolver.IdRoh_conductedBy = doctorado.entidadTitulacion;
                 doctoradosDevolver.Dct_issued = doctorado.fechaTitulacion;
-
                 doctoradosDevolver.IdRoh_deaEntity = doctorado.entidadTitDEA;
                 doctoradosDevolver.Roh_deaEntityTitle = doctorado.entidadTitDEATitulo;
                 doctoradosDevolver.Roh_deaDate = doctorado.obtencionDEA;
                 doctoradosDevolver.Roh_thesisTitle = doctorado.tituloTesis;
                 doctoradosDevolver.Roh_qualification = doctorado.calificacionObtenida;
-
                 doctoradosDevolver.Roh_directorNick = doctorado.firmaDirector;
                 doctoradosDevolver.Roh_directorName = doctorado.nombreDirector;
                 doctoradosDevolver.Roh_directorFirstSurname = doctorado.primApeDirector;
                 doctoradosDevolver.Roh_directorSecondSurname = doctorado.segunApeDirector;
-
                 // TODO: CoDirectores
-
                 doctoradosDevolver.Roh_europeanDoctorate = doctorado.doctoradoEuropeo;
                 doctoradosDevolver.Roh_europeanDoctorateDate = doctorado.fechaDoctorado;
-
                 doctoradosDevolver.Roh_qualityMention = doctorado.mencionCalidad;
-
                 doctoradosDevolver.Roh_doctorExtraordinaryAward = doctorado.premioExtraordinarioDoctor;
                 doctoradosDevolver.Roh_doctorExtraordinaryAwardDate = doctorado.fechaPremioDoctor;
-
                 doctoradosDevolver.Roh_approvedDegree = doctorado.tituloHomologado;
                 doctoradosDevolver.Roh_approvedDate = doctorado.fechaHomologado;
 
@@ -591,14 +609,15 @@ namespace OAI_PMH.Models.SGI.PersonalData
             {
                 AcademicdegreeOntology.AcademicDegree posgradosDevolver = new AcademicdegreeOntology.AcademicDegree();
 
+                // CrisIdentifier
+                posgradosDevolver.Roh_crisIdentifier = posgrado.crisIdentifier;
+
                 posgradosDevolver.IdRoh_owner = pIdGnoss;
                 posgradosDevolver.Roh_cvnCode = "020.010.030.000";
                 posgradosDevolver.Roh_title = posgrado.nombreTitulo;
-                posgradosDevolver.Roh_crisIdentifier = posgrado.crisIdentifier;
                 posgradosDevolver.Roh_conductedByTitle = posgrado.entidadTitulacionTitulo;
                 posgradosDevolver.IdRoh_conductedBy = posgrado.entidadTitulacion;
                 posgradosDevolver.Dct_issued = posgrado.fechaTitulacion;
-
                 posgradosDevolver.IdRoh_formationType = posgrado.tipoFormacion;
                 posgradosDevolver.Roh_qualification = posgrado.calificacionObtenida;
                 posgradosDevolver.Roh_approvedDegree = posgrado.tituloHomologado;
@@ -618,14 +637,15 @@ namespace OAI_PMH.Models.SGI.PersonalData
             {
                 AcademicdegreeOntology.AcademicDegree formEspDevolver = new AcademicdegreeOntology.AcademicDegree();
 
+                // CrisIdentifier
+                formEspDevolver.Roh_crisIdentifier = formacionEspecializada.crisIdentifier;
+
                 formEspDevolver.IdRoh_owner = pIdGnoss;
                 formEspDevolver.Roh_cvnCode = "020.020.000.000";
                 formEspDevolver.Roh_title = formacionEspecializada.nombreTitulo;
-                formEspDevolver.Roh_crisIdentifier = formacionEspecializada.crisIdentifier;
                 formEspDevolver.Roh_conductedByTitle = formacionEspecializada.entidadTitulacionTitulo;
                 formEspDevolver.IdRoh_conductedBy = formacionEspecializada.entidadTitulacion;
                 formEspDevolver.Dct_issued = formacionEspecializada.fechaFinalizacion;
-
                 formEspDevolver.Roh_durationHours = formacionEspecializada.duracionHoras;
                 formEspDevolver.IdRoh_formationType = formacionEspecializada.tipoFormacion;
                 formEspDevolver.Roh_goals = formacionEspecializada.objetivosEntidad;
@@ -649,9 +669,12 @@ namespace OAI_PMH.Models.SGI.PersonalData
             {
                 ImpartedacademictrainingOntology.ImpartedAcademicTraining academicDevolver = new ImpartedacademictrainingOntology.ImpartedAcademicTraining();
 
-                academicDevolver.IdRoh_owner = pIdGnoss;
-                academicDevolver.Roh_cvnCode = "030.010.000.000";
+                // CrisIdentifier
                 academicDevolver.Roh_crisIdentifier = impartedAcademic.crisIdentifier;
+
+                academicDevolver.IdRoh_owner = pIdGnoss;
+
+                academicDevolver.Roh_cvnCode = "030.010.000.000";
                 academicDevolver.Roh_title = impartedAcademic.title;
                 academicDevolver.IdRoh_degreeType = impartedAcademic.degreeType;
                 academicDevolver.Roh_teaches = impartedAcademic.teaches;
@@ -710,31 +733,61 @@ namespace OAI_PMH.Models.SGI.PersonalData
             {
                 ImpartedcoursesseminarsOntology.ImpartedCoursesSeminars courseDevolver = new ImpartedcoursesseminarsOntology.ImpartedCoursesSeminars();
 
+                string crisIdentifier = string.Empty;
+
                 courseDevolver.IdRoh_owner = pIdGnoss;
                 courseDevolver.Roh_cvnCode = "030.060.000.000";
-                courseDevolver.Roh_crisIdentifier = curso.crisIdentifiers;
+                crisIdentifier += $@"{courseDevolver.Roh_cvnCode}___";
+
                 courseDevolver.Roh_title = curso.title;
+                crisIdentifier += $@"{RemoveDiacritics(courseDevolver.Roh_title)}___";
+
                 courseDevolver.IdRoh_eventType = curso.eventType;
                 courseDevolver.Roh_eventTypeOther = curso.eventTypeOther;
+                crisIdentifier += $@"{RemoveDiacritics(courseDevolver.Roh_eventTypeOther)}___";
+
                 courseDevolver.Roh_promotedByTitle = curso.promotedByTitle;
+                crisIdentifier += $@"{RemoveDiacritics(courseDevolver.Roh_promotedByTitle)}___";
+
                 courseDevolver.IdRoh_promotedBy = curso.promotedBy;
                 courseDevolver.IdRoh_promotedByType = curso.promotedByType;
                 courseDevolver.Roh_promotedByTypeOther = curso.promotedByTypeOther;
+                crisIdentifier += $@"{RemoveDiacritics(courseDevolver.Roh_promotedByTypeOther)}___";
+
                 courseDevolver.Vivo_start = curso.start;
                 courseDevolver.Roh_durationHours = curso.durationHours;
+                crisIdentifier += $@"{courseDevolver.Roh_durationHours}___";
+
                 // TODO
                 courseDevolver.Roh_goals = curso.goals;
+                crisIdentifier += $@"{RemoveDiacritics(courseDevolver.Roh_goals)}___";
+
                 courseDevolver.IdVcard_hasLanguage = curso.hasLanguage;
                 courseDevolver.Roh_isbn = curso.isbn;
+                crisIdentifier += $@"{RemoveDiacritics(courseDevolver.Roh_isbn)}___";
+
                 courseDevolver.Bibo_issn = curso.issn;
+                crisIdentifier += $@"{RemoveDiacritics(courseDevolver.Bibo_issn)}___";
+
                 courseDevolver.Roh_correspondingAuthor = curso.correspondingAuthor;
+
                 courseDevolver.Bibo_doi = curso.doi;
+                crisIdentifier += $@"{RemoveDiacritics(courseDevolver.Bibo_doi)}___";
+
                 courseDevolver.Bibo_handle = curso.handle;
+                crisIdentifier += $@"{RemoveDiacritics(courseDevolver.Bibo_handle)}___";
+
                 courseDevolver.Bibo_pmid = curso.pmid;
+                crisIdentifier += $@"{RemoveDiacritics(courseDevolver.Bibo_pmid)}___";
+
                 // TODO Identifier
                 courseDevolver.Roh_targetProfile = curso.targetProfile;
+
                 courseDevolver.IdRoh_participationType = curso.participationType;
                 courseDevolver.Roh_participationTypeOther = curso.participationTypeOther;
+                crisIdentifier += $@"{RemoveDiacritics(courseDevolver.Roh_participationTypeOther)}___";
+
+                courseDevolver.Roh_crisIdentifier = crisIdentifier;
 
                 listacursoDevolver.Add(courseDevolver.ToGnossApiResource(pResourceApi, null));
             }
@@ -1442,11 +1495,13 @@ namespace OAI_PMH.Models.SGI.PersonalData
             {
                 ImpartedAcademicTrainingBBDD impartedAcademic = new ImpartedAcademicTrainingBBDD();
 
-                string tituloTrabajo = RemoveDiacritics(item.TitulacionUniversitaria);
-                tituloTrabajo = tituloTrabajo.Replace(" ", "-");
-                impartedAcademic.crisIdentifier = $@"{item.Id}___{tituloTrabajo}";
+                string crisIdentifier = "030.010.000.000___";
+
                 impartedAcademic.title = item.TitulacionUniversitaria;
+                crisIdentifier += $@"{RemoveDiacritics(impartedAcademic.title)}___";
+
                 impartedAcademic.teaches = item.NombreAsignaturaCurso;
+                crisIdentifier += $@"{RemoveDiacritics(impartedAcademic.teaches)}___";
 
                 //impartedAcademic.start = item.FechaInicio;
                 //impartedAcademic.end = item.FechaFinalizacion;                
@@ -1461,6 +1516,7 @@ namespace OAI_PMH.Models.SGI.PersonalData
                         if (organizacionAux != null)
                         {
                             impartedAcademic.promotedByTitle = organizacionAux.Nombre;
+                            crisIdentifier += $@"{RemoveDiacritics(impartedAcademic.promotedByTitle)}___";
 
                             if (string.IsNullOrEmpty(organizacion.Value))
                             {
@@ -1484,7 +1540,13 @@ namespace OAI_PMH.Models.SGI.PersonalData
                 }
 
                 impartedAcademic.numberECTSHours = item.NumHorasCreditos.Value;
-                impartedAcademic.frequency = item.FrecuenciaActividad.Value;
+                crisIdentifier += $@"{impartedAcademic.numberECTSHours}___";
+
+                if (item.FrecuenciaActividad.HasValue)
+                {
+                    impartedAcademic.frequency = item.FrecuenciaActividad.Value;
+                    crisIdentifier += $@"{impartedAcademic.frequency}___";
+                }
 
                 if (item.TipoPrograma != null && !string.IsNullOrEmpty(item.TipoPrograma.Nombre))
                 {
@@ -1492,6 +1554,7 @@ namespace OAI_PMH.Models.SGI.PersonalData
                     if (impartedAcademic.programType.Contains("OTHERS"))
                     {
                         impartedAcademic.programTypeOther = item.TipoPrograma.Nombre;
+                        crisIdentifier += $@"{RemoveDiacritics(impartedAcademic.programTypeOther)}___";
                     }
                 }
 
@@ -1501,10 +1564,12 @@ namespace OAI_PMH.Models.SGI.PersonalData
                     if (impartedAcademic.modalityTeachingType.Contains("OTHERS"))
                     {
                         impartedAcademic.modalityTeachingTypeOther = item.TipoDocencia.Nombre;
+                        crisIdentifier += $@"{RemoveDiacritics(impartedAcademic.modalityTeachingTypeOther)}___";
                     }
                 }
 
                 impartedAcademic.department = item.Departamento;
+                crisIdentifier += $@"{RemoveDiacritics(impartedAcademic.department)}___";
 
                 if (item.TipoAsignatura != null && !string.IsNullOrEmpty(item.TipoAsignatura.Nombre))
                 {
@@ -1512,10 +1577,12 @@ namespace OAI_PMH.Models.SGI.PersonalData
                     if (impartedAcademic.courseType.Contains("OTHERS"))
                     {
                         impartedAcademic.courseTypeOther = item.TipoAsignatura.Nombre;
+                        crisIdentifier += $@"{RemoveDiacritics(impartedAcademic.courseTypeOther)}___";
                     }
                 }
 
                 impartedAcademic.course = item.Curso;
+                crisIdentifier += $@"{RemoveDiacritics(impartedAcademic.course)}___";
 
                 if (item.TipoHorasCreditos != null && !string.IsNullOrEmpty(item.TipoHorasCreditos.Nombre))
                 {
@@ -1525,7 +1592,12 @@ namespace OAI_PMH.Models.SGI.PersonalData
                 // TODO: Idioma
 
                 impartedAcademic.competencies = item.Competencias;
+                crisIdentifier += $@"{RemoveDiacritics(impartedAcademic.competencies)}___";
                 impartedAcademic.professionalCategory = item.CategoriaProfesional;
+                crisIdentifier += $@"{RemoveDiacritics(impartedAcademic.professionalCategory)}___";
+
+                // CrisIdentifier
+                impartedAcademic.crisIdentifier = crisIdentifier;
 
                 listaImpartedAcademic.Add(impartedAcademic);
             }
@@ -1540,10 +1612,7 @@ namespace OAI_PMH.Models.SGI.PersonalData
             foreach (Tesis item in pListaTesisSGI)
             {
                 TesisBBDD tesis = new TesisBBDD();
-
-                string tituloTrabajo = RemoveDiacritics(item.TituloTrabajo.ToLower());
-                tituloTrabajo = tituloTrabajo.Replace(" ", "-");
-                tesis.crisIdentifier = $@"{item.Id}___{item.Alumno}___{tituloTrabajo}";
+                string crisIdentifier = "030.040.000.000___";
 
                 if (item.TipoProyecto != null && !string.IsNullOrEmpty(item.TipoProyecto.Nombre))
                 {
@@ -1551,19 +1620,28 @@ namespace OAI_PMH.Models.SGI.PersonalData
                     if (tesis.projectCharacterType.Contains("OTHERS"))
                     {
                         tesis.projectCharacterTypeOther = item.TipoProyecto.Nombre;
+                        crisIdentifier += $@"{RemoveDiacritics(tesis.projectCharacterTypeOther)}___";
                     }
                 }
 
                 tesis.title = item.TituloTrabajo;
+                crisIdentifier += $@"{RemoveDiacritics(tesis.title)}___";
+
                 // TODO: Código del pais no mapeable.
                 //tesis.hasCountryName = IdentificadorPais(item.PaisEntidadRealizacion.Id, pResourceApi);
                 //tesis.hasRegion = IdentificadorRegion(item.CcaaRegionEntidadRealizacion.Id, pResourceApi);
                 //tesis.locality = item.CiudadEntidadRealizacion;
                 tesis.issued = item.FechaDefensa;
                 tesis.qualification = item.CalificacionObtenida;
+                crisIdentifier += $@"{RemoveDiacritics(tesis.qualification)}___";
+
                 tesis.europeanDoctorateDate = item.FechaMencionDoctoradoEuropeo;
                 tesis.qualityMention = item.MencionCalidad != null ? (bool)item.MencionCalidad : false;
+                crisIdentifier += $@"{tesis.qualityMention}___";
+
                 tesis.europeanDoctorate = item.DoctoradoEuropeo != null ? (bool)item.DoctoradoEuropeo : false;
+                crisIdentifier += $@"{tesis.europeanDoctorate}___";
+
                 tesis.qualityMentionDate = item.FechaMencionCalidad;
 
                 Persona alumno = GetPersonaSGI(pHarvesterServices, pConfig, "Persona_" + item.Alumno, pDicRutas);
@@ -1572,6 +1650,7 @@ namespace OAI_PMH.Models.SGI.PersonalData
                     tesis.studentName = alumno.Nombre;
                     tesis.studentFirstSurname = alumno.Apellidos;
                     tesis.studentNick = alumno.Nombre + " " + alumno.Apellidos;
+                    crisIdentifier += $@"{RemoveDiacritics(tesis.studentNick)}___";
                 }
 
                 // ORGANIZACION
@@ -1585,6 +1664,7 @@ namespace OAI_PMH.Models.SGI.PersonalData
                         if (organizacionAux != null)
                         {
                             tesis.promotedByTitle = organizacionAux.Nombre;
+                            crisIdentifier += $@"{RemoveDiacritics(tesis.promotedByTitle)}___";
 
                             if (string.IsNullOrEmpty(organizacion.Value))
                             {
@@ -1615,6 +1695,9 @@ namespace OAI_PMH.Models.SGI.PersonalData
                         tesis.codirector = new List<Codirector>() { codirector };
                     }
                 }
+
+                // CrisIdentifier
+                tesis.crisIdentifier = crisIdentifier;
 
                 listaTesis.Add(tesis);
             }
@@ -1765,11 +1848,10 @@ namespace OAI_PMH.Models.SGI.PersonalData
             {
                 DoctoradosBBDD doctorado = new DoctoradosBBDD();
 
-                string tituloTrabajo = RemoveDiacritics(item.ProgramaDoctorado.ToLower());
-                tituloTrabajo = tituloTrabajo.Replace(" ", "-");
-                doctorado.crisIdentifier = $@"{item.Id}___{tituloTrabajo}";
+                string crisIdentifier = $@"030.060.000.000___";
 
                 doctorado.nombreTitulo = item.ProgramaDoctorado;
+                crisIdentifier += $@"{RemoveDiacritics(doctorado.nombreTitulo)}___";
 
                 if (item.EntidadTitulacion != null && !string.IsNullOrEmpty(item.EntidadTitulacion.EntidadRef))
                 {
@@ -1781,6 +1863,7 @@ namespace OAI_PMH.Models.SGI.PersonalData
                         if (organizacionAux != null)
                         {
                             doctorado.entidadTitulacionTitulo = organizacionAux.Nombre;
+                            crisIdentifier += $@"{RemoveDiacritics(doctorado.entidadTitulacionTitulo)}___";
 
                             if (string.IsNullOrEmpty(organizacion.Value))
                             {
@@ -1812,6 +1895,7 @@ namespace OAI_PMH.Models.SGI.PersonalData
                         if (organizacionAux != null)
                         {
                             doctorado.entidadTitDEATitulo = organizacionAux.Nombre;
+                            crisIdentifier += $@"{RemoveDiacritics(doctorado.entidadTitDEATitulo)}___";
 
                             if (string.IsNullOrEmpty(organizacion.Value))
                             {
@@ -1831,7 +1915,9 @@ namespace OAI_PMH.Models.SGI.PersonalData
 
                 doctorado.obtencionDEA = item.FechaTitulacionDEA;
                 doctorado.tituloTesis = item.TituloTesis;
+                crisIdentifier += $@"{RemoveDiacritics(doctorado.tituloTesis)}___";
                 doctorado.calificacionObtenida = item.CalificacionObtenida;
+                crisIdentifier += $@"{RemoveDiacritics(doctorado.calificacionObtenida)}___";
 
                 Persona director = GetPersonaSGI(pHarvesterServices, pConfig, "Persona_" + item.DirectorTesis, pDicRutas);
                 if (director != null)
@@ -1839,6 +1925,7 @@ namespace OAI_PMH.Models.SGI.PersonalData
                     doctorado.nombreDirector = director.Nombre;
                     doctorado.primApeDirector = director.Apellidos;
                     doctorado.firmaDirector = director.Nombre + " " + director.Apellidos;
+                    crisIdentifier += $@"{RemoveDiacritics(doctorado.firmaDirector)}___";
                 }
 
                 if (item.CoDirectorTesis != null && !string.IsNullOrEmpty(item.CoDirectorTesis.PersonaRef))
@@ -1856,12 +1943,19 @@ namespace OAI_PMH.Models.SGI.PersonalData
                 }
 
                 doctorado.doctoradoEuropeo = item.DoctoradoEuropeo != null ? (bool)item.DoctoradoEuropeo : false;
+                crisIdentifier += $@"{doctorado.doctoradoEuropeo}___";
                 doctorado.fechaDoctorado = item.FechaMencionDoctoradoEuropeo;
                 doctorado.mencionCalidad = item.MencionCalidad != null ? (bool)item.MencionCalidad : false;
+                crisIdentifier += $@"{doctorado.mencionCalidad}___";
                 doctorado.premioExtraordinarioDoctor = item.PremioExtraordinarioDoctor != null ? (bool)item.PremioExtraordinarioDoctor : false;
+                crisIdentifier += $@"{doctorado.premioExtraordinarioDoctor}___";
                 doctorado.fechaPremioDoctor = item.FechaPremioExtraordinarioDoctor;
                 doctorado.tituloHomologado = item.TituloHomologado != null ? (bool)item.TituloHomologado : false;
+                crisIdentifier += $@"{doctorado.tituloHomologado}___";
                 doctorado.fechaHomologado = item.FechaHomologacion;
+
+                // CrisIdentifier
+                doctorado.crisIdentifier = crisIdentifier;
 
                 listaDoctorados.Add(doctorado);
             }
@@ -1877,11 +1971,10 @@ namespace OAI_PMH.Models.SGI.PersonalData
             {
                 PosgradoBBDD posgrado = new PosgradoBBDD();
 
-                string tituloTrabajo = RemoveDiacritics(item.NombreTituloPosgrado.ToLower());
-                tituloTrabajo = tituloTrabajo.Replace(" ", "-");
-                posgrado.crisIdentifier = $@"{item.Id}___{tituloTrabajo}";
+                string crisIdentifier = string.Empty;
 
                 posgrado.nombreTitulo = item.NombreTituloPosgrado;
+                crisIdentifier += $@"{RemoveDiacritics(posgrado.nombreTitulo)}___";
 
                 if (item.EntidadTitulacion != null && !string.IsNullOrEmpty(item.EntidadTitulacion.EntidadRef))
                 {
@@ -1893,6 +1986,7 @@ namespace OAI_PMH.Models.SGI.PersonalData
                         if (organizacionAux != null)
                         {
                             posgrado.entidadTitulacionTitulo = organizacionAux.Nombre;
+                            crisIdentifier += $@"{RemoveDiacritics(posgrado.entidadTitulacionTitulo)}___";
 
                             if (string.IsNullOrEmpty(organizacion.Value))
                             {
@@ -1920,8 +2014,13 @@ namespace OAI_PMH.Models.SGI.PersonalData
                 }
 
                 posgrado.calificacionObtenida = item.CalificacionObtenida;
+                crisIdentifier += $@"{posgrado.calificacionObtenida}___";
                 posgrado.tituloHomologado = item.TituloHomologado != null ? (bool)item.TituloHomologado : false;
+                crisIdentifier += $@"{posgrado.tituloHomologado}___";
                 posgrado.fechaHomologacion = item.FechaHomologacion;
+
+                // CrisIdentifier
+                posgrado.crisIdentifier = crisIdentifier;
 
                 listaPosgrados.Add(posgrado);
             }
@@ -1937,11 +2036,10 @@ namespace OAI_PMH.Models.SGI.PersonalData
             {
                 FormacionEspecializadaBBDD formEspecializada = new FormacionEspecializadaBBDD();
 
-                string tituloTrabajo = RemoveDiacritics(item.NombreTitulo.ToLower());
-                tituloTrabajo = tituloTrabajo.Replace(" ", "-");
-                formEspecializada.crisIdentifier = $@"{item.Id}___{tituloTrabajo}";
+                string crisIdentifier = "020.020.000.000___";
 
                 formEspecializada.nombreTitulo = item.NombreTitulo;
+                crisIdentifier += $@"{RemoveDiacritics(formEspecializada.nombreTitulo)}___";
 
                 if (item.EntidadTitulacion != null && !string.IsNullOrEmpty(item.EntidadTitulacion.EntidadRef))
                 {
@@ -1953,6 +2051,7 @@ namespace OAI_PMH.Models.SGI.PersonalData
                         if (organizacionAux != null)
                         {
                             formEspecializada.entidadTitulacionTitulo = organizacionAux.Nombre;
+                            crisIdentifier += $@"{RemoveDiacritics(formEspecializada.entidadTitulacionTitulo)}___";
 
                             if (string.IsNullOrEmpty(organizacion.Value))
                             {
@@ -1974,7 +2073,11 @@ namespace OAI_PMH.Models.SGI.PersonalData
 
                 // TODO: Ciudad, Pais, CCAA
 
-                formEspecializada.duracionHoras = item.DuracionTitulacion.Value;
+                if (item.DuracionTitulacion.HasValue)
+                {
+                    formEspecializada.duracionHoras = item.DuracionTitulacion.Value;
+                    crisIdentifier += $@"{formEspecializada.duracionHoras}___";
+                }                
 
                 if (item.TipoFormacion != null && !string.IsNullOrEmpty(item.TipoFormacion.Nombre))
                 {
@@ -1982,16 +2085,21 @@ namespace OAI_PMH.Models.SGI.PersonalData
                 }
 
                 formEspecializada.objetivosEntidad = item.Objetivos;
+                crisIdentifier += $@"{RemoveDiacritics(formEspecializada.objetivosEntidad)}___";
 
                 if (!string.IsNullOrEmpty(item.ResponsableFormacion))
                 {
                     formEspecializada.firma = item.ResponsableFormacion;
+                    crisIdentifier += $@"{RemoveDiacritics(formEspecializada.firma)}___";
                     if (item.ResponsableFormacion.Contains(" "))
                     {
                         formEspecializada.nombre = item.ResponsableFormacion.Split(" ")[0];
                         formEspecializada.primApe = item.ResponsableFormacion.Split(" ")[1];
                     }
                 }
+
+                // CrisIdentifier
+                formEspecializada.crisIdentifier = crisIdentifier;
 
                 listaFormEspecializada.Add(formEspecializada);
             }
@@ -2000,8 +2108,16 @@ namespace OAI_PMH.Models.SGI.PersonalData
         }
 
 
-        static string RemoveDiacritics(string text)
+        static string RemoveDiacritics(string pText)
         {
+            if (string.IsNullOrEmpty(pText))
+            {
+                return pText;
+            }
+
+            string text = pText.ToLower();
+            text = text.Replace(" ","-");
+
             var normalizedString = text.Normalize(NormalizationForm.FormD);
             var stringBuilder = new StringBuilder(capacity: normalizedString.Length);
 

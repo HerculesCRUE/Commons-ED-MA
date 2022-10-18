@@ -24,7 +24,7 @@ namespace OAI_PMH.Services
             string accessToken = Token.CheckToken(pConfig);
             Dictionary<string, DateTime> idDictionary = new();
             List<string> idList = new();
-            RestClient client = new(pConfig.GetUrlBaseAutorizacion() + "autorizaciones/modificadas-ids?q=fechaModificacion=ge=\"" + from + "\"");
+            RestClient client = new(pConfig.GetConfigSGI() + "/api/sgicsp/autorizaciones/modificadas-ids?q=fechaModificacion=ge=\"" + from + "\"");
             client.AddDefaultHeader("Authorization", "Bearer " + accessToken);
             var request = new RestRequest(Method.GET);
             IRestResponse response = client.Execute(request);
@@ -49,7 +49,7 @@ namespace OAI_PMH.Services
         {
             string accessToken = Token.CheckToken(pConfig);
             string identifier = id.Split("_")[1];
-            RestClient client = new(pConfig.GetUrlBaseAutorizacion() + "autorizaciones/" + identifier);
+            RestClient client = new(pConfig.GetConfigSGI() + "/api/sgicsp/autorizaciones/" + identifier);
             client.AddDefaultHeader("Authorization", "Bearer " + accessToken);
             var request = new RestRequest(Method.GET);
             IRestResponse response = client.Execute(request);
