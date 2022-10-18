@@ -137,22 +137,24 @@ namespace Gnoss.Web.Login
             }
 
             IDictionary environmentVariables = Environment.GetEnvironmentVariables();
-            if(environmentVariables.Contains("Saml2_IdPMetadata"))
+            if (environmentVariables.Contains("Saml2_IdPMetadata"))
             {
                 Response.Redirect(Url.Content(@$"~/{mConfigServiceSAML.GetUrlServiceInDomain()}Auth/Logout"));
             }
-
-            if ((Request.Query.ContainsKey("redirect") || Request.Headers.ContainsKey("redirect")) && !hayIframes)
+            else
             {
-                if (Request.Headers.ContainsKey("redirect"))
+                if ((Request.Query.ContainsKey("redirect") || Request.Headers.ContainsKey("redirect")) && !hayIframes)
                 {
-                    Response.Redirect(Request.Headers["redirect"]);
-                }
-                else if (Request.Query.ContainsKey("redirect"))
-                {
-                    Response.Redirect(Request.Query["redirect"]);
-                }
+                    if (Request.Headers.ContainsKey("redirect"))
+                    {
+                        Response.Redirect(Request.Headers["redirect"]);
+                    }
+                    else if (Request.Query.ContainsKey("redirect"))
+                    {
+                        Response.Redirect(Request.Query["redirect"]);
+                    }
 
+                }
             }
         }
 
