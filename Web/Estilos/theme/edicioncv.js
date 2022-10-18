@@ -812,12 +812,12 @@ var edicionCV = {
 		var numResultadosPagina = parseInt(sectionItem.find(' .panNavegador .dropdown-toggle span').attr('items'));
 		var texto = sectionItem.find(' .txtBusqueda').val();
 
-		if (mostrarSoloConflictos != null && sectionItem.find('.acciones-listado .checkAllCVWrapper input[type="checkbox"]').hasClass('mostrarSimilitudes')) {
+		if (mostrarSoloConflictos != false && sectionItem.find('.acciones-listado .checkAllCVWrapper input[type="checkbox"]').hasClass('mostrarSimilitudes')) {
 			mostrarSoloConflictos = true;
 		}
-		else if (mostrarSoloNuevos != null && sectionItem.find('.acciones-listado .checkAllCVWrapper input[type="checkbox"]').hasClass('mostrarNuevos')) {
+		else if (mostrarSoloNuevos != false && sectionItem.find('.acciones-listado .checkAllCVWrapper input[type="checkbox"]').hasClass('mostrarNuevos')) {
 			mostrarSoloNuevos = true;
-		}
+		}	
 		else {
 			mostrarSoloConflictos = false;
 			mostrarSoloNuevos = false;
@@ -914,15 +914,19 @@ var edicionCV = {
 			if (existe || existeEnTitulo || existeEnPropiedad) {
 				if (mostrarSoloConflictos) {
 					numPaginas = Math.floor((numTotal - 1 + numResultadosPagina) / numResultadosPagina);
-					if (numPaginas == paginaActual && $(this).hasClass('conflict-true')) {
-						$(this).show();
+					if ($(this).hasClass('conflict-true')) {
+						if (numPaginas == paginaActual) {
+							$(this).show();
+						}
 						numTotal++;
 					}
 				}
 				else if (mostrarSoloNuevos) {
 					numPaginas = Math.floor((numTotal - 1 + numResultadosPagina) / numResultadosPagina);
-					if (numPaginas == paginaActual && $(this).hasClass('conflict-false')) {
-						$(this).show();
+					if ($(this).hasClass('conflict-false')) {
+						if (numPaginas == paginaActual) {
+							$(this).show();
+						}
 						numTotal++;
 					}
 				} else {
