@@ -11,31 +11,37 @@
         Notification notificacion = new Notification(fila);
         listaNotificaciones.Add(notificacion);
     }
+
+    int numAlertasT = listaNotificaciones.Count(x => !string.IsNullOrEmpty(x.titulo) || !string.IsNullOrEmpty(x.mensaje));
+    int numAlertas = listaNotificaciones.Count(x => x.pestanaNotificacion.Equals("p1") && (!string.IsNullOrEmpty(x.titulo) || !string.IsNullOrEmpty(x.mensaje)));
+    int numAlertasOtras = listaNotificaciones.Count(x => x.pestanaNotificacion.Equals("otros") && (!string.IsNullOrEmpty(x.titulo) || !string.IsNullOrEmpty(x.mensaje)));
+
     <div class="col col-12 col-xl-12 col-contenido izquierda">
         <div class="wrapCol">
             <div class="header-contenido">
                 <div class="h1-container">
-                    <h1>@Html.Translate("NOTIFICACION_ALERTA") <span class="numResultados">@listaNotificaciones.Count(x => !string.IsNullOrEmpty(x.titulo) || !string.IsNullOrEmpty(x.mensaje) || x.tipoNotificacion.Equals("loadExternalSource"))</span></h1>
+                    <h1>@Html.Translate("NOTIFICACION_ALERTA") 
+                        <span class="numResultados">@numAlertasT</span>
+                    </h1>
                 </div>
             </div>
             <div class="tab-paneles-alertas">
                 <ul class="nav nav-tabs" id="navegacion-alertas" role="tablist">
                     <li class="nav-item" role="presentation">
                         <a class="nav-link active" id="externas-tab" data-toggle="tab"
-                           href="#externas-panel" role="tab" aria-controls="externas-panel"
-                           aria-selected="false">
-                            @Html.Translate("NOVEDADES_PUBLICACIONES_RO") <span class="badge">
-                                @listaNotificaciones.Count(x => string.IsNullOrEmpty(x.desencadenante) && (!string.IsNullOrEmpty(x.titulo) || !string.IsNullOrEmpty(x.mensaje) || x.tipoNotificacion.Equals("loadExternalSource") || x.tipoNotificacion.Equals("recuperarSexenios") || x.tipoNotificacion.Equals("recuperarAcreditaciones")))
+                           href="#externas-panel" role="tab" aria-controls="externas-panel" aria-selected="false">
+                            @Html.Translate("NOVEDADES_PUBLICACIONES_RO")
+                            <span class="badge">
+                                @numAlertas
                             </span>
                         </a>
                     </li>
                     <li class="nav-item" role="presentation">
                         <a class="nav-link" id="otras-tab" data-toggle="tab"
-                           href="#otras-panel" role="tab" aria-controls="otras-panel"
-                           aria-selected="true">
-                            @Html.Translate("OTRAS_NOTIFICACIONES") <span class="badge">
-                                @listaNotificaciones.Count(x => !string.IsNullOrEmpty(x.desencadenante) && x.desencadenante != @Html.Translate("NOTIFICACION_SE")
-                                 && (!string.IsNullOrEmpty(x.titulo) || !string.IsNullOrEmpty(x.mensaje)))
+                           href="#otras-panel" role="tab" aria-controls="otras-panel" aria-selected="true">
+                            @Html.Translate("OTRAS_NOTIFICACIONES")
+                            <span class="badge">
+                                @numAlertasOtras
                             </span>
                         </a>
                     </li>
@@ -45,10 +51,10 @@
                         <div class="resource-list listView resource-list-cv">
                             <div class="resource-list-wrap">
 
-                                @foreach (Notification notification in listaNotificaciones.Where(x => string.IsNullOrEmpty(x.desencadenante)))
+                                @foreach (Notification notification in listaNotificaciones.Where(x => x.pestanaNotificacion.Equals("p1")))
                                 {
-                                    //Si no tiene titulo, no tiene mensaje y no es de tipo "loadExternalSource" no la muestro
-                                    if (string.IsNullOrEmpty(notification.titulo) && string.IsNullOrEmpty(notification.mensaje) && !notification.tipoNotificacion.Equals("loadExternalSource") && !notification.tipoNotificacion.Equals("recuperarSexenios") && !notification.tipoNotificacion.Equals("recuperarAcreditaciones"))
+									//Si no tiene titulo, no tiene mensaje y no es de tipo "loadExternalSource" no la muestro
+                                    if (string.IsNullOrEmpty(notification.titulo) && string.IsNullOrEmpty(notification.mensaje))
                                     {
                                         continue;
                                     }
@@ -64,7 +70,6 @@
                                     }
 
                                     @Html.Raw(InsertaNotificacion(notification));
-
                                 }
                             </div>
                         </div>
@@ -73,13 +78,15 @@
                         <div class="resource-list listView resource-list-cv">
                             <div class="resource-list-wrap">
 
-                                @foreach (Notification notification in listaNotificaciones.Where(x => !string.IsNullOrEmpty(x.desencadenante) && x.desencadenante != Html.Translate("NOTIFICACION_SE")))
+                                @foreach (Notification notification in listaNotificaciones.Where(x => x.pestanaNotificacion.Equals("otros")))
                                 {
-                                    //Si no tiene titulo o mensaje no la muestro
+									//Si no tiene titulo, no tiene mensaje y no es de tipo "loadExternalSource" no la muestro
                                     if (string.IsNullOrEmpty(notification.titulo) && string.IsNullOrEmpty(notification.mensaje))
                                     {
                                         continue;
                                     }
+                                    notification.desencadenante = Html.Translate("NOTIFICACION_SE");
+
                                     if (!string.IsNullOrEmpty(notification.trigger) && notification.trigger.Split('_').Length > 2)
                                     {
                                         notification.trigger = Comunidad.Url + "/" + Html.Translate("NOTIFICACION_RECURSO_URL") + "/" + Html.Translate("NOTIFICACION_PERSONA") + "/" + notification.trigger.Split('_')[1];
@@ -88,10 +95,13 @@
                                     {
                                         notification.trigger = "";
                                     }
+
+                                    @Html.Raw(InsertaNotificacion(notification));
                                 }
                             </div>
                         </div>
                     </div>
+                    
                 </div>
             </div>
         </div>
@@ -102,17 +112,17 @@
 {
     public static List<Notification> listaNotificaciones = new List<Notification>();
     public string InicioArticle = $@"
-                        <article class=""resource"">
-                            <div class=""wrap"">
-                                <div class=""middle-wrap"">
-                                    <div class=""title-wrap"">
-                                        <h2 class=""resource-title"">";
+                                    <article class=""resource"">
+                                        <div class=""wrap"">
+                                            <div class=""middle-wrap"">
+                                                <div class=""title-wrap"">
+                                                    <h2 class=""resource-title"">";
     public string FinArticle = $@"
-                                        </h2>
-                                    </div>
-                                </div>
-                            </div>
-                        </article>";
+                                                    </h2>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </article>";
 
     public string InsertaNotificacion(Notification notification)
     {
@@ -236,6 +246,7 @@
         public string id { get; set; }
         public string fecha { get; set; }
         public string tipoNotificacion { get; set; }
+        public string pestanaNotificacion { get; set; }
         public string propiedadCV { get; set; }
         public string trigger { get; set; }
         public string desencadenante { get; set; }
@@ -253,6 +264,7 @@
             id = "";
             fecha = "";
             tipoNotificacion = "";
+            pestanaNotificacion = "";
             propiedadCV = "";
             trigger = "";
             desencadenante = "";
@@ -263,7 +275,7 @@
             cv = "";
             cvnCode = "";
             tipoPublicacion = "";
-            seccionCV = "";
+			seccionCV = "";
         }
 
         public Notification(System.Data.DataRow fila)
@@ -271,6 +283,7 @@
             this.id = fila["notificacion"].ToString();
             this.fecha = GetFecha(fila["fecha"].ToString());
             this.tipoNotificacion = fila["tipoNotificacion"].ToString();
+            this.pestanaNotificacion = fila["pestanaNotificacion"].ToString();
             this.propiedadCV = fila["propiedadCV"].ToString();
             this.trigger = fila["trigger"].ToString();
             this.desencadenante = fila["desencadenante"].ToString();
@@ -294,7 +307,7 @@
                 string hora = fecha.Substring(8, 2);
                 string min = fecha.Substring(10, 2);
                 string segs = fecha.Substring(12, 2);
-                fecha = dia + "/" + mes + "/" + anio; //+ " " + hora + ":" + min + ":" + segs + " UTC";
+                fecha = dia + "/" + mes + "/" + anio + " " + hora + ":" + min + ":" + segs;
             }
             return fecha;
         }
@@ -312,9 +325,9 @@
             return null;
         }
 
-        private string GetSeccionNotificationCvnCode(string cvnCode)
-        {
-            if (cvnCode.Equals("060.010.010.000"))
+		private string GetSeccionNotificationCvnCode(string cvnCode)
+        {	
+			if (cvnCode.Equals("060.010.010.000"))
             {
                 return "http://w3id.org/roh/scientificPublications";
             }
@@ -327,8 +340,8 @@
                 return "http://w3id.org/roh/worksSubmittedSeminars";
             }
 
-            return "";
-        }
+            return "";            
+		}
 
         public static string GetTextNotificationCvnCode(IHtmlHelper Html, string cvnCode)
         {
@@ -351,4 +364,8 @@
         }
     }
 }
+
+
+
+
 
