@@ -13,10 +13,10 @@
     }
 
     var numAlertasT = listaNotificaciones.Count(x => !string.IsNullOrEmpty(x.titulo) || !string.IsNullOrEmpty(x.mensaje));
+    // if(string.IsNullOrEmpty(notification.titulo) && string.IsNullOrEmpty(notification.mensaje) && !notification.tipoNotificacion.Equals("loadExternalSource")) 
+    var numAlertas = listaNotificaciones.Count(x => x.pestanaNotificacion.Equals("p1") && (!string.IsNullOrEmpty(x.titulo) || !string.IsNullOrEmpty(x.mensaje)));
 
-    var numAlertas = listaNotificaciones.Count(x => string.IsNullOrEmpty(x.desencadenante) && (!string.IsNullOrEmpty(x.titulo) || !string.IsNullOrEmpty(x.mensaje)));
-
-    var numAlertasOtras = listaNotificaciones.Count(x => !string.IsNullOrEmpty(x.desencadenante) && x.desencadenante != Html.Translate("NOTIFICACION_SE") && (!string.IsNullOrEmpty(x.titulo) || !string.IsNullOrEmpty(x.mensaje)));
+    var numAlertasOtras = listaNotificaciones.Count(x => x.pestanaNotificacion.Equals("otros") && (!string.IsNullOrEmpty(x.titulo) || !string.IsNullOrEmpty(x.mensaje)));
 
     int numMaxAlertas = 15;
 
@@ -26,7 +26,7 @@
                 <div class="h1-container">
                     <h1>@Html.Translate("NOTIFICACION_ALERTA") 
                         <span class="numResultados">
-                        @if (numAlertasT == numMaxAlertas ) {
+                        @if (numAlertas == numMaxAlertas ) {
                             <span>+</span>
                         }@numAlertasT</span></h1>
                 </div>
@@ -37,7 +37,7 @@
                         <a class="nav-link active" id="externas-tab" data-toggle="tab"
                            href="#externas-panel" role="tab" aria-controls="externas-panel"
                            aria-selected="false">
-                            Novedades de fuentes externas <span class="badge">
+                            @Html.Translate("NOVEDADES_PUBLICACIONES_RO") <span class="badge">
                                 @if (numAlertas == numMaxAlertas ) {
                                     <span>+</span>
                                 }@numAlertas
@@ -48,7 +48,7 @@
                         <a class="nav-link" id="otras-tab" data-toggle="tab"
                            href="#otras-panel" role="tab" aria-controls="otras-panel"
                            aria-selected="true">
-                            Otras notificaciones <span class="badge">
+                            @Html.Translate("OTRAS_NOTIFICACIONES") <span class="badge">
                                 @if (numAlertasOtras == numMaxAlertas ) {
                                     <span>+</span>
                                 }@numAlertasOtras
@@ -61,10 +61,10 @@
                         <div class="resource-list listView resource-list-cv">
                             <div class="resource-list-wrap">
 
-                                @foreach (Notification notification in listaNotificaciones.Where(x => string.IsNullOrEmpty(x.desencadenante)))
+                                @foreach (Notification notification in listaNotificaciones.Where(x => x.pestanaNotificacion.Equals("p1")))
                                 {
 									//Si no tiene titulo o mensaje no la muestro
-									if(string.IsNullOrEmpty(notification.titulo) && string.IsNullOrEmpty(notification.mensaje)){
+									if (!(!string.IsNullOrEmpty(notification.titulo) || !string.IsNullOrEmpty(notification.mensaje))){
 										continue;
 									}
                                     notification.desencadenante = Html.Translate("NOTIFICACION_SE");
@@ -165,7 +165,7 @@
                         <div class="resource-list listView resource-list-cv">
                             <div class="resource-list-wrap">
 
-                                @foreach (Notification notification in listaNotificaciones.Where(x => !string.IsNullOrEmpty(x.desencadenante) && x.desencadenante != Html.Translate("NOTIFICACION_SE")))
+                                @foreach (Notification notification in listaNotificaciones.Where(x => x.pestanaNotificacion.Equals("otros")))
                                 {
 									//Si no tiene titulo o mensaje no la muestro
 									if(string.IsNullOrEmpty(notification.titulo) && string.IsNullOrEmpty(notification.mensaje)){
@@ -307,6 +307,7 @@
         public string id { get; set; }
         public string fecha { get; set; }
         public string tipoNotificacion { get; set; }
+        public string pestanaNotificacion { get; set; }
         public string propiedadCV { get; set; }
         public string trigger { get; set; }
         public string desencadenante { get; set; }
@@ -324,6 +325,7 @@
             id = "";
             fecha = "";
             tipoNotificacion = "";
+            pestanaNotificacion = "";
             propiedadCV = "";
             trigger = "";
             desencadenante = "";
@@ -342,6 +344,7 @@
             this.id = fila["notificacion"].ToString();
             this.fecha = GetFecha(fila["fecha"].ToString());
             this.tipoNotificacion = fila["tipoNotificacion"].ToString();
+            this.pestanaNotificacion = fila["pestanaNotificacion"].ToString();
             this.propiedadCV = fila["propiedadCV"].ToString();
             this.trigger = fila["trigger"].ToString();
             this.desencadenante = fila["desencadenante"].ToString();
