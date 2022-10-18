@@ -144,17 +144,26 @@ Página de error de un login inexistente
 ---
 
 # _Destacado_metricas$$$7af7ab86-f67e-401b-9b1b-0598204888a0.cshtml
+Archivo encargado de montar las gráficas públicamente disponibles que muestras los datos de distintas áreas
 
----
+## Relaciones:
+### Se relaciona los siguientes archivos js:
+- [**graficas_proy.js**](https://github.com/HerculesCRUE/Commons-ED-MA/blob/main/Web/Estilos/theme/graficas_proy.js) - Js encargado del pintado de las gráficas
+- [**graphic-engine.js**](https://github.com/HerculesCRUE/Commons-ED-MA/blob/main/Web/Estilos/theme/graphic-engine.js) - JS encargado del motor de los gráficos
 
-# _Destacado_original$$$30f3b2f7-4bad-43aa-a715-e10b077a6db3.cshtml
+### Relaciones con Confluence:
+- [**Análisis de indicadores de investigación - Módulo de Catálogo de indicadores**](https://confluence.um.es/confluence/pages/viewpage.action?pageId=397534317)
 
 ---
 
 # _Destacado_redes$$$fd5352c6-5f78-4254-85b9-d7df7976aa9a.cshtml
+Archivo encargado del funcionamiento para la página de configuración de los Research Objects de cada usuario.
+## Relaciones:
+### Se relaciona con el js: 
+- [**redes.cshtml**](https://github.com/HerculesCRUE/Commons-ED-MA/blob/main/Web/Estilos/theme/redes.js) 
+
+### Se relaciona con los servicios: 
+- [**Hercules.CommonsEDMA.ServicioExterno**](https://github.com/HerculesCRUE/Commons-ED-MA/blob/main/src/Hercules.CommonsEDMA.ServicioExterno): Servicio encargado de diversas utilidades relacionadas mayormente a peticiones desde las fichas de los diferentes recursos, asistentes en MA y otras funcionalidades.
 
 ---
 
-# _Destacado_top-resources---home-ma$$$fe799704-29f8-4789-b67d-c2c6941d79ea.cshtml
-
----
