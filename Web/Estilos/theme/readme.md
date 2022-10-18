@@ -67,7 +67,7 @@ Hoja de estilos personalizada sobre los estilos de la comunidad Hércules
 
 ---
 # community_proy.js
-Archivo js encargado de sobrescribir parte del funcionamiento de community.js y añadir alguna otra función transversal al sitio
+Archivo js encargado de sobrescribir parte del funcionamiento de community.js y añadir alguna otra función transversal al sitio. Alguna de las funciones más destacadas es el metabuscador, la configuración de los diferentes tooltips, los menús laterales y algunas funcionalidades en los buscadores facetados.
 ## Clases y funciones:
 - **Función GetText**
 - **Objeto cargarCVId**
