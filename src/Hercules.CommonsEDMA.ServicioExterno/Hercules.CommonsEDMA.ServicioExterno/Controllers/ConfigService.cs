@@ -14,7 +14,6 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers
         private string DenormalizerQueueRabbit { get; set; }
         private string DoiQueueRabbit { get; set; }
         private string UrlSimilarity { get; set; }
-        private string UrlPublicacion { get; set; }
 
         /// <summary>
         /// Constructor.
@@ -150,29 +149,6 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers
                 UrlSimilarity = url;
             }
             return UrlSimilarity;
-        }
-
-        /// <summary>
-        /// Obtiene la URL del servicio de similitud
-        /// </summary>
-        /// <returns>Url del servicio</returns>
-        public string GetUrlPublicacion()
-        {
-            if (string.IsNullOrEmpty(UrlPublicacion))
-            {
-                IDictionary environmentVariables = Environment.GetEnvironmentVariables();
-                string url = "";
-                if (environmentVariables.Contains("UrlPublicacion"))
-                {
-                    url = environmentVariables["UrlPublicacion"] as string;
-                }
-                else
-                {
-                    url = configuracion["UrlPublicacion"];
-                }
-                UrlPublicacion = url;
-            }
-            return UrlPublicacion;
         }
     }
 }
