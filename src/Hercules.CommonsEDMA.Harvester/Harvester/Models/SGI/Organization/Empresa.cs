@@ -19,6 +19,18 @@ namespace OAI_PMH.Models.SGI.Organization
     /// </summary>
     public class Empresa : SGI_Base
     {
+        /// <summary>
+        /// Crea el objeto ComplexOntologyResource para ser cargado.
+        /// </summary>
+        /// <param name="pHarvesterServices"></param>
+        /// <param name="pConfig"></param>
+        /// <param name="pResourceApi"></param>
+        /// <param name="pDicIdentificadores"></param>
+        /// <param name="pDicRutas"></param>
+        /// <param name="pRabbitConf"></param>
+        /// <param name="pFusionarPersona"></param>
+        /// <param name="pIdPersona"></param>
+        /// <returns></returns>
         public override ComplexOntologyResource ToRecurso(IHarvesterServices pHarvesterServices, ReadConfig pConfig, ResourceApi pResourceApi, Dictionary<string, HashSet<string>> pDicIdentificadores, Dictionary<string, Dictionary<string, string>> pDicRutas, RabbitServiceWriterDenormalizer pRabbitConf, bool pFusionarPersona = false, string pIdPersona = null)
         {
             OrganizationOntology.Organization proyecto = CrearOrganizationOntology(pHarvesterServices, pConfig, pResourceApi, pDicIdentificadores, pDicRutas);
@@ -26,6 +38,11 @@ namespace OAI_PMH.Models.SGI.Organization
             return proyecto.ToGnossApiResource(pResourceApi, null);
         }
 
+        /// <summary>
+        /// Obtiene el ID del recurso mediante el crisidentifier en BBDD.
+        /// </summary>
+        /// <param name="pResourceApi"></param>
+        /// <returns></returns>
         public override string ObtenerIDBBDD(ResourceApi pResourceApi)
         {
             Dictionary<string, string> respuesta = ObtenerEmpresaBBDD(new HashSet<string>() { Id.ToString() }, pResourceApi);
@@ -36,6 +53,12 @@ namespace OAI_PMH.Models.SGI.Organization
             return null;
         }
 
+        /// <summary>
+        /// Obtiene el ID del recurso de la organización mediante crisidentifier.
+        /// </summary>
+        /// <param name="pListaIds"></param>
+        /// <param name="pResourceApi"></param>
+        /// <returns></returns>
         public static Dictionary<string, string> ObtenerOrganizacionesBBDD(HashSet<string> pListaIds, ResourceApi pResourceApi)
         {
             List<List<string>> listasPersonas = SplitList(pListaIds.ToList(), 1000).ToList();
@@ -75,6 +98,14 @@ namespace OAI_PMH.Models.SGI.Organization
             return dicOrganizacionesBBDD;
         }
 
+        /// <summary>
+        /// Obtiene los datos adicionales del SGI.
+        /// </summary>
+        /// <param name="pHarvesterServices"></param>
+        /// <param name="pConfig"></param>
+        /// <param name="pId"></param>
+        /// <param name="pDicRutas"></param>
+        /// <returns></returns>
         public static Empresa GetOrganizacionSGI(IHarvesterServices pHarvesterServices, ReadConfig pConfig, string pId, Dictionary<string, Dictionary<string, string>> pDicRutas)
         {
             // Obtención de datos en bruto.
@@ -95,6 +126,14 @@ namespace OAI_PMH.Models.SGI.Organization
             return empresa;
         }
 
+        /// <summary>
+        /// Obtiene datos adicionales de organizaciones.
+        /// </summary>
+        /// <param name="pHarvesterServices"></param>
+        /// <param name="pConfig"></param>
+        /// <param name="pResourceApi"></param>
+        /// <param name="pIdGnoss"></param>
+        /// <returns></returns>
         public static OrganizacionBBDD GetOrganizacionBBDD(IHarvesterServices pHarvesterServices, ReadConfig pConfig, ResourceApi pResourceApi, string pIdGnoss)
         {
             SparqlObject resultadoQuery = null;
@@ -136,8 +175,15 @@ namespace OAI_PMH.Models.SGI.Organization
 
         public override void ToRecursoAdicional(IHarvesterServices pHarvesterServices, ReadConfig pConfig, ResourceApi pResourceApi, Dictionary<string, HashSet<string>> pDicIdentificadores, Dictionary<string, Dictionary<string, string>> pDicRutas, RabbitServiceWriterDenormalizer pRabbitConf, string pIdGnoss)
         {
+            // No necesario en esta clase.
         }
 
+        /// <summary>
+        /// Obtiene las organicaciones de BBDD mediante el crisidentifier.
+        /// </summary>
+        /// <param name="pListaIds"></param>
+        /// <param name="pResourceApi"></param>
+        /// <returns></returns>
         public static Dictionary<string, string> ObtenerEmpresaBBDD(HashSet<string> pListaIds, ResourceApi pResourceApi)
         {
             List<List<string>> listaEmpresas = SplitList(pListaIds.ToList(), 1000).ToList();
@@ -183,7 +229,16 @@ namespace OAI_PMH.Models.SGI.Organization
 
             return dicEmpresasBBDD;
         }
-                
+        
+        /// <summary>
+        /// Crea el objeto Organización para cargar en BBDD.
+        /// </summary>
+        /// <param name="pHarvesterServices"></param>
+        /// <param name="pConfig"></param>
+        /// <param name="pResourceApi"></param>
+        /// <param name="pDicIdentificadores"></param>
+        /// <param name="pDicRutas"></param>
+        /// <returns></returns>
         public OrganizationOntology.Organization CrearOrganizationOntology(IHarvesterServices pHarvesterServices, ReadConfig pConfig, ResourceApi pResourceApi, Dictionary<string, HashSet<string>> pDicIdentificadores, Dictionary<string, Dictionary<string, string>> pDicRutas)
         {
             OrganizationOntology.Organization organization = new OrganizationOntology.Organization();

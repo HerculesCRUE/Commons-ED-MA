@@ -1,23 +1,37 @@
 ﻿using Newtonsoft.Json;
+using QuickType;
 using System.Collections.Generic;
 using System.IO;
+using System.Xml;
 
 namespace Utilidades
 {
     class UtilidadesGeneral
     {
         public static Dictionary<string, string> dicPaises = new Dictionary<string, string>();
+        public static Dictionary<string, string> dicPaisesXML = new Dictionary<string, string>();
         public static Dictionary<string, string> dicRegiones = new Dictionary<string, string>();
 
         private static string RUTA_PAISES = $@"{System.AppDomain.CurrentDomain.SetupInformation.ApplicationBase}Utilidades/paises.json";
+        private static string RUTA_PAISES_XML = $@"{System.AppDomain.CurrentDomain.SetupInformation.ApplicationBase}Utilidades/paises.xml";
         private static string RUTA_REGIONES = $@"{System.AppDomain.CurrentDomain.SetupInformation.ApplicationBase}Utilidades/regiones.json";
 
         public static void IniciadorDiccionarioPaises()
         {
+            XmlDocument doc = new XmlDocument();
+            doc.LoadXml(File.ReadAllText(RUTA_PAISES_XML));
+            string jsonPaisesXml = JsonConvert.SerializeXmlNode(doc);
+
+            MainPaises paises = JsonConvert.DeserializeObject<MainPaises>(jsonPaisesXml);
+            foreach (DataRecord data in paises.Paises.DataRecord)
+            {
+                dicPaisesXML[data.PaiCodigo] = data.PaiIso31661A3;
+            }
+
             List<Pais> listaPaises = JsonConvert.DeserializeObject<List<Pais>>(File.ReadAllText(RUTA_PAISES));
             foreach (Pais pais in listaPaises)
             {
-                dicPaises.Add(pais.country_code, pais.name);
+                dicPaises[pais.alpha_3] = pais.country_code;
             }
         }
         public static void IniciadorDiccionarioRegion()
@@ -29,9 +43,17 @@ namespace Utilidades
             }
         }
 
-        public static bool DicPaisesContienePais(string pais)
+        public static string DicPaisesContienePais(string pais)
         {
-            return dicPaises.ContainsKey(pais);
+            if (dicPaisesXML.ContainsKey(pais))
+            {
+                if (dicPaises.ContainsKey(dicPaisesXML[pais]))
+                {
+                    return dicPaises[dicPaisesXML[pais]];
+                }
+            }
+
+            return null;
         }
         public static bool DicRegionesContieneRegion(string region)
         {
@@ -52,11 +74,11 @@ namespace Utilidades
         string ISO_31661_A3 { get; set; }
     }
 
-    class Pais
+    public class Pais
     {
         public string name { get; set; }
         string alpha_2 { get; set; }
-        string alpha_3 { get; set; }
+        public string alpha_3 { get; set; }
         public string country_code { get; set; }
         string iso_3166_2 { get; set; }
         string region { get; set; }

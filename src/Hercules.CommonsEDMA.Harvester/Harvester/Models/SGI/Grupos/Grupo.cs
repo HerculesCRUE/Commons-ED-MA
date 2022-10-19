@@ -17,6 +17,18 @@ namespace OAI_PMH.Models.SGI.GruposInvestigacion
     /// </summary>
     public class Grupo : SGI_Base
     {
+        /// <summary>
+        /// Crea el objeto ComplexOntologyResource para ser cargado.
+        /// </summary>
+        /// <param name="pHarvesterServices"></param>
+        /// <param name="pConfig"></param>
+        /// <param name="pResourceApi"></param>
+        /// <param name="pDicIdentificadores"></param>
+        /// <param name="pDicRutas"></param>
+        /// <param name="pRabbitConf"></param>
+        /// <param name="pFusionarPersona"></param>
+        /// <param name="pIdPersona"></param>
+        /// <returns></returns>
         public override ComplexOntologyResource ToRecurso(IHarvesterServices pHarvesterServices, ReadConfig pConfig, ResourceApi pResourceApi, Dictionary<string, HashSet<string>> pDicIdentificadores, Dictionary<string, Dictionary<string, string>> pDicRutas, RabbitServiceWriterDenormalizer pRabbitConf, bool pFusionarPersona = false, string pIdPersona = null)
         {
             GroupOntology.Group grupo = CrearGroupOntology(pHarvesterServices, pConfig, pResourceApi, pDicIdentificadores, pDicRutas, pRabbitConf);
@@ -24,6 +36,11 @@ namespace OAI_PMH.Models.SGI.GruposInvestigacion
             return grupo.ToGnossApiResource(pResourceApi, null);
         }
 
+        /// <summary>
+        /// Obtiene los IDs de BBDD mediante el crisidentifier.
+        /// </summary>
+        /// <param name="pResourceApi"></param>
+        /// <returns></returns>
         public override string ObtenerIDBBDD(ResourceApi pResourceApi)
         {
             Dictionary<string, string> respuesta = ObtenerGruposBBDD(new HashSet<string>() { id.ToString() }, pResourceApi);
@@ -36,8 +53,15 @@ namespace OAI_PMH.Models.SGI.GruposInvestigacion
 
         public override void ToRecursoAdicional(IHarvesterServices pHarvesterServices, ReadConfig pConfig, ResourceApi pResourceApi, Dictionary<string, HashSet<string>> pDicIdentificadores, Dictionary<string, Dictionary<string, string>> pDicRutas, RabbitServiceWriterDenormalizer pRabbitConf, string pIdGnoss)
         {
+            // No es necesario para esta clase.
         }
 
+        /// <summary>
+        /// Obtiene los IDs de los Grupos de BBDD mediante el crisidentifier.
+        /// </summary>
+        /// <param name="pListaIds"></param>
+        /// <param name="pResourceApi"></param>
+        /// <returns></returns>
         public static Dictionary<string, string> ObtenerGruposBBDD(HashSet<string> pListaIds, ResourceApi pResourceApi)
         {
             List<List<string>> listasPersonas = SplitList(pListaIds.ToList(), 1000).ToList();
@@ -77,6 +101,14 @@ namespace OAI_PMH.Models.SGI.GruposInvestigacion
             return dicPersonasBBDD;
         }
 
+        /// <summary>
+        /// Obtiene los datos de los grupos del SGI.
+        /// </summary>
+        /// <param name="pHarvesterServices"></param>
+        /// <param name="pConfig"></param>
+        /// <param name="pId"></param>
+        /// <param name="pDicRutas"></param>
+        /// <returns></returns>
         public static Grupo GetGrupoSGI(IHarvesterServices pHarvesterServices, ReadConfig pConfig, string pId, Dictionary<string, Dictionary<string, string>> pDicRutas)
         {
             // Obtención de datos en bruto.
@@ -96,7 +128,17 @@ namespace OAI_PMH.Models.SGI.GruposInvestigacion
 
             return grupo;
         }
-                
+        
+        /// <summary>
+        /// Crea el objeto Grupo para cargarlo.
+        /// </summary>
+        /// <param name="pHarvesterServices"></param>
+        /// <param name="pConfig"></param>
+        /// <param name="pResourceApi"></param>
+        /// <param name="pDicIdentificadores"></param>
+        /// <param name="pDicRutas"></param>
+        /// <param name="pRabbitConf"></param>
+        /// <returns></returns>
         public GroupOntology.Group CrearGroupOntology(IHarvesterServices pHarvesterServices, ReadConfig pConfig, ResourceApi pResourceApi, Dictionary<string, HashSet<string>> pDicIdentificadores, Dictionary<string, Dictionary<string, string>> pDicRutas, RabbitServiceWriterDenormalizer pRabbitConf)
         {
             GroupOntology.Group groupOntology = new GroupOntology.Group();

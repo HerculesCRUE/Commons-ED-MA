@@ -16,6 +16,7 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Xml.Serialization;
 using Utilidades;
@@ -27,9 +28,22 @@ namespace OAI_PMH.Models.SGI.PersonalData
     /// </summary>
     public class Persona : SGI_Base
     {
-        private static string RUTA_PREFIJOS = $@"{System.AppDomain.CurrentDomain.SetupInformation.ApplicationBase}Utilidades/prefijos.json";
+        // Prefijos para las consultas SPARQL.
+        private static string RUTA_PREFIJOS = $@"{AppDomain.CurrentDomain.SetupInformation.ApplicationBase}Utilidades/prefijos.json";
         private static string mPrefijos = string.Join(" ", JsonConvert.DeserializeObject<List<string>>(File.ReadAllText(RUTA_PREFIJOS)));
 
+        /// <summary>
+        /// Crea el objeto ComplexOntologyResource para ser cargado.
+        /// </summary>
+        /// <param name="pHarvesterServices"></param>
+        /// <param name="pConfig"></param>
+        /// <param name="pResourceApi"></param>
+        /// <param name="pDicIdentificadores"></param>
+        /// <param name="pDicRutas"></param>
+        /// <param name="pRabbitConf"></param>
+        /// <param name="pFusionarPersona"></param>
+        /// <param name="pIdPersona"></param>
+        /// <returns></returns>
         public override ComplexOntologyResource ToRecurso(IHarvesterServices pHarvesterServices, ReadConfig pConfig, ResourceApi pResourceApi, Dictionary<string, HashSet<string>> pDicIdentificadores, Dictionary<string, Dictionary<string, string>> pDicRutas, RabbitServiceWriterDenormalizer pRabbitConf, bool pFusionarPersona = false, string pIdPersona = null)
         {
             PersonOntology.Person persona = CrearPersonOntology(pRabbitConf, pHarvesterServices, pConfig, pResourceApi, pDicIdentificadores, pDicRutas);
@@ -44,6 +58,11 @@ namespace OAI_PMH.Models.SGI.PersonalData
             return persona.ToGnossApiResource(pResourceApi, null);
         }
 
+        /// <summary>
+        /// Devuelve el ID de la persona en BBDD.
+        /// </summary>
+        /// <param name="pResourceApi"></param>
+        /// <returns></returns>
         public override string ObtenerIDBBDD(ResourceApi pResourceApi)
         {
             Dictionary<string, string> respuesta = ObtenerPersonasBBDD(new HashSet<string>() { Id.ToString() }, pResourceApi);
@@ -54,9 +73,19 @@ namespace OAI_PMH.Models.SGI.PersonalData
             return null;
         }
 
+        /// <summary>
+        /// Permite cargar las entidades adicionales de la persona.
+        /// </summary>
+        /// <param name="pHarvesterServices"></param>
+        /// <param name="pConfig"></param>
+        /// <param name="pResourceApi"></param>
+        /// <param name="pDicIdentificadores"></param>
+        /// <param name="pDicRutas"></param>
+        /// <param name="pRabbitConf"></param>
+        /// <param name="pIdGnoss"></param>
         public override void ToRecursoAdicional(IHarvesterServices pHarvesterServices, ReadConfig pConfig, ResourceApi pResourceApi, Dictionary<string, HashSet<string>> pDicIdentificadores, Dictionary<string, Dictionary<string, string>> pDicRutas, RabbitServiceWriterDenormalizer pRabbitConf, string pIdGnoss)
         {
-            #region --- TESIS
+            #region --- TESIS TODO: REVISAR PROPIEDADES
             pResourceApi.ChangeOntoly("thesissupervision");
             List<string> crisIdentifiersTesisBBDD = ObtenerDataCrisIdentifier(pResourceApi, this.Id, "thesissupervision", "030.040.000.000");
             List<string> crisIdentifiersTesisSGI = new List<string>();
@@ -67,15 +96,29 @@ namespace OAI_PMH.Models.SGI.PersonalData
             }
 
             // Carga.
-            List<string> listaTesisCargarCrisIdentifiers = crisIdentifiersTesisSGI.Except(crisIdentifiersTesisBBDD).ToList();
-            List<TesisBBDD> listaTesisCargar = listaTesisSGI.Where(x => listaTesisCargarCrisIdentifiers.Contains(x.crisIdentifier)).ToList();
-            List<ComplexOntologyResource> listaTesisOntology = GetThesisSupervision(listaTesisCargar, pResourceApi, pIdGnoss);
-            CargarDatos(listaTesisOntology, pResourceApi);
+            try
+            {
+                List<string> listaTesisCargarCrisIdentifiers = crisIdentifiersTesisSGI.Except(crisIdentifiersTesisBBDD).ToList();
+                List<TesisBBDD> listaTesisCargar = listaTesisSGI.Where(x => listaTesisCargarCrisIdentifiers.Contains(x.crisIdentifier)).ToList();
+                List<ComplexOntologyResource> listaTesisOntology = GetThesisSupervision(listaTesisCargar, pResourceApi, pIdGnoss);
+                CargarDatos(listaTesisOntology, pResourceApi);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("[" + this.Id + "] ERROR en el proceso de CARGA de 'Tésis': " + e);
+            }
 
             // Eliminación.
-            List<string> listaTesisBorrarCrisIdentifiers = crisIdentifiersTesisBBDD.Except(crisIdentifiersTesisSGI).ToList();
-            List<string> listaIdsTesisBorrar = ObtenerDataByCrisIdentifiers(listaTesisBorrarCrisIdentifiers, pResourceApi, "thesissupervision", "030.040.000.000");
-            BorrarRecursos(listaIdsTesisBorrar, pResourceApi, "thesissupervision");
+            try
+            {
+                List<string> listaTesisBorrarCrisIdentifiers = crisIdentifiersTesisBBDD.Except(crisIdentifiersTesisSGI).ToList();
+                List<string> listaIdsTesisBorrar = ObtenerDataByCrisIdentifiers(listaTesisBorrarCrisIdentifiers, pResourceApi, "thesissupervision", "030.040.000.000");
+                BorrarRecursos(listaIdsTesisBorrar, pResourceApi, "thesissupervision");
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("[" + this.Id + "] ERROR en el proceso de BORRADO de 'Tésis': " + e);
+            }
             #endregion
 
             #region --- IMPARTED ACADEMIC TRAINING TODO: REVISAR PROPIEDADES
@@ -90,15 +133,29 @@ namespace OAI_PMH.Models.SGI.PersonalData
             }
 
             // Carga.
-            List<string> listaImpartedAcademicCargarCrisIdentifiers = crisIdentifiersImpartedAcademicSGI.Except(crisIdentifiersImpartedAcademicBBDD).ToList();
-            List<ImpartedAcademicTrainingBBDD> listaImpartedAcademicCargar = listaImpartedAcademicCargarSGI.Where(x => listaImpartedAcademicCargarCrisIdentifiers.Contains(x.crisIdentifier)).ToList();
-            List<ComplexOntologyResource> listaImpartedAcademicOntology = GetImpartedAcademic(listaImpartedAcademicCargar, pResourceApi, pIdGnoss);
-            CargarDatos(listaImpartedAcademicOntology, pResourceApi);
+            try
+            {
+                List<string> listaImpartedAcademicCargarCrisIdentifiers = crisIdentifiersImpartedAcademicSGI.Except(crisIdentifiersImpartedAcademicBBDD).ToList();
+                List<ImpartedAcademicTrainingBBDD> listaImpartedAcademicCargar = listaImpartedAcademicCargarSGI.Where(x => listaImpartedAcademicCargarCrisIdentifiers.Contains(x.crisIdentifier)).ToList();
+                List<ComplexOntologyResource> listaImpartedAcademicOntology = GetImpartedAcademic(listaImpartedAcademicCargar, pResourceApi, pIdGnoss);
+                CargarDatos(listaImpartedAcademicOntology, pResourceApi);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("[" + this.Id + "] ERROR en el proceso de CARGA de 'Formación Académica Impartida': " + e);
+            }
 
             // Eliminación.
-            List<string> listaImpartedAcademicBorrarCrisIdentifiers = crisIdentifiersImpartedAcademicBBDD.Except(crisIdentifiersImpartedAcademicSGI).ToList();
-            List<string> listaIdsImpartedAcademicBorrar = ObtenerDataByCrisIdentifiers(listaImpartedAcademicBorrarCrisIdentifiers, pResourceApi, "impartedacademictraining", "030.010.000.000");
-            BorrarRecursos(listaIdsImpartedAcademicBorrar, pResourceApi, "impartedacademictraining");
+            try
+            {
+                List<string> listaImpartedAcademicBorrarCrisIdentifiers = crisIdentifiersImpartedAcademicBBDD.Except(crisIdentifiersImpartedAcademicSGI).ToList();
+                List<string> listaIdsImpartedAcademicBorrar = ObtenerDataByCrisIdentifiers(listaImpartedAcademicBorrarCrisIdentifiers, pResourceApi, "impartedacademictraining", "030.010.000.000");
+                BorrarRecursos(listaIdsImpartedAcademicBorrar, pResourceApi, "impartedacademictraining");
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("[" + this.Id + "] ERROR en el proceso de BORRADO de 'Formación Académica Impartida': " + e);
+            }
             #endregion
 
             #region --- CURSES AND SEMINARS TODO: REVISAR PROPIEDADES
@@ -113,18 +170,32 @@ namespace OAI_PMH.Models.SGI.PersonalData
             }
 
             // Carga.
-            List<string> listaCursosCargarCrisIdentifiers = crisIdentifiersCursosSGI.Except(crisIdentifiersCursosBBDD).ToList();
-            List<ImpartedCoursesSeminarsBBDD> listaCursosCargar = listaCursosSGI.Where(x => listaCursosCargarCrisIdentifiers.Contains(x.crisIdentifiers)).ToList();
-            List<ComplexOntologyResource> listaCursosOntology = GetCursosSupervision(listaCursosCargar, pResourceApi, pIdGnoss);
-            CargarDatos(listaCursosOntology, pResourceApi);
+            try
+            {
+                List<string> listaCursosCargarCrisIdentifiers = crisIdentifiersCursosSGI.Except(crisIdentifiersCursosBBDD).ToList();
+                List<ImpartedCoursesSeminarsBBDD> listaCursosCargar = listaCursosSGI.Where(x => listaCursosCargarCrisIdentifiers.Contains(x.crisIdentifiers)).ToList();
+                List<ComplexOntologyResource> listaCursosOntology = GetCursosSupervision(listaCursosCargar, pResourceApi, pIdGnoss);
+                CargarDatos(listaCursosOntology, pResourceApi);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("[" + this.Id + "] ERROR en el proceso de CARGA de 'Cursos y Seminarios': " + e);
+            }
 
             // Eliminación.
-            List<string> listaCursosBorrarCrisIdentifiers = crisIdentifiersCursosBBDD.Except(crisIdentifiersCursosSGI).ToList();
-            List<string> listaIdsCursosBorrar = ObtenerDataByCrisIdentifiers(listaCursosBorrarCrisIdentifiers, pResourceApi, "impartedcoursesseminars", "030.060.000.000");
-            BorrarRecursos(listaIdsCursosBorrar, pResourceApi, "impartedcoursesseminars");
+            try
+            {
+                List<string> listaCursosBorrarCrisIdentifiers = crisIdentifiersCursosBBDD.Except(crisIdentifiersCursosSGI).ToList();
+                List<string> listaIdsCursosBorrar = ObtenerDataByCrisIdentifiers(listaCursosBorrarCrisIdentifiers, pResourceApi, "impartedcoursesseminars", "030.060.000.000");
+                BorrarRecursos(listaIdsCursosBorrar, pResourceApi, "impartedcoursesseminars");
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("[" + this.Id + "] ERROR en el proceso de BORRADO de 'Cursos y Seminarios': " + e);
+            }
             #endregion
 
-            #region --- CICLOS TODO: REVISAR PROPIEDADES
+            #region --- CICLOS TODO: REVISAR PROPIEDADES            
             pResourceApi.ChangeOntoly("academicdegree");
             List<string> crisIdentifiersCyclesBBDD = ObtenerDataCrisIdentifier(pResourceApi, this.Id, "academicdegree", "020.010.010.000");
             List<string> crisIdentifiersCyclesSGI = new List<string>();
@@ -135,15 +206,29 @@ namespace OAI_PMH.Models.SGI.PersonalData
             }
 
             // Carga.
-            List<string> listaCiclosCargarCrisIdentifiers = crisIdentifiersCyclesSGI.Except(crisIdentifiersCyclesBBDD).ToList();
-            List<CiclosBBDD> listaCiclosCargar = listaCiclosSGI.Where(x => listaCiclosCargarCrisIdentifiers.Contains(x.crisIdentifier)).ToList();
-            List<ComplexOntologyResource> listaCiclosOntology = GetCycles(listaCiclosCargar, pResourceApi, pIdGnoss);
-            CargarDatos(listaCiclosOntology, pResourceApi);
+            try
+            {
+                List<string> listaCiclosCargarCrisIdentifiers = crisIdentifiersCyclesSGI.Except(crisIdentifiersCyclesBBDD).ToList();
+                List<CiclosBBDD> listaCiclosCargar = listaCiclosSGI.Where(x => listaCiclosCargarCrisIdentifiers.Contains(x.crisIdentifier)).ToList();
+                List<ComplexOntologyResource> listaCiclosOntology = GetCycles(listaCiclosCargar, pResourceApi, pIdGnoss);
+                CargarDatos(listaCiclosOntology, pResourceApi);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("[" + this.Id + "] ERROR en el proceso de CARGA de 'Ciclos': " + e);
+            }
 
             // Eliminación.
-            List<string> listaCiclosBorrarCrisIdentifiers = crisIdentifiersCyclesBBDD.Except(crisIdentifiersCyclesSGI).ToList();
-            List<string> listaIdsCiclosBorrar = ObtenerDataByCrisIdentifiers(listaCiclosBorrarCrisIdentifiers, pResourceApi, "academicdegree", "020.010.010.000");
-            BorrarRecursos(listaIdsCiclosBorrar, pResourceApi, "academicdegree");
+            try
+            {
+                List<string> listaCiclosBorrarCrisIdentifiers = crisIdentifiersCyclesBBDD.Except(crisIdentifiersCyclesSGI).ToList();
+                List<string> listaIdsCiclosBorrar = ObtenerDataByCrisIdentifiers(listaCiclosBorrarCrisIdentifiers, pResourceApi, "academicdegree", "020.010.010.000");
+                BorrarRecursos(listaIdsCiclosBorrar, pResourceApi, "academicdegree");
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("[" + this.Id + "] ERROR en el proceso de BORRADO de 'Ciclos': " + e);
+            }
             #endregion
 
             #region --- DOCTORADOS TODO: REVISAR PROPIEDADES
@@ -157,15 +242,29 @@ namespace OAI_PMH.Models.SGI.PersonalData
             }
 
             // Carga.
-            List<string> listaDoctoradosCargarCrisIdentifiers = crisIdentifiersDoctoradosSGI.Except(crisIdentifiersDoctoradosBBDD).ToList();
-            List<DoctoradosBBDD> listaDoctoradosCargar = listaDoctoradosSGI.Where(x => listaDoctoradosCargarCrisIdentifiers.Contains(x.crisIdentifier)).ToList();
-            List<ComplexOntologyResource> listaDoctoradosOntology = GetDoctorates(listaDoctoradosCargar, pResourceApi, pIdGnoss);
-            CargarDatos(listaDoctoradosOntology, pResourceApi);
+            try
+            {
+                List<string> listaDoctoradosCargarCrisIdentifiers = crisIdentifiersDoctoradosSGI.Except(crisIdentifiersDoctoradosBBDD).ToList();
+                List<DoctoradosBBDD> listaDoctoradosCargar = listaDoctoradosSGI.Where(x => listaDoctoradosCargarCrisIdentifiers.Contains(x.crisIdentifier)).ToList();
+                List<ComplexOntologyResource> listaDoctoradosOntology = GetDoctorates(listaDoctoradosCargar, pResourceApi, pIdGnoss);
+                CargarDatos(listaDoctoradosOntology, pResourceApi);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("[" + this.Id + "] ERROR en el proceso de CARGA de 'Doctorados': " + e);
+            }
 
             // Eliminación.
-            List<string> listaDoctoradosBorrarCrisIdentifiers = crisIdentifiersDoctoradosBBDD.Except(crisIdentifiersDoctoradosSGI).ToList();
-            List<string> listaIdsDoctoradosBorrar = ObtenerDataByCrisIdentifiers(listaDoctoradosBorrarCrisIdentifiers, pResourceApi, "academicdegree", "020.010.020.000");
-            BorrarRecursos(listaIdsDoctoradosBorrar, pResourceApi, "academicdegree");
+            try
+            {
+                List<string> listaDoctoradosBorrarCrisIdentifiers = crisIdentifiersDoctoradosBBDD.Except(crisIdentifiersDoctoradosSGI).ToList();
+                List<string> listaIdsDoctoradosBorrar = ObtenerDataByCrisIdentifiers(listaDoctoradosBorrarCrisIdentifiers, pResourceApi, "academicdegree", "020.010.020.000");
+                BorrarRecursos(listaIdsDoctoradosBorrar, pResourceApi, "academicdegree");
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("[" + this.Id + "] ERROR en el proceso de BORRADO de 'Doctorados': " + e);
+            }
             #endregion
 
             #region --- POSGRADO TODO: REVISAR PROPIEDADES
@@ -179,15 +278,29 @@ namespace OAI_PMH.Models.SGI.PersonalData
             }
 
             // Carga.
-            List<string> listaPosgradosCargarCrisIdentifiers = crisIdentifiersPosgradoSGI.Except(crisIdentifiersPosgradoBBDD).ToList();
-            List<PosgradoBBDD> listaPosgradosCargar = listaPosgradosSGI.Where(x => listaPosgradosCargarCrisIdentifiers.Contains(x.crisIdentifier)).ToList();
-            List<ComplexOntologyResource> listaPosgradosOntology = GetPosgrados(listaPosgradosCargar, pResourceApi, pIdGnoss);
-            CargarDatos(listaPosgradosOntology, pResourceApi);
+            try
+            {
+                List<string> listaPosgradosCargarCrisIdentifiers = crisIdentifiersPosgradoSGI.Except(crisIdentifiersPosgradoBBDD).ToList();
+                List<PosgradoBBDD> listaPosgradosCargar = listaPosgradosSGI.Where(x => listaPosgradosCargarCrisIdentifiers.Contains(x.crisIdentifier)).ToList();
+                List<ComplexOntologyResource> listaPosgradosOntology = GetPosgrados(listaPosgradosCargar, pResourceApi, pIdGnoss);
+                CargarDatos(listaPosgradosOntology, pResourceApi);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("[" + this.Id + "] ERROR en el proceso de CARGA de 'Posgrados': " + e);
+            }
 
             // Eliminación.
-            List<string> listaPosgradosBorrarCrisIdentifiers = crisIdentifiersPosgradoBBDD.Except(crisIdentifiersPosgradoSGI).ToList();
-            List<string> listaIdsPosgradosBorrar = ObtenerDataByCrisIdentifiers(listaPosgradosBorrarCrisIdentifiers, pResourceApi, "academicdegree", "020.010.030.000");
-            BorrarRecursos(listaIdsPosgradosBorrar, pResourceApi, "academicdegree");
+            try
+            {
+                List<string> listaPosgradosBorrarCrisIdentifiers = crisIdentifiersPosgradoBBDD.Except(crisIdentifiersPosgradoSGI).ToList();
+                List<string> listaIdsPosgradosBorrar = ObtenerDataByCrisIdentifiers(listaPosgradosBorrarCrisIdentifiers, pResourceApi, "academicdegree", "020.010.030.000");
+                BorrarRecursos(listaIdsPosgradosBorrar, pResourceApi, "academicdegree");
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("[" + this.Id + "] ERROR en el proceso de BORRADO de 'Posgrados': " + e);
+            }
             #endregion
 
             #region --- FORMACIÓN ESPECIALIZADA TODO: REVISAR PROPIEDADES
@@ -201,18 +314,38 @@ namespace OAI_PMH.Models.SGI.PersonalData
             }
 
             // Carga.
-            List<string> listaEspecializadaCargarCrisIdentifiers = crisIdentifiersEspecializadaSGI.Except(crisIdentifiersEspecializadaBBDD).ToList();
-            List<FormacionEspecializadaBBDD> listaEspecializadaCargar = listaEspecializadaSGI.Where(x => listaEspecializadaCargarCrisIdentifiers.Contains(x.crisIdentifier)).ToList();
-            List<ComplexOntologyResource> listaEspecializadaOntology = GetFormacionEspecializada(listaEspecializadaCargar, pResourceApi, pIdGnoss);
-            CargarDatos(listaEspecializadaOntology, pResourceApi);
+            try
+            {
+                List<string> listaEspecializadaCargarCrisIdentifiers = crisIdentifiersEspecializadaSGI.Except(crisIdentifiersEspecializadaBBDD).ToList();
+                List<FormacionEspecializadaBBDD> listaEspecializadaCargar = listaEspecializadaSGI.Where(x => listaEspecializadaCargarCrisIdentifiers.Contains(x.crisIdentifier)).ToList();
+                List<ComplexOntologyResource> listaEspecializadaOntology = GetFormacionEspecializada(listaEspecializadaCargar, pResourceApi, pIdGnoss);
+                CargarDatos(listaEspecializadaOntology, pResourceApi);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("[" + this.Id + "] ERROR en el proceso de CARGA de 'Formación Especializada': " + e);
+            }
 
             // Eliminación.
-            List<string> listaEspecializadaBorrarCrisIdentifiers = crisIdentifiersEspecializadaBBDD.Except(crisIdentifiersEspecializadaSGI).ToList();
-            List<string> listaIdsEspecializadaBorrar = ObtenerDataByCrisIdentifiers(listaEspecializadaBorrarCrisIdentifiers, pResourceApi, "academicdegree", "020.020.000.000");
-            BorrarRecursos(listaIdsEspecializadaBorrar, pResourceApi, "academicdegree");
+            try
+            {
+                List<string> listaEspecializadaBorrarCrisIdentifiers = crisIdentifiersEspecializadaBBDD.Except(crisIdentifiersEspecializadaSGI).ToList();
+                List<string> listaIdsEspecializadaBorrar = ObtenerDataByCrisIdentifiers(listaEspecializadaBorrarCrisIdentifiers, pResourceApi, "academicdegree", "020.020.000.000");
+                BorrarRecursos(listaIdsEspecializadaBorrar, pResourceApi, "academicdegree");
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("[" + this.Id + "] ERERROR en el proceso de BORRADO de 'Formación Especializada': " + e);
+            }
             #endregion
         }
 
+        /// <summary>
+        /// Permite borrar recursos.
+        /// </summary>
+        /// <param name="pListaGnossId"></param>
+        /// <param name="pResourceApi"></param>
+        /// <param name="pOntology"></param>
         public static void BorrarRecursos(List<string> pListaGnossId, ResourceApi pResourceApi, string pOntology)
         {
             pResourceApi.ChangeOntoly(pOntology);
@@ -224,6 +357,14 @@ namespace OAI_PMH.Models.SGI.PersonalData
             }
         }
 
+        /// <summary>
+        /// Obtiene el ID del recurso mediante un crisidentifier.
+        /// </summary>
+        /// <param name="pListaCrisIdentifiers"></param>
+        /// <param name="pResourceApi"></param>
+        /// <param name="pOntology"></param>
+        /// <param name="pCvnCode"></param>
+        /// <returns></returns>
         public static List<string> ObtenerDataByCrisIdentifiers(List<string> pListaCrisIdentifiers, ResourceApi pResourceApi, string pOntology, string pCvnCode)
         {
             List<string> listaTesis = new List<string>();
@@ -250,6 +391,12 @@ namespace OAI_PMH.Models.SGI.PersonalData
             return listaTesis;
         }
 
+        /// <summary>
+        /// Obtiene los crisidentifiers de las personas mediante el ID del recurso.
+        /// </summary>
+        /// <param name="pListaIds"></param>
+        /// <param name="pResourceApi"></param>
+        /// <returns></returns>
         public static Dictionary<string, string> ObtenerPersonasBBDD(HashSet<string> pListaIds, ResourceApi pResourceApi)
         {
             List<List<string>> listasPersonas = SplitList(pListaIds.ToList(), 1000).ToList();
@@ -289,6 +436,14 @@ namespace OAI_PMH.Models.SGI.PersonalData
             return dicPersonasBBDD;
         }
 
+        /// <summary>
+        /// Permite consultar los datos de las personas en el SGI.
+        /// </summary>
+        /// <param name="pHarvesterServices"></param>
+        /// <param name="pConfig"></param>
+        /// <param name="pId"></param>
+        /// <param name="pDicRutas"></param>
+        /// <returns></returns>
         public static Persona GetPersonaSGI(IHarvesterServices pHarvesterServices, ReadConfig pConfig, string pId, Dictionary<string, Dictionary<string, string>> pDicRutas)
         {
             // Obtención de datos en bruto.
@@ -309,6 +464,16 @@ namespace OAI_PMH.Models.SGI.PersonalData
             return persona;
         }
 
+        /// <summary>
+        /// Crea el objeto Person.
+        /// </summary>
+        /// <param name="pRabbitConf"></param>
+        /// <param name="pHarvesterServices"></param>
+        /// <param name="pConfig"></param>
+        /// <param name="pResourceApi"></param>
+        /// <param name="pDicIdentificadores"></param>
+        /// <param name="pDicRutas"></param>
+        /// <returns></returns>
         public PersonOntology.Person CrearPersonOntology(RabbitServiceWriterDenormalizer pRabbitConf, IHarvesterServices pHarvesterServices, ReadConfig pConfig, ResourceApi pResourceApi, Dictionary<string, HashSet<string>> pDicIdentificadores, Dictionary<string, Dictionary<string, string>> pDicRutas)
         {
             PersonOntology.Person persona = new PersonOntology.Person();
@@ -466,6 +631,13 @@ namespace OAI_PMH.Models.SGI.PersonalData
             return idsItems.Distinct().ToList();
         }
 
+        /// <summary>
+        /// Construye el objeto de carga de las Tesis.
+        /// </summary>
+        /// <param name="pTesisList"></param>
+        /// <param name="pResourceApi"></param>
+        /// <param name="pIdGnoss"></param>
+        /// <returns></returns>
         public List<ComplexOntologyResource> GetThesisSupervision(List<TesisBBDD> pTesisList, ResourceApi pResourceApi, string pIdGnoss)
         {
             List<ComplexOntologyResource> listaTesisDevolver = new List<ComplexOntologyResource>();
@@ -482,9 +654,9 @@ namespace OAI_PMH.Models.SGI.PersonalData
                 tesisDevolver.IdRoh_projectCharacterType = tesis.projectCharacterType;
                 tesisDevolver.Roh_projectCharacterTypeOther = tesis.projectCharacterTypeOther;
                 tesisDevolver.Roh_title = tesis.title;
-                //tesisDevolver.IdVcard_hasCountryName = tesis.hasCountryName;
-                //tesisDevolver.IdVcard_hasRegion = tesis.hasRegion;
-                //tesisDevolver.Vcard_locality = tesis.locality;
+                tesisDevolver.IdVcard_hasCountryName = tesis.hasCountryName;
+                tesisDevolver.IdVcard_hasRegion = tesis.hasRegion;
+                tesisDevolver.Vcard_locality = tesis.locality;
                 tesisDevolver.Dct_issued = tesis.issued;
                 tesisDevolver.Roh_qualification = tesis.qualification;
                 tesisDevolver.Roh_europeanDoctorateDate = tesis.europeanDoctorateDate;
@@ -515,6 +687,13 @@ namespace OAI_PMH.Models.SGI.PersonalData
             return listaTesisDevolver;
         }
 
+        /// <summary>
+        /// Construye el objeto de carga de los Ciclos
+        /// </summary>
+        /// <param name="pCyclesList"></param>
+        /// <param name="pResourceApi"></param>
+        /// <param name="pIdGnoss"></param>
+        /// <returns></returns>
         public List<ComplexOntologyResource> GetCycles(List<CiclosBBDD> pCyclesList, ResourceApi pResourceApi, string pIdGnoss)
         {
             List<ComplexOntologyResource> listaCiclosDevolver = new List<ComplexOntologyResource>();
@@ -523,36 +702,26 @@ namespace OAI_PMH.Models.SGI.PersonalData
             {
                 AcademicdegreeOntology.AcademicDegree ciclosDevolver = new AcademicdegreeOntology.AcademicDegree();
 
-                string crisIdentifier = string.Empty;
-
                 ciclosDevolver.IdRoh_owner = pIdGnoss;
                 ciclosDevolver.Roh_cvnCode = "020.010.010.000";
-                crisIdentifier += $@"{ciclosDevolver.Roh_cvnCode}___";
-
                 ciclosDevolver.Roh_title = ciclo.nombreTitulo;
-                crisIdentifier += $@"{RemoveDiacritics(ciclosDevolver.Roh_title)}___";
-
                 ciclosDevolver.Roh_conductedByTitle = ciclo.entidadTitulacionTitulo;
-                crisIdentifier += $@"{RemoveDiacritics(ciclosDevolver.Roh_conductedByTitle)}___";
-
                 ciclosDevolver.IdRoh_conductedBy = ciclo.entidadTitulacion;
                 ciclosDevolver.Dct_issued = ciclo.fechaTitulacion;
                 ciclosDevolver.IdRoh_universityDegreeType = ciclo.titulacionUni;
                 ciclosDevolver.Roh_universityDegreeTypeOther = ciclo.titulacionUniOtros;
-                crisIdentifier += $@"{RemoveDiacritics(ciclosDevolver.Roh_universityDegreeTypeOther)}___";
-
                 ciclosDevolver.Roh_foreignTitle = ciclo.tituloExtranjero;
-                crisIdentifier += $@"{RemoveDiacritics(ciclosDevolver.Roh_foreignTitle)}___";
-
                 ciclosDevolver.Roh_approvedDegree = ciclo.tituloHomologado;
                 ciclosDevolver.Roh_approvedDate = ciclo.fechaHomologacion;
+                ciclosDevolver.Vcard_locality = ciclo.ciudadEntidadTitulacion;
+                ciclosDevolver.IdVcard_hasRegion = ciclo.cAutonEntidadTitulacion;
+                ciclosDevolver.IdVcard_hasCountryName = ciclo.paisEntidadTitulacion;
                 // NOTA MEDIA TODO
                 ciclosDevolver.IdRoh_prize = ciclo.premio;
                 ciclosDevolver.Roh_prizeOther = ciclo.premioOther;
-                crisIdentifier += $@"{RemoveDiacritics(ciclosDevolver.Roh_prizeOther)}___";
 
                 // CrisIdentifier
-                ciclosDevolver.Roh_crisIdentifier = crisIdentifier;
+                ciclosDevolver.Roh_crisIdentifier = ciclo.crisIdentifier;
 
                 listaCiclosDevolver.Add(ciclosDevolver.ToGnossApiResource(pResourceApi, null));
             }
@@ -560,6 +729,13 @@ namespace OAI_PMH.Models.SGI.PersonalData
             return listaCiclosDevolver;
         }
 
+        /// <summary>
+        /// Obtiene el objeto de carga de los Doctorados.
+        /// </summary>
+        /// <param name="pDoctoratesList"></param>
+        /// <param name="pResourceApi"></param>
+        /// <param name="pIdGnoss"></param>
+        /// <returns></returns>
         public List<ComplexOntologyResource> GetDoctorates(List<DoctoradosBBDD> pDoctoratesList, ResourceApi pResourceApi, string pIdGnoss)
         {
             List<ComplexOntologyResource> listaDoctoradosDevolver = new List<ComplexOntologyResource>();
@@ -594,6 +770,9 @@ namespace OAI_PMH.Models.SGI.PersonalData
                 doctoradosDevolver.Roh_doctorExtraordinaryAwardDate = doctorado.fechaPremioDoctor;
                 doctoradosDevolver.Roh_approvedDegree = doctorado.tituloHomologado;
                 doctoradosDevolver.Roh_approvedDate = doctorado.fechaHomologado;
+                doctoradosDevolver.Vcard_locality = doctorado.ciudadEntidadTitulacion;
+                doctoradosDevolver.IdVcard_hasRegion = doctorado.cAutonEntidadTitulacion;
+                doctoradosDevolver.IdVcard_hasCountryName = doctorado.paisEntidadTitulacion;
 
                 listaDoctoradosDevolver.Add(doctoradosDevolver.ToGnossApiResource(pResourceApi, null));
             }
@@ -601,6 +780,13 @@ namespace OAI_PMH.Models.SGI.PersonalData
             return listaDoctoradosDevolver;
         }
 
+        /// <summary>
+        /// Obtiene el objeto de carga de los Posgrados.
+        /// </summary>
+        /// <param name="pPosgradosList"></param>
+        /// <param name="pResourceApi"></param>
+        /// <param name="pIdGnoss"></param>
+        /// <returns></returns>
         public List<ComplexOntologyResource> GetPosgrados(List<PosgradoBBDD> pPosgradosList, ResourceApi pResourceApi, string pIdGnoss)
         {
             List<ComplexOntologyResource> listaPosgradosDevolver = new List<ComplexOntologyResource>();
@@ -622,6 +808,9 @@ namespace OAI_PMH.Models.SGI.PersonalData
                 posgradosDevolver.Roh_qualification = posgrado.calificacionObtenida;
                 posgradosDevolver.Roh_approvedDegree = posgrado.tituloHomologado;
                 posgradosDevolver.Roh_approvedDate = posgrado.fechaHomologacion;
+                posgradosDevolver.Vcard_locality = posgrado.ciudadEntidadTitulacion;
+                posgradosDevolver.IdVcard_hasRegion = posgrado.cAutonEntidadTitulacion;
+                posgradosDevolver.IdVcard_hasCountryName = posgrado.paisEntidadTitulacion;
 
                 listaPosgradosDevolver.Add(posgradosDevolver.ToGnossApiResource(pResourceApi, null));
             }
@@ -629,6 +818,13 @@ namespace OAI_PMH.Models.SGI.PersonalData
             return listaPosgradosDevolver;
         }
 
+        /// <summary>
+        /// Obtiene el objeto de carga de la Formación Especializada.
+        /// </summary>
+        /// <param name="pEspecializadaList"></param>
+        /// <param name="pResourceApi"></param>
+        /// <param name="pIdGnoss"></param>
+        /// <returns></returns>
         public List<ComplexOntologyResource> GetFormacionEspecializada(List<FormacionEspecializadaBBDD> pEspecializadaList, ResourceApi pResourceApi, string pIdGnoss)
         {
             List<ComplexOntologyResource> listaPosgradosDevolver = new List<ComplexOntologyResource>();
@@ -653,6 +849,9 @@ namespace OAI_PMH.Models.SGI.PersonalData
                 formEspDevolver.Roh_trainerName = formacionEspecializada.nombre;
                 formEspDevolver.Roh_trainerFirstSurname = formacionEspecializada.primApe;
                 formEspDevolver.Roh_trainerSecondSurname = formacionEspecializada.segunApe;
+                formEspDevolver.Vcard_locality = formacionEspecializada.ciudadEntidadTitulacion;
+                formEspDevolver.IdVcard_hasRegion = formacionEspecializada.cAutonEntidadTitulacion;
+                formEspDevolver.IdVcard_hasCountryName = formacionEspecializada.paisEntidadTitulacion;
 
                 listaPosgradosDevolver.Add(formEspDevolver.ToGnossApiResource(pResourceApi, null));
             }
@@ -660,7 +859,13 @@ namespace OAI_PMH.Models.SGI.PersonalData
             return listaPosgradosDevolver;
         }
 
-
+        /// <summary>
+        /// Obtiene el objeto de carga de la Formación Impartida.
+        /// </summary>
+        /// <param name="pImpartedAcademicList"></param>
+        /// <param name="pResourceApi"></param>
+        /// <param name="pIdGnoss"></param>
+        /// <returns></returns>
         public List<ComplexOntologyResource> GetImpartedAcademic(List<ImpartedAcademicTrainingBBDD> pImpartedAcademicList, ResourceApi pResourceApi, string pIdGnoss)
         {
             List<ComplexOntologyResource> listaImpartedDevolver = new List<ComplexOntologyResource>();
@@ -686,6 +891,7 @@ namespace OAI_PMH.Models.SGI.PersonalData
                 academicDevolver.Roh_promotedByTypeOther = impartedAcademic.promotedByTypeOther;
                 academicDevolver.Roh_center = impartedAcademic.center;
                 academicDevolver.Vcard_locality = impartedAcademic.locality;
+                academicDevolver.IdVcard_hasRegion = impartedAcademic.hasRegion;
                 academicDevolver.IdVcard_hasCountryName = impartedAcademic.hasCountryName;
                 academicDevolver.IdRoh_teachingType = impartedAcademic.teachingType;
                 academicDevolver.Roh_numberECTSHours = (float)impartedAcademic.numberECTSHours;
@@ -725,6 +931,13 @@ namespace OAI_PMH.Models.SGI.PersonalData
             return listaImpartedDevolver;
         }
 
+        /// <summary>
+        /// Obtiene el objeto de carga de Cursos y Seminarios.
+        /// </summary>
+        /// <param name="pTesisList"></param>
+        /// <param name="pResourceApi"></param>
+        /// <param name="pIdGnoss"></param>
+        /// <returns></returns>
         public List<ComplexOntologyResource> GetCursosSupervision(List<ImpartedCoursesSeminarsBBDD> pTesisList, ResourceApi pResourceApi, string pIdGnoss)
         {
             List<ComplexOntologyResource> listacursoDevolver = new List<ComplexOntologyResource>();
@@ -737,56 +950,32 @@ namespace OAI_PMH.Models.SGI.PersonalData
 
                 courseDevolver.IdRoh_owner = pIdGnoss;
                 courseDevolver.Roh_cvnCode = "030.060.000.000";
-                crisIdentifier += $@"{courseDevolver.Roh_cvnCode}___";
-
                 courseDevolver.Roh_title = curso.title;
-                crisIdentifier += $@"{RemoveDiacritics(courseDevolver.Roh_title)}___";
-
                 courseDevolver.IdRoh_eventType = curso.eventType;
                 courseDevolver.Roh_eventTypeOther = curso.eventTypeOther;
-                crisIdentifier += $@"{RemoveDiacritics(courseDevolver.Roh_eventTypeOther)}___";
-
                 courseDevolver.Roh_promotedByTitle = curso.promotedByTitle;
-                crisIdentifier += $@"{RemoveDiacritics(courseDevolver.Roh_promotedByTitle)}___";
-
                 courseDevolver.IdRoh_promotedBy = curso.promotedBy;
                 courseDevolver.IdRoh_promotedByType = curso.promotedByType;
                 courseDevolver.Roh_promotedByTypeOther = curso.promotedByTypeOther;
-                crisIdentifier += $@"{RemoveDiacritics(courseDevolver.Roh_promotedByTypeOther)}___";
-
                 courseDevolver.Vivo_start = curso.start;
                 courseDevolver.Roh_durationHours = curso.durationHours;
-                crisIdentifier += $@"{courseDevolver.Roh_durationHours}___";
-
-                // TODO
+                courseDevolver.IdVcard_hasCountryName = curso.hasCountryName;
+                courseDevolver.IdVcard_hasRegion = curso.hasRegion;
+                courseDevolver.Vcard_locality = curso.locality;
                 courseDevolver.Roh_goals = curso.goals;
-                crisIdentifier += $@"{RemoveDiacritics(courseDevolver.Roh_goals)}___";
-
                 courseDevolver.IdVcard_hasLanguage = curso.hasLanguage;
                 courseDevolver.Roh_isbn = curso.isbn;
-                crisIdentifier += $@"{RemoveDiacritics(courseDevolver.Roh_isbn)}___";
-
                 courseDevolver.Bibo_issn = curso.issn;
-                crisIdentifier += $@"{RemoveDiacritics(courseDevolver.Bibo_issn)}___";
-
                 courseDevolver.Roh_correspondingAuthor = curso.correspondingAuthor;
-
                 courseDevolver.Bibo_doi = curso.doi;
-                crisIdentifier += $@"{RemoveDiacritics(courseDevolver.Bibo_doi)}___";
-
                 courseDevolver.Bibo_handle = curso.handle;
-                crisIdentifier += $@"{RemoveDiacritics(courseDevolver.Bibo_handle)}___";
-
                 courseDevolver.Bibo_pmid = curso.pmid;
-                crisIdentifier += $@"{RemoveDiacritics(courseDevolver.Bibo_pmid)}___";
-
                 // TODO Identifier
                 courseDevolver.Roh_targetProfile = curso.targetProfile;
-
                 courseDevolver.IdRoh_participationType = curso.participationType;
                 courseDevolver.Roh_participationTypeOther = curso.participationTypeOther;
-                crisIdentifier += $@"{RemoveDiacritics(courseDevolver.Roh_participationTypeOther)}___";
 
+                // CrisIdentifier
                 courseDevolver.Roh_crisIdentifier = crisIdentifier;
 
                 listacursoDevolver.Add(courseDevolver.ToGnossApiResource(pResourceApi, null));
@@ -794,7 +983,6 @@ namespace OAI_PMH.Models.SGI.PersonalData
 
             return listacursoDevolver;
         }
-
 
         /// <summary>
         /// Obtiene los datos que no queremos borrar de la persona.
@@ -1042,6 +1230,12 @@ namespace OAI_PMH.Models.SGI.PersonalData
             pPersonaSGI.Roh_ignorePublication = pPersonaBBDD.Roh_ignorePublication;
         }
 
+        /// <summary>
+        /// Permite cargar un departamento.
+        /// </summary>
+        /// <param name="pCodigoDept"></param>
+        /// <param name="pNombreDept"></param>
+        /// <param name="pResourceApi"></param>
         private static void CargarDepartment(string pCodigoDept, string pNombreDept, ResourceApi pResourceApi)
         {
             string ontology = "department";
@@ -1058,6 +1252,12 @@ namespace OAI_PMH.Models.SGI.PersonalData
             var cargado = pResourceApi.LoadSecondaryResource(dept.ToGnossApiResource(pResourceApi, ontology + "_" + dept.Dc_identifier));
         }
 
+        /// <summary>
+        /// Comprueba si existe un departamento en BBDD.
+        /// </summary>
+        /// <param name="pIdentificadorDept"></param>
+        /// <param name="pResourceApi"></param>
+        /// <returns></returns>
         private static bool ComprobarDepartamentoBBDD(string pIdentificadorDept, ResourceApi pResourceApi)
         {
             string idSecundaria = $@"http://gnoss.com/items/department_{pIdentificadorDept}";
@@ -1079,384 +1279,15 @@ namespace OAI_PMH.Models.SGI.PersonalData
 
             return false;
         }
-        public List<string> ObtenerCodigosAcademicDegree(ResourceApi pResourceApi, string pCrisIdentifierPerson, string pTipo)
-        {
-            List<string> listaAcademicDegree = new List<string>();
 
-            string select = "SELECT ?crisIdentifier";
-            string where = $@"
-            WHERE {{
-                ?cv <http://w3id.org/roh/cvOf> ?persona.
-                ?persona <http://w3id.org/roh/crisIdentifier> '{pCrisIdentifierPerson}'.
-                ?cv <http://w3id.org/roh/qualifications> ?qualifications.
-                ?qualifications <{pTipo}> ?aux.
-                ?aux <http://vivoweb.org/ontology/core#relatedBy> ?s.
-                ?s <http://w3id.org/roh/crisIdentifier> ?crisIdentifier.
-                
-            }}";
-
-            SparqlObject resultadoQuery = pResourceApi.VirtuosoQueryMultipleGraph(select, where, new List<string>() { "curriculumvitae", "academicdegree", "person" });
-            if (!(resultadoQuery != null && resultadoQuery.results != null && resultadoQuery.results.bindings != null && resultadoQuery.results.bindings.Count > 0))
-            {
-                foreach (Dictionary<string, SparqlObject.Data> fila in resultadoQuery.results.bindings)
-                {
-                    if (fila.ContainsKey("crisIdentifier") && !string.IsNullOrEmpty(fila["crisIdentifier"].value))
-                    {
-                        listaAcademicDegree.Add(fila["crisIdentifier"].value);
-                    }
-                }
-            }
-            return listaAcademicDegree;
-        }
-        public List<AcademicDegreeBBDD> ObtenerAcademicDegree(ResourceApi pResourceApi, string pCrisIdentifierPerson, string pTipo)
-        {
-            List<AcademicDegreeBBDD> listaAcademicDegree = new List<AcademicDegreeBBDD>();
-            Dictionary<string, List<string>> dicCodirectores = new Dictionary<string, List<string>>();
-            Dictionary<string, List<string>> dicCategoryPaths = new Dictionary<string, List<string>>();
-
-            string select = "SELECT *";
-            string where = $@"
-            WHERE {{
-                ?cv <http://w3id.org/roh/cvOf> ?persona.
-                ?cv <http://w3id.org/roh/qualifications> ?qualifications.
-                ?qualifications <{pTipo}> ?aux.
-                ?aux <http://vivoweb.org/ontology/core#relatedBy> ?s.
-                OPTIONAL {{ ?s <http://w3id.org/roh/title> ?title. }}
-                OPTIONAL {{ ?s <http://w3id.org/roh/degreeType> ?degreeType. }}
-                OPTIONAL {{ ?s <http://w3id.org/roh/postgradeDegree> ?postgradeDegree. }}
-                OPTIONAL {{ ?s <http://w3id.org/roh/doctoralProgram> ?doctoralProgram. }}
-                OPTIONAL {{ ?s <http://purl.org/dc/terms/issued> ?issued. }}
-                OPTIONAL {{ ?s <http://w3id.org/roh/universityDegreeType> ?universityDegreeType. }}
-                OPTIONAL {{ ?s <http://w3id.org/roh/universityDegreeTypeOther> ?universityDegreeTypeOther. }}
-                OPTIONAL {{ ?s <http://w3id.org/roh/conductedByTitle> ?conductedByTitle. }}
-                OPTIONAL {{ ?s <http://w3id.org/roh/conductedBy> ?conductedBy. }}
-                OPTIONAL {{ ?s <http://w3id.org/roh/conductedByType> ?conductedByType. }}
-                OPTIONAL {{ ?s <http://w3id.org/roh/conductedByTypeOther> ?conductedByTypeOther. }}
-                OPTIONAL {{ ?s <http://www.w3.org/2006/vcard/ns#locality> ?locality. }}
-                OPTIONAL {{ ?s <http://www.w3.org/2006/vcard/ns#hasCountryName> ?hasCountryName. }}
-                OPTIONAL {{ ?s <http://www.w3.org/2006/vcard/ns#hasRegion> ?hasRegion. }}
-                OPTIONAL {{ ?s <http://w3id.org/roh/foreignTitle> ?foreignTitle. }}
-                OPTIONAL {{ ?s <http://w3id.org/roh/foreignDegreeType> ?foreignDegreeType. }}
-                OPTIONAL {{ ?s <http://w3id.org/roh/approvedDegree> ?approvedDegree. }}
-                OPTIONAL {{ ?s <http://w3id.org/roh/approvedDate> ?approvedDate. }}
-                OPTIONAL {{ ?s <http://w3id.org/roh/mark> ?mark. }}
-                OPTIONAL {{ ?s <http://w3id.org/roh/prize> ?prize. }}
-                OPTIONAL {{ ?s <http://w3id.org/roh/prizeOther> ?prizeOther. }}
-                OPTIONAL {{ ?s <http://w3id.org/roh/formationType> ?formationType. }}
-                OPTIONAL {{ ?s <http://w3id.org/roh/qualification> ?qualification. }}
-                OPTIONAL {{ ?s <http://w3id.org/roh/center> ?center. }}
-                OPTIONAL {{ ?s <http://w3id.org/roh/durationHours> ?durationHours. }}
-                OPTIONAL {{ ?s <http://w3id.org/roh/goals> ?goals. }}
-                OPTIONAL {{ ?s <http://w3id.org/roh/trainerNick> ?trainerNick. }}
-                OPTIONAL {{ ?s <http://w3id.org/roh/trainerName> ?trainerName. }}
-                OPTIONAL {{ ?s <http://w3id.org/roh/trainerFistSurname> ?trainerFistSurname. }}
-                OPTIONAL {{ ?s <http://vivoweb.org/ontology/core#end> ?end. }}
-                OPTIONAL {{ ?s <http://w3id.org/roh/formationActivityType> ?formationActivityType. }}
-                OPTIONAL {{ ?s <http://w3id.org/roh/formationActivityTypeOther> ?formationActivityTypeOther. }}
-                OPTIONAL {{ ?s <http://w3id.org/roh/stayGoal> ?stayGoal. }}
-                OPTIONAL {{ ?s <http://w3id.org/roh/stayGoalOther> ?stayGoalOther. }}
-                OPTIONAL {{ ?s <http://w3id.org/roh/fundingProgram> ?fundingProgram. }}
-                OPTIONAL {{ ?s <http://w3id.org/roh/targetProfile> ?targetProfile. }}
-                OPTIONAL {{ ?s <http://w3id.org/roh/performedTasks> ?performedTasks. }}
-                OPTIONAL {{ ?s <http://w3id.org/roh/durationYears> ?durationYears. }}
-                OPTIONAL {{ ?s <http://w3id.org/roh/durationMonths> ?durationMonths. }}
-                OPTIONAL {{ ?s <http://w3id.org/roh/durationDays> ?durationDays. }}
-                OPTIONAL {{ ?s <http://w3id.org/roh/deaEntityTitle> ?deaEntityTitle. }}
-                OPTIONAL {{ ?s <http://w3id.org/roh/deaEntity> ?deaEntity. }}
-                OPTIONAL {{ ?s <http://w3id.org/roh/deaDate> ?deaDate. }}
-                OPTIONAL {{ ?s <http://w3id.org/roh/thesiTitle> ?thesiTitle. }}
-                OPTIONAL {{ ?s <http://w3id.org/roh/directorNick> ?directorNick. }}
-                OPTIONAL {{ ?s <http://w3id.org/roh/directorName> ?directorName. }}
-                OPTIONAL {{ ?s <http://w3id.org/roh/directorFirstSurname> ?directorFirstSurname. }}
-                OPTIONAL {{ ?s <http://w3id.org/roh/directorSecondSurname> ?directorSecondSurname. }}
-                OPTIONAL {{ ?s <http://w3id.org/roh/codirector> ?codirector. }}
-                OPTIONAL {{ ?s <http://w3id.org/roh/europeanDoctorate> ?europeanDoctorate. }}
-                OPTIONAL {{ ?s <http://w3id.org/roh/europeanDoctorateDate> ?europeanDoctorateDate. }}
-                OPTIONAL {{ ?s <http://w3id.org/roh/qualityMention> ?qualityMention. }}
-                OPTIONAL {{ ?s <http://w3id.org/roh/doctorExtraordinaryAward> ?doctorExtraordinaryAward. }}
-                OPTIONAL {{ ?s <http://w3id.org/roh/doctorExtraordinaryAwardDate> ?doctorExtraordinaryAwardDate. }}
-                ?persona <http://w3id.org/roh/crisIdentifier> '{pCrisIdentifierPerson}'.
-            }}";
-
-            SparqlObject resultadoQuery = pResourceApi.VirtuosoQueryMultipleGraph(select, where, new List<string>() { "person", "thesissupervision" });
-            if (!(resultadoQuery != null && resultadoQuery.results != null && resultadoQuery.results.bindings != null && resultadoQuery.results.bindings.Count > 0))
-            {
-                return listaAcademicDegree;
-            }
-
-            if (pTipo.Equals("http://w3id.org/roh/relatedFirstSecondCycles"))
-            {
-                foreach (Dictionary<string, SparqlObject.Data> fila in resultadoQuery.results.bindings)
-                {
-                    listaAcademicDegree.Add(ObtenerCiclosBBDD(fila));
-                }
-            }
-            else if (pTipo.Equals("http://w3id.org/roh/relatedDoctorates"))
-            {
-                foreach (Dictionary<string, SparqlObject.Data> fila in resultadoQuery.results.bindings)
-                {
-                    listaAcademicDegree.Add(ObtenerDoctoradosBBDD(fila));
-                }
-            }
-            else if (pTipo.Equals("http://w3id.org/roh/relatedPostGraduates"))
-            {
-                foreach (Dictionary<string, SparqlObject.Data> fila in resultadoQuery.results.bindings)
-                {
-                    listaAcademicDegree.Add(ObtenerPosgradoBBDD(fila));
-                }
-            }
-            else if (pTipo.Equals("http://w3id.org/roh/relatedSpecialisedTrainings"))
-            {
-                foreach (Dictionary<string, SparqlObject.Data> fila in resultadoQuery.results.bindings)
-                {
-                    listaAcademicDegree.Add(ObtenerFormacionEspecializadaBBDD(fila));
-                }
-            }
-            else if (pTipo.Equals("http://w3id.org/roh/relatedCoursesAndSeminars"))
-            {
-                foreach (Dictionary<string, SparqlObject.Data> fila in resultadoQuery.results.bindings)
-                {
-                    listaAcademicDegree.Add(ObtenerSeminariosCursosBBDD(fila));
-                }
-            }
-            return listaAcademicDegree;
-        }
-        public CiclosBBDD ObtenerCiclosBBDD(Dictionary<string, SparqlObject.Data> fila)
-        {
-            CiclosBBDD ciclo = new CiclosBBDD();
-            ciclo.crisIdentifier = fila["s"].value;
-            ciclo.nombreTitulo = fila["title"].value;
-
-            return ciclo;
-        }
-        public DoctoradosBBDD ObtenerDoctoradosBBDD(Dictionary<string, SparqlObject.Data> fila)
-        {
-            DoctoradosBBDD doctorados = new DoctoradosBBDD();
-            doctorados.tituloTesis = fila["thesiTitle"].value;
-            return doctorados;
-        }
-        public PosgradoBBDD ObtenerPosgradoBBDD(Dictionary<string, SparqlObject.Data> fila)
-        {
-            PosgradoBBDD posgrado = new PosgradoBBDD();
-
-            return posgrado;
-        }
-        public FormacionEspecializadaBBDD ObtenerFormacionEspecializadaBBDD(Dictionary<string, SparqlObject.Data> fila)
-        {
-            FormacionEspecializadaBBDD formacionEspecializada = new FormacionEspecializadaBBDD();
-
-            return formacionEspecializada;
-        }
-        public SeminariosCursosBBDD ObtenerSeminariosCursosBBDD(Dictionary<string, SparqlObject.Data> fila)
-        {
-            SeminariosCursosBBDD seminariosCursos = new SeminariosCursosBBDD();
-
-            return seminariosCursos;
-        }
-
-        public List<TesisBBDD> ObtenerTesisBBDD(ResourceApi pResourceApi, string pCrisIdentifierPerson)
-        {
-            List<TesisBBDD> listaTesis = new List<TesisBBDD>();
-            Dictionary<string, List<string>> dicCodirectores = new Dictionary<string, List<string>>();
-            Dictionary<string, List<string>> dicCategoryPaths = new Dictionary<string, List<string>>();
-
-            string select = string.Empty;
-            string where = string.Empty;
-            SparqlObject resultadoQuery = null;
-
-            #region --- Obtención datos básicos Tesis
-            select = "SELECT * ";
-            where = $@"WHERE {{ 
-                                ?s <http://w3id.org/roh/owner> ?persona.
-                                ?s <http://w3id.org/roh/crisIdentifier> ?crisIdentifier.
-                                ?s <http://w3id.org/roh/title> ?title.
-                                OPTIONAL {{ ?s <http://purl.org/dc/terms/issued> ?issued. }}
-                                OPTIONAL {{ ?s <http://w3id.org/roh/studentNick> ?studentNick. }}
-                                OPTIONAL {{ ?s <http://w3id.org/roh/studentName> ?studentName. }}
-                                OPTIONAL {{ ?s <http://w3id.org/roh/studentFirstSurname> ?studentFirstSurname. }}
-                                OPTIONAL {{ ?s <http://w3id.org/roh/studentSecondSurname> ?studentSecondSurname. }}
-                                OPTIONAL {{ ?s <http://w3id.org/roh/promotedByTitle> ?promotedByTitle. }}
-                                OPTIONAL {{ ?s <http://w3id.org/roh/promotedBy> ?promotedBy. }}
-                                OPTIONAL {{ ?s <http://w3id.org/roh/promotedByType> ?promotedByType. }}
-                                OPTIONAL {{ ?s <http://w3id.org/roh/promotedByTypeOther> ?promotedByTypeOther. }}
-                                OPTIONAL {{ ?s <http://www.w3.org/2006/vcard/ns#locality> ?locality. }}
-                                OPTIONAL {{ ?s <http://www.w3.org/2006/vcard/ns#hasCountryName> ?hasCountryName. }}
-                                OPTIONAL {{ ?s <http://www.w3.org/2006/vcard/ns#hasRegion> ?hasRegion. }}
-                                OPTIONAL {{ ?s <http://w3id.org/roh/projectCharacterType> ?projectCharacterType. }}
-                                OPTIONAL {{ ?s <http://w3id.org/roh/projectCharacterTypeOther> ?projectCharacterTypeOther. }}
-                                OPTIONAL {{ ?s <http://w3id.org/roh/codirector> ?codirector. }}
-                                OPTIONAL {{ ?s <http://w3id.org/roh/qualification> ?qualification. }}
-                                OPTIONAL {{ ?s <http://w3id.org/roh/qualityMention> ?qualityMention. }}
-                                OPTIONAL {{ ?s <http://w3id.org/roh/qualityMentionDate> ?qualityMentionDate. }}
-                                OPTIONAL {{ ?s <http://w3id.org/roh/europeanDoctorate> ?europeanDoctorate. }}
-                                OPTIONAL {{ ?s <http://w3id.org/roh/europeanDoctorateDate> ?europeanDoctorateDate. }}
-                                OPTIONAL {{ ?s <http://vivoweb.org/ontology/core#freeTextKeyword> ?freeTextKeyword. }}
-                                ?persona <http://w3id.org/roh/crisIdentifier> '{pCrisIdentifierPerson}'.
-                            }}";
-
-            resultadoQuery = pResourceApi.VirtuosoQueryMultipleGraph(select, where, new List<string>() { "person", "thesissupervision" });
-            if (resultadoQuery != null && resultadoQuery.results != null && resultadoQuery.results.bindings != null && resultadoQuery.results.bindings.Count > 0)
-            {
-                foreach (Dictionary<string, SparqlObject.Data> fila in resultadoQuery.results.bindings)
-                {
-                    TesisBBDD tesis = new TesisBBDD();
-                    tesis.idGnoss = fila["s"].value;
-                    tesis.crisIdentifier = fila["s"].value;
-                    tesis.title = fila["title"].value;
-                    if (fila.ContainsKey("issued") && !string.IsNullOrEmpty(fila["issued"].value))
-                    {
-                        int anio = int.Parse(fila["issued"].value.Substring(0, 4));
-                        int mes = int.Parse(fila["issued"].value.Substring(4, 2));
-                        int dia = int.Parse(fila["issued"].value.Substring(6, 2));
-                        tesis.issued = new DateTime(anio, mes, dia, 0, 0, 0, DateTimeKind.Utc);
-                    }
-                    if (fila.ContainsKey("studentNick") && !string.IsNullOrEmpty(fila["studentNick"].value))
-                    {
-                        tesis.studentNick = fila["studentNick"].value;
-                    }
-                    if (fila.ContainsKey("studentName") && !string.IsNullOrEmpty(fila["studentName"].value))
-                    {
-                        tesis.studentName = fila["studentName"].value;
-                    }
-                    if (fila.ContainsKey("studentFirstSurname") && !string.IsNullOrEmpty(fila["studentFirstSurname"].value))
-                    {
-                        tesis.studentFirstSurname = fila["studentFirstSurname"].value;
-                    }
-                    if (fila.ContainsKey("studentSecondSurname") && !string.IsNullOrEmpty(fila["studentSecondSurname"].value))
-                    {
-                        tesis.studentSecondSurname = fila["studentSecondSurname"].value;
-                    }
-                    if (fila.ContainsKey("promotedByTitle") && !string.IsNullOrEmpty(fila["promotedByTitle"].value))
-                    {
-                        tesis.promotedByTitle = fila["promotedByTitle"].value;
-                    }
-                    if (fila.ContainsKey("promotedBy") && !string.IsNullOrEmpty(fila["promotedBy"].value))
-                    {
-                        tesis.promotedBy = fila["promotedBy"].value;
-                    }
-                    if (fila.ContainsKey("promotedByType") && !string.IsNullOrEmpty(fila["promotedByType"].value))
-                    {
-                        tesis.promotedByType = fila["promotedByType"].value;
-                    }
-                    if (fila.ContainsKey("promotedByTypeOther") && !string.IsNullOrEmpty(fila["promotedByTypeOther"].value))
-                    {
-                        tesis.promotedByTypeOther = fila["promotedByTypeOther"].value;
-                    }
-                    if (fila.ContainsKey("codirector") && !string.IsNullOrEmpty(fila["codirector"].value))
-                    {
-                        if (dicCodirectores.ContainsKey(fila["s"].value))
-                        {
-                            dicCodirectores[fila["s"].value].Add(fila["codirector"].value);
-                        }
-                        else
-                        {
-                            tesis.codirector = new List<Codirector>();
-                            dicCodirectores[fila["s"].value] = new List<string>() { fila["codirector"].value };
-                        }
-                    }
-                    if (fila.ContainsKey("locality") && !string.IsNullOrEmpty(fila["locality"].value))
-                    {
-                        tesis.locality = fila["locality"].value;
-                    }
-                    if (fila.ContainsKey("hasCountryName") && !string.IsNullOrEmpty(fila["hasCountryName"].value))
-                    {
-                        tesis.hasCountryName = fila["hasCountryName"].value;
-                    }
-                    if (fila.ContainsKey("hasRegion") && !string.IsNullOrEmpty(fila["hasRegion"].value))
-                    {
-                        tesis.hasRegion = fila["hasRegion"].value;
-                    }
-                    if (fila.ContainsKey("projectCharacterType") && !string.IsNullOrEmpty(fila["projectCharacterType"].value))
-                    {
-                        tesis.projectCharacterType = fila["projectCharacterType"].value;
-                    }
-                    if (fila.ContainsKey("projectCharacterTypeOther") && !string.IsNullOrEmpty(fila["projectCharacterTypeOther"].value))
-                    {
-                        tesis.projectCharacterTypeOther = fila["projectCharacterTypeOther"].value;
-                    }
-                    if (fila.ContainsKey("qualityMention") && !string.IsNullOrEmpty(fila["qualityMention"].value))
-                    {
-                        tesis.qualityMention = bool.Parse(fila["qualityMention"].value);
-                    }
-                    if (fila.ContainsKey("qualityMentionDate") && !string.IsNullOrEmpty(fila["qualityMentionDate"].value))
-                    {
-                        int anio = int.Parse(fila["qualityMentionDate"].value.Substring(0, 4));
-                        int mes = int.Parse(fila["qualityMentionDate"].value.Substring(4, 2));
-                        int dia = int.Parse(fila["qualityMentionDate"].value.Substring(6, 2));
-                        tesis.qualityMentionDate = new DateTime(anio, mes, dia, 0, 0, 0, DateTimeKind.Utc);
-                    }
-                    if (fila.ContainsKey("europeanDoctorate") && !string.IsNullOrEmpty(fila["europeanDoctorate"].value))
-                    {
-                        tesis.europeanDoctorate = bool.Parse(fila["europeanDoctorate"].value);
-                    }
-                    if (fila.ContainsKey("europeanDoctorateDate") && !string.IsNullOrEmpty(fila["europeanDoctorateDate"].value))
-                    {
-                        int anio = int.Parse(fila["europeanDoctorateDate"].value.Substring(0, 4));
-                        int mes = int.Parse(fila["europeanDoctorateDate"].value.Substring(4, 2));
-                        int dia = int.Parse(fila["europeanDoctorateDate"].value.Substring(6, 2));
-                        tesis.europeanDoctorateDate = new DateTime(anio, mes, dia, 0, 0, 0, DateTimeKind.Utc);
-                    }
-                    if (fila.ContainsKey("freeTextKeyword") && !string.IsNullOrEmpty(fila["freeTextKeyword"].value))
-                    {
-                        if (dicCategoryPaths.ContainsKey(fila["s"].value))
-                        {
-                            dicCategoryPaths[fila["s"].value].Add(fila["freeTextKeyword"].value);
-                        }
-                        else
-                        {
-                            tesis.freeTextKeyword = new List<string>();
-                            dicCategoryPaths[fila["s"].value] = new List<string>() { fila["freeTextKeyword"].value };
-                        }
-                    }
-                    listaTesis.Add(tesis);
-                }
-            }
-            #endregion
-
-            #region --- Obtención de los datos de codirectores
-            foreach (KeyValuePair<string, List<string>> item in dicCodirectores)
-            {
-                select = "SELECT * ";
-                where = $@"WHERE {{
-                        ?s <http://www.w3.org/1999/02/22-rdf-syntax-ns#comment> ?comment.
-                        ?s <http://xmlns.com/foaf/0.1/nick> ?nick.
-                        ?s <http://xmlns.com/foaf/0.1/firtName> ?firstName.
-                        ?s <http://xmlns.com/foaf/0.1/familyName> ?familyName.
-                        ?s <http://w3id.org/roh/secondFamilyName> ?secondFamilyName.
-                        FILTER(?s in (<{string.Join(">, <", item.Value.Select(x => x))}>))}}
-                    }}";
-
-                resultadoQuery = pResourceApi.VirtuosoQuery(select, where, "thesissupervision");
-                if (resultadoQuery != null && resultadoQuery.results != null && resultadoQuery.results.bindings != null && resultadoQuery.results.bindings.Count > 0)
-                {
-                    foreach (Dictionary<string, SparqlObject.Data> fila in resultadoQuery.results.bindings)
-                    {
-                        Codirector codirector = new Codirector();
-                        codirector.comment = Int32.Parse(fila["comment"].value);
-                        codirector.firstName = fila["firstName"].value;
-
-                        if (fila.ContainsKey("nick") && !string.IsNullOrEmpty(fila["nick"].value))
-                        {
-                            codirector.nick = fila["nick"].value;
-                        }
-                        if (fila.ContainsKey("familyName") && !string.IsNullOrEmpty(fila["familyName"].value))
-                        {
-                            codirector.familyName = fila["familyName"].value;
-                        }
-                        if (fila.ContainsKey("secondFamilyName") && !string.IsNullOrEmpty(fila["secondFamilyName"].value))
-                        {
-                            codirector.secondFamilyName = fila["secondFamilyName"].value;
-                        }
-
-                        listaTesis.First(x => x.idGnoss == item.Key).codirector.Add(codirector);
-                    }
-                }
-            }
-            #endregion
-
-            return listaTesis;
-        }
-
+        /// <summary>
+        /// Obtiene información de la persona mediante el crisidentifier.
+        /// </summary>
+        /// <param name="pResourceApi"></param>
+        /// <param name="pCrisIdentfierPerson"></param>
+        /// <param name="pOntology"></param>
+        /// <param name="pCvnCode"></param>
+        /// <returns></returns>
         public List<string> ObtenerDataCrisIdentifier(ResourceApi pResourceApi, string pCrisIdentfierPerson, string pOntology, string pCvnCode)
         {
             List<string> listaDevolver = new List<string>();
@@ -1487,6 +1318,18 @@ namespace OAI_PMH.Models.SGI.PersonalData
 
             return listaDevolver;
         }
+
+        /// <summary>
+        /// Construye el objeto con los datos obtenidos de BBDD.
+        /// </summary>
+        /// <param name="pRabbitConf"></param>
+        /// <param name="pListaImpartedAcademicSGI"></param>
+        /// <param name="pHarvesterServices"></param>
+        /// <param name="pConfig"></param>
+        /// <param name="pResourceApi"></param>
+        /// <param name="pDicIdentificadores"></param>
+        /// <param name="pDicRutas"></param>
+        /// <returns></returns>
         public List<ImpartedAcademicTrainingBBDD> ObtenerImpartedAcademicSGI(RabbitServiceWriterDenormalizer pRabbitConf, List<FormacionAcademicaImpartida> pListaImpartedAcademicSGI, IHarvesterServices pHarvesterServices, ReadConfig pConfig, ResourceApi pResourceApi, Dictionary<string, HashSet<string>> pDicIdentificadores, Dictionary<string, Dictionary<string, string>> pDicRutas)
         {
             List<ImpartedAcademicTrainingBBDD> listaImpartedAcademic = new List<ImpartedAcademicTrainingBBDD>();
@@ -1537,6 +1380,25 @@ namespace OAI_PMH.Models.SGI.PersonalData
                 if (item.TipoDocente != null && !string.IsNullOrEmpty(item.TipoDocente.Nombre))
                 {
                     impartedAcademic.teachingType = TeachingType(item.TipoDocente.Nombre, pResourceApi);
+                }
+
+                // Código de países.
+                if (item.PaisEntidadRealizacion != null && !string.IsNullOrEmpty(item.PaisEntidadRealizacion.Id))
+                {
+                    impartedAcademic.hasCountryName = IdentificadorPais(item.PaisEntidadRealizacion.Id, pResourceApi);
+                    crisIdentifier += $@"{item.PaisEntidadRealizacion.Id}___";
+                }
+
+                if (item.CcaaRegionEntidadRealizacion != null && !string.IsNullOrEmpty(item.CcaaRegionEntidadRealizacion.Id))
+                {
+                    impartedAcademic.hasRegion = IdentificadorRegion(item.CcaaRegionEntidadRealizacion.Id, pResourceApi);
+                    crisIdentifier += $@"{item.CcaaRegionEntidadRealizacion.Id}___";
+                }
+
+                if (!string.IsNullOrEmpty(item.CiudadEntidadRealizacion))
+                {
+                    impartedAcademic.locality = item.CiudadEntidadRealizacion;
+                    crisIdentifier += $@"{item.CiudadEntidadRealizacion}___";
                 }
 
                 impartedAcademic.numberECTSHours = item.NumHorasCreditos.Value;
@@ -1605,6 +1467,17 @@ namespace OAI_PMH.Models.SGI.PersonalData
             return listaImpartedAcademic;
         }
 
+        /// <summary>
+        /// Construye el objeto con los datos obtenidos de BBDD.
+        /// </summary>
+        /// <param name="pRabbitConf"></param>
+        /// <param name="pListaTesisSGI"></param>
+        /// <param name="pHarvesterServices"></param>
+        /// <param name="pConfig"></param>
+        /// <param name="pResourceApi"></param>
+        /// <param name="pDicIdentificadores"></param>
+        /// <param name="pDicRutas"></param>
+        /// <returns></returns>
         public List<TesisBBDD> ObtenerTesisSGI(RabbitServiceWriterDenormalizer pRabbitConf, List<Tesis> pListaTesisSGI, IHarvesterServices pHarvesterServices, ReadConfig pConfig, ResourceApi pResourceApi, Dictionary<string, HashSet<string>> pDicIdentificadores, Dictionary<string, Dictionary<string, string>> pDicRutas)
         {
             List<TesisBBDD> listaTesis = new List<TesisBBDD>();
@@ -1627,10 +1500,25 @@ namespace OAI_PMH.Models.SGI.PersonalData
                 tesis.title = item.TituloTrabajo;
                 crisIdentifier += $@"{RemoveDiacritics(tesis.title)}___";
 
-                // TODO: Código del pais no mapeable.
-                //tesis.hasCountryName = IdentificadorPais(item.PaisEntidadRealizacion.Id, pResourceApi);
-                //tesis.hasRegion = IdentificadorRegion(item.CcaaRegionEntidadRealizacion.Id, pResourceApi);
-                //tesis.locality = item.CiudadEntidadRealizacion;
+                // Código de países.
+                if (item.PaisEntidadRealizacion != null && !string.IsNullOrEmpty(item.PaisEntidadRealizacion.Id))
+                {
+                    tesis.hasCountryName = IdentificadorPais(item.PaisEntidadRealizacion.Id, pResourceApi);
+                    crisIdentifier += $@"{item.PaisEntidadRealizacion.Id}___";
+                }
+
+                if (item.CcaaRegionEntidadRealizacion != null && !string.IsNullOrEmpty(item.CcaaRegionEntidadRealizacion.Id))
+                {
+                    tesis.hasRegion = IdentificadorRegion(item.CcaaRegionEntidadRealizacion.Id, pResourceApi);
+                    crisIdentifier += $@"{item.CcaaRegionEntidadRealizacion.Id}___";
+                }
+
+                if (!string.IsNullOrEmpty(item.CiudadEntidadRealizacion))
+                {
+                    tesis.locality = item.CiudadEntidadRealizacion;
+                    crisIdentifier += $@"{item.CiudadEntidadRealizacion}___";
+                }
+
                 tesis.issued = item.FechaDefensa;
                 tesis.qualification = item.CalificacionObtenida;
                 crisIdentifier += $@"{RemoveDiacritics(tesis.qualification)}___";
@@ -1705,6 +1593,17 @@ namespace OAI_PMH.Models.SGI.PersonalData
             return listaTesis;
         }
 
+        /// <summary>
+        /// Construye el objeto con los datos obtenidos de BBDD.
+        /// </summary>
+        /// <param name="pRabbitConf"></param>
+        /// <param name="pListaCursosSGI"></param>
+        /// <param name="pHarvesterServices"></param>
+        /// <param name="pConfig"></param>
+        /// <param name="pResourceApi"></param>
+        /// <param name="pDicIdentificadores"></param>
+        /// <param name="pDicRutas"></param>
+        /// <returns></returns>
         public List<ImpartedCoursesSeminarsBBDD> ObtenerCursosSGI(RabbitServiceWriterDenormalizer pRabbitConf, List<SeminariosCursos> pListaCursosSGI, IHarvesterServices pHarvesterServices, ReadConfig pConfig, ResourceApi pResourceApi, Dictionary<string, HashSet<string>> pDicIdentificadores, Dictionary<string, Dictionary<string, string>> pDicRutas)
         {
             List<ImpartedCoursesSeminarsBBDD> listaCursos = new List<ImpartedCoursesSeminarsBBDD>();
@@ -1713,20 +1612,30 @@ namespace OAI_PMH.Models.SGI.PersonalData
             {
                 ImpartedCoursesSeminarsBBDD curso = new ImpartedCoursesSeminarsBBDD();
 
-                string tituloTrabajo = RemoveDiacritics(item.NombreEvento.ToLower());
-                tituloTrabajo = tituloTrabajo.Replace(" ", "-");
-                curso.crisIdentifiers = $@"{item.Id}___{tituloTrabajo}";
+                string crisIdentifier = "030.060.000.000___";
+
+                curso.title = item.NombreEvento;
+                crisIdentifier += $@"{RemoveDiacritics(item.NombreEvento)}___";
+
                 curso.goals = item.ObjetivosCurso;
+                crisIdentifier += $@"{RemoveDiacritics(item.ObjetivosCurso)}___";
+
                 curso.targetProfile = item.PerfilDestinatarios;
+                crisIdentifier += $@"{RemoveDiacritics(item.PerfilDestinatarios)}___";
+
                 curso.hasLanguage = item.Idioma;
+                crisIdentifier += $@"{RemoveDiacritics(item.Idioma)}___";
+
                 curso.start = item.FechaTitulacion;
 
                 if (item.TipoParticipacion != null && !string.IsNullOrEmpty(item.TipoParticipacion.Nombre))
                 {
                     curso.participationType = item.TipoParticipacion.Nombre;
+                    crisIdentifier += $@"{RemoveDiacritics(item.TipoParticipacion.Nombre)}___";
                 }
 
                 curso.correspondingAuthor = item.AutorCorrespondencia != null ? (bool)item.AutorCorrespondencia : false;
+                crisIdentifier += $@"{curso.correspondingAuthor}___";
 
                 // ENTIDAD ORGANIZADORA
                 if (item.EntidadOrganizacionEvento != null && !string.IsNullOrEmpty(item.EntidadOrganizacionEvento.EntidadRef))
@@ -1739,6 +1648,7 @@ namespace OAI_PMH.Models.SGI.PersonalData
                         if (organizacionAux != null)
                         {
                             curso.promotedByTitle = organizacionAux.Nombre;
+                            crisIdentifier += $@"{RemoveDiacritics(organizacionAux.Nombre)}___";
 
                             if (string.IsNullOrEmpty(organizacion.Value))
                             {
@@ -1756,8 +1666,21 @@ namespace OAI_PMH.Models.SGI.PersonalData
                     }
                 }
 
+                // Código de países.
+                if (!string.IsNullOrEmpty(item.CiudadEntidadOrganizacionEvento))
+                {
+                    curso.locality = item.CiudadEntidadOrganizacionEvento;
+                    crisIdentifier += $@"{item.CiudadEntidadOrganizacionEvento}___";
+                }
+
                 curso.isbn = item.ISBN;
+                crisIdentifier += $@"{RemoveDiacritics(item.ISBN)}___";
+
                 curso.issn = item.ISSN;
+                crisIdentifier += $@"{RemoveDiacritics(item.ISSN)}___";
+
+                // CrisIdentifier.
+                curso.crisIdentifiers = crisIdentifier;
 
                 listaCursos.Add(curso);
             }
@@ -1765,6 +1688,17 @@ namespace OAI_PMH.Models.SGI.PersonalData
             return listaCursos;
         }
 
+        /// <summary>
+        /// Construye el objeto con los datos obtenidos de BBDD.
+        /// </summary>
+        /// <param name="pRabbitConf"></param>
+        /// <param name="pListaCiclosSGI"></param>
+        /// <param name="pHarvesterServices"></param>
+        /// <param name="pConfig"></param>
+        /// <param name="pResourceApi"></param>
+        /// <param name="pDicIdentificadores"></param>
+        /// <param name="pDicRutas"></param>
+        /// <returns></returns>
         public List<CiclosBBDD> ObtenerCiclosSGI(RabbitServiceWriterDenormalizer pRabbitConf, List<Ciclos> pListaCiclosSGI, IHarvesterServices pHarvesterServices, ReadConfig pConfig, ResourceApi pResourceApi, Dictionary<string, HashSet<string>> pDicIdentificadores, Dictionary<string, Dictionary<string, string>> pDicRutas)
         {
             List<CiclosBBDD> listaCiclos = new List<CiclosBBDD>();
@@ -1773,11 +1707,10 @@ namespace OAI_PMH.Models.SGI.PersonalData
             {
                 CiclosBBDD ciclo = new CiclosBBDD();
 
-                string tituloTrabajo = RemoveDiacritics(item.NombreTitulo.ToLower());
-                tituloTrabajo = tituloTrabajo.Replace(" ", "-");
-                ciclo.crisIdentifier = $@"{item.Id}___{tituloTrabajo}";
+                string crisIdentifier = "020.010.010.000___";
 
                 ciclo.nombreTitulo = item.NombreTitulo;
+                crisIdentifier += $@"{RemoveDiacritics(item.NombreTitulo)}___";
 
                 if (item.EntidadTitulacion != null && !string.IsNullOrEmpty(item.EntidadTitulacion.EntidadRef))
                 {
@@ -1789,6 +1722,7 @@ namespace OAI_PMH.Models.SGI.PersonalData
                         if (organizacionAux != null)
                         {
                             ciclo.entidadTitulacionTitulo = organizacionAux.Nombre;
+                            crisIdentifier += $@"{RemoveDiacritics(ciclo.entidadTitulacionTitulo)}___";
 
                             if (string.IsNullOrEmpty(organizacion.Value))
                             {
@@ -1806,6 +1740,25 @@ namespace OAI_PMH.Models.SGI.PersonalData
                     }
                 }
 
+                // Código de países.
+                if (item.PaisEntidadTitulacion != null && !string.IsNullOrEmpty(item.PaisEntidadTitulacion.Id))
+                {
+                    ciclo.cAutonEntidadTitulacion = IdentificadorPais(item.PaisEntidadTitulacion.Id, pResourceApi);
+                    crisIdentifier += $@"{item.PaisEntidadTitulacion.Id}___";
+                }
+
+                if (item.CcaaRegionEntidadTitulacion != null && !string.IsNullOrEmpty(item.CcaaRegionEntidadTitulacion.Id))
+                {
+                    ciclo.paisEntidadTitulacion = IdentificadorRegion(item.CcaaRegionEntidadTitulacion.Id, pResourceApi);
+                    crisIdentifier += $@"{item.CcaaRegionEntidadTitulacion.Id}___";
+                }
+
+                if (!string.IsNullOrEmpty(item.CiudadEntidadTitulacion))
+                {
+                    ciclo.ciudadEntidadTitulacion = item.CiudadEntidadTitulacion;
+                    crisIdentifier += $@"{item.CiudadEntidadTitulacion}___";
+                }
+
 
                 ciclo.fechaTitulacion = item.FechaTitulacion;
 
@@ -1814,25 +1767,34 @@ namespace OAI_PMH.Models.SGI.PersonalData
                 if (item.Premio != null && !string.IsNullOrEmpty(item.Premio.Nombre))
                 {
                     ciclo.premio = PrizeType(pResourceApi, item.Premio.Nombre);
+                    crisIdentifier += $@"{RemoveDiacritics(item.Premio.Nombre)}___";
+
                     if (ciclo.premio.Contains("OTHERS"))
                     {
                         ciclo.premioOther = item.Premio.Nombre;
+                        crisIdentifier += $@"{RemoveDiacritics(ciclo.premioOther)}___";
                     }
                 }
 
                 if (item.TitulacionUniversitaria != null && !string.IsNullOrEmpty(item.TitulacionUniversitaria.Nombre))
                 {
                     ciclo.titulacionUni = UniversityDegreeType(pResourceApi, item.TitulacionUniversitaria.Nombre);
+                    crisIdentifier += $@"{RemoveDiacritics(item.TitulacionUniversitaria.Nombre)}___";
+
                     if (ciclo.titulacionUni.Contains("OTHERS"))
                     {
                         ciclo.titulacionUniOtros = item.TitulacionUniversitaria.Nombre;
+                        crisIdentifier += $@"{RemoveDiacritics(ciclo.titulacionUniOtros)}___";
                     }
                 }
 
                 ciclo.tituloExtranjero = item.TituloExtranjero;
+                crisIdentifier += $@"{RemoveDiacritics(item.TituloExtranjero)}___";
 
                 ciclo.tituloHomologado = item.TituloHomologado != null ? (bool)item.TituloHomologado : false;
                 ciclo.fechaHomologacion = item.FechaHomologacion;
+
+                ciclo.crisIdentifier = crisIdentifier;
 
                 listaCiclos.Add(ciclo);
             }
@@ -1840,6 +1802,17 @@ namespace OAI_PMH.Models.SGI.PersonalData
             return listaCiclos;
         }
 
+        /// <summary>
+        /// Construye el objeto con los datos obtenidos de BBDD.
+        /// </summary>
+        /// <param name="pRabbitConf"></param>
+        /// <param name="pListaDoctoradosSGI"></param>
+        /// <param name="pHarvesterServices"></param>
+        /// <param name="pConfig"></param>
+        /// <param name="pResourceApi"></param>
+        /// <param name="pDicIdentificadores"></param>
+        /// <param name="pDicRutas"></param>
+        /// <returns></returns>
         public List<DoctoradosBBDD> ObtenerDoctoradosSGI(RabbitServiceWriterDenormalizer pRabbitConf, List<Doctorados> pListaDoctoradosSGI, IHarvesterServices pHarvesterServices, ReadConfig pConfig, ResourceApi pResourceApi, Dictionary<string, HashSet<string>> pDicIdentificadores, Dictionary<string, Dictionary<string, string>> pDicRutas)
         {
             List<DoctoradosBBDD> listaDoctorados = new List<DoctoradosBBDD>();
@@ -1848,7 +1821,7 @@ namespace OAI_PMH.Models.SGI.PersonalData
             {
                 DoctoradosBBDD doctorado = new DoctoradosBBDD();
 
-                string crisIdentifier = $@"030.060.000.000___";
+                string crisIdentifier = $@"020.010.020.000___";
 
                 doctorado.nombreTitulo = item.ProgramaDoctorado;
                 crisIdentifier += $@"{RemoveDiacritics(doctorado.nombreTitulo)}___";
@@ -1883,7 +1856,23 @@ namespace OAI_PMH.Models.SGI.PersonalData
 
                 doctorado.fechaTitulacion = item.FechaTitulacion;
 
-                // TODO: Ciudad, Pais, CCAA
+                if (item.PaisEntidadTitulacion != null && !string.IsNullOrEmpty(item.PaisEntidadTitulacion.Id))
+                {
+                    doctorado.paisEntidadTitulacion = IdentificadorPais(item.PaisEntidadTitulacion.Id, pResourceApi);
+                    crisIdentifier += $@"{item.PaisEntidadTitulacion.Id}___";
+                }
+
+                if (item.CcaaRegionEntidadTitulacion != null && !string.IsNullOrEmpty(item.CcaaRegionEntidadTitulacion.Id))
+                {
+                    doctorado.cAutonEntidadTitulacion = IdentificadorRegion(item.CcaaRegionEntidadTitulacion.Id, pResourceApi);
+                    crisIdentifier += $@"{item.CcaaRegionEntidadTitulacion.Id}___";
+                }
+
+                if (!string.IsNullOrEmpty(item.CiudadEntidadTitulacion))
+                {
+                    doctorado.ciudadEntidadTitulacion = item.CiudadEntidadTitulacion;
+                    crisIdentifier += $@"{item.CiudadEntidadTitulacion}___";
+                }
 
                 if (item.EntidadTitulacionDEA != null && !string.IsNullOrEmpty(item.EntidadTitulacionDEA.EntidadRef))
                 {
@@ -1963,6 +1952,17 @@ namespace OAI_PMH.Models.SGI.PersonalData
             return listaDoctorados;
         }
 
+        /// <summary>
+        /// Construye el objeto con los datos obtenidos de BBDD.
+        /// </summary>
+        /// <param name="pRabbitConf"></param>
+        /// <param name="pListaPosgradosSGI"></param>
+        /// <param name="pHarvesterServices"></param>
+        /// <param name="pConfig"></param>
+        /// <param name="pResourceApi"></param>
+        /// <param name="pDicIdentificadores"></param>
+        /// <param name="pDicRutas"></param>
+        /// <returns></returns>
         public List<PosgradoBBDD> ObtenerPosgradosSGI(RabbitServiceWriterDenormalizer pRabbitConf, List<Posgrado> pListaPosgradosSGI, IHarvesterServices pHarvesterServices, ReadConfig pConfig, ResourceApi pResourceApi, Dictionary<string, HashSet<string>> pDicIdentificadores, Dictionary<string, Dictionary<string, string>> pDicRutas)
         {
             List<PosgradoBBDD> listaPosgrados = new List<PosgradoBBDD>();
@@ -2006,7 +2006,23 @@ namespace OAI_PMH.Models.SGI.PersonalData
 
                 posgrado.fechaTitulacion = item.FechaTitulacion;
 
-                // TODO: Ciudad, Pais, CCAA
+                if (item.PaisEntidadTitulacion != null && !string.IsNullOrEmpty(item.PaisEntidadTitulacion.Id))
+                {
+                    posgrado.paisEntidadTitulacion = IdentificadorPais(item.PaisEntidadTitulacion.Id, pResourceApi);
+                    crisIdentifier += $@"{item.PaisEntidadTitulacion.Id}___";
+                }
+
+                if (item.CcaaRegionEntidadTitulacion != null && !string.IsNullOrEmpty(item.CcaaRegionEntidadTitulacion.Id))
+                {
+                    posgrado.cAutonEntidadTitulacion = IdentificadorRegion(item.CcaaRegionEntidadTitulacion.Id, pResourceApi);
+                    crisIdentifier += $@"{item.CcaaRegionEntidadTitulacion.Id}___";
+                }
+
+                if (!string.IsNullOrEmpty(item.CiudadEntidadTitulacion))
+                {
+                    posgrado.ciudadEntidadTitulacion = item.CiudadEntidadTitulacion;
+                    crisIdentifier += $@"{item.CiudadEntidadTitulacion}___";
+                }
 
                 if (item.TipoFormacionHomologada != null && !string.IsNullOrEmpty(item.TipoFormacionHomologada.Nombre))
                 {
@@ -2028,6 +2044,17 @@ namespace OAI_PMH.Models.SGI.PersonalData
             return listaPosgrados;
         }
 
+        /// <summary>
+        /// Construye el objeto con los datos obtenidos de BBDD.
+        /// </summary>
+        /// <param name="pRabbitConf"></param>
+        /// <param name="pListaEspecializadaSGI"></param>
+        /// <param name="pHarvesterServices"></param>
+        /// <param name="pConfig"></param>
+        /// <param name="pResourceApi"></param>
+        /// <param name="pDicIdentificadores"></param>
+        /// <param name="pDicRutas"></param>
+        /// <returns></returns>
         public List<FormacionEspecializadaBBDD> ObtenerFormacionEspecializadaSGI(RabbitServiceWriterDenormalizer pRabbitConf, List<FormacionEspecializada> pListaEspecializadaSGI, IHarvesterServices pHarvesterServices, ReadConfig pConfig, ResourceApi pResourceApi, Dictionary<string, HashSet<string>> pDicIdentificadores, Dictionary<string, Dictionary<string, string>> pDicRutas)
         {
             List<FormacionEspecializadaBBDD> listaFormEspecializada = new List<FormacionEspecializadaBBDD>();
@@ -2071,13 +2098,29 @@ namespace OAI_PMH.Models.SGI.PersonalData
 
                 formEspecializada.fechaFinalizacion = item.FechaTitulacion;
 
-                // TODO: Ciudad, Pais, CCAA
+                if (item.PaisEntidadTitulacion != null && !string.IsNullOrEmpty(item.PaisEntidadTitulacion.Id))
+                {
+                    formEspecializada.paisEntidadTitulacion = IdentificadorPais(item.PaisEntidadTitulacion.Id, pResourceApi);
+                    crisIdentifier += $@"{item.PaisEntidadTitulacion.Id}___";
+                }
+
+                if (item.CcaaRegionEntidadTitulacion != null && !string.IsNullOrEmpty(item.CcaaRegionEntidadTitulacion.Id))
+                {
+                    formEspecializada.cAutonEntidadTitulacion = IdentificadorRegion(item.CcaaRegionEntidadTitulacion.Id, pResourceApi);
+                    crisIdentifier += $@"{item.CcaaRegionEntidadTitulacion.Id}___";
+                }
+
+                if (!string.IsNullOrEmpty(item.CiudadEntidadTitulacion))
+                {
+                    formEspecializada.ciudadEntidadTitulacion = item.CiudadEntidadTitulacion;
+                    crisIdentifier += $@"{item.CiudadEntidadTitulacion}___";
+                }
 
                 if (item.DuracionTitulacion.HasValue)
                 {
                     formEspecializada.duracionHoras = item.DuracionTitulacion.Value;
                     crisIdentifier += $@"{formEspecializada.duracionHoras}___";
-                }                
+                }
 
                 if (item.TipoFormacion != null && !string.IsNullOrEmpty(item.TipoFormacion.Nombre))
                 {
@@ -2107,7 +2150,11 @@ namespace OAI_PMH.Models.SGI.PersonalData
             return listaFormEspecializada;
         }
 
-
+        /// <summary>
+        /// Limpia un texto.
+        /// </summary>
+        /// <param name="pText"></param>
+        /// <returns></returns>
         static string RemoveDiacritics(string pText)
         {
             if (string.IsNullOrEmpty(pText))
@@ -2115,8 +2162,17 @@ namespace OAI_PMH.Models.SGI.PersonalData
                 return pText;
             }
 
-            string text = pText.ToLower();
-            text = text.Replace(" ","-");
+            string text = pText.Trim().ToLower();
+
+            const string removeChars = "?&^$#@!()+-,:;<>’\'\"._*";
+            StringBuilder sb = new StringBuilder(text.Length);
+            foreach (char x in text.Where(c => !removeChars.Contains(c)))
+            {
+                sb.Append(x);
+            }
+
+            text = sb.ToString();
+            text = text.Replace(" ", "-");
 
             var normalizedString = text.Normalize(NormalizationForm.FormD);
             var stringBuilder = new StringBuilder(capacity: normalizedString.Length);
@@ -2136,6 +2192,12 @@ namespace OAI_PMH.Models.SGI.PersonalData
                 .Normalize(NormalizationForm.FormC);
         }
 
+        /// <summary>
+        /// Devuelve el ID de la secundaria.
+        /// </summary>
+        /// <param name="tipoFormacion"></param>
+        /// <param name="pResourceApi"></param>
+        /// <returns></returns>
         private static string FormationType(string tipoFormacion, ResourceApi pResourceApi)
         {
             string id = pResourceApi.GraphsUrl + "items/formationtype_";
@@ -2165,6 +2227,12 @@ namespace OAI_PMH.Models.SGI.PersonalData
             return id;
         }
 
+        /// <summary>
+        /// Devuelve el ID de la secundaria.
+        /// </summary>
+        /// <param name="hoursCreditsECTSType"></param>
+        /// <param name="pResourceApi"></param>
+        /// <returns></returns>
         private static string HoursCreditsECTSType(string hoursCreditsECTSType, ResourceApi pResourceApi)
         {
             string id = pResourceApi.GraphsUrl + "items/hourscreditsectstype_";
@@ -2182,6 +2250,12 @@ namespace OAI_PMH.Models.SGI.PersonalData
             return id;
         }
 
+        /// <summary>
+        /// Devuelve el ID de la secundaria.
+        /// </summary>
+        /// <param name="courseType"></param>
+        /// <param name="pResourceApi"></param>
+        /// <returns></returns>
         private static string CourseType(string courseType, ResourceApi pResourceApi)
         {
             string id = pResourceApi.GraphsUrl + "items/coursetype_";
@@ -2209,6 +2283,12 @@ namespace OAI_PMH.Models.SGI.PersonalData
             return id;
         }
 
+        /// <summary>
+        /// Devuelve el ID de la secundaria.
+        /// </summary>
+        /// <param name="modalityTeachingType"></param>
+        /// <param name="pResourceApi"></param>
+        /// <returns></returns>
         private static string ModalityTeachingType(string modalityTeachingType, ResourceApi pResourceApi)
         {
             string id = pResourceApi.GraphsUrl + "items/modalityteachingtype_";
@@ -2236,6 +2316,12 @@ namespace OAI_PMH.Models.SGI.PersonalData
             return id;
         }
 
+        /// <summary>
+        /// Devuelve el ID de la secundaria.
+        /// </summary>
+        /// <param name="programType"></param>
+        /// <param name="pResourceApi"></param>
+        /// <returns></returns>
         private static string ProgramType(string programType, ResourceApi pResourceApi)
         {
             string id = pResourceApi.GraphsUrl + "items/programtype_";
@@ -2272,6 +2358,12 @@ namespace OAI_PMH.Models.SGI.PersonalData
             return id;
         }
 
+        /// <summary>
+        /// Devuelve el ID de la secundaria.
+        /// </summary>
+        /// <param name="teachingtype"></param>
+        /// <param name="pResourceApi"></param>
+        /// <returns></returns>
         private static string TeachingType(string teachingtype, ResourceApi pResourceApi)
         {
             string id = pResourceApi.GraphsUrl + "items/teachingtype_";
@@ -2292,6 +2384,12 @@ namespace OAI_PMH.Models.SGI.PersonalData
             return id;
         }
 
+        /// <summary>
+        /// Devuelve el ID de la secundaria.
+        /// </summary>
+        /// <param name="pResourceApi"></param>
+        /// <param name="premio"></param>
+        /// <returns></returns>
         private static string PrizeType(ResourceApi pResourceApi, string premio)
         {
             string id = pResourceApi.GraphsUrl + "items/prizetype_";
@@ -2310,6 +2408,12 @@ namespace OAI_PMH.Models.SGI.PersonalData
             return id;
         }
 
+        /// <summary>
+        /// Devuelve el ID de la secundaria.
+        /// </summary>
+        /// <param name="pResourceApi"></param>
+        /// <param name="tipoTitulacion"></param>
+        /// <returns></returns>
         private static string UniversityDegreeType(ResourceApi pResourceApi, string tipoTitulacion)
         {
             string id = pResourceApi.GraphsUrl + "items/universitydegreetype_";
@@ -2331,15 +2435,30 @@ namespace OAI_PMH.Models.SGI.PersonalData
             return id;
         }
 
+        /// <summary>
+        /// Devuelve el ID de la secundaria.
+        /// </summary>
+        /// <param name="pais"></param>
+        /// <param name="pResourceApi"></param>
+        /// <returns></returns>
         private static string IdentificadorPais(string pais, ResourceApi pResourceApi)
         {
-            if (!UtilidadesGeneral.DicPaisesContienePais(pais))
+            string codigo = UtilidadesGeneral.DicPaisesContienePais(pais);
+
+            if (string.IsNullOrEmpty(codigo))
             {
                 return null;
             }
-            return pResourceApi.GraphsUrl + "items/feature_PCLD_" + UtilidadesGeneral.dicPaises[pais];
+
+            return pResourceApi.GraphsUrl + "items/feature_PCLD_" + codigo;
         }
 
+        /// <summary>
+        /// Devuelve el ID de la secundaria.
+        /// </summary>
+        /// <param name="region"></param>
+        /// <param name="pResourceApi"></param>
+        /// <returns></returns>
         private static string IdentificadorRegion(string region, ResourceApi pResourceApi)
         {
             if (!UtilidadesGeneral.DicRegionesContieneRegion(region))
@@ -2349,6 +2468,12 @@ namespace OAI_PMH.Models.SGI.PersonalData
             return pResourceApi.GraphsUrl + "items/feature_ADM1_" + UtilidadesGeneral.dicRegiones[region];
         }
 
+        /// <summary>
+        /// Devuelve el ID de la secundaria.
+        /// </summary>
+        /// <param name="pResourceApi"></param>
+        /// <param name="projectCharacterType"></param>
+        /// <returns></returns>
         private static string ProjectCharacterType(ResourceApi pResourceApi, string projectCharacterType)
         {
             string id = pResourceApi.GraphsUrl + "items/projectcharactertype_";

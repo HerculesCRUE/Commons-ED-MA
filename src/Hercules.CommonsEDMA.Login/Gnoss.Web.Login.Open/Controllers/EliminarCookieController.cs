@@ -12,6 +12,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 
 namespace Gnoss.Web.Login
@@ -135,20 +136,26 @@ namespace Gnoss.Web.Login
                 hayIframes = EliminarCookieRestoDominios(dominioPeticion);
             }
 
-            //if ((Request.Query.ContainsKey("redirect") || Request.Headers.ContainsKey("redirect")) && !hayIframes)
-            //{
-            //    if (Request.Headers.ContainsKey("redirect"))
-            //    {
-            //        Response.Redirect(Request.Headers["redirect"]);
-            //    }
-            //    else if (Request.Query.ContainsKey("redirect"))
-            //    {
-            //        Response.Redirect(Request.Query["redirect"]);
-            //    }
+            IDictionary environmentVariables = Environment.GetEnvironmentVariables();
+            if (environmentVariables.Contains("Saml2_IdPMetadata") && !string.IsNullOrEmpty(environmentVariables["Saml2_IdPMetadata"] as string))
+            {
+                Response.Redirect(Url.Content(@$"~/{mConfigServiceSAML.GetUrlServiceInDomain()}Auth/Logout"));
+            }
+            else
+            {
+                if ((Request.Query.ContainsKey("redirect") || Request.Headers.ContainsKey("redirect")) && !hayIframes)
+                {
+                    if (Request.Headers.ContainsKey("redirect"))
+                    {
+                        Response.Redirect(Request.Headers["redirect"]);
+                    }
+                    else if (Request.Query.ContainsKey("redirect"))
+                    {
+                        Response.Redirect(Request.Query["redirect"]);
+                    }
 
-            //}
-
-            Response.Redirect(Url.Content(@$"~/{mConfigServiceSAML.GetUrlServiceInDomain()}Auth/Logout"));
+                }
+            }
         }
 
         #endregion
