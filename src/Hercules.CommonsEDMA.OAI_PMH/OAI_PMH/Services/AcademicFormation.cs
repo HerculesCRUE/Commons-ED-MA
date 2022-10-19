@@ -52,8 +52,9 @@ namespace OAI_PMH.Services
                 return null;
             }
         }
-        public static Dictionary<string, DateTime> GetModifiedDoctorados(string from, ConfigService pConfig, string accessToken)
+        public static Dictionary<string, DateTime> GetModifiedDoctorados(string from, ConfigService pConfig)
         {
+            string accessToken = Token.CheckToken(pConfig);
             Dictionary<string, DateTime> idDictionary = new();
             List<string> idList = new();
             RestClient client = new(pConfig.GetConfigSGI() + "/api/sgp/formacion/modificados-ids?q=fechaModificacion=ge=\"" + from + "\"" + ";tipoFormacion=\"020.010.020.000\"");
@@ -92,8 +93,9 @@ namespace OAI_PMH.Services
                 return null;
             }
         }
-        public static Dictionary<string, DateTime> GetModifiedPosgrado(string from, ConfigService pConfig, string accessToken)
+        public static Dictionary<string, DateTime> GetModifiedPosgrado(string from, ConfigService pConfig)
         {
+            string accessToken = Token.CheckToken(pConfig);
             Dictionary<string, DateTime> idDictionary = new();
             List<string> idList = new();
             RestClient client = new(pConfig.GetConfigSGI() + "/api/sgp/formacion/modificados-ids?q=fechaModificacion=ge=\"" + from + "\"" + ";tipoFormacion=\"020.010.030.000\"");
@@ -132,8 +134,9 @@ namespace OAI_PMH.Services
                 return null;
             }
         }
-        public static Dictionary<string, DateTime> GetModifiedEspecializada(string from, ConfigService pConfig, string accessToken)
+        public static Dictionary<string, DateTime> GetModifiedEspecializada(string from, ConfigService pConfig)
         {
+            string accessToken = Token.CheckToken(pConfig);
             Dictionary<string, DateTime> idDictionary = new();
             List<string> idList = new();
             RestClient client = new(pConfig.GetConfigSGI() + "/api/sgp/formacion/modificados-ids?q=fechaModificacion=ge=\"" + from + "\"" + ";tipoFormacion=\"020.020.000.000\"");

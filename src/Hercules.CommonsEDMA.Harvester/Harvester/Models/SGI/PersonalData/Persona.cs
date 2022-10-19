@@ -195,7 +195,7 @@ namespace OAI_PMH.Models.SGI.PersonalData
             }
             #endregion
 
-            #region --- CICLOS TODO: REVISAR PROPIEDADES            
+            #region --- CICLOS TODO: REVISAR PROPIEDADES
             pResourceApi.ChangeOntoly("academicdegree");
             List<string> crisIdentifiersCyclesBBDD = ObtenerDataCrisIdentifier(pResourceApi, this.Id, "academicdegree", "020.010.010.000");
             List<string> crisIdentifiersCyclesSGI = new List<string>();
@@ -335,7 +335,7 @@ namespace OAI_PMH.Models.SGI.PersonalData
             }
             catch (Exception e)
             {
-                Console.WriteLine("[" + this.Id + "] ERERROR en el proceso de BORRADO de 'Formación Especializada': " + e);
+                Console.WriteLine("[" + this.Id + "] ERROR en el proceso de BORRADO de 'Formación Especializada': " + e);
             }
             #endregion
         }
