@@ -219,15 +219,17 @@
 
         // Datos cabeceras de las fichas.
         let urlGIHEU = url_servicio_externo+"Hercules/GetInfoHomeEdUser"
-
         let arg = {};
         arg.pIdGnossUser = "@currentId";
-        $.get(urlGIHEU, arg, function (data) {
-            $("#menuLateralUsuarioClonado #trabajo a.editcvPub .numResultados").text(data.numPublicaciones);
-            $("#menuLateralUsuarioClonado #trabajo a.editcvPV .numResultados").text(data.numPV);
-            $("#menuLateralUsuarioClonado #trabajo a.editcvOR .numResultados").text(data.numOtrosR);
+
+        $(document).ready(e=>{
+            $.get(urlGIHEU, arg, function (data) {
+                $("#menuLateralUsuarioClonado #trabajo a.editcvPub .numResultados").text(data.numPublicaciones);
+                $("#menuLateralUsuarioClonado #trabajo a.editcvPV .numResultados").text(data.numPV);
+                $("#menuLateralUsuarioClonado #trabajo a.editcvOR .numResultados").text(data.numOtrosR);
+            });
+            cargarCVId.init()
         });
-        cargarCVId.init()
 
     </script>
 
