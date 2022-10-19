@@ -779,3 +779,52 @@ div.row.upper-row div.menu-logo-wrapper > div.menu-toggle > a.texto-blanco {
 div#toast-container{
 	margin-top: 75px;
 }
+
+
+/*
+ Cabecera Menu
+ Mostrando los iconos de indicadores, y añadiendo la opción de iniciar sesión en la versión móvil
+*/
+
+.home-ma header .row .col.col03 > ul .buscar {
+    display: none;
+}
+
+header .row .col.col03 > ul li.usuario #navegacionClonado .liIndicadores span.text {
+    line-height: 3rem;
+}
+
+header .row .col.col03 > ul li.usuario #navegacionClonado .liIndicadores span.material-icons {
+    top: 2px;
+    font-size: 28px;
+    position: relative;
+    display: none;
+}
+
+@media (max-width: 1199px) {
+    header .row .col.col03 > ul li.usuario #navegacionClonado {
+        display: block;
+    }
+
+    header .row .col.col03 > ul li.usuario:not(.guser) #navegacionClonado .liInicio {
+        display: none;
+    }
+
+    header .row .col.col03 > ul li.usuario #navegacionClonado .liIndicadores span.text {
+        display: none;
+    }
+
+    header .row .col.col03 > ul li.usuario #navegacionClonado .liIndicadores span.material-icons {
+        display: initial;
+    }
+
+    /* Buscador en responsive */
+    header .row .col.col03 > ul li.usuario.guser + .buscar {
+        margin-left: 5px;
+    }
+    
+    /* Eliminada la barra de separación en la home para usuarios no logueados */
+    .home-ma header .row .col.col03 > ul li.usuario.guser #navegacionClonado > ul > li::after {
+        content: '';
+    }
+}

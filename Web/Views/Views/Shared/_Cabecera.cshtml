@@ -66,20 +66,28 @@
                                 <a href="@Comunidad.Url/login" class="texto-blanco">@Html.GetText("COMMON", "INICIARSESION")</a>
                             </li> -->
 
-                            <li class="usuario">
+                            <li class="usuario guser">
                                 <div id="navegacionClonado" class="navegacion clonado">
                                     <ul class="pmd-sidebar-nav" data-url="@Html.GetBaseUrl()@Html.GetUrlPagina()">
                                         @{
                                             string urlIndicadores=Comunidad.Url+"/"+Html.Translate("URL_PAGINA_INDICADORES");
                                         }
                                         <li class="liIndicadores">
-                                            <a href="@urlIndicadores">@Html.Translate("INDICADORES")</a>
+                                            <a href="@urlIndicadores">
+                                                <span class="text">@Html.Translate("INDICADORES")</span>
+                                                <span class="material-icons">bar_chart</span>
+                                            </a>
                                         </li>
                                         <li class="liInicio">
                                             <a href="@Comunidad.Url/login">@Html.GetText("COMMON", "INICIARSESION")</a>
                                         </li>
                                     </ul>
                                 </div>
+                            </li>
+                            <li class="buscar">
+                                <a href="javascript: void(0);" class="texto-blanco">
+                                    <span class="material-icons">search</span>
+                                </a>
                             </li>
 
                         }
@@ -95,7 +103,10 @@
                                             string urlIndicadores=Comunidad.Url+"/"+Html.Translate("URL_PAGINA_INDICADORES");
                                         }
                                         <li class="liIndicadores">
-                                            <a href="@urlIndicadores">@Html.Translate("INDICADORES")</a>
+                                            <a href="@urlIndicadores">
+                                                <span class="text">@Html.Translate("INDICADORES")</span>
+                                                <span class="material-icons">bar_chart</span>
+                                            </a>
                                         </li>
                                     </ul>
                                 </div>
