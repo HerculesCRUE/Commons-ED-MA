@@ -828,3 +828,55 @@ header .row .col.col03 > ul li.usuario #navegacionClonado .liIndicadores span.ma
         content: '';
     }
 }
+
+
+
+/*
+* Login page
+*/
+
+body.operativaRegistro.login main {
+    background-repeat: no-repeat;
+    background-size: cover;
+    margin-bottom: -36px;
+}
+
+body.operativaRegistro.login main .panel-centrado {
+
+
+    background: #00000065;
+    max-width: 650px;
+    margin: auto;
+    border: none;
+    padding: 75px 60px 50px 60px;
+    color: #fff;
+    position: relative;
+    top: calc(50vh - 50% - 30px);
+}
+
+body.operativaRegistro.login main .panel-centrado input[type="text"],
+body.operativaRegistro.login main .panel-centrado input[type="password"],
+body.operativaRegistro.login main .panel-centrado textarea {
+    background: transparent;
+    color: #fff;
+}
+
+body.operativaRegistro.login main .panel-centrado input::placeholder {
+    color: #fff;
+    opacity: .6;
+    font-size: 1em;
+}
+
+body.operativaRegistro.login main .panel-centrado input[type="text"]:-internal-autofill-selected,
+body.operativaRegistro.login main .panel-centrado input[type="password"]:-internal-autofill-selected,
+body.operativaRegistro.login main .panel-centrado textarea:-internal-autofill-selected {
+    appearance: initial;
+    background-color: transparent !important;
+    color: #fff !important;
+}
+
+body.operativaRegistro.login main .panel-centrado .actionButtons .fieldsetContent {
+    display: flex;
+    align-items: flex-end;
+    flex-direction: column;
+}
