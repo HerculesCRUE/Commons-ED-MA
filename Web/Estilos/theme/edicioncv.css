@@ -369,6 +369,10 @@ input.form-group-date {
     margin-bottom: 0;
     color: #03a1ff;
 }
+.importar-exportar-cv .compararItems::after{
+	content: "\eb7d";
+}
+
 div#contenedorOtrosMeritos div.col-section-title , div#contenedorOtrosMeritos div.col-contenido{
 	border-bottom: 1px solid var(--c-gris-borde);
     padding: 12px 0px 12px 28px;

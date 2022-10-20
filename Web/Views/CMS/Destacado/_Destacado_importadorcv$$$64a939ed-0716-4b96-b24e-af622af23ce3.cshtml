@@ -147,6 +147,38 @@
 		</div>
 	</div>
 </div>
+<div id="modal-comparar-items" class="modal modal-top fade modal-comparar-items" style="pointer-events:none" tabindex="-1" role="dialog">
+    <div class="modal-dialog" style="margin:50px" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <p class="modal-title">@Html.Translate("COMPARAR_ITEMS_IMPORTAR")</p>
+                <span class="material-icons" data-dismiss="modal" aria-label="Close">close</span>
+            </div>
+            <div class="modal-body">
+				<div class="alert">
+                    <p class="alert-title">
+                        <span class="material-icons">info</span>
+						@Html.Translate("COMPARAR_ITEMS_INFORMACION_TITULO")
+                    </p>
+					<p>@Html.Translate("COMPARAR_ITEMS_INFORMACION")</p>
+                </div>
+				<div class="resource-list listView">
+					<div class="resource-list-wrap">
+						<div class="item-importado">
+							<p>@Html.Translate("ITEM_IMPORTADO")</p>
+						</div>
+						<div class="item-original">
+							<p>@Html.Translate("ITEM_ORIGINAL")</p>
+						</div>
+					</div>
+				</div>
+                <div class="form-actions">
+                    <a class="btn btn-primary" id="btnCerrarComparar">@Html.Translate("CERRAR")</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 <script>
 	$(document).ready(function () {	
 		importarCVN.init();

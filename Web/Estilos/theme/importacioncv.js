@@ -273,6 +273,7 @@ var importarCVN = {
 				checkUniqueItems();
 				aniadirComportamientoWrapperSeccion();
 				aniadirTooltipsConflict();
+				aniadirComportamientoCompararItems();
 				
 				
 				window.removeEventListener('beforeunload', preventBeforeUnload);
@@ -475,7 +476,24 @@ function checkAllWrappersCV(check){
 		});
 	}
 }
-
+function aniadirComportamientoCompararItems(){
+	$('span.compararItems').off('click').on('click', function(e){
+		e.preventDefault();
+		MostrarUpdateProgress();
+		var pIdBBDD = $(this).data("iditemoriginal");
+		var pIdSection = $(this).closest('div.panel-group.pmd-accordion').attr("section");
+		var pLang = $('#inpt_Idioma').val();
+		$('.item-importado').append($(this).closest('article').clone())
+		$('.item-original').append(getItemCV(pIdBBDD, pIdSection, pLang));
+		OcultarUpdateProgress();
+	});
+}
+function getItemCV(pIdBBDD, pIdSection, pLang){
+	$.get(url_servicio_editorcv + 'GetItemMiniImport?pIdSection=' + pIdSection + "&pIdBBDD=" + pIdBBDD + "&pLang=" + pLang, null, function (data) {
+		var htmlItem = edicionCV.printHtmlListItem(pIdBBDD, data);
+		return htmlItem;
+	});
+}
 function aniadirComportamientoWrapperSeccion(){	
 	$('.seleccionar.dropdown.dropdown-select.seccion .dropdown-menu.basic-dropdown.dropdown-menu-right .seleccionar').off('click').on('click', function(e) {
 		e.preventDefault();
@@ -1051,6 +1069,7 @@ edicionCV.printHtmlListItem= function(id, data) {
 	{
 		isCheck = "checked";
 	}
+	var htmlSpanComparar = "";
 	if(data.idBBDD != "")
 	{
 		isConflict = true;
@@ -1059,7 +1078,6 @@ edicionCV.printHtmlListItem= function(id, data) {
 	{
 		isConflict = false;
 	}
-	
 	var htmlListItem = ``;
 	if(data.title!= null){
 		htmlListItem = `<article class="resource success ${openAccess} conflict-${isConflict}" >
@@ -1072,6 +1090,7 @@ edicionCV.printHtmlListItem= function(id, data) {
 									${this.printHtmlListItemOrders(data)}
 									<div class="title-wrap">
 										<h2 class="resource-title">${data.title}</h2>
+										${isConflict ? `<span class="material-icons compararItems" data-idItemOriginal="${data.idBBDD}" data-toggle="modal" data-target="#modal-comparar-items"></span>`: ""}
 										${this.printHtmlListItemEditable(data)}	`;
 		if(data.idBBDD != ""){
 			if(data.iseditable){
