@@ -41,17 +41,17 @@ namespace Gnoss.Web.Login.Open
 
         public string GetClaimMail()
         {
-            if (string.IsNullOrEmpty(urlServiceInDomain))
+            if (string.IsNullOrEmpty(claimMail))
             {
                 string connectionString = string.Empty;
                 IDictionary environmentVariables = Environment.GetEnvironmentVariables();
                 if (environmentVariables.Contains("claimMail"))
                 {
-                    claimMail = environmentVariables["claimMail"] as string;
+                    connectionString = environmentVariables["claimMail"] as string;
                 }
                 else
                 {
-                    claimMail = _configuration["claimMail"];
+                    connectionString = _configuration["claimMail"];
                 }
 
                 claimMail = connectionString;
