@@ -64,161 +64,116 @@
                     }
                 </div>                
             </div>
-            <div class="list-wrap">
-                <ul>
-                    @{
-                        if (pProject.Roh_conductedBy != null && !string.IsNullOrEmpty(pProject.Roh_conductedBy.Roh_title))
+            @if ((pProject.Roh_conductedBy != null && !string.IsNullOrEmpty(pProject.Roh_conductedBy.Roh_title)) || (pProject.Vivo_geographicFocus != null && !string.IsNullOrEmpty(pProject.Vivo_geographicFocus.Dc_title[idiomaUsuario])))
+            {
+                <div class="list-wrap">
+                    <ul>
+                        @if (pProject.Roh_conductedBy != null && !string.IsNullOrEmpty(pProject.Roh_conductedBy.Roh_title))
                         {
                             <li about="@pProject.Roh_conductedBy.GNOSSID" property="@pProject.Roh_conductedBy.GetPropertyURI(nameof(pProject.Roh_conductedBy.Roh_title))">@pProject.Roh_conductedBy.Roh_title</li>
-
                         }
-                        else
-                        {
-                            <li>---</li>
-                        }
-                    }
 
-                    @{
-                        if (pProject.Vivo_geographicFocus != null && !string.IsNullOrEmpty(pProject.Vivo_geographicFocus.Dc_title[idiomaUsuario]))
+                        @if (pProject.Vivo_geographicFocus != null && !string.IsNullOrEmpty(pProject.Vivo_geographicFocus.Dc_title[idiomaUsuario]))
                         {
                             <li about="@pProject.Vivo_geographicFocus.GNOSSID" property="@pProject.Vivo_geographicFocus.GetPropertyURI(nameof(pProject.Vivo_geographicFocus.Dc_title))">@pProject.Vivo_geographicFocus.Dc_title[idiomaUsuario]</li>
                         }
-                        else
-                        {
-                            <li>---</li>
-                        }
-                    }
-                </ul>
-            </div>
-            <div class="group-wrap">
-                <div class="bloque">
-                    <div class="list-wrap">
-                        <div class="label">
-                            @Html.Translate("PERSONAL_INVESTIGADOR_PRINCIPAL")
-                        </div>
-                        @{
-                            if (pProject.Roh_mainResearchers != null && pProject.Roh_mainResearchers.Count > 0)
-                            {
-                                string nombrePersona = "";
-                                <ul>
-                                    @{
-                                        foreach (PersonAux persona in pProject.Roh_mainResearchers)
-                                        {
-                                            if (persona != null)
-                                            {
-                                                nombrePersona = persona.Foaf_firstName + " " + persona.Foaf_familyName + " " + persona.Roh_secondFamilyName;
-                                                <li>
-                                                    <a about="@persona.GNOSSID" property="@persona.GetPropertyURI(nameof(persona.Foaf_firstName))" href="@persona.URL">@nombrePersona</a>
-                                                </li>
-                                            }
-                                        }
+                    </ul>
+                </div>
+            }
+
+            @if (pProject.Roh_mainResearchers != null && pProject.Roh_mainResearchers.Count > 0)
+            {
+                string nombrePersona = "";
+
+                <div class="group-wrap">
+                    <div class="bloque">
+                        <div class="list-wrap">
+                            <div class="label">
+                                @Html.Translate("PERSONAL_INVESTIGADOR_PRINCIPAL")
+                            </div>
+                            <ul>
+                                @foreach (PersonAux persona in pProject.Roh_mainResearchers)
+                                {
+                                    if (persona != null)
+                                    {
+                                        nombrePersona = persona.Foaf_firstName + " " + persona.Foaf_familyName + " " + persona.Roh_secondFamilyName;
+                                        <li>
+                                            <a about="@persona.GNOSSID" property="@persona.GetPropertyURI(nameof(persona.Foaf_firstName))" href="@persona.URL">@nombrePersona</a>
+                                        </li>
                                     }
-                                </ul>
-                            }
-                            else
+                                }
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            }
+            
+
+            @if (!string.IsNullOrEmpty(pProject.Vivo_description))
+            {
+                <div class="group-wrap">
+                    <div class="bloque">
+                        <div class="label"></div>
+                        <p about="@pProject.GNOSSID" property="@pProject.GetPropertyURI(nameof(pProject.Vivo_description))" class="value">@pProject.Vivo_description</p>
+
+                    </div>
+                </div>
+            }
+            @if (pProject.Roh_grantedBy != null && pProject.Roh_grantedBy.Count > 0)
+            {
+                <div class="group-wrap">
+                    <div class="bloque">
+                        <div class="label">@Html.Translate("ENTIDAD_FINANCIADORA")</div>
+                        @foreach (OrganizationAux organizacion in pProject.Roh_grantedBy)
+                        {
+                            if (organizacion != null && !string.IsNullOrEmpty(organizacion.Roh_organizationTitle))
                             {
-                                <div class="value">---</div>
+                                <div about="@organizacion.GNOSSID" property="@organizacion.GetPropertyURI(nameof(organizacion.Roh_organizationTitle))" class="value">@organizacion.Roh_organizationTitle</div>
                             }
                         }
                     </div>
                 </div>
-            </div>
-
+            }
             @{
-                if (!string.IsNullOrEmpty(pProject.Vivo_description))
+                string fundedBy = "";
+                if (!string.IsNullOrEmpty(pProject.Roh_isSupportedBy))
+                {
+                    fundedBy = pProject.Roh_isSupportedBy;
+                    
+                    <div class="group-wrap">
+                        <div class="bloque">
+                            <div class="label">@Html.Translate("PROGRAMA_FINANCIACION")</div>
+                            <div about="@pProject.GNOSSID" property="@pProject.GetPropertyURI(nameof(pProject.Roh_isSupportedBy))" class="value">@fundedBy</div>
+                        </div>
+                    </div>
+                }
+
+                if (pProject.Roh_scientificExperienceProject != null && !string.IsNullOrEmpty(pProject.Roh_scientificExperienceProject.Dc_title[idiomaUsuario]) && pProject.Roh_isSupportedBy != null)
                 {
                     <div class="group-wrap">
                         <div class="bloque">
-                            <div class="label">
-                            </div>
-                            <p about="@pProject.GNOSSID" property="@pProject.GetPropertyURI(nameof(pProject.Vivo_description))" class="value">@pProject.Vivo_description</p>
-
+                            <div class="label">@Html.Translate("MODALIDAD_PROYECTO")</div>
+                            <div about="@pProject.Roh_scientificExperienceProject.GNOSSID" property="@pProject.Roh_scientificExperienceProject.GetPropertyURI(nameof(pProject.Roh_scientificExperienceProject.Dc_title))" class="value">@pProject.Roh_scientificExperienceProject.Dc_title[idiomaUsuario]</div> 
                         </div>
                     </div>
                 }
             }
-            <div class="group-wrap">
-                <div class="bloque">
-                    <div class="label">@Html.Translate("ENTIDAD_FINANCIADORA")</div>
-                    @{
-                        if (pProject.Roh_grantedBy != null && pProject.Roh_grantedBy.Count > 0)
-                        {
-                            foreach (OrganizationAux organizacion in pProject.Roh_grantedBy)
-                            {
-                                if (organizacion != null && !string.IsNullOrEmpty(organizacion.Roh_organizationTitle))
-                                {
-                                    <div about="@organizacion.GNOSSID" property="@organizacion.GetPropertyURI(nameof(organizacion.Roh_organizationTitle))" class="value">@organizacion.Roh_organizationTitle</div>
-                                }
-                                else
-                                {
-                                    <div class="value">---</div>
-                                }
-                            }
-                        }
-                        else
-                        {
-                            <div class="value">---</div>
-                        }
-                    }
-                </div>
-            </div>
-            <div class="group-wrap">
-                <div class="bloque">
-                    <div class="label">@Html.Translate("PROGRAMA_FINANCIACION")</div>
-                    @{
-                        string fundedBy = "";
-                        if (!string.IsNullOrEmpty(pProject.Roh_isSupportedBy))
-                        {
-                            fundedBy = pProject.Roh_isSupportedBy;
-                            <div about="@pProject.GNOSSID" property="@pProject.GetPropertyURI(nameof(pProject.Roh_isSupportedBy))" class="value">@fundedBy</div>
-                        }
-                        else
-                        {
-                            <div class="value">---</div>
-                        }
-                    }
-                </div>
-            </div>
-            <div class="group-wrap">
-                <div class="bloque">
-                    <div class="label">@Html.Translate("MODALIDAD_PROYECTO")</div>
-                    @{
-                        if (pProject.Roh_scientificExperienceProject != null && !string.IsNullOrEmpty(pProject.Roh_scientificExperienceProject.Dc_title[idiomaUsuario]) && pProject.Roh_isSupportedBy != null)
-                        {
-                            <div about="@pProject.Roh_scientificExperienceProject.GNOSSID" property="@pProject.Roh_scientificExperienceProject.GetPropertyURI(nameof(pProject.Roh_scientificExperienceProject.Dc_title))" class="value">@pProject.Roh_scientificExperienceProject.Dc_title[idiomaUsuario]</div>
-                        }
-                        else
-                        {
-                            <div class="value">---</div>
-                        }
-                    }
-                </div>
-            </div>
             <div class="group-wrap div3">
-                <div class="bloque">
-                    <div class="label">@Html.Translate("AMBITO_GEOGRAFICO")</div>
-                    @{
-                        if (pProject.Vivo_geographicFocus != null && pProject.Vivo_geographicFocus.Dc_title != null && pProject.Vivo_geographicFocus.Dc_title.Count > 0)
-                        {
-                            <div about="@pProject.Vivo_geographicFocus.GNOSSID" property="@pProject.Vivo_geographicFocus.GetPropertyURI(nameof(pProject.Vivo_geographicFocus.Dc_title))" class="value">@pProject.Vivo_geographicFocus.Dc_title[idiomaUsuario]</div>
-                        }
-                        else
-                        {
-                            <div class="value">---</div>
-                        }
-                    }
-                </div>
-                <div class="bloque">
-                    <div class="label">@Html.Translate("NUMERO_INVESTIGADORES")</div>
-                    @if (pProject.Roh_researchersNumber != null && pProject.Roh_researchersNumber.HasValue)
-                    {
+                @if (pProject.Vivo_geographicFocus != null && pProject.Vivo_geographicFocus.Dc_title != null && pProject.Vivo_geographicFocus.Dc_title.Count > 0)
+                {
+                    <div class="bloque">
+                        <div class="label">@Html.Translate("AMBITO_GEOGRAFICO")</div>
+                        <div about="@pProject.Vivo_geographicFocus.GNOSSID" property="@pProject.Vivo_geographicFocus.GetPropertyURI(nameof(pProject.Vivo_geographicFocus.Dc_title))" class="value">@pProject.Vivo_geographicFocus.Dc_title[idiomaUsuario]</div>
+                    </div>
+                }
+                
+                @if (pProject.Roh_researchersNumber != null && pProject.Roh_researchersNumber.HasValue)
+                {
+                    <div class="bloque">
+                        <div class="label">@Html.Translate("NUMERO_INVESTIGADORES")</div>
                         <div about="@pProject.GNOSSID" property="@pProject.GetPropertyURI(nameof(pProject.Roh_researchersNumber))" class="value" id="researchers-number">@pProject.Roh_researchersNumber</div>
-                    }
-                    else
-                    {
-                        <div class="value" id="researchers-number">---</div>
-                    }
-                </div>
+                    </div>
+                }
             </div>
             <div class="group-wrap div3">
                 <div class="bloque">
