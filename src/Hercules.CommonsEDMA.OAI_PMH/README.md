@@ -79,27 +79,25 @@ Para la utilización de este método, es necesario los siguientes parámetros:
     }
   },
   "AllowedHosts": "*",
+  "UsernameToken": "",
+  "PasswordToken": "",
+  "UsernameTokenPII": "",
+  "PasswordTokenPII": "",
   "ConfigUrl": "",
-  "UrlBaseToken": "",
-  "UrlBaseProyecto": "",
-  "UrlBasePersona": "",
-  "UrlBaseOrganizacion": "",
-  "UrlBaseEstructuraOrganica": "",
-  "UrlBaseFormacionAcademica": "",
-  "UrlBaseActividadDocente": ""
+  "url_sgi": "",
+  "CronExpression": ""
 }
 ```
 - **LogLevel.Default**: Nivel de error por defecto.
 - **LogLevel.Microsoft**: Nivel de error para los errores propios de Microsoft.
 - **LogLevel.Microsoft.Hosting.Lifetime**: Nivel de error para los errores de host.
+- **UsernameToken**: Nombre de usuario para solicitar el token.
+- **PasswordToken**: Contraseña para solicitar el token.
+- **UsernameTokenPII**: Nombre de usuario para solicitar el token en PII.
+- **PasswordTokenPII**: Contraseña para solicitar el token en PII.
 - **ConfigUrl**: Url del servicio OAI-PMH instalado.
-- **UrlBaseToken**: Url de obtención del token de autentificación.
-- **UrlBaseProyecto**: Url de obtención de los datos de proyecto.
-- **UrlBasePersona**: Url de obtención de los datos de persona.
-- **UrlBaseOrganizacion**: Url de obtención de los datos de las empresas.
-- **UrlBaseEstructuraOrganica**: Url de obtención de datos orgánicos.
-- **UrlBaseFormacionAcademica**: Url de obtención de los datos de la formación académica.
-- **UrlBaseActividadDocente**: Url de obtención de los datos de la actividad docente.
+- **url_sgi**: Dominio dónde está instalado el sistema SGI. Ej: https://domniosgi.com
+- **CronExpression**: Expresión en formato Cron para la ejecución del programa. Ej: 0 0 0 ? * * *
 
 ## Dependencias
 - **IdentityServer4**: v4.1.2
