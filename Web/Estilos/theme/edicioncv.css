@@ -273,8 +273,8 @@ input.form-group-date {
     border: 1px solid var(--c-gris-borde);
     height: 45px;
     padding: 10px 20px;
-	width: 150px;
-	margin-left: 15px;
+	width: 225px;
+	margin-left: 10px;
 }
 
 .importar-exportar-cv .acciones-listado-cv .checkAllCVWrapper {
