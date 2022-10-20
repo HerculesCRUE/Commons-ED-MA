@@ -90,36 +90,7 @@ namespace Hercules.CommonsEDMA.ConfigLoad
             Despliegue(rutaBase + "SearchPersonalizado.zip", "SearchPersonalizado");
             Console.WriteLine("11- Subimos Vistas");
             Despliegue(rutaBase + "Vistas.zip", "Vistas");
-        }
-
-        private void CambiarURLs(string rutaZip)
-        {
-            string rutaCarpeta = rutaZip.Substring(0, rutaZip.Length - 4);
-            if (Directory.Exists(rutaCarpeta))
-            {
-                Directory.Delete(rutaCarpeta, true);
-            }
-            System.IO.Compression.ZipFile.ExtractToDirectory(rutaZip, rutaCarpeta);
-            foreach (string file in Directory.EnumerateFiles(rutaCarpeta, "*.*", SearchOption.AllDirectories))
-            {
-                string contenidoOriginal = File.ReadAllText(file);
-                string contenidoModificado = contenidoOriginal;
-                contenidoModificado=contenidoModificado.Replace(configService.ObtenerUrlServiciosBase(), configService.ObtenerUrlServiciosInstalacion());
-                if (contenidoOriginal != contenidoModificado)
-                {
-                    System.IO.File.WriteAllText(file, contenidoModificado);
-                }
-            }
-            if (File.Exists(rutaZip))
-            {
-                File.Delete(rutaZip);
-            }
-            System.IO.Compression.ZipFile.CreateFromDirectory(rutaCarpeta,rutaZip);
-            if (Directory.Exists(rutaCarpeta))
-            {
-                System.IO.Directory.Delete(rutaCarpeta, true);
-            }
-        }
+        }        
 
 
         private void Despliegue(string pRutaFichero, string pMetodo)
@@ -127,7 +98,6 @@ namespace Hercules.CommonsEDMA.ConfigLoad
             string nombreProy = configService.ObtenerNombreCortoComunidad();
             string loginAdmin = configService.ObtenerLoginAdmin();
             string passAdmin = configService.ObtenerPassAdmin();
-            CambiarURLs(pRutaFichero);
             string sWebAddress = $"{configService.ObtenerUrlAPIDespliegues()}Upload?tipoPeticion={pMetodo}&usuario={loginAdmin}&password={passAdmin}&nombreProy={nombreProy}";
 
             HttpContent contentData = null;

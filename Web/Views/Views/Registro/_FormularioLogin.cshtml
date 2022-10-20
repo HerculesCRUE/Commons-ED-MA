@@ -54,7 +54,7 @@
                     <div id="acceder_sesion">
                         <input class="principal submit btn btn-primary" type="submit" onclick="@funcion" title="@Html.GetText("COMMON", "INICIARSESION")" value="@Html.GetText("COMMON", "INICIARSESION")" class="principal submit" />
                     </div>
-                    <div>
+                    <div class="login_cas">
                         @{											
                             string urlLoginSAML = Html.GetUrlActionLogin().Replace("/login?", "/loginsaml?").Replace("http://", "https://");
                             urlLoginSAML += "&returnUrl=" + Comunidad.Url;
@@ -107,6 +107,12 @@
                     }
                 }
             });
+
+            // Modifica el título del login
+            let h1 = document.querySelector('.formularioRegistroUsuarios > h1')
+            h1.innerHTML = "@Html.Translate("INI_SESSION") <strong>Hércules</strong>"
+
+
         }); function validarCampos() {
             return ($('#usuario_Login').val() != '' && $('#password_login').val() != '')
         }

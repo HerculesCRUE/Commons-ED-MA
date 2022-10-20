@@ -32,8 +32,6 @@ namespace ResearchobjecttypeOntology
 			this.Dc_title.Add(idiomaUsuario , GetPropertyValueSemCms(pSemCmsModel.GetPropertyByPath("http://purl.org/dc/elements/1.1/title")));
 			
 			this.Dc_identifier = GetPropertyValueSemCms(pSemCmsModel.GetPropertyByPath("http://purl.org/dc/elements/1.1/identifier"));
-			this.Dc_type = new Dictionary<LanguageEnum,string>();
-			this.Dc_type.Add(idiomaUsuario , GetPropertyValueSemCms(pSemCmsModel.GetPropertyByPath("http://purl.org/dc/elements/1.1/type")));
 			
 		}
 
@@ -46,10 +44,6 @@ namespace ResearchobjecttypeOntology
 		[LABEL(LanguageEnum.es,"Identificador del tipo de publicación")]
 		[RDFProperty("http://purl.org/dc/elements/1.1/identifier")]
 		public  string Dc_identifier { get; set;}
-
-		[RDFProperty("http://purl.org/dc/elements/1.1/type")]
-		public  Dictionary<LanguageEnum,string> Dc_type { get; set;}
-
 
 		internal override void GetProperties()
 		{
@@ -66,17 +60,6 @@ namespace ResearchobjecttypeOntology
 				throw new GnossAPIException($"La propiedad dc:title debe tener al menos un valor en el recurso: {resourceID}");
 			}
 			propList.Add(new StringOntologyProperty("dc:identifier", this.Dc_identifier));
-			if(this.Dc_type != null)
-			{
-				foreach (LanguageEnum idioma in this.Dc_type.Keys)
-				{
-					propList.Add(new StringOntologyProperty("dc:type", this.Dc_type[idioma], idioma.ToString()));
-				}
-			}
-			else
-			{
-				throw new GnossAPIException($"La propiedad dc:type debe tener al menos un valor en el recurso: {resourceID}");
-			}
 		}
 
 		internal override void GetEntities()
@@ -112,13 +95,6 @@ namespace ResearchobjecttypeOntology
 				{
 					AgregarTripleALista($"{resourceAPI.GraphsUrl}items/ResearchObjectType_{ResourceID}_{ArticleID}",  "http://purl.org/dc/elements/1.1/identifier", $"\"{GenerarTextoSinSaltoDeLinea(this.Dc_identifier)}\"", list, " . ");
 				}
-				if(this.Dc_type != null)
-				{
-							foreach (LanguageEnum idioma in this.Dc_type.Keys)
-							{
-								AgregarTripleALista($"{resourceAPI.GraphsUrl}items/ResearchObjectType_{ResourceID}_{ArticleID}", "http://purl.org/dc/elements/1.1/type",  $"\"{GenerarTextoSinSaltoDeLinea(this.Dc_type[idioma])}\"", list,  $"{idioma} . ");
-							}
-				}
 			return list;
 		}
 
@@ -137,13 +113,6 @@ namespace ResearchobjecttypeOntology
 				if(this.Dc_identifier != null)
 				{
 					AgregarTripleALista($"http://gnoss/{ResourceID.ToString().ToUpper()}",  "http://purl.org/dc/elements/1.1/identifier", $"\"{GenerarTextoSinSaltoDeLinea(this.Dc_identifier).ToLower()}\"", list, " . ");
-				}
-				if(this.Dc_type != null)
-				{
-							foreach (LanguageEnum idioma in this.Dc_type.Keys)
-							{
-								AgregarTripleALista($"http://gnoss/{ResourceID.ToString().ToUpper()}", "http://purl.org/dc/elements/1.1/type",  $"\"{GenerarTextoSinSaltoDeLinea(this.Dc_type[idioma]).ToLower()}\"", list,  $"{idioma} . ");
-							}
 				}
 			if (listaSearch != null && listaSearch.Count > 0)
 			{
