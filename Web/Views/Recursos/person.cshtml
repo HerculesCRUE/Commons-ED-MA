@@ -915,8 +915,8 @@
                 buscadorPersonalizado.orders[0]={"name":"@Html.Translate("FECHA_INICIO_DESCENDENTE")","orderby":"vivo:start|desc"};
                 buscadorPersonalizado.orders[1]={"name":"@Html.Translate("FECHA_INICIO_ASCENDENTE")","orderby":"vivo:start|asc"};
                 buscadorPersonalizado.orders[2]={"name":"@Html.Translate("FECHA_FIN_DESCENDENTE")","orderby":"vivo:end|desc"};
-                buscadorPersonalizado.orders[2]={"name":"@Html.Translate("FECHA_FIN_ASCENDENTE")","orderby":"vivo:end|asc"};
-                buscadorPersonalizado.init("Proyectos", "#contenedorBuscadorProyectos", "searchProyectosPublicosPerson=http://gnoss/@pPerson.GNOSSID.Split('_')[1].ToUpper()", "", "rdf:type=project", "@Comunidad.Url", "@Comunidad.Key.ToString()");
+                buscadorPersonalizado.orders[3]={"name":"@Html.Translate("FECHA_FIN_ASCENDENTE")","orderby":"vivo:end|asc"};
+                buscadorPersonalizado.init("Proyectos", "#contenedorBuscadorProyectos", "searchProyectosPublicosPerson=http://gnoss/@pPerson.GNOSSID.Split('_')[1].ToUpper()", "vivo:start", "rdf:type=project", "@Comunidad.Url", "@Comunidad.Key.ToString()");
             });
             $('#otros-tab').unbind().click(function (e) {
                 e.preventDefault();
