@@ -199,7 +199,6 @@ namespace Harvester
             int i = 0;
             foreach (string fichero in Directory.EnumerateFiles(directorioPendientes))
             {
-                i++;
                 pDicRutas[pSet][directorioPendientes] += fichero.Substring(fichero.LastIndexOf("\\"));
                 List<string> idsACargar = File.ReadAllLines(fichero).Distinct().ToList();
 
@@ -215,10 +214,12 @@ namespace Harvester
                 }
 
                 idsACargar.Sort();
-
-                Console.WriteLine($"Procesando fichero de {pSet} {i}/{idsACargar.Count}");
+                               
                 foreach (string id in idsACargar)
                 {
+                    i++;
+                    Console.WriteLine($"Procesando fichero de {pSet} {i}/{idsACargar.Count}");
+
                     switch (pSet)
                     {
                         #region - Organizacion
@@ -231,7 +232,6 @@ namespace Harvester
                             catch
                             {
                                 // ID no válido.
-                                File.AppendAllText(pDicRutas[pSet][directorioPendientes], id + Environment.NewLine);
                                 break;
                             }
 
@@ -255,7 +255,6 @@ namespace Harvester
                             catch
                             {
                                 // ID no válido.
-                                File.AppendAllText(pDicRutas[pSet][directorioPendientes], id + Environment.NewLine);
                                 break;
                             }
                             if (persona != null && !string.IsNullOrEmpty(persona.Nombre))
@@ -278,7 +277,6 @@ namespace Harvester
                             catch
                             {
                                 // ID no válido.
-                                File.AppendAllText(pDicRutas[pSet][directorioPendientes], id + Environment.NewLine);
                                 break;
                             }
                             if (proyectoSGI != null && !string.IsNullOrEmpty(proyectoSGI.Titulo))
@@ -389,7 +387,6 @@ namespace Harvester
                             catch
                             {
                                 // ID no válido.
-                                File.AppendAllText(pDicRutas[pSet][directorioPendientes], id + Environment.NewLine);
                                 break;
                             }
                             if (invencion != null && !string.IsNullOrEmpty(invencion.titulo))
@@ -411,7 +408,6 @@ namespace Harvester
                             catch
                             {
                                 // ID no válido.
-                                File.AppendAllText(pDicRutas[pSet][directorioPendientes], id + Environment.NewLine);
                                 break;
                             }
                             if (grupo != null && !string.IsNullOrEmpty(grupo.nombre))
