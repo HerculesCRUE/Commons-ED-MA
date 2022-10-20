@@ -167,7 +167,11 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
                 WHERE {{ 
                         <http://gnoss/{pIdGroup}> roh:title ?nombre.                        
                 }}";
-                string nombreGrupo = resourceApi.VirtuosoQuery(select, where, idComunidad).results.bindings.First()["nombre"].value.Substring(0, 20) + "...";
+                string nombreGrupo = resourceApi.VirtuosoQuery(select, where, idComunidad).results.bindings.First()["nombre"].value;
+                if(nombreGrupo.Length>20)
+                {
+                    nombreGrupo = nombreGrupo.Substring(0, 20) + "...";
+                }
                 grupo = "http://gnoss/" + pIdGroup;
                 dicNodos.Add("http://gnoss/" + pIdGroup, nombreGrupo);
             }
@@ -378,7 +382,7 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
         public List<DataItemRelacion> DatosGraficaColaboradoresGrupo(string pIdGroup, string pParametros, int pMax)
         {
             HashSet<string> colaboradores = new HashSet<string>();
-            string grupo = "";
+            string grupo = "http://gnoss/" + pIdGroup;
             Dictionary<string, int> numRelacionesColaboradorGrupo = new Dictionary<string, int>();
             Dictionary<string, int> numRelacionesColaboradorDocumentoGrupo = new Dictionary<string, int>();
             Dictionary<string, int> numRelacionesColaboradorProyectoGrupo = new Dictionary<string, int>();
@@ -561,8 +565,7 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
                 {
                     if (colaboradores.Contains(colaborador))
                     {
-                        string group = "http://gnoss/" + pIdGroup.ToUpper();
-                        grupo = "http://gnoss/" + pIdGroup;
+                        string group = "http://gnoss/" + pIdGroup.ToUpper();                       
                         string nombreRelacion = "Documentos";
                         if (!dicRelaciones.ContainsKey(group))
                         {

@@ -522,7 +522,11 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
                         <http://gnoss/{pIdProyecto}> roh:title ?nombre.                        
                 }}";
 
-                string nombreProyecto = resourceApi.VirtuosoQuery(select, where, idComunidad).results.bindings.First()["nombre"].value.Substring(0, 20) + "...";
+                string nombreProyecto = resourceApi.VirtuosoQuery(select, where, idComunidad).results.bindings.First()["nombre"].value;
+                if (nombreProyecto.Length > 20)
+                {
+                    nombreProyecto = nombreProyecto.Substring(0, 20) + "...";
+                }
                 proyecto = "http://gnoss/" + pIdProyecto;
                 dicNodos.Add("http://gnoss/" + pIdProyecto, nombreProyecto);
             }
@@ -742,8 +746,12 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
                         <http://gnoss/{pIdProyecto}> roh:title ?nombre.                        
                 }}";
 
-                string nombreProjecto = resourceApi.VirtuosoQuery(select, where, idComunidad).results.bindings.First()["nombre"].value.Substring(0, 20) + "...";
-                dicNodos.Add("http://gnoss/" + pIdProyecto, nombreProjecto);
+                string nombreProyecto = resourceApi.VirtuosoQuery(select, where, idComunidad).results.bindings.First()["nombre"].value;
+                if (nombreProyecto.Length > 20)
+                {
+                    nombreProyecto = nombreProyecto.Substring(0, 20) + "...";
+                }
+                dicNodos.Add("http://gnoss/" + pIdProyecto, nombreProyecto);
             }
             #endregion
             if (colaboradores.Count > 0)
