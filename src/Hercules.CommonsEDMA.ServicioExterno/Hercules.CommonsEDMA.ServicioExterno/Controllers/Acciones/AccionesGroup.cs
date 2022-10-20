@@ -167,7 +167,11 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
                 WHERE {{ 
                         <http://gnoss/{pIdGroup}> roh:title ?nombre.                        
                 }}";
-                string nombreGrupo = resourceApi.VirtuosoQuery(select, where, idComunidad).results.bindings.First()["nombre"].value.Substring(0, 20) + "...";
+                string nombreGrupo = resourceApi.VirtuosoQuery(select, where, idComunidad).results.bindings.First()["nombre"].value;
+                if(nombreGrupo.Length>20)
+                {
+                    nombreGrupo = nombreGrupo.Substring(0, 20) + "...";
+                }
                 grupo = "http://gnoss/" + pIdGroup;
                 dicNodos.Add("http://gnoss/" + pIdGroup, nombreGrupo);
             }
