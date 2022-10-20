@@ -80,15 +80,24 @@ namespace Gnoss.Web.Login.SAML
 
             mCommunityApi.Log.Info("3.-numClaims:" + pUser.Claims.ToList());
 
-            //mail http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier
+            
             foreach (Claim claim in pUser.Claims.ToList())
             {
                 mCommunityApi.Log.Info("4.-CLAIM TYPE: '" + claim.Type + "' CLAIMVALUE: '" + claim.Value.Trim().ToLower() + "'");
-                if(claim.Type== "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier")
+                if(claim.Type== mConfigServiceSAML.GetClaimMail())
                 {
                     email = claim.Value.Trim();
                 }            
             }
+
+            if (pUser.Identity != null)
+            {
+                mCommunityApi.Log.Info("4.1-NAME: '"+pUser.Identity.Name + "'");
+            }
+
+            bool adminOtri = true;
+            bool adminGraphics = true;
+            bool admin = true;
 
             //comprobamos si existe la persona del email
             string person=mResourceApi.VirtuosoQuery("select ?person", @$"where{{
@@ -99,7 +108,7 @@ namespace Gnoss.Web.Login.SAML
             
             string UrlLogout = pReturnUrl + "/"+ UtilIdiomas.GetText("URLSEM","DESCONECTAR");
 
-            if (string.IsNullOrEmpty(person))
+            if (string.IsNullOrEmpty(person) && !adminOtri && !adminGraphics && !admin)
             {
                 //No existe ninguna persona aociada al correo
                 mCommunityApi.Log.Info("5.-Redirigir a la página avisando de que no existe ningún usuario con ese correo");
@@ -108,7 +117,7 @@ namespace Gnoss.Web.Login.SAML
             else
             {
                 mCommunityApi.Log.Info("6.-LOGUEAMOS");
-                //Comprobamos si existe usuario para la persona
+                //Comprobamos si existe usuario para la persona (investigador)
                 string user = mResourceApi.VirtuosoQuery("select ?user", @$"where{{
                                         <{person}> <http://w3id.org/roh/gnossUser> ?user.
                         }}", "person").results.bindings.FirstOrDefault()?["user"].value;
