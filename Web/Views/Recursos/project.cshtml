@@ -175,32 +175,40 @@
                     </div>
                 }
             </div>
-            <div class="group-wrap div3">
-                <div class="bloque">
-                    <div class="label">@Html.Translate("FECHA_INICIO")</div>
+
+            @if ((pProject.Vivo_start != null && pProject.Vivo_start.HasValue) || (pProject.Vivo_end != null && pProject.Vivo_end.HasValue))
+            {
+                <div class="group-wrap div3">
                     @if (pProject.Vivo_start != null && pProject.Vivo_start.HasValue)
                     {
-                        string anioInicio = pProject.Vivo_start.Value.Year.ToString();
-                        string mesInicio = pProject.Vivo_start.Value.Month.ToString();
-                        string diaInicio = pProject.Vivo_start.Value.Day.ToString();
-                        string fechaInicio = diaInicio + "/" + mesInicio + "/" + anioInicio;
-
-                        <div about="@pProject.GNOSSID" property="@pProject.GetPropertyURI(nameof(pProject.Vivo_start))" class="value">@fechaInicio</div>
+                        <div class="bloque">
+                            <div class="label">@Html.Translate("FECHA_INICIO")</div>
+                            @{
+                                string anioInicio = pProject.Vivo_start.Value.Year.ToString();
+                                string mesInicio = pProject.Vivo_start.Value.Month.ToString();
+                                string diaInicio = pProject.Vivo_start.Value.Day.ToString();
+                                string fechaInicio = diaInicio + "/" + mesInicio + "/" + anioInicio;
+                            }
+                            <div about="@pProject.GNOSSID" property="@pProject.GetPropertyURI(nameof(pProject.Vivo_start))" class="value">@fechaInicio</div>
+                        </div>
                     }
-                </div>
-                <div class="bloque">
-                    <div class="label">@Html.Translate("FECHA_FIN")</div>
+
                     @if (pProject.Vivo_end != null && pProject.Vivo_end.HasValue)
                     {
-                        string anioFin = pProject.Vivo_end.Value.Year.ToString();
-                        string mesFin = pProject.Vivo_end.Value.Month.ToString();
-                        string diaFin = pProject.Vivo_end.Value.Day.ToString();
-                        string fechaFin = diaFin + "/" + mesFin + "/" + anioFin;
-
-                        <div about="@pProject.GNOSSID" property="@pProject.GetPropertyURI(nameof(pProject.Vivo_end))" class="value">@fechaFin</div>
+                        <div class="bloque">
+                            <div class="label">@Html.Translate("FECHA_FIN")</div>
+                            @{
+                                string anioFin = pProject.Vivo_end.Value.Year.ToString();
+                                string mesFin = pProject.Vivo_end.Value.Month.ToString();
+                                string diaFin = pProject.Vivo_end.Value.Day.ToString();
+                                string fechaFin = diaFin + "/" + mesFin + "/" + anioFin;
+                            }
+                            <div about="@pProject.GNOSSID" property="@pProject.GetPropertyURI(nameof(pProject.Vivo_end))" class="value">@fechaFin</div>
+                        </div>
                     }
                 </div>
-            </div>
+            }
+
             @if (pProject.Roh_hasKnowledgeArea != null && pProject.Roh_hasKnowledgeArea.Count > 0)
             {
                 <div class="list-wrap tags">
