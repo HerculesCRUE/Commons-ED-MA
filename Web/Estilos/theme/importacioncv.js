@@ -89,6 +89,13 @@ var importarCVN = {
 
 		$('.btImportarCV').off('click').on('click', function(e) {
 			e.preventDefault();
+			//Compruebo que el usuario ha elegido una opción.
+			if(CheckSelectorIgnored())
+			{
+				return;
+			}
+			
+			
 			var listaId = "";
 			var listaOpcionSeleccionados = "";
 			$('.resource-list .custom-control-input:checkbox:checked').each(function(){
@@ -409,6 +416,18 @@ var importarCVN = {
 		
 	}
 };
+
+//True si algun selector no ha cambiado el estado por defecto y está checkeado, false en caso contrario
+function CheckSelectorIgnored(){
+	var articlesSelected = $("article select:not(:disabled)[name='itemConflict'] option:selected");
+	for(var i = 0; i < articlesSelected.length; i++){
+		if(articlesSelected[i].value=='ig'){
+			mostrarNotificacion("warning", "Alguno de los ítems no ha sido seleccionado");
+			return true;
+		}
+	}
+	return false;
+}
 
 function changeSelector(selectItem, optionSelected){
 	var selectOption = selectItem.closest('article.resource').find('select').prop('disabled');

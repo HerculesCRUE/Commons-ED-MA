@@ -144,22 +144,60 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
                     String where = @$"where{{
                                     {filter}
                                     {{
-                                        select distinct ?grupo ?doc
-                                        Where{{
-                                            ?grupo a <http://xmlns.com/foaf/0.1/Group>.
-                                            ?grupo <http://vivoweb.org/ontology/core#relates> ?members.
-                                            ?members <http://w3id.org/roh/roleOf> ?person.
-                                            ?person a <http://xmlns.com/foaf/0.1/Person>.
-                                            OPTIONAL{{?members <http://vivoweb.org/ontology/core#start> ?fechaPersonaInit.}}
-                                            OPTIONAL{{?members <http://vivoweb.org/ontology/core#end> ?fechaPersonaEnd.}}
-                                            BIND(IF(bound(?fechaPersonaEnd), xsd:integer(?fechaPersonaEnd), 30000000000000) as ?fechaPersonaEndAux)
-                                            BIND(IF(bound(?fechaPersonaInit), xsd:integer(?fechaPersonaInit), 10000000000000) as ?fechaPersonaInitAux)
-                                            ?doc a <http://purl.org/ontology/bibo/Document>.
-                                            ?doc <http://w3id.org/roh/isValidated> 'true'.
-                                            ?doc <http://purl.org/ontology/bibo/authorList> ?autores.
-                                            ?autores <http://www.w3.org/1999/02/22-rdf-syntax-ns#member> ?person.
-                                            ?doc <http://purl.org/dc/terms/issued> ?fechaPublicacion.
-                                            FILTER(xsd:integer(?fechaPublicacion)>= ?fechaPersonaInitAux AND xsd:integer(?fechaPublicacion)<= ?fechaPersonaEndAux)
+                                        {{
+                                            select distinct ?grupo ?doc
+                                            Where{{
+                                                ?grupo a <http://xmlns.com/foaf/0.1/Group>.
+                                                ?grupo <http://vivoweb.org/ontology/core#relates> ?members.
+                                                ?members <http://w3id.org/roh/roleOf> ?person.
+                                                ?person a <http://xmlns.com/foaf/0.1/Person>.
+                                                ?members <http://vivoweb.org/ontology/core#start> ?fechaPersonaInit.
+                                                ?members <http://vivoweb.org/ontology/core#end> ?fechaPersonaEnd.
+                                                BIND(xsd:integer(?fechaPersonaEnd) as ?fechaPersonaEndAux)
+												BIND(xsd:integer(?fechaPersonaInit) as ?fechaPersonaInitAux)
+                                                ?doc a <http://purl.org/ontology/bibo/Document>.
+                                                ?doc <http://w3id.org/roh/isValidated> 'true'.
+                                                ?doc <http://purl.org/ontology/bibo/authorList> ?autores.
+                                                ?autores <http://www.w3.org/1999/02/22-rdf-syntax-ns#member> ?person.
+                                                ?doc <http://purl.org/dc/terms/issued> ?fechaPublicacion.
+                                                FILTER(xsd:integer(?fechaPublicacion)>= ?fechaPersonaInitAux AND xsd:integer(?fechaPublicacion)<= ?fechaPersonaEndAux)
+                                            }}
+                                        }}UNION
+                                        {{
+                                            select distinct ?grupo ?doc
+                                            Where{{
+                                                ?grupo a <http://xmlns.com/foaf/0.1/Group>.
+                                                ?grupo <http://vivoweb.org/ontology/core#relates> ?members.
+                                                ?members <http://w3id.org/roh/roleOf> ?person.
+                                                ?person a <http://xmlns.com/foaf/0.1/Person>.
+                                                ?members <http://vivoweb.org/ontology/core#start> ?fechaPersonaInit.
+												MINUS{{?members <http://vivoweb.org/ontology/core#end> ?fechaPersonaEnd.}}
+												BIND(xsd:integer(?fechaPersonaInit) as ?fechaPersonaInitAux)
+                                                ?doc a <http://purl.org/ontology/bibo/Document>.
+                                                ?doc <http://w3id.org/roh/isValidated> 'true'.
+                                                ?doc <http://purl.org/ontology/bibo/authorList> ?autores.
+                                                ?autores <http://www.w3.org/1999/02/22-rdf-syntax-ns#member> ?person.
+                                                ?doc <http://purl.org/dc/terms/issued> ?fechaPublicacion.
+                                                FILTER(xsd:integer(?fechaPublicacion)>= ?fechaPersonaInitAux)
+                                            }}
+                                        }}UNION
+                                        {{
+                                            select distinct ?grupo ?doc
+                                            Where{{
+                                                ?grupo a <http://xmlns.com/foaf/0.1/Group>.
+                                                ?grupo <http://vivoweb.org/ontology/core#relates> ?members.
+                                                ?members <http://w3id.org/roh/roleOf> ?person.
+                                                ?person a <http://xmlns.com/foaf/0.1/Person>.
+                                                MINUS{{?members <http://vivoweb.org/ontology/core#start> ?fechaPersonaInit.}}
+												?members <http://vivoweb.org/ontology/core#end> ?fechaPersonaEnd.
+												BIND(xsd:integer(?fechaPersonaEnd) as ?fechaPersonaEndAux)
+                                                ?doc a <http://purl.org/ontology/bibo/Document>.
+                                                ?doc <http://w3id.org/roh/isValidated> 'true'.
+                                                ?doc <http://purl.org/ontology/bibo/authorList> ?autores.
+                                                ?autores <http://www.w3.org/1999/02/22-rdf-syntax-ns#member> ?person.
+                                                ?doc <http://purl.org/dc/terms/issued> ?fechaPublicacion.
+                                                FILTER( xsd:integer(?fechaPublicacion)<= ?fechaPersonaEndAux)
+                                            }}
                                         }}
                                     }}
                                     MINUS
@@ -179,7 +217,7 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
 
                 while (true)
                 {
-                    //Eliminamos de dcumentpos
+                    //Eliminamos de documentos
                     int limit = 500;
                     String select = @"select distinct ?doc ?grupo  ";
                     String where = @$"where{{
@@ -191,22 +229,60 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
                                     }}
                                     MINUS
                                     {{
-                                        select distinct ?grupo ?doc
-                                        Where{{
-                                            ?grupo a <http://xmlns.com/foaf/0.1/Group>.
-                                            ?grupo <http://vivoweb.org/ontology/core#relates> ?members.
-                                            ?members <http://w3id.org/roh/roleOf> ?person.
-                                            ?person a <http://xmlns.com/foaf/0.1/Person>.
-                                            OPTIONAL{{?members <http://vivoweb.org/ontology/core#start> ?fechaPersonaInit.}}
-                                            OPTIONAL{{?members <http://vivoweb.org/ontology/core#end> ?fechaPersonaEnd.}}
-                                            BIND(IF(bound(?fechaPersonaEnd), xsd:integer(?fechaPersonaEnd), 30000000000000) as ?fechaPersonaEndAux)
-                                            BIND(IF(bound(?fechaPersonaInit), xsd:integer(?fechaPersonaInit), 10000000000000) as ?fechaPersonaInitAux)
-                                            ?doc a <http://purl.org/ontology/bibo/Document>.
-                                            ?doc <http://w3id.org/roh/isValidated> 'true'.
-                                            ?doc <http://purl.org/ontology/bibo/authorList> ?autores.
-                                            ?autores <http://www.w3.org/1999/02/22-rdf-syntax-ns#member> ?person.
-                                            ?doc <http://purl.org/dc/terms/issued> ?fechaPublicacion.
-                                            FILTER(xsd:integer(?fechaPublicacion)>= ?fechaPersonaInitAux AND xsd:integer(?fechaPublicacion)<= ?fechaPersonaEndAux)
+                                        {{
+                                            select distinct ?grupo ?doc
+                                            Where{{
+                                                ?grupo a <http://xmlns.com/foaf/0.1/Group>.
+                                                ?grupo <http://vivoweb.org/ontology/core#relates> ?members.
+                                                ?members <http://w3id.org/roh/roleOf> ?person.
+                                                ?person a <http://xmlns.com/foaf/0.1/Person>.
+                                                ?members <http://vivoweb.org/ontology/core#start> ?fechaPersonaInit.
+                                                ?members <http://vivoweb.org/ontology/core#end> ?fechaPersonaEnd.
+                                                BIND(xsd:integer(?fechaPersonaEnd) as ?fechaPersonaEndAux)
+												BIND(xsd:integer(?fechaPersonaInit) as ?fechaPersonaInitAux)
+                                                ?doc a <http://purl.org/ontology/bibo/Document>.
+                                                ?doc <http://w3id.org/roh/isValidated> 'true'.
+                                                ?doc <http://purl.org/ontology/bibo/authorList> ?autores.
+                                                ?autores <http://www.w3.org/1999/02/22-rdf-syntax-ns#member> ?person.
+                                                ?doc <http://purl.org/dc/terms/issued> ?fechaPublicacion.
+                                                FILTER(xsd:integer(?fechaPublicacion)>= ?fechaPersonaInitAux AND xsd:integer(?fechaPublicacion)<= ?fechaPersonaEndAux)
+                                            }}
+                                        }}UNION
+                                        {{
+                                            select distinct ?grupo ?doc
+                                            Where{{
+                                                ?grupo a <http://xmlns.com/foaf/0.1/Group>.
+                                                ?grupo <http://vivoweb.org/ontology/core#relates> ?members.
+                                                ?members <http://w3id.org/roh/roleOf> ?person.
+                                                ?person a <http://xmlns.com/foaf/0.1/Person>.
+                                                ?members <http://vivoweb.org/ontology/core#start> ?fechaPersonaInit.
+												MINUS{{?members <http://vivoweb.org/ontology/core#end> ?fechaPersonaEnd.}}
+												BIND(xsd:integer(?fechaPersonaInit) as ?fechaPersonaInitAux)
+                                                ?doc a <http://purl.org/ontology/bibo/Document>.
+                                                ?doc <http://w3id.org/roh/isValidated> 'true'.
+                                                ?doc <http://purl.org/ontology/bibo/authorList> ?autores.
+                                                ?autores <http://www.w3.org/1999/02/22-rdf-syntax-ns#member> ?person.
+                                                ?doc <http://purl.org/dc/terms/issued> ?fechaPublicacion.
+                                                FILTER(xsd:integer(?fechaPublicacion)>= ?fechaPersonaInitAux)
+                                            }}
+                                        }}UNION
+                                        {{
+                                            select distinct ?grupo ?doc
+                                            Where{{
+                                                ?grupo a <http://xmlns.com/foaf/0.1/Group>.
+                                                ?grupo <http://vivoweb.org/ontology/core#relates> ?members.
+                                                ?members <http://w3id.org/roh/roleOf> ?person.
+                                                ?person a <http://xmlns.com/foaf/0.1/Person>.
+                                                MINUS{{?members <http://vivoweb.org/ontology/core#start> ?fechaPersonaInit.}}
+												?members <http://vivoweb.org/ontology/core#end> ?fechaPersonaEnd.
+												BIND(xsd:integer(?fechaPersonaEnd) as ?fechaPersonaEndAux)
+                                                ?doc a <http://purl.org/ontology/bibo/Document>.
+                                                ?doc <http://w3id.org/roh/isValidated> 'true'.
+                                                ?doc <http://purl.org/ontology/bibo/authorList> ?autores.
+                                                ?autores <http://www.w3.org/1999/02/22-rdf-syntax-ns#member> ?person.
+                                                ?doc <http://purl.org/dc/terms/issued> ?fechaPublicacion.
+                                                FILTER( xsd:integer(?fechaPublicacion)<= ?fechaPersonaEndAux)
+                                            }}
                                         }}
                                     }}
                                 }}order by desc(?doc) limit {limit}";
