@@ -51,7 +51,7 @@ namespace Gnoss.Web.Login.SAML
         }
 
         [HttpGet, HttpPost]
-        public IActionResult Index(string returnUrl = null,string token=null)
+        public IActionResult Index(string returnUrl = null, string token = null)
         {
             mResourceApi.Log.Info($"0.-LoginSAMLController Intento de login returnUrl: {returnUrl} token: {token}");
             if (!string.IsNullOrEmpty(returnUrl))
@@ -60,44 +60,42 @@ namespace Gnoss.Web.Login.SAML
                 {
                     mResourceApi.Log.Info($"1.-LoginSAMLController Intento de login returnUrl: {returnUrl} token: {token}");
                     //Loguear
-                    Response.Redirect(LoguearUsuario(User, returnUrl,token));
+                    Response.Redirect(LoguearUsuario(User, returnUrl, token));
                 }
                 else
                 {
                     mResourceApi.Log.Info($"2.-LoginSAMLController Intento de login returnUrl: {returnUrl} token: {token}");
                     //Si no hay usuario redirigimos al login
-                    Response.Redirect(Url.Content(@$"~/{mConfigServiceSAML.GetUrlServiceInDomain()}Auth/Login") + "?returnUrl=" + returnUrl +"&token="+ token);
-                    
+                    Response.Redirect(Url.Content(@$"~/{mConfigServiceSAML.GetUrlServiceInDomain()}Auth/Login") + "?returnUrl=" + returnUrl + "&token=" + token);
+
                 }
             }
 
             return View();
         }
 
-        private string LoguearUsuario(ClaimsPrincipal pUser,string pReturnUrl,string pToken)
+        private string LoguearUsuario(ClaimsPrincipal pUser, string pReturnUrl, string pToken)
         {
             string email = "";
 
             mCommunityApi.Log.Info("3.-numClaims:" + pUser.Claims.ToList());
 
-           
+            string claimMail = mConfigServiceSAML.GetClaimMail();
+
+
             foreach (Claim claim in pUser.Claims.ToList())
             {
                 mCommunityApi.Log.Info("4.-CLAIM TYPE: '" + claim.Type + "' CLAIMVALUE: '" + claim.Value.Trim().ToLower() + "'");
-                mCommunityApi.Log.Info("4.-CLAIM mail: '" + mConfigServiceSAML.GetClaimMail() +"'");
-                if (claim.Type== mConfigServiceSAML.GetClaimMail())
+                if (claim.Type == claimMail)
                 {
                     email = claim.Value.Trim();
-                }            
+                }
             }
+
+            mCommunityApi.Log.Info("getuserbyemail" + mUserApi.GetUserByEmail(email).email);
 
             if (!string.IsNullOrEmpty(email))
             {
-                if (pUser.Identity != null)
-                {
-                    mCommunityApi.Log.Info("4.1-NAME: '" + pUser.Identity.Name + "'");
-                }
-
                 bool adminOtri = true;
                 bool adminGraphics = true;
                 bool admin = true;
@@ -113,24 +111,34 @@ namespace Gnoss.Web.Login.SAML
 
                 if (string.IsNullOrEmpty(person) && !adminOtri && !adminGraphics && !admin)
                 {
-                    //No existe ninguna persona aociada al correo
+                    //No existe ninguna persona aociada al correo ni es ningun tipo de administrador redirigimos avisando de que no puede loguearse
                     mCommunityApi.Log.Info("5.-Redirigir a la página avisando de que no existe ningún usuario con ese correo");
                     return pReturnUrl + "/notexistsmail?email=" + email;
                 }
                 else
                 {
                     mCommunityApi.Log.Info("6.-LOGUEAMOS");
-                    //Comprobamos si existe usuario para la persona (investigador)
-                    string user = mResourceApi.VirtuosoQuery("select ?user", @$"where{{
+                    User usuario = null;
+
+                    //Existe una persona con ese email
+                    if (!string.IsNullOrEmpty(person))
+                    {
+                        //Comprobamos si existe usuario para la persona (investigador)
+                        string user = mResourceApi.VirtuosoQuery("select ?user", @$"where{{
                                         <{person}> <http://w3id.org/roh/gnossUser> ?user.
                         }}", "person").results.bindings.FirstOrDefault()?["user"].value;
-
-                    User usuario = null;
-                    if (!string.IsNullOrEmpty(user))
+                                                
+                        if (!string.IsNullOrEmpty(user))
+                        {
+                            //Obtenemos el usuario
+                            Guid userID = new Guid(user.Substring(user.LastIndexOf("/") + 1));
+                            usuario = mUserApi.GetUserById(userID);
+                        }                        
+                    }
+                    else
                     {
-                        //Obtenemos el usuario
-                        Guid userID = new Guid(user.Substring(user.LastIndexOf("/") + 1));
-                        usuario = mUserApi.GetUserById(userID);
+                        //No existe una persona con ese email
+                        usuario = mUserApi.GetUserByEmail(email);
                     }
 
                     if (usuario == null)
@@ -138,12 +146,15 @@ namespace Gnoss.Web.Login.SAML
                         usuario = new User();
                         usuario.email = email;
                         usuario.password = CreatePassword();
-                        usuario.name = "name";
-                        usuario.last_name = "last_name";
+                        usuario.name = email;
+                        usuario.last_name = email;
                         usuario = mUserApi.CreateUser(usuario);
-                        //Modificamos persona para asignar ususario
+                        //Modificamos persona para asignar ususario                        
+                    }
 
-                        //Insertamos
+                    if (!string.IsNullOrEmpty(person))
+                    {
+                        //Insertamos el triple en la persona si existe la persona
                         Dictionary<Guid, List<TriplesToInclude>> triples = new() { { mResourceApi.GetShortGuid(person), new List<TriplesToInclude>() } };
                         TriplesToInclude t = new();
                         t.Predicate = "http://w3id.org/roh/gnossUser";
@@ -172,6 +183,7 @@ namespace Gnoss.Web.Login.SAML
                     base.LoguearUsuario(filaUsuario.UsuarioID, mPersonaID, mNombreCorto, mLogin, mIdioma);
 
                     return EnviarCookies(url.Scheme + "://" + url.Host, pReturnUrl, pToken);
+
                 }
             }
             else
