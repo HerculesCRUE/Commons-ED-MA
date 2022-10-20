@@ -153,7 +153,7 @@ namespace Harvester
 
             // Patentes.
             mResourceApi.ChangeOntoly("patent");
-            ProcesarFichero(_Config, "Invencion", dicIdentificadores, dicRutas, pRabbitConf);            
+            ProcesarFichero(_Config, "Invencion", dicIdentificadores, dicRutas, pRabbitConf);
         }
 
         /// <summary>
@@ -199,10 +199,9 @@ namespace Harvester
             int i = 0;
             foreach (string fichero in Directory.EnumerateFiles(directorioPendientes))
             {
-                i++;
                 pDicRutas[pSet][directorioPendientes] += fichero.Substring(fichero.LastIndexOf("\\"));
                 List<string> idsACargar = File.ReadAllLines(fichero).Distinct().ToList();
-                
+
                 if (File.Exists(pDicRutas[pSet][directorioPendientes]))
                 {
                     List<string> listaIdsCargados = File.ReadAllLines(pDicRutas[pSet][directorioPendientes]).Distinct().ToList();
@@ -215,16 +214,27 @@ namespace Harvester
                 }
 
                 idsACargar.Sort();
-
-                Console.WriteLine($"Procesando fichero de {pSet} {i}/{idsACargar.Count}");
+                               
                 foreach (string id in idsACargar)
                 {
+                    i++;
+                    Console.WriteLine($"Procesando fichero de {pSet} {i}/{idsACargar.Count}");
+
                     switch (pSet)
                     {
                         #region - Organizacion
                         case "Organizacion":
+                            Empresa empresa = null;
+                            try
+                            {
+                                empresa = Empresa.GetOrganizacionSGI(harvesterServices, _Config, id, pDicRutas);
+                            }
+                            catch
+                            {
+                                // ID no válido.
+                                break;
+                            }
 
-                            Empresa empresa = Empresa.GetOrganizacionSGI(harvesterServices, _Config, id, pDicRutas);
                             if (empresa != null && !string.IsNullOrEmpty(empresa.Nombre))
                             {
                                 string idGnossOrg = empresa.Cargar(harvesterServices, pConfig, mResourceApi, "organization", pDicIdentificadores, pDicRutas, pRabbitConf);
@@ -237,8 +247,16 @@ namespace Harvester
 
                         #region - Persona
                         case "Persona":
-
-                            Persona persona = Persona.GetPersonaSGI(harvesterServices, _Config, id, pDicRutas);                            
+                            Persona persona = null;
+                            try
+                            {
+                                persona = Persona.GetPersonaSGI(harvesterServices, _Config, id, pDicRutas);
+                            }
+                            catch
+                            {
+                                // ID no válido.
+                                break;
+                            }
                             if (persona != null && !string.IsNullOrEmpty(persona.Nombre))
                             {
                                 string idGnossPersona = persona.Cargar(harvesterServices, pConfig, mResourceApi, "person", pDicIdentificadores, pDicRutas, pRabbitConf, true);
@@ -246,13 +264,21 @@ namespace Harvester
                             }
                             File.AppendAllText(pDicRutas[pSet][directorioPendientes], id + Environment.NewLine);
                             break;
-                                                    
+
                         #endregion
 
                         #region - Proyecto
                         case "Proyecto":
-
-                            Proyecto proyectoSGI = Proyecto.GetProyectoSGI(harvesterServices, _Config, id, pDicRutas);
+                            Proyecto proyectoSGI = null;
+                            try
+                            {
+                                proyectoSGI = Proyecto.GetProyectoSGI(harvesterServices, _Config, id, pDicRutas);
+                            }
+                            catch
+                            {
+                                // ID no válido.
+                                break;
+                            }
                             if (proyectoSGI != null && !string.IsNullOrEmpty(proyectoSGI.Titulo))
                             {
                                 string idGnossProy = proyectoSGI.Cargar(harvesterServices, pConfig, mResourceApi, "project", pDicIdentificadores, pDicRutas, pRabbitConf);
@@ -260,7 +286,6 @@ namespace Harvester
                             }
                             File.AppendAllText(pDicRutas[pSet][directorioPendientes], id + Environment.NewLine);
                             break;
-                        
                         #endregion
 
                         #region - PRC
@@ -334,21 +359,36 @@ namespace Harvester
 
                         #region - Autorizacion proyecto
                         case "AutorizacionProyecto":
-
-                            Autorizacion autorizacionSGI = Autorizacion.GetAutorizacionSGI(harvesterServices, _Config, id, pDicRutas);
+                            Autorizacion autorizacionSGI = null;
+                            try
+                            {
+                                autorizacionSGI = Autorizacion.GetAutorizacionSGI(harvesterServices, _Config, id, pDicRutas);
+                            }
+                            catch
+                            {
+                                // ID no válido.
+                                break;
+                            }
                             if (autorizacionSGI != null && !string.IsNullOrEmpty(autorizacionSGI.tituloProyecto) && !string.IsNullOrEmpty(autorizacionSGI.solicitanteRef) && !string.IsNullOrEmpty(autorizacionSGI.entidadRef))
                             {
                                 string idGnossAutorizacion = autorizacionSGI.Cargar(harvesterServices, pConfig, mResourceApi, "projectauthorization", pDicIdentificadores, pDicRutas, pRabbitConf);
                                 pDicIdentificadores["projectauthorization"].Add(idGnossAutorizacion);
                             }
                             break;
-                            
                         #endregion
 
                         #region - Invencion
                         case "Invencion":
-
-                            Invencion invencion = Invencion.GetInvencionSGI(harvesterServices, _Config, id, pDicRutas);
+                            Invencion invencion = null;
+                            try
+                            {
+                                invencion = Invencion.GetInvencionSGI(harvesterServices, _Config, id, pDicRutas);
+                            }
+                            catch
+                            {
+                                // ID no válido.
+                                break;
+                            }
                             if (invencion != null && !string.IsNullOrEmpty(invencion.titulo))
                             {
                                 string idGnossInv = invencion.Cargar(harvesterServices, pConfig, mResourceApi, "patent", pDicIdentificadores, pDicRutas, pRabbitConf);
@@ -356,13 +396,20 @@ namespace Harvester
                             }
                             File.AppendAllText(pDicRutas[pSet][directorioPendientes], id + Environment.NewLine);
                             break;
-
                         #endregion
 
                         #region - Grupo
                         case "Grupo":
-
-                            Grupo grupo = Grupo.GetGrupoSGI(harvesterServices, _Config, id, pDicRutas);
+                            Grupo grupo = null;
+                            try
+                            {
+                                grupo = Grupo.GetGrupoSGI(harvesterServices, _Config, id, pDicRutas);
+                            }
+                            catch
+                            {
+                                // ID no válido.
+                                break;
+                            }
                             if (grupo != null && !string.IsNullOrEmpty(grupo.nombre))
                             {
                                 string idGnossGrupo = grupo.Cargar(harvesterServices, pConfig, mResourceApi, "group", pDicIdentificadores, pDicRutas, pRabbitConf);
@@ -370,8 +417,7 @@ namespace Harvester
                             }
                             File.AppendAllText(pDicRutas[pSet][directorioPendientes], id + Environment.NewLine);
                             break;
-
-                       #endregion
+                            #endregion
                     }
                 }
 
@@ -417,7 +463,7 @@ namespace Harvester
                 yield return pItems.GetRange(i, Math.Min(pSize, pItems.Count - i));
             }
         }
-        
+
         /// <summary>
         /// Devuelve un diccionario con los valores de identificador del documento, si esta validado y estado de validacion en PRC
         /// </summary>

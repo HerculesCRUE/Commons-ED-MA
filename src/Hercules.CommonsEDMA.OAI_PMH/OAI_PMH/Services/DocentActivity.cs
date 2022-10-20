@@ -11,8 +11,9 @@ namespace OAI_PMH.Services
 {
     public class DocentActivity
     {
-        public static Dictionary<string, DateTime> GetModifiedTesis(string from, ConfigService pConfig, string accessToken)
+        public static Dictionary<string, DateTime> GetModifiedTesis(string from, ConfigService pConfig)
         {
+            string accessToken = Token.CheckToken(pConfig);
             Dictionary<string, DateTime> idDictionary = new();
             List<string> idList = new();
             RestClient client = new(pConfig.GetConfigSGI() + "/api/sgp/actividad-docente/modificados-ids?q=fechaModificacion=ge=\"" + from + "\"" + ";tipoActividad=\"030.040.000.000\"");
@@ -51,8 +52,9 @@ namespace OAI_PMH.Services
                 return null;
             }
         }
-        public static Dictionary<string, DateTime> GetModifiedAcademicFormationProvided(string from, ConfigService pConfig, string accessToken)
+        public static Dictionary<string, DateTime> GetModifiedAcademicFormationProvided(string from, ConfigService pConfig)
         {
+            string accessToken = Token.CheckToken(pConfig);
             Dictionary<string, DateTime> idDictionary = new();
             List<string> idList = new();
             RestClient client = new(pConfig.GetConfigSGI() + "/api/sgp/actividad-docente/modificados-ids?q=fechaModificacion=ge=\"" + from + "\"" + ";tipoActividad=\"030.010.000.000\"");
@@ -91,8 +93,9 @@ namespace OAI_PMH.Services
                 return null;
             }
         }
-        public static Dictionary<string, DateTime> GetModifiedSeminars(string from, ConfigService pConfig, string accessToken)
+        public static Dictionary<string, DateTime> GetModifiedSeminars(string from, ConfigService pConfig)
         {
+            string accessToken = Token.CheckToken(pConfig);
             Dictionary<string, DateTime> idDictionary = new();
             List<string> idList = new();
             RestClient client = new(pConfig.GetConfigSGI() + "/api/sgp/actividad-docente/modificados-ids?q=fechaModificacion=ge=\"" + from + "\"" + ";tipoActividad=\"030.060.000.000\"");

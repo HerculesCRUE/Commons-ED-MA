@@ -63,7 +63,7 @@ namespace OAI_PMH.Services
                 }
             }
 
-            dicFormacionAcademica = AcademicFormation.GetModifiedDoctorados(from, pConfig, accessToken);
+            dicFormacionAcademica = AcademicFormation.GetModifiedDoctorados(from, pConfig);
             foreach (KeyValuePair<string, DateTime> item in dicFormacionAcademica)
             {
                 string idPersona = "Persona_" + item.Key.Split("_")[1];
@@ -80,7 +80,7 @@ namespace OAI_PMH.Services
                 }
             }
 
-            dicFormacionAcademica = AcademicFormation.GetModifiedPosgrado(from, pConfig, accessToken);
+            dicFormacionAcademica = AcademicFormation.GetModifiedPosgrado(from, pConfig);
             foreach (KeyValuePair<string, DateTime> item in dicFormacionAcademica)
             {
                 string idPersona = "Persona_" + item.Key.Split("_")[1];
@@ -97,7 +97,7 @@ namespace OAI_PMH.Services
                 }
             }
 
-            dicFormacionAcademica = AcademicFormation.GetModifiedEspecializada(from, pConfig, accessToken);
+            dicFormacionAcademica = AcademicFormation.GetModifiedEspecializada(from, pConfig);
             foreach (KeyValuePair<string, DateTime> item in dicFormacionAcademica)
             {
                 string idPersona = "Persona_" + item.Key.Split("_")[1];
@@ -116,7 +116,7 @@ namespace OAI_PMH.Services
             #endregion
 
             #region --- Actividad Docente
-            Dictionary<string, DateTime> dicActividadDocente = DocentActivity.GetModifiedTesis(from, pConfig, accessToken);
+            Dictionary<string, DateTime> dicActividadDocente = DocentActivity.GetModifiedTesis(from, pConfig);
             foreach (KeyValuePair<string, DateTime> item in dicActividadDocente)
             {
                 string idPersona = "Persona_" + item.Key.Split("_")[1];
@@ -133,7 +133,7 @@ namespace OAI_PMH.Services
                 }
             }
 
-            dicActividadDocente = DocentActivity.GetModifiedAcademicFormationProvided(from, pConfig, accessToken);
+            dicActividadDocente = DocentActivity.GetModifiedAcademicFormationProvided(from, pConfig);
             foreach (KeyValuePair<string, DateTime> item in dicActividadDocente)
             {
                 string idPersona = "Persona_" + item.Key.Split("_")[1];
@@ -150,7 +150,7 @@ namespace OAI_PMH.Services
                 }
             }
 
-            dicActividadDocente = DocentActivity.GetModifiedSeminars(from, pConfig, accessToken);
+            dicActividadDocente = DocentActivity.GetModifiedSeminars(from, pConfig);
             foreach (KeyValuePair<string, DateTime> item in dicActividadDocente)
             {
                 string idPersona = "Persona_" + item.Key.Split("_")[1];
