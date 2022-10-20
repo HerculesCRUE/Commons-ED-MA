@@ -47,11 +47,11 @@ namespace Gnoss.Web.Login.Open
                 IDictionary environmentVariables = Environment.GetEnvironmentVariables();
                 if (environmentVariables.Contains("claimMail"))
                 {
-                    claimMail = environmentVariables["claimMail"] as string;
+                    connectionString = environmentVariables["claimMail"] as string;
                 }
                 else
                 {
-                    claimMail = _configuration["claimMail"];
+                    connectionString = _configuration["claimMail"];
                 }
 
                 claimMail = connectionString;
