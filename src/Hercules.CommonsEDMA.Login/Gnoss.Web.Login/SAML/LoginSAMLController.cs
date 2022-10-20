@@ -80,11 +80,12 @@ namespace Gnoss.Web.Login.SAML
 
             mCommunityApi.Log.Info("3.-numClaims:" + pUser.Claims.ToList());
 
-            
+           
             foreach (Claim claim in pUser.Claims.ToList())
             {
                 mCommunityApi.Log.Info("4.-CLAIM TYPE: '" + claim.Type + "' CLAIMVALUE: '" + claim.Value.Trim().ToLower() + "'");
-                if(claim.Type== mConfigServiceSAML.GetClaimMail())
+                mCommunityApi.Log.Info("4.-CLAIM mail: '" + mConfigServiceSAML.GetClaimMail() +"'");
+                if (claim.Type== mConfigServiceSAML.GetClaimMail())
                 {
                     email = claim.Value.Trim();
                 }            
