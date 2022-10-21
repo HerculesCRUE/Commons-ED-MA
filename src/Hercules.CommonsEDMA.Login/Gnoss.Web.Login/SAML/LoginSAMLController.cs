@@ -149,13 +149,13 @@ namespace Gnoss.Web.Login.SAML
             if (!string.IsNullOrEmpty(email))
             {
                 //comprobamos si existe la persona del email (primero investigador principal, después sincronizado, después resto)
-                SparqlObject datosPersona = mResourceApi.VirtuosoQuery("select ?person ?active ?crisIdentifier", @$"where{{
+                SparqlObject datosPersona = mResourceApi.VirtuosoQuery("select ?person ?active ?crisIdentifier ?firstName ?lastName", @$"where{{                                        
+                                        ?person a <http://xmlns.com/foaf/0.1/Person>.
+                                        ?person <https://www.w3.org/2006/vcard/ns#email> '{email}'.
                                         OPTIONAL{{?person <http://w3id.org/roh/isActive> ?active.}}
                                         OPTIONAL{{?person <http://w3id.org/roh/crisIdentifier> ?crisIdentifier.}}
                                         OPTIONAL{{?person <http://xmlns.com/foaf/0.1/firstName> ?firstName}}
                                         OPTIONAL{{?person <http://xmlns.com/foaf/0.1/lastName> ?lastName}}
-                                        ?person a <http://xmlns.com/foaf/0.1/Person>.
-                                        ?person <https://www.w3.org/2006/vcard/ns#email> '{email}'.
                         }}order by desc(?active) desc(?crisIdentifier)", "person");
 
                 string person = datosPersona.results.bindings.FirstOrDefault()?["person"].value;
