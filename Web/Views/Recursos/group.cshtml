@@ -976,12 +976,16 @@
             $('#proyectos-tab').unbind().click(function (e) {
                 e.preventDefault();
                 that.tabActive = "proyectos";
-                buscadorPersonalizado.init("@Html.Translate("PROYECTOS")", "#contenedorBuscadorProyectos", "searchProyectosPorGrupo=http://gnoss/@pGroup.GNOSSID.Split('_')[1].ToUpper()", null, "rdf:type=project", "@Comunidad.Url", "@Comunidad.Key.ToString()");
+                buscadorPersonalizado.init("@Html.Translate("PROYECTOS")", "#contenedorBuscadorProyectos", "searchProyectosPorGrupo=http://gnoss/@pGroup.GNOSSID.Split('_')[1].ToUpper()", null, "rdf:type=project", "@Comunidad.Url", "@Comunidad.Key.ToString()", null, function() {
+                    filtrarMovil.init()
+                });
             });
             $('#publicaciones-tab').unbind().click(function (e) {
                 e.preventDefault();
                 that.tabActive = "publicaciones";
-                buscadorPersonalizado.init("@Html.Translate("PUBLICACIONES")", "#contenedorBuscadorPublicaciones", "roh:isProducedBy=http://gnoss/@pGroup.GNOSSID.Split('_')[1].ToUpper()", null, "rdf:type=document", "@Comunidad.Url", "@Comunidad.Key.ToString()");
+                buscadorPersonalizado.init("@Html.Translate("PUBLICACIONES")", "#contenedorBuscadorPublicaciones", "roh:isProducedBy=http://gnoss/@pGroup.GNOSSID.Split('_')[1].ToUpper()", null, "rdf:type=document", "@Comunidad.Url", "@Comunidad.Key.ToString()", null, function() {
+                    filtrarMovil.init()
+                });
             });
             $('#temas-investigacion-tab').unbind().click(function (e) {
                 e.preventDefault();
@@ -992,12 +996,16 @@
             $('#miembros-tab').unbind().click(function (e) {
                 e.preventDefault();
                 that.tabActive = "miembros";
-                buscadorPersonalizado.init("@Html.Translate("MIEMBROS")", "#contenedorBuscadorMiembros", "searchMiembrosGrupo=http://gnoss/@pGroup.GNOSSID.Split('_')[1].ToUpper()", null, "rdf:type=person", "@Comunidad.Url", "@Comunidad.Key.ToString()");
+                buscadorPersonalizado.init("@Html.Translate("MIEMBROS")", "#contenedorBuscadorMiembros", "searchMiembrosGrupo=http://gnoss/@pGroup.GNOSSID.Split('_')[1].ToUpper()", null, "rdf:type=person", "@Comunidad.Url", "@Comunidad.Key.ToString()", null, function() {
+                    filtrarMovil.init()
+                });
             });
             $('#colaboradores-tab').unbind().click(function (e) {
                 e.preventDefault();
                 that.tabActive = "colaboradores";
-                buscadorPersonalizado.init("@Html.Translate("COLABORADORES")", "#contenedorBuscadorMiembrosFuera", "searchColaboradoresGruposExternos=http://gnoss/@pGroup.GNOSSID.Split('_')[1].ToUpper()", null, "rdf:type=person", "@Comunidad.Url", "@Comunidad.Key.ToString()");
+                buscadorPersonalizado.init("@Html.Translate("COLABORADORES")", "#contenedorBuscadorMiembrosFuera", "searchColaboradoresGruposExternos=http://gnoss/@pGroup.GNOSSID.Split('_')[1].ToUpper()", null, "rdf:type=person", "@Comunidad.Url", "@Comunidad.Key.ToString()", null, function() {
+                    filtrarMovil.init()
+                });
             });
             return;
         }

@@ -872,12 +872,16 @@
             $('#participantes-tab').unbind().click(function (e) {
                 e.preventDefault();
                 that.tabActive = "participantes";
-                buscadorPersonalizado.init("@Html.Translate("INVESTIGADORES")", "#contenedorBuscadorParticipantes", "searchPersonasRelacionadasConProyectoPublic=http://gnoss/@pProject.GNOSSID.Split('_')[1].ToUpper()", null, "PestanyaActualID=@Html.Translate("ID_BUSQUEDA_PERSONAS")|rdf:type=person", "@Comunidad.Url", "@Comunidad.Key.ToString()");
+                buscadorPersonalizado.init("@Html.Translate("INVESTIGADORES")", "#contenedorBuscadorParticipantes", "searchPersonasRelacionadasConProyectoPublic=http://gnoss/@pProject.GNOSSID.Split('_')[1].ToUpper()", null, "PestanyaActualID=@Html.Translate("ID_BUSQUEDA_PERSONAS")|rdf:type=person", "@Comunidad.Url", "@Comunidad.Key.ToString()", null, function() {
+                    filtrarMovil.init()
+                });
             });
             $('#publicaciones-tab').unbind().click(function (e) {
                 e.preventDefault();
                 that.tabActive = "publicaciones";
-                buscadorPersonalizado.init("@Html.Translate("PUBLICACIONES")", "#contenedorBuscadorPublicaciones", "roh:project=http://gnoss/@pProject.GNOSSID.Split('_')[1].ToUpper()", "dct:issued", "PestanyaActualID=@Html.Translate("ID_BUSQUEDA_DOCUMENTOS")|rdf:type=document", "@Comunidad.Url", "@Comunidad.Key.ToString()");
+                buscadorPersonalizado.init("@Html.Translate("PUBLICACIONES")", "#contenedorBuscadorPublicaciones", "roh:project=http://gnoss/@pProject.GNOSSID.Split('_')[1].ToUpper()", "dct:issued", "PestanyaActualID=@Html.Translate("ID_BUSQUEDA_DOCUMENTOS")|rdf:type=document", "@Comunidad.Url", "@Comunidad.Key.ToString()", null, function() {
+                    filtrarMovil.init()
+                });
             });
             $('#temas-investigacion-tab').unbind().click(function (e) {
                 e.preventDefault();
@@ -889,7 +893,9 @@
             $('#colaboradores-tab').unbind().click(function (e) {
                 e.preventDefault();
                 that.tabActive = "colaboradores";
-                buscadorPersonalizado.init("@Html.Translate("INVESTIGADORES")", "#contenedorBuscadorColaboradores", "searchPersonasColaboradoresConProyecto=@pProject.GNOSSID.Split('_')[1].ToUpper()", null, "PestanyaActualID=@Html.Translate("ID_BUSQUEDA_PERSONAS_COLABORADORES")|rdf:type=person", "@Comunidad.Url", "@Comunidad.Key.ToString()");
+                buscadorPersonalizado.init("@Html.Translate("INVESTIGADORES")", "#contenedorBuscadorColaboradores", "searchPersonasColaboradoresConProyecto=@pProject.GNOSSID.Split('_')[1].ToUpper()", null, "PestanyaActualID=@Html.Translate("ID_BUSQUEDA_PERSONAS_COLABORADORES")|rdf:type=person", "@Comunidad.Url", "@Comunidad.Key.ToString()", null, function() {
+                    filtrarMovil.init()
+                });
             });
             return;
         }

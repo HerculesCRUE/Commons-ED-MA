@@ -1531,7 +1531,9 @@ var comportamientoPopupCluster = {
 		buscadorPersonalizado.search='searchClusterMixto';
 		
 		// Iniciar el listado de usuarios
-		buscadorPersonalizado.init($('#INVESTIGADORES').val(), "#clusterListUsers", "searchClusterMixto=" + paramsCl, null, "profiles=" + JSON.stringify(profiles) + "|viewmode=cluster|rdf:type=person", $('inpt_baseUrlBusqueda').val(), $('#inpt_proyID').val());
+		buscadorPersonalizado.init($('#INVESTIGADORES').val(), "#clusterListUsers", "searchClusterMixto=" + paramsCl, null, "profiles=" + JSON.stringify(profiles) + "|viewmode=cluster|rdf:type=person", $('inpt_baseUrlBusqueda').val(), $('#inpt_proyID').val(), null, function() {
+			filtrarMovil.init()
+		});
 		
 		// Agregamos los ordenes
 		$('.searcherResults .h1-container').after(

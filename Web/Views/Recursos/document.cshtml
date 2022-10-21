@@ -1130,6 +1130,7 @@
             });
 
         }
+
         function borrarAnotacion(idCurrentAnnotation) {
             anotaciones.deleteAnnotation(idCurrentAnnotation).then((data) => {
                 anotaciones.loadInRo().then((data) => {
@@ -1809,132 +1810,6 @@
     }
 
 
-    // Datos gráfica citas.
-    //function CargarGraficaCitas(pIdDocumento, parametros) {
-    //    var url = url_servicio_externo+"Hercules/DatosGraficaCitas"
-    //    if (depuracion) {
-    //        url = localUrlBase + "Hercules/DatosGraficaCitas"
-    //    }
-    //    var arg = {};
-    //    arg.pIdDocumento = pIdDocumento;
-    //    arg.pParametros = parametros;
-    //    $('#graficaBuscadorCitas').empty();
-    //    $.get(url, arg, function (data) {
-    //        $('#graficaBuscadorCitas').empty();
-
-    //        var cy = window.cy = cytoscape({
-    //            // Contenedor
-    //            container: document.getElementById('graficaBuscadorCitas'),
-    //            // Layout
-    //            layout: {
-    //                name: 'cose',
-    //                idealEdgeLength: 100,
-    //                nodeOverlap: 20,
-    //                refresh: 20,
-    //                padding: 30,
-    //                randomize: false,
-    //                componentSpacing: 100,
-    //                nodeRepulsion: 400000,
-    //                edgeElasticity: 100,
-    //                nestingFactor: 5,
-    //                gravity: 80,
-    //                numIter: 1000,
-    //                initialTemp: 200,
-    //                coolingFactor: 0.95,
-    //                minTemp: 1.0
-
-    //            }, pan: { x: 350, y: 50 },
-    //            // Estilos
-    //            style: [{
-    //                "selector": "node",
-    //                "style": {
-
-    //                    "width": "mapData(score, 0, 25, 30, 70)",
-    //                    "height": "mapData(score, 0, 25, 30, 70)",
-    //                    "content": "data(name)",
-    //                    "font-size": "12px",
-    //                    "font-family": 'Roboto',
-    //                    "font-color": "#999999",
-    //                    "background-color": "#c2c2c2",
-
-    //                    "text-outline-width": "0px",
-
-    //                    "overlay-padding": "6px",
-    //                    "z-index": "10"
-    //                }
-    //            }, {
-    //                "selector": "edge",
-    //                "style": {
-    //                    "curve-style": "haystack",
-    //                    "haystack-radius": "0.5",
-    //                    "opacity": "0.4",
-    //                    "line-color": "#E1E1E1",
-    //                    "width": "mapData(weight, 0, 10, 0, 10)",
-    //                    "overlay-padding": "1px",
-    //                    "font-family": 'Arial Black',
-    //                    "font-color": 'black'
-    //                }
-    //            }],
-    //            // Datos
-    //            elements: data
-    //        });
-    //        cy.zoomingEnabled(false);
-
-    //        var array = []
-    //        var nodos = cy.nodes()
-
-    //        //Quita el nombre de la publicación.
-    //        array.push(nodos[0]._private.data.name);
-    //        cy.nodes()[0]._private.data.name = "";
-
-    //        cy.nodes()[0].style({
-    //            'border-width': '2px',
-    //            'border-color': 'black',
-    //            'shape': 'circle'
-    //        });
-
-    //        var f = cy.nodes().length
-
-    //        for (i = 1; i < cy.nodes().length; i++) { //starts loop
-    //            array.push(nodos[i]._private.data.name);
-    //            //cy.nodes()[i]._private.data.name="";
-    //            cy.nodes()[i].style({
-    //                'background-color': 'white',
-    //                'background-image': 'https://cdn.iconscout.com/icon/free/png-256/user-1648810-1401302.png',
-    //                'background-fit': 'cover',
-    //                'border-width': '2px',
-    //                'border-color': 'rgb(4,184,209)',
-    //                'shape': 'circle'
-    //            })
-    //        };
-
-    //        cy.on('mouseover', 'edges', function (event) {
-    //            $('#numRelaciones').text('(' + event.target.id().split("~")[2] + ')');
-    //        });
-
-    //        cy.on('click', 'node', function (e) {
-    //            e = e.target;
-    //            var indice = cy.nodes().indexOf(e)
-    //            if (e._private.data.name === "") {
-    //                e._private.data.name = array[indice]
-    //                //nodo proyect.
-    //                if (indice === 0) {
-    //                    e.style('border-color', 'rgb(12,121,212)')
-    //                }
-    //                else {
-    //                    e.style('border-color', 'rgb(4,184,209)')
-    //                }
-    //            }
-    //            else {
-    //                e._private.data.name = ""
-    //                if (indice == 0) e.style('border-color', 'black');
-    //                else e.style('border-color', 'grey');
-    //            }
-    //        })
-    //    });
-    //}
-
-
     // Comportamiento página proyecto
     var similitaryDocs=null;
     var comportamientoPaginaDocumento = {
@@ -1965,6 +1840,7 @@
 
                     buscadorPersonalizado.init("@Html.Translate("RELACIONADOS")", "#contenedorBuscadorRelacionados", filterSearch, null, "rdf:type=document", "@Comunidad.Url", "@Comunidad.Key.ToString()",null, function() {
                         $('#panNumResultados').hide();
+                        filtrarMovil.init()
                     });
 
                 });
@@ -1980,7 +1856,9 @@
                 buscadorPersonalizado.orders=null;
                 // Realmente no funciona correctamente, he tenido que crear un botón para cargar más.
                 // Inicia
-                buscadorPersonalizado.init("@Html.Translate("LISTADO_RESEARCHOBJECTS_DOCUMENTOS_VINCULADOS")", "#contenedorBuscadorResearchObjectsLinked", "linkedROs=http://gnoss/@pDocument.GNOSSID.Split('_')[1].ToUpper()", "dct:issued", "rdf:type=researchobject|rdf:type=document", "@Comunidad.Url", "@Comunidad.Key.ToString()");
+                buscadorPersonalizado.init("@Html.Translate("LISTADO_RESEARCHOBJECTS_DOCUMENTOS_VINCULADOS")", "#contenedorBuscadorResearchObjectsLinked", "linkedROs=http://gnoss/@pDocument.GNOSSID.Split('_')[1].ToUpper()", "dct:issued", "rdf:type=researchobject|rdf:type=document", "@Comunidad.Url", "@Comunidad.Key.ToString()", null, function() {
+                    filtrarMovil.init()
+                });
 
 
             });
