@@ -509,8 +509,36 @@ function aniadirComportamientoCompararItems(){
 }
 function getItemCV(pIdBBDD, pIdSection, pLang){
 	$.get(url_servicio_editorcv + 'GetItemMiniImport?pIdSection=' + pIdSection + "&pIdBBDD=" + pIdBBDD + "&pLang=" + pLang, null, function (data) {
-		var htmlItem = edicionCV.printHtmlListItem(pIdBBDD, data);
-		return htmlItem;
+		let openAccess = "";
+		if (data.isopenaccess) {
+			openAccess = "open-access";
+		}
+		var htmlListItem = `<article class="resource success ${openAccess}" >
+									<div class="wrap">
+										<div class="middle-wrap">
+											${this.printHtmlListItemOrders(data)}
+											<div class="title-wrap">
+											</div>
+											<div class="title-wrap">
+												<h2 class="resource-title">
+													<a href="#" data-id="${id}" internal-id="${data.identifier}">${data.title}</a>
+												</h2>
+												${!onlyPublic ? this.printHtmlListItemValidacion(data) : ''}
+												${!onlyPublic ? this.printHtmlListItemEditable(data) : ''}
+												${!onlyPublic ? this.printHtmlListItemVisibilidad(data) : ''}
+												${!onlyPublic ? this.printHtmlListItemIdiomas(data) : ''}
+												${!onlyPublic ? this.printHtmlListItemAcciones(data, id) : ''}
+												<span class="material-icons arrow">keyboard_arrow_down</span>
+											</div>
+											<div class="content-wrap">
+												<div class="description-wrap">
+												${this.printHtmlListItemPropiedades(data)}
+												</div>
+											</div>
+										</div>
+									</div>
+								</article>`;
+		return htmlListItem;
 	});
 }
 function aniadirComportamientoWrapperSeccion(){	
