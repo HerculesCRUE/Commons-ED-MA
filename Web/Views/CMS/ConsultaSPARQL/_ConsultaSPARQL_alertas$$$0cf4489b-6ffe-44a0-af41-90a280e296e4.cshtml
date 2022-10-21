@@ -182,6 +182,14 @@
                 return GetNotification(notification, Html.Translate(notification.mensaje));
             }
         }
+		else if(notification.tipoNotificacion == "notifySexenios")
+		{
+			return GetNotification(notification, Html.Translate("NOTIFICACION_SEXENIOS_NOTIFY") + " <a target=blank class=\"a-alertas\" href=" + notification.mensaje + ">" + notification.mensaje + "</a>");
+		}
+		else if(notification.tipoNotificacion == "notifyAcreditaciones")
+		{
+			return GetNotification(notification, Html.Translate("NOTIFICACION_ACREDITACIONES_NOTIFY") + " <a target=blank class=\"a-alertas\" href=" + notification.mensaje + ">" + notification.mensaje + "</a>");
+		}
         else
         {
             if (notification.entidad != null && notification.entidad.Split('_').Length > 2 && notification.cv.Split('_').Length > 2)

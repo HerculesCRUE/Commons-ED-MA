@@ -10,6 +10,7 @@ namespace Gnoss.Web.Login.Open
     public class ConfigServiceLogin
     {
         private string urlServiceInDomain { get; set; }
+        private string claimMail { get; set; }
 
         private IConfiguration _configuration { get; set; }
 
@@ -36,6 +37,26 @@ namespace Gnoss.Web.Login.Open
                 urlServiceInDomain = connectionString;
             }
             return urlServiceInDomain;
+        }
+
+        public string GetClaimMail()
+        {
+            if (string.IsNullOrEmpty(claimMail))
+            {
+                string connectionString = string.Empty;
+                IDictionary environmentVariables = Environment.GetEnvironmentVariables();
+                if (environmentVariables.Contains("claimMail"))
+                {
+                    connectionString = environmentVariables["claimMail"] as string;
+                }
+                else
+                {
+                    connectionString = _configuration["claimMail"];
+                }
+
+                claimMail = connectionString;
+            }
+            return claimMail;
         }
     }
 }

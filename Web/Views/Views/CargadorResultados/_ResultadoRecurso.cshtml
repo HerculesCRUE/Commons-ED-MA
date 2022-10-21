@@ -1050,11 +1050,11 @@
 
                                             foreach (Dictionary<string, string> row in item.Rows)
                                             {
-                                                if (row.ContainsKey(propiedadFechaStart))
+                                                if (row.ContainsKey(propiedadFechaStart) && !String.IsNullOrEmpty(row[propiedadFechaStart]))
                                                 {
                                                     fechaStart = @row[propiedadFechaStart].Substring(0, 4);
                                                 }
-                                                if (row.ContainsKey(propiedadFechaEnd))
+                                                if (row.ContainsKey(propiedadFechaEnd) && !String.IsNullOrEmpty(row[propiedadFechaEnd]))
                                                 {
                                                     fechaEnd = @row[propiedadFechaEnd].Substring(0, 4);
                                                 }
@@ -1267,7 +1267,7 @@
 												}
 											}
 										}
-									     idQuery = "HIndex";
+									    idQuery = "HIndex";
                                         string hIndex ="";
 										if (item.Id == idQuery && item.Rows != null && item.Rows.Count > 0)
 										{
@@ -1280,7 +1280,7 @@
 												}
 											}
 										}
-                                         idQuery = "HIndex";
+                                        idQuery = "HIndex";
                                         string source ="";
 										if (item.Id == idQuery && item.Rows != null && item.Rows.Count > 0)
 										{
@@ -1290,7 +1290,7 @@
 												if (row.ContainsKey(propiedad))
 												{
                                                     source=row[propiedad];
-                                                     <input type="hidden" class="source" data-source="@source" data-value="@hIndex.Roh_hIndex"/>
+                                                     <input type="hidden" class="source" data-source="@source" data-value="@hIndex"/>
 												}
 											}
 										}

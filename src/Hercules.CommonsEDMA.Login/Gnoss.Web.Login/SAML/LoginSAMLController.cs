@@ -51,7 +51,7 @@ namespace Gnoss.Web.Login.SAML
         }
 
         [HttpGet, HttpPost]
-        public IActionResult Index(string returnUrl = null,string token=null)
+        public IActionResult Index(string returnUrl = null, string token = null)
         {
             mResourceApi.Log.Info($"0.-LoginSAMLController Intento de login returnUrl: {returnUrl} token: {token}");
             if (!string.IsNullOrEmpty(returnUrl))
@@ -60,106 +60,137 @@ namespace Gnoss.Web.Login.SAML
                 {
                     mResourceApi.Log.Info($"1.-LoginSAMLController Intento de login returnUrl: {returnUrl} token: {token}");
                     //Loguear
-                    Response.Redirect(LoguearUsuario(User, returnUrl,token));
+                    Response.Redirect(LoguearUsuario(User, returnUrl, token));
                 }
                 else
                 {
                     mResourceApi.Log.Info($"2.-LoginSAMLController Intento de login returnUrl: {returnUrl} token: {token}");
                     //Si no hay usuario redirigimos al login
-                    Response.Redirect(Url.Content(@$"~/{mConfigServiceSAML.GetUrlServiceInDomain()}Auth/Login") + "?returnUrl=" + returnUrl +"&token="+ token);
-                    
+                    Response.Redirect(Url.Content(@$"~/{mConfigServiceSAML.GetUrlServiceInDomain()}Auth/Login") + "?returnUrl=" + returnUrl + "&token=" + token);
+
                 }
             }
 
             return View();
         }
 
-        private string LoguearUsuario(ClaimsPrincipal pUser,string pReturnUrl,string pToken)
+        private string LoguearUsuario(ClaimsPrincipal pUser, string pReturnUrl, string pToken)
         {
             string email = "";
 
             mCommunityApi.Log.Info("3.-numClaims:" + pUser.Claims.ToList());
 
-            //mail http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier
+            string claimMail = mConfigServiceSAML.GetClaimMail();
+
+
             foreach (Claim claim in pUser.Claims.ToList())
             {
                 mCommunityApi.Log.Info("4.-CLAIM TYPE: '" + claim.Type + "' CLAIMVALUE: '" + claim.Value.Trim().ToLower() + "'");
-                if(claim.Type== "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier")
+                if (claim.Type == claimMail)
                 {
                     email = claim.Value.Trim();
-                }            
+                }
             }
 
-            //comprobamos si existe la persona del email
-            string person=mResourceApi.VirtuosoQuery("select ?person", @$"where{{
+            mCommunityApi.Log.Info("getuserbyemail" + mUserApi.GetUserByEmail(email).email);
+
+            if (!string.IsNullOrEmpty(email))
+            {
+                bool adminOtri = true;
+                bool adminGraphics = true;
+                bool admin = true;
+
+                //comprobamos si existe la persona del email
+                string person = mResourceApi.VirtuosoQuery("select ?person", @$"where{{
                                         ?person <http://w3id.org/roh/isActive> 'true'.
                                         ?person a <http://xmlns.com/foaf/0.1/Person>.
                                         ?person <https://www.w3.org/2006/vcard/ns#email> '{email}'.
                         }}", "person").results.bindings.FirstOrDefault()?["person"].value;
-            
-            string UrlLogout = pReturnUrl + "/"+ UtilIdiomas.GetText("URLSEM","DESCONECTAR");
 
-            if (string.IsNullOrEmpty(person))
-            {
-                //No existe ninguna persona aociada al correo
-                mCommunityApi.Log.Info("5.-Redirigir a la página avisando de que no existe ningún usuario con ese correo");
-                return pReturnUrl+"/notexistsmail?email="+email;
+                string UrlLogout = pReturnUrl + "/" + UtilIdiomas.GetText("URLSEM", "DESCONECTAR");
+
+                if (string.IsNullOrEmpty(person) && !adminOtri && !adminGraphics && !admin)
+                {
+                    //No existe ninguna persona aociada al correo ni es ningun tipo de administrador redirigimos avisando de que no puede loguearse
+                    mCommunityApi.Log.Info("5.-Redirigir a la página avisando de que no existe ningún usuario con ese correo");
+                    return pReturnUrl + "/notexistsmail?email=" + email;
+                }
+                else
+                {
+                    mCommunityApi.Log.Info("6.-LOGUEAMOS");
+                    User usuario = null;
+
+                    //Existe una persona con ese email
+                    if (!string.IsNullOrEmpty(person))
+                    {
+                        //Comprobamos si existe usuario para la persona (investigador)
+                        string user = mResourceApi.VirtuosoQuery("select ?user", @$"where{{
+                                        <{person}> <http://w3id.org/roh/gnossUser> ?user.
+                        }}", "person").results.bindings.FirstOrDefault()?["user"].value;
+                                                
+                        if (!string.IsNullOrEmpty(user))
+                        {
+                            //Obtenemos el usuario
+                            Guid userID = new Guid(user.Substring(user.LastIndexOf("/") + 1));
+                            usuario = mUserApi.GetUserById(userID);
+                        }                        
+                    }
+                    else
+                    {
+                        //No existe una persona con ese email
+                        usuario = mUserApi.GetUserByEmail(email);
+                    }
+
+                    if (usuario == null)
+                    {
+                        usuario = new User();
+                        usuario.email = email;
+                        usuario.password = CreatePassword();
+                        usuario.name = email;
+                        usuario.last_name = email;
+                        usuario = mUserApi.CreateUser(usuario);
+                        //Modificamos persona para asignar ususario                        
+                    }
+
+                    if (!string.IsNullOrEmpty(person))
+                    {
+                        //Insertamos el triple en la persona si existe la persona
+                        Dictionary<Guid, List<TriplesToInclude>> triples = new() { { mResourceApi.GetShortGuid(person), new List<TriplesToInclude>() } };
+                        TriplesToInclude t = new();
+                        t.Predicate = "http://w3id.org/roh/gnossUser";
+                        t.NewValue = "http://gnoss/" + usuario.user_id.ToString().ToUpper();
+                        triples[mResourceApi.GetShortGuid(person)].Add(t);
+                        mResourceApi.InsertPropertiesLoadedResources(triples);
+                    }
+
+                    string logoutUrl = UrlLogout;
+                    mCommunityApi.Log.Info("7.-logoutUrl:" + logoutUrl);
+                    mCommunityApi.Log.Info("8.-urlRedirect:" + pReturnUrl);
+                    Uri url = new Uri(pReturnUrl);
+
+                    PersonaCN personaCN = new PersonaCN(mEntityContext, mLoggingService, mConfigService, mServicesUtilVirtuosoAndReplication);
+                    Es.Riam.Gnoss.AD.EntityModel.Models.PersonaDS.Persona filaPersona = personaCN.ObtenerPersonaPorUsuario(usuario.user_id).ListaPersona.FirstOrDefault();
+                    UsuarioCN usuarioCN = new UsuarioCN(mEntityContext, mLoggingService, mConfigService, mServicesUtilVirtuosoAndReplication);
+                    Es.Riam.Gnoss.AD.EntityModel.Models.UsuarioDS.Usuario filaUsuario = usuarioCN.ObtenerUsuarioCompletoPorID(usuario.user_id).ListaUsuario.FirstOrDefault();
+
+                    mUsuarioID = filaUsuario.UsuarioID;
+                    mPersonaID = filaPersona.PersonaID;
+                    mLogin = filaUsuario.Login;
+                    mIdioma = filaPersona.Idioma;
+                    mNombreCorto = filaUsuario.NombreCorto;
+                    mMantenerConectado = false;
+
+                    base.LoguearUsuario(filaUsuario.UsuarioID, mPersonaID, mNombreCorto, mLogin, mIdioma);
+
+                    return EnviarCookies(url.Scheme + "://" + url.Host, pReturnUrl, pToken);
+
+                }
             }
             else
             {
-                mCommunityApi.Log.Info("6.-LOGUEAMOS");
-                //Comprobamos si existe usuario para la persona
-                string user = mResourceApi.VirtuosoQuery("select ?user", @$"where{{
-                                        <{person}> <http://w3id.org/roh/gnossUser> ?user.
-                        }}", "person").results.bindings.FirstOrDefault()?["user"].value;
-
-                User usuario = null;
-                if (!string.IsNullOrEmpty(user))
-                {                    
-                    //Obtenemos el usuario
-                    Guid userID = new Guid(user.Substring(user.LastIndexOf("/") + 1));
-                    usuario = mUserApi.GetUserById(userID);
-                }
-
-                if (usuario==null)
-                {
-                    usuario = new User();
-                    usuario.email = email;
-                    usuario.password = CreatePassword();
-                    usuario.name = "name";
-                    usuario.last_name = "last_name";
-                    usuario = mUserApi.CreateUser(usuario);
-                    //Modificamos persona para asignar ususario
-
-                    //Insertamos
-                    Dictionary<Guid, List<TriplesToInclude>> triples = new() { { mResourceApi.GetShortGuid(person), new List<TriplesToInclude>() } };
-                    TriplesToInclude t = new();
-                    t.Predicate = "http://w3id.org/roh/gnossUser";
-                    t.NewValue = "http://gnoss/" + usuario.user_id.ToString().ToUpper();
-                    triples[mResourceApi.GetShortGuid(person)].Add(t);
-                    mResourceApi.InsertPropertiesLoadedResources(triples);
-                }
-
-                string logoutUrl = UrlLogout;
-                mCommunityApi.Log.Info("7.-logoutUrl:" + logoutUrl);
-                mCommunityApi.Log.Info("8.-urlRedirect:" + pReturnUrl);
-                Uri url = new Uri(pReturnUrl);
-
-                PersonaCN personaCN = new PersonaCN(mEntityContext, mLoggingService, mConfigService, mServicesUtilVirtuosoAndReplication);
-                Es.Riam.Gnoss.AD.EntityModel.Models.PersonaDS.Persona filaPersona = personaCN.ObtenerPersonaPorUsuario(usuario.user_id).ListaPersona.FirstOrDefault();
-                UsuarioCN usuarioCN=new UsuarioCN(mEntityContext, mLoggingService, mConfigService, mServicesUtilVirtuosoAndReplication);
-                Es.Riam.Gnoss.AD.EntityModel.Models.UsuarioDS.Usuario filaUsuario = usuarioCN.ObtenerUsuarioCompletoPorID(usuario.user_id).ListaUsuario.FirstOrDefault();
-
-                mUsuarioID = filaUsuario.UsuarioID;
-                mPersonaID = filaPersona.PersonaID;
-                mLogin = filaUsuario.Login;
-                mIdioma = filaPersona.Idioma;
-                mNombreCorto = filaUsuario.NombreCorto;
-                mMantenerConectado = false;
-
-                base.LoguearUsuario(filaUsuario.UsuarioID, mPersonaID, mNombreCorto, mLogin, mIdioma);
-
-                return EnviarCookies(url.Scheme+"://"+url.Host, pReturnUrl, pToken);
+                //No tiene email
+                mCommunityApi.Log.Info("5.-Redirigir a la página avisando de que no existe ningún usuario con ese correo");
+                return pReturnUrl + "/notexistsmail?email=" + email;
             }
         }
 

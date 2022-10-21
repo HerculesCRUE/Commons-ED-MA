@@ -206,6 +206,7 @@ var importarCVN = {
 				$('#informacionImportacion').show();
 				$('#titleMascaraBlanca').remove();
 				$('#workMascaraBlanca').remove();
+				$('#subworkMascaraBlanca').remove();
 				for(var i=0;i<7;i++){
 					var id = 'x' + RandomGuid();
 					var dropdowns = '';
@@ -293,6 +294,7 @@ var importarCVN = {
 				clearInterval(intervalStatus);				
 				$('#titleMascaraBlanca').remove();
 				$('#workMascaraBlanca').remove();
+				$('#subworkMascaraBlanca').remove();
 				window.removeEventListener('beforeunload', preventBeforeUnload);
 				
 				var msg = '';
