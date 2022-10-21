@@ -338,9 +338,6 @@ namespace Gnoss.Web.Login.SAML
                         mCommunityApi.DowngradeMemberFromAdministrator(usuario.user_id);
                     }
 
-
-
-
                     return usuario;
 
                 }
