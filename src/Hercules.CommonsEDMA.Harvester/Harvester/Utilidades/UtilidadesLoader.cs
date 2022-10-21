@@ -1,5 +1,7 @@
 ﻿using Gnoss.ApiWrapper;
 using Gnoss.ApiWrapper.ApiModel;
+using Gnoss.ApiWrapper.Model;
+using Models.NotificationOntology;
 using OAI_PMH.Models.SGI.Project;
 using System;
 using System.Collections.Generic;
@@ -11,6 +13,8 @@ namespace Utilidades
 {
     class UtilidadesLoader
     {
+        private static readonly ResourceApi mResourceApi = new ResourceApi($@"{System.AppDomain.CurrentDomain.SetupInformation.ApplicationBase}Config/ConfigOAuth/OAuthV3.config");
+
         /// <summary>
         /// Crea las entidades gestoras, convocantes y financiadoras auxiliares de <paramref name="proyecto"/>.
         /// </summary>
@@ -144,6 +148,35 @@ namespace Utilidades
             }
 
             return dicResultados;
+        }
+        
+        /// <summary>
+        /// Envia una notificación.
+        /// </summary>
+        /// <param name="owner">Persona a la que enviar la notificación</param>
+        /// <param name="rohType">Tipo de notificación</param>
+        /// <param name="textoExtra">Texto extra de la notificación</param>
+        public static void EnvioNotificacion(string owner, string rohType, string mensaje)
+        {
+            Notification notificacion = new Notification();
+            notificacion.Roh_text = mensaje;
+            notificacion.IdRoh_owner = owner;
+            notificacion.Dct_issued = DateTime.UtcNow;
+            notificacion.Roh_type = rohType;
+
+            mResourceApi.ChangeOntoly("notification");
+            ComplexOntologyResource recursoCargar = notificacion.ToGnossApiResource(mResourceApi);
+            int numIntentos = 0;
+            while (!recursoCargar.Uploaded)
+            {
+                numIntentos++;
+
+                if (numIntentos > 5)
+                {
+                    break;
+                }
+                mResourceApi.LoadComplexSemanticResource(recursoCargar);
+            }
         }
 
     }
