@@ -259,27 +259,27 @@ namespace Gnoss.Web.Login.SAML
 
                     //Aplicamos permisos en la persona
                     //-Asignamos usuario                   
-                    //-Asignamos adminIndicadores http://w3id.org/roh/isGraphicmanager
+                    //-Asignamos adminIndicadores http://w3id.org/roh/isGraphicManager
                     //-Asignamos gestorOtri http://w3id.org/roh/isOtriManager
                     //Asignamos admin
 
                     //Obtenemos los datos de la persona
-                    SparqlObject datosPermisosPersona = mResourceApi.VirtuosoQuery("select ?person ?isGraphicmanager ?isOtriManager ?gnossUser", @$"where{{                                        
+                    SparqlObject datosPermisosPersona = mResourceApi.VirtuosoQuery("select ?person ?isGraphicManager ?isOtriManager ?gnossUser", @$"where{{                                        
                                         ?person a <http://xmlns.com/foaf/0.1/Person>.
                                         FILTER(?person=<{person}>)
-                                        OPTIONAL{{?person <http://w3id.org/roh/isGraphicmanager> ?isGraphicmanager}}
+                                        OPTIONAL{{?person <http://w3id.org/roh/isGraphicManager> ?isGraphicManager}}
                                         OPTIONAL{{?person <http://w3id.org/roh/isOtriManager> ?isOtriManager}}
                                         OPTIONAL{{?person <http://w3id.org/roh/gnossUser> ?gnossUser}}
                                         
                         }}", "person");
 
-                    string isGraphicmanager = "";
+                    string isGraphicManager = "";
                     string isOtriManager = "";
                     string gnossUser = "";
 
-                    if (datosPermisosPersona.results.bindings.FirstOrDefault() != null && datosPermisosPersona.results.bindings.FirstOrDefault().ContainsKey("isGraphicmanager"))
+                    if (datosPermisosPersona.results.bindings.FirstOrDefault() != null && datosPermisosPersona.results.bindings.FirstOrDefault().ContainsKey("isGraphicManager"))
                     {
-                        isGraphicmanager = datosPermisosPersona.results.bindings.FirstOrDefault()["isGraphicmanager"].value;
+                        isGraphicManager = datosPermisosPersona.results.bindings.FirstOrDefault()["isGraphicManager"].value;
                     }
                     if (datosPermisosPersona.results.bindings.FirstOrDefault() != null && datosPermisosPersona.results.bindings.FirstOrDefault().ContainsKey("isOtriManager"))
                     {
@@ -293,7 +293,7 @@ namespace Gnoss.Web.Login.SAML
                     mCommunityApi.Log.Info($"-Comprobamos si es administrador de la comunidad");
                     bool isAdmin = EsAdministradorComunidad("hercules", usuario.user_id);
 
-                    mCommunityApi.Log.Info($"-Permisos actuales isGraphicmanager:'{isGraphicmanager}' isOtriManager:'{isOtriManager}' gnossUser:'{gnossUser}' isAdmin:'{isAdmin}' ");
+                    mCommunityApi.Log.Info($"-Permisos actuales isGraphicManager:'{isGraphicManager}' isOtriManager:'{isOtriManager}' gnossUser:'{gnossUser}' isAdmin:'{isAdmin}' ");
 
                     Dictionary<Guid, List<TriplesToInclude>> triplesInsertar = new() { { mResourceApi.GetShortGuid(person), new List<TriplesToInclude>() } };
                     Dictionary<Guid, List<TriplesToModify>> triplesModificar = new() { { mResourceApi.GetShortGuid(person), new List<TriplesToModify>() } };
@@ -319,32 +319,32 @@ namespace Gnoss.Web.Login.SAML
                     }
 
                     //adminIndicadores
-                    if (adminIndicadores && (string.IsNullOrEmpty(isGraphicmanager) || isGraphicmanager != "true"))
+                    if (adminIndicadores && (string.IsNullOrEmpty(isGraphicManager) || isGraphicManager != "true"))
                     {
-                        if (string.IsNullOrEmpty(isGraphicmanager))
+                        if (string.IsNullOrEmpty(isGraphicManager))
                         {
-                            mCommunityApi.Log.Info($"-Damos de alta isGraphicmanager ");
+                            mCommunityApi.Log.Info($"-Damos de alta isGraphicManager ");
                             TriplesToInclude t = new();
-                            t.Predicate = "http://w3id.org/roh/isGraphicmanager";
+                            t.Predicate = "http://w3id.org/roh/isGraphicManager";
                             t.NewValue = "true";
                             triplesInsertar[mResourceApi.GetShortGuid(person)].Add(t);
                         }
                         else
                         {
-                            mCommunityApi.Log.Info($"-Modificamos isGraphicmanager a 'true'");
+                            mCommunityApi.Log.Info($"-Modificamos isGraphicManager a 'true'");
                             TriplesToModify t = new();
-                            t.OldValue = isGraphicmanager;
-                            t.Predicate = "http://w3id.org/roh/isGraphicmanager";
+                            t.OldValue = isGraphicManager;
+                            t.Predicate = "http://w3id.org/roh/isGraphicManager";
                             t.NewValue = "true";
                             triplesModificar[mResourceApi.GetShortGuid(person)].Add(t);
                         }
                     }
-                    if (!adminIndicadores && !string.IsNullOrEmpty(isGraphicmanager))
+                    if (!adminIndicadores && !string.IsNullOrEmpty(isGraphicManager))
                     {
-                        mCommunityApi.Log.Info($"-Eliminamos isGraphicmanager ");
+                        mCommunityApi.Log.Info($"-Eliminamos isGraphicManager ");
                         RemoveTriples t = new();
-                        t.Predicate = "http://w3id.org/roh/isGraphicmanager";
-                        t.Value = isGraphicmanager;
+                        t.Predicate = "http://w3id.org/roh/isGraphicManager";
+                        t.Value = isGraphicManager;
                         triplesEliminar[mResourceApi.GetShortGuid(person)].Add(t);
                     }
 
@@ -353,7 +353,7 @@ namespace Gnoss.Web.Login.SAML
                     {
                         if (string.IsNullOrEmpty(isOtriManager))
                         {
-                            mCommunityApi.Log.Info($"-Damos de alta isGraphicmanager ");
+                            mCommunityApi.Log.Info($"-Damos de alta isOtriManager ");
                             TriplesToInclude t = new();
                             t.Predicate = "http://w3id.org/roh/isOtriManager";
                             t.NewValue = "true";
@@ -361,7 +361,7 @@ namespace Gnoss.Web.Login.SAML
                         }
                         else
                         {
-                            mCommunityApi.Log.Info($"-Modificamos isGraphicmanager a 'true'");
+                            mCommunityApi.Log.Info($"-Modificamos isOtriManager a 'true'");
                             TriplesToModify t = new();
                             t.OldValue = isOtriManager;
                             t.Predicate = "http://w3id.org/roh/isOtriManager";
@@ -371,7 +371,7 @@ namespace Gnoss.Web.Login.SAML
                     }
                     if (!gestorOtri && !string.IsNullOrEmpty(isOtriManager))
                     {
-                        mCommunityApi.Log.Info($"-Eliminamos isGraphicmanager ");
+                        mCommunityApi.Log.Info($"-Eliminamos isOtriManager ");
                         RemoveTriples t = new();
                         t.Predicate = "http://w3id.org/roh/isOtriManager";
                         t.Value = isOtriManager;
