@@ -195,8 +195,7 @@ namespace Harvester
             {
                 Directory.CreateDirectory(directorioProcesados);
             }
-
-            int i = 0;
+            
             foreach (string fichero in Directory.EnumerateFiles(directorioPendientes))
             {
                 pDicRutas[pSet][directorioPendientes] += fichero.Substring(fichero.LastIndexOf("\\"));
