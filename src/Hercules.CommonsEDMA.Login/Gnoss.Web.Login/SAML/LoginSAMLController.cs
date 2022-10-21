@@ -86,9 +86,9 @@ namespace Gnoss.Web.Login.SAML
             string claimMail = mConfigServiceSAML.GetClaimMail();
             string claimGroups = mConfigServiceSAML.GetClaimGroups();
 
-            bool gestorOtri = true;
-            bool adminIndicadores = true;
-            bool admin = true;
+            bool gestorOtri = false;
+            bool adminIndicadores = false;
+            bool admin = false;
 
             foreach (Claim claim in pUser.Claims.ToList())
             {
@@ -169,7 +169,7 @@ namespace Gnoss.Web.Login.SAML
                 }
                 if (datosPersona.results.bindings.FirstOrDefault() != null && datosPersona.results.bindings.FirstOrDefault().ContainsKey("active"))
                 {
-                    active = datosPersona.results.bindings.FirstOrDefault()["active"].value=="true";
+                    active = datosPersona.results.bindings.FirstOrDefault()["active"].value == "true";
                 }
                 if (datosPersona.results.bindings.FirstOrDefault() != null && datosPersona.results.bindings.FirstOrDefault().ContainsKey("crisIdentifier"))
                 {
@@ -444,24 +444,17 @@ namespace Gnoss.Web.Login.SAML
         public bool EsAdministradorComunidad(string community_short_name, Guid user_id)
         {
             bool esAdministrador = false;
-            try
+            ProyectoCN proyCN = new ProyectoCN(mEntityContext, mLoggingService, mConfigService, mServicesUtilVirtuosoAndReplication);
+            Guid proyectoID = proyCN.ObtenerProyectoIDPorNombre(community_short_name);
+            if (!proyectoID.Equals(Guid.Empty))
             {
-                ProyectoCN proyCN = new ProyectoCN(mEntityContext, mLoggingService, mConfigService, mServicesUtilVirtuosoAndReplication);
-                Guid proyectoID = proyCN.ObtenerProyectoIDPorNombre(community_short_name);
-                if (!proyectoID.Equals(Guid.Empty))
-                {
-                    GestionProyecto gestorProyecto = new GestionProyecto(proyCN.ObtenerProyectoPorID(proyectoID), mLoggingService, mEntityContext);
-                    gestorProyecto.CargarGestor();
-                    Proyecto proyecto = gestorProyecto.ListaProyectos[proyectoID];
-                    esAdministrador = proyecto.EsAdministradorUsuario(user_id);
+                GestionProyecto gestorProyecto = new GestionProyecto(proyCN.ObtenerProyectoPorID(proyectoID), mLoggingService, mEntityContext);
+                gestorProyecto.CargarGestor();
+                Proyecto proyecto = gestorProyecto.ListaProyectos[proyectoID];
+                esAdministrador = proyecto.EsAdministradorUsuario(user_id);
 
-                }
-                proyCN.Dispose();
             }
-            catch (Exception ex)
-            {
-                mResourceApi.Log.Info(ex.Message);
-            }
+            proyCN.Dispose();
             return esAdministrador;
         }
 
