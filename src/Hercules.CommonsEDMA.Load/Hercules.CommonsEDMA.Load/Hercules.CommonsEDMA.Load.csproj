@@ -29,6 +29,9 @@
     <None Update="Config\ConfigOAuth\OAuthV3.config">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Update="Dataset\AreaProcedencia.xlsx">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="Dataset\CVN\ReferenceTables.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
@@ -45,6 +48,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Update="Dataset\Hércules-CommonsEDMA_Taxonomías_v1.1.xlsx">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Dataset\SectorAplicacion.xlsx">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>
