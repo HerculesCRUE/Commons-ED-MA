@@ -214,11 +214,21 @@ namespace Harvester
                 }
 
                 idsACargar.Sort();
-                               
+
+                int i = 0;
+                DateTime inicio = DateTime.Now;
                 foreach (string id in idsACargar)
                 {
+                    DateTime actual = DateTime.Now;
                     i++;
+
+                    double tiempoRestante = (idsACargar.Count / i) * (actual - inicio).TotalSeconds;
+
                     Console.WriteLine($"Procesando fichero de {pSet} {i}/{idsACargar.Count}");
+                    if (i > 1)
+                    {
+                        Console.WriteLine($"Tiempo restabte aproximado {tiempoRestante} segundos");
+                    }
 
                     switch (pSet)
                     {
