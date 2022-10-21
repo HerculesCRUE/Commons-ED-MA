@@ -243,17 +243,19 @@ namespace Gnoss.Web.Login.SAML
                     //Asignamos admin
 
                     //Obtenemos los datos de la persona
-                    SparqlObject datosPermisosPersona = mResourceApi.VirtuosoQuery("select ?person ?isGraphicmanager ?isOtriManager ?gnossUser", @$"where{{
-                                        OPTIONAL{{?person <http://w3id.org/roh/isGraphicmanager> ?isGraphicmanager.}}
-                                        OPTIONAL{{?person <http://w3id.org/roh/isOtriManager> ?isOtriManager.}}
-                                        OPTIONAL{{?person <http://w3id.org/roh/gnossUser> ?gnossUser}}
+                    SparqlObject datosPermisosPersona = mResourceApi.VirtuosoQuery("select ?person ?isGraphicmanager ?isOtriManager ?gnossUser", @$"where{{                                        
                                         ?person a <http://xmlns.com/foaf/0.1/Person>.
                                         FILTER(?person=<{person}>)
+                                        OPTIONAL{{?person <http://w3id.org/roh/isGraphicmanager> ?isGraphicmanager}}
+                                        OPTIONAL{{?person <http://w3id.org/roh/isOtriManager> ?isOtriManager}}
+                                        OPTIONAL{{?person <http://w3id.org/roh/gnossUser> ?gnossUser}}
+                                        
                         }}", "person");
 
                     string isGraphicmanager = datosPermisosPersona.results.bindings.FirstOrDefault()?["isGraphicmanager"].value;
                     string isOtriManager = datosPermisosPersona.results.bindings.FirstOrDefault()?["isOtriManager"].value;
                     string gnossUser = datosPermisosPersona.results.bindings.FirstOrDefault()?["gnossUser"].value;
+                    mCommunityApi.Log.Info($"-Comprobamos si es administrador de la comunidad");
                     bool isAdmin = EsAdministradorComunidad("hercules", usuario.user_id);
 
                     mCommunityApi.Log.Info($"-Permisos actuales isGraphicmanager:'{isGraphicmanager}' isOtriManager:'{isOtriManager}' gnossUser:'{gnossUser}' isAdmin:'{isAdmin}' ");
@@ -399,7 +401,6 @@ namespace Gnoss.Web.Login.SAML
 
             string dominio = ObtenerDominioIP();
 
-
             string query = "urlVuelta=" + pDominioDeVuelta + "&redirect=" + HttpUtility.UrlEncode(pRedirect) + "&token=" + pToken;
 
             return dominio + "/obtenerCookie?" + query;
@@ -408,17 +409,24 @@ namespace Gnoss.Web.Login.SAML
         public bool EsAdministradorComunidad(string community_short_name, Guid user_id)
         {
             bool esAdministrador = false;
-            ProyectoCN proyCN = new ProyectoCN(mEntityContext, mLoggingService, mConfigService, mServicesUtilVirtuosoAndReplication);
-            Guid proyectoID = proyCN.ObtenerProyectoIDPorNombre(community_short_name);
-            if (!proyectoID.Equals(Guid.Empty))
+            try
             {
-                GestionProyecto gestorProyecto = new GestionProyecto(proyCN.ObtenerProyectoPorID(proyectoID), mLoggingService, mEntityContext);
-                gestorProyecto.CargarGestor();
-                Proyecto proyecto = gestorProyecto.ListaProyectos[proyectoID];
-                esAdministrador = proyecto.EsAdministradorUsuario(user_id);
+                ProyectoCN proyCN = new ProyectoCN(mEntityContext, mLoggingService, mConfigService, mServicesUtilVirtuosoAndReplication);
+                Guid proyectoID = proyCN.ObtenerProyectoIDPorNombre(community_short_name);
+                if (!proyectoID.Equals(Guid.Empty))
+                {
+                    GestionProyecto gestorProyecto = new GestionProyecto(proyCN.ObtenerProyectoPorID(proyectoID), mLoggingService, mEntityContext);
+                    gestorProyecto.CargarGestor();
+                    Proyecto proyecto = gestorProyecto.ListaProyectos[proyectoID];
+                    esAdministrador = proyecto.EsAdministradorUsuario(user_id);
 
+                }
+                proyCN.Dispose();
             }
-            proyCN.Dispose();
+            catch (Exception ex)
+            {
+                mResourceApi.Log.Info(ex.Message);
+            }
             return esAdministrador;
         }
 
