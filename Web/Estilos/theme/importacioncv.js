@@ -531,7 +531,7 @@ function getItemCV(pIdBBDD, pIdSection, pLang){
 											</div>
 											<div class="title-wrap">
 												<h2 class="resource-title">
-													<a href="#" data-id="${pIdBBDD}" internal-id="${data.identifier}">${data.title}</a>
+													${data.title}
 												</h2>
 											</div>
 											<div class="content-wrap">
