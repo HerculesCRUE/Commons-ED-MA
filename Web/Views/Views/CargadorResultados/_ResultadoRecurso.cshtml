@@ -1260,43 +1260,41 @@
                             @{
                                 if (Model.ViewSettings != null && Model.ViewSettings.CustomSemanticProperties != null && Model.ViewSettings.CustomSemanticProperties.Count > 0)
                                 {
+                                    int hIndexMax = 0;
                                     foreach (CustomSemanticPropertiesModel item in Model.ViewSettings.CustomSemanticProperties)
                                     {
-                                        string idQuery = "HIndexSource";
-                                        string hIndex = "";
-                                        string source = "";
-                                        int hIndexMax = 0;
-
+                                        string idQuery = "HIndex";
                                         if (item.Id == idQuery && item.Rows != null && item.Rows.Count > 0)
                                         {
                                             string propiedad = "hIndex";
                                             foreach (Dictionary<string, string> row in item.Rows)
                                             {
-                                                if (row.ContainsKey("hIndex"))
-                                                {
-                                                    hIndexMax = hIndexMax < int.Parse(row["hIndex"]) ? int.Parse(row["hIndex"]) : hIndexMax;
-                                                }
+                                                hIndexMax = hIndexMax < int.Parse(row["hIndex"]) ? int.Parse(row["hIndex"]) : hIndexMax;
                                             }
-                                            //Compruebo que el valor minimo es mayor a 0(por defecto)
-                                            if (hIndexMax!=0)
+                                            if (hIndexMax > 0)
                                             {
                                                 <span class="material-icons">tag</span>
                                                 <span class="hindex texto">@hIndexMax Índice H</span>
                                             }
-                                            //Añado el desplegable
-                                            if (hIndexMax!=0)
+
+                                        }
+                                        if (hIndexMax > 0)
+                                        {                                            
+                                            idQuery = "HIndexSource";
+                                            string hIndex = "";
+                                            string source = "";
+                                            if (item.Id == idQuery && item.Rows != null && item.Rows.Count > 0)
                                             {
                                                 foreach (Dictionary<string, string> row in item.Rows)
                                                 {
                                                     if (row.ContainsKey("hIndex") && row.ContainsKey("source"))
                                                     {
                                                         hIndex = row["hIndex"];
-
                                                         source = row["source"];
-                                                       <input type="hidden" class="source" data-source="@source" data-value="@hIndex" />
+                                                        <input type="hidden" class="source" data-source="@source" data-value="@hIndex" />
                                                     }
                                                 }
-                                            }                                        
+                                            }
                                         }
                                     }
                                 }
@@ -1552,10 +1550,10 @@
                                                             {
                                                                 nItems++;
                                                                 <li @{
-                                        if (nItems > 3) {
-                                        @Html.Raw("class=\"ocultar\"")
- }
-}>
+                                if (nItems > 3) {
+                                            @Html.Raw("class=\"ocultar\"")
+                                }
+                                        }>
                                                                     <a href="javascript: void(0);">@row[propiedad]</a>
                                                                 </li>
                                                             }
