@@ -3,6 +3,7 @@ using Newtonsoft.Json.Linq;
 using OAI_PMH.Controllers;
 using OAI_PMH.Models.SGI.ActividadDocente;
 using OAI_PMH.Models.SGI.FormacionAcademica;
+using OAI_PMH.Models.SGI.OrganicStructure;
 using OAI_PMH.Models.SGI.PersonalData;
 using RestSharp;
 using System;
