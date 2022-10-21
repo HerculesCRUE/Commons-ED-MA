@@ -16,7 +16,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Config\ConfigOAuth\" />
     <Folder Include="Models\JSON\" />
   </ItemGroup>
 
