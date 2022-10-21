@@ -39,11 +39,11 @@ namespace OAI_PMH.Models.SGI.ActividadDocente
         /// <summary>
         /// País en el que se ha obtenido el título
         /// </summary>
-        public string PaisEntidadOrganizacionEvento { get; set; }
+        public Pais PaisEntidadOrganizacionEvento { get; set; }
         /// <summary>
         /// Región/comunidad autónoma en la que se ha obtenido el título
         /// </summary>
-        public string CcaaRegionEntidadOrganizacionEvento { get; set; }
+        public ComunidadAutonoma CcaaRegionEntidadOrganizacionEvento { get; set; }
         /// <summary>
         /// Descripción del curso
         /// </summary>
