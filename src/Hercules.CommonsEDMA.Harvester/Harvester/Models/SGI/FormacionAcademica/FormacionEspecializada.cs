@@ -23,7 +23,7 @@ namespace OAI_PMH.Models.SGI.FormacionAcademica
         /// <summary>
         /// Horas de formación
         /// </summary>
-        public int? DuracionTitulacion { get; set; }
+        public float? DuracionTitulacion { get; set; }
         /// <summary>
         /// Entidad que concede el título
         /// </summary>
@@ -51,6 +51,6 @@ namespace OAI_PMH.Models.SGI.FormacionAcademica
         /// <summary>
         /// Nombre y apellidos de la persona responsable, no se identifica a la persona con un investigador existente
         /// </summary>
-        public string ResponsableFormacion { get; set; }
+        public PersonaSecundaria ResponsableFormacion { get; set; }
     }
 }

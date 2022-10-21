@@ -1,5 +1,6 @@
 ﻿using OAI_PMH.Models.SGI.OrganicStructure;
 using System;
+using System.Collections.Generic;
 
 namespace OAI_PMH.Models.SGI.FormacionAcademica
 {
@@ -59,7 +60,7 @@ namespace OAI_PMH.Models.SGI.FormacionAcademica
         /// <summary>
         /// Nombre de los/las co-directores/as que han intervenido
         /// </summary>
-        public Director CoDirectorTesis { get; set; }
+        public string CoDirectorTesis { get; set; }
         /// <summary>
         /// Indica si se ha recibido una mención europea
         /// </summary>

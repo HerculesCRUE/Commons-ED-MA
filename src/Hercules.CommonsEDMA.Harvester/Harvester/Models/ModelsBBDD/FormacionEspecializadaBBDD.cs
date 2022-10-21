@@ -5,7 +5,7 @@ namespace Harvester.Models.ModelsBBDD
     public class FormacionEspecializadaBBDD:AcademicDegreeBBDD
     {
         public DateTime? fechaFinalizacion { get; set; }
-        public int duracionHoras { get; set; }
+        public float duracionHoras { get; set; }
         public string tipoFormacion { get; set; }
         public string objetivosEntidad { get; set; }
         public string firma { get; set; }

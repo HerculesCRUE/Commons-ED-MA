@@ -12,9 +12,15 @@ namespace OAI_PMH.Models.SGI.PersonalData
     public class Vinculacion : SGI_Base
     {
         /// <summary>
-        /// Vinculacion categoria profesional
+        /// Categoría profesional
         /// </summary>
-        public VinculacionCategoriaProfesional VinculacionCategoriaProfesional { get; set; }
+        public CategoriaProfesional CategoriaProfesional { get; set; }
+
+        /// <summary>
+        /// Fecha obtención categoría
+        /// </summary>
+        public DateTime? fechaObtencionCategoria { get; set; }
+
         /// <summary>
         /// Departamento de la Universidad
         /// </summary>

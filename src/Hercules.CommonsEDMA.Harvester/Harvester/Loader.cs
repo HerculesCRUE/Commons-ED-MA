@@ -195,8 +195,7 @@ namespace Harvester
             {
                 Directory.CreateDirectory(directorioProcesados);
             }
-
-            int i = 0;
+            
             foreach (string fichero in Directory.EnumerateFiles(directorioPendientes))
             {
                 pDicRutas[pSet][directorioPendientes] += fichero.Substring(fichero.LastIndexOf("\\"));
@@ -214,11 +213,21 @@ namespace Harvester
                 }
 
                 idsACargar.Sort();
-                               
+
+                int i = 0;
+                DateTime inicio = DateTime.Now;
                 foreach (string id in idsACargar)
                 {
+                    DateTime actual = DateTime.Now;
                     i++;
+
+                    double tiempoRestante = (idsACargar.Count / i) * (actual - inicio).TotalSeconds;
+
                     Console.WriteLine($"Procesando fichero de {pSet} {i}/{idsACargar.Count}");
+                    if (i > 1)
+                    {
+                        Console.WriteLine($"Tiempo restabte aproximado {tiempoRestante} segundos");
+                    }
 
                     switch (pSet)
                     {

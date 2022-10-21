@@ -3,6 +3,7 @@ using Newtonsoft.Json.Linq;
 using OAI_PMH.Controllers;
 using OAI_PMH.Models.SGI.ActividadDocente;
 using OAI_PMH.Models.SGI.FormacionAcademica;
+using OAI_PMH.Models.SGI.OrganicStructure;
 using OAI_PMH.Models.SGI.PersonalData;
 using RestSharp;
 using System;
@@ -373,25 +374,6 @@ namespace OAI_PMH.Services
             try
             {
                 vinculacion = JsonConvert.DeserializeObject<Vinculacion>(response.Content);
-            }
-            catch
-            {
-                return null;
-            }
-            return vinculacion;
-        }
-
-        private static VinculacionCategoriaProfesional GetVinculacionCategoriaProfesional(string id, ConfigService pConfig)
-        {
-            string accessToken = Token.CheckToken(pConfig);
-            VinculacionCategoriaProfesional vinculacion = new();
-            RestClient client = new(pConfig.GetConfigSGI() + "/api/sgp/vinculaciones/persona/" + id + "/vinculaciones-categorias-profesionales");
-            client.AddDefaultHeader("Authorization", "Bearer " + accessToken);
-            var request = new RestRequest(Method.GET);
-            IRestResponse response = client.Execute(request);
-            try
-            {
-                vinculacion = JsonConvert.DeserializeObject<VinculacionCategoriaProfesional>(response.Content);
             }
             catch
             {
