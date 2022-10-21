@@ -622,9 +622,9 @@ namespace OAI_PMH.Models.SGI.PersonalData
             }
 
             // Cargo en la universidad.
-            if (!string.IsNullOrEmpty(this.Vinculacion?.VinculacionCategoriaProfesional?.categoriaProfesional?.nombre))
+            if (!string.IsNullOrEmpty(this.Vinculacion?.CategoriaProfesional?.nombre))
             {
-                persona.Roh_hasPosition = this.Vinculacion?.VinculacionCategoriaProfesional?.categoriaProfesional?.nombre;
+                persona.Roh_hasPosition = this.Vinculacion?.CategoriaProfesional?.nombre;
             }
 
             // Fecha de actualización.
