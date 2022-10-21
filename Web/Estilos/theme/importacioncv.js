@@ -504,9 +504,18 @@ function aniadirComportamientoCompararItems(){
 		var pIdBBDD = $(this).data("iditemoriginal");
 		var pIdSection = $(this).closest('div.panel-group.pmd-accordion').attr("section");
 		var pLang = $('#inpt_Idioma').val();
-		$('.item-importado').append($(this).closest('article').clone())
-		$('.item-original').append(getItemCV(pIdBBDD, pIdSection, pLang));
-		OcultarUpdateProgress();
+		var itemImportado = $(this).closest('article').clone();
+		itemImportado.addClass('activo');
+		itemImportado.find('select[name="itemConflict"]').remove();
+		itemImportado.find('div.custom-checkbox').remove();
+		itemImportado.find('.material-icons.arrow').remove();
+		itemImportado.find('.compararItems').remove();
+		$('.item-importado').append(itemImportado)
+		getItemCV(pIdBBDD, pIdSection, pLang);
+	});
+	$('#modal-comparar-items').on('hidden.bs.modal', function (e) {
+		$('.item-importado article').remove();
+		$('.item-original article').remove();
 	});
 }
 function getItemCV(pIdBBDD, pIdSection, pLang){
@@ -515,32 +524,26 @@ function getItemCV(pIdBBDD, pIdSection, pLang){
 		if (data.isopenaccess) {
 			openAccess = "open-access";
 		}
-		var htmlListItem = `<article class="resource success ${openAccess}" >
+		var htmlListItem = `<article class="resource success activo ${openAccess}" >
 									<div class="wrap">
 										<div class="middle-wrap">
-											${this.printHtmlListItemOrders(data)}
 											<div class="title-wrap">
 											</div>
 											<div class="title-wrap">
 												<h2 class="resource-title">
-													<a href="#" data-id="${id}" internal-id="${data.identifier}">${data.title}</a>
+													<a href="#" data-id="${pIdBBDD}" internal-id="${data.identifier}">${data.title}</a>
 												</h2>
-												${!onlyPublic ? this.printHtmlListItemValidacion(data) : ''}
-												${!onlyPublic ? this.printHtmlListItemEditable(data) : ''}
-												${!onlyPublic ? this.printHtmlListItemVisibilidad(data) : ''}
-												${!onlyPublic ? this.printHtmlListItemIdiomas(data) : ''}
-												${!onlyPublic ? this.printHtmlListItemAcciones(data, id) : ''}
-												<span class="material-icons arrow">keyboard_arrow_down</span>
 											</div>
 											<div class="content-wrap">
 												<div class="description-wrap">
-												${this.printHtmlListItemPropiedades(data)}
+													${edicionCV.printHtmlListItemPropiedades(data)}
 												</div>
 											</div>
 										</div>
 									</div>
 								</article>`;
-		return htmlListItem;
+		OcultarUpdateProgress();
+		$('.item-original').append(htmlListItem);
 	});
 }
 function aniadirComportamientoWrapperSeccion(){	
