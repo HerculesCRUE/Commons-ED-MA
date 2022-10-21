@@ -32,6 +32,7 @@ using ApiWrapper::Gnoss.ApiWrapper;
 using ApiWrapper::Gnoss.ApiWrapper.ApiModel;
 using ApiWrapper::Gnoss.ApiWrapper.Model;
 using Gnoss.Web.Login.Open;
+using Gnoss.Web.Login.SAML.Models.PersonOntology;
 
 namespace Gnoss.Web.Login.SAML
 {
@@ -81,7 +82,11 @@ namespace Gnoss.Web.Login.SAML
             mCommunityApi.Log.Info("3.-numClaims:" + pUser.Claims.ToList());
 
             string claimMail = mConfigServiceSAML.GetClaimMail();
+            string claimGroups = mConfigServiceSAML.GetClaimGroups();
 
+            bool gestorOtri = true;
+            bool adminIndicadores = true;
+            bool admin = true;
 
             foreach (Claim claim in pUser.Claims.ToList())
             {
@@ -90,30 +95,86 @@ namespace Gnoss.Web.Login.SAML
                 {
                     email = claim.Value.Trim();
                 }
+                if (claim.Type == claimGroups && claim.Value.Trim() == mConfigServiceSAML.GetGroupAdmin())
+                {
+                    admin = true;
+                }
+                if (claim.Type == claimGroups && claim.Value.Trim() == mConfigServiceSAML.GetGroupAdminIndicadores())
+                {
+                    adminIndicadores = true;
+                }
+                if (claim.Type == claimGroups && claim.Value.Trim() == mConfigServiceSAML.GetGroupGestorOtri())
+                {
+                    gestorOtri = true;
+                }
             }
 
-            mCommunityApi.Log.Info("getuserbyemail" + mUserApi.GetUserByEmail(email).email);
+            User usuario = ObtenerUsuario(email, gestorOtri, adminIndicadores, admin);
 
+            if (usuario != null)
+            {
+                string logoutUrl = pReturnUrl + "/" + UtilIdiomas.GetText("URLSEM", "DESCONECTAR");
+                mCommunityApi.Log.Info("7.-logoutUrl:" + logoutUrl);
+                mCommunityApi.Log.Info("8.-urlRedirect:" + pReturnUrl);
+                Uri url = new Uri(pReturnUrl);
+
+                PersonaCN personaCN = new PersonaCN(mEntityContext, mLoggingService, mConfigService, mServicesUtilVirtuosoAndReplication);
+                Es.Riam.Gnoss.AD.EntityModel.Models.PersonaDS.Persona filaPersona = personaCN.ObtenerPersonaPorUsuario(usuario.user_id).ListaPersona.FirstOrDefault();
+                UsuarioCN usuarioCN = new UsuarioCN(mEntityContext, mLoggingService, mConfigService, mServicesUtilVirtuosoAndReplication);
+                Es.Riam.Gnoss.AD.EntityModel.Models.UsuarioDS.Usuario filaUsuario = usuarioCN.ObtenerUsuarioCompletoPorID(usuario.user_id).ListaUsuario.FirstOrDefault();
+
+                mUsuarioID = filaUsuario.UsuarioID;
+                mPersonaID = filaPersona.PersonaID;
+                mLogin = filaUsuario.Login;
+                mIdioma = filaPersona.Idioma;
+                mNombreCorto = filaUsuario.NombreCorto;
+                mMantenerConectado = false;
+
+                base.LoguearUsuario(filaUsuario.UsuarioID, mPersonaID, mNombreCorto, mLogin, mIdioma);
+
+                return EnviarCookies(url.Scheme + "://" + url.Host, pReturnUrl, pToken);
+            }
+            else
+            {
+                //No tiene email
+                mCommunityApi.Log.Info("5.-Redirigir a la página avisando de que no existe ningún usuario con ese correo");
+                return pReturnUrl + "/notexistsmail?email=" + email;
+            }
+        }
+
+        private User ObtenerUsuario(string email, bool gestorOtri, bool adminIndicadores, bool admin)
+        {
             if (!string.IsNullOrEmpty(email))
             {
-                bool adminOtri = true;
-                bool adminGraphics = true;
-                bool admin = true;
-
-                //comprobamos si existe la persona del email
-                string person = mResourceApi.VirtuosoQuery("select ?person", @$"where{{
-                                        ?person <http://w3id.org/roh/isActive> 'true'.
+                //comprobamos si existe la persona del email (primero investigador principal, después sincronizado, después resto)
+                SparqlObject datosPersona = mResourceApi.VirtuosoQuery("select ?person ?active ?crisIdentifier", @$"where{{
+                                        OPTIONAL{{?person <http://w3id.org/roh/isActive> ?active.}}
+                                        OPTIONAL{{?person <http://w3id.org/roh/crisIdentifier> ?crisIdentifier.}}
+                                        OPTIONAL{{?person <http://xmlns.com/foaf/0.1/firstName> ?firstName}}
+                                        OPTIONAL{{?person <http://xmlns.com/foaf/0.1/lastName> ?lastName}}
                                         ?person a <http://xmlns.com/foaf/0.1/Person>.
                                         ?person <https://www.w3.org/2006/vcard/ns#email> '{email}'.
-                        }}", "person").results.bindings.FirstOrDefault()?["person"].value;
+                        }}order by desc(?active) desc(?crisIdentifier)", "person");
 
-                string UrlLogout = pReturnUrl + "/" + UtilIdiomas.GetText("URLSEM", "DESCONECTAR");
-
-                if (string.IsNullOrEmpty(person) && !adminOtri && !adminGraphics && !admin)
+                string person = datosPersona.results.bindings.FirstOrDefault()?["person"].value;
+                bool active = datosPersona.results.bindings.FirstOrDefault()?["active"].value == "true";
+                string crisIdentifier = datosPersona.results.bindings.FirstOrDefault()?["crisIdentifier"].value;
+                string firstName = datosPersona.results.bindings.FirstOrDefault()?["firstName"].value;
+                string lastName = datosPersona.results.bindings.FirstOrDefault()?["lastName"].value;
+                if (string.IsNullOrEmpty(firstName))
                 {
-                    //No existe ninguna persona aociada al correo ni es ningun tipo de administrador redirigimos avisando de que no puede loguearse
-                    mCommunityApi.Log.Info("5.-Redirigir a la página avisando de que no existe ningún usuario con ese correo");
-                    return pReturnUrl + "/notexistsmail?email=" + email;
+                    firstName = email;
+                }
+                if (string.IsNullOrEmpty(lastName))
+                {
+                    lastName = email;
+                }
+
+
+                //Si no tiene ningún tipo de administración sólo consideramos a los investigadores
+                if ((!gestorOtri && !adminIndicadores && !admin) && (string.IsNullOrEmpty(person) || !active))
+                {
+                    return null;
                 }
                 else
                 {
@@ -123,75 +184,168 @@ namespace Gnoss.Web.Login.SAML
                     //Existe una persona con ese email
                     if (!string.IsNullOrEmpty(person))
                     {
-                        //Comprobamos si existe usuario para la persona (investigador)
+                        //Comprobamos si existe usuario para la persona
                         string user = mResourceApi.VirtuosoQuery("select ?user", @$"where{{
                                         <{person}> <http://w3id.org/roh/gnossUser> ?user.
                         }}", "person").results.bindings.FirstOrDefault()?["user"].value;
-                                                
+
                         if (!string.IsNullOrEmpty(user))
                         {
                             //Obtenemos el usuario
                             Guid userID = new Guid(user.Substring(user.LastIndexOf("/") + 1));
                             usuario = mUserApi.GetUserById(userID);
-                        }                        
-                    }
-                    else
-                    {
-                        //No existe una persona con ese email
-                        usuario = mUserApi.GetUserByEmail(email);
+                            return usuario;
+                        }
                     }
 
+                    //Si no existe el usuario lo creamos
                     if (usuario == null)
                     {
                         usuario = new User();
                         usuario.email = email;
                         usuario.password = CreatePassword();
-                        usuario.name = email;
-                        usuario.last_name = email;
+                        usuario.name = firstName;
+                        usuario.community_short_name = "hercules";
+                        usuario.last_name = lastName;
                         usuario = mUserApi.CreateUser(usuario);
-                        //Modificamos persona para asignar ususario                        
                     }
 
-                    if (!string.IsNullOrEmpty(person))
+                    //Si no existe la persona se crea 
+                    if (string.IsNullOrEmpty(person))
                     {
-                        //Insertamos el triple en la persona si existe la persona
-                        Dictionary<Guid, List<TriplesToInclude>> triples = new() { { mResourceApi.GetShortGuid(person), new List<TriplesToInclude>() } };
+                        Person personObject = new();
+                        personObject.Vcard_email = new List<string>() { email };
+                        personObject.Foaf_firstName = firstName;
+                        personObject.Foaf_lastName = lastName;
+
+                        ComplexOntologyResource resource = personObject.ToGnossApiResource(mResourceApi, null);
+                        int numIntentos = 0;
+                        while (!resource.Uploaded)
+                        {
+                            numIntentos++;
+                            if (numIntentos > 5)
+                            {
+                                break;
+                            }
+                            person = mResourceApi.LoadComplexSemanticResource(resource);
+                        }
+                    }
+
+                    //Aplicamos permisos en la persona
+                    //-Asignamos usuario                   
+                    //-Asignamos adminIndicadores http://w3id.org/roh/isGraphicmanager
+                    //-Asignamos gestorOtri http://w3id.org/roh/isOtriManager
+                    //Asignamos admin
+
+                    //Obtenemos los datos de la persona
+                    SparqlObject datosPermisosPersona = mResourceApi.VirtuosoQuery("select ?person ?isGraphicmanager ?isOtriManager ?gnossUser", @$"where{{
+                                        OPTIONAL{{?person <http://w3id.org/roh/isGraphicmanager> ?isGraphicmanager.}}
+                                        OPTIONAL{{?person <http://w3id.org/roh/isOtriManager> ?isOtriManager.}}
+                                        OPTIONAL{{?person <http://w3id.org/roh/gnossUser> ?gnossUser}}
+                                        ?person a <http://xmlns.com/foaf/0.1/Person>.
+                                        FILTER(?person=<{person}>)
+                        }}", "person");
+
+                    string isGraphicmanager = datosPermisosPersona.results.bindings.FirstOrDefault()?["isGraphicmanager"].value;
+                    string isOtriManager = datosPermisosPersona.results.bindings.FirstOrDefault()?["isOtriManager"].value;
+                    string gnossUser = datosPermisosPersona.results.bindings.FirstOrDefault()?["gnossUser"].value;
+                    bool isAdmin = mCommunityApi.checkIsAdminCommunity("hercules", usuario.user_id);
+
+                    Dictionary<Guid, List<TriplesToInclude>> triplesInsertar = new() { { mResourceApi.GetShortGuid(person), new List<TriplesToInclude>() } };
+                    Dictionary<Guid, List<TriplesToModify>> triplesModificar = new() { { mResourceApi.GetShortGuid(person), new List<TriplesToModify>() } };
+                    Dictionary<Guid, List<RemoveTriples>> triplesEliminar = new() { { mResourceApi.GetShortGuid(person), new List<RemoveTriples>() } };
+
+                    //gnossUser
+                    if (string.IsNullOrEmpty(gnossUser))
+                    {
                         TriplesToInclude t = new();
                         t.Predicate = "http://w3id.org/roh/gnossUser";
                         t.NewValue = "http://gnoss/" + usuario.user_id.ToString().ToUpper();
-                        triples[mResourceApi.GetShortGuid(person)].Add(t);
-                        mResourceApi.InsertPropertiesLoadedResources(triples);
+                        triplesInsertar[mResourceApi.GetShortGuid(person)].Add(t);
+                    }
+                    else if (gnossUser != "http://gnoss/" + usuario.user_id.ToString().ToUpper())
+                    {
+                        TriplesToModify t = new();
+                        t.OldValue = gnossUser;
+                        t.Predicate = "http://w3id.org/roh/gnossUser";
+                        t.NewValue = "http://gnoss/" + usuario.user_id.ToString().ToUpper();
+                        triplesModificar[mResourceApi.GetShortGuid(person)].Add(t);
                     }
 
-                    string logoutUrl = UrlLogout;
-                    mCommunityApi.Log.Info("7.-logoutUrl:" + logoutUrl);
-                    mCommunityApi.Log.Info("8.-urlRedirect:" + pReturnUrl);
-                    Uri url = new Uri(pReturnUrl);
+                    //adminIndicadores
+                    if (adminIndicadores && (string.IsNullOrEmpty(isGraphicmanager) || isGraphicmanager != "true"))
+                    {
+                        if (string.IsNullOrEmpty(isGraphicmanager))
+                        {
+                            TriplesToInclude t = new();
+                            t.Predicate = "http://w3id.org/roh/isGraphicmanager";
+                            t.NewValue = "true";
+                            triplesInsertar[mResourceApi.GetShortGuid(person)].Add(t);
+                        }
+                        else
+                        {
+                            TriplesToModify t = new();
+                            t.OldValue = isGraphicmanager;
+                            t.Predicate = "http://w3id.org/roh/isGraphicmanager";
+                            t.NewValue = "true";
+                            triplesModificar[mResourceApi.GetShortGuid(person)].Add(t);
+                        }
+                    }
+                    if (!adminIndicadores && !string.IsNullOrEmpty(isGraphicmanager))
+                    {
+                        RemoveTriples t = new();
+                        t.Predicate = "http://w3id.org/roh/isGraphicmanager";
+                        t.Value = isGraphicmanager;
+                        triplesEliminar[mResourceApi.GetShortGuid(person)].Add(t);
+                    }
 
-                    PersonaCN personaCN = new PersonaCN(mEntityContext, mLoggingService, mConfigService, mServicesUtilVirtuosoAndReplication);
-                    Es.Riam.Gnoss.AD.EntityModel.Models.PersonaDS.Persona filaPersona = personaCN.ObtenerPersonaPorUsuario(usuario.user_id).ListaPersona.FirstOrDefault();
-                    UsuarioCN usuarioCN = new UsuarioCN(mEntityContext, mLoggingService, mConfigService, mServicesUtilVirtuosoAndReplication);
-                    Es.Riam.Gnoss.AD.EntityModel.Models.UsuarioDS.Usuario filaUsuario = usuarioCN.ObtenerUsuarioCompletoPorID(usuario.user_id).ListaUsuario.FirstOrDefault();
+                    //gestorOtri
+                    if (gestorOtri && (string.IsNullOrEmpty(isOtriManager) || isOtriManager != "true"))
+                    {
+                        if (string.IsNullOrEmpty(isOtriManager))
+                        {
+                            TriplesToInclude t = new();
+                            t.Predicate = "http://w3id.org/roh/isOtriManager";
+                            t.NewValue = "true";
+                            triplesInsertar[mResourceApi.GetShortGuid(person)].Add(t);
+                        }
+                        else
+                        {
+                            TriplesToModify t = new();
+                            t.OldValue = isOtriManager;
+                            t.Predicate = "http://w3id.org/roh/isOtriManager";
+                            t.NewValue = "true";
+                            triplesModificar[mResourceApi.GetShortGuid(person)].Add(t);
+                        }
+                    }
+                    if (!gestorOtri && !string.IsNullOrEmpty(isOtriManager))
+                    {
+                        RemoveTriples t = new();
+                        t.Predicate = "http://w3id.org/roh/isOtriManager";
+                        t.Value = isOtriManager;
+                        triplesEliminar[mResourceApi.GetShortGuid(person)].Add(t);
+                    }
 
-                    mUsuarioID = filaUsuario.UsuarioID;
-                    mPersonaID = filaPersona.PersonaID;
-                    mLogin = filaUsuario.Login;
-                    mIdioma = filaPersona.Idioma;
-                    mNombreCorto = filaUsuario.NombreCorto;
-                    mMantenerConectado = false;
+                    //Admin
+                    if (admin && !isAdmin)
+                    {
+                        //Meter como admin
+                        mCommunityApi.UpgradeMemberToAdministrator(usuario.user_id);
+                    }
+                    else if (!admin && isAdmin)
+                    {
+                        //Sacar como admin
+                        mCommunityApi.DowngradeMemberFromAdministrator(usuario.user_id);
+                    }
 
-                    base.LoguearUsuario(filaUsuario.UsuarioID, mPersonaID, mNombreCorto, mLogin, mIdioma);
 
-                    return EnviarCookies(url.Scheme + "://" + url.Host, pReturnUrl, pToken);
+
+
+                    return usuario;
 
                 }
             }
-            else
-            {
-                //No tiene email
-                mCommunityApi.Log.Info("5.-Redirigir a la página avisando de que no existe ningún usuario con ese correo");
-                return pReturnUrl + "/notexistsmail?email=" + email;
-            }
+            return null;
         }
 
         private string CreatePassword()
