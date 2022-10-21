@@ -906,7 +906,9 @@
                 buscadorPersonalizado.orders[0]={"name":"@Html.Translate("FECHA_DESCENDENTE")","orderby":"dct:issued|desc"};
                 buscadorPersonalizado.orders[1]={"name":"@Html.Translate("FECHA_ASCENDENTE")","orderby":"dct:issued|asc"};
                 buscadorPersonalizado.orders[2]={"name":"@Html.Translate("NUMERO_CITAS")","orderby":"roh:citationCount|desc"};
-                buscadorPersonalizado.init("@Html.Translate("PUBLICACIONES")", "#contenedorBuscadorPublicaciones", "searchPublicacionesPublicasPerson=http://gnoss/@pPerson.GNOSSID.Split('_')[1].ToUpper()", "dct:issued", "rdf:type=document", "@Comunidad.Url", "@Comunidad.Key.ToString()");
+                buscadorPersonalizado.init("@Html.Translate("PUBLICACIONES")", "#contenedorBuscadorPublicaciones", "searchPublicacionesPublicasPerson=http://gnoss/@pPerson.GNOSSID.Split('_')[1].ToUpper()", "dct:issued", "rdf:type=document", "@Comunidad.Url", "@Comunidad.Key.ToString()", null, function() {
+                    filtrarMovil.init()
+                });
             });
             $('#proyectos-tab').unbind().click(function (e) {
                 e.preventDefault();
@@ -916,13 +918,17 @@
                 buscadorPersonalizado.orders[1]={"name":"@Html.Translate("FECHA_INICIO_ASCENDENTE")","orderby":"vivo:start|asc"};
                 buscadorPersonalizado.orders[2]={"name":"@Html.Translate("FECHA_FIN_DESCENDENTE")","orderby":"vivo:end|desc"};
                 buscadorPersonalizado.orders[3]={"name":"@Html.Translate("FECHA_FIN_ASCENDENTE")","orderby":"vivo:end|asc"};
-                buscadorPersonalizado.init("Proyectos", "#contenedorBuscadorProyectos", "searchProyectosPublicosPerson=http://gnoss/@pPerson.GNOSSID.Split('_')[1].ToUpper()", "vivo:start", "rdf:type=project", "@Comunidad.Url", "@Comunidad.Key.ToString()");
+                buscadorPersonalizado.init("Proyectos", "#contenedorBuscadorProyectos", "searchProyectosPublicosPerson=http://gnoss/@pPerson.GNOSSID.Split('_')[1].ToUpper()", "vivo:start", "rdf:type=project", "@Comunidad.Url", "@Comunidad.Key.ToString()", null, function() {
+                    filtrarMovil.init()
+                });
             });
             $('#otros-tab').unbind().click(function (e) {
                 e.preventDefault();
                 that.tabActive = "researchobjects";
                 buscadorPersonalizado.orders=null;
-                buscadorPersonalizado.init("@Html.Translate("OTROS_RESULTADOS")", "#contenedorBuscadorResearchObjects", "searchResearchObjectsPublicosPerson=http://gnoss/@pPerson.GNOSSID.Split('_')[1].ToUpper()", "dct:issued", "rdf:type=researchobject", "@Comunidad.Url", "@Comunidad.Key.ToString()");
+                buscadorPersonalizado.init("@Html.Translate("OTROS_RESULTADOS")", "#contenedorBuscadorResearchObjects", "searchResearchObjectsPublicosPerson=http://gnoss/@pPerson.GNOSSID.Split('_')[1].ToUpper()", "dct:issued", "rdf:type=researchobject", "@Comunidad.Url", "@Comunidad.Key.ToString()", null, function() {
+                    filtrarMovil.init()
+                });
             });
             $('#topics-tab').unbind().click(function (e) {
                 e.preventDefault();
@@ -934,7 +940,9 @@
                 e.preventDefault();
                 that.tabActive = "colaboradores";
                 buscadorPersonalizado.orders=null;
-                buscadorPersonalizado.init("Colaboradores", "#contenedorBuscadorColaboradores", "searchColaboradoresPersonPublic=http://gnoss/@pPerson.GNOSSID.Split('_')[1].ToUpper()", "", "rdf:type=person", "@Comunidad.Url", "@Comunidad.Key.ToString()");
+                buscadorPersonalizado.init("Colaboradores", "#contenedorBuscadorColaboradores", "searchColaboradoresPersonPublic=http://gnoss/@pPerson.GNOSSID.Split('_')[1].ToUpper()", "", "rdf:type=person", "@Comunidad.Url", "@Comunidad.Key.ToString()", null, function() {
+                    filtrarMovil.init()
+                });
             });
             $('#otros-meritos-tab').unbind().click(function (e) {
                 e.preventDefault();

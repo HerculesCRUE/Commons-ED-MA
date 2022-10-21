@@ -3182,7 +3182,9 @@ var comportamientoPopupOferta = {
 		// Iniciar el listado de usuarios
 		// buscadorPersonalizado.init($('#INVESTIGADORES').val(), "#ofertaListUsers", "searchOfertaMixto=" + paramsCl, null, "profiles=" + JSON.stringify(profiles) + "|viewmode=oferta|rdf:type=person", $('inpt_baseUrlBusqueda').val(), $('#inpt_proyID').val());
 		// buscadorPersonalizado.init($('#INVESTIGADORES').val(), "#ofertaListUsers", "searcherPersonsOffers=" + paramsCl, null, "rdf:type=person|roh:isActive=true", $('inpt_baseUrlBusqueda').val(), $('#inpt_proyID').val(), paramsClUrl);
-		buscadorPersonalizado.init($('#INVESTIGADORES').val(), "#ofertaListUsers", null, null, "rdf:type=person|roh:isActive=true", $('#inpt_baseUrlBusqueda').val(), $('#inpt_proyID').val(), paramsClUrl);
+		buscadorPersonalizado.init($('#INVESTIGADORES').val(), "#ofertaListUsers", null, null, "rdf:type=person|roh:isActive=true", $('#inpt_baseUrlBusqueda').val(), $('#inpt_proyID').val(), paramsClUrl, function() {
+			filtrarMovil.init()
+		});
 		
 		// Agregamos los ordenes
 		// $('.searcherResults .h1-container').after(
@@ -3308,7 +3310,9 @@ var comportamientoProyectosOferta = {
 		
 		// Iniciar el listado de usuarios
 		// buscadorPersonalizado.init($('#INVESTIGADORES').val(), "#ofertaListProyectos", "searchOfertaMixto=" + paramsCl, null, "profiles=" + JSON.stringify(profiles) + "|viewmode=oferta|rdf:type=person", $('inpt_baseUrlBusqueda').val(), $('#inpt_proyID').val());
-		buscadorPersonalizado.init(stepsOffer.txtProyectos, "#ofertaListProyectos", "searcherProyectosValidadasPersonas=" + paramsCl, null, "rdf:type=project|roh:isValidated=true", $('#inpt_baseUrlBusqueda').val(), $('#inpt_proyID').val());
+		buscadorPersonalizado.init(stepsOffer.txtProyectos, "#ofertaListProyectos", "searcherProyectosValidadasPersonas=" + paramsCl, null, "rdf:type=project|roh:isValidated=true", $('#inpt_baseUrlBusqueda').val(), $('#inpt_proyID').val(), null, function() {
+			filtrarMovil.init()
+		});
 		
 
 		//Enganchamos comportamiento grafica seleccionados
@@ -3354,7 +3358,9 @@ var comportamientoPublicacionesOferta = {
 		
 		// Iniciar el listado de usuarios
 		// buscadorPersonalizado.init($('#INVESTIGADORES').val(), "#ofertaListPublicaciones", "searchOfertaMixto=" + paramsCl, null, "profiles=" + JSON.stringify(profiles) + "|viewmode=oferta|rdf:type=person", $('inpt_baseUrlBusqueda').val(), $('#inpt_proyID').val());
-		buscadorPersonalizado.init(stepsOffer.txtPublicaciones, "#ofertaListPublicaciones", "searcherPublicacionesValidadasPersonas=" + paramsCl, null, "rdf:type=document|roh:isValidated=true", $('#inpt_baseUrlBusqueda').val(), $('#inpt_proyID').val());
+		buscadorPersonalizado.init(stepsOffer.txtPublicaciones, "#ofertaListPublicaciones", "searcherPublicacionesValidadasPersonas=" + paramsCl, null, "rdf:type=document|roh:isValidated=true", $('#inpt_baseUrlBusqueda').val(), $('#inpt_proyID').val(), null, function() {
+			filtrarMovil.init()
+		});
 		
 
 		return;
@@ -3395,7 +3401,9 @@ var comportamientoPIIOferta = {
 		
 		// Iniciar el listado de usuarios
 		// buscadorPersonalizado.init($('#INVESTIGADORES').val(), "#ofertaListPublicaciones", "searchOfertaMixto=" + paramsCl, null, "profiles=" + JSON.stringify(profiles) + "|viewmode=oferta|rdf:type=person", $('inpt_baseUrlBusqueda').val(), $('#inpt_proyID').val());
-		buscadorPersonalizado.init(stepsOffer.txtPii, "#ofertaListPII", "searcherPIIPublicosPersonas=" + paramsCl, null, "rdf:type=patent", $('#inpt_baseUrlBusqueda').val(), $('#inpt_proyID').val());
+		buscadorPersonalizado.init(stepsOffer.txtPii, "#ofertaListPII", "searcherPIIPublicosPersonas=" + paramsCl, null, "rdf:type=patent", $('#inpt_baseUrlBusqueda').val(), $('#inpt_proyID').val(), null, function() {
+			filtrarMovil.init()
+		});
 		
 
 		return;
@@ -3429,7 +3437,9 @@ var comportamientoOfertasOtri = {
 		buscadorPersonalizado.profile=null;
 
 		// Iniciar el listado de ofertas
-		buscadorPersonalizado.init(document.getElementById(idPrint).dataset.title, "#"+idPrint, "searchOffersOtri=" + pIdUser, null, "rdf:type=offer", $('inpt_baseUrlBusqueda').val(), $('#inpt_proyID').val());
+		buscadorPersonalizado.init(document.getElementById(idPrint).dataset.title, "#"+idPrint, "searchOffersOtri=" + pIdUser, null, "rdf:type=offer", $('inpt_baseUrlBusqueda').val(), $('#inpt_proyID').val(), null, function() {
+			filtrarMovil.init()
+		});
 
 		return;
 	}
@@ -3449,7 +3459,9 @@ var comportamientoMisOfertas = {
 		buscadorPersonalizado.profile=null;
 
 		// Iniciar el listado de ofertas
-		buscadorPersonalizado.init(document.getElementById(idPrint).dataset.title, "#"+idPrint, "searchOwnOffers=" + pIdUser, null, "rdf:type=offer", $('#inpt_baseUrlBusqueda').val(), $('#inpt_proyID').val());
+		buscadorPersonalizado.init(document.getElementById(idPrint).dataset.title, "#"+idPrint, "searchOwnOffers=" + pIdUser, null, "rdf:type=offer", $('#inpt_baseUrlBusqueda').val(), $('#inpt_proyID').val(), null, function() {
+			filtrarMovil.init()
+		});
 
 		return;
 	}

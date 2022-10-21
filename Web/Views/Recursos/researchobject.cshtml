@@ -1445,17 +1445,22 @@
                 that.tabActive = "relacionados";
                 buscadorPersonalizado.init("@Html.Translate("RELACIONADOS")", "#contenedorBuscadorRelacionados", "searchRelacionadosROs=@pResearchObject.GNOSSID.Split('_')[1].ToUpper()", "", "rdf:type=researchobject", "@Comunidad.Url", "@Comunidad.Key.ToString()", "", function() {
                     $('#panNumResultados').hide();
+                    filtrarMovil.init()
                 });
             });
             //$('#citas-tab').unbind().click(function (e) {
             //    e.preventDefault();
             //    that.tabActive = "citas";
-            //    buscadorPersonalizado.init("@Html.Translate("CITAS")", "#contenedorBuscadorCitas", "bibo:cites=http://gnoss/@pResearchObject.GNOSSID.Split('_')[1].ToUpper()", "dct:issued", "rdf:type=researchobject", "@Comunidad.Url", "@Comunidad.Key.ToString()");
+            //    buscadorPersonalizado.init("@Html.Translate("CITAS")", "#contenedorBuscadorCitas", "bibo:cites=http://gnoss/@pResearchObject.GNOSSID.Split('_')[1].ToUpper()", "dct:issued", "rdf:type=researchobject", "@Comunidad.Url", "@Comunidad.Key.ToString()", null, function() {
+            //        filtrarMovil.init()
+            //    });
             //});
             $('#referencias-tab').unbind().click(function (e) {
                 e.preventDefault();
                 that.tabActive = "referencias";
-                buscadorPersonalizado.init("@Html.Translate("REFERENCIAS")", "#contenedorBuscadorReferencias", "searchReferenciasDocumento=@pResearchObject.GNOSSID.Split('_')[1].ToUpper()", "dct:issued", "rdf:type=researchobject", "@Comunidad.Url", "@Comunidad.Key.ToString()");
+                buscadorPersonalizado.init("@Html.Translate("REFERENCIAS")", "#contenedorBuscadorReferencias", "searchReferenciasDocumento=@pResearchObject.GNOSSID.Split('_')[1].ToUpper()", "dct:issued", "rdf:type=researchobject", "@Comunidad.Url", "@Comunidad.Key.ToString()", null, function() {
+                    filtrarMovil.init()
+                });
             });
 
             $('#linked-tab').unbind().on('click', function (e) {
@@ -1465,7 +1470,9 @@
                 buscadorPersonalizado.orders=null;
                 // Realmente no funciona correctamente, he tenido que crear un botón para cargar más.
                 // Inicia
-                buscadorPersonalizado.init("@Html.Translate("LISTADO_RESEARCHOBJECTS_DOCUMENTOS_VINCULADOS")", "#contenedorBuscadorResearchObjectsLinked", "linkedROs=http://gnoss/@pResearchObject.GNOSSID.Split('_')[1].ToUpper()", "dct:issued", "rdf:type=researchobject|rdf:type=document", "@Comunidad.Url", "@Comunidad.Key.ToString()");
+                buscadorPersonalizado.init("@Html.Translate("LISTADO_RESEARCHOBJECTS_DOCUMENTOS_VINCULADOS")", "#contenedorBuscadorResearchObjectsLinked", "linkedROs=http://gnoss/@pResearchObject.GNOSSID.Split('_')[1].ToUpper()", "dct:issued", "rdf:type=researchobject|rdf:type=document", "@Comunidad.Url", "@Comunidad.Key.ToString()", null, function() {
+                    filtrarMovil.init()
+                });
 
 
             });

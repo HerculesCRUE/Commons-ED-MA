@@ -925,7 +925,7 @@
                                                     if (row.ContainsKey(propiedad))
                                                     {
                                                         contadorEtiquetas++;
-                                                        string filtro = $@"vivo:freeTextKeyword@@@roh:title={row[propiedad]}";
+                                                        string filtro = $@"vivo:freeTextKeyword={row[propiedad]}";
                                                         if (contadorEtiquetas <= 3)
                                                         {
                                                             <li>
@@ -1894,7 +1894,7 @@
             </div>
         </article>
     }
-    else if (Model.RdfTypeName == "Patent") // Offer
+    else if (Model.RdfTypeName == "Patent") // Patente
     {
         <article class="resource publicacion" id="resource_@Model.Key" typeof="sioc_t:Item" xmlns:owl="http://www.w3.org/2002/07/owl#" xmlns:sioc_t="http://rdfs.org/sioc/types#" xmlns:foaf="http://xmlns.com/foaf/0.1/" xmlns:dcterms="http://purl.org/dc/terms/" xmlns:sioc="http://rdfs.org/sioc/ns#">
             <div class="wrap">
