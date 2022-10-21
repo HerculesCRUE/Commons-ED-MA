@@ -392,6 +392,20 @@ namespace Gnoss.Web.Login.SAML
                         EliminarPermisosAdministrador("hercules", usuario.user_id);
                     }
 
+                    if (triplesInsertar[mResourceApi.GetShortGuid(person)].Count > 0)
+                    {
+                        mResourceApi.InsertPropertiesLoadedResources(triplesInsertar);
+                    }
+                    if (triplesModificar[mResourceApi.GetShortGuid(person)].Count > 0)
+                    {
+                        mResourceApi.ModifyPropertiesLoadedResources(triplesModificar);
+                    }
+                    if (triplesEliminar[mResourceApi.GetShortGuid(person)].Count > 0)
+                    {
+                        mResourceApi.DeletePropertiesLoadedResources(triplesEliminar);
+                    }
+
+
                     return usuario;
 
                 }
