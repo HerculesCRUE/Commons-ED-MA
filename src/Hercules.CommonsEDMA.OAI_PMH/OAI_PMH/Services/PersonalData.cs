@@ -382,25 +382,6 @@ namespace OAI_PMH.Services
             return vinculacion;
         }
 
-        private static VinculacionCategoriaProfesional GetVinculacionCategoriaProfesional(string id, ConfigService pConfig)
-        {
-            string accessToken = Token.CheckToken(pConfig);
-            VinculacionCategoriaProfesional vinculacion = new();
-            RestClient client = new(pConfig.GetConfigSGI() + "/api/sgp/vinculaciones/persona/" + id + "/vinculaciones-categorias-profesionales");
-            client.AddDefaultHeader("Authorization", "Bearer " + accessToken);
-            var request = new RestRequest(Method.GET);
-            IRestResponse response = client.Execute(request);
-            try
-            {
-                vinculacion = JsonConvert.DeserializeObject<VinculacionCategoriaProfesional>(response.Content);
-            }
-            catch
-            {
-                return null;
-            }
-            return vinculacion;
-        }
-
         private static DatosAcademicos GetDatosAcademicos(string id, ConfigService pConfig)
         {
             string accessToken = Token.CheckToken(pConfig);
