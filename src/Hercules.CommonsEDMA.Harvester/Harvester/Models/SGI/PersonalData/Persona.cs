@@ -8,6 +8,7 @@ using Harvester.Models.RabbitMQ;
 using Newtonsoft.Json;
 using OAI_PMH.Models.SGI.ActividadDocente;
 using OAI_PMH.Models.SGI.FormacionAcademica;
+using OAI_PMH.Models.SGI.OrganicStructure;
 using OAI_PMH.Models.SGI.Organization;
 using System;
 using System.Collections.Concurrent;
@@ -476,6 +477,39 @@ namespace OAI_PMH.Models.SGI.PersonalData
         /// <returns></returns>
         public PersonOntology.Person CrearPersonOntology(RabbitServiceWriterDenormalizer pRabbitConf, IHarvesterServices pHarvesterServices, ReadConfig pConfig, ResourceApi pResourceApi, Dictionary<string, HashSet<string>> pDicIdentificadores, Dictionary<string, Dictionary<string, string>> pDicRutas)
         {
+
+            #region --- Obtenemos el ID de la Organización
+            HashSet<string> listaIdsOrganizaciones = new HashSet<string>();
+            if (!string.IsNullOrEmpty(this.EntidadPropiaRef))
+            {
+                listaIdsOrganizaciones.Add(this.EntidadPropiaRef);
+            }
+            #endregion
+
+            #region --- Obtenemos los IDs de las organizaciones en BBDD.
+            Dictionary<string, string> dicOrganizaciones = Empresa.ObtenerOrganizacionesBBDD(listaIdsOrganizaciones, pResourceApi);
+            #endregion
+
+            #region --- Obtención de organizaciones
+            Dictionary<string, string> dicOrganizacionesCargadas = new Dictionary<string, string>();
+            foreach (KeyValuePair<string, string> item in dicOrganizaciones)
+            {
+                if (string.IsNullOrEmpty(item.Value))
+                {
+                    Empresa organizacionAux = Empresa.GetOrganizacionSGI(pHarvesterServices, pConfig, "Organizacion_" + item.Key, pDicRutas);
+                    string idGnoss = organizacionAux.Cargar(pHarvesterServices, pConfig, pResourceApi, "organization", pDicIdentificadores, pDicRutas, pRabbitConf);
+                    pDicIdentificadores["organization"].Add(idGnoss);
+                    dicOrganizacionesCargadas[item.Key] = idGnoss;
+                }
+                else
+                {
+                    dicOrganizacionesCargadas[item.Key] = item.Value;
+                }
+            }
+            #endregion
+
+
+            #region Construimos el objeto Person
             PersonOntology.Person persona = new PersonOntology.Person();
 
             // Crisidentifier (Se corresponde al DNI sin letra)
@@ -494,6 +528,12 @@ namespace OAI_PMH.Models.SGI.PersonalData
             if (!string.IsNullOrEmpty(this.Apellidos))
             {
                 persona.Foaf_lastName = this.Apellidos;
+            }
+
+            //organizacion
+            if (!string.IsNullOrEmpty(this.EntidadPropiaRef))
+            {
+                persona.IdRoh_hasRole = dicOrganizacionesCargadas[this.EntidadPropiaRef];
             }
 
             // Sexo.
@@ -589,7 +629,7 @@ namespace OAI_PMH.Models.SGI.PersonalData
 
             // Fecha de actualización.
             persona.Roh_lastUpdatedDate = DateTime.UtcNow;
-
+            #endregion
             return persona;
         }
 
@@ -842,7 +882,7 @@ namespace OAI_PMH.Models.SGI.PersonalData
                 formEspDevolver.Roh_conductedByTitle = formacionEspecializada.entidadTitulacionTitulo;
                 formEspDevolver.IdRoh_conductedBy = formacionEspecializada.entidadTitulacion;
                 formEspDevolver.Dct_issued = formacionEspecializada.fechaFinalizacion;
-                formEspDevolver.Roh_durationHours = formacionEspecializada.duracionHoras;
+                formEspDevolver.Roh_durationHours = (int)(formacionEspecializada.duracionHoras);
                 formEspDevolver.IdRoh_formationType = formacionEspecializada.tipoFormacion;
                 formEspDevolver.Roh_goals = formacionEspecializada.objetivosEntidad;
                 formEspDevolver.Roh_trainerNick = formacionEspecializada.firma;
@@ -1537,7 +1577,7 @@ namespace OAI_PMH.Models.SGI.PersonalData
                 {
                     tesis.studentName = alumno.Nombre;
                     tesis.studentFirstSurname = alumno.Apellidos;
-                    tesis.studentNick = alumno.Nombre + " " + alumno.Apellidos;
+                    tesis.studentNick = (alumno.Nombre + " " + alumno.Apellidos).Trim();
                     crisIdentifier += $@"{RemoveDiacritics(tesis.studentNick)}___";
                 }
 
@@ -1570,17 +1610,26 @@ namespace OAI_PMH.Models.SGI.PersonalData
                     }
                 }
 
-                if (item.CoDirectorTesis != null && !string.IsNullOrEmpty(item.CoDirectorTesis.PersonaRef))
+                if (item.CoDirectorTesis != null && item.CoDirectorTesis.Count > 0)
                 {
-                    Persona codirectorSGI = GetPersonaSGI(pHarvesterServices, pConfig, "Persona_" + item.CoDirectorTesis.PersonaRef, pDicRutas);
-                    if (codirectorSGI != null)
+                    int orden = 1;
+                    tesis.codirector = new List<Codirector>();
+                    foreach (Director director in item.CoDirectorTesis)
                     {
-                        Codirector codirector = new Codirector();
-                        codirector.firstName = codirectorSGI.Nombre;
-                        codirector.secondFamilyName = codirectorSGI.Apellidos;
-                        codirector.nick = codirectorSGI.Nombre + " " + codirectorSGI.Apellidos;
-                        codirector.comment = 1;
-                        tesis.codirector = new List<Codirector>() { codirector };
+                        if (!string.IsNullOrEmpty(director.PersonaRef))
+                        {
+                            Persona codirectorSGI = GetPersonaSGI(pHarvesterServices, pConfig, "Persona_" + director.PersonaRef, pDicRutas);
+                            if (codirectorSGI != null)
+                            {
+                                Codirector codirector = new Codirector();
+                                codirector.firstName = codirectorSGI.Nombre;
+                                codirector.secondFamilyName = codirectorSGI.Apellidos;
+                                codirector.nick = (codirectorSGI.Nombre + " " + codirectorSGI.Apellidos).Trim();
+                                codirector.comment = orden;
+                                tesis.codirector.Add(codirector);
+                                orden++;
+                            }
+                        }
                     }
                 }
 
@@ -1664,6 +1713,19 @@ namespace OAI_PMH.Models.SGI.PersonalData
                             curso.promotedBy = dicOrganizacionesCargadas[item.EntidadOrganizacionEvento.EntidadRef];
                         }
                     }
+                }
+
+                // Código de países.
+                if (item.PaisEntidadOrganizacionEvento != null && !string.IsNullOrEmpty(item.PaisEntidadOrganizacionEvento.Id))
+                {
+                    curso.hasCountryName = IdentificadorPais(item.PaisEntidadOrganizacionEvento.Id, pResourceApi);
+                    crisIdentifier += $@"{item.PaisEntidadOrganizacionEvento.Id}___";
+                }
+
+                if (item.CcaaRegionEntidadOrganizacionEvento != null && !string.IsNullOrEmpty(item.CcaaRegionEntidadOrganizacionEvento.Id))
+                {
+                    curso.hasRegion = IdentificadorRegion(item.CcaaRegionEntidadOrganizacionEvento.Id, pResourceApi);
+                    crisIdentifier += $@"{item.CcaaRegionEntidadOrganizacionEvento.Id}___";
                 }
 
                 // Código de países.
@@ -1913,21 +1975,30 @@ namespace OAI_PMH.Models.SGI.PersonalData
                 {
                     doctorado.nombreDirector = director.Nombre;
                     doctorado.primApeDirector = director.Apellidos;
-                    doctorado.firmaDirector = director.Nombre + " " + director.Apellidos;
+                    doctorado.firmaDirector = (director.Nombre + " " + director.Apellidos).Trim();
                     crisIdentifier += $@"{RemoveDiacritics(doctorado.firmaDirector)}___";
                 }
 
-                if (item.CoDirectorTesis != null && !string.IsNullOrEmpty(item.CoDirectorTesis.PersonaRef))
+                if (item.CoDirectorTesis != null && item.CoDirectorTesis.Count > 0)
                 {
-                    Persona codirectorSGI = GetPersonaSGI(pHarvesterServices, pConfig, "Persona_" + item.CoDirectorTesis.PersonaRef, pDicRutas);
-                    if (codirectorSGI != null)
+                    int orden = 1;
+                    doctorado.codirectorTesis = new List<DoctoradosBBDD.Codirector>();
+                    foreach (Director codirectortesis in item.CoDirectorTesis)
                     {
-                        DoctoradosBBDD.Codirector codirector = new DoctoradosBBDD.Codirector();
-                        codirector.firstName = codirectorSGI.Nombre;
-                        codirector.secondFamilyName = codirectorSGI.Apellidos;
-                        codirector.nick = codirectorSGI.Nombre + " " + codirectorSGI.Apellidos;
-                        codirector.comment = 1;
-                        doctorado.codirectorTesis = new List<DoctoradosBBDD.Codirector>() { codirector };
+                        if (!string.IsNullOrEmpty(codirectortesis.PersonaRef))
+                        {
+                            Persona codirectorSGI = GetPersonaSGI(pHarvesterServices, pConfig, "Persona_" + codirectortesis.PersonaRef, pDicRutas);
+                            if (codirectorSGI != null)
+                            {
+                                DoctoradosBBDD.Codirector codirector = new DoctoradosBBDD.Codirector();
+                                codirector.firstName = codirectorSGI.Nombre;
+                                codirector.secondFamilyName = codirectorSGI.Apellidos;
+                                codirector.nick = (codirectorSGI.Nombre + " " + codirectorSGI.Apellidos).Trim();
+                                codirector.comment = orden;
+                                doctorado.codirectorTesis.Add(codirector);
+                                orden++;
+                            }
+                        }
                     }
                 }
 
@@ -2130,15 +2201,13 @@ namespace OAI_PMH.Models.SGI.PersonalData
                 formEspecializada.objetivosEntidad = item.Objetivos;
                 crisIdentifier += $@"{RemoveDiacritics(formEspecializada.objetivosEntidad)}___";
 
-                if (!string.IsNullOrEmpty(item.ResponsableFormacion))
+                if (item.ResponsableFormacion != null)
                 {
-                    formEspecializada.firma = item.ResponsableFormacion;
+                    formEspecializada.firma = item.ResponsableFormacion.NombreCompleto;
                     crisIdentifier += $@"{RemoveDiacritics(formEspecializada.firma)}___";
-                    if (item.ResponsableFormacion.Contains(" "))
-                    {
-                        formEspecializada.nombre = item.ResponsableFormacion.Split(" ")[0];
-                        formEspecializada.primApe = item.ResponsableFormacion.Split(" ")[1];
-                    }
+                    formEspecializada.nombre = item.ResponsableFormacion.Nombre;
+                    formEspecializada.primApe = item.ResponsableFormacion.PrimerApellido;
+                    formEspecializada.segunApe = item.ResponsableFormacion.SegundoApellido;
                 }
 
                 // CrisIdentifier
