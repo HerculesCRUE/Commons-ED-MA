@@ -158,11 +158,32 @@ namespace Gnoss.Web.Login.SAML
                                         OPTIONAL{{?person <http://xmlns.com/foaf/0.1/lastName> ?lastName}}
                         }}order by desc(?active) desc(?crisIdentifier)", "person");
 
-                string person = datosPersona.results.bindings.FirstOrDefault()?["person"].value;
-                bool active = datosPersona.results.bindings.FirstOrDefault()?["active"].value == "true";
-                string crisIdentifier = datosPersona.results.bindings.FirstOrDefault()?["crisIdentifier"].value;
-                string firstName = datosPersona.results.bindings.FirstOrDefault()?["firstName"].value;
-                string lastName = datosPersona.results.bindings.FirstOrDefault()?["lastName"].value;
+                string person = "";
+                bool active = false;
+                string crisIdentifier = "";
+                string firstName = "";
+                string lastName = "";
+                if (datosPersona.results.bindings.FirstOrDefault() != null && datosPersona.results.bindings.FirstOrDefault().ContainsKey("person"))
+                {
+                    person = datosPersona.results.bindings.FirstOrDefault()["person"].value;
+                }
+                if (datosPersona.results.bindings.FirstOrDefault() != null && datosPersona.results.bindings.FirstOrDefault().ContainsKey("active"))
+                {
+                    active = datosPersona.results.bindings.FirstOrDefault()["active"].value=="true";
+                }
+                if (datosPersona.results.bindings.FirstOrDefault() != null && datosPersona.results.bindings.FirstOrDefault().ContainsKey("crisIdentifier"))
+                {
+                    crisIdentifier = datosPersona.results.bindings.FirstOrDefault()["crisIdentifier"].value;
+                }
+                if (datosPersona.results.bindings.FirstOrDefault() != null && datosPersona.results.bindings.FirstOrDefault().ContainsKey("firstName"))
+                {
+                    firstName = datosPersona.results.bindings.FirstOrDefault()["firstName"].value;
+                }
+                if (datosPersona.results.bindings.FirstOrDefault() != null && datosPersona.results.bindings.FirstOrDefault().ContainsKey("lastName"))
+                {
+                    lastName = datosPersona.results.bindings.FirstOrDefault()["lastName"].value;
+                }
+
                 if (string.IsNullOrEmpty(firstName))
                 {
                     firstName = email;
@@ -252,9 +273,23 @@ namespace Gnoss.Web.Login.SAML
                                         
                         }}", "person");
 
-                    string isGraphicmanager = datosPermisosPersona.results.bindings.FirstOrDefault()?["isGraphicmanager"].value;
-                    string isOtriManager = datosPermisosPersona.results.bindings.FirstOrDefault()?["isOtriManager"].value;
-                    string gnossUser = datosPermisosPersona.results.bindings.FirstOrDefault()?["gnossUser"].value;
+                    string isGraphicmanager = "";
+                    string isOtriManager = "";
+                    string gnossUser = "";
+
+                    if (datosPermisosPersona.results.bindings.FirstOrDefault() != null && datosPermisosPersona.results.bindings.FirstOrDefault().ContainsKey("isGraphicmanager"))
+                    {
+                        isGraphicmanager = datosPermisosPersona.results.bindings.FirstOrDefault()["isGraphicmanager"].value;
+                    }
+                    if (datosPermisosPersona.results.bindings.FirstOrDefault() != null && datosPermisosPersona.results.bindings.FirstOrDefault().ContainsKey("isOtriManager"))
+                    {
+                        isOtriManager = datosPermisosPersona.results.bindings.FirstOrDefault()["isOtriManager"].value;
+                    }
+                    if (datosPermisosPersona.results.bindings.FirstOrDefault() != null && datosPermisosPersona.results.bindings.FirstOrDefault().ContainsKey("gnossUser"))
+                    {
+                        gnossUser = datosPermisosPersona.results.bindings.FirstOrDefault()["gnossUser"].value;
+                    }
+
                     mCommunityApi.Log.Info($"-Comprobamos si es administrador de la comunidad");
                     bool isAdmin = EsAdministradorComunidad("hercules", usuario.user_id);
 
