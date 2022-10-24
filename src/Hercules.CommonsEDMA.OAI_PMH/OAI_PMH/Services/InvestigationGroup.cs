@@ -28,7 +28,7 @@ namespace OAI_PMH.Services
             RestClient client = new(pConfig.GetConfigSGI() + "/api/sgicsp/grupos/modificados-ids?q=fechaModificacion=ge=\"" + from + "\""); // TODO: Revisar url petición.
             client.AddDefaultHeader("Authorization", "Bearer " + accessToken);
             var request = new RestRequest(Method.GET);
-            IRestResponse response = client.Execute(request);
+            IRestResponse response = Token.httpCall(client, request);
 
             if (!string.IsNullOrEmpty(response.Content))
             {
@@ -58,7 +58,7 @@ namespace OAI_PMH.Services
             RestClient client = new(pConfig.GetConfigSGI() + "/api/sgicsp/grupos/" + identifier);
             client.AddDefaultHeader("Authorization", "Bearer " + accessToken);
             var request = new RestRequest(Method.GET);
-            IRestResponse response = client.Execute(request);
+            IRestResponse response = Token.httpCall(client, request);
             Grupo grupo = new Grupo();
             List<Thread> hilos = new();
             List<GrupoEquipo> equipo = null;
@@ -130,7 +130,7 @@ namespace OAI_PMH.Services
             RestClient client = new(pConfig.GetConfigSGI() + "/api/sgicsp/gruposlineasinvestigacion/" + id + "/clasificaciones");
             client.AddDefaultHeader("Authorization", "Bearer " + accessToken);
             var request = new RestRequest(Method.GET);
-            IRestResponse response = client.Execute(request);
+            IRestResponse response = Token.httpCall(client, request);
             try
             {
                 lineas = JsonConvert.DeserializeObject<List<LineaClasificacion>>(response.Content);
@@ -155,7 +155,7 @@ namespace OAI_PMH.Services
             RestClient client = new(pConfig.GetConfigSGI() + "/api/sgicsp/grupos/" + id + "/lineasinvestigacion");
             client.AddDefaultHeader("Authorization", "Bearer " + accessToken);
             var request = new RestRequest(Method.GET);
-            IRestResponse response = client.Execute(request);
+            IRestResponse response = Token.httpCall(client, request);
             try
             {
                 lineas = JsonConvert.DeserializeObject<List<LineaInvestigacion>>(response.Content);
@@ -180,7 +180,7 @@ namespace OAI_PMH.Services
             RestClient client = new(pConfig.GetConfigSGI() + "/api/sgicsp/grupos/" + id + "/palabrasclave");
             client.AddDefaultHeader("Authorization", "Bearer " + accessToken);
             var request = new RestRequest(Method.GET);
-            IRestResponse response = client.Execute(request);
+            IRestResponse response = Token.httpCall(client, request);
             try
             {
                 palabras = JsonConvert.DeserializeObject<List<GrupoPalabraClave>>(response.Content);
@@ -205,7 +205,7 @@ namespace OAI_PMH.Services
             RestClient client = new(pConfig.GetConfigSGI() + "/api/sgicsp/grupos/" + id + "/investigadoresprincipalesmaxparticipacion");
             client.AddDefaultHeader("Authorization", "Bearer " + accessToken);
             var request = new RestRequest(Method.GET);
-            IRestResponse response = client.Execute(request);
+            IRestResponse response = Token.httpCall(client, request);
             try
             {
                 investigadores = JsonConvert.DeserializeObject<List<string>>(response.Content);
@@ -230,7 +230,7 @@ namespace OAI_PMH.Services
             RestClient client = new(pConfig.GetConfigSGI() + "/api/sgicsp/grupos/" + id + "/investigadoresprincipales");
             client.AddDefaultHeader("Authorization", "Bearer " + accessToken);
             var request = new RestRequest(Method.GET);
-            IRestResponse response = client.Execute(request);
+            IRestResponse response = Token.httpCall(client, request);
             try
             {
                 investigadores = JsonConvert.DeserializeObject<List<string>>(response.Content);
@@ -255,7 +255,7 @@ namespace OAI_PMH.Services
             RestClient client = new(pConfig.GetConfigSGI() + "/api/sgicsp/grupos/" + id + "/miembrosequipo");
             client.AddDefaultHeader("Authorization", "Bearer " + accessToken);
             var request = new RestRequest(Method.GET);
-            IRestResponse response = client.Execute(request);
+            IRestResponse response = Token.httpCall(client, request);
             try
             {
                 grupoEquipo = JsonConvert.DeserializeObject<List<GrupoEquipo>>(response.Content);

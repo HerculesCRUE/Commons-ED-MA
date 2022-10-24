@@ -22,7 +22,7 @@ namespace OAI_PMH.Services
             RestClient client = new(pConfig.GetConfigSGI() + "/api/sgemp/empresas/modificadas-ids?q=fechaModificacion=ge=\"" + from + "\"");
             client.AddDefaultHeader("Authorization", "Bearer " + accessToken);
             var request = new RestRequest(Method.GET);
-            IRestResponse response = client.Execute(request);
+            IRestResponse response = Token.httpCall(client, request);
             if (!String.IsNullOrEmpty(response.Content))
             {
                 var sinComillas = response.Content[1..^1].Replace("\"", "");
@@ -45,7 +45,7 @@ namespace OAI_PMH.Services
             RestClient client = new(pConfig.GetConfigSGI() + "/api/sgemp/empresas/" + identifier);
             client.AddDefaultHeader("Authorization", "Bearer " + accessToken);
             var request = new RestRequest(Method.GET);
-            IRestResponse response = client.Execute(request);
+            IRestResponse response = Token.httpCall(client, request);
             var json = JObject.Parse(response.Content);
             empresa = JsonConvert.DeserializeObject<Empresa>(json.ToString());
             DatosContacto datosContacto = null;
@@ -72,7 +72,7 @@ namespace OAI_PMH.Services
             RestClient client = new(pConfig.GetConfigSGI() + "/api/sgemp/datos-contacto/empresa/" + id);
             client.AddDefaultHeader("Authorization", "Bearer " + accessToken);
             var request = new RestRequest(Method.GET);
-            IRestResponse response = client.Execute(request);
+            IRestResponse response = Token.httpCall(client, request);
             string datosLimpios = response.Content;
             try
             {
@@ -92,7 +92,7 @@ namespace OAI_PMH.Services
             RestClient client = new(pConfig.GetConfigSGI() + "/api/sgemp/empresas-clasificaciones/empresa/" + id);
             client.AddDefaultHeader("Authorization", "Bearer " + accessToken);
             var request = new RestRequest(Method.GET);
-            IRestResponse response = client.Execute(request);
+            IRestResponse response = Token.httpCall(client, request);
             string datosLimpios = response.Content;
             try
             {
@@ -112,7 +112,7 @@ namespace OAI_PMH.Services
             RestClient client = new(pConfig.GetConfigSGI() + "/api/sgemp/tipos-identificador");
             client.AddDefaultHeader("Authorization", "Bearer " + accessToken);
             var request = new RestRequest(Method.GET);
-            IRestResponse response = client.Execute(request);
+            IRestResponse response = Token.httpCall(client, request);
             try
             {
                 tiposIdentificador = JsonConvert.DeserializeObject<List<TipoIdentificador>>(response.Content);
@@ -131,7 +131,7 @@ namespace OAI_PMH.Services
             RestClient client = new(pConfig.GetConfigSGI() + "/api/sgemp/datos-tipo-empresa/empresa/" + id);
             client.AddDefaultHeader("Authorization", "Bearer " + accessToken);
             var request = new RestRequest(Method.GET);
-            IRestResponse response = client.Execute(request);
+            IRestResponse response = Token.httpCall(client, request);
             try
             {
                 datosTipoEmpresa = JsonConvert.DeserializeObject<DatosTipoEmpresa>(response.Content);
