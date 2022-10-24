@@ -524,17 +524,21 @@ namespace Gnoss.Web.Login.SAML
 
                 UsuarioCN usuarioCN = new UsuarioCN(mEntityContext, mLoggingService, mConfigService, mServicesUtilVirtuosoAndReplication);
 
+                mCommunityApi.Log.Info($"-A");
                 Es.Riam.Gnoss.AD.EntityModel.Models.UsuarioDS.ProyectoRolUsuario filaProyectoRolUsuario = usuarioCN.ObtenerRolUsuarioEnProyecto(proyectoID, user_id);
                 if (filaProyectoRolUsuario != null)
                 {
+                    mCommunityApi.Log.Info($"-B");
                     filaProyectoRolUsuario.RolPermitido = "0000000000000000";
                     filaProyectoRolUsuario.RolDenegado = "FFFFFFFFFFFFFFFF";
                 }
 
                 Es.Riam.Gnoss.AD.EncapsuladoDatos.DataWrapperProyecto dataWrapperProyecto = proyCN.ObtenerAdministradorProyectoDeUsuario(user_id);
                 Es.Riam.Gnoss.AD.EntityModel.Models.ProyectoDS.AdministradorProyecto filaAdminProyecto = dataWrapperProyecto.ListaAdministradorProyecto.FirstOrDefault(x => x.UsuarioID == user_id && x.ProyectoID == proyectoID);
+                mCommunityApi.Log.Info($"-C");
                 if (filaAdminProyecto != null)
                 {
+                    mCommunityApi.Log.Info($"-D");
                     mEntityContext.Entry(filaAdminProyecto).State = EntityState.Deleted;
                 }
                 mEntityContext.SaveChanges();
