@@ -9,6 +9,17 @@
 |Tipo|Especificación|
 |Cambios de la Versión|Versión inicial|
 
+
+[![SonarCloud](https://sonarcloud.io/images/project_badges/sonarcloud-white.svg)](https://sonarcloud.io/summary/new_code?id=Hercules.CommonsEDMA.Login)
+
+[![Bugs](https://sonarcloud.io/api/project_badges/measure?project=Hercules.CommonsEDMA.Login&metric=bugs)](https://sonarcloud.io/summary/new_code?id=Hercules.CommonsEDMA.Login)
+[![Reliability Rating](https://sonarcloud.io/api/project_badges/measure?project=Hercules.CommonsEDMA.Login&metric=reliability_rating)](https://sonarcloud.io/summary/new_code?id=Hercules.CommonsEDMA.Login)
+[![Reliability Rating](https://sonarcloud.io/api/project_badges/measure?project=Hercules.CommonsEDMA.Login&metric=reliability_rating)](https://sonarcloud.io/summary/new_code?id=Hercules.CommonsEDMA.Login)
+[![Duplicated Lines (%)](https://sonarcloud.io/api/project_badges/measure?project=Hercules.CommonsEDMA.Login&metric=duplicated_lines_density)](https://sonarcloud.io/summary/new_code?id=Hercules.CommonsEDMA.Login)
+
+
+
+
 # Acerca de SAML
 
 SAML es un tipo de servicio SSO (Single Sign On) capaz de intercambiar información del usuario mediante un identity provider y un service provider. 
