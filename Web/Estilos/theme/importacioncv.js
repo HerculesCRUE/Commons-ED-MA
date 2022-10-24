@@ -498,6 +498,12 @@ function checkAllWrappersCV(check){
 	}
 }
 function aniadirComportamientoCompararItems(){
+	$('span.compararItems').tooltip({
+		html: true,
+		placement: 'left',
+		template: '<div class="tooltip background-gris-oscuro" role="tooltip"><div class="tooltip-arrow"></div><div class="tooltip-inner"></div></div>',
+		title: GetText('COMPARAR_ITEMS')
+	});
 	$('span.compararItems').off('click').on('click', function(e){
 		e.preventDefault();
 		MostrarUpdateProgress();
@@ -519,7 +525,7 @@ function aniadirComportamientoCompararItems(){
 	});
 }
 function getItemCV(pIdBBDD, pIdSection, pLang){
-	$.get(url_servicio_editorcv + 'GetItemMiniImport?pIdSection=' + pIdSection + "&pIdBBDD=" + pIdBBDD + "&pLang=" + pLang, null, function (data) {
+	$.get(url_servicio_editorcv + 'EdicionCV/GetItemMiniImport?pIdSection=' + pIdSection + "&pIdBBDD=" + pIdBBDD + "&pLang=" + pLang, null, function (data) {
 		let openAccess = "";
 		if (data.isopenaccess) {
 			openAccess = "open-access";
