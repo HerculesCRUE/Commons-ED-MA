@@ -552,7 +552,7 @@ namespace Hercules.CommonsEDMA.Journals
                 int offset = 0;
                 bool salirBucle = false;
 
-                while(true)
+                while (true)
                 {
                     // Consulta sparql.
                     string selectMainDocument = $@"SELECT * WHERE {{ SELECT ?revista ?titulo ?issn ?eissn ?editor";
@@ -626,7 +626,7 @@ namespace Hercules.CommonsEDMA.Journals
                 bool salirBucle = false;
 
                 // ImpactIndex
-                while(true)
+                while (true)
                 {
                     // Consulta sparql.
                     string selectImpactIndex = $@"SELECT * WHERE {{ SELECT ?revista ?impactIndex ?fuente ?year ?impactIndexInYear ";
@@ -690,7 +690,7 @@ namespace Hercules.CommonsEDMA.Journals
                         break;
                     }
 
-                } 
+                }
             }
             #endregion
 
@@ -701,7 +701,7 @@ namespace Hercules.CommonsEDMA.Journals
                 int offset = 0;
 
                 // ImpactCategory
-                while(true)
+                while (true)
                 {
                     // Consulta sparql.
                     string selectImpactCategory = $@"SELECT * WHERE {{ SELECT ?revista ?impactIndex ?impactCategory ?year ?nombreCategoria ?posicion ?numCategoria ?cuartil ";
@@ -804,71 +804,19 @@ namespace Hercules.CommonsEDMA.Journals
                 return false;
             }
 
+            List<string> listadoComprobacion = new List<string>()
+            {
+                "TITLE","PUBLISHER_NAME","ISSN","EISSN","IMPACT_FACTOR","CATEGORY_DESCRIPTION","RANK","RANK_OUT_OF","QUARTILE_RANK","SOURCE","YEAR"
+            };
+
             // Comprobación de los nombres de las columnas. 
-            if (!tabla.Columns.Contains("TITLE"))
+            foreach (string columna in listadoComprobacion)
             {
-                Console.WriteLine($@"{DateTime.Now} Revista inválida. No contiene la columna 'TITLE'.");
-                return false;
-            }
-
-            if (!tabla.Columns.Contains("PUBLISHER_NAME"))
-            {
-                Console.WriteLine($@"{DateTime.Now} Revista inválida. No contiene la columna 'PUBLISHER_NAME'.");
-                return false;
-            }
-
-            if (!tabla.Columns.Contains("ISSN"))
-            {
-                Console.WriteLine($@"{DateTime.Now} Revista inválida. No contiene la columna 'ISSN'.");
-                return false;
-            }
-
-            if (!tabla.Columns.Contains("EISSN"))
-            {
-                Console.WriteLine($@"{DateTime.Now} Revista inválida. No contiene la columna 'EISSN'.");
-                return false;
-            }
-
-            if (!tabla.Columns.Contains("IMPACT_FACTOR"))
-            {
-                Console.WriteLine($@"{DateTime.Now} Revista inválida. No contiene la columna 'IMPACT_FACTOR'.");
-                return false;
-            }
-
-            if (!tabla.Columns.Contains("CATEGORY_DESCRIPTION"))
-            {
-                Console.WriteLine($@"{DateTime.Now} Revista inválida. No contiene la columna 'CATEGORY_DESCRIPTION'.");
-                return false;
-            }
-
-            if (!tabla.Columns.Contains("RANK"))
-            {
-                Console.WriteLine($@"{DateTime.Now} Revista inválida. No contiene la columna 'RANK'.");
-                return false;
-            }
-
-            if (!tabla.Columns.Contains("RANK_OUT_OF"))
-            {
-                Console.WriteLine($@"{DateTime.Now} Revista inválida. No contiene la columna 'RANK_OUT_OF'.");
-                return false;
-            }
-
-            if (!tabla.Columns.Contains("QUARTILE_RANK"))
-            {
-                Console.WriteLine($@"{DateTime.Now} Revista inválida. No contiene la columna 'QUARTILE_RANK'.");
-                return false;
-            }
-
-            if (!tabla.Columns.Contains("SOURCE"))
-            {
-                Console.WriteLine($@"{DateTime.Now} Revista inválida. No contiene la columna 'SOURCE'.");
-                return false;
-            }
-
-            if (!tabla.Columns.Contains("YEAR"))
-            {
-                Console.WriteLine($@"{DateTime.Now} Revista inválida. No contiene la columna 'YEAR'.");
-                return false;
+                if (!tabla.Columns.Contains(columna))
+                {
+                    Console.WriteLine($@"{DateTime.Now} Columna: " + columna + " erronea");
+                    return false;
+                }
             }
 
             return true;
