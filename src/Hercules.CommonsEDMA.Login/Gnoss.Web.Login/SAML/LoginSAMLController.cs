@@ -514,18 +514,14 @@ namespace Gnoss.Web.Login.SAML
             {
                 mCommunityApi.Log.Info($"{community_short_name} {user_id}");
                 ProyectoCN proyCN = new ProyectoCN(mEntityContext, mLoggingService, mConfigService, mServicesUtilVirtuosoAndReplication);
+                UsuarioCN usuarioCN = new UsuarioCN(mEntityContext, mLoggingService, mConfigService, mServicesUtilVirtuosoAndReplication);
                 Guid proyectoID = proyCN.ObtenerProyectoIDPorNombre(community_short_name);
                 mCommunityApi.Log.Info($"-0");
                 if (!proyectoID.Equals(Guid.Empty))
                 {
-                    GestionProyecto gestorProyecto = new GestionProyecto(proyCN.ObtenerProyectoPorID(proyectoID), mLoggingService, mEntityContext);
-                    gestorProyecto.CargarGestor();
-                    Proyecto proyecto = gestorProyecto.ListaProyectos[proyectoID];
-
-                    string error = "";
-
-                    UsuarioCN usuarioCN = new UsuarioCN(mEntityContext, mLoggingService, mConfigService, mServicesUtilVirtuosoAndReplication);
-
+                    Es.Riam.Gnoss.AD.EncapsuladoDatos.DataWrapperProyecto dataWrapperProyecto = new Es.Riam.Gnoss.AD.EncapsuladoDatos.DataWrapperProyecto();
+                    dataWrapperProyecto.ListaAdministradorProyecto = proyCN.ObtenerAdministradorProyectoDeUsuario(user_id).ListaAdministradorProyecto;
+                    
                     mCommunityApi.Log.Info($"-A");
                     Es.Riam.Gnoss.AD.EntityModel.Models.UsuarioDS.ProyectoRolUsuario filaProyectoRolUsuario = usuarioCN.ObtenerRolUsuarioEnProyecto(proyectoID, user_id);
                     if (filaProyectoRolUsuario != null)
@@ -535,7 +531,6 @@ namespace Gnoss.Web.Login.SAML
                         filaProyectoRolUsuario.RolDenegado = "FFFFFFFFFFFFFFFF";
                     }
 
-                    Es.Riam.Gnoss.AD.EncapsuladoDatos.DataWrapperProyecto dataWrapperProyecto = proyCN.ObtenerAdministradorProyectoDeUsuario(user_id);
                     Es.Riam.Gnoss.AD.EntityModel.Models.ProyectoDS.AdministradorProyecto filaAdminProyecto = dataWrapperProyecto.ListaAdministradorProyecto.FirstOrDefault(x => x.UsuarioID == user_id && x.ProyectoID == proyectoID);
                     mCommunityApi.Log.Info($"-C");
                     if (filaAdminProyecto != null)
@@ -544,11 +539,6 @@ namespace Gnoss.Web.Login.SAML
                         mEntityContext.Entry(filaAdminProyecto).State = EntityState.Deleted;
                     }
                     mEntityContext.SaveChanges();
-
-                    if (!string.IsNullOrEmpty(error))
-                    {
-                        throw new Exception("Could not delete the member as administrator");
-                    }
                 }
                 else
                 {
