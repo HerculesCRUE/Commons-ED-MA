@@ -519,9 +519,6 @@ namespace Gnoss.Web.Login.SAML
                 mCommunityApi.Log.Info($"-0");
                 if (!proyectoID.Equals(Guid.Empty))
                 {
-                    Es.Riam.Gnoss.AD.EncapsuladoDatos.DataWrapperProyecto dataWrapperProyecto = new Es.Riam.Gnoss.AD.EncapsuladoDatos.DataWrapperProyecto();
-                    dataWrapperProyecto.ListaAdministradorProyecto = proyCN.ObtenerAdministradorProyectoDeUsuario(user_id).ListaAdministradorProyecto;
-                    
                     mCommunityApi.Log.Info($"-A");
                     Es.Riam.Gnoss.AD.EntityModel.Models.UsuarioDS.ProyectoRolUsuario filaProyectoRolUsuario = usuarioCN.ObtenerRolUsuarioEnProyecto(proyectoID, user_id);
                     if (filaProyectoRolUsuario != null)
@@ -530,8 +527,8 @@ namespace Gnoss.Web.Login.SAML
                         filaProyectoRolUsuario.RolPermitido = "0000000000000000";
                         filaProyectoRolUsuario.RolDenegado = "FFFFFFFFFFFFFFFF";
                     }
-
-                    Es.Riam.Gnoss.AD.EntityModel.Models.ProyectoDS.AdministradorProyecto filaAdminProyecto = dataWrapperProyecto.ListaAdministradorProyecto.FirstOrDefault(x => x.UsuarioID == user_id && x.ProyectoID == proyectoID);
+                    Es.Riam.Gnoss.Web.Controles.ProyectoGBD.ProyectoGBD proyectoGBD = new Es.Riam.Gnoss.Web.Controles.ProyectoGBD.ProyectoGBD(mEntityContext);
+                    Es.Riam.Gnoss.AD.EntityModel.Models.ProyectoDS.AdministradorProyecto filaAdminProyecto = proyectoGBD.CargaAdministradorProyecto.FirstOrDefault(x => x.ProyectoID == proyectoID && x.UsuarioID == user_id);
                     mCommunityApi.Log.Info($"-C");
                     if (filaAdminProyecto != null)
                     {
