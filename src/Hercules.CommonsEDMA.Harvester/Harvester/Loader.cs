@@ -73,21 +73,14 @@ namespace Harvester
                         // Carga de datos.
                         CargarDatosSGI(rabbitServiceWriterDenormalizer);
 
-                        // Fecha de la última actualización.
-                        //string fecha = "1500-01-01T00:00:00Z";
-                        string fecha = LeerFicheroFecha(_Config);
-
                         // Genero los ficheros con los datos a procesar desde la fecha.
-                        GuardarIdentificadores(_Config, "Organizacion", fecha);
-                        GuardarIdentificadores(_Config, "Persona", fecha);
-                        GuardarIdentificadores(_Config, "Proyecto", fecha);
-                        GuardarIdentificadores(_Config, "PRC", fecha, true);
-                        GuardarIdentificadores(_Config, "AutorizacionProyecto", fecha);
-                        GuardarIdentificadores(_Config, "Grupo", fecha);
-                        GuardarIdentificadores(_Config, "Invencion", fecha);
-
-                        // Actualizo la última fecha de carga.
-                        UpdateLastDate(_Config, DateTime.Now.ToString("yyyy'-'MM'-'dd'T'HH':'mm':'ss'Z'"));
+                        GuardarIdentificadores(_Config, "Organizacion");
+                        GuardarIdentificadores(_Config, "Persona");
+                        GuardarIdentificadores(_Config, "Proyecto");
+                        GuardarIdentificadores(_Config, "PRC", true);
+                        GuardarIdentificadores(_Config, "AutorizacionProyecto");
+                        GuardarIdentificadores(_Config, "Grupo");
+                        GuardarIdentificadores(_Config, "Invencion");
 
                         // Carga de datos.
                         CargarDatosSGI(rabbitServiceWriterDenormalizer);
@@ -162,15 +155,20 @@ namespace Harvester
         /// <param name="pConfig"></param>
         /// <param name="pSet"></param>
         /// <param name="pFecha"></param>
-        public void GuardarIdentificadores(ReadConfig pConfig, string pSet, string pFecha, bool pPRC = false)
+        public void GuardarIdentificadores(ReadConfig pConfig, string pSet, bool pPRC = false)
         {
+            // Se obtiene la última fecha de actualización del fichero.
+            //string fecha = "1500-01-01T00:00:00Z";
+            string fecha = LeerFicheroFecha(_Config, pSet);
+
+            Console.WriteLine($"Obteniendo identificadores de {pSet} ({fecha})");
             if (pPRC == false)
             {
-                harvester.Harvest(pConfig, pSet, pFecha);
+                harvester.Harvest(pConfig, pSet, fecha);
             }
             else
             {
-                harvester.HarvestPRC(pConfig, pSet, pFecha);
+                harvester.HarvestPRC(pConfig, pSet, fecha);
             }
         }
 
@@ -195,7 +193,11 @@ namespace Harvester
             {
                 Directory.CreateDirectory(directorioProcesados);
             }
-            
+            if (!Directory.Exists(pConfig.GetLastUpdateDate()))
+            {
+                Directory.CreateDirectory(pConfig.GetLastUpdateDate());
+            }
+
             foreach (string fichero in Directory.EnumerateFiles(directorioPendientes))
             {
                 pDicRutas[pSet][directorioPendientes] += fichero.Substring(fichero.LastIndexOf("\\"));
@@ -221,12 +223,12 @@ namespace Harvester
                     DateTime actual = DateTime.Now;
                     i++;
 
-                    double tiempoRestante = (idsACargar.Count / i) * (actual - inicio).TotalSeconds;
+                    int tiempoRestante = (int)((idsACargar.Count / i) * (actual - inicio).TotalSeconds);
 
                     Console.WriteLine($"Procesando fichero de {pSet} {i}/{idsACargar.Count}");
                     if (i > 1)
                     {
-                        Console.WriteLine($"Tiempo restabte aproximado {tiempoRestante} segundos");
+                        Console.WriteLine($"Tiempo restante aproximado {tiempoRestante} segundos.");
                     }
 
                     switch (pSet)
@@ -237,21 +239,15 @@ namespace Harvester
                             try
                             {
                                 empresa = Empresa.GetOrganizacionSGI(harvesterServices, _Config, id, pDicRutas);
-                            }
-                            catch
-                            {
-                                // ID no válido.
-                                break;
-                            }
-
-                            if (empresa != null && !string.IsNullOrEmpty(empresa.Nombre))
-                            {
                                 string idGnossOrg = empresa.Cargar(harvesterServices, pConfig, mResourceApi, "organization", pDicIdentificadores, pDicRutas, pRabbitConf);
                                 pDicIdentificadores["organization"].Add(idGnossOrg);
+                                File.AppendAllText(pDicRutas[pSet][directorioPendientes], id + Environment.NewLine);
                             }
-                            File.AppendAllText(pDicRutas[pSet][directorioPendientes], id + Environment.NewLine);
+                            catch (Exception e)
+                            {
+                                Console.WriteLine(e.Message);
+                            }
                             break;
-
                         #endregion
 
                         #region - Persona
@@ -260,18 +256,14 @@ namespace Harvester
                             try
                             {
                                 persona = Persona.GetPersonaSGI(harvesterServices, _Config, id, pDicRutas);
-                            }
-                            catch
-                            {
-                                // ID no válido.
-                                break;
-                            }
-                            if (persona != null && !string.IsNullOrEmpty(persona.Nombre))
-                            {
                                 string idGnossPersona = persona.Cargar(harvesterServices, pConfig, mResourceApi, "person", pDicIdentificadores, pDicRutas, pRabbitConf, true);
                                 pDicIdentificadores["person"].Add(idGnossPersona);
+                                File.AppendAllText(pDicRutas[pSet][directorioPendientes], id + Environment.NewLine);
                             }
-                            File.AppendAllText(pDicRutas[pSet][directorioPendientes], id + Environment.NewLine);
+                            catch (Exception e)
+                            {
+                                Console.WriteLine(e.Message);
+                            }
                             break;
 
                         #endregion
@@ -282,18 +274,15 @@ namespace Harvester
                             try
                             {
                                 proyectoSGI = Proyecto.GetProyectoSGI(harvesterServices, _Config, id, pDicRutas);
-                            }
-                            catch
-                            {
-                                // ID no válido.
-                                break;
-                            }
-                            if (proyectoSGI != null && !string.IsNullOrEmpty(proyectoSGI.Titulo))
-                            {
                                 string idGnossProy = proyectoSGI.Cargar(harvesterServices, pConfig, mResourceApi, "project", pDicIdentificadores, pDicRutas, pRabbitConf);
                                 pDicIdentificadores["project"].Add(idGnossProy);
+                                File.AppendAllText(pDicRutas[pSet][directorioPendientes], id + Environment.NewLine);
                             }
-                            File.AppendAllText(pDicRutas[pSet][directorioPendientes], id + Environment.NewLine);
+                            catch (Exception e)
+                            {
+                                Console.WriteLine(e.Message);
+                            }
+
                             break;
                         #endregion
 
@@ -372,16 +361,13 @@ namespace Harvester
                             try
                             {
                                 autorizacionSGI = Autorizacion.GetAutorizacionSGI(harvesterServices, _Config, id, pDicRutas);
-                            }
-                            catch
-                            {
-                                // ID no válido.
-                                break;
-                            }
-                            if (autorizacionSGI != null && !string.IsNullOrEmpty(autorizacionSGI.tituloProyecto) && !string.IsNullOrEmpty(autorizacionSGI.solicitanteRef) && !string.IsNullOrEmpty(autorizacionSGI.entidadRef))
-                            {
                                 string idGnossAutorizacion = autorizacionSGI.Cargar(harvesterServices, pConfig, mResourceApi, "projectauthorization", pDicIdentificadores, pDicRutas, pRabbitConf);
                                 pDicIdentificadores["projectauthorization"].Add(idGnossAutorizacion);
+                                File.AppendAllText(pDicRutas[pSet][directorioPendientes], id + Environment.NewLine);
+                            }
+                            catch (Exception e)
+                            {
+                                Console.WriteLine(e.Message);
                             }
                             break;
                         #endregion
@@ -392,18 +378,14 @@ namespace Harvester
                             try
                             {
                                 invencion = Invencion.GetInvencionSGI(harvesterServices, _Config, id, pDicRutas);
-                            }
-                            catch
-                            {
-                                // ID no válido.
-                                break;
-                            }
-                            if (invencion != null && !string.IsNullOrEmpty(invencion.titulo))
-                            {
                                 string idGnossInv = invencion.Cargar(harvesterServices, pConfig, mResourceApi, "patent", pDicIdentificadores, pDicRutas, pRabbitConf);
                                 pDicIdentificadores["patent"].Add(idGnossInv);
+                                File.AppendAllText(pDicRutas[pSet][directorioPendientes], id + Environment.NewLine);
                             }
-                            File.AppendAllText(pDicRutas[pSet][directorioPendientes], id + Environment.NewLine);
+                            catch (Exception e)
+                            {
+                                Console.WriteLine(e.Message);
+                            }
                             break;
                         #endregion
 
@@ -413,25 +395,34 @@ namespace Harvester
                             try
                             {
                                 grupo = Grupo.GetGrupoSGI(harvesterServices, _Config, id, pDicRutas);
-                            }
-                            catch
-                            {
-                                // ID no válido.
-                                break;
-                            }
-                            if (grupo != null && !string.IsNullOrEmpty(grupo.nombre))
-                            {
                                 string idGnossGrupo = grupo.Cargar(harvesterServices, pConfig, mResourceApi, "group", pDicIdentificadores, pDicRutas, pRabbitConf);
                                 pDicIdentificadores["group"].Add(idGnossGrupo);
+                                File.AppendAllText(pDicRutas[pSet][directorioPendientes], id + Environment.NewLine);
                             }
-                            File.AppendAllText(pDicRutas[pSet][directorioPendientes], id + Environment.NewLine);
+                            catch (Exception e)
+                            {
+                                Console.WriteLine(e.Message);
+                            }
                             break;
                             #endregion
                     }
+                    ProcesarItems(pDicRutas[pSet][directorioPendientes], fichero);
                 }
+            }
+        }
 
-                // Borra el fichero.
-                File.Delete(fichero);
+        public void ProcesarItems(string pRutaProcesado,string pRutaPendiente)
+        {
+            // Guardado de IDs erróneos.
+            List<string> identificadoresACargar = File.ReadAllLines(pRutaPendiente).Distinct().ToList();
+            List<string> identificadoresCargados = File.ReadAllLines(pRutaProcesado).Distinct().ToList();
+            List<string> identificadoresNoCargados = identificadoresACargar.Except(identificadoresCargados).Distinct().ToList();
+            if (identificadoresNoCargados.Count > 0)
+            {
+                File.WriteAllText(pRutaPendiente, string.Join("\n", identificadoresNoCargados));
+            }else if (File.Exists(pRutaPendiente))
+            {
+                File.Delete(pRutaPendiente);
             }
         }
 
@@ -440,16 +431,16 @@ namespace Harvester
         /// </summary>
         /// <param name="pConfig"></param>
         /// <returns></returns>
-        public string LeerFicheroFecha(ReadConfig pConfig)
+        public string LeerFicheroFecha(ReadConfig pConfig, string pSet)
         {
-            string ficheroFecha = pConfig.GetLastUpdateDate();
+            string ficheroFecha = pConfig.GetLastUpdateDate() + $@"\\lastUpdateDate_{pSet}.txt";
 
             if (!File.Exists(ficheroFecha))
             {
-                string fecha = DateTime.Now.ToString("yyyy'-'MM'-'dd'T'HH':'mm':'ss'Z'");
+                string fecha = "1500-01-01T00:00:00Z";
                 FileStream fichero = File.Create(ficheroFecha);
                 fichero.Close();
-                File.WriteAllText(pConfig.GetLastUpdateDate(), fecha);
+                File.WriteAllText(pConfig.GetLastUpdateDate() + $@"\\lastUpdateDate_{pSet}.txt", fecha);
                 return fecha;
             }
             else
@@ -636,15 +627,6 @@ namespace Harvester
             {
 
             }
-        }
-
-        /// <summary>
-        /// Modifica el fichero con la última fecha.
-        /// </summary>
-        /// <param name="pConfig"></param>
-        public void UpdateLastDate(ReadConfig pConfig, string pFecha)
-        {
-            File.WriteAllText(pConfig.GetLastUpdateDate(), pFecha);
         }
     }
 }
