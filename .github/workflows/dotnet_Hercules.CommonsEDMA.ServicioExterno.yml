@@ -43,5 +43,5 @@ jobs:
         shell: powershell
         run: |
           .\.sonar\scanner\dotnet-sonarscanner begin /k:"Hercules.CommonsEDMA.ServicioExterno" /o:"herculescrue" /d:sonar.ServicioExterno="${{ secrets.SONAR_TOKEN_Hercules_CommonsEDMA_ServicioExterno }}" /d:sonar.host.url="https://sonarcloud.io"
-          dotnet build src/Hercules.CommonsEDMA.ServicioExterno/Hercules.CommonsEDMA.ServicioExterno
+          dotnet build src/Hercules.CommonsEDMA.ServicioExterno/Hercules.CommonsEDMA.ServicioExterno -c Release 
           .\.sonar\scanner\dotnet-sonarscanner end /d:sonar.ServicioExterno="${{ secrets.SONAR_TOKEN_Hercules_CommonsEDMA_ServicioExterno }}"
