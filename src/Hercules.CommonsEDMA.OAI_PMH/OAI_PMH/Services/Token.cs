@@ -136,14 +136,6 @@ namespace OAI_PMH.Services
             });
             }
 
-            //content = new FormUrlEncodedContent(new[]
-            //{
-            //    new KeyValuePair<string, string>("client_id", "front"),
-            //    new KeyValuePair<string, string>("username", _ConfigService.GetUsernameToken()),
-            //    new KeyValuePair<string, string>("password", _ConfigService.GetPasswordToken()),
-            //    new KeyValuePair<string, string>("grant_type", "password")
-            //});
-
             string result = httpCall(url.ToString(), "POST", content).Result;
 
             var json = JObject.Parse(result);

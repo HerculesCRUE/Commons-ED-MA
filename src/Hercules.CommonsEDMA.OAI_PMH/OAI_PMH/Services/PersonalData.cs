@@ -43,7 +43,6 @@ namespace OAI_PMH.Services
             }
             #endregion
 
-
             #region --- Personal Data
             List<string> idList = new();
             RestClient client = new(pConfig.GetConfigSGI() + "/api/sgp/personas/modificadas-ids?q=fechaModificacion=ge=\"" + from + "\"");
@@ -75,13 +74,6 @@ namespace OAI_PMH.Services
                 {
                     idDictionary.Add(idPersona, DateTime.UtcNow);
                 }
-                else
-                {
-                    if (DateTime.Compare(item.Value, idDictionary[idPersona]) == 1)
-                    {
-                        idDictionary[idPersona] = item.Value;
-                    }
-                }
             }
 
             dicFormacionAcademica = AcademicFormation.GetModifiedDoctorados(from, pConfig);
@@ -91,13 +83,6 @@ namespace OAI_PMH.Services
                 if (!idDictionary.ContainsKey(idPersona))
                 {
                     idDictionary.Add(idPersona, DateTime.UtcNow);
-                }
-                else
-                {
-                    if (DateTime.Compare(item.Value, idDictionary[idPersona]) == 1)
-                    {
-                        idDictionary[idPersona] = item.Value;
-                    }
                 }
             }
 
@@ -109,13 +94,6 @@ namespace OAI_PMH.Services
                 {
                     idDictionary.Add(idPersona, DateTime.UtcNow);
                 }
-                else
-                {
-                    if (DateTime.Compare(item.Value, idDictionary[idPersona]) == 1)
-                    {
-                        idDictionary[idPersona] = item.Value;
-                    }
-                }
             }
 
             dicFormacionAcademica = AcademicFormation.GetModifiedEspecializada(from, pConfig);
@@ -125,13 +103,6 @@ namespace OAI_PMH.Services
                 if (!idDictionary.ContainsKey(idPersona))
                 {
                     idDictionary.Add(idPersona, DateTime.UtcNow);
-                }
-                else
-                {
-                    if (DateTime.Compare(item.Value, idDictionary[idPersona]) == 1)
-                    {
-                        idDictionary[idPersona] = item.Value;
-                    }
                 }
             }
             #endregion
@@ -145,13 +116,6 @@ namespace OAI_PMH.Services
                 {
                     idDictionary.Add(idPersona, DateTime.UtcNow);
                 }
-                else
-                {
-                    if (DateTime.Compare(item.Value, idDictionary[idPersona]) == 1)
-                    {
-                        idDictionary[idPersona] = item.Value;
-                    }
-                }
             }
 
             dicActividadDocente = DocentActivity.GetModifiedAcademicFormationProvided(from, pConfig);
@@ -162,13 +126,6 @@ namespace OAI_PMH.Services
                 {
                     idDictionary.Add(idPersona, DateTime.UtcNow);
                 }
-                else
-                {
-                    if (DateTime.Compare(item.Value, idDictionary[idPersona]) == 1)
-                    {
-                        idDictionary[idPersona] = item.Value;
-                    }
-                }
             }
 
             dicActividadDocente = DocentActivity.GetModifiedSeminars(from, pConfig);
@@ -178,13 +135,6 @@ namespace OAI_PMH.Services
                 if (!idDictionary.ContainsKey(idPersona))
                 {
                     idDictionary.Add(idPersona, DateTime.UtcNow);
-                }
-                else
-                {
-                    if (DateTime.Compare(item.Value, idDictionary[idPersona]) == 1)
-                    {
-                        idDictionary[idPersona] = item.Value;
-                    }
                 }
             }
             #endregion
