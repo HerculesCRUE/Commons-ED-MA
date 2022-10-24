@@ -566,6 +566,7 @@ namespace Hercules.CommonsEDMA.Journals
                                 }} ORDER BY DESC(?revista) }} LIMIT {limit} OFFSET {offset} ";
 
                     SparqlObject resultadoQueryMainDocument = mResourceApi.VirtuosoQueryMultipleGraph(selectMainDocument, whereMainDocument, new List<string>() { "maindocument", "documentformat", "referencesource", "impactindexcategory" });
+                    
                     if (resultadoQueryMainDocument == null || resultadoQueryMainDocument.results == null ||
                         resultadoQueryMainDocument.results.bindings == null || resultadoQueryMainDocument.results.bindings.Count == 0)
                     {
@@ -610,7 +611,6 @@ namespace Hercules.CommonsEDMA.Journals
                     {
                         break;
                     }
-
 
                 }
             }
