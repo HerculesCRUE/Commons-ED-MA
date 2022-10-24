@@ -555,8 +555,8 @@ namespace Hercules.CommonsEDMA.Journals
                 do
                 {
                     // Consulta sparql.
-                    string select = $@"SELECT * WHERE {{ SELECT ?revista ?titulo ?issn ?eissn ?editor FROM <{mResourceApi.GraphsUrl}documentformat.owl> FROM <{mResourceApi.GraphsUrl}referencesource.owl> FROM <{mResourceApi.GraphsUrl}impactindexcategory.owl> ";
-                    string where = $@"WHERE {{
+                    string selectMainDocument = $@"SELECT * WHERE {{ SELECT ?revista ?titulo ?issn ?eissn ?editor FROM <{mResourceApi.GraphsUrl}documentformat.owl> FROM <{mResourceApi.GraphsUrl}referencesource.owl> FROM <{mResourceApi.GraphsUrl}impactindexcategory.owl> ";
+                    string whereMainDocument = $@"WHERE {{
                                 ?revista a <http://w3id.org/roh/MainDocument>. 
                                 ?revista <http://w3id.org/roh/format> <{mResourceApi.GraphsUrl}items/documentformat_057>. 
                                 ?revista <http://w3id.org/roh/title> ?titulo. 
@@ -566,12 +566,13 @@ namespace Hercules.CommonsEDMA.Journals
                                 FILTER(?revista IN (<{string.Join(">,<", listaSpliteada)}>)) 
                                 }} ORDER BY DESC(?revista) }} LIMIT {limit} OFFSET {offset} ";
 
-                    SparqlObject resultadoQuery = mResourceApi.VirtuosoQuery(select, where, "maindocument");
-                    if (resultadoQuery != null && resultadoQuery.results != null && resultadoQuery.results.bindings != null && resultadoQuery.results.bindings.Count > 0)
+                    SparqlObject resultadoQueryMainDocument = mResourceApi.VirtuosoQuery(selectMainDocument, whereMainDocument, "maindocument");
+                    if (resultadoQueryMainDocument != null && resultadoQueryMainDocument.results != null &&
+                        resultadoQueryMainDocument.results.bindings != null && resultadoQueryMainDocument.results.bindings.Count > 0)
                     {
                         offset += limit;
 
-                        foreach (Dictionary<string, SparqlObject.Data> fila in resultadoQuery.results.bindings)
+                        foreach (Dictionary<string, SparqlObject.Data> fila in resultadoQueryMainDocument.results.bindings)
                         {
                             // Valores.
                             string revistaId = fila["revista"].value;
@@ -603,7 +604,7 @@ namespace Hercules.CommonsEDMA.Journals
                             dicResultado.Add(revista.idJournal, revista);
                         }
 
-                        if (resultadoQuery.results.bindings.Count < limit)
+                        if (resultadoQueryMainDocument.results.bindings.Count < limit)
                         {
                             salirBucle = true;
                         }
@@ -628,8 +629,8 @@ namespace Hercules.CommonsEDMA.Journals
                 do
                 {
                     // Consulta sparql.
-                    string select = $@"SELECT * WHERE {{ SELECT ?revista ?impactIndex ?fuente ?year ?impactIndexInYear FROM <{mResourceApi.GraphsUrl}documentformat.owl> FROM <{mResourceApi.GraphsUrl}referencesource.owl> FROM <{mResourceApi.GraphsUrl}impactindexcategory.owl> ";
-                    string where = $@"WHERE {{
+                    string selectImpactIndex = $@"SELECT * WHERE {{ SELECT ?revista ?impactIndex ?fuente ?year ?impactIndexInYear FROM <{mResourceApi.GraphsUrl}documentformat.owl> FROM <{mResourceApi.GraphsUrl}referencesource.owl> FROM <{mResourceApi.GraphsUrl}impactindexcategory.owl> ";
+                    string whereImpactIndex = $@"WHERE {{
                                 ?revista a <http://w3id.org/roh/MainDocument>.
                                 ?revista <http://w3id.org/roh/format> <{mResourceApi.GraphsUrl}items/documentformat_057>. 
                                 ?revista <http://w3id.org/roh/impactIndex> ?impactIndex.
@@ -639,12 +640,13 @@ namespace Hercules.CommonsEDMA.Journals
                                 FILTER(?revista IN (<{string.Join(">,<", listaSpliteada)}>)) 
                                 }} ORDER BY DESC(?revista) DESC(?impactIndex) }} LIMIT {limit} OFFSET {offset} ";
 
-                    SparqlObject resultadoQuery = mResourceApi.VirtuosoQuery(select, where, "maindocument");
-                    if (resultadoQuery != null && resultadoQuery.results != null && resultadoQuery.results.bindings != null && resultadoQuery.results.bindings.Count > 0)
+                    SparqlObject resultadoQueryImpactIndex = mResourceApi.VirtuosoQuery(selectImpactIndex, whereImpactIndex, "maindocument");
+                    if (resultadoQueryImpactIndex != null && resultadoQueryImpactIndex.results != null &&
+                        resultadoQueryImpactIndex.results.bindings != null && resultadoQueryImpactIndex.results.bindings.Count > 0)
                     {
                         offset += limit;
 
-                        foreach (Dictionary<string, SparqlObject.Data> fila in resultadoQuery.results.bindings)
+                        foreach (Dictionary<string, SparqlObject.Data> fila in resultadoQueryImpactIndex.results.bindings)
                         {
                             string revistaId = fila["revista"].value;
                             string impactIndexId = fila["impactIndex"].value;
@@ -678,7 +680,7 @@ namespace Hercules.CommonsEDMA.Journals
                             });
                         }
 
-                        if (resultadoQuery.results.bindings.Count < limit)
+                        if (resultadoQueryImpactIndex.results.bindings.Count < limit)
                         {
                             salirBucle = true;
                         }
@@ -703,8 +705,8 @@ namespace Hercules.CommonsEDMA.Journals
                 do
                 {
                     // Consulta sparql.
-                    string select = $@"SELECT * WHERE {{ SELECT ?revista ?impactIndex ?impactCategory ?year ?nombreCategoria ?posicion ?numCategoria ?cuartil FROM <{mResourceApi.GraphsUrl}documentformat.owl> FROM <{mResourceApi.GraphsUrl}referencesource.owl> FROM <{mResourceApi.GraphsUrl}impactindexcategory.owl> ";
-                    string where = $@"WHERE {{
+                    string selectImpactCategory = $@"SELECT * WHERE {{ SELECT ?revista ?impactIndex ?impactCategory ?year ?nombreCategoria ?posicion ?numCategoria ?cuartil FROM <{mResourceApi.GraphsUrl}documentformat.owl> FROM <{mResourceApi.GraphsUrl}referencesource.owl> FROM <{mResourceApi.GraphsUrl}impactindexcategory.owl> ";
+                    string whereImpactCategory = $@"WHERE {{
                                 ?revista a <http://w3id.org/roh/MainDocument>.
                                 ?revista <http://w3id.org/roh/format> <{mResourceApi.GraphsUrl}items/documentformat_057>. 
                                 ?revista <http://w3id.org/roh/impactIndex> ?impactIndex.
@@ -719,12 +721,13 @@ namespace Hercules.CommonsEDMA.Journals
                                 FILTER(?revista IN (<{string.Join(">,<", listaSpliteada)}>)) 
                                 }} ORDER BY DESC(?revista) DESC(?impactIndex) DESC(?impactCategory) }} LIMIT {limit} OFFSET {offset} ";
 
-                    SparqlObject resultadoQuery = mResourceApi.VirtuosoQuery(select, where, "maindocument");
-                    if (resultadoQuery != null && resultadoQuery.results != null && resultadoQuery.results.bindings != null && resultadoQuery.results.bindings.Count > 0)
+                    SparqlObject resultadoQueryImpactCategory = mResourceApi.VirtuosoQuery(selectImpactCategory, whereImpactCategory, "maindocument");
+                    if (resultadoQueryImpactCategory != null && resultadoQueryImpactCategory.results != null &&
+                        resultadoQueryImpactCategory.results.bindings != null && resultadoQueryImpactCategory.results.bindings.Count > 0)
                     {
                         offset += limit;
 
-                        foreach (Dictionary<string, SparqlObject.Data> fila in resultadoQuery.results.bindings)
+                        foreach (Dictionary<string, SparqlObject.Data> fila in resultadoQueryImpactCategory.results.bindings)
                         {
                             string revistaId = fila["revista"].value;
                             string impactIndexId = fila["impactIndex"].value;
@@ -755,7 +758,7 @@ namespace Hercules.CommonsEDMA.Journals
 
                         }
 
-                        if (resultadoQuery.results.bindings.Count < limit)
+                        if (resultadoQueryImpactCategory.results.bindings.Count < limit)
                         {
                             salirBucle = true;
                         }
@@ -997,7 +1000,8 @@ namespace Hercules.CommonsEDMA.Journals
                         Thread.Sleep(1000 * numIntentos);
                     }
                 }
-            };
+            }
+
             Console.WriteLine($"\r5/7.- Cargando revistas {numRevista}/{numRevistas}");
         }
 
