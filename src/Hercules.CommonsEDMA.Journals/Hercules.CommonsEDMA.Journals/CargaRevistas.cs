@@ -552,10 +552,10 @@ namespace Hercules.CommonsEDMA.Journals
                 int offset = 0;
                 bool salirBucle = false;
 
-                do
+                while(true)
                 {
                     // Consulta sparql.
-                    string selectMainDocument = $@"SELECT * WHERE {{ SELECT ?revista ?titulo ?issn ?eissn ?editor FROM <{mResourceApi.GraphsUrl}documentformat.owl> FROM <{mResourceApi.GraphsUrl}referencesource.owl> FROM <{mResourceApi.GraphsUrl}impactindexcategory.owl> ";
+                    string selectMainDocument = $@"SELECT * WHERE {{ SELECT ?revista ?titulo ?issn ?eissn ?editor";
                     string whereMainDocument = $@"WHERE {{
                                 ?revista a <http://w3id.org/roh/MainDocument>. 
                                 ?revista <http://w3id.org/roh/format> <{mResourceApi.GraphsUrl}items/documentformat_057>. 
@@ -566,7 +566,7 @@ namespace Hercules.CommonsEDMA.Journals
                                 FILTER(?revista IN (<{string.Join(">,<", listaSpliteada)}>)) 
                                 }} ORDER BY DESC(?revista) }} LIMIT {limit} OFFSET {offset} ";
 
-                    SparqlObject resultadoQueryMainDocument = mResourceApi.VirtuosoQuery(selectMainDocument, whereMainDocument, "maindocument");
+                    SparqlObject resultadoQueryMainDocument = mResourceApi.VirtuosoQueryMultipleGraph(selectMainDocument, whereMainDocument, new List<string>() { "maindocument", "documentformat", "referencesource", "impactindexcategory" });
                     if (resultadoQueryMainDocument != null && resultadoQueryMainDocument.results != null &&
                         resultadoQueryMainDocument.results.bindings != null && resultadoQueryMainDocument.results.bindings.Count > 0)
                     {
@@ -606,15 +606,15 @@ namespace Hercules.CommonsEDMA.Journals
 
                         if (resultadoQueryMainDocument.results.bindings.Count < limit)
                         {
-                            salirBucle = true;
+                            break;
                         }
                     }
                     else
                     {
-                        salirBucle = true;
+                        break;
                     }
 
-                } while (!salirBucle);
+                }
             }
             #endregion
 
@@ -626,10 +626,10 @@ namespace Hercules.CommonsEDMA.Journals
                 bool salirBucle = false;
 
                 // ImpactIndex
-                do
+                while(true)
                 {
                     // Consulta sparql.
-                    string selectImpactIndex = $@"SELECT * WHERE {{ SELECT ?revista ?impactIndex ?fuente ?year ?impactIndexInYear FROM <{mResourceApi.GraphsUrl}documentformat.owl> FROM <{mResourceApi.GraphsUrl}referencesource.owl> FROM <{mResourceApi.GraphsUrl}impactindexcategory.owl> ";
+                    string selectImpactIndex = $@"SELECT * WHERE {{ SELECT ?revista ?impactIndex ?fuente ?year ?impactIndexInYear ";
                     string whereImpactIndex = $@"WHERE {{
                                 ?revista a <http://w3id.org/roh/MainDocument>.
                                 ?revista <http://w3id.org/roh/format> <{mResourceApi.GraphsUrl}items/documentformat_057>. 
@@ -640,7 +640,7 @@ namespace Hercules.CommonsEDMA.Journals
                                 FILTER(?revista IN (<{string.Join(">,<", listaSpliteada)}>)) 
                                 }} ORDER BY DESC(?revista) DESC(?impactIndex) }} LIMIT {limit} OFFSET {offset} ";
 
-                    SparqlObject resultadoQueryImpactIndex = mResourceApi.VirtuosoQuery(selectImpactIndex, whereImpactIndex, "maindocument");
+                    SparqlObject resultadoQueryImpactIndex = mResourceApi.VirtuosoQueryMultipleGraph(selectImpactIndex, whereImpactIndex, new List<string>() { "maindocument", "documentformat", "referencesource", "impactindexcategory" });
                     if (resultadoQueryImpactIndex != null && resultadoQueryImpactIndex.results != null &&
                         resultadoQueryImpactIndex.results.bindings != null && resultadoQueryImpactIndex.results.bindings.Count > 0)
                     {
@@ -682,15 +682,15 @@ namespace Hercules.CommonsEDMA.Journals
 
                         if (resultadoQueryImpactIndex.results.bindings.Count < limit)
                         {
-                            salirBucle = true;
+                            break;
                         }
                     }
                     else
                     {
-                        salirBucle = true;
+                        break;
                     }
 
-                } while (!salirBucle);
+                } 
             }
             #endregion
 
@@ -699,13 +699,12 @@ namespace Hercules.CommonsEDMA.Journals
             {
                 int limit = 10000;
                 int offset = 0;
-                bool salirBucle = false;
 
                 // ImpactCategory
-                do
+                while(true)
                 {
                     // Consulta sparql.
-                    string selectImpactCategory = $@"SELECT * WHERE {{ SELECT ?revista ?impactIndex ?impactCategory ?year ?nombreCategoria ?posicion ?numCategoria ?cuartil FROM <{mResourceApi.GraphsUrl}documentformat.owl> FROM <{mResourceApi.GraphsUrl}referencesource.owl> FROM <{mResourceApi.GraphsUrl}impactindexcategory.owl> ";
+                    string selectImpactCategory = $@"SELECT * WHERE {{ SELECT ?revista ?impactIndex ?impactCategory ?year ?nombreCategoria ?posicion ?numCategoria ?cuartil ";
                     string whereImpactCategory = $@"WHERE {{
                                 ?revista a <http://w3id.org/roh/MainDocument>.
                                 ?revista <http://w3id.org/roh/format> <{mResourceApi.GraphsUrl}items/documentformat_057>. 
@@ -721,7 +720,7 @@ namespace Hercules.CommonsEDMA.Journals
                                 FILTER(?revista IN (<{string.Join(">,<", listaSpliteada)}>)) 
                                 }} ORDER BY DESC(?revista) DESC(?impactIndex) DESC(?impactCategory) }} LIMIT {limit} OFFSET {offset} ";
 
-                    SparqlObject resultadoQueryImpactCategory = mResourceApi.VirtuosoQuery(selectImpactCategory, whereImpactCategory, "maindocument");
+                    SparqlObject resultadoQueryImpactCategory = mResourceApi.VirtuosoQueryMultipleGraph(selectImpactCategory, whereImpactCategory, new List<string>() { "maindocument", "documentformat", "referencesource", "impactindexcategory" });
                     if (resultadoQueryImpactCategory != null && resultadoQueryImpactCategory.results != null &&
                         resultadoQueryImpactCategory.results.bindings != null && resultadoQueryImpactCategory.results.bindings.Count > 0)
                     {
@@ -760,15 +759,15 @@ namespace Hercules.CommonsEDMA.Journals
 
                         if (resultadoQueryImpactCategory.results.bindings.Count < limit)
                         {
-                            salirBucle = true;
+                            break;
                         }
                     }
                     else
                     {
-                        salirBucle = true;
+                        break;
                     }
 
-                } while (!salirBucle);
+                }
             }
             #endregion
 
