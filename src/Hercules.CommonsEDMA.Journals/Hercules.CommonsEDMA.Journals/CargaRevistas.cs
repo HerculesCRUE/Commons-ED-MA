@@ -500,7 +500,6 @@ namespace Hercules.CommonsEDMA.Journals
             List<string> idsRecursos = new List<string>();
             int limit = 10000;
             int offset = 0;
-            bool salirBucle = false;
 
             while(true)
             {
