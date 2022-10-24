@@ -35,6 +35,15 @@ using Gnoss.Web.Login.Open;
 using Gnoss.Web.Login.SAML.Models.PersonOntology;
 using Es.Riam.Gnoss.Elementos.ServiciosGenerales;
 using Es.Riam.Gnoss.Web.Controles.Proyectos;
+using Es.Riam.Gnoss.Logica.Identidad;
+using Es.Riam.Gnoss.AD.Live;
+using Es.Riam.Gnoss.CL.ServiciosGenerales;
+using Es.Riam.Gnoss.CL.Identidad;
+using Es.Riam.Gnoss.AD.Live.Model;
+using Es.Riam.Gnoss.RabbitMQ;
+using Newtonsoft.Json;
+using Es.Riam.Gnoss.AD.ServiciosGenerales;
+using Microsoft.EntityFrameworkCore;
 
 namespace Gnoss.Web.Login.SAML
 {
@@ -86,9 +95,9 @@ namespace Gnoss.Web.Login.SAML
             string claimMail = mConfigServiceSAML.GetClaimMail();
             string claimGroups = mConfigServiceSAML.GetClaimGroups();
 
-            bool gestorOtri = true;
-            bool adminIndicadores = true;
-            bool admin = true;
+            bool gestorOtri = false;
+            bool adminIndicadores = false;
+            bool admin = false;
 
             foreach (Claim claim in pUser.Claims.ToList())
             {
@@ -158,11 +167,32 @@ namespace Gnoss.Web.Login.SAML
                                         OPTIONAL{{?person <http://xmlns.com/foaf/0.1/lastName> ?lastName}}
                         }}order by desc(?active) desc(?crisIdentifier)", "person");
 
-                string person = datosPersona.results.bindings.FirstOrDefault()?["person"].value;
-                bool active = datosPersona.results.bindings.FirstOrDefault()?["active"].value == "true";
-                string crisIdentifier = datosPersona.results.bindings.FirstOrDefault()?["crisIdentifier"].value;
-                string firstName = datosPersona.results.bindings.FirstOrDefault()?["firstName"].value;
-                string lastName = datosPersona.results.bindings.FirstOrDefault()?["lastName"].value;
+                string person = "";
+                bool active = false;
+                string crisIdentifier = "";
+                string firstName = "";
+                string lastName = "";
+                if (datosPersona.results.bindings.FirstOrDefault() != null && datosPersona.results.bindings.FirstOrDefault().ContainsKey("person"))
+                {
+                    person = datosPersona.results.bindings.FirstOrDefault()["person"].value;
+                }
+                if (datosPersona.results.bindings.FirstOrDefault() != null && datosPersona.results.bindings.FirstOrDefault().ContainsKey("active"))
+                {
+                    active = datosPersona.results.bindings.FirstOrDefault()["active"].value == "true";
+                }
+                if (datosPersona.results.bindings.FirstOrDefault() != null && datosPersona.results.bindings.FirstOrDefault().ContainsKey("crisIdentifier"))
+                {
+                    crisIdentifier = datosPersona.results.bindings.FirstOrDefault()["crisIdentifier"].value;
+                }
+                if (datosPersona.results.bindings.FirstOrDefault() != null && datosPersona.results.bindings.FirstOrDefault().ContainsKey("firstName"))
+                {
+                    firstName = datosPersona.results.bindings.FirstOrDefault()["firstName"].value;
+                }
+                if (datosPersona.results.bindings.FirstOrDefault() != null && datosPersona.results.bindings.FirstOrDefault().ContainsKey("lastName"))
+                {
+                    lastName = datosPersona.results.bindings.FirstOrDefault()["lastName"].value;
+                }
+
                 if (string.IsNullOrEmpty(firstName))
                 {
                     firstName = email;
@@ -238,25 +268,41 @@ namespace Gnoss.Web.Login.SAML
 
                     //Aplicamos permisos en la persona
                     //-Asignamos usuario                   
-                    //-Asignamos adminIndicadores http://w3id.org/roh/isGraphicmanager
+                    //-Asignamos adminIndicadores http://w3id.org/roh/isGraphicManager
                     //-Asignamos gestorOtri http://w3id.org/roh/isOtriManager
                     //Asignamos admin
 
                     //Obtenemos los datos de la persona
-                    SparqlObject datosPermisosPersona = mResourceApi.VirtuosoQuery("select ?person ?isGraphicmanager ?isOtriManager ?gnossUser", @$"where{{
-                                        OPTIONAL{{?person <http://w3id.org/roh/isGraphicmanager> ?isGraphicmanager.}}
-                                        OPTIONAL{{?person <http://w3id.org/roh/isOtriManager> ?isOtriManager.}}
-                                        OPTIONAL{{?person <http://w3id.org/roh/gnossUser> ?gnossUser}}
+                    SparqlObject datosPermisosPersona = mResourceApi.VirtuosoQuery("select ?person ?isGraphicManager ?isOtriManager ?gnossUser", @$"where{{                                        
                                         ?person a <http://xmlns.com/foaf/0.1/Person>.
                                         FILTER(?person=<{person}>)
+                                        OPTIONAL{{?person <http://w3id.org/roh/isGraphicManager> ?isGraphicManager}}
+                                        OPTIONAL{{?person <http://w3id.org/roh/isOtriManager> ?isOtriManager}}
+                                        OPTIONAL{{?person <http://w3id.org/roh/gnossUser> ?gnossUser}}
+                                        
                         }}", "person");
 
-                    string isGraphicmanager = datosPermisosPersona.results.bindings.FirstOrDefault()?["isGraphicmanager"].value;
-                    string isOtriManager = datosPermisosPersona.results.bindings.FirstOrDefault()?["isOtriManager"].value;
-                    string gnossUser = datosPermisosPersona.results.bindings.FirstOrDefault()?["gnossUser"].value;
+                    string isGraphicManager = "";
+                    string isOtriManager = "";
+                    string gnossUser = "";
+
+                    if (datosPermisosPersona.results.bindings.FirstOrDefault() != null && datosPermisosPersona.results.bindings.FirstOrDefault().ContainsKey("isGraphicManager"))
+                    {
+                        isGraphicManager = datosPermisosPersona.results.bindings.FirstOrDefault()["isGraphicManager"].value;
+                    }
+                    if (datosPermisosPersona.results.bindings.FirstOrDefault() != null && datosPermisosPersona.results.bindings.FirstOrDefault().ContainsKey("isOtriManager"))
+                    {
+                        isOtriManager = datosPermisosPersona.results.bindings.FirstOrDefault()["isOtriManager"].value;
+                    }
+                    if (datosPermisosPersona.results.bindings.FirstOrDefault() != null && datosPermisosPersona.results.bindings.FirstOrDefault().ContainsKey("gnossUser"))
+                    {
+                        gnossUser = datosPermisosPersona.results.bindings.FirstOrDefault()["gnossUser"].value;
+                    }
+
+                    mCommunityApi.Log.Info($"-Comprobamos si es administrador de la comunidad");
                     bool isAdmin = EsAdministradorComunidad("hercules", usuario.user_id);
 
-                    mCommunityApi.Log.Info($"-Permisos actuales isGraphicmanager:'{isGraphicmanager}' isOtriManager:'{isOtriManager}' gnossUser:'{gnossUser}' isAdmin:'{isAdmin}' ");
+                    mCommunityApi.Log.Info($"-Permisos actuales isGraphicManager:'{isGraphicManager}' isOtriManager:'{isOtriManager}' gnossUser:'{gnossUser}' isAdmin:'{isAdmin}' ");
 
                     Dictionary<Guid, List<TriplesToInclude>> triplesInsertar = new() { { mResourceApi.GetShortGuid(person), new List<TriplesToInclude>() } };
                     Dictionary<Guid, List<TriplesToModify>> triplesModificar = new() { { mResourceApi.GetShortGuid(person), new List<TriplesToModify>() } };
@@ -282,32 +328,32 @@ namespace Gnoss.Web.Login.SAML
                     }
 
                     //adminIndicadores
-                    if (adminIndicadores && (string.IsNullOrEmpty(isGraphicmanager) || isGraphicmanager != "true"))
+                    if (adminIndicadores && (string.IsNullOrEmpty(isGraphicManager) || isGraphicManager != "true"))
                     {
-                        if (string.IsNullOrEmpty(isGraphicmanager))
+                        if (string.IsNullOrEmpty(isGraphicManager))
                         {
-                            mCommunityApi.Log.Info($"-Damos de alta isGraphicmanager ");
+                            mCommunityApi.Log.Info($"-Damos de alta isGraphicManager ");
                             TriplesToInclude t = new();
-                            t.Predicate = "http://w3id.org/roh/isGraphicmanager";
+                            t.Predicate = "http://w3id.org/roh/isGraphicManager";
                             t.NewValue = "true";
                             triplesInsertar[mResourceApi.GetShortGuid(person)].Add(t);
                         }
                         else
                         {
-                            mCommunityApi.Log.Info($"-Modificamos isGraphicmanager a 'true'");
+                            mCommunityApi.Log.Info($"-Modificamos isGraphicManager a 'true'");
                             TriplesToModify t = new();
-                            t.OldValue = isGraphicmanager;
-                            t.Predicate = "http://w3id.org/roh/isGraphicmanager";
+                            t.OldValue = isGraphicManager;
+                            t.Predicate = "http://w3id.org/roh/isGraphicManager";
                             t.NewValue = "true";
                             triplesModificar[mResourceApi.GetShortGuid(person)].Add(t);
                         }
                     }
-                    if (!adminIndicadores && !string.IsNullOrEmpty(isGraphicmanager))
+                    if (!adminIndicadores && !string.IsNullOrEmpty(isGraphicManager))
                     {
-                        mCommunityApi.Log.Info($"-Eliminamos isGraphicmanager ");
+                        mCommunityApi.Log.Info($"-Eliminamos isGraphicManager ");
                         RemoveTriples t = new();
-                        t.Predicate = "http://w3id.org/roh/isGraphicmanager";
-                        t.Value = isGraphicmanager;
+                        t.Predicate = "http://w3id.org/roh/isGraphicManager";
+                        t.Value = isGraphicManager;
                         triplesEliminar[mResourceApi.GetShortGuid(person)].Add(t);
                     }
 
@@ -316,7 +362,7 @@ namespace Gnoss.Web.Login.SAML
                     {
                         if (string.IsNullOrEmpty(isOtriManager))
                         {
-                            mCommunityApi.Log.Info($"-Damos de alta isGraphicmanager ");
+                            mCommunityApi.Log.Info($"-Damos de alta isOtriManager ");
                             TriplesToInclude t = new();
                             t.Predicate = "http://w3id.org/roh/isOtriManager";
                             t.NewValue = "true";
@@ -324,7 +370,7 @@ namespace Gnoss.Web.Login.SAML
                         }
                         else
                         {
-                            mCommunityApi.Log.Info($"-Modificamos isGraphicmanager a 'true'");
+                            mCommunityApi.Log.Info($"-Modificamos isOtriManager a 'true'");
                             TriplesToModify t = new();
                             t.OldValue = isOtriManager;
                             t.Predicate = "http://w3id.org/roh/isOtriManager";
@@ -334,7 +380,7 @@ namespace Gnoss.Web.Login.SAML
                     }
                     if (!gestorOtri && !string.IsNullOrEmpty(isOtriManager))
                     {
-                        mCommunityApi.Log.Info($"-Eliminamos isGraphicmanager ");
+                        mCommunityApi.Log.Info($"-Eliminamos isOtriManager ");
                         RemoveTriples t = new();
                         t.Predicate = "http://w3id.org/roh/isOtriManager";
                         t.Value = isOtriManager;
@@ -354,6 +400,20 @@ namespace Gnoss.Web.Login.SAML
                         //Sacar como admin
                         EliminarPermisosAdministrador("hercules", usuario.user_id);
                     }
+
+                    if (triplesInsertar[mResourceApi.GetShortGuid(person)].Count > 0)
+                    {
+                        mResourceApi.InsertPropertiesLoadedResources(triplesInsertar);
+                    }
+                    if (triplesModificar[mResourceApi.GetShortGuid(person)].Count > 0)
+                    {
+                        mResourceApi.ModifyPropertiesLoadedResources(triplesModificar);
+                    }
+                    if (triplesEliminar[mResourceApi.GetShortGuid(person)].Count > 0)
+                    {
+                        mResourceApi.DeletePropertiesLoadedResources(triplesEliminar);
+                    }
+
 
                     return usuario;
 
@@ -399,7 +459,6 @@ namespace Gnoss.Web.Login.SAML
 
             string dominio = ObtenerDominioIP();
 
-
             string query = "urlVuelta=" + pDominioDeVuelta + "&redirect=" + HttpUtility.UrlEncode(pRedirect) + "&token=" + pToken;
 
             return dominio + "/obtenerCookie?" + query;
@@ -424,57 +483,117 @@ namespace Gnoss.Web.Login.SAML
 
         public void AltaAdministradorDeComunidad(string community_short_name, Guid user_id)
         {
-            ProyectoCN proyCN = new ProyectoCN(mEntityContext, mLoggingService, mConfigService, mServicesUtilVirtuosoAndReplication);
-            Guid proyectoID = proyCN.ObtenerProyectoIDPorNombre(community_short_name);
-            if (!proyectoID.Equals(Guid.Empty))
+            try
             {
-                GestionProyecto gestorProyecto = new GestionProyecto(proyCN.ObtenerProyectoPorID(proyectoID), mLoggingService, mEntityContext);
-                gestorProyecto.CargarGestor();
-                Proyecto proyecto = gestorProyecto.ListaProyectos[proyectoID];
-
-                List<Guid> listaUsuarios = new List<Guid>();
-                listaUsuarios.Add(user_id);
-
-                string error = new ControladorProyecto(mLoggingService, mEntityContext, mConfigService, mRedisCacheWrapper, mGnossCache, mEntityContextBASE, mVirtuosoAD, mHttpContextAccessor, mServicesUtilVirtuosoAndReplication).AgregarAdministradoresAComunidad(proyecto.FilaProyecto.OrganizacionID, proyecto.Clave, listaUsuarios, false);
-
-                if (!string.IsNullOrEmpty(error))
+                mCommunityApi.Log.Info($"{community_short_name} {user_id}");
+                ProyectoCN proyCN = new ProyectoCN(mEntityContext, mLoggingService, mConfigService, mServicesUtilVirtuosoAndReplication);
+                UsuarioCN usuarioCN = new UsuarioCN(mEntityContext, mLoggingService, mConfigService, mServicesUtilVirtuosoAndReplication);
+                Guid proyectoID = proyCN.ObtenerProyectoIDPorNombre(community_short_name);
+                Es.Riam.Gnoss.AD.EncapsuladoDatos.DataWrapperProyecto dataWrapperProyecto = proyCN.ObtenerProyectoPorID(proyectoID);
+                mCommunityApi.Log.Info($"-0");
+                if (!proyectoID.Equals(Guid.Empty))
                 {
-                    throw new Exception("Could not add the member as administrator");
+                    mCommunityApi.Log.Info($"-A");
+                    Es.Riam.Gnoss.AD.EntityModel.Models.UsuarioDS.ProyectoRolUsuario filaProyectoRolUsuario = usuarioCN.ObtenerRolUsuarioEnProyecto(proyectoID, user_id);
+                    if (filaProyectoRolUsuario != null)
+                    {
+                        mCommunityApi.Log.Info($"-B");
+                        filaProyectoRolUsuario.RolDenegado = "0000000000000000";
+                        filaProyectoRolUsuario.RolPermitido = "FFFFFFFFFFFFFFFF";
+                    }
+                    Es.Riam.Gnoss.Web.Controles.ProyectoGBD.ProyectoGBD proyectoGBD = new Es.Riam.Gnoss.Web.Controles.ProyectoGBD.ProyectoGBD(mEntityContext);
+                    Es.Riam.Gnoss.AD.EntityModel.Models.ProyectoDS.AdministradorProyecto filaAdminProyecto = proyectoGBD.CargaAdministradorProyecto.FirstOrDefault(x => x.ProyectoID == proyectoID && x.UsuarioID == user_id);
+                    mCommunityApi.Log.Info($"-C");
+                    if (filaAdminProyecto == null)
+                    {
+                        mEntityContext.AdministradorProyecto.Add(new Es.Riam.Gnoss.AD.EntityModel.Models.ProyectoDS.AdministradorProyecto()
+                        {
+                            OrganizacionID = dataWrapperProyecto.ListaProyecto.First().OrganizacionID,
+                            ProyectoID=proyectoID,
+                            Tipo = (short)TipoRolUsuario.Administrador,
+                            UsuarioID=user_id
+                        });
+                    }
+                    mEntityContext.SaveChanges();
+
+                    ProyectoCL proyectoCL = new ProyectoCL(mEntityContext, mLoggingService, mRedisCacheWrapper, mConfigService, mVirtuosoAD, mServicesUtilVirtuosoAndReplication);
+                    proyectoCL.InvalidarHTMLAdministradoresProyecto(proyectoID);
+                    proyectoCL.InvalidarFilaProyecto(proyectoID);
+
+                    IdentidadCL identidadCL = new IdentidadCL(mEntityContext, mLoggingService, mRedisCacheWrapper, mConfigService, mServicesUtilVirtuosoAndReplication);
+                    PersonaCN personaCN = new PersonaCN(mEntityContext, mLoggingService, mConfigService, mServicesUtilVirtuosoAndReplication);
+                    Guid? personaID = personaCN.ObtenerPersonaIDPorUsuarioID(user_id);
+
+                    if (personaID.HasValue)
+                    {
+                        identidadCL.EliminarCacheGestorTodasIdentidadesUsuario(user_id, personaID.Value);
+                    }
                 }
+                else
+                {
+                    throw new Exception("The community does not exists");
+                }
+                proyCN.Dispose();
             }
-            else
+            catch (Exception ex)
             {
-                throw new Exception("The community does not exists");
+                mCommunityApi.Log.Info(ex.ToString());
             }
-            proyCN.Dispose();
         }
 
         public void EliminarPermisosAdministrador(string community_short_name, Guid user_id)
         {
-
-            ProyectoCN proyCN = new ProyectoCN(mEntityContext, mLoggingService, mConfigService, mServicesUtilVirtuosoAndReplication);
-            Guid proyectoID = proyCN.ObtenerProyectoIDPorNombre(community_short_name);
-
-            if (!proyectoID.Equals(Guid.Empty))
+            try
             {
-                GestionProyecto gestorProyecto = new GestionProyecto(proyCN.ObtenerProyectoPorID(proyectoID), mLoggingService, mEntityContext);
-                gestorProyecto.CargarGestor();
-                Proyecto proyecto = gestorProyecto.ListaProyectos[proyectoID];
-
-                string error = new ControladorProyecto(mLoggingService, mEntityContext, mConfigService, mRedisCacheWrapper, mGnossCache, mEntityContextBASE, mVirtuosoAD, mHttpContextAccessor, mServicesUtilVirtuosoAndReplication)
-                    .EliminarAdministradorComunidad(proyecto.FilaProyecto.OrganizacionID, proyecto.Clave, user_id, false);
-
-                if (!string.IsNullOrEmpty(error))
+                mCommunityApi.Log.Info($"{community_short_name} {user_id}");
+                ProyectoCN proyCN = new ProyectoCN(mEntityContext, mLoggingService, mConfigService, mServicesUtilVirtuosoAndReplication);
+                UsuarioCN usuarioCN = new UsuarioCN(mEntityContext, mLoggingService, mConfigService, mServicesUtilVirtuosoAndReplication);
+                Guid proyectoID = proyCN.ObtenerProyectoIDPorNombre(community_short_name);
+                mCommunityApi.Log.Info($"-0");
+                if (!proyectoID.Equals(Guid.Empty))
                 {
-                    throw new Exception("Could not delete the member as administrator");
-                }
-            }
-            else
-            {
-                throw new Exception("The community does not exists");
-            }
+                    mCommunityApi.Log.Info($"-A");
+                    Es.Riam.Gnoss.AD.EntityModel.Models.UsuarioDS.ProyectoRolUsuario filaProyectoRolUsuario = usuarioCN.ObtenerRolUsuarioEnProyecto(proyectoID, user_id);
+                    if (filaProyectoRolUsuario != null)
+                    {
+                        mCommunityApi.Log.Info($"-B");
+                        filaProyectoRolUsuario.RolPermitido = "0000000000000000";
+                        filaProyectoRolUsuario.RolDenegado = "FFFFFFFFFFFFFFFF";
+                    }
+                    Es.Riam.Gnoss.Web.Controles.ProyectoGBD.ProyectoGBD proyectoGBD = new Es.Riam.Gnoss.Web.Controles.ProyectoGBD.ProyectoGBD(mEntityContext);
+                    Es.Riam.Gnoss.AD.EntityModel.Models.ProyectoDS.AdministradorProyecto filaAdminProyecto = proyectoGBD.CargaAdministradorProyecto.FirstOrDefault(x => x.ProyectoID == proyectoID && x.UsuarioID == user_id);
+                    mCommunityApi.Log.Info($"-C");
+                    if (filaAdminProyecto != null)
+                    {
+                        mCommunityApi.Log.Info($"-D");
+                        mEntityContext.Entry(filaAdminProyecto).State = EntityState.Deleted;
+                    }
+                    mEntityContext.SaveChanges();
 
-            proyCN.Dispose();
+                    ProyectoCL proyectoCL = new ProyectoCL(mEntityContext, mLoggingService, mRedisCacheWrapper, mConfigService, mVirtuosoAD, mServicesUtilVirtuosoAndReplication);
+                    proyectoCL.InvalidarHTMLAdministradoresProyecto(proyectoID);
+                    proyectoCL.InvalidarFilaProyecto(proyectoID);
+
+                    IdentidadCL identidadCL = new IdentidadCL(mEntityContext, mLoggingService, mRedisCacheWrapper, mConfigService, mServicesUtilVirtuosoAndReplication);
+                    PersonaCN personaCN = new PersonaCN(mEntityContext, mLoggingService, mConfigService, mServicesUtilVirtuosoAndReplication);
+                    Guid? personaID = personaCN.ObtenerPersonaIDPorUsuarioID(user_id);
+
+                    if (personaID.HasValue)
+                    {
+                        identidadCL.EliminarCacheGestorTodasIdentidadesUsuario(user_id, personaID.Value);
+                    }
+                }
+                else
+                {
+                    throw new Exception("The community does not exists");
+                }
+                proyCN.Dispose();
+            }
+            catch(Exception ex)
+            {
+                mCommunityApi.Log.Info(ex.ToString());
+            }            
         }
+
     }
 }

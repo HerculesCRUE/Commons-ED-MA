@@ -889,3 +889,9 @@ body.operativaRegistro.login main .panel-centrado a {
 body.operativaRegistro.login main .panel-centrado .login_cas {
     margin-top: 13px;
 }
+/* CUSTOM SCROLL PROY */
+.custom-css-scroll-proy::-webkit-scrollbar { width: 6px;}
+.custom-css-scroll-proy { overflow: overlay; scrollbar-width: thin; scrollbar-color: var(--c-texto-claro) rgba(0,0,0,0.08);}
+.custom-css-scroll-proy::-webkit-scrollbar-track { background: rgba(0,0,0,0.08); border-radius: 0px;}
+.custom-css-scroll-proy::-webkit-scrollbar-thumb { background-color: var(--c-texto-claro) ; border-radius: 8px; }
+/* */

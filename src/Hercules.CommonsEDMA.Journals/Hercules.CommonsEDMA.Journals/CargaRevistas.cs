@@ -500,9 +500,8 @@ namespace Hercules.CommonsEDMA.Journals
             List<string> idsRecursos = new List<string>();
             int limit = 10000;
             int offset = 0;
-            bool salirBucle = false;
 
-            do
+            while(true)
             {
                 // Consulta sparql.
                 string select = "SELECT * WHERE { SELECT ?revista ";
@@ -522,15 +521,15 @@ namespace Hercules.CommonsEDMA.Journals
 
                     if (resultadoQuery.results.bindings.Count < limit)
                     {
-                        salirBucle = true;
+                        break;
                     }
                 }
                 else
                 {
-                    salirBucle = true;
+                    break;
                 }
 
-            } while (!salirBucle);
+            }
 
             return idsRecursos;
         }
@@ -550,13 +549,12 @@ namespace Hercules.CommonsEDMA.Journals
             {
                 int limit = 10000;
                 int offset = 0;
-                bool salirBucle = false;
 
-                do
+                while (true)
                 {
                     // Consulta sparql.
-                    string select = $@"SELECT * WHERE {{ SELECT ?revista ?titulo ?issn ?eissn ?editor FROM <{mResourceApi.GraphsUrl}documentformat.owl> FROM <{mResourceApi.GraphsUrl}referencesource.owl> FROM <{mResourceApi.GraphsUrl}impactindexcategory.owl> ";
-                    string where = $@"WHERE {{
+                    string selectMainDocument = $@"SELECT * WHERE {{ SELECT ?revista ?titulo ?issn ?eissn ?editor";
+                    string whereMainDocument = $@"WHERE {{
                                 ?revista a <http://w3id.org/roh/MainDocument>. 
                                 ?revista <http://w3id.org/roh/format> <{mResourceApi.GraphsUrl}items/documentformat_057>. 
                                 ?revista <http://w3id.org/roh/title> ?titulo. 
@@ -566,54 +564,54 @@ namespace Hercules.CommonsEDMA.Journals
                                 FILTER(?revista IN (<{string.Join(">,<", listaSpliteada)}>)) 
                                 }} ORDER BY DESC(?revista) }} LIMIT {limit} OFFSET {offset} ";
 
-                    SparqlObject resultadoQuery = mResourceApi.VirtuosoQuery(select, where, "maindocument");
-                    if (resultadoQuery != null && resultadoQuery.results != null && resultadoQuery.results.bindings != null && resultadoQuery.results.bindings.Count > 0)
+                    SparqlObject resultadoQueryMainDocument = mResourceApi.VirtuosoQueryMultipleGraph(selectMainDocument, whereMainDocument, new List<string>() { "maindocument", "documentformat", "referencesource", "impactindexcategory" });
+                    
+                    if (resultadoQueryMainDocument == null || resultadoQueryMainDocument.results == null ||
+                        resultadoQueryMainDocument.results.bindings == null || resultadoQueryMainDocument.results.bindings.Count == 0)
                     {
-                        offset += limit;
-
-                        foreach (Dictionary<string, SparqlObject.Data> fila in resultadoQuery.results.bindings)
-                        {
-                            // Valores.
-                            string revistaId = fila["revista"].value;
-                            string titulo = fila["titulo"].value;
-                            string issn = null;
-                            string eissn = null;
-                            string editor = null;
-                            if (fila.ContainsKey("issn"))
-                            {
-                                issn = fila["issn"].value;
-                            }
-                            if (fila.ContainsKey("eissn"))
-                            {
-                                eissn = fila["eissn"].value;
-                            }
-                            if (fila.ContainsKey("editor"))
-                            {
-                                editor = fila["editor"].value;
-                            }
-
-                            // Creación del objeto.
-                            Journal revista = new Journal();
-                            revista.idJournal = revistaId;
-                            revista.titulo = titulo;
-                            revista.issn = issn;
-                            revista.eissn = eissn;
-                            revista.publicador = editor;
-                            revista.indicesImpacto = new HashSet<IndiceImpacto>();
-                            dicResultado.Add(revista.idJournal, revista);
-                        }
-
-                        if (resultadoQuery.results.bindings.Count < limit)
-                        {
-                            salirBucle = true;
-                        }
-                    }
-                    else
-                    {
-                        salirBucle = true;
+                        break;
                     }
 
-                } while (!salirBucle);
+                    offset += limit;
+
+                    foreach (Dictionary<string, SparqlObject.Data> fila in resultadoQueryMainDocument.results.bindings)
+                    {
+                        // Valores.
+                        string revistaId = fila["revista"].value;
+                        string titulo = fila["titulo"].value;
+                        string issn = null;
+                        string eissn = null;
+                        string editor = null;
+                        if (fila.ContainsKey("issn"))
+                        {
+                            issn = fila["issn"].value;
+                        }
+                        if (fila.ContainsKey("eissn"))
+                        {
+                            eissn = fila["eissn"].value;
+                        }
+                        if (fila.ContainsKey("editor"))
+                        {
+                            editor = fila["editor"].value;
+                        }
+
+                        // Creación del objeto.
+                        Journal revista = new Journal();
+                        revista.idJournal = revistaId;
+                        revista.titulo = titulo;
+                        revista.issn = issn;
+                        revista.eissn = eissn;
+                        revista.publicador = editor;
+                        revista.indicesImpacto = new HashSet<IndiceImpacto>();
+                        dicResultado.Add(revista.idJournal, revista);
+                    }
+
+                    if (resultadoQueryMainDocument.results.bindings.Count < limit)
+                    {
+                        break;
+                    }
+
+                }
             }
             #endregion
 
@@ -622,14 +620,13 @@ namespace Hercules.CommonsEDMA.Journals
             {
                 int limit = 10000;
                 int offset = 0;
-                bool salirBucle = false;
 
                 // ImpactIndex
-                do
+                while (true)
                 {
                     // Consulta sparql.
-                    string select = $@"SELECT * WHERE {{ SELECT ?revista ?impactIndex ?fuente ?year ?impactIndexInYear FROM <{mResourceApi.GraphsUrl}documentformat.owl> FROM <{mResourceApi.GraphsUrl}referencesource.owl> FROM <{mResourceApi.GraphsUrl}impactindexcategory.owl> ";
-                    string where = $@"WHERE {{
+                    string selectImpactIndex = $@"SELECT * WHERE {{ SELECT ?revista ?impactIndex ?fuente ?year ?impactIndexInYear ";
+                    string whereImpactIndex = $@"WHERE {{
                                 ?revista a <http://w3id.org/roh/MainDocument>.
                                 ?revista <http://w3id.org/roh/format> <{mResourceApi.GraphsUrl}items/documentformat_057>. 
                                 ?revista <http://w3id.org/roh/impactIndex> ?impactIndex.
@@ -639,12 +636,13 @@ namespace Hercules.CommonsEDMA.Journals
                                 FILTER(?revista IN (<{string.Join(">,<", listaSpliteada)}>)) 
                                 }} ORDER BY DESC(?revista) DESC(?impactIndex) }} LIMIT {limit} OFFSET {offset} ";
 
-                    SparqlObject resultadoQuery = mResourceApi.VirtuosoQuery(select, where, "maindocument");
-                    if (resultadoQuery != null && resultadoQuery.results != null && resultadoQuery.results.bindings != null && resultadoQuery.results.bindings.Count > 0)
+                    SparqlObject resultadoQueryImpactIndex = mResourceApi.VirtuosoQueryMultipleGraph(selectImpactIndex, whereImpactIndex, new List<string>() { "maindocument", "documentformat", "referencesource", "impactindexcategory" });
+                    if (resultadoQueryImpactIndex != null && resultadoQueryImpactIndex.results != null &&
+                        resultadoQueryImpactIndex.results.bindings != null && resultadoQueryImpactIndex.results.bindings.Count > 0)
                     {
                         offset += limit;
 
-                        foreach (Dictionary<string, SparqlObject.Data> fila in resultadoQuery.results.bindings)
+                        foreach (Dictionary<string, SparqlObject.Data> fila in resultadoQueryImpactIndex.results.bindings)
                         {
                             string revistaId = fila["revista"].value;
                             string impactIndexId = fila["impactIndex"].value;
@@ -678,17 +676,17 @@ namespace Hercules.CommonsEDMA.Journals
                             });
                         }
 
-                        if (resultadoQuery.results.bindings.Count < limit)
+                        if (resultadoQueryImpactIndex.results.bindings.Count < limit)
                         {
-                            salirBucle = true;
+                            break;
                         }
                     }
                     else
                     {
-                        salirBucle = true;
+                        break;
                     }
 
-                } while (!salirBucle);
+                }
             }
             #endregion
 
@@ -697,14 +695,13 @@ namespace Hercules.CommonsEDMA.Journals
             {
                 int limit = 10000;
                 int offset = 0;
-                bool salirBucle = false;
 
                 // ImpactCategory
-                do
+                while (true)
                 {
                     // Consulta sparql.
-                    string select = $@"SELECT * WHERE {{ SELECT ?revista ?impactIndex ?impactCategory ?year ?nombreCategoria ?posicion ?numCategoria ?cuartil FROM <{mResourceApi.GraphsUrl}documentformat.owl> FROM <{mResourceApi.GraphsUrl}referencesource.owl> FROM <{mResourceApi.GraphsUrl}impactindexcategory.owl> ";
-                    string where = $@"WHERE {{
+                    string selectImpactCategory = $@"SELECT * WHERE {{ SELECT ?revista ?impactIndex ?impactCategory ?year ?nombreCategoria ?posicion ?numCategoria ?cuartil ";
+                    string whereImpactCategory = $@"WHERE {{
                                 ?revista a <http://w3id.org/roh/MainDocument>.
                                 ?revista <http://w3id.org/roh/format> <{mResourceApi.GraphsUrl}items/documentformat_057>. 
                                 ?revista <http://w3id.org/roh/impactIndex> ?impactIndex.
@@ -719,12 +716,13 @@ namespace Hercules.CommonsEDMA.Journals
                                 FILTER(?revista IN (<{string.Join(">,<", listaSpliteada)}>)) 
                                 }} ORDER BY DESC(?revista) DESC(?impactIndex) DESC(?impactCategory) }} LIMIT {limit} OFFSET {offset} ";
 
-                    SparqlObject resultadoQuery = mResourceApi.VirtuosoQuery(select, where, "maindocument");
-                    if (resultadoQuery != null && resultadoQuery.results != null && resultadoQuery.results.bindings != null && resultadoQuery.results.bindings.Count > 0)
+                    SparqlObject resultadoQueryImpactCategory = mResourceApi.VirtuosoQueryMultipleGraph(selectImpactCategory, whereImpactCategory, new List<string>() { "maindocument", "documentformat", "referencesource", "impactindexcategory" });
+                    if (resultadoQueryImpactCategory != null && resultadoQueryImpactCategory.results != null &&
+                        resultadoQueryImpactCategory.results.bindings != null && resultadoQueryImpactCategory.results.bindings.Count > 0)
                     {
                         offset += limit;
 
-                        foreach (Dictionary<string, SparqlObject.Data> fila in resultadoQuery.results.bindings)
+                        foreach (Dictionary<string, SparqlObject.Data> fila in resultadoQueryImpactCategory.results.bindings)
                         {
                             string revistaId = fila["revista"].value;
                             string impactIndexId = fila["impactIndex"].value;
@@ -755,17 +753,17 @@ namespace Hercules.CommonsEDMA.Journals
 
                         }
 
-                        if (resultadoQuery.results.bindings.Count < limit)
+                        if (resultadoQueryImpactCategory.results.bindings.Count < limit)
                         {
-                            salirBucle = true;
+                            break;
                         }
                     }
                     else
                     {
-                        salirBucle = true;
+                        break;
                     }
 
-                } while (!salirBucle);
+                }
             }
             #endregion
 
@@ -802,71 +800,19 @@ namespace Hercules.CommonsEDMA.Journals
                 return false;
             }
 
+            List<string> listadoComprobacion = new List<string>()
+            {
+                "TITLE","PUBLISHER_NAME","ISSN","EISSN","IMPACT_FACTOR","CATEGORY_DESCRIPTION","RANK","RANK_OUT_OF","QUARTILE_RANK","SOURCE","YEAR"
+            };
+
             // Comprobación de los nombres de las columnas. 
-            if (!tabla.Columns.Contains("TITLE"))
+            foreach (string columna in listadoComprobacion)
             {
-                Console.WriteLine($@"{DateTime.Now} Revista inválida. No contiene la columna 'TITLE'.");
-                return false;
-            }
-
-            if (!tabla.Columns.Contains("PUBLISHER_NAME"))
-            {
-                Console.WriteLine($@"{DateTime.Now} Revista inválida. No contiene la columna 'PUBLISHER_NAME'.");
-                return false;
-            }
-
-            if (!tabla.Columns.Contains("ISSN"))
-            {
-                Console.WriteLine($@"{DateTime.Now} Revista inválida. No contiene la columna 'ISSN'.");
-                return false;
-            }
-
-            if (!tabla.Columns.Contains("EISSN"))
-            {
-                Console.WriteLine($@"{DateTime.Now} Revista inválida. No contiene la columna 'EISSN'.");
-                return false;
-            }
-
-            if (!tabla.Columns.Contains("IMPACT_FACTOR"))
-            {
-                Console.WriteLine($@"{DateTime.Now} Revista inválida. No contiene la columna 'IMPACT_FACTOR'.");
-                return false;
-            }
-
-            if (!tabla.Columns.Contains("CATEGORY_DESCRIPTION"))
-            {
-                Console.WriteLine($@"{DateTime.Now} Revista inválida. No contiene la columna 'CATEGORY_DESCRIPTION'.");
-                return false;
-            }
-
-            if (!tabla.Columns.Contains("RANK"))
-            {
-                Console.WriteLine($@"{DateTime.Now} Revista inválida. No contiene la columna 'RANK'.");
-                return false;
-            }
-
-            if (!tabla.Columns.Contains("RANK_OUT_OF"))
-            {
-                Console.WriteLine($@"{DateTime.Now} Revista inválida. No contiene la columna 'RANK_OUT_OF'.");
-                return false;
-            }
-
-            if (!tabla.Columns.Contains("QUARTILE_RANK"))
-            {
-                Console.WriteLine($@"{DateTime.Now} Revista inválida. No contiene la columna 'QUARTILE_RANK'.");
-                return false;
-            }
-
-            if (!tabla.Columns.Contains("SOURCE"))
-            {
-                Console.WriteLine($@"{DateTime.Now} Revista inválida. No contiene la columna 'SOURCE'.");
-                return false;
-            }
-
-            if (!tabla.Columns.Contains("YEAR"))
-            {
-                Console.WriteLine($@"{DateTime.Now} Revista inválida. No contiene la columna 'YEAR'.");
-                return false;
+                if (!tabla.Columns.Contains(columna))
+                {
+                    Console.WriteLine($@"{DateTime.Now} Columna: " + columna + " erronea");
+                    return false;
+                }
             }
 
             return true;
@@ -997,7 +943,8 @@ namespace Hercules.CommonsEDMA.Journals
                         Thread.Sleep(1000 * numIntentos);
                     }
                 }
-            };
+            }
+
             Console.WriteLine($"\r5/7.- Cargando revistas {numRevista}/{numRevistas}");
         }
 

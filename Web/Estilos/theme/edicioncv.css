@@ -370,7 +370,9 @@ input.form-group-date {
     color: #03a1ff;
 }
 .importar-exportar-cv .compararItems::after{
-	content: "\eb7d";
+	content: "\f1c3";
+	color: var(--c-secundario);
+	cursor: pointer;
 }
 
 div#contenedorOtrosMeritos div.col-section-title , div#contenedorOtrosMeritos div.col-contenido{

@@ -114,27 +114,27 @@ namespace OAI_PMH.Models.SGI
             ToRecursoAdicional(pHarvesterServices, pConfig, pResourceApi, pDicIdentificadores, pDicRutas, pRabbitConf, gnossId);
 
             // Inserción en la cola de Rabbit.
-            //switch (pIdGrafo)
-            //{
-            //    case "person":
-            //        pRabbitConf.PublishMessage(new DenormalizerItemQueue(DenormalizerItemQueue.ItemType.person, new HashSet<string>() { resource.GnossId }));
-            //        break;
-            //    case "project":
-            //        pRabbitConf.PublishMessage(new DenormalizerItemQueue(DenormalizerItemQueue.ItemType.project, new HashSet<string>() { resource.GnossId }));
-            //        break;
-            //    case "group":
-            //        pRabbitConf.PublishMessage(new DenormalizerItemQueue(DenormalizerItemQueue.ItemType.group, new HashSet<string>() { resource.GnossId }));
-            //        break;
-            //    case "patent":
-            //        pRabbitConf.PublishMessage(new DenormalizerItemQueue(DenormalizerItemQueue.ItemType.patent, new HashSet<string>() { resource.GnossId }));
-            //        break;
-            //    case "organization":
-            //        pRabbitConf.PublishMessage(new DenormalizerItemQueue(DenormalizerItemQueue.ItemType.organization, new HashSet<string>() { resource.GnossId }));
-            //        break;
-            //    case "projectauthorization":
-            //        pRabbitConf.PublishMessage(new DenormalizerItemQueue(DenormalizerItemQueue.ItemType.projectauthorization, new HashSet<string>() { resource.GnossId }));
-            //        break;
-            //}
+            switch (pIdGrafo)
+            {
+                case "person":
+                    pRabbitConf.PublishMessage(new DenormalizerItemQueue(DenormalizerItemQueue.ItemType.person, new HashSet<string>() { resource.GnossId }));
+                    break;
+                case "project":
+                    pRabbitConf.PublishMessage(new DenormalizerItemQueue(DenormalizerItemQueue.ItemType.project, new HashSet<string>() { resource.GnossId }));
+                    break;
+                case "group":
+                    pRabbitConf.PublishMessage(new DenormalizerItemQueue(DenormalizerItemQueue.ItemType.group, new HashSet<string>() { resource.GnossId }));
+                    break;
+                case "patent":
+                    pRabbitConf.PublishMessage(new DenormalizerItemQueue(DenormalizerItemQueue.ItemType.patent, new HashSet<string>() { resource.GnossId }));
+                    break;
+                case "organization":
+                    pRabbitConf.PublishMessage(new DenormalizerItemQueue(DenormalizerItemQueue.ItemType.organization, new HashSet<string>() { resource.GnossId }));
+                    break;
+                case "projectauthorization":
+                    pRabbitConf.PublishMessage(new DenormalizerItemQueue(DenormalizerItemQueue.ItemType.projectauthorization, new HashSet<string>() { resource.GnossId }));
+                    break;
+            }
 
             return resource.GnossId;
         }        

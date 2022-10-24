@@ -9,6 +9,17 @@
 |Tipo|Especificación|
 |Cambios de la Versión|Versión inicial|
 
+
+
+[![SonarCloud](https://sonarcloud.io/images/project_badges/sonarcloud-white.svg)](https://sonarcloud.io/summary/new_code?id=Hercules.CommonsEDMA.DisambiguationEngine)
+
+[![Bugs](https://sonarcloud.io/api/project_badges/measure?project=Hercules.CommonsEDMA.DisambiguationEngine&metric=bugs)](https://sonarcloud.io/summary/new_code?id=Hercules.CommonsEDMA.DisambiguationEngine)
+[![Reliability Rating](https://sonarcloud.io/api/project_badges/measure?project=Hercules.CommonsEDMA.DisambiguationEngine&metric=reliability_rating)](https://sonarcloud.io/summary/new_code?id=Hercules.CommonsEDMA.DisambiguationEngine)
+[![Reliability Rating](https://sonarcloud.io/api/project_badges/measure?project=Hercules.CommonsEDMA.DisambiguationEngine&metric=reliability_rating)](https://sonarcloud.io/summary/new_code?id=Hercules.CommonsEDMA.DisambiguationEngine)
+[![Duplicated Lines (%)](https://sonarcloud.io/api/project_badges/measure?project=Hercules.CommonsEDMA.DisambiguationEngine&metric=duplicated_lines_density)](https://sonarcloud.io/summary/new_code?id=Hercules.CommonsEDMA.DisambiguationEngine)
+
+
+
 # Motor de desambiguación y deduplicación de datos
 El motor de desambiguación y deduplicación de datos se ocupa de reconocer y diferenciar de un conjunto de datos aquellos que sean iguales. Dicho proceso beneficia el desarrollo y mantenimiento de la información en aquellos servicios que hagan uso en Hércules CommonsEDMA.
 Este proceso tiene varias ventajas como:

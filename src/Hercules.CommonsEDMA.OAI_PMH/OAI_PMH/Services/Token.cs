@@ -21,19 +21,7 @@ namespace OAI_PMH.Services
         public static string CheckToken(ConfigService pConfig, bool pTokenGestor = true, bool pTokenPii = false)
         {
             _ConfigService = pConfig;
-            string token = "";
-            while (string.IsNullOrEmpty(token))
-            {
-                try
-                {
-                    token = GetToken(pConfig, pTokenGestor, pTokenPii);
-                }
-                catch (Exception ex)
-                {
-                    Console.WriteLine(ex.Message);
-                    Thread.Sleep(5000);
-                }
-            }
+            string token = GetToken(pConfig, pTokenGestor, pTokenPii);
             return token;
             // TODO: Revisar por qué no actualiza bien el token si aparentemente parece que el código está correcto.
             //if (lastUpdate != default)
@@ -61,6 +49,25 @@ namespace OAI_PMH.Services
             //return accessToken;
         }
 
+        public static IRestResponse httpCall(RestClient pRestClient, RestRequest pRestRequest)
+        {
+            IRestResponse response = null;
+
+            while (true)
+            {
+                try
+                {
+                    response = pRestClient.Execute(pRestRequest);
+                    break;
+                }
+                catch
+                {
+                    return null;
+                }
+            }
+
+            return response;
+        }
 
         protected static async Task<string> httpCall(string pUrl, string pMethod, FormUrlEncodedContent pBody)
         {
@@ -81,14 +88,14 @@ namespace OAI_PMH.Services
                         }
                         catch
                         {
-                            intentos--;
+                            //intentos--;
                             if (intentos == 0)
                             {
                                 throw;
                             }
                             else
                             {
-                                Thread.Sleep(1000);
+                                Thread.Sleep(60000);
                             }
                         }
                     }

@@ -1186,7 +1186,7 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
                 while (true)
                 {
                     int limit = 500;
-                    String select = @"select ?person ?datoActual ?datoCargar  ";
+                    String select = @"select distinct ?person ?datoActual ?datoCargar  ";
                     String where = @$"where{{
                             ?person a <http://xmlns.com/foaf/0.1/Person>.
                             {filter}
@@ -1266,7 +1266,7 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
                 while (true)
                 {
                     int limit = 500;
-                    String select = @"select ?person ?datoActual ?datoCargar   ";
+                    String select = @"select distinct ?person ?datoActual ?datoCargar   ";
                     String where = @$"where{{
                             ?person a <http://xmlns.com/foaf/0.1/Person>.
                             {filter}

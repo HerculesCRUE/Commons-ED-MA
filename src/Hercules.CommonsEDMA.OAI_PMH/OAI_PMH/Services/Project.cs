@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 namespace OAI_PMH.Services
 {
     public class Project
-    {
+    {        
         public static Dictionary<string, DateTime> GetModifiedProjects(string from, ConfigService pConfig)
         {
             string accessToken = Token.CheckToken(pConfig);
@@ -22,7 +22,7 @@ namespace OAI_PMH.Services
             RestClient client = new(pConfig.GetConfigSGI() + "/api/sgicsp/proyectos/modificados-ids?q=fechaModificacion=ge=\"" + from + "\"");
             client.AddDefaultHeader("Authorization", "Bearer " + accessToken);
             var request = new RestRequest(Method.GET);
-            IRestResponse response = client.Execute(request);
+            IRestResponse response = Token.httpCall(client, request);
 
             if (!String.IsNullOrEmpty(response.Content))
             {
@@ -112,7 +112,7 @@ namespace OAI_PMH.Services
             RestClient client = new(pConfig.GetConfigSGI() + "/api/sgicsp/proyectos/" + id);
             client.AddDefaultHeader("Authorization", "Bearer " + accessToken);
             var request = new RestRequest(Method.GET);
-            IRestResponse response = client.Execute(request);            
+            IRestResponse response = Token.httpCall(client, request);        
             try
             {
                 var json = JObject.Parse(response.Content);
@@ -132,7 +132,7 @@ namespace OAI_PMH.Services
             RestClient client = new(pConfig.GetConfigSGI() + "/api/sgicsp/proyectos/" + id + "/contexto");
             client.AddDefaultHeader("Authorization", "Bearer " + accessToken);
             var request = new RestRequest(Method.GET);
-            IRestResponse response = client.Execute(request);
+            IRestResponse response = Token.httpCall(client, request);
             try
             {
                 contexto = JsonConvert.DeserializeObject<ContextoProyecto>(response.Content);
@@ -151,7 +151,7 @@ namespace OAI_PMH.Services
             RestClient client = new(pConfig.GetConfigSGI() + "/api/sgicsp/proyectos/" + id + "/equipos");
             client.AddDefaultHeader("Authorization", "Bearer " + accessToken);
             var request = new RestRequest(Method.GET);
-            IRestResponse response = client.Execute(request);
+            IRestResponse response = Token.httpCall(client, request);
             try
             {
                 equipo = JsonConvert.DeserializeObject<List<ProyectoEquipo>>(response.Content);
@@ -170,7 +170,7 @@ namespace OAI_PMH.Services
             RestClient client = new(pConfig.GetConfigSGI() + "/api/sgicsp/proyectos/" + id + "/entidadgestoras");
             client.AddDefaultHeader("Authorization", "Bearer " + accessToken);
             var request = new RestRequest(Method.GET);
-            IRestResponse response = client.Execute(request);
+            IRestResponse response = Token.httpCall(client, request);
             try
             {
                 entidadesGestoras = JsonConvert.DeserializeObject<List<ProyectoEntidadGestora>>(response.Content);
@@ -189,7 +189,7 @@ namespace OAI_PMH.Services
             RestClient client = new(pConfig.GetConfigSGI() + "/api/sgicsp/proyectos/" + id + "/entidadconvocantes");
             client.AddDefaultHeader("Authorization", "Bearer " + accessToken);
             var request = new RestRequest(Method.GET);
-            IRestResponse response = client.Execute(request);
+            IRestResponse response = Token.httpCall(client, request);
             try
             {
                 entidadesConvocantes = JsonConvert.DeserializeObject<List<ProyectoEntidadConvocante>>(response.Content);
@@ -208,7 +208,7 @@ namespace OAI_PMH.Services
             RestClient client = new(pConfig.GetConfigSGI() + "/api/sgicsp/proyectos/" + id + "/entidadfinanciadoras");
             client.AddDefaultHeader("Authorization", "Bearer " + accessToken);
             var request = new RestRequest(Method.GET);
-            IRestResponse response = client.Execute(request);
+            IRestResponse response = Token.httpCall(client, request);
             try
             {
                 entidadesFinanciadoras = JsonConvert.DeserializeObject<List<ProyectoEntidadFinanciadora>>(response.Content);
@@ -227,7 +227,7 @@ namespace OAI_PMH.Services
             RestClient client = new(pConfig.GetConfigSGI() + "/api/sgicsp/proyectos/" + id + "/anualidades");
             client.AddDefaultHeader("Authorization", "Bearer " + accessToken);
             var request = new RestRequest(Method.GET);
-            IRestResponse response = client.Execute(request);
+            IRestResponse response = Token.httpCall(client, request);
             try
             {
                 anualidades = JsonConvert.DeserializeObject<List<ProyectoAnualidadResumen>>(response.Content);
@@ -246,7 +246,7 @@ namespace OAI_PMH.Services
             RestClient client = new(pConfig.GetConfigSGI() + "/api/sgicsp/proyectos/" + id + "/proyectoclasificaciones");
             client.AddDefaultHeader("Authorization", "Bearer " + accessToken);
             var request = new RestRequest(Method.GET);
-            IRestResponse response = client.Execute(request);
+            IRestResponse response = Token.httpCall(client, request);
             try
             {
                 proyectoClasificaciones = JsonConvert.DeserializeObject<List<ProyectoClasificacion>>(response.Content);
@@ -265,7 +265,7 @@ namespace OAI_PMH.Services
             RestClient client = new(pConfig.GetConfigSGI() + "/api/sgicsp/proyectos/" + id + "/notificacionesproyectos");
             client.AddDefaultHeader("Authorization", "Bearer " + accessToken);
             var request = new RestRequest(Method.GET);
-            IRestResponse response = client.Execute(request);
+            IRestResponse response = Token.httpCall(client, request);
             try
             {
                 notificacionProyectos = JsonConvert.DeserializeObject<List<NotificacionProyectoExternoCVN>>(response.Content);
@@ -284,7 +284,7 @@ namespace OAI_PMH.Services
             RestClient client = new(pConfig.GetConfigSGI() + "/api/sgicsp/proyectos/" + id + "/presupuesto-totales");
             client.AddDefaultHeader("Authorization", "Bearer " + accessToken);
             var request = new RestRequest(Method.GET);
-            IRestResponse response = client.Execute(request);
+            IRestResponse response = Token.httpCall(client, request);
             try
             {
                 presupuestos = JsonConvert.DeserializeObject<ProyectoPresupuestoTotales>(response.Content);
@@ -303,7 +303,7 @@ namespace OAI_PMH.Services
             RestClient client = new(pConfig.GetConfigSGI() + "/api/sgicsp/proyectos/" + id + "/areasconocimento");
             client.AddDefaultHeader("Authorization", "Bearer " + accessToken);
             var request = new RestRequest(Method.GET);
-            IRestResponse response = client.Execute(request);
+            IRestResponse response = Token.httpCall(client, request);
             try
             {
                 areasConocimiento = JsonConvert.DeserializeObject<List<ProyectoAreaConocimiento>>(response.Content);
@@ -322,7 +322,7 @@ namespace OAI_PMH.Services
             RestClient client = new(pConfig.GetConfigSGI() + "/api/sgicsp/proyectos/" + id + "/palabrasclave");
             client.AddDefaultHeader("Authorization", "Bearer " + accessToken);
             var request = new RestRequest(Method.GET);
-            IRestResponse response = client.Execute(request);
+            IRestResponse response = Token.httpCall(client, request);
             try
             {
                 palabrasClave = JsonConvert.DeserializeObject<List<PalabraClave>>(response.Content);
@@ -341,7 +341,7 @@ namespace OAI_PMH.Services
             RestClient client = new(pConfig.GetConfigSGI() + "/api/sgicsp/proyectos/" + id + "/estadoproyectos");
             client.AddDefaultHeader("Authorization", "Bearer " + accessToken);
             var request = new RestRequest(Method.GET);
-            IRestResponse response = client.Execute(request);
+            IRestResponse response = Token.httpCall(client, request);
             try
             {
                 palabrasClave = JsonConvert.DeserializeObject<List<EstadoProyecto>>(response.Content);

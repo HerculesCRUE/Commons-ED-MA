@@ -9,6 +9,15 @@
 |Tipo|Especificación|
 |Cambios de la Versión|Versión inicial|
 
+[![SonarCloud](https://sonarcloud.io/images/project_badges/sonarcloud-white.svg)](https://sonarcloud.io/summary/new_code?id=Hercules.CommonsEDMA.Desnormalizador)
+
+[![Bugs](https://sonarcloud.io/api/project_badges/measure?project=Hercules.CommonsEDMA.Desnormalizador&metric=bugs)](https://sonarcloud.io/summary/new_code?id=Hercules.CommonsEDMA.Desnormalizador)
+[![Reliability Rating](https://sonarcloud.io/api/project_badges/measure?project=Hercules.CommonsEDMA.Desnormalizador&metric=reliability_rating)](https://sonarcloud.io/summary/new_code?id=Hercules.CommonsEDMA.Desnormalizador)
+[![Reliability Rating](https://sonarcloud.io/api/project_badges/measure?project=Hercules.CommonsEDMA.Desnormalizador&metric=reliability_rating)](https://sonarcloud.io/summary/new_code?id=Hercules.CommonsEDMA.Desnormalizador)
+[![Duplicated Lines (%)](https://sonarcloud.io/api/project_badges/measure?project=Hercules.CommonsEDMA.Desnormalizador&metric=duplicated_lines_density)](https://sonarcloud.io/summary/new_code?id=Hercules.CommonsEDMA.Desnormalizador)
+
+
+
 # Servicio de desnormalización de datos
 
 El Desnormalizador es un proceso encargado de generar datos desnormalizados para su consulta, búsqueda y representación; tanto en Hércules ED como en [Hércules MA](https://github.com/HerculesCRUE/HerculesMA).
