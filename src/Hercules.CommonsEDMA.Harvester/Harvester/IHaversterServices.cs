@@ -132,32 +132,15 @@ namespace Harvester
         }
         public string GetRecord(string id, ReadConfig pConfig, string file = null)
         {
-            int contador = 1;
-            while (true)
-            {
-                try
-                {
-                    string uri = $@"{pConfig.GetUrlOaiPmh()}?verb=GetRecord&identifier=" + id + "&metadataPrefix=EDMA";
-                    WebRequest wrGETURL = WebRequest.Create(uri);
-                    wrGETURL.Timeout = 172800000; // 48h
-                    Stream stream = wrGETURL.GetResponse().GetResponseStream();
-                    XDocument XMLresponse = XDocument.Load(stream);
-                    XNamespace nameSpace = XMLresponse.Root.GetDefaultNamespace();
-                    string record = XMLresponse.Root.Element(nameSpace + "GetRecord").Descendants(nameSpace + "metadata").First().FirstNode.ToString();
-                    record = record.Replace("xmlns=\"" + nameSpace + "\"", "");
-                    return record;
-                }
-                catch
-                {
-                    contador++;                    
-                    Thread.Sleep(60000);
-                }
-
-                if (contador > 3)
-                {
-                    return null;
-                }
-            }
+            string uri = $@"{pConfig.GetUrlOaiPmh()}?verb=GetRecord&identifier=" + id + "&metadataPrefix=EDMA";
+            WebRequest wrGETURL = WebRequest.Create(uri);
+            wrGETURL.Timeout = 172800000; // 48h
+            Stream stream = wrGETURL.GetResponse().GetResponseStream();
+            XDocument XMLresponse = XDocument.Load(stream);
+            XNamespace nameSpace = XMLresponse.Root.GetDefaultNamespace();
+            string record = XMLresponse.Root.Element(nameSpace + "GetRecord").Descendants(nameSpace + "metadata").First().FirstNode.ToString();
+            record = record.Replace("xmlns=\"" + nameSpace + "\"", "");
+            return record;
         }
     }
 
