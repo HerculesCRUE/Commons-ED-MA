@@ -42,6 +42,7 @@ using Es.Riam.Gnoss.CL.Identidad;
 using Es.Riam.Gnoss.AD.Live.Model;
 using Es.Riam.Gnoss.RabbitMQ;
 using Newtonsoft.Json;
+using Es.Riam.Gnoss.AD.ServiciosGenerales;
 
 namespace Gnoss.Web.Login.SAML
 {
