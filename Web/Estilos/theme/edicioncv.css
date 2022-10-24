@@ -370,7 +370,7 @@ input.form-group-date {
     color: #03a1ff;
 }
 .importar-exportar-cv .compararItems::after{
-	content: "\e172";
+	content: "\f1c3";
 	color: var(--c-secundario);
 	cursor: pointer;
 }
