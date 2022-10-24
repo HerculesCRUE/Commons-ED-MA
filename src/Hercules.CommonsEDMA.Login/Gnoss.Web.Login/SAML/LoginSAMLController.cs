@@ -43,6 +43,7 @@ using Es.Riam.Gnoss.AD.Live.Model;
 using Es.Riam.Gnoss.RabbitMQ;
 using Newtonsoft.Json;
 using Es.Riam.Gnoss.AD.ServiciosGenerales;
+using Microsoft.EntityFrameworkCore;
 
 namespace Gnoss.Web.Login.SAML
 {
@@ -519,7 +520,24 @@ namespace Gnoss.Web.Login.SAML
                 gestorProyecto.CargarGestor();
                 Proyecto proyecto = gestorProyecto.ListaProyectos[proyectoID];
 
-                string error = EliminarAdministradorComunidad(proyecto.FilaProyecto.OrganizacionID, proyecto.Clave, user_id, false);
+                string error = "";
+
+                UsuarioCN usuarioCN = new UsuarioCN(mEntityContext, mLoggingService, mConfigService, mServicesUtilVirtuosoAndReplication);
+
+                Es.Riam.Gnoss.AD.EntityModel.Models.UsuarioDS.ProyectoRolUsuario filaProyectoRolUsuario = usuarioCN.ObtenerRolUsuarioEnProyecto(proyectoID, user_id);
+                if (filaProyectoRolUsuario != null)
+                {
+                    filaProyectoRolUsuario.RolPermitido = "0000000000000000";
+                    filaProyectoRolUsuario.RolDenegado = "FFFFFFFFFFFFFFFF";
+                }
+
+                Es.Riam.Gnoss.AD.EncapsuladoDatos.DataWrapperProyecto dataWrapperProyecto = proyCN.ObtenerAdministradorProyectoDeUsuario(user_id);
+                Es.Riam.Gnoss.AD.EntityModel.Models.ProyectoDS.AdministradorProyecto filaAdminProyecto = dataWrapperProyecto.ListaAdministradorProyecto.FirstOrDefault(x => x.UsuarioID == user_id && x.ProyectoID == proyectoID);
+                if (filaAdminProyecto != null)
+                {
+                    mEntityContext.Entry(filaAdminProyecto).State = EntityState.Deleted;
+                }
+                mEntityContext.SaveChanges();
 
                 if (!string.IsNullOrEmpty(error))
                 {
