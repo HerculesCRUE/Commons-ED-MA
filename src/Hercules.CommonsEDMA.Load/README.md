@@ -9,6 +9,18 @@
 |Tipo|Especificación|
 |Cambios de la Versión|Versión inicial|
 
+
+
+[![SonarCloud](https://sonarcloud.io/images/project_badges/sonarcloud-white.svg)](https://sonarcloud.io/summary/new_code?id=Hercules.CommonsEDMA.Load)
+
+[![Bugs](https://sonarcloud.io/api/project_badges/measure?project=Hercules.CommonsEDMA.Load&metric=bugs)](https://sonarcloud.io/summary/new_code?id=Hercules.CommonsEDMA.Load)
+[![Reliability Rating](https://sonarcloud.io/api/project_badges/measure?project=Hercules.CommonsEDMA.Load&metric=reliability_rating)](https://sonarcloud.io/summary/new_code?id=Hercules.CommonsEDMA.Load)
+[![Reliability Rating](https://sonarcloud.io/api/project_badges/measure?project=Hercules.CommonsEDMA.Load&metric=reliability_rating)](https://sonarcloud.io/summary/new_code?id=Hercules.CommonsEDMA.Load)
+[![Duplicated Lines (%)](https://sonarcloud.io/api/project_badges/measure?project=Hercules.CommonsEDMA.Load&metric=duplicated_lines_density)](https://sonarcloud.io/summary/new_code?id=Hercules.CommonsEDMA.Load)
+
+
+
+
 # Hércules ED - MA. Desarrollo del proceso de la carga inicial de datos mediante los archivos XML.
 
 Este documento describe el proceso de carga de los datos XML ofrecidos por la universidad de Murcia. Cuando el sistema de gestión de información (SGI) esté implantado por completo, dicho programa de carga estará en desuso.

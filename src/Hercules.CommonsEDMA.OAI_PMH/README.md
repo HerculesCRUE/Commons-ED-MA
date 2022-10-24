@@ -10,6 +10,17 @@
 |Cambios de la Versión|Versión inicial|
 
 
+
+[![SonarCloud](https://sonarcloud.io/images/project_badges/sonarcloud-white.svg)](https://sonarcloud.io/summary/new_code?id=Hercules.CommonsEDMA.OAI_PMH)
+
+[![Bugs](https://sonarcloud.io/api/project_badges/measure?project=Hercules.CommonsEDMA.OAI_PMH&metric=bugs)](https://sonarcloud.io/summary/new_code?id=Hercules.CommonsEDMA.OAI_PMH)
+[![Reliability Rating](https://sonarcloud.io/api/project_badges/measure?project=Hercules.CommonsEDMA.OAI_PMH&metric=reliability_rating)](https://sonarcloud.io/summary/new_code?id=Hercules.CommonsEDMA.OAI_PMH)
+[![Reliability Rating](https://sonarcloud.io/api/project_badges/measure?project=Hercules.CommonsEDMA.OAI_PMH&metric=reliability_rating)](https://sonarcloud.io/summary/new_code?id=Hercules.CommonsEDMA.OAI_PMH)
+[![Duplicated Lines (%)](https://sonarcloud.io/api/project_badges/measure?project=Hercules.CommonsEDMA.OAI_PMH&metric=duplicated_lines_density)](https://sonarcloud.io/summary/new_code?id=Hercules.CommonsEDMA.OAI_PMH)
+
+
+
+
 # Hercules.CommonsEDMA.OAI_PMH
 OAI-PMH es un protocolo para la transmisión de metadatos por internet y su versión actual es la 2.0, de 2002.
 El protocolo OAI-PMH presenta las siguientes características:
