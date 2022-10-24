@@ -500,9 +500,8 @@ namespace Hercules.CommonsEDMA.Journals
             List<string> idsRecursos = new List<string>();
             int limit = 10000;
             int offset = 0;
-            bool salirBucle = false;
 
-            do
+            while(true)
             {
                 // Consulta sparql.
                 string select = "SELECT * WHERE { SELECT ?revista ";
@@ -522,15 +521,15 @@ namespace Hercules.CommonsEDMA.Journals
 
                     if (resultadoQuery.results.bindings.Count < limit)
                     {
-                        salirBucle = true;
+                        break;
                     }
                 }
                 else
                 {
-                    salirBucle = true;
+                    break;
                 }
 
-            } while (!salirBucle);
+            }
 
             return idsRecursos;
         }
@@ -566,6 +565,7 @@ namespace Hercules.CommonsEDMA.Journals
                                 }} ORDER BY DESC(?revista) }} LIMIT {limit} OFFSET {offset} ";
 
                     SparqlObject resultadoQueryMainDocument = mResourceApi.VirtuosoQueryMultipleGraph(selectMainDocument, whereMainDocument, new List<string>() { "maindocument", "documentformat", "referencesource", "impactindexcategory" });
+                    
                     if (resultadoQueryMainDocument == null || resultadoQueryMainDocument.results == null ||
                         resultadoQueryMainDocument.results.bindings == null || resultadoQueryMainDocument.results.bindings.Count == 0)
                     {
@@ -610,7 +610,6 @@ namespace Hercules.CommonsEDMA.Journals
                     {
                         break;
                     }
-
 
                 }
             }

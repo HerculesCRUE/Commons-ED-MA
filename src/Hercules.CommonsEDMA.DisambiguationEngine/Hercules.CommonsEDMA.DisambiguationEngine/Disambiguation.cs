@@ -58,114 +58,117 @@ namespace Hercules.CommonsEDMA.DisambiguationEngine.Models
         {
             get
             {
-                if (mFrecuenciaNombres == null)
+                if (mFrecuenciaNombres != null)
                 {
-                    if (_loading.CheckAndSetFirstCall)
+                    return mFrecuenciaNombres;
+                }
+
+                if (_loading.CheckAndSetFirstCall)
+                {
+                    new Thread(delegate ()
                     {
-                        new Thread(delegate ()
+                        try
                         {
-                            try
+                            while (true)
                             {
+                                Dictionary<string, int> frecuenciaNombresAux = new Dictionary<string, int>();
+                                Dictionary<string, float> scoreNombresCalculadoAux = new Dictionary<string, float>();
+                                int limit = 10000;
+                                int offset = 0;
+                                int numPersonas = 0;
                                 while (true)
                                 {
-                                    Dictionary<string, int> frecuenciaNombresAux = new Dictionary<string, int>();
-                                    Dictionary<string, float> scoreNombresCalculadoAux = new Dictionary<string, float>();
-                                    int limit = 10000;
-                                    int offset = 0;
-                                    int numPersonas = 0;
-                                    while (true)
-                                    {
-                                        string select = $@"SELECT * WHERE {{ SELECT DISTINCT ?persona ?nombreCompleto";
-                                        string where = $@"WHERE {{
+                                    string select = $@"SELECT * WHERE {{ SELECT DISTINCT ?persona ?nombreCompleto";
+                                    string where = $@"WHERE {{
                                                             ?persona a <http://xmlns.com/foaf/0.1/Person>. 
                                                             ?persona <http://w3id.org/roh/isActive> 'true'. 
                                                             ?persona <http://xmlns.com/foaf/0.1/name> ?nombreCompleto.                                
                                                         }} ORDER BY DESC(?persona) }} LIMIT {limit} OFFSET {offset}";
-                                        SparqlObject resultadoQuery = mResourceApi.VirtuosoQuery(select, where, "person");
-                                        if (resultadoQuery != null && resultadoQuery.results != null && resultadoQuery.results.bindings != null && resultadoQuery.results.bindings.Count > 0)
+                                    SparqlObject resultadoQuery = mResourceApi.VirtuosoQuery(select, where, "person");
+                                    if (resultadoQuery != null && resultadoQuery.results != null && resultadoQuery.results.bindings != null && resultadoQuery.results.bindings.Count > 0)
+                                    {
+                                        offset += limit;
+                                        foreach (Dictionary<string, SparqlObject.Data> fila in resultadoQuery.results.bindings)
                                         {
-                                            offset += limit;
-                                            foreach (Dictionary<string, SparqlObject.Data> fila in resultadoQuery.results.bindings)
+                                            numPersonas++;
+                                            string nombreNormalizado = ObtenerTextosNombresNormalizados(fila["nombreCompleto"].value);
+                                            foreach (string nombre in nombreNormalizado.Split(' '))
                                             {
-                                                numPersonas++;
-                                                string nombreNormalizado = ObtenerTextosNombresNormalizados(fila["nombreCompleto"].value);
-                                                foreach (string nombre in nombreNormalizado.Split(' '))
+                                                if (!frecuenciaNombresAux.ContainsKey(nombre))
                                                 {
-                                                    if (!frecuenciaNombresAux.ContainsKey(nombre))
+                                                    frecuenciaNombresAux[nombre] = 0;
+                                                }
+                                                frecuenciaNombresAux[nombre]++;
+                                                if (nombre.Length > 0)
+                                                {
+                                                    if (!frecuenciaNombresAux.ContainsKey(nombre[0].ToString()))
                                                     {
-                                                        frecuenciaNombresAux[nombre] = 0;
+                                                        frecuenciaNombresAux[nombre[0].ToString()] = 0;
                                                     }
-                                                    frecuenciaNombresAux[nombre]++;
-                                                    if (nombre.Length > 0)
-                                                    {
-                                                        if (!frecuenciaNombresAux.ContainsKey(nombre[0].ToString()))
-                                                        {
-                                                            frecuenciaNombresAux[nombre[0].ToString()] = 0;
-                                                        }
-                                                        frecuenciaNombresAux[nombre[0].ToString()]++;
-                                                    }
+                                                    frecuenciaNombresAux[nombre[0].ToString()]++;
                                                 }
                                             }
-                                            if (resultadoQuery.results.bindings.Count < limit)
-                                            {
-                                                break;
-                                            }
                                         }
-                                    }
-                                    frecuenciaNombresAux = frecuenciaNombresAux.OrderByDescending(x => x.Value).ToDictionary(x => x.Key, x => x.Value);
-
-                                    int max = frecuenciaNombresAux.Where(x => x.Key.Length > 1).Select(x => x.Value).Max();
-                                    int min = frecuenciaNombresAux.Where(x => x.Key.Length > 1).Select(x => x.Value).Min();
-                                    //Asignamos un valor a cada frecuencia
-                                    int numFrecuencias = frecuenciaNombresAux.Where(x => x.Key.Length > 1).Select(x => x.Value).Distinct().Count();
-                                    int i = 0;
-                                    Dictionary<int, float> frecuenciaValor = new Dictionary<int, float>();
-                                    foreach (int frecuencia in frecuenciaNombresAux.Where(x => x.Key.Length > 1).Select(x => x.Value).Reverse().Distinct())
-                                    {
-                                        var f = (float)i / numFrecuencias;
-                                        frecuenciaValor.Add(frecuencia, 1 - f);
-                                        i++;
-                                    }
-                                    foreach (string nombre in frecuenciaNombresAux.Keys)
-                                    {
-                                        if (nombre.Length == 1)
+                                        if (resultadoQuery.results.bindings.Count < limit)
                                         {
-                                            scoreNombresCalculadoAux[nombre] = scoreInicial;
-                                        }
-                                        else
-                                        {
-                                            float x = minimoScoreNombres + (maximoScoreNombres - minimoScoreNombres) * frecuenciaValor[frecuenciaNombresAux[nombre]];
-                                            if (x > maximoScoreNombres)
-                                            {
-                                                x = maximoScoreNombres;
-                                            }
-                                            if (x < minimoScoreNombres)
-                                            {
-                                                x = minimoScoreNombres;
-                                            }
-                                            scoreNombresCalculadoAux[nombre] = x;
+                                            break;
                                         }
                                     }
-                                    scoreNombresCalculadoAux = scoreNombresCalculadoAux.OrderBy(x => x.Value).ToDictionary(x => x.Key, x => x.Value);
-                                    mFrecuenciaNombres = frecuenciaNombresAux;
-                                    mScoreNombresCalculado = scoreNombresCalculadoAux;
-
-
-                                    //Se recalcula cada hora
-                                    Thread.Sleep(3600000);
                                 }
-                            }
-                            catch (Exception)
-                            {
+                                frecuenciaNombresAux = frecuenciaNombresAux.OrderByDescending(x => x.Value).ToDictionary(x => x.Key, x => x.Value);
 
+                                int max = frecuenciaNombresAux.Where(x => x.Key.Length > 1).Select(x => x.Value).Max();
+                                int min = frecuenciaNombresAux.Where(x => x.Key.Length > 1).Select(x => x.Value).Min();
+                                //Asignamos un valor a cada frecuencia
+                                int numFrecuencias = frecuenciaNombresAux.Where(x => x.Key.Length > 1).Select(x => x.Value).Distinct().Count();
+                                int i = 0;
+                                Dictionary<int, float> frecuenciaValor = new Dictionary<int, float>();
+                                foreach (int frecuencia in frecuenciaNombresAux.Where(x => x.Key.Length > 1).Select(x => x.Value).Reverse().Distinct())
+                                {
+                                    var f = (float)i / numFrecuencias;
+                                    frecuenciaValor.Add(frecuencia, 1 - f);
+                                    i++;
+                                }
+                                foreach (string nombre in frecuenciaNombresAux.Keys)
+                                {
+                                    if (nombre.Length == 1)
+                                    {
+                                        scoreNombresCalculadoAux[nombre] = scoreInicial;
+                                    }
+                                    else
+                                    {
+                                        float x = minimoScoreNombres + (maximoScoreNombres - minimoScoreNombres) * frecuenciaValor[frecuenciaNombresAux[nombre]];
+                                        if (x > maximoScoreNombres)
+                                        {
+                                            x = maximoScoreNombres;
+                                        }
+                                        if (x < minimoScoreNombres)
+                                        {
+                                            x = minimoScoreNombres;
+                                        }
+                                        scoreNombresCalculadoAux[nombre] = x;
+                                    }
+                                }
+                                scoreNombresCalculadoAux = scoreNombresCalculadoAux.OrderBy(x => x.Value).ToDictionary(x => x.Key, x => x.Value);
+                                mFrecuenciaNombres = frecuenciaNombresAux;
+                                mScoreNombresCalculado = scoreNombresCalculadoAux;
+
+
+                                //Se recalcula cada hora
+                                Thread.Sleep(3600000);
                             }
-                        }).Start();
-                    }
-                    while (mFrecuenciaNombres == null)
-                    {
-                        Thread.Sleep(1000);
-                    }
+                        }
+                        catch (Exception)
+                        {
+
+                        }
+                    }).Start();
                 }
+                while (mFrecuenciaNombres == null)
+                {
+                    Thread.Sleep(1000);
+                }
+
                 return mFrecuenciaNombres;
             }
         }
@@ -1936,7 +1939,7 @@ namespace Hercules.CommonsEDMA.DisambiguationEngine.Models
         {
             pSource = ObtenerTextosNombresNormalizados(pSource, pDicNomAutoresDesnormalizados);
             pTarget = ObtenerTextosNombresNormalizados(pTarget, pDicNomAutoresDesnormalizados);
-                        
+
             string[] pFirmaNormalizadoSplitAux = pSource.Split(new string[] { " " }, StringSplitOptions.RemoveEmptyEntries);
             string[] pTargetNormalizadoSplitAux = pTarget.Split(new string[] { " " }, StringSplitOptions.RemoveEmptyEntries);
 
@@ -1945,7 +1948,7 @@ namespace Hercules.CommonsEDMA.DisambiguationEngine.Models
 
             foreach (string word in pFirmaNormalizadoSplitAux)
             {
-                if(word.Length==2)
+                if (word.Length == 2)
                 {
                     pFirmaNormalizadoSplitAux2.Add(word[0].ToString());
                     pFirmaNormalizadoSplitAux2.Add(word[1].ToString());
@@ -1973,7 +1976,7 @@ namespace Hercules.CommonsEDMA.DisambiguationEngine.Models
             string[] pTargetNormalizadoSplit = pTargetNormalizadoSplitAux2.ToArray();
 
 
-            
+
             string[] source1 = pFirmaNormalizadoSplit;
             string[] target1 = pTargetNormalizadoSplit;
 
@@ -1984,11 +1987,11 @@ namespace Hercules.CommonsEDMA.DisambiguationEngine.Models
             targets.Add(target1);
 
             int sourceLength = source1.Length;
-            if (sourceLength > 1 && source1.Last().Length==1)
+            if (sourceLength > 1 && source1.Last().Length == 1)
             {
                 string[] source2 = new string[sourceLength];
                 source2[0] = source1.Last();
-                for(int i=0;i< sourceLength-1;i++)
+                for (int i = 0; i < sourceLength - 1; i++)
                 {
                     source2[i + 1] = source1[i];
                 }
