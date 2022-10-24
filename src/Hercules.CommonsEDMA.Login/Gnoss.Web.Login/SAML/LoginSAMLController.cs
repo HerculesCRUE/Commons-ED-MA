@@ -596,7 +596,7 @@ namespace Gnoss.Web.Login.SAML
 
                         //dataWrapperProyecto.ListaAdministradorProyecto.FindByOrganizacionIDProyectoIDUsuarioIDTipo(pOrganizacionID, pProyectoID, pUsuariosID, (short)TipoRolUsuario.Administrador).Delete();
                         proyectoGBD.DeleteAdministradorProyecto(adminProyecto);
-                        mCommunityApi.Log.Info($"-DeleteAdministradorProyecto");
+                        mCommunityApi.Log.Info($"-DeleteAdministradorProyecto {adminProyecto.OrganizacionID} {adminProyecto.Proyecto} {adminProyecto.UsuarioID} {adminProyecto.Tipo}");
                         //Le actualizo los permisos del proyecto
                         Es.Riam.Gnoss.AD.EntityModel.Models.UsuarioDS.ProyectoRolUsuario filaProyectoRolUsuario = gestorUsuarios.DataWrapperUsuario.ListaProyectoRolUsuario.FirstOrDefault(proyRolUs => proyRolUs.OrganizacionGnossID.Equals(pOrganizacionID) && proyRolUs.ProyectoID.Equals(pProyectoID) && proyRolUs.UsuarioID.Equals(pUsuariosID));
 
