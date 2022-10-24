@@ -35,6 +35,13 @@ using Gnoss.Web.Login.Open;
 using Gnoss.Web.Login.SAML.Models.PersonOntology;
 using Es.Riam.Gnoss.Elementos.ServiciosGenerales;
 using Es.Riam.Gnoss.Web.Controles.Proyectos;
+using Es.Riam.Gnoss.Logica.Identidad;
+using Es.Riam.Gnoss.AD.Live;
+using Es.Riam.Gnoss.CL.ServiciosGenerales;
+using Es.Riam.Gnoss.CL.Identidad;
+using Es.Riam.Gnoss.AD.Live.Model;
+using Es.Riam.Gnoss.RabbitMQ;
+using Newtonsoft.Json;
 
 namespace Gnoss.Web.Login.SAML
 {
@@ -511,8 +518,7 @@ namespace Gnoss.Web.Login.SAML
                 gestorProyecto.CargarGestor();
                 Proyecto proyecto = gestorProyecto.ListaProyectos[proyectoID];
 
-                string error = new ControladorProyecto(mLoggingService, mEntityContext, mConfigService, mRedisCacheWrapper, mGnossCache, mEntityContextBASE, mVirtuosoAD, mHttpContextAccessor, mServicesUtilVirtuosoAndReplication)
-                    .EliminarAdministradorComunidad(proyecto.FilaProyecto.OrganizacionID, proyecto.Clave, user_id, false);
+                string error = EliminarAdministradorComunidad(proyecto.FilaProyecto.OrganizacionID, proyecto.Clave, user_id, false);
 
                 if (!string.IsNullOrEmpty(error))
                 {
@@ -525,6 +531,176 @@ namespace Gnoss.Web.Login.SAML
             }
 
             proyCN.Dispose();
+        }
+
+        /// <summary>
+        /// Elimina los usuarios de la lista de administrador de una comunidad
+        /// </summary>
+        /// <param name="pOrganizacionID">Identificador de la organización del proyecto</param>
+        /// <param name="pProyectoID">Identificador del proyecto</param>
+        /// <param name="pUsuariosID">Identificador de usuarios</param>
+        /// <returns>Cadena vacía si todo va bien. Descripción del error en caso contrario</returns>
+        public string EliminarAdministradorComunidad(Guid pOrganizacionID, Guid pProyectoID, Guid pUsuariosID, bool pActualizarLive)
+        {
+            string error = string.Empty;
+            mCommunityApi.Log.Info($"-EliminarAdministradorComunidad");
+            ProyectoCN proyectoCN = new ProyectoCN(mEntityContext, mLoggingService, mConfigService, mServicesUtilVirtuosoAndReplication);
+            IdentidadCN identidadCN = new IdentidadCN(mEntityContext, mLoggingService, mConfigService, mServicesUtilVirtuosoAndReplication);
+            UsuarioCN usuarioCN = new UsuarioCN(mEntityContext, mLoggingService, mConfigService, mServicesUtilVirtuosoAndReplication);
+
+            List<Guid> identidadesAdministradores = proyectoCN.ObtenerListaIdentidadesAdministradoresPorProyecto(pProyectoID);
+
+
+            mCommunityApi.Log.Info($"-identidadesAdministradores: {string.Join(",",identidadesAdministradores)}");
+
+            //Cargo los permisos de la tabla Administradorproyecto
+            //ProyectoDS proyectoDS = proyectoCN.ObtenerAdministradorProyectoDeProyecto(pProyectoID);
+            Es.Riam.Gnoss.Web.Controles.ProyectoGBD.ProyectoGBD proyectoGBD = new Es.Riam.Gnoss.Web.Controles.ProyectoGBD.ProyectoGBD(mEntityContext);
+            var administradorPoyecto = proyectoGBD.CargaAdministradorProyecto.Where(adminProy => adminProy.ProyectoID.Equals(pProyectoID)).Select(adminProy => new
+            {
+                OrganizacionID = adminProy.OrganizacionID,
+                ProyectoID = adminProy.ProyectoID,
+                UsuarioID = adminProy.UsuarioID,
+                Tipo = adminProy.Tipo
+            });
+            Es.Riam.Gnoss.AD.EncapsuladoDatos.DataWrapperProyecto dataWrapperProyecto = new Es.Riam.Gnoss.AD.EncapsuladoDatos.DataWrapperProyecto();
+            foreach (var adminProyect in administradorPoyecto.ToList())
+            {
+                Es.Riam.Gnoss.AD.EntityModel.Models.ProyectoDS.AdministradorProyecto adminProyec = new Es.Riam.Gnoss.AD.EntityModel.Models.ProyectoDS.AdministradorProyecto();
+                adminProyec.OrganizacionID = adminProyect.OrganizacionID;
+                adminProyec.ProyectoID = adminProyect.ProyectoID;
+                adminProyec.UsuarioID = adminProyect.UsuarioID;
+                adminProyec.Tipo = adminProyect.Tipo;
+                dataWrapperProyecto.ListaAdministradorProyecto.Add(adminProyec);
+            }
+            Es.Riam.Gnoss.AD.EncapsuladoDatos.DataWrapperUsuario dataWrapperUsuario = new Es.Riam.Gnoss.AD.EncapsuladoDatos.DataWrapperUsuario();
+            dataWrapperUsuario.ListaProyectoRolUsuario.Add(usuarioCN.ObtenerRolUsuarioEnProyecto(pProyectoID, pUsuariosID));
+            GestionUsuarios gestorUsuarios = new GestionUsuarios(dataWrapperUsuario, mLoggingService, mEntityContext, mConfigService);
+            try
+            {
+                List<Guid> listaAuxUsuarioID = new List<Guid>();
+                listaAuxUsuarioID.Add(pUsuariosID);
+                List<Guid> listaIdentidadesUsuario = identidadCN.ObtenerIdentidadesIDDeusuariosEnProyecto(pProyectoID, listaAuxUsuarioID, true);
+                mCommunityApi.Log.Info($"-listaIdentidadesUsuario: {string.Join(",", listaIdentidadesUsuario)}");
+                Guid identidadID = listaIdentidadesUsuario[0];
+
+                //Comprueba si la identidad ya administra el proyecto
+                if (identidadesAdministradores.Contains(identidadID))
+                {
+                    Es.Riam.Gnoss.AD.EntityModel.Models.ProyectoDS.AdministradorProyecto adminProyecto = dataWrapperProyecto.ListaAdministradorProyecto.FirstOrDefault(adminProy => adminProy.OrganizacionID.Equals(pOrganizacionID) && adminProy.ProyectoID.Equals(pProyectoID) && adminProy.UsuarioID.Equals(pUsuariosID) && adminProy.Tipo.Equals((short)TipoRolUsuario.Administrador));
+                    if (adminProyecto != null)
+                    {
+                        mCommunityApi.Log.Info($"-adminProyecto != null");
+                        //Si estaba de administrador lo quito de administrador
+
+                        //dataWrapperProyecto.ListaAdministradorProyecto.FindByOrganizacionIDProyectoIDUsuarioIDTipo(pOrganizacionID, pProyectoID, pUsuariosID, (short)TipoRolUsuario.Administrador).Delete();
+                        proyectoGBD.DeleteAdministradorProyecto(adminProyecto);
+                        mCommunityApi.Log.Info($"-DeleteAdministradorProyecto");
+                        //Le actualizo los permisos del proyecto
+                        Es.Riam.Gnoss.AD.EntityModel.Models.UsuarioDS.ProyectoRolUsuario filaProyectoRolUsuario = gestorUsuarios.DataWrapperUsuario.ListaProyectoRolUsuario.FirstOrDefault(proyRolUs => proyRolUs.OrganizacionGnossID.Equals(pOrganizacionID) && proyRolUs.ProyectoID.Equals(pProyectoID) && proyRolUs.UsuarioID.Equals(pUsuariosID));
+
+                        //Le doy todos los permisos
+                        string RolPermitido = "0000000000000000";
+                        //No le deniego ninguno
+                        string RolDenegado = "FFFFFFFFFFFFFFFF";
+
+                        filaProyectoRolUsuario.RolPermitido = RolPermitido;
+                        filaProyectoRolUsuario.RolDenegado = RolDenegado;
+                    }
+
+                    mEntityContext.SaveChanges();
+                    mCommunityApi.Log.Info($"-SaveChanges");
+                    if (pActualizarLive)
+                    {
+                        mCommunityApi.Log.Info($"-pActualizarLive");
+                        //Agregamos el evento a la cola del live
+                        Es.Riam.Gnoss.Logica.Live.LiveCN liveCN = new Es.Riam.Gnoss.Logica.Live.LiveCN("base", mEntityContext, mLoggingService, mConfigService, mServicesUtilVirtuosoAndReplication);
+                        Es.Riam.Gnoss.AD.Live.Model.LiveDS liveDS = new Es.Riam.Gnoss.AD.Live.Model.LiveDS();
+
+                        try
+                        {
+                            InsertarFilaEnColaRabbitMQ(pProyectoID, identidadID, (int)AccionLive.ComunidadAbierta, (int)TipoLive.Miembro, 0, DateTime.Now, false, (short)PrioridadLive.Alta);
+                        }
+                        catch (Exception ex)
+                        {
+                            mLoggingService.GuardarLogError(ex, "Fallo al insertar en Rabbit, insertamos en la base de datos 'BASE', tabla 'cola'");
+                            liveDS.Cola.AddColaRow(pProyectoID, identidadID, (int)AccionLive.ComunidadAbierta, (int)TipoLive.Miembro, 0, DateTime.Now, false, (short)PrioridadLive.Alta, null);
+                        }
+
+
+                        liveCN.ActualizarBD(liveDS);
+                        liveDS.Dispose();
+                    }
+
+                    ProyectoCL proyectoCL = new ProyectoCL(mEntityContext, mLoggingService, mRedisCacheWrapper, mConfigService, mVirtuosoAD, mServicesUtilVirtuosoAndReplication);
+                    proyectoCL.InvalidarHTMLAdministradoresProyecto(pProyectoID);
+                    proyectoCL.InvalidarFilaProyecto(pProyectoID);
+
+                    IdentidadCL identidadCL = new IdentidadCL(mEntityContext, mLoggingService, mRedisCacheWrapper, mConfigService, mServicesUtilVirtuosoAndReplication);
+                    PersonaCN personaCN = new PersonaCN(mEntityContext, mLoggingService, mConfigService, mServicesUtilVirtuosoAndReplication);
+                    Guid? personaID = personaCN.ObtenerPersonaIDPorUsuarioID(pUsuariosID);
+
+                    if (personaID.HasValue)
+                    {
+                        identidadCL.EliminarCacheGestorTodasIdentidadesUsuario(pUsuariosID, personaID.Value);
+                    }
+                }
+                else
+                {
+                    error += "\r\n ERROR: El usuario " + pUsuariosID + " ya no administra el proyecto";
+                }
+            }
+            catch (Exception)
+            {
+                error += "\r\n ERROR: El usuario " + pUsuariosID + " ha fallado al eliminarlo como administrador del proyecto";
+            }
+
+
+            return error;
+        }
+
+        public void InsertarFilaEnColaRabbitMQ(Guid pProyectoID, Guid pID, int pAccion, int pTipo, int pNumIntentos, DateTime pFecha, bool pSoloPersonal, short pPrioridad, string pInfoExtra = null)
+        {
+            LiveDS.ColaRow filaCola = new LiveDS().Cola.NewColaRow();
+            filaCola.ProyectoId = pProyectoID;
+            filaCola.Id = pID;
+            filaCola.Accion = pAccion;
+            filaCola.Tipo = pTipo;
+            filaCola.NumIntentos = pNumIntentos;
+            filaCola.Fecha = pFecha;
+            filaCola.SoloPersonal = pSoloPersonal;
+            filaCola.Prioridad = pPrioridad;
+            filaCola.InfoExtra = pInfoExtra;
+
+            //AcctionLive.VisitaRecurso
+
+            if (AccionLive.VisitaRecurso.Equals(pAccion) && HayConexionRabbit)
+            {
+                using (RabbitMQClient rabbitMQ = new RabbitMQClient(RabbitMQClient.BD_SERVICIOS_WIN, COLA_VISITAS, mLoggingService, mConfigService, EXCHANGE, COLA_VISITAS))
+                {
+                    rabbitMQ.AgregarElementoACola(JsonConvert.SerializeObject(filaCola.ItemArray));
+                }
+            }
+            else if (HayConexionRabbit)
+            {
+                using (RabbitMQClient rabbitMQ = new RabbitMQClient(RabbitMQClient.BD_SERVICIOS_WIN, COLA_RABBIT, mLoggingService, mConfigService, EXCHANGE, COLA_RABBIT))
+                {
+                    rabbitMQ.AgregarElementoACola(JsonConvert.SerializeObject(filaCola.ItemArray));
+                }
+            }
+        }
+
+        private const string EXCHANGE = "";
+        private const string COLA_RABBIT = "cola";
+        private const string COLA_VISITAS = "ColaVisitas";
+
+        public bool HayConexionRabbit
+        {
+            get
+            {
+                return mConfigService.ExistRabbitConnection(RabbitMQClient.BD_SERVICIOS_WIN);
+
+            }
         }
     }
 }
