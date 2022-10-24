@@ -43,5 +43,5 @@ jobs:
         shell: powershell
         run: |
           .\.sonar\scanner\dotnet-sonarscanner begin /k:"Hercules.CommonsEDMA.Login" /o:"herculescrue" /d:sonar.login="${{ secrets.SONAR_TOKEN_Hercules_CommonsEDMA_Login }}" /d:sonar.host.url="https://sonarcloud.io"
-          dotnet build src/Hercules.CommonsEDMA.Login/Hercules.CommonsEDMA.Login
+          dotnet build src/Hercules.CommonsEDMA.Login/Gnoss.Web.Login
           .\.sonar\scanner\dotnet-sonarscanner end /d:sonar.login="${{ secrets.SONAR_TOKEN_Hercules_CommonsEDMA_Login }}"
