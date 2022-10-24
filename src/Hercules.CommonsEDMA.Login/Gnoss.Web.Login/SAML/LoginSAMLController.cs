@@ -120,10 +120,6 @@ namespace Gnoss.Web.Login.SAML
                 }
             }
 
-            gestorOtri = false;
-            adminIndicadores = false;
-            admin = false;
-
             User usuario = ObtenerUsuario(email, gestorOtri, adminIndicadores, admin);
 
             if (usuario != null)
