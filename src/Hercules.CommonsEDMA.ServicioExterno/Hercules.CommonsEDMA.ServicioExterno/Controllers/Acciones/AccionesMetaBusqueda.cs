@@ -79,19 +79,14 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
         {
             get
             {
-                while (!mIDComunidad.HasValue)
+                try
                 {
-                    try
-                    {
-                        mIDComunidad = communityApi.GetCommunityId();
-                    }
-                    catch (Exception)
-                    {
-                        Console.WriteLine("No se ha podido obtener el ID de la comnunidad");
-                        Console.WriteLine($"Ruta OAuth: {RUTA_OAUTH}");
-                        Console.WriteLine($"Contenido OAuth: {System.IO.File.ReadAllText(RUTA_OAUTH)}");
-                        Thread.Sleep(10000);
-                    }
+                    mIDComunidad = communityApi.GetCommunityId();
+                }
+                catch (Exception)
+                {
+                    // resourceApi.Log.Error("Excepcion: " + ex.Message);
+                    return Guid.Empty;
                 }
                 return mIDComunidad.Value;
             }
@@ -923,7 +918,8 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
                     }
                     catch (Exception ex)
                     {
-                        resourceApi.Log.Error("Excepcion: " + ex.Message);
+                        // resourceApi.Log.Error("Excepcion: " + ex.Message);
+                        Thread.Sleep(300000);
                     }
                 }
             }).Start();
