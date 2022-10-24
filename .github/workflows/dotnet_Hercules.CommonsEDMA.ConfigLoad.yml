@@ -42,6 +42,6 @@ jobs:
           SONAR_TOKEN_Hercules_CommonsEDMA_ConfigLoad: ${{ secrets.SONAR_TOKEN_Hercules_CommonsEDMA_ConfigLoad }}
         shell: powershell
         run: |
-          .\.sonar\scanner\dotnet-sonarscanner begin /k:"Hercules.CommonsEDMA.ConfigLoad" /o:"herculescrue" /d:sonar.ConfigLoad="${{ secrets.SONAR_TOKEN_Hercules_CommonsEDMA_ConfigLoad }}" /d:sonar.host.url="https://sonarcloud.io"
+          .\.sonar\scanner\dotnet-sonarscanner begin /k:"Hercules.CommonsEDMA.ConfigLoad" /o:"herculescrue" /d:sonar.login="${{ secrets.SONAR_TOKEN_Hercules_CommonsEDMA_ConfigLoad }}" /d:sonar.host.url="https://sonarcloud.io"
           dotnet build src/Hercules.CommonsEDMA.ConfigLoad
-          .\.sonar\scanner\dotnet-sonarscanner end /d:sonar.ConfigLoad="${{ secrets.SONAR_TOKEN_Hercules_CommonsEDMA_ConfigLoad }}"
+          .\.sonar\scanner\dotnet-sonarscanner end /d:sonar.login="${{ secrets.SONAR_TOKEN_Hercules_CommonsEDMA_ConfigLoad }}"
