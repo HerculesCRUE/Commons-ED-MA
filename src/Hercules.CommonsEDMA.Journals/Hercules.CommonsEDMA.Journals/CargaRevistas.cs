@@ -550,7 +550,6 @@ namespace Hercules.CommonsEDMA.Journals
             {
                 int limit = 10000;
                 int offset = 0;
-                bool salirBucle = false;
 
                 while (true)
                 {
@@ -567,52 +566,51 @@ namespace Hercules.CommonsEDMA.Journals
                                 }} ORDER BY DESC(?revista) }} LIMIT {limit} OFFSET {offset} ";
 
                     SparqlObject resultadoQueryMainDocument = mResourceApi.VirtuosoQueryMultipleGraph(selectMainDocument, whereMainDocument, new List<string>() { "maindocument", "documentformat", "referencesource", "impactindexcategory" });
-                    if (resultadoQueryMainDocument != null && resultadoQueryMainDocument.results != null &&
-                        resultadoQueryMainDocument.results.bindings != null && resultadoQueryMainDocument.results.bindings.Count > 0)
-                    {
-                        offset += limit;
-
-                        foreach (Dictionary<string, SparqlObject.Data> fila in resultadoQueryMainDocument.results.bindings)
-                        {
-                            // Valores.
-                            string revistaId = fila["revista"].value;
-                            string titulo = fila["titulo"].value;
-                            string issn = null;
-                            string eissn = null;
-                            string editor = null;
-                            if (fila.ContainsKey("issn"))
-                            {
-                                issn = fila["issn"].value;
-                            }
-                            if (fila.ContainsKey("eissn"))
-                            {
-                                eissn = fila["eissn"].value;
-                            }
-                            if (fila.ContainsKey("editor"))
-                            {
-                                editor = fila["editor"].value;
-                            }
-
-                            // Creación del objeto.
-                            Journal revista = new Journal();
-                            revista.idJournal = revistaId;
-                            revista.titulo = titulo;
-                            revista.issn = issn;
-                            revista.eissn = eissn;
-                            revista.publicador = editor;
-                            revista.indicesImpacto = new HashSet<IndiceImpacto>();
-                            dicResultado.Add(revista.idJournal, revista);
-                        }
-
-                        if (resultadoQueryMainDocument.results.bindings.Count < limit)
-                        {
-                            break;
-                        }
-                    }
-                    else
+                    if (resultadoQueryMainDocument == null || resultadoQueryMainDocument.results == null ||
+                        resultadoQueryMainDocument.results.bindings == null || resultadoQueryMainDocument.results.bindings.Count == 0)
                     {
                         break;
                     }
+
+                    offset += limit;
+
+                    foreach (Dictionary<string, SparqlObject.Data> fila in resultadoQueryMainDocument.results.bindings)
+                    {
+                        // Valores.
+                        string revistaId = fila["revista"].value;
+                        string titulo = fila["titulo"].value;
+                        string issn = null;
+                        string eissn = null;
+                        string editor = null;
+                        if (fila.ContainsKey("issn"))
+                        {
+                            issn = fila["issn"].value;
+                        }
+                        if (fila.ContainsKey("eissn"))
+                        {
+                            eissn = fila["eissn"].value;
+                        }
+                        if (fila.ContainsKey("editor"))
+                        {
+                            editor = fila["editor"].value;
+                        }
+
+                        // Creación del objeto.
+                        Journal revista = new Journal();
+                        revista.idJournal = revistaId;
+                        revista.titulo = titulo;
+                        revista.issn = issn;
+                        revista.eissn = eissn;
+                        revista.publicador = editor;
+                        revista.indicesImpacto = new HashSet<IndiceImpacto>();
+                        dicResultado.Add(revista.idJournal, revista);
+                    }
+
+                    if (resultadoQueryMainDocument.results.bindings.Count < limit)
+                    {
+                        break;
+                    }
+
 
                 }
             }
@@ -623,7 +621,6 @@ namespace Hercules.CommonsEDMA.Journals
             {
                 int limit = 10000;
                 int offset = 0;
-                bool salirBucle = false;
 
                 // ImpactIndex
                 while (true)
