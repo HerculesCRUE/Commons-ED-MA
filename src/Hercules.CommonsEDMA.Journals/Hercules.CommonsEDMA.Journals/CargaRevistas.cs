@@ -502,7 +502,7 @@ namespace Hercules.CommonsEDMA.Journals
             int offset = 0;
             bool salirBucle = false;
 
-            do
+            while(true)
             {
                 // Consulta sparql.
                 string select = "SELECT * WHERE { SELECT ?revista ";
@@ -522,15 +522,15 @@ namespace Hercules.CommonsEDMA.Journals
 
                     if (resultadoQuery.results.bindings.Count < limit)
                     {
-                        salirBucle = true;
+                        break;
                     }
                 }
                 else
                 {
-                    salirBucle = true;
+                    break;
                 }
 
-            } while (!salirBucle);
+            }
 
             return idsRecursos;
         }
