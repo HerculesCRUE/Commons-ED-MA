@@ -37,19 +37,17 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
             //Eliminamos los duplicados
             EliminarDuplicados("project", "http://vivoweb.org/ontology/core#Project", "http://w3id.org/roh/isValidated");
 
-            HashSet<string> filters = new HashSet<string>();
+            HashSet<string> filtersActualizarProyectosValidados = new HashSet<string>();
             if (pProjects != null && pProjects.Count > 0)
             {
-                filters.Add($" FILTER(?project in(<{string.Join(">,<", pProjects)}>))");
+                filtersActualizarProyectosValidados.Add($" FILTER(?project in(<{string.Join(">,<", pProjects)}>))");
             }
-            if (filters.Count == 0)
+            if (filtersActualizarProyectosValidados.Count == 0)
             {
-                filters.Add("");
+                filtersActualizarProyectosValidados.Add("");
             }
-            foreach (string filter in filters)
+            foreach (string filter in filtersActualizarProyectosValidados)
             {
-
-
                 while (true)
                 {
                     int limit = 500;
@@ -108,18 +106,17 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
             //Si el proyecto a terminado, han de aparecer todos los participantes que haya tenido,
             //pero si sigue activo solamente los participantes actuales
 
-            HashSet<string> filters = new HashSet<string>();
+            HashSet<string> filtersActualizarMiembros = new HashSet<string>();
             if (pProjects != null && pProjects.Count > 0)
             {
-                filters.Add($" FILTER(?project in(<{string.Join(">,<", pProjects)}>))");
+                filtersActualizarMiembros.Add($" FILTER(?project in(<{string.Join(">,<", pProjects)}>))");
             }
-            if (filters.Count == 0)
+            if (filtersActualizarMiembros.Count == 0)
             {
-                filters.Add("");
+                filtersActualizarMiembros.Add("");
             }
-            foreach (string filter in filters)
+            foreach (string filter in filtersActualizarMiembros)
             {
-
                 //Creamos los miembros
                 while (true)
                 {
@@ -297,16 +294,16 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
         /// <param name="pProjects">IDs de los proyectos</param>
         public void ActualizarMiembrosUnificados(List<string> pProjects = null)
         {
-            HashSet<string> filters = new HashSet<string>();
+            HashSet<string> filtersActualizarMiembrosUnificados = new HashSet<string>();
             if (pProjects != null && pProjects.Count > 0)
             {
-                filters.Add($" FILTER(?project in(<{string.Join(">,<", pProjects)}>))");
+                filtersActualizarMiembrosUnificados.Add($" FILTER(?project in(<{string.Join(">,<", pProjects)}>))");
             }
-            if (filters.Count == 0)
+            if (filtersActualizarMiembrosUnificados.Count == 0)
             {
-                filters.Add("");
+                filtersActualizarMiembrosUnificados.Add("");
             }
-            foreach (string filter in filters)
+            foreach (string filter in filtersActualizarMiembrosUnificados)
             {
                 //Creamos los miembros
                 while (true)
@@ -379,20 +376,20 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
         /// <param name="pProjects">IDs de los proyectos</param>
         public void ActualizarPertenenciaGrupos(List<string> pGroups = null, List<string> pProjects = null)
         {
-            HashSet<string> filters = new HashSet<string>();
+            HashSet<string> filtersActualizarPertenenciaGrupos = new HashSet<string>();
             if (pProjects != null && pProjects.Count > 0)
             {
-                filters.Add($" FILTER(?proyecto in (<{string.Join(">,<", pProjects)}>))");
+                filtersActualizarPertenenciaGrupos.Add($" FILTER(?proyecto in (<{string.Join(">,<", pProjects)}>))");
             }
             if (pGroups != null && pGroups.Count > 0)
             {
-                filters.Add($" FILTER(?group in (<{string.Join(">,<", pGroups)}>))");
+                filtersActualizarPertenenciaGrupos.Add($" FILTER(?group in (<{string.Join(">,<", pGroups)}>))");
             }
-            if (filters.Count == 0)
+            if (filtersActualizarPertenenciaGrupos.Count == 0)
             {
-                filters.Add("");
+                filtersActualizarPertenenciaGrupos.Add("");
             }
-            foreach (string filter in filters)
+            foreach (string filter in filtersActualizarPertenenciaGrupos)
             {
                 while (true)
                 {
@@ -501,20 +498,20 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
             //Eliminamos los duplicados
             EliminarDuplicados("project", "http://vivoweb.org/ontology/core#Project", "http://w3id.org/roh/themedAreasNumber");
 
-            HashSet<string> filters = new HashSet<string>();
+            HashSet<string> filtersActualizarNumeroAreasTematicas = new HashSet<string>();
             if (pProjects != null && pProjects.Count > 0)
             {
-                filters.Add($" FILTER(?project in(<{string.Join(">,<", pProjects)}>))");
+                filtersActualizarNumeroAreasTematicas.Add($" FILTER(?project in(<{string.Join(">,<", pProjects)}>))");
             }
             if (pDocuments != null && pDocuments.Count > 0)
             {
-                filters.Add($" ?docAux <http://w3id.org/roh/project> ?project.  FILTER(?docAux in (<{string.Join(">,<", pDocuments)}>))");
+                filtersActualizarNumeroAreasTematicas.Add($" ?docAux <http://w3id.org/roh/project> ?project.  FILTER(?docAux in (<{string.Join(">,<", pDocuments)}>))");
             }
-            if (filters.Count == 0)
+            if (filtersActualizarNumeroAreasTematicas.Count == 0)
             {
-                filters.Add("");
+                filtersActualizarNumeroAreasTematicas.Add("");
             }
-            foreach (string filter in filters)
+            foreach (string filter in filtersActualizarNumeroAreasTematicas)
             {
                 //Actualizamos los datos
                 while (true)
@@ -584,20 +581,20 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
             //Eliminamos los duplicados
             EliminarDuplicados("project", "http://vivoweb.org/ontology/core#Project", "http://w3id.org/roh/publicationsNumber");
 
-            HashSet<string> filters = new HashSet<string>();
+            HashSet<string> filtersActualizarNumeroPublicaciones = new HashSet<string>();
             if (pProjects != null && pProjects.Count > 0)
             {
-                filters.Add($" FILTER(?project in(<{string.Join(">,<", pProjects)}>))");
+                filtersActualizarNumeroPublicaciones.Add($" FILTER(?project in(<{string.Join(">,<", pProjects)}>))");
             }
             if (pDocuments != null && pDocuments.Count > 0)
             {
-                filters.Add($" ?docAux <http://w3id.org/roh/project> ?project.  FILTER(?docAux in (<{string.Join(">,<", pDocuments)}>))");
+                filtersActualizarNumeroPublicaciones.Add($" ?docAux <http://w3id.org/roh/project> ?project.  FILTER(?docAux in (<{string.Join(">,<", pDocuments)}>))");
             }
-            if (filters.Count == 0)
+            if (filtersActualizarNumeroPublicaciones.Count == 0)
             {
-                filters.Add("");
+                filtersActualizarNumeroPublicaciones.Add("");
             }
-            foreach (string filter in filters)
+            foreach (string filter in filtersActualizarNumeroPublicaciones)
             {
                 //Actualizamos los datos
                 while (true)
@@ -659,20 +656,20 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
             //Eliminamos los duplicados
             EliminarDuplicados("project", "http://vivoweb.org/ontology/core#Project", "http://w3id.org/roh/collaboratorsNumber");
 
-            HashSet<string> filters = new HashSet<string>();
+            HashSet<string> filtersActualizarNumeroColaboradores = new HashSet<string>();
             if (pProjects != null && pProjects.Count > 0)
             {
-                filters.Add($" FILTER(?project in(<{string.Join(">,<", pProjects)}>))");
+                filtersActualizarNumeroColaboradores.Add($" FILTER(?project in(<{string.Join(">,<", pProjects)}>))");
             }
             if (pDocuments != null && pDocuments.Count > 0)
             {
-                filters.Add($" ?docAux <http://w3id.org/roh/project> ?project.  FILTER(?docAux in (<{string.Join(">,<", pDocuments)}>))");
+                filtersActualizarNumeroColaboradores.Add($" ?docAux <http://w3id.org/roh/project> ?project.  FILTER(?docAux in (<{string.Join(">,<", pDocuments)}>))");
             }
-            if (filters.Count == 0)
+            if (filtersActualizarNumeroColaboradores.Count == 0)
             {
-                filters.Add("");
+                filtersActualizarNumeroColaboradores.Add("");
             }
-            foreach (string filter in filters)
+            foreach (string filter in filtersActualizarNumeroColaboradores)
             {
 
                 while (true)
@@ -757,16 +754,16 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
             //Eliminamos los duplicados
             EliminarDuplicados("project", "http://vivoweb.org/ontology/core#Project", "http://w3id.org/roh/researchersNumber");
 
-            HashSet<string> filters = new HashSet<string>();
+            HashSet<string> filtersActualizarNumeroMiembros = new HashSet<string>();
             if (pProjects != null && pProjects.Count > 0)
             {
-                filters.Add($" FILTER(?project in(<{string.Join(">,<", pProjects)}>))");
+                filtersActualizarNumeroMiembros.Add($" FILTER(?project in(<{string.Join(">,<", pProjects)}>))");
             }
-            if (filters.Count == 0)
+            if (filtersActualizarNumeroMiembros.Count == 0)
             {
-                filters.Add("");
+                filtersActualizarNumeroMiembros.Add("");
             }
-            foreach (string filter in filters)
+            foreach (string filter in filtersActualizarNumeroMiembros)
             {
                 while (true)
                 {
@@ -827,17 +824,17 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
             //Eliminamos los duplicados
             EliminarDuplicados("project", "http://vivoweb.org/ontology/core#Project", "http://w3id.org/roh/yearStart");
 
-            HashSet<string> filters = new HashSet<string>();
+            HashSet<string> filtersActualizarAniosInicio = new HashSet<string>();
             if (pProjects != null && pProjects.Count > 0)
             {
-                filters.Add($" FILTER(?project in(<{string.Join(">,<", pProjects)}>))");
+                filtersActualizarAniosInicio.Add($" FILTER(?project in(<{string.Join(">,<", pProjects)}>))");
             }
-            if (filters.Count == 0)
+            if (filtersActualizarAniosInicio.Count == 0)
             {
-                filters.Add("");
+                filtersActualizarAniosInicio.Add("");
             }
 
-            foreach (string filter in filters)
+            foreach (string filter in filtersActualizarAniosInicio)
             {
                 //Inserciones
                 while (true)
@@ -896,17 +893,17 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
             //Eliminamos los duplicados
             EliminarDuplicados("project", "http://vivoweb.org/ontology/core#Project", "http://w3id.org/roh/yearEnd");
 
-            HashSet<string> filters = new HashSet<string>();
+            HashSet<string> filtersActualizarAniosFin = new HashSet<string>();
             if (pProjects != null && pProjects.Count > 0)
             {
-                filters.Add($" FILTER(?project in(<{string.Join(">,<", pProjects)}>))");
+                filtersActualizarAniosFin.Add($" FILTER(?project in(<{string.Join(">,<", pProjects)}>))");
             }
-            if (filters.Count == 0)
+            if (filtersActualizarAniosFin.Count == 0)
             {
-                filters.Add("");
+                filtersActualizarAniosFin.Add("");
             }
 
-            foreach (string filter in filters)
+            foreach (string filter in filtersActualizarAniosFin)
             {
                 //Inserciones
                 while (true)

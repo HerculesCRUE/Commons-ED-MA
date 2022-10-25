@@ -35,17 +35,17 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
             //usuario-->http://w3id.org/roh/userKnowledgeArea
             //external-->http://w3id.org/roh/externalKnowledgeArea
             //enriched-->http://w3id.org/roh/enrichedKnowledgeArea
-            HashSet<string> filters = new HashSet<string>();
+            HashSet<string> filtersActualizarAreasRO = new HashSet<string>();
             if (pROs != null && pROs.Count > 0)
             {
-                filters.Add($" FILTER(?ro in (<{string.Join(">,<", pROs)}>))");
+                filtersActualizarAreasRO.Add($" FILTER(?ro in (<{string.Join(">,<", pROs)}>))");
             }
-            if (filters.Count == 0)
+            if (filtersActualizarAreasRO.Count == 0)
             {
-                filters.Add("");
+                filtersActualizarAreasRO.Add("");
             }
 
-            foreach (string filter in filters)
+            foreach (string filter in filtersActualizarAreasRO)
             {
                 //Eliminamos las categorías duplicadas
                 while (true)
@@ -231,17 +231,17 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
             //enriched-->http://w3id.org/roh/enrichedKeywords
 
 
-            HashSet<string> filters = new HashSet<string>();
+            HashSet<string> filtersActualizarTagsRO = new HashSet<string>();
             if (pROs != null && pROs.Count > 0)
             {
-                filters.Add($" FILTER(?ro in (<{string.Join(">,<", pROs)}>))");
+                filtersActualizarTagsRO.Add($" FILTER(?ro in (<{string.Join(">,<", pROs)}>))");
             }
-            if (filters.Count == 0)
+            if (filtersActualizarTagsRO.Count == 0)
             {
-                filters.Add("");
+                filtersActualizarTagsRO.Add("");
             }
 
-            foreach (string filter in filters)
+            foreach (string filter in filtersActualizarTagsRO)
             {
                 while (true)
                 {
@@ -314,16 +314,16 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
         /// <param name="pROs">ID de ROs</param>
         public void EliminarROsSinAutoresActivos(List<string> pROs = null)
         {
-            HashSet<string> filters = new HashSet<string>();
+            HashSet<string> filtersEliminarROsSinAutoresActivos = new HashSet<string>();
             if (pROs != null && pROs.Count > 0)
             {
-                filters.Add($" FILTER(?ro in (<{string.Join(">,<", pROs)}>))");
+                filtersEliminarROsSinAutoresActivos.Add($" FILTER(?ro in (<{string.Join(">,<", pROs)}>))");
             }
-            if (filters.Count == 0)
+            if (filtersEliminarROsSinAutoresActivos.Count == 0)
             {
-                filters.Add("");
+                filtersEliminarROsSinAutoresActivos.Add("");
             }
-            foreach (string filter in filters)
+            foreach (string filter in filtersEliminarROsSinAutoresActivos)
             {
                 while (true)
                 {
@@ -366,20 +366,20 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
         /// <param name="pDocuments">IDs de documentos</param>
         public void ActualizarNumeroVinculados(List<string> pROs = null)
         {
-            HashSet<string> filters = new HashSet<string>();
+            HashSet<string> filtersActualizarNumeroVinculados = new HashSet<string>();
             if (pROs != null && pROs.Count > 0)
             {
-                filters.Add($" FILTER(?ro in (<{string.Join(">,<", pROs)}>))");
+                filtersActualizarNumeroVinculados.Add($" FILTER(?ro in (<{string.Join(">,<", pROs)}>))");
             }
-            if (filters.Count == 0)
+            if (filtersActualizarNumeroVinculados.Count == 0)
             {
-                filters.Add("");
+                filtersActualizarNumeroVinculados.Add("");
             }
 
             //Eliminamos los duplicados
             EliminarDuplicados("researchobject", "http://w3id.org/roh/ResearchObject", "http://w3id.org/roh/linkedCount");
 
-            foreach (string filter in filters)
+            foreach (string filter in filtersActualizarNumeroVinculados)
             {
                 //Actualizamos los datos
                 while (true)

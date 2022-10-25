@@ -16,8 +16,6 @@ using System.Web;
 
 namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
 {
-    //TODO comentarios completados
-
     /// <summary>
     /// Clase para actualizar propiedades de documentos
     /// </summary>
@@ -1765,60 +1763,60 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
                     {
                         string idAux = mResourceApi.GraphsUrl + "items/ImpactIndex_" + guid.ToString().ToLower() + "_" + Guid.NewGuid().ToString().ToLower();
                         string document = fila["document"].value;
-                        {
-                            TriplesToInclude t = new();
-                            t.Predicate = "http://w3id.org/roh/impactIndex|http://w3id.org/roh/impactIndexInYear";
-                            t.NewValue = idAux + "|" + fila["impactIndexInYear"].value;
-                            triples[guid].Add(t);
-                        }
+                        
+                        TriplesToInclude t = new();
+                        t.Predicate = "http://w3id.org/roh/impactIndex|http://w3id.org/roh/impactIndexInYear";
+                        t.NewValue = idAux + "|" + fila["impactIndexInYear"].value;
+                        triples[guid].Add(t);
+                        
                         if (fila.ContainsKey("impactSource"))
                         {
-                            TriplesToInclude t = new();
-                            t.Predicate = "http://w3id.org/roh/impactIndex|http://w3id.org/roh/impactSource";
-                            t.NewValue = idAux + "|" + fila["impactSource"].value;
-                            triples[guid].Add(t);
+                            TriplesToInclude timpactSource = new();
+                            timpactSource.Predicate = "http://w3id.org/roh/impactIndex|http://w3id.org/roh/impactSource";
+                            timpactSource.NewValue = idAux + "|" + fila["impactSource"].value;
+                            triples[guid].Add(timpactSource);
                         }
                         if (fila.ContainsKey("impactSourceOther"))
                         {
-                            TriplesToInclude t = new();
-                            t.Predicate = "http://w3id.org/roh/impactIndex|http://w3id.org/roh/impactSourceOther";
-                            t.NewValue = idAux + "|" + fila["impactSourceOther"].value;
-                            triples[guid].Add(t);
+                            TriplesToInclude timpactSourceOther = new();
+                            timpactSourceOther.Predicate = "http://w3id.org/roh/impactIndex|http://w3id.org/roh/impactSourceOther";
+                            timpactSourceOther.NewValue = idAux + "|" + fila["impactSourceOther"].value;
+                            triples[guid].Add(timpactSourceOther);
                         }
                         if (fila.ContainsKey("categoryTitle"))
                         {
-                            TriplesToInclude t = new();
-                            t.Predicate = "http://w3id.org/roh/impactIndex|http://w3id.org/roh/impactIndexCategory";
-                            t.NewValue = idAux + "|" + fila["categoryTitle"].value;
-                            triples[guid].Add(t);
+                            TriplesToInclude tcategoryTitle = new();
+                            tcategoryTitle.Predicate = "http://w3id.org/roh/impactIndex|http://w3id.org/roh/impactIndexCategory";
+                            tcategoryTitle.NewValue = idAux + "|" + fila["categoryTitle"].value;
+                            triples[guid].Add(tcategoryTitle);
                         }
                         if (fila.ContainsKey("publicationPosition"))
                         {
-                            TriplesToInclude t = new();
-                            t.Predicate = "http://w3id.org/roh/impactIndex|http://w3id.org/roh/publicationPosition";
-                            t.NewValue = idAux + "|" + fila["publicationPosition"].value;
-                            triples[guid].Add(t);
+                            TriplesToInclude tpublicationPosition = new();
+                            tpublicationPosition.Predicate = "http://w3id.org/roh/impactIndex|http://w3id.org/roh/publicationPosition";
+                            tpublicationPosition.NewValue = idAux + "|" + fila["publicationPosition"].value;
+                            triples[guid].Add(tpublicationPosition);
                         }
                         if (fila.ContainsKey("journalNumberInCat"))
                         {
-                            TriplesToInclude t = new();
-                            t.Predicate = "http://w3id.org/roh/impactIndex|http://w3id.org/roh/journalNumberInCat";
-                            t.NewValue = idAux + "|" + fila["journalNumberInCat"].value;
-                            triples[guid].Add(t);
+                            TriplesToInclude tjournalNumberInCat = new();
+                            tjournalNumberInCat.Predicate = "http://w3id.org/roh/impactIndex|http://w3id.org/roh/journalNumberInCat";
+                            tjournalNumberInCat.NewValue = idAux + "|" + fila["journalNumberInCat"].value;
+                            triples[guid].Add(tjournalNumberInCat);
                         }
                         if (fila.ContainsKey("quartile"))
                         {
-                            TriplesToInclude t = new();
-                            t.Predicate = "http://w3id.org/roh/impactIndex|http://w3id.org/roh/quartile";
-                            t.NewValue = idAux + "|" + fila["quartile"].value;
-                            triples[guid].Add(t);
+                            TriplesToInclude tquartile = new();
+                            tquartile.Predicate = "http://w3id.org/roh/impactIndex|http://w3id.org/roh/quartile";
+                            tquartile.NewValue = idAux + "|" + fila["quartile"].value;
+                            triples[guid].Add(tquartile);
                         }
                         if (fila.ContainsKey("impactCategory"))
                         {
-                            TriplesToInclude t = new();
-                            t.Predicate = "http://w3id.org/roh/impactIndex|http://w3id.org/roh/impactIndexCategoryEntity";
-                            t.NewValue = idAux + "|" + fila["impactCategory"].value;
-                            triples[guid].Add(t);
+                            TriplesToInclude timpactCategory = new();
+                            timpactCategory.Predicate = "http://w3id.org/roh/impactIndex|http://w3id.org/roh/impactIndexCategoryEntity";
+                            timpactCategory.NewValue = idAux + "|" + fila["impactCategory"].value;
+                            triples[guid].Add(timpactCategory);
                         }
                     }
                     if (triples[guid].Count > 0)
