@@ -147,20 +147,20 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
                 while (true)
                 {
                     //Creamos CVs
-                    int limit = 50;
-                    String select = @"SELECT distinct ?person  ";
-                    String where = @$"  where{{
+                    int limitCrearCVs = 50;
+                    String selectCrearCVs = @"SELECT distinct ?person  ";
+                    String whereCrearCVs = @$"  where{{
                                             {filter}
                                             ?person a <http://xmlns.com/foaf/0.1/Person>.
                                             ?person <http://w3id.org/roh/isActive> 'true'.
                                             MINUS{{ ?cv  <http://w3id.org/roh/cvOf> ?person}}
-                                        }} limit {limit}";
+                                        }} limit {limitCrearCVs}";
 
-                    SparqlObject resultado = mResourceApi.VirtuosoQueryMultipleGraph(select, where, new List<string>() { "person", "curriculumvitae", "project", "group", "document", "researchobject" });
+                    SparqlObject resultadoCrearCVs = mResourceApi.VirtuosoQueryMultipleGraph(selectCrearCVs, whereCrearCVs, new List<string>() { "person", "curriculumvitae", "project", "group", "document", "researchobject" });
 
                     // Personas que no poseen actualmente un CV y deberían tenerlo
                     List<string> persons = new();
-                    foreach (Dictionary<string, SparqlObject.Data> fila in resultado.results.bindings)
+                    foreach (Dictionary<string, SparqlObject.Data> fila in resultadoCrearCVs.results.bindings)
                     {
                         persons.Add(fila["person"].value);
                     }
@@ -190,7 +190,7 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
                         }
                     });
 
-                    if (resultado.results.bindings.Count != limit)
+                    if (resultadoCrearCVs.results.bindings.Count != limitCrearCVs)
                     {
                         break;
                     }
@@ -225,14 +225,14 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
                 filtersModificarDocumentos.Add("");
             }
 
-            foreach (string filter in filters)
+            foreach (string filter in filtersModificarDocumentos)
             {
                 while (true)
                 {
                     //Añadimos documentos
-                    int limit = 500;
-                    String select = @"select distinct ?cv ?scientificActivity ?document ?isValidated ?typeDocument ";
-                    String where = @$"where{{
+                    int limitAniadirDocumentos = 500;
+                    String selectAniadirDocumentos = @"select distinct ?cv ?scientificActivity ?document ?isValidated ?typeDocument ";
+                    String whereAniadirDocumentos = @$"where{{
                                     {filter}
                                     {{
                                         #DESEABLES
@@ -277,10 +277,10 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
                                                 BIND(""SAD3"" as ?typeDocument)
                                         }}
                                     }}
-                                }}order by desc(?cv) limit {limit}";
-                    SparqlObject resultado = mResourceApi.VirtuosoQueryMultipleGraph(select, where, new List<string>() { "curriculumvitae", "document", "person", "scientificactivitydocument" });
-                    InsertarDocumentosCV(resultado);
-                    if (resultado.results.bindings.Count != limit)
+                                }}order by desc(?cv) limit {limitAniadirDocumentos}";
+                    SparqlObject resultadoAniadirDocumentos = mResourceApi.VirtuosoQueryMultipleGraph(selectAniadirDocumentos, whereAniadirDocumentos, new List<string>() { "curriculumvitae", "document", "person", "scientificactivitydocument" });
+                    InsertarDocumentosCV(resultadoAniadirDocumentos);
+                    if (resultadoAniadirDocumentos.results.bindings.Count != limitAniadirDocumentos)
                     {
                         break;
                     }
@@ -289,9 +289,9 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
                 while (true)
                 {
                     //Elminamos documentos
-                    int limit = 500;
-                    String select = @"select distinct ?cv ?scientificActivity ?item ?typeDocument ";
-                    String where = @$"where{{
+                    int limitEliminarDocumentos = 500;
+                    String selectEliminarDocumentos = @"select distinct ?cv ?scientificActivity ?item ?typeDocument ";
+                    String whereEliminarDocumentos = @$"where{{
                                     {filter}                                    
                                     {{
                                         #ACTUALES
@@ -335,10 +335,10 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
                                             ?scientificActivityDocument  <http://purl.org/dc/elements/1.1/identifier> ?typeDocument.
                                         }}                                        
                                     }}
-                                }}order by desc(?cv) limit {limit}";
-                    SparqlObject resultado = mResourceApi.VirtuosoQueryMultipleGraph(select, where, new List<string>() { "curriculumvitae", "document", "person", "scientificactivitydocument" });
-                    EliminarDocumentosCV(resultado);
-                    if (resultado.results.bindings.Count != limit)
+                                }}order by desc(?cv) limit {limitEliminarDocumentos}";
+                    SparqlObject resultadoEliminarDocumentos = mResourceApi.VirtuosoQueryMultipleGraph(selectEliminarDocumentos, whereEliminarDocumentos, new List<string>() { "curriculumvitae", "document", "person", "scientificactivitydocument" });
+                    EliminarDocumentosCV(resultadoEliminarDocumentos);
+                    if (resultadoEliminarDocumentos.results.bindings.Count != limitEliminarDocumentos)
                     {
                         break;
                     }
@@ -442,9 +442,9 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
                 while (true)
                 {
                     //Añadimos documentos
-                    int limit = 500;
-                    String select = @"select distinct ?cv ?researchObject ?ro ";
-                    String where = @$"where{{
+                    int limitAniadirDocumentos = 500;
+                    String selectAniadirDocumentos = @"select distinct ?cv ?researchObject ?ro ";
+                    String whereAniadirDocumentos = @$"where{{
                                     {filter}
                                     {{
                                         #DESEABLES
@@ -471,10 +471,10 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
                                         ?researchObject <http://w3id.org/roh/researchObjects> ?item.
                                         ?item <http://vivoweb.org/ontology/core#relatedBy> ?ro.
                                     }}
-                                }}order by desc(?cv) limit {limit}";
-                    SparqlObject resultado = mResourceApi.VirtuosoQueryMultipleGraph(select, where, new List<string>() { "curriculumvitae", "researchobject", "person" });
-                    InsertarResearchObjectsCV(resultado);
-                    if (resultado.results.bindings.Count != limit)
+                                }}order by desc(?cv) limit {limitAniadirDocumentos}";
+                    SparqlObject resultadoAniadirDocumentos = mResourceApi.VirtuosoQueryMultipleGraph(selectAniadirDocumentos, whereAniadirDocumentos, new List<string>() { "curriculumvitae", "researchobject", "person" });
+                    InsertarResearchObjectsCV(resultadoAniadirDocumentos);
+                    if (resultadoAniadirDocumentos.results.bindings.Count != limitAniadirDocumentos)
                     {
                         break;
                     }
@@ -483,9 +483,9 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
                 while (true)
                 {
                     //Elminamos documentos
-                    int limit = 500;
-                    String select = @"select distinct ?cv ?researchObject ?item ";
-                    String where = @$"where{{
+                    int limitEliminarDocumentos = 500;
+                    String selectEliminarDocumentos = @"select distinct ?cv ?researchObject ?item ";
+                    String whereEliminarDocumentos = @$"where{{
                                     {filter}                                    
                                     {{
                                         #ACTUALES
@@ -512,10 +512,10 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
                                             ?autor <http://www.w3.org/1999/02/22-rdf-syntax-ns#member> ?person.
                                         }}                                      
                                     }}
-                                }}order by desc(?cv) limit {limit}";
-                    SparqlObject resultado = mResourceApi.VirtuosoQueryMultipleGraph(select, where, new List<string>() { "curriculumvitae", "researchobject", "person" });
-                    EliminarResearchObjectsCV(resultado);
-                    if (resultado.results.bindings.Count != limit)
+                                }}order by desc(?cv) limit {limitEliminarDocumentos}";
+                    SparqlObject resultadoEliminarDocumentos = mResourceApi.VirtuosoQueryMultipleGraph(selectEliminarDocumentos, whereEliminarDocumentos, new List<string>() { "curriculumvitae", "researchobject", "person" });
+                    EliminarResearchObjectsCV(resultadoEliminarDocumentos);
+                    if (resultadoEliminarDocumentos.results.bindings.Count != limitEliminarDocumentos)
                     {
                         break;
                     }
@@ -559,9 +559,9 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
                 while (true)
                 {
                     //Publicamos los documentos
-                    int limit = 500;
-                    String select = @"select distinct ?cv ?researchObject ?propItem ?item ";
-                    String where = @$"where{{
+                    int limitCambiarPrivacidadResearchObjects = 500;
+                    String selectCambiarPrivacidadResearchObjects = @"select distinct ?cv ?researchObject ?propItem ?item ";
+                    String whereCambiarPrivacidadResearchObjects = @$"where{{
                                     {filter}
                                     {{
                                         ?person a <http://xmlns.com/foaf/0.1/Person>.                                            
@@ -574,10 +574,10 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
                                         ?item <http://vivoweb.org/ontology/core#relatedBy> ?ro.
                                         ?item <http://w3id.org/roh/isPublic> 'false'.
                                     }}
-                                }}order by desc(?cv) limit {limit}";
-                    SparqlObject resultado = mResourceApi.VirtuosoQueryMultipleGraph(select, where, new List<string>() { "curriculumvitae", "researchobject", "person" });
-                    PublicarResearchObjectsCV(resultado);
-                    if (resultado.results.bindings.Count != limit)
+                                }}order by desc(?cv) limit {limitCambiarPrivacidadResearchObjects}";
+                    SparqlObject resultadoCambiarPrivacidadResearchObjects = mResourceApi.VirtuosoQueryMultipleGraph(selectCambiarPrivacidadResearchObjects, whereCambiarPrivacidadResearchObjects, new List<string>() { "curriculumvitae", "researchobject", "person" });
+                    PublicarResearchObjectsCV(resultadoCambiarPrivacidadResearchObjects);
+                    if (resultadoCambiarPrivacidadResearchObjects.results.bindings.Count != limitCambiarPrivacidadResearchObjects)
                     {
                         break;
                     }
@@ -617,9 +617,9 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
                 while (true)
                 {
                     //Añadimos proyectos
-                    int limit = 500;
-                    String select = @"select distinct ?cv ?scientificExperience ?project ?typeProject ";
-                    String where = @$"where{{
+                    int limitAniadirProyectos = 500;
+                    String selectAniadirProyectos = @"select distinct ?cv ?scientificExperience ?project ?typeProject ";
+                    String whereAniadirProyectos = @$"where{{
                                     {filter}
                                     {{
                                         #DESEABLES
@@ -659,10 +659,10 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
                                                 BIND(""SEP2"" as ?typeProject)
                                         }}
                                     }}
-                                }}order by desc(?cv) limit {limit}";
-                    SparqlObject resultado = mResourceApi.VirtuosoQueryMultipleGraph(select, where, new List<string>() { "curriculumvitae", "project", "person", "scientificexperienceproject" });
-                    InsertarProyectosCV(resultado);
-                    if (resultado.results.bindings.Count != limit)
+                                }}order by desc(?cv) limit {limitAniadirProyectos}";
+                    SparqlObject resultadoAniadirProyectos = mResourceApi.VirtuosoQueryMultipleGraph(selectAniadirProyectos, whereAniadirProyectos, new List<string>() { "curriculumvitae", "project", "person", "scientificexperienceproject" });
+                    InsertarProyectosCV(resultadoAniadirProyectos);
+                    if (resultadoAniadirProyectos.results.bindings.Count != limitAniadirProyectos)
                     {
                         break;
                     }
@@ -671,9 +671,9 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
                 while (true)
                 {
                     //Elminamos proyectos
-                    int limit = 500;
-                    String select = @"select distinct ?cv ?scientificExperience ?project ?item ?typeProject ";
-                    String where = @$"where{{
+                    int limitEliminarProyectos = 500;
+                    String selectEliminarProyectos = @"select distinct ?cv ?scientificExperience ?project ?item ?typeProject ";
+                    String whereEliminarProyectos = @$"where{{
                                     {filter}
                                     
                                         #ACTUALES
@@ -713,10 +713,10 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
                                             ?scientificExperienceProject <http://purl.org/dc/elements/1.1/identifier> ?typeProject.
                                         }}
                                     }}
-                                }}order by desc(?cv) limit {limit}";
-                    SparqlObject resultado = mResourceApi.VirtuosoQueryMultipleGraph(select, where, new List<string>() { "curriculumvitae", "project", "person", "scientificexperienceproject" });
-                    EliminarProyectosCV(resultado);
-                    if (resultado.results.bindings.Count != limit)
+                                }}order by desc(?cv) limit {limitEliminarProyectos}";
+                    SparqlObject resultadoEliminarProyectos = mResourceApi.VirtuosoQueryMultipleGraph(selectEliminarProyectos, whereEliminarProyectos, new List<string>() { "curriculumvitae", "project", "person", "scientificexperienceproject" });
+                    EliminarProyectosCV(resultadoEliminarProyectos);
+                    if (resultadoEliminarProyectos.results.bindings.Count != limitEliminarProyectos)
                     {
                         break;
                     }
@@ -759,12 +759,12 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
                 while (true)
                 {
                     //Añadimos grupos
-                    int limit = 500;
-                    String select = @"select distinct ?cv ?idSection ?item 
+                    int limitAniadirGrupos = 500;
+                    String selectAniadirGrupos = @"select distinct ?cv ?idSection ?item 
                                         'http://w3id.org/roh/RelatedGroup' as ?rdfTypeAux 
                                         'http://w3id.org/roh/scientificExperience' as ?sectionProperty
                                         'http://w3id.org/roh/groups' as ?auxProperty  ";
-                    String where = @$"where{{
+                    String whereAniadirGrupos = @$"where{{
                                     {filter} 
                                     {{
                                         #DESEABLES                                        
@@ -790,11 +790,11 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
                                         ?idSection <http://w3id.org/roh/groups> ?auxSection.
                                         ?auxSection <http://vivoweb.org/ontology/core#relatedBy> ?item.
                                     }}
-                                }}order by desc(?cv) limit {limit}";
-                    SparqlObject resultado = mResourceApi.VirtuosoQueryMultipleGraph(select, where, new List<string>() { "curriculumvitae", "group", "person" });
-                    InsertarItemsCV(resultado);
+                                }}order by desc(?cv) limit {limitAniadirGrupos}";
+                    SparqlObject resultadoAniadirGrupos = mResourceApi.VirtuosoQueryMultipleGraph(selectAniadirGrupos, whereAniadirGrupos, new List<string>() { "curriculumvitae", "group", "person" });
+                    InsertarItemsCV(resultadoAniadirGrupos);
 
-                    if (resultado.results.bindings.Count != limit)
+                    if (resultadoAniadirGrupos.results.bindings.Count != limitAniadirGrupos)
                     {
                         break;
                     }
@@ -803,11 +803,11 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
                 while (true)
                 {
                     //Elminamos grupos
-                    int limit = 500;
-                    String select = @"select distinct ?cv ?idSection ?auxEntity 
+                    int limitEliminarGrupos = 500;
+                    String selectEliminarGrupos = @"select distinct ?cv ?idSection ?auxEntity 
                                         'http://w3id.org/roh/scientificExperience' as ?sectionProperty
                                         'http://w3id.org/roh/groups' as ?auxProperty ";
-                    String where = @$"where{{
+                    String whereEliminarGrupos = @$"where{{
                                     {filter}                                    
                                     {{
                                         #ACTUALES
@@ -832,10 +832,10 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
                                         ?group <http://vivoweb.org/ontology/core#relates> ?rol.
                                         ?rol <http://w3id.org/roh/roleOf> ?person.
                                     }}
-                                }}order by desc(?cv) limit {limit}";
-                    SparqlObject resultado = mResourceApi.VirtuosoQueryMultipleGraph(select, where, new List<string>() { "curriculumvitae", "group", "person" });
-                    EliminarItemsCV(resultado);
-                    if (resultado.results.bindings.Count != limit)
+                                }}order by desc(?cv) limit {limitEliminarGrupos}";
+                    SparqlObject resultadoEliminarGrupos = mResourceApi.VirtuosoQueryMultipleGraph(selectEliminarGrupos, whereEliminarGrupos, new List<string>() { "curriculumvitae", "group", "person" });
+                    EliminarItemsCV(resultadoEliminarGrupos);
+                    if (resultadoEliminarGrupos.results.bindings.Count != limitEliminarGrupos)
                     {
                         break;
                     }
@@ -878,11 +878,11 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
                 while (true)
                 {
                     //Añadimos patentes
-                    int limit = 500;
-                    String select = @"select distinct ?cv ?idSection ?item 'http://w3id.org/roh/RelatedPatent' as ?rdfTypeAux 
+                    int limitAniadirPatentes = 500;
+                    String selectAniadirPatentes = @"select distinct ?cv ?idSection ?item 'http://w3id.org/roh/RelatedPatent' as ?rdfTypeAux 
                                         'http://w3id.org/roh/scientificExperience' as ?sectionProperty
                                         'http://w3id.org/roh/patents' as ?auxProperty ";
-                    String where = @$"where{{
+                    String whereAniadirPatentes = @$"where{{
                                     {filter}
                                     {{
                                         #DESEABLES                                        
@@ -908,10 +908,10 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
                                         ?idSection <http://w3id.org/roh/patents> ?auxSection.
                                         ?auxSection <http://vivoweb.org/ontology/core#relatedBy> ?item.
                                     }}
-                                }}order by desc(?cv) limit {limit}";
-                    SparqlObject resultado = mResourceApi.VirtuosoQueryMultipleGraph(select, where, new List<string>() { "curriculumvitae", "patent", "person" });
-                    InsertarItemsCV(resultado);
-                    if (resultado.results.bindings.Count != limit)
+                                }}order by desc(?cv) limit {limitAniadirPatentes}";
+                    SparqlObject resultadoAniadirPatentes = mResourceApi.VirtuosoQueryMultipleGraph(selectAniadirPatentes, whereAniadirPatentes, new List<string>() { "curriculumvitae", "patent", "person" });
+                    InsertarItemsCV(resultadoAniadirPatentes);
+                    if (resultadoAniadirPatentes.results.bindings.Count != limitAniadirPatentes)
                     {
                         break;
                     }
@@ -920,12 +920,12 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
                 while (true)
                 {
                     //Elminamos patentes
-                    int limit = 500;
-                    String select = @"select distinct ?cv ?idSection ?auxEntity 
+                    int limitEliminarPatentes = 500;
+                    String selectEliminarPatentes = @"select distinct ?cv ?idSection ?auxEntity 
                                         'http://w3id.org/roh/scientificExperience' as ?sectionProperty
                                         'http://w3id.org/roh/patents' as ?auxProperty      
                                         ?group ";
-                    String where = @$"where{{
+                    String whereEliminarPatentes = @$"where{{
                                     {filter}                                    
                                     {{
                                         #ACTUALES
@@ -950,10 +950,10 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
                                         ?group <http://vivoweb.org/ontology/core#relates> ?rol.
                                         ?rol <http://w3id.org/roh/roleOf> ?person.
                                     }}
-                                }}order by desc(?cv) limit {limit}";
-                    SparqlObject resultado = mResourceApi.VirtuosoQueryMultipleGraph(select, where, new List<string>() { "curriculumvitae", "patent", "person" });
-                    EliminarItemsCV(resultado);
-                    if (resultado.results.bindings.Count != limit)
+                                }}order by desc(?cv) limit {limitEliminarPatentes}";
+                    SparqlObject resultadoEliminarPatentes = mResourceApi.VirtuosoQueryMultipleGraph(selectEliminarPatentes, whereEliminarPatentes, new List<string>() { "curriculumvitae", "patent", "person" });
+                    EliminarItemsCV(resultadoEliminarPatentes);
+                    if (resultadoEliminarPatentes.results.bindings.Count != limitEliminarPatentes)
                     {
                         break;
                     }
