@@ -57,7 +57,7 @@ namespace Hercules.CommonsEDMA.Desnormalizador
         /// <returns></returns>
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
         {
-            ListenToQueue();            
+            ListenToQueue();
 
             ProcessItemsPendingCV();
 
@@ -155,7 +155,7 @@ namespace Hercules.CommonsEDMA.Desnormalizador
                                     agrupados[denormalizerItemQueue._itemType] = new HashSet<string>();
                                 }
                                 agrupados[denormalizerItemQueue._itemType].UnionWith(denormalizerItemQueue._items);
-                                if (agrupados.Where(x => x.Value.Count > maxItems).Count() > 0)
+                                if (agrupados.Any(x => x.Value.Count > maxItems))
                                 {
                                     break;
                                 }
@@ -348,7 +348,7 @@ namespace Hercules.CommonsEDMA.Desnormalizador
                                     }
                                     File.Delete(file);
                                 }
-                                catch(Exception ex)
+                                catch (Exception ex)
                                 {
                                     FileLogger.Log(ex);
                                 }
