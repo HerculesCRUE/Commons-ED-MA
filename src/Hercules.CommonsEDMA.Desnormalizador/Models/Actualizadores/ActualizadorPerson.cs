@@ -1646,15 +1646,15 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
 
         private void InsercionHIndexCitationCount(List<Dictionary<string, SparqlObject.Data>> pFilas)
         {
-            List<string> ids = pFilas.Select(x => x["person"].value).Distinct().ToList();
-            if (ids.Count > 0)
+            List<string> idsInsercionHIndexCitationCount = pFilas.Select(x => x["person"].value).Distinct().ToList();
+            if (idsInsercionHIndexCitationCount.Count > 0)
             {
-                Parallel.ForEach(ids, new ParallelOptions { MaxDegreeOfParallelism = ActualizadorBase.numParallel }, id =>
+                Parallel.ForEach(idsInsercionHIndexCitationCount, new ParallelOptions { MaxDegreeOfParallelism = ActualizadorBase.numParallel }, idInsercionHIndexCitationCount =>
                 {
-                    Guid guid = mResourceApi.GetShortGuid(id);
+                    Guid guid = mResourceApi.GetShortGuid(idInsercionHIndexCitationCount);
 
                     Dictionary<Guid, List<TriplesToInclude>> triples = new() { { guid, new List<TriplesToInclude>() } };
-                    foreach (Dictionary<string, SparqlObject.Data> fila in pFilas.Where(x => x["person"].value == id))
+                    foreach (Dictionary<string, SparqlObject.Data> fila in pFilas.Where(x => x["person"].value == idInsercionHIndexCitationCount))
                     {
                         string idAux = mResourceApi.GraphsUrl + "items/HIndexCitationCount_" + guid.ToString().ToLower() + "_" + Guid.NewGuid().ToString().ToLower();
                         string person = fila["person"].value;
@@ -1683,18 +1683,18 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
 
         private void ActualizarHIndexCitationCount(List<Dictionary<string, SparqlObject.Data>> pFilas)
         {
-            List<string> ids = pFilas.Select(x => x["person"].value).Distinct().ToList();
-            if (ids.Count > 0)
+            List<string> idsActualizarHIndexCitationCount = pFilas.Select(x => x["person"].value).Distinct().ToList();
+            if (idsActualizarHIndexCitationCount.Count > 0)
             {
-                Parallel.ForEach(ids, new ParallelOptions { MaxDegreeOfParallelism = ActualizadorBase.numParallel }, id =>
+                Parallel.ForEach(idsActualizarHIndexCitationCount, new ParallelOptions { MaxDegreeOfParallelism = ActualizadorBase.numParallel }, idActualizarHIndexCitationCount =>
                 {
-                    Guid guid = mResourceApi.GetShortGuid(id);
+                    Guid guid = mResourceApi.GetShortGuid(idActualizarHIndexCitationCount);
 
                     Dictionary<Guid, List<TriplesToInclude>> triplesInsert = new() { { guid, new List<TriplesToInclude>() } };
                     Dictionary<Guid, List<TriplesToModify>> triplesModify = new() { { guid, new List<TriplesToModify>() } };
 
 
-                    foreach (Dictionary<string, SparqlObject.Data> fila in pFilas.Where(x => x["person"].value == id))
+                    foreach (Dictionary<string, SparqlObject.Data> fila in pFilas.Where(x => x["person"].value == idActualizarHIndexCitationCount))
                     {
                         string idAux = fila["hIndexCitationCount"].value;
                         string person = fila["person"].value;
@@ -1745,15 +1745,15 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
 
         private void InsercionHIndex(List<Dictionary<string, SparqlObject.Data>> pFilas)
         {
-            List<string> ids = pFilas.Select(x => x["person"].value).Distinct().ToList();
-            if (ids.Count > 0)
+            List<string> idsInsercionHIndex = pFilas.Select(x => x["person"].value).Distinct().ToList();
+            if (idsInsercionHIndex.Count > 0)
             {
-                Parallel.ForEach(ids, new ParallelOptions { MaxDegreeOfParallelism = ActualizadorBase.numParallel }, id =>
+                Parallel.ForEach(idsInsercionHIndex, new ParallelOptions { MaxDegreeOfParallelism = ActualizadorBase.numParallel }, idInsercionHIndex =>
                 {
-                    Guid guid = mResourceApi.GetShortGuid(id);
+                    Guid guid = mResourceApi.GetShortGuid(idInsercionHIndex);
 
                     Dictionary<Guid, List<TriplesToInclude>> triples = new() { { guid, new List<TriplesToInclude>() } };
-                    foreach (Dictionary<string, SparqlObject.Data> fila in pFilas.Where(x => x["person"].value == id))
+                    foreach (Dictionary<string, SparqlObject.Data> fila in pFilas.Where(x => x["person"].value == idInsercionHIndex))
                     {
                         string idAux = mResourceApi.GraphsUrl + "items/HIndex_" + guid.ToString().ToLower() + "_" + Guid.NewGuid().ToString().ToLower();
                         string person = fila["person"].value;
