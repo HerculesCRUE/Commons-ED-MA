@@ -1700,34 +1700,34 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
                         string person = fila["person"].value;
                         if (fila.ContainsKey("numAcumuladoCargadas"))
                         {
-                            TriplesToModify t = new();
-                            t.Predicate = "http://w3id.org/roh/hIndexCitationCount|http://w3id.org/roh/acumulatedPublicationNumber";
-                            t.NewValue = idAux + "|" + fila["numAcumuladoACargar"].value;
-                            t.OldValue = idAux + "|" + fila["numAcumuladoCargadas"].value;
-                            triplesModify[guid].Add(t);
+                            TriplesToModify tnumAcumuladoCargadas = new();
+                            tnumAcumuladoCargadas.Predicate = "http://w3id.org/roh/hIndexCitationCount|http://w3id.org/roh/acumulatedPublicationNumber";
+                            tnumAcumuladoCargadas.NewValue = idAux + "|" + fila["numAcumuladoACargar"].value;
+                            tnumAcumuladoCargadas.OldValue = idAux + "|" + fila["numAcumuladoCargadas"].value;
+                            triplesModify[guid].Add(tnumAcumuladoCargadas);
                         }
                         else if (fila.ContainsKey("numAcumuladoACargar"))
                         {
-                            TriplesToInclude t = new();
-                            t.Predicate = "http://w3id.org/roh/hIndexCitationCount|http://w3id.org/roh/acumulatedPublicationNumber";
-                            t.NewValue = idAux + "|" + fila["numAcumuladoACargar"].value;
-                            triplesInsert[guid].Add(t);
+                            TriplesToInclude tnumAcumuladoACargar = new();
+                            tnumAcumuladoACargar.Predicate = "http://w3id.org/roh/hIndexCitationCount|http://w3id.org/roh/acumulatedPublicationNumber";
+                            tnumAcumuladoACargar.NewValue = idAux + "|" + fila["numAcumuladoACargar"].value;
+                            triplesInsert[guid].Add(tnumAcumuladoACargar);
                         }
 
                         if (fila.ContainsKey("numMaxCargado"))
                         {
-                            TriplesToModify t = new();
-                            t.Predicate = "http://w3id.org/roh/hIndexCitationCount|http://w3id.org/roh/hIndexMax";
-                            t.NewValue = idAux + "|" + fila["numMaxACargar"].value;
-                            t.OldValue = idAux + "|" + fila["numMaxCargado"].value;
-                            triplesModify[guid].Add(t);
+                            TriplesToModify tnumMaxCargado = new();
+                            tnumMaxCargado.Predicate = "http://w3id.org/roh/hIndexCitationCount|http://w3id.org/roh/hIndexMax";
+                            tnumMaxCargado.NewValue = idAux + "|" + fila["numMaxACargar"].value;
+                            tnumMaxCargado.OldValue = idAux + "|" + fila["numMaxCargado"].value;
+                            triplesModify[guid].Add(tnumMaxCargado);
                         }
                         else if (fila.ContainsKey("numMaxACargar"))
                         {
-                            TriplesToInclude t = new();
-                            t.Predicate = "http://w3id.org/roh/hIndexCitationCount|http://w3id.org/roh/hIndexMax";
-                            t.NewValue = idAux + "|" + fila["numMaxACargar"].value;
-                            triplesInsert[guid].Add(t);
+                            TriplesToInclude tnumMaxACargar = new();
+                            tnumMaxACargar.Predicate = "http://w3id.org/roh/hIndexCitationCount|http://w3id.org/roh/hIndexMax";
+                            tnumMaxACargar.NewValue = idAux + "|" + fila["numMaxACargar"].value;
+                            triplesInsert[guid].Add(tnumMaxACargar);
                         }
                     }
 
