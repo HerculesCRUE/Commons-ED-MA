@@ -16,7 +16,7 @@ namespace OAI_PMH.Services
             RestClient client = new(pConfig.GetConfigSGI() + "/api/sgo/empresas/modificadas-ids?q=padreId=na=\"" + parentId + "\"");
             client.AddDefaultHeader("Authorization", "Bearer " + accessToken);
             var request = new RestRequest(Method.GET);
-            IRestResponse response = Token.httpCall(client, request, true);
+            IRestResponse response = Token.httpCall(client, request);
             idList = response.Content[1..^1].Split(',').ToList();
 
             foreach (string id in idList)

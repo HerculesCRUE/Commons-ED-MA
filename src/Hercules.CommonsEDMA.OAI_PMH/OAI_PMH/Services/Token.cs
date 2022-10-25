@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json.Linq;
 using OAI_PMH.Controllers;
+using OAI_PMH.Middlewares;
 using RestSharp;
 using System;
 using System.Collections.Generic;
@@ -16,29 +17,35 @@ namespace OAI_PMH.Services
         private static DateTime lastUpdate;
         private static ConfigService _ConfigService;
 
+        // Logs.
+        private static FileLogger _FileLogger;
+
         public static string CheckToken(ConfigService pConfig, bool pTokenGestor = true, bool pTokenPii = false)
         {
             _ConfigService = pConfig;
+            _FileLogger = new FileLogger(_ConfigService);
             string token = GetToken(pConfig, pTokenGestor, pTokenPii);
             return token;
         }
 
-        public static IRestResponse httpCall(RestClient pRestClient, RestRequest pRestRequest, bool pPermitirRespuestaVacia = false)
+        public static IRestResponse httpCall(RestClient pRestClient, RestRequest pRestRequest)
         {
             IRestResponse response = null;
             while (true)
             {
+                DateTime inicio = DateTime.Now;
+
                 try
-                {
+                {                    
                     response = pRestClient.Execute(pRestRequest);
-                    if (!pPermitirRespuestaVacia && string.IsNullOrEmpty(response.Content))
-                    {
-                        throw new Exception("La respuesta no debería estar vacía");
-                    }
+                    DateTime fin = DateTime.Now;
+                    _FileLogger.Log(inicio, fin, pRestClient.BaseUrl.ToString(), "DEBUG");
                     break;
                 }
                 catch
                 {
+                    DateTime fin = DateTime.Now;
+                    _FileLogger.Log(inicio, fin, pRestClient.BaseUrl.ToString(), "ERROR");
                     return null;
                 }
             }
