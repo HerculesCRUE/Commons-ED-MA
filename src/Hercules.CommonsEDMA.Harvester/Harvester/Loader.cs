@@ -414,7 +414,7 @@ namespace Harvester
                                     if (fila.ContainsKey("person"))
                                     {
                                         //Notifico a los miembros
-                                        UtilidadesLoader.EnvioNotificacion("NOTIFICACION_GRUPO", fila["person"].value, "nuevoGrupo" + idGnossGrupo);
+                                        UtilidadesLoader.EnvioNotificacion("NOTIFICACION_GRUPO", fila["person"].value, "harvesterGrupo" + idGnossGrupo);
                                     }
                                 }
 
