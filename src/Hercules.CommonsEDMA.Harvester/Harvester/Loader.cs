@@ -279,23 +279,7 @@ namespace Harvester
 
                                 //Selecciono los miembros para ser notificados
                                 List<string> listadoMiembros = proyectoSGI.Equipo.Select(x => x.PersonaRef).ToList();
-
-                                //Busco en BBDD (solo los que tengan CV)
-                                string select = "SELECT ?person";
-                                string where = $@"WHERE {{
-                                                    ?cv <http://w3id.org/roh/cvOf> ?person .
-                                                    ?person <http://w3id.org/roh/crisIdentifier> ?crisID .
-                                                    FILTER(?crisID in ('{string.Join("','", listadoMiembros)}'))
-                                                }}";
-                                SparqlObject resultData = mResourceApi.VirtuosoQueryMultipleGraph(select, where, new List<string> { "curriculumvitae", "person" });
-                                foreach (Dictionary<string, Data> fila in resultData.results.bindings)
-                                {
-                                    if (fila.ContainsKey("person"))
-                                    {
-                                        //Notifico a los miembros
-                                        UtilidadesLoader.EnvioNotificacion(fila["person"].value, "harvesterProyecto", "NOTIFICACION_GRUPO " + idGnossProy);
-                                    }
-                                }
+                                UtilidadesLoader.EnvioNotificacionesMiembros(listadoMiembros, "harvesterProyecto", "NOTIFICACION_GRUPO " + idGnossProy);
 
                                 pDicIdentificadores["project"].Add(idGnossProy);
                                 File.AppendAllText(pDicRutas[pSet][directorioPendientes], id + Environment.NewLine);
@@ -388,22 +372,7 @@ namespace Harvester
                                 string solicitante = autorizacionSGI.solicitanteRef;
                                 string responsable = autorizacionSGI.responsableRef;
                                 List<string> listado = new List<string>() { solicitante, responsable };
-
-                                //Busco los miembros en BBDD (solo los que tengan CV)
-                                string select = "SELECT ?person";
-                                string where = $@"WHERE {{
-                                                    ?cv <http://w3id.org/roh/cvOf> ?person .
-                                                    ?person <http://w3id.org/roh/crisIdentifier> ?crisID .
-                                                    FILTER(?crisID in ('{string.Join("','", listado)}'))
-                                                }}";
-                                SparqlObject resultData = mResourceApi.VirtuosoQueryMultipleGraph(select, where, new List<string> { "curriculumvitae", "person" });
-                                foreach (Dictionary<string, Data> fila in resultData.results.bindings)
-                                {
-                                    if (fila.ContainsKey("person"))
-                                    {
-                                        UtilidadesLoader.EnvioNotificacion(fila["person"].value, "harvesterAutorizacion", "NOTIFICACION_AUTORIZACION");
-                                    }
-                                }
+                                UtilidadesLoader.EnvioNotificacionesMiembros(listado, "harvesterAutorizacion", "NOTIFICACION_AUTORIZACION");
 
                                 pDicIdentificadores["projectauthorization"].Add(idGnossAutorizacion);
                                 File.AppendAllText(pDicRutas[pSet][directorioPendientes], id + Environment.NewLine);
@@ -425,26 +394,7 @@ namespace Harvester
 
                                 //Selecciono los inventores para ser notificados
                                 List<string> listadoMiembros = invencion.inventores.Select(x => x.inventorRef).ToList();
-                                //listadoMiembros.AddRange(invencion.titulares.Select(x => x.titularRef).ToList());
-                                if (listadoMiembros.Any())
-                                {
-                                    //Busco en BBDD (solo los que tengan CV)
-                                    string select = "SELECT ?person";
-                                    string where = $@"WHERE {{
-                                                    ?cv <http://w3id.org/roh/cvOf> ?person .
-                                                    ?person <http://w3id.org/roh/crisIdentifier> ?crisID .
-                                                    FILTER(?crisID in ('{string.Join("','", listadoMiembros)}'))
-                                                }}";
-                                    SparqlObject resultData = mResourceApi.VirtuosoQueryMultipleGraph(select, where, new List<string> { "curriculumvitae", "person" });
-                                    foreach (Dictionary<string, Data> fila in resultData.results.bindings)
-                                    {
-                                        if (fila.ContainsKey("person"))
-                                        {
-                                            //Notifico a los miembros
-                                            UtilidadesLoader.EnvioNotificacion(fila["person"].value, "harvesterInvencion","NOTIFICACION_GRUPO " + idGnossInv);
-                                        }
-                                    }
-                                }
+                                UtilidadesLoader.EnvioNotificacionesMiembros(listadoMiembros, "harvesterInvencion", "NOTIFICACION_GRUPO " + idGnossInv);
 
                                 pDicIdentificadores["patent"].Add(idGnossInv);
                                 File.AppendAllText(pDicRutas[pSet][directorioPendientes], id + Environment.NewLine);
@@ -466,26 +416,8 @@ namespace Harvester
 
                                 //Selecciono los miembros del grupo para ser notificados
                                 List<string> listadoMiembros = grupo.equipo.Select(x => x.personaRef).ToList();
-                                if (listadoMiembros.Any())
-                                {
-                                    //Busco los miembros en BBDD (solo los que tengan CV)
-                                    string select = "SELECT ?person";
-                                    string where = $@"WHERE {{
-                                                    ?cv <http://w3id.org/roh/cvOf> ?person .
-                                                    ?person <http://w3id.org/roh/crisIdentifier> ?crisID .
-                                                    FILTER(?crisID in ('{string.Join("','", listadoMiembros)}'))
-                                                }}";
-                                    SparqlObject resultData = mResourceApi.VirtuosoQueryMultipleGraph(select, where, new List<string> { "curriculumvitae", "person" });
-                                    foreach (Dictionary<string, Data> fila in resultData.results.bindings)
-                                    {
-                                        if (fila.ContainsKey("person"))
-                                        {
-                                            //Notifico a los miembros
-                                            UtilidadesLoader.EnvioNotificacion(fila["person"].value, "harvesterGrupo", "NOTIFICACION_GRUPO" + idGnossGrupo);
-                                        }
-                                    }
-                                }
-
+                                UtilidadesLoader.EnvioNotificacionesMiembros(listadoMiembros, "harvesterGrupo", "NOTIFICACION_GRUPO" + idGnossGrupo);
+                                
                                 pDicIdentificadores["group"].Add(idGnossGrupo);
                                 File.AppendAllText(pDicRutas[pSet][directorioPendientes], id + Environment.NewLine);
                             }
