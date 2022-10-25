@@ -8,8 +8,8 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using Hercules.CommonsEDMA.ServicioExterno.Models.Cluster;
-using Hercules.CommonsEDMA.ServicioExterno.Models;
 using System.IO;
+using Hercules.CommonsEDMA.ServicioExterno.Controllers.Utilidades;
 
 namespace Hercules.CommonsEDMA.ServicioExterno.Controllers
 {
