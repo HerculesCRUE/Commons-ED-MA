@@ -1751,15 +1751,15 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
         /// <param name="pFilas">Filas con los datos para insertar</param>
         public void InsercionIndicesImpacto(List<Dictionary<string, SparqlObject.Data>> pFilas)
         {
-            List<string> ids = pFilas.Select(x => x["document"].value).Distinct().ToList();
-            if (ids.Count > 0)
+            List<string> idsInsercionIndicesImpacto = pFilas.Select(x => x["document"].value).Distinct().ToList();
+            if (idsInsercionIndicesImpacto.Count > 0)
             {
-                Parallel.ForEach(ids, new ParallelOptions { MaxDegreeOfParallelism = ActualizadorBase.numParallel }, id =>
+                Parallel.ForEach(idsInsercionIndicesImpacto, new ParallelOptions { MaxDegreeOfParallelism = ActualizadorBase.numParallel }, idInsercionIndicesImpacto =>
                 {
-                    Guid guid = mResourceApi.GetShortGuid(id);
+                    Guid guid = mResourceApi.GetShortGuid(idInsercionIndicesImpacto);
 
                     Dictionary<Guid, List<TriplesToInclude>> triples = new() { { guid, new List<TriplesToInclude>() } };
-                    foreach (Dictionary<string, SparqlObject.Data> fila in pFilas.Where(x => x["document"].value == id))
+                    foreach (Dictionary<string, SparqlObject.Data> fila in pFilas.Where(x => x["document"].value == idInsercionIndicesImpacto))
                     {
                         string idAux = mResourceApi.GraphsUrl + "items/ImpactIndex_" + guid.ToString().ToLower() + "_" + Guid.NewGuid().ToString().ToLower();
                         string document = fila["document"].value;
