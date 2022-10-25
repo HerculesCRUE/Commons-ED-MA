@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace OAI_PMH.Models.SGI.Project
+﻿namespace OAI_PMH.Models.SGI.Project
 {
     /// <summary>
     /// Fuente de financiación

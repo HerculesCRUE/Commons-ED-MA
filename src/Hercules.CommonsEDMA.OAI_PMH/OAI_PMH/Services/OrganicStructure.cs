@@ -3,7 +3,6 @@ using RestSharp;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace OAI_PMH.Services
 {
@@ -17,7 +16,7 @@ namespace OAI_PMH.Services
             RestClient client = new(pConfig.GetConfigSGI() + "/api/sgo/empresas/modificadas-ids?q=padreId=na=\"" + parentId + "\"");
             client.AddDefaultHeader("Authorization", "Bearer " + accessToken);
             var request = new RestRequest(Method.GET);
-            IRestResponse response = Token.httpCall(client, request);
+            IRestResponse response = Token.httpCall(client, request, true);
             idList = response.Content[1..^1].Split(',').ToList();
 
             foreach (string id in idList)

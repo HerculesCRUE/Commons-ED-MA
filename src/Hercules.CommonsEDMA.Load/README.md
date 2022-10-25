@@ -10,7 +10,6 @@
 |Cambios de la Versión|Versión inicial|
 
 
-
 [![SonarCloud](https://sonarcloud.io/images/project_badges/sonarcloud-white.svg)](https://sonarcloud.io/summary/new_code?id=Hercules.CommonsEDMA.Load)
 
 [![Bugs](https://sonarcloud.io/api/project_badges/measure?project=Hercules.CommonsEDMA.Load&metric=bugs)](https://sonarcloud.io/summary/new_code?id=Hercules.CommonsEDMA.Load)

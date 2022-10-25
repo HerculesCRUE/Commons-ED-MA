@@ -186,14 +186,14 @@ namespace Utilidades
             {
                 if (listadoMiembros.Any())
                 {
-                    //Busco los miembros en BBDD (solo los que tengan CV)
+                    //Busco los miembros en BBDD (solo los investigadores)
                     string select = "SELECT ?person";
                     string where = $@"WHERE {{
-                                    ?cv <http://w3id.org/roh/cvOf> ?person .
+                                    ?person <http://w3id.org/roh/isActive> 'true' .
                                     ?person <http://w3id.org/roh/crisIdentifier> ?crisID .
                                     FILTER(?crisID in ('{string.Join("','", listadoMiembros)}'))
                                 }}";
-                    SparqlObject resultData = mResourceApi.VirtuosoQueryMultipleGraph(select, where, new List<string> { "curriculumvitae", "person" });
+                    SparqlObject resultData = mResourceApi.VirtuosoQuery(select, where, "person");
                     foreach (Dictionary<string, Data> fila in resultData.results.bindings)
                     {
                         if (fila.ContainsKey("person"))

@@ -5,7 +5,6 @@ using RestSharp;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading;
 
 namespace OAI_PMH.Services
 {
@@ -28,7 +27,7 @@ namespace OAI_PMH.Services
             RestClient client = new(pConfig.GetConfigSGI() + "/api/sgipii/invenciones/modificados-ids?q=fechaModificacion=ge=\"" + from + "\"");
             client.AddDefaultHeader("Authorization", "Bearer " + accessToken);
             var request = new RestRequest(Method.GET);
-            IRestResponse response = Token.httpCall(client, request);
+            IRestResponse response = Token.httpCall(client, request,true);
 
             if (!string.IsNullOrEmpty(response.Content))
             {
@@ -56,8 +55,7 @@ namespace OAI_PMH.Services
             string accessToken = Token.CheckToken(pConfig, pTokenGestor: false, pTokenPii: true);
             string identifier = id.Replace("\"", "").Split('_')[1];
             RestClient client = new(pConfig.GetConfigSGI() + "/api/sgipii/invenciones/" + identifier);
-            client.AddDefaultHeader("Authorization", "Bearer " + accessToken);
-            List<Thread> hilos = new();
+            client.AddDefaultHeader("Authorization", "Bearer " + accessToken);           
             var request = new RestRequest(Method.GET);
             IRestResponse response = Token.httpCall(client, request);
             if (string.IsNullOrEmpty(response.Content))
@@ -65,45 +63,21 @@ namespace OAI_PMH.Services
                 return null;
             }
             Invencion invencion = JsonConvert.DeserializeObject<Invencion>(response.Content);
-            List<SectorAplicacion> sectorAplicacion = null;
-            hilos.Add(new Thread(() => sectorAplicacion = GetSectores(identifier, pConfig)));
-            List<InvencionDocumento> invencionDocumento = null;
-            hilos.Add(new Thread(() => invencionDocumento = GetDocumentos(identifier, pConfig)));
-            List<InvencionGastos> gastos = null;
-            hilos.Add(new(() => gastos = GetGastos(identifier, pConfig)));
-            List<PalabraClave> palabrasClave = null;
-            hilos.Add(new(() => palabrasClave = GetPalabrasClaves(identifier, pConfig)));
-            List<AreaConocimiento> areasConocimiento = null;
-            hilos.Add(new(() => areasConocimiento = GetAreasConocimiento(identifier, pConfig)));
-            List<PeriodoTitularidad> periodosTitularidad = null;
+            List<SectorAplicacion> sectorAplicacion =  GetSectores(identifier, pConfig);
+            List<InvencionDocumento> invencionDocumento = GetDocumentos(identifier, pConfig);
+            List<InvencionGastos> gastos = GetGastos(identifier, pConfig);
+            List<PalabraClave> palabrasClave = GetPalabrasClaves(identifier, pConfig);
+            List<AreaConocimiento> areasConocimiento = GetAreasConocimiento(identifier, pConfig);
+            List<PeriodoTitularidad> periodosTitularidad = GetPeriodosTitularidad(identifier, pConfig);
             List<Titular> titulares = new List<Titular>();
-            hilos.Add(new(() =>
+            if (periodosTitularidad != null && periodosTitularidad.Any())
             {
-                periodosTitularidad = GetPeriodosTitularidad(identifier, pConfig);
-
-                if (periodosTitularidad != null && periodosTitularidad.Any())
+                foreach (PeriodoTitularidad periodo in periodosTitularidad)
                 {
-
-                    foreach (PeriodoTitularidad periodo in periodosTitularidad)
-                    {
-                        titulares.AddRange(GetTitular(periodo.id.ToString(), pConfig));
-                    }
+                    titulares.AddRange(GetTitular(periodo.id.ToString(), pConfig));
                 }
-            }));
-            List<SolicitudProteccion> solicitudes = null;
-            hilos.Add(new(() => solicitudes = GetSolicitudesProteccion(identifier, pConfig)));
-            invencion.solicitudes = GetSolicitudesProteccion(identifier, pConfig);
-            // Inicio hilos.
-            foreach (Thread th in hilos)
-            {
-                th.Start();
             }
-
-            // Espero a que estén listos.
-            foreach (Thread th in hilos)
-            {
-                th.Join();
-            }
+            List<SolicitudProteccion> solicitudes = GetSolicitudesProteccion(identifier, pConfig);
             invencion.sectoresAplicacion = sectorAplicacion;
             invencion.invencionDocumentos = invencionDocumento;
             invencion.gastos = gastos;

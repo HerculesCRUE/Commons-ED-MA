@@ -1,14 +1,10 @@
 ﻿using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 using OAI_PMH.Controllers;
 using OAI_PMH.Models.SGI.Organization;
 using RestSharp;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace OAI_PMH.Services
 {
@@ -22,7 +18,7 @@ namespace OAI_PMH.Services
             RestClient client = new(pConfig.GetConfigSGI() + "/api/sgemp/empresas/modificadas-ids?q=fechaModificacion=ge=\"" + from + "\"");
             client.AddDefaultHeader("Authorization", "Bearer " + accessToken);
             var request = new RestRequest(Method.GET);
-            IRestResponse response = Token.httpCall(client, request);
+            IRestResponse response = Token.httpCall(client, request, true);
             if (!String.IsNullOrEmpty(response.Content))
             {
                 var sinComillas = response.Content[1..^1].Replace("\"", "");
@@ -40,8 +36,6 @@ namespace OAI_PMH.Services
         {
             string accessToken = Token.CheckToken(pConfig);
             string identifier = id.Split('_')[1];
-            Empresa empresa = new();
-            List<Thread> hilos = new();
             RestClient client = new(pConfig.GetConfigSGI() + "/api/sgemp/empresas/" + identifier);
             client.AddDefaultHeader("Authorization", "Bearer " + accessToken);
             var request = new RestRequest(Method.GET);
@@ -50,7 +44,7 @@ namespace OAI_PMH.Services
             {
                 return null;
             }
-            empresa = JsonConvert.DeserializeObject<Empresa>(response.Content);
+            Empresa empresa = JsonConvert.DeserializeObject<Empresa>(response.Content);
             empresa.DatosContacto = GetDatosContacto(identifier, pConfig);
             return empresa;
         }

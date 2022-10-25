@@ -26,9 +26,10 @@ var edicionCV = {
 	},
 	importacion: async function(){
 		var url = urlImportacionCV +"FechaCheck"
-		var formData = {};
+		var formData = new FormData();
+		var pCVID = $("#recurso_id").val();
+		formData.append("pCVID",pCVID)
 		var importacion = false;
-		formData.pCVID = "";
 		await $.ajax({
 			url: url,
 			type: 'POST',
