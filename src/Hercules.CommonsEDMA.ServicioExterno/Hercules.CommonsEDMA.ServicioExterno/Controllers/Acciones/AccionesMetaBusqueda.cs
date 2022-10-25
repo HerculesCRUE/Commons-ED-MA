@@ -1,5 +1,6 @@
 ﻿using Gnoss.ApiWrapper;
 using Gnoss.ApiWrapper.ApiModel;
+using Hercules.CommonsEDMA.ServicioExterno.Controllers.Utilidades;
 using Hercules.CommonsEDMA.ServicioExterno.Models.Buscador;
 using Newtonsoft.Json;
 using System;
@@ -11,16 +12,10 @@ using System.Threading;
 
 namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
 {
-    public class AccionesMetaBusqueda
+    public class AccionesMetaBusqueda : GnossGetMainResourceApiDataBase
     {
 
-        #region --- Constantes     
-        private static string RUTA_OAUTH = $@"{System.AppDomain.CurrentDomain.SetupInformation.ApplicationBase}Config{Path.DirectorySeparatorChar}ConfigOAuth{Path.DirectorySeparatorChar}OAuthV3.config";
-        private static ResourceApi mResourceAPI = null;
-        private static CommunityApi mCommunityAPI = null;
-        private static Guid? mIDComunidad = null;
-        private static string RUTA_PREFIJOS = $@"{System.AppDomain.CurrentDomain.SetupInformation.ApplicationBase}Models{Path.DirectorySeparatorChar}JSON{Path.DirectorySeparatorChar}prefijos.json";
-        private static string mPrefijos = string.Join(" ", JsonConvert.DeserializeObject<List<string>>(File.ReadAllText(RUTA_PREFIJOS)));
+        #region --- Constantes
 
         public static int publicationsCount = 0;
         public static int researchObjectsCount = 0;
@@ -33,71 +28,6 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
 
         #endregion
 
-        private static ResourceApi resourceApi
-        {
-            get
-            {
-                while (mResourceAPI == null)
-                {
-                    try
-                    {
-                        mResourceAPI = new ResourceApi(RUTA_OAUTH);
-                    }
-                    catch (Exception)
-                    {
-                        Console.WriteLine("No se ha podido iniciar ResourceApi");
-                        Console.WriteLine($"Contenido OAuth: {System.IO.File.ReadAllText(RUTA_OAUTH)}");
-                        Thread.Sleep(10000);
-                    }
-                }
-                return mResourceAPI;
-            }
-        }
-
-        private static CommunityApi communityApi
-        {
-            get
-            {
-                while (mCommunityAPI == null)
-                {
-                    try
-                    {
-                        mCommunityAPI = new CommunityApi(RUTA_OAUTH);
-                    }
-                    catch (Exception)
-                    {
-                        Console.WriteLine("No se ha podido iniciar CommunityApi");
-                        Console.WriteLine($"Contenido OAuth: {System.IO.File.ReadAllText(RUTA_OAUTH)}");
-                        Thread.Sleep(10000);
-                    }
-                }
-                return mCommunityAPI;
-            }
-        }
-
-        private static Guid idComunidad
-        {
-            get
-            {
-
-                while (mCommunityAPI == null)
-                {
-                    try
-                    {
-                        mIDComunidad = communityApi.GetCommunityId();
-                    }
-                    catch (Exception)
-                    {
-                        Console.WriteLine("No se ha podido iniciar CommunityApi");
-                        Console.WriteLine($"Contenido OAuth: {System.IO.File.ReadAllText(RUTA_OAUTH)}");
-                        Thread.Sleep(10000);
-                        return Guid.Empty;
-                    }
-                }
-                return mIDComunidad.Value;
-
-            }
-        }
 
         /// <summary>
         /// Busca los elementos necesarios y los guarda en una variable estática para realizar posteriormente la búsqueda en el metabuscador

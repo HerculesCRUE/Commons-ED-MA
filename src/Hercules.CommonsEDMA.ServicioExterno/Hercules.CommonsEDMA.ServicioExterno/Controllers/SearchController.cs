@@ -20,7 +20,7 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers
         /// <param name="lang">Idioma</param>
         /// <returns>JSON con los datos necesarios para el JS.</returns>
         [HttpGet("DoMetaSearch")]
-        public IActionResult DoMetaSearch(string stringSearch, string lang)
+        public IActionResult DoMetaSearch(string stringSearch, string lang = "es")
         {
             Dictionary<string, KeyValuePair<bool, List<ObjectSearch>>> resultBusqueda = null; 
 
