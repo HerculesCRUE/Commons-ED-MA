@@ -652,11 +652,11 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
                 PerfilCluster perfilCluster = pDataCluster.profiles.FirstOrDefault(x => x.entityID == perfil);
                 float scoreAux = float.Parse(fila["scoreAux"].value);
                 float scoreMax = 0;
-                if (perfilCluster.tags != null)
+                if (perfilCluster != null && perfilCluster.tags != null)
                 {
                     scoreMax += perfilCluster.tags.Count;
                 }
-                if (perfilCluster.terms != null)
+                if (perfilCluster != null && perfilCluster.terms != null)
                 {
                     scoreMax += perfilCluster.terms.Count;
                 }

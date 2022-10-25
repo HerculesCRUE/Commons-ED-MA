@@ -1374,134 +1374,133 @@ namespace OAI_PMH.Models.SGI.PersonalData
         {
             List<ImpartedAcademicTrainingBBDD> listaImpartedAcademic = new List<ImpartedAcademicTrainingBBDD>();
 
-            foreach (FormacionAcademicaImpartida item in pListaImpartedAcademicSGI)
+            if (pListaImpartedAcademicSGI != null && pListaImpartedAcademicSGI.Count > 0)
             {
-                ImpartedAcademicTrainingBBDD impartedAcademic = new ImpartedAcademicTrainingBBDD();
+                HashSet<string> listaOrgsAux = new HashSet<string>(pListaImpartedAcademicSGI.Select(item => item?.EntidadRealizacion?.EntidadRef).Where(x => !string.IsNullOrEmpty(x)));
+                Dictionary<string, string> dicOrganizacionesCargadas = Empresa.ObtenerOrganizacionesBBDD(listaOrgsAux, pResourceApi);
 
-                string crisIdentifier = "030.010.000.000___";
-
-                impartedAcademic.title = item.TitulacionUniversitaria;
-                crisIdentifier += $@"{RemoveDiacritics(impartedAcademic.title)}___";
-
-                impartedAcademic.teaches = item.NombreAsignaturaCurso;
-                crisIdentifier += $@"{RemoveDiacritics(impartedAcademic.teaches)}___";
-
-                //impartedAcademic.start = item.FechaInicio;
-                //impartedAcademic.end = item.FechaFinalizacion;                
-
-                if (item.EntidadRealizacion != null && !string.IsNullOrEmpty(item.EntidadRealizacion.EntidadRef))
+                foreach (FormacionAcademicaImpartida item in pListaImpartedAcademicSGI)
                 {
-                    Dictionary<string, string> dicOrganizaciones = Empresa.ObtenerOrganizacionesBBDD(new HashSet<string>() { item.EntidadRealizacion.EntidadRef }, pResourceApi);
-                    Dictionary<string, string> dicOrganizacionesCargadas = new Dictionary<string, string>();
-                    foreach (KeyValuePair<string, string> organizacion in dicOrganizaciones)
-                    {
-                        crisIdentifier += $@"{RemoveDiacritics(organizacion.Key)}___";
+                    ImpartedAcademicTrainingBBDD impartedAcademic = new ImpartedAcademicTrainingBBDD();
 
-                        if (string.IsNullOrEmpty(organizacion.Value))
+                    string crisIdentifier = "030.010.000.000___";
+
+                    impartedAcademic.title = item.TitulacionUniversitaria;
+                    crisIdentifier += $@"{RemoveDiacritics(impartedAcademic.title)}___";
+
+                    impartedAcademic.teaches = item.NombreAsignaturaCurso;
+                    crisIdentifier += $@"{RemoveDiacritics(impartedAcademic.teaches)}___";
+
+                    //impartedAcademic.start = item.FechaInicio;
+                    //impartedAcademic.end = item.FechaFinalizacion;                
+
+                    if (item.EntidadRealizacion != null && !string.IsNullOrEmpty(item.EntidadRealizacion.EntidadRef))
+                    {
+                        crisIdentifier += $@"{RemoveDiacritics(item.EntidadRealizacion.EntidadRef)}___";
+
+                        if (!dicOrganizacionesCargadas.ContainsKey(item.EntidadRealizacion.EntidadRef))
                         {
-                            Empresa organizacionAux = Empresa.GetOrganizacionSGI(pHarvesterServices, pConfig, "Organizacion_" + organizacion.Key, pDicRutas);
-                            if (organizacionAux == null)
+                            Empresa organizacionAux = Empresa.GetOrganizacionSGI(pHarvesterServices, pConfig, "Organizacion_" + item.EntidadRealizacion.EntidadRef, pDicRutas);
+                            if (organizacionAux != null)
                             {
-                                continue;
+                                string idGnoss = organizacionAux.Cargar(pHarvesterServices, pConfig, pResourceApi, "organization", pDicIdentificadores, pDicRutas, pRabbitConf);
+                                pDicIdentificadores["organization"].Add(idGnoss);
+                                dicOrganizacionesCargadas[item.EntidadRealizacion.EntidadRef] = idGnoss;
+                                impartedAcademic.promotedBy = dicOrganizacionesCargadas[item.EntidadRealizacion.EntidadRef];
                             }
-                            string idGnoss = organizacionAux.Cargar(pHarvesterServices, pConfig, pResourceApi, "organization", pDicIdentificadores, pDicRutas, pRabbitConf);
-                            pDicIdentificadores["organization"].Add(idGnoss);
-                            dicOrganizacionesCargadas[organizacion.Key] = idGnoss;
                         }
                         else
                         {
-                            dicOrganizacionesCargadas[organizacion.Key] = organizacion.Value;
+                            impartedAcademic.promotedBy = dicOrganizacionesCargadas[item.EntidadRealizacion.EntidadRef];
                         }
-
-                        impartedAcademic.promotedBy = dicOrganizacionesCargadas[item.EntidadRealizacion.EntidadRef];
                     }
-                }
 
-                if (item.TipoDocente != null && !string.IsNullOrEmpty(item.TipoDocente.Nombre))
-                {
-                    impartedAcademic.teachingType = TeachingType(item.TipoDocente.Nombre, pResourceApi);
-                }
-
-                // Código de países.
-                if (item.PaisEntidadRealizacion != null && !string.IsNullOrEmpty(item.PaisEntidadRealizacion.Id))
-                {
-                    impartedAcademic.hasCountryName = IdentificadorPais(item.PaisEntidadRealizacion.Id, pResourceApi);
-                    crisIdentifier += $@"{item.PaisEntidadRealizacion.Id}___";
-                }
-
-                if (item.CcaaRegionEntidadRealizacion != null && !string.IsNullOrEmpty(item.CcaaRegionEntidadRealizacion.Id))
-                {
-                    impartedAcademic.hasRegion = IdentificadorRegion(item.CcaaRegionEntidadRealizacion.Id, pResourceApi);
-                    crisIdentifier += $@"{item.CcaaRegionEntidadRealizacion.Id}___";
-                }
-
-                if (!string.IsNullOrEmpty(item.CiudadEntidadRealizacion))
-                {
-                    impartedAcademic.locality = item.CiudadEntidadRealizacion;
-                    crisIdentifier += $@"{item.CiudadEntidadRealizacion}___";
-                }
-
-                impartedAcademic.numberECTSHours = item.NumHorasCreditos.Value;
-                crisIdentifier += $@"{impartedAcademic.numberECTSHours}___";
-
-                if (item.FrecuenciaActividad.HasValue)
-                {
-                    impartedAcademic.frequency = item.FrecuenciaActividad.Value;
-                    crisIdentifier += $@"{impartedAcademic.frequency}___";
-                }
-
-                if (item.TipoPrograma != null && !string.IsNullOrEmpty(item.TipoPrograma.Nombre))
-                {
-                    impartedAcademic.programType = ProgramType(item.TipoPrograma.Nombre, pResourceApi);
-                    if (impartedAcademic.programType.Contains("OTHERS"))
+                    if (item.TipoDocente != null && !string.IsNullOrEmpty(item.TipoDocente.Nombre))
                     {
-                        impartedAcademic.programTypeOther = item.TipoPrograma.Nombre;
-                        crisIdentifier += $@"{RemoveDiacritics(impartedAcademic.programTypeOther)}___";
+                        impartedAcademic.teachingType = TeachingType(item.TipoDocente.Nombre, pResourceApi);
                     }
-                }
 
-                if (item.TipoDocencia != null && !string.IsNullOrEmpty(item.TipoDocencia.Nombre))
-                {
-                    impartedAcademic.modalityTeachingType = ModalityTeachingType(item.TipoDocencia.Nombre, pResourceApi);
-                    if (impartedAcademic.modalityTeachingType.Contains("OTHERS"))
+                    // Código de países.
+                    if (item.PaisEntidadRealizacion != null && !string.IsNullOrEmpty(item.PaisEntidadRealizacion.Id))
                     {
-                        impartedAcademic.modalityTeachingTypeOther = item.TipoDocencia.Nombre;
-                        crisIdentifier += $@"{RemoveDiacritics(impartedAcademic.modalityTeachingTypeOther)}___";
+                        impartedAcademic.hasCountryName = IdentificadorPais(item.PaisEntidadRealizacion.Id, pResourceApi);
+                        crisIdentifier += $@"{item.PaisEntidadRealizacion.Id}___";
                     }
-                }
 
-                impartedAcademic.department = item.Departamento;
-                crisIdentifier += $@"{RemoveDiacritics(impartedAcademic.department)}___";
-
-                if (item.TipoAsignatura != null && !string.IsNullOrEmpty(item.TipoAsignatura.Nombre))
-                {
-                    impartedAcademic.courseType = CourseType(item.TipoAsignatura.Nombre, pResourceApi);
-                    if (impartedAcademic.courseType.Contains("OTHERS"))
+                    if (item.CcaaRegionEntidadRealizacion != null && !string.IsNullOrEmpty(item.CcaaRegionEntidadRealizacion.Id))
                     {
-                        impartedAcademic.courseTypeOther = item.TipoAsignatura.Nombre;
-                        crisIdentifier += $@"{RemoveDiacritics(impartedAcademic.courseTypeOther)}___";
+                        impartedAcademic.hasRegion = IdentificadorRegion(item.CcaaRegionEntidadRealizacion.Id, pResourceApi);
+                        crisIdentifier += $@"{item.CcaaRegionEntidadRealizacion.Id}___";
                     }
+
+                    if (!string.IsNullOrEmpty(item.CiudadEntidadRealizacion))
+                    {
+                        impartedAcademic.locality = item.CiudadEntidadRealizacion;
+                        crisIdentifier += $@"{item.CiudadEntidadRealizacion}___";
+                    }
+
+                    impartedAcademic.numberECTSHours = item.NumHorasCreditos.Value;
+                    crisIdentifier += $@"{impartedAcademic.numberECTSHours}___";
+
+                    if (item.FrecuenciaActividad.HasValue)
+                    {
+                        impartedAcademic.frequency = item.FrecuenciaActividad.Value;
+                        crisIdentifier += $@"{impartedAcademic.frequency}___";
+                    }
+
+                    if (item.TipoPrograma != null && !string.IsNullOrEmpty(item.TipoPrograma.Nombre))
+                    {
+                        impartedAcademic.programType = ProgramType(item.TipoPrograma.Nombre, pResourceApi);
+                        if (impartedAcademic.programType.Contains("OTHERS"))
+                        {
+                            impartedAcademic.programTypeOther = item.TipoPrograma.Nombre;
+                            crisIdentifier += $@"{RemoveDiacritics(impartedAcademic.programTypeOther)}___";
+                        }
+                    }
+
+                    if (item.TipoDocencia != null && !string.IsNullOrEmpty(item.TipoDocencia.Nombre))
+                    {
+                        impartedAcademic.modalityTeachingType = ModalityTeachingType(item.TipoDocencia.Nombre, pResourceApi);
+                        if (impartedAcademic.modalityTeachingType.Contains("OTHERS"))
+                        {
+                            impartedAcademic.modalityTeachingTypeOther = item.TipoDocencia.Nombre;
+                            crisIdentifier += $@"{RemoveDiacritics(impartedAcademic.modalityTeachingTypeOther)}___";
+                        }
+                    }
+
+                    impartedAcademic.department = item.Departamento;
+                    crisIdentifier += $@"{RemoveDiacritics(impartedAcademic.department)}___";
+
+                    if (item.TipoAsignatura != null && !string.IsNullOrEmpty(item.TipoAsignatura.Nombre))
+                    {
+                        impartedAcademic.courseType = CourseType(item.TipoAsignatura.Nombre, pResourceApi);
+                        if (impartedAcademic.courseType.Contains("OTHERS"))
+                        {
+                            impartedAcademic.courseTypeOther = item.TipoAsignatura.Nombre;
+                            crisIdentifier += $@"{RemoveDiacritics(impartedAcademic.courseTypeOther)}___";
+                        }
+                    }
+
+                    impartedAcademic.course = item.Curso;
+                    crisIdentifier += $@"{RemoveDiacritics(impartedAcademic.course)}___";
+
+                    if (item.TipoHorasCreditos != null && !string.IsNullOrEmpty(item.TipoHorasCreditos.Nombre))
+                    {
+                        impartedAcademic.hoursCreditsECTSType = HoursCreditsECTSType(item.TipoHorasCreditos.Nombre, pResourceApi);
+                    }
+
+                    // TODO: Idioma
+
+                    impartedAcademic.competencies = item.Competencias;
+                    crisIdentifier += $@"{RemoveDiacritics(impartedAcademic.competencies)}___";
+                    impartedAcademic.professionalCategory = item.CategoriaProfesional;
+                    crisIdentifier += $@"{RemoveDiacritics(impartedAcademic.professionalCategory)}___";
+
+                    // CrisIdentifier
+                    impartedAcademic.crisIdentifier = crisIdentifier;
+
+                    listaImpartedAcademic.Add(impartedAcademic);
                 }
-
-                impartedAcademic.course = item.Curso;
-                crisIdentifier += $@"{RemoveDiacritics(impartedAcademic.course)}___";
-
-                if (item.TipoHorasCreditos != null && !string.IsNullOrEmpty(item.TipoHorasCreditos.Nombre))
-                {
-                    impartedAcademic.hoursCreditsECTSType = HoursCreditsECTSType(item.TipoHorasCreditos.Nombre, pResourceApi);
-                }
-
-                // TODO: Idioma
-
-                impartedAcademic.competencies = item.Competencias;
-                crisIdentifier += $@"{RemoveDiacritics(impartedAcademic.competencies)}___";
-                impartedAcademic.professionalCategory = item.CategoriaProfesional;
-                crisIdentifier += $@"{RemoveDiacritics(impartedAcademic.professionalCategory)}___";
-
-                // CrisIdentifier
-                impartedAcademic.crisIdentifier = crisIdentifier;
-
-                listaImpartedAcademic.Add(impartedAcademic);
             }
 
             return listaImpartedAcademic;
@@ -1593,21 +1592,18 @@ namespace OAI_PMH.Models.SGI.PersonalData
                         if (string.IsNullOrEmpty(organizacion.Value))
                         {
                             Empresa organizacionAux = Empresa.GetOrganizacionSGI(pHarvesterServices, pConfig, "Organizacion_" + organizacion.Key, pDicRutas);
-                            if (organizacionAux == null)
+                            if (organizacionAux != null)
                             {
-                                continue;
-
+                                string idGnoss = organizacionAux.Cargar(pHarvesterServices, pConfig, pResourceApi, "organization", pDicIdentificadores, pDicRutas, pRabbitConf);
+                                pDicIdentificadores["organization"].Add(idGnoss);
+                                dicOrganizacionesCargadas[organizacion.Key] = idGnoss;
+                                tesis.promotedBy = dicOrganizacionesCargadas[item.EntidadRealizacion.EntidadRef];
                             }
-                            string idGnoss = organizacionAux.Cargar(pHarvesterServices, pConfig, pResourceApi, "organization", pDicIdentificadores, pDicRutas, pRabbitConf);
-                            pDicIdentificadores["organization"].Add(idGnoss);
-                            dicOrganizacionesCargadas[organizacion.Key] = idGnoss;
                         }
                         else
                         {
-                            dicOrganizacionesCargadas[organizacion.Key] = organizacion.Value;
+                            tesis.promotedBy = dicOrganizacionesCargadas[item.EntidadRealizacion.EntidadRef];
                         }
-
-                        tesis.promotedBy = dicOrganizacionesCargadas[item.EntidadRealizacion.EntidadRef];
                     }
                 }
 
@@ -1658,96 +1654,95 @@ namespace OAI_PMH.Models.SGI.PersonalData
         {
             List<ImpartedCoursesSeminarsBBDD> listaCursos = new List<ImpartedCoursesSeminarsBBDD>();
 
-            foreach (SeminariosCursos item in pListaCursosSGI)
+            if (pListaCursosSGI != null && pListaCursosSGI.Count > 0)
             {
-                ImpartedCoursesSeminarsBBDD curso = new ImpartedCoursesSeminarsBBDD();
+                HashSet<string> listaOrgsAux = new HashSet<string>(pListaCursosSGI.Select(item => item?.EntidadOrganizacionEvento?.EntidadRef).Where(x => !string.IsNullOrEmpty(x)));
+                Dictionary<string, string> dicOrganizacionesCargadas = Empresa.ObtenerOrganizacionesBBDD(listaOrgsAux, pResourceApi);
 
-                string crisIdentifier = "030.060.000.000___";
-
-                curso.title = item.NombreEvento;
-                crisIdentifier += $@"{RemoveDiacritics(item.NombreEvento)}___";
-
-                curso.goals = item.ObjetivosCurso;
-                crisIdentifier += $@"{RemoveDiacritics(item.ObjetivosCurso)}___";
-
-                curso.targetProfile = item.PerfilDestinatarios;
-                crisIdentifier += $@"{RemoveDiacritics(item.PerfilDestinatarios)}___";
-
-                curso.hasLanguage = item.Idioma;
-                crisIdentifier += $@"{RemoveDiacritics(item.Idioma)}___";
-
-                curso.start = item.FechaTitulacion;
-
-                if (item.TipoParticipacion != null && !string.IsNullOrEmpty(item.TipoParticipacion.Nombre))
+                foreach (SeminariosCursos item in pListaCursosSGI)
                 {
-                    curso.participationType = item.TipoParticipacion.Nombre;
-                    crisIdentifier += $@"{RemoveDiacritics(item.TipoParticipacion.Nombre)}___";
-                }
+                    ImpartedCoursesSeminarsBBDD curso = new ImpartedCoursesSeminarsBBDD();
 
-                curso.correspondingAuthor = item.AutorCorrespondencia != null ? (bool)item.AutorCorrespondencia : false;
-                crisIdentifier += $@"{curso.correspondingAuthor}___";
+                    string crisIdentifier = "030.060.000.000___";
 
-                // ENTIDAD ORGANIZADORA
-                if (item.EntidadOrganizacionEvento != null && !string.IsNullOrEmpty(item.EntidadOrganizacionEvento.EntidadRef))
-                {
-                    Dictionary<string, string> dicOrganizaciones = Empresa.ObtenerOrganizacionesBBDD(new HashSet<string>() { item.EntidadOrganizacionEvento.EntidadRef }, pResourceApi);
-                    Dictionary<string, string> dicOrganizacionesCargadas = new Dictionary<string, string>();
-                    foreach (KeyValuePair<string, string> organizacion in dicOrganizaciones)
+                    curso.title = item.NombreEvento;
+                    crisIdentifier += $@"{RemoveDiacritics(item.NombreEvento)}___";
+
+                    curso.goals = item.ObjetivosCurso;
+                    crisIdentifier += $@"{RemoveDiacritics(item.ObjetivosCurso)}___";
+
+                    curso.targetProfile = item.PerfilDestinatarios;
+                    crisIdentifier += $@"{RemoveDiacritics(item.PerfilDestinatarios)}___";
+
+                    curso.hasLanguage = item.Idioma;
+                    crisIdentifier += $@"{RemoveDiacritics(item.Idioma)}___";
+
+                    curso.start = item.FechaTitulacion;
+
+                    if (item.TipoParticipacion != null && !string.IsNullOrEmpty(item.TipoParticipacion.Nombre))
                     {
-                        crisIdentifier += $@"{RemoveDiacritics(organizacion.Key)}___";
+                        curso.participationType = item.TipoParticipacion.Nombre;
+                        crisIdentifier += $@"{RemoveDiacritics(item.TipoParticipacion.Nombre)}___";
+                    }
 
-                        if (string.IsNullOrEmpty(organizacion.Value))
+                    curso.correspondingAuthor = item.AutorCorrespondencia != null ? (bool)item.AutorCorrespondencia : false;
+                    crisIdentifier += $@"{curso.correspondingAuthor}___";
+
+                    // ENTIDAD ORGANIZADORA
+                    if (item.EntidadOrganizacionEvento != null && !string.IsNullOrEmpty(item.EntidadOrganizacionEvento.EntidadRef))
+                    {
+
+                        crisIdentifier += $@"{RemoveDiacritics(item.EntidadOrganizacionEvento.EntidadRef)}___";
+
+                        if (!dicOrganizacionesCargadas.ContainsKey(item.EntidadOrganizacionEvento.EntidadRef))
                         {
-                            Empresa organizacionAux = Empresa.GetOrganizacionSGI(pHarvesterServices, pConfig, "Organizacion_" + organizacion.Key, pDicRutas);
-                            if (organizacionAux == null)
+                            Empresa organizacionAux = Empresa.GetOrganizacionSGI(pHarvesterServices, pConfig, "Organizacion_" + item.EntidadOrganizacionEvento.EntidadRef, pDicRutas);
+                            if (organizacionAux != null)
                             {
-                                continue;
+                                string idGnoss = organizacionAux.Cargar(pHarvesterServices, pConfig, pResourceApi, "organization", pDicIdentificadores, pDicRutas, pRabbitConf);
+                                pDicIdentificadores["organization"].Add(idGnoss);
+                                dicOrganizacionesCargadas[item.EntidadOrganizacionEvento.EntidadRef] = idGnoss;
+                                curso.promotedBy = dicOrganizacionesCargadas[item.EntidadOrganizacionEvento.EntidadRef];
                             }
-                            string idGnoss = organizacionAux.Cargar(pHarvesterServices, pConfig, pResourceApi, "organization", pDicIdentificadores, pDicRutas, pRabbitConf);
-                            pDicIdentificadores["organization"].Add(idGnoss);
-                            dicOrganizacionesCargadas[organizacion.Key] = idGnoss;
                         }
                         else
                         {
-                            dicOrganizacionesCargadas[organizacion.Key] = organizacion.Value;
+                            curso.promotedBy = dicOrganizacionesCargadas[item.EntidadOrganizacionEvento.EntidadRef];
                         }
-
-                        curso.promotedBy = dicOrganizacionesCargadas[item.EntidadOrganizacionEvento.EntidadRef];
                     }
+
+                    // Código de países.
+                    if (item.PaisEntidadOrganizacionEvento != null && !string.IsNullOrEmpty(item.PaisEntidadOrganizacionEvento.Id))
+                    {
+                        curso.hasCountryName = IdentificadorPais(item.PaisEntidadOrganizacionEvento.Id, pResourceApi);
+                        crisIdentifier += $@"{item.PaisEntidadOrganizacionEvento.Id}___";
+                    }
+
+                    if (item.CcaaRegionEntidadOrganizacionEvento != null && !string.IsNullOrEmpty(item.CcaaRegionEntidadOrganizacionEvento.Id))
+                    {
+                        curso.hasRegion = IdentificadorRegion(item.CcaaRegionEntidadOrganizacionEvento.Id, pResourceApi);
+                        crisIdentifier += $@"{item.CcaaRegionEntidadOrganizacionEvento.Id}___";
+                    }
+
+                    // Código de países.
+                    if (!string.IsNullOrEmpty(item.CiudadEntidadOrganizacionEvento))
+                    {
+                        curso.locality = item.CiudadEntidadOrganizacionEvento;
+                        crisIdentifier += $@"{item.CiudadEntidadOrganizacionEvento}___";
+                    }
+
+                    curso.isbn = item.ISBN;
+                    crisIdentifier += $@"{RemoveDiacritics(item.ISBN)}___";
+
+                    curso.issn = item.ISSN;
+                    crisIdentifier += $@"{RemoveDiacritics(item.ISSN)}___";
+
+                    // CrisIdentifier.
+                    curso.crisIdentifiers = crisIdentifier;
+
+                    listaCursos.Add(curso);
                 }
-
-                // Código de países.
-                if (item.PaisEntidadOrganizacionEvento != null && !string.IsNullOrEmpty(item.PaisEntidadOrganizacionEvento.Id))
-                {
-                    curso.hasCountryName = IdentificadorPais(item.PaisEntidadOrganizacionEvento.Id, pResourceApi);
-                    crisIdentifier += $@"{item.PaisEntidadOrganizacionEvento.Id}___";
-                }
-
-                if (item.CcaaRegionEntidadOrganizacionEvento != null && !string.IsNullOrEmpty(item.CcaaRegionEntidadOrganizacionEvento.Id))
-                {
-                    curso.hasRegion = IdentificadorRegion(item.CcaaRegionEntidadOrganizacionEvento.Id, pResourceApi);
-                    crisIdentifier += $@"{item.CcaaRegionEntidadOrganizacionEvento.Id}___";
-                }
-
-                // Código de países.
-                if (!string.IsNullOrEmpty(item.CiudadEntidadOrganizacionEvento))
-                {
-                    curso.locality = item.CiudadEntidadOrganizacionEvento;
-                    crisIdentifier += $@"{item.CiudadEntidadOrganizacionEvento}___";
-                }
-
-                curso.isbn = item.ISBN;
-                crisIdentifier += $@"{RemoveDiacritics(item.ISBN)}___";
-
-                curso.issn = item.ISSN;
-                crisIdentifier += $@"{RemoveDiacritics(item.ISSN)}___";
-
-                // CrisIdentifier.
-                curso.crisIdentifiers = crisIdentifier;
-
-                listaCursos.Add(curso);
             }
-
             return listaCursos;
         }
 
@@ -1766,100 +1761,100 @@ namespace OAI_PMH.Models.SGI.PersonalData
         {
             List<CiclosBBDD> listaCiclos = new List<CiclosBBDD>();
 
-            foreach (Ciclos item in pListaCiclosSGI)
+            if (pListaCiclosSGI != null && pListaCiclosSGI.Count > 0)
             {
-                CiclosBBDD ciclo = new CiclosBBDD();
+                HashSet<string> listaOrgsAux = new HashSet<string>(pListaCiclosSGI.Select(item => item?.EntidadTitulacion?.EntidadRef).Where(x => !string.IsNullOrEmpty(x)));
+                Dictionary<string, string> dicOrganizacionesCargadas = Empresa.ObtenerOrganizacionesBBDD(listaOrgsAux, pResourceApi);
 
-                string crisIdentifier = "020.010.010.000___";
-
-                ciclo.nombreTitulo = item.NombreTitulo;
-                crisIdentifier += $@"{RemoveDiacritics(item.NombreTitulo)}___";
-
-                if (item.EntidadTitulacion != null && !string.IsNullOrEmpty(item.EntidadTitulacion.EntidadRef))
+                foreach (Ciclos item in pListaCiclosSGI)
                 {
-                    Dictionary<string, string> dicOrganizaciones = Empresa.ObtenerOrganizacionesBBDD(new HashSet<string>() { item.EntidadTitulacion.EntidadRef }, pResourceApi);
-                    Dictionary<string, string> dicOrganizacionesCargadas = new Dictionary<string, string>();
-                    foreach (KeyValuePair<string, string> organizacion in dicOrganizaciones)
-                    {
-                        crisIdentifier += $@"{RemoveDiacritics(organizacion.Key)}___";
+                    CiclosBBDD ciclo = new CiclosBBDD();
 
-                        if (string.IsNullOrEmpty(organizacion.Value))
+                    string crisIdentifier = "020.010.010.000___";
+
+                    ciclo.nombreTitulo = item.NombreTitulo;
+                    crisIdentifier += $@"{RemoveDiacritics(item.NombreTitulo)}___";
+
+                    if (item.EntidadTitulacion != null && !string.IsNullOrEmpty(item.EntidadTitulacion.EntidadRef))
+                    {
+
+                        crisIdentifier += $@"{RemoveDiacritics(item.EntidadTitulacion.EntidadRef)}___";
+
+                        if (!dicOrganizacionesCargadas.ContainsKey(item.EntidadTitulacion.EntidadRef))
                         {
-                            Empresa organizacionAux = Empresa.GetOrganizacionSGI(pHarvesterServices, pConfig, "Organizacion_" + organizacion.Key, pDicRutas);
-                            if (organizacionAux == null)
+                            Empresa organizacionAux = Empresa.GetOrganizacionSGI(pHarvesterServices, pConfig, "Organizacion_" + item.EntidadTitulacion.EntidadRef, pDicRutas);
+                            if (organizacionAux != null)
                             {
-                                continue;
+                                string idGnoss = organizacionAux.Cargar(pHarvesterServices, pConfig, pResourceApi, "organization", pDicIdentificadores, pDicRutas, pRabbitConf);
+                                pDicIdentificadores["organization"].Add(idGnoss);
+                                dicOrganizacionesCargadas[item.EntidadTitulacion.EntidadRef] = idGnoss;
+                                ciclo.entidadTitulacion = dicOrganizacionesCargadas[item.EntidadTitulacion.EntidadRef];
                             }
-                            string idGnoss = organizacionAux.Cargar(pHarvesterServices, pConfig, pResourceApi, "organization", pDicIdentificadores, pDicRutas, pRabbitConf);
-                            pDicIdentificadores["organization"].Add(idGnoss);
-                            dicOrganizacionesCargadas[organizacion.Key] = idGnoss;
                         }
                         else
                         {
-                            dicOrganizacionesCargadas[organizacion.Key] = organizacion.Value;
+                            ciclo.entidadTitulacion = dicOrganizacionesCargadas[item.EntidadTitulacion.EntidadRef];
                         }
-
-                        ciclo.entidadTitulacion = dicOrganizacionesCargadas[item.EntidadTitulacion.EntidadRef];
                     }
-                }
 
-                // Código de países.
-                if (item.PaisEntidadTitulacion != null && !string.IsNullOrEmpty(item.PaisEntidadTitulacion.Id))
-                {
-                    ciclo.cAutonEntidadTitulacion = IdentificadorPais(item.PaisEntidadTitulacion.Id, pResourceApi);
-                    crisIdentifier += $@"{item.PaisEntidadTitulacion.Id}___";
-                }
-
-                if (item.CcaaRegionEntidadTitulacion != null && !string.IsNullOrEmpty(item.CcaaRegionEntidadTitulacion.Id))
-                {
-                    ciclo.paisEntidadTitulacion = IdentificadorRegion(item.CcaaRegionEntidadTitulacion.Id, pResourceApi);
-                    crisIdentifier += $@"{item.CcaaRegionEntidadTitulacion.Id}___";
-                }
-
-                if (!string.IsNullOrEmpty(item.CiudadEntidadTitulacion))
-                {
-                    ciclo.ciudadEntidadTitulacion = item.CiudadEntidadTitulacion;
-                    crisIdentifier += $@"{item.CiudadEntidadTitulacion}___";
-                }
-
-
-                ciclo.fechaTitulacion = item.FechaTitulacion;
-
-                // TODO: NOTA MEDIA
-
-                if (item.Premio != null && !string.IsNullOrEmpty(item.Premio.Nombre))
-                {
-                    ciclo.premio = PrizeType(pResourceApi, item.Premio.Nombre);
-                    crisIdentifier += $@"{RemoveDiacritics(item.Premio.Nombre)}___";
-
-                    if (ciclo.premio.Contains("OTHERS"))
+                    // Código de países.
+                    if (item.PaisEntidadTitulacion != null && !string.IsNullOrEmpty(item.PaisEntidadTitulacion.Id))
                     {
-                        ciclo.premioOther = item.Premio.Nombre;
-                        crisIdentifier += $@"{RemoveDiacritics(ciclo.premioOther)}___";
+                        ciclo.cAutonEntidadTitulacion = IdentificadorPais(item.PaisEntidadTitulacion.Id, pResourceApi);
+                        crisIdentifier += $@"{item.PaisEntidadTitulacion.Id}___";
                     }
-                }
 
-                if (item.TitulacionUniversitaria != null && !string.IsNullOrEmpty(item.TitulacionUniversitaria.Nombre))
-                {
-                    ciclo.titulacionUni = UniversityDegreeType(pResourceApi, item.TitulacionUniversitaria.Nombre);
-                    crisIdentifier += $@"{RemoveDiacritics(item.TitulacionUniversitaria.Nombre)}___";
-
-                    if (ciclo.titulacionUni.Contains("OTHERS"))
+                    if (item.CcaaRegionEntidadTitulacion != null && !string.IsNullOrEmpty(item.CcaaRegionEntidadTitulacion.Id))
                     {
-                        ciclo.titulacionUniOtros = item.TitulacionUniversitaria.Nombre;
-                        crisIdentifier += $@"{RemoveDiacritics(ciclo.titulacionUniOtros)}___";
+                        ciclo.paisEntidadTitulacion = IdentificadorRegion(item.CcaaRegionEntidadTitulacion.Id, pResourceApi);
+                        crisIdentifier += $@"{item.CcaaRegionEntidadTitulacion.Id}___";
                     }
+
+                    if (!string.IsNullOrEmpty(item.CiudadEntidadTitulacion))
+                    {
+                        ciclo.ciudadEntidadTitulacion = item.CiudadEntidadTitulacion;
+                        crisIdentifier += $@"{item.CiudadEntidadTitulacion}___";
+                    }
+
+
+                    ciclo.fechaTitulacion = item.FechaTitulacion;
+
+                    // TODO: NOTA MEDIA
+
+                    if (item.Premio != null && !string.IsNullOrEmpty(item.Premio.Nombre))
+                    {
+                        ciclo.premio = PrizeType(pResourceApi, item.Premio.Nombre);
+                        crisIdentifier += $@"{RemoveDiacritics(item.Premio.Nombre)}___";
+
+                        if (ciclo.premio.Contains("OTHERS"))
+                        {
+                            ciclo.premioOther = item.Premio.Nombre;
+                            crisIdentifier += $@"{RemoveDiacritics(ciclo.premioOther)}___";
+                        }
+                    }
+
+                    if (item.TitulacionUniversitaria != null && !string.IsNullOrEmpty(item.TitulacionUniversitaria.Nombre))
+                    {
+                        ciclo.titulacionUni = UniversityDegreeType(pResourceApi, item.TitulacionUniversitaria.Nombre);
+                        crisIdentifier += $@"{RemoveDiacritics(item.TitulacionUniversitaria.Nombre)}___";
+
+                        if (ciclo.titulacionUni.Contains("OTHERS"))
+                        {
+                            ciclo.titulacionUniOtros = item.TitulacionUniversitaria.Nombre;
+                            crisIdentifier += $@"{RemoveDiacritics(ciclo.titulacionUniOtros)}___";
+                        }
+                    }
+
+                    ciclo.tituloExtranjero = item.TituloExtranjero;
+                    crisIdentifier += $@"{RemoveDiacritics(item.TituloExtranjero)}___";
+
+                    ciclo.tituloHomologado = item.TituloHomologado != null ? (bool)item.TituloHomologado : false;
+                    ciclo.fechaHomologacion = item.FechaHomologacion;
+
+                    ciclo.crisIdentifier = crisIdentifier;
+
+                    listaCiclos.Add(ciclo);
                 }
-
-                ciclo.tituloExtranjero = item.TituloExtranjero;
-                crisIdentifier += $@"{RemoveDiacritics(item.TituloExtranjero)}___";
-
-                ciclo.tituloHomologado = item.TituloHomologado != null ? (bool)item.TituloHomologado : false;
-                ciclo.fechaHomologacion = item.FechaHomologacion;
-
-                ciclo.crisIdentifier = crisIdentifier;
-
-                listaCiclos.Add(ciclo);
             }
 
             return listaCiclos;
@@ -1880,145 +1875,139 @@ namespace OAI_PMH.Models.SGI.PersonalData
         {
             List<DoctoradosBBDD> listaDoctorados = new List<DoctoradosBBDD>();
 
-            foreach (Doctorados item in pListaDoctoradosSGI)
+            if (pListaDoctoradosSGI != null && pListaDoctoradosSGI.Count > 0)
             {
-                DoctoradosBBDD doctorado = new DoctoradosBBDD();
+                HashSet<string> listaOrgsAux = new HashSet<string>(pListaDoctoradosSGI.Select(item => item?.EntidadTitulacion?.EntidadRef).Where(x => !string.IsNullOrEmpty(x)));
+                listaOrgsAux = new HashSet<string>(listaOrgsAux.Union(pListaDoctoradosSGI.Select(item => item?.EntidadTitulacionDEA?.EntidadRef).Where(x => !string.IsNullOrEmpty(x))));
 
-                string crisIdentifier = $@"020.010.020.000___";
+                Dictionary<string, string> dicOrganizacionesCargadas = Empresa.ObtenerOrganizacionesBBDD(listaOrgsAux, pResourceApi);
 
-                doctorado.nombreTitulo = item.ProgramaDoctorado;
-                crisIdentifier += $@"{RemoveDiacritics(doctorado.nombreTitulo)}___";
-
-                if (item.EntidadTitulacion != null && !string.IsNullOrEmpty(item.EntidadTitulacion.EntidadRef))
+                foreach (Doctorados item in pListaDoctoradosSGI)
                 {
-                    Dictionary<string, string> dicOrganizaciones = Empresa.ObtenerOrganizacionesBBDD(new HashSet<string>() { item.EntidadTitulacion.EntidadRef }, pResourceApi);
-                    Dictionary<string, string> dicOrganizacionesCargadas = new Dictionary<string, string>();
-                    foreach (KeyValuePair<string, string> organizacion in dicOrganizaciones)
-                    {
-                        crisIdentifier += $@"{RemoveDiacritics(organizacion.Key)}___";
+                    DoctoradosBBDD doctorado = new DoctoradosBBDD();
 
-                        if (string.IsNullOrEmpty(organizacion.Value))
+                    string crisIdentifier = $@"020.010.020.000___";
+
+                    doctorado.nombreTitulo = item.ProgramaDoctorado;
+                    crisIdentifier += $@"{RemoveDiacritics(doctorado.nombreTitulo)}___";
+
+                    if (item.EntidadTitulacion != null && !string.IsNullOrEmpty(item.EntidadTitulacion.EntidadRef))
+                    {
+                        crisIdentifier += $@"{RemoveDiacritics(item.EntidadTitulacion.EntidadRef)}___";
+
+                        if (!dicOrganizacionesCargadas.ContainsKey(item.EntidadTitulacion.EntidadRef))
                         {
-                            Empresa organizacionAux = Empresa.GetOrganizacionSGI(pHarvesterServices, pConfig, "Organizacion_" + organizacion.Key, pDicRutas);
-                            if (organizacionAux == null)
+                            Empresa organizacionAux = Empresa.GetOrganizacionSGI(pHarvesterServices, pConfig, "Organizacion_" + item.EntidadTitulacion.EntidadRef, pDicRutas);
+                            if (organizacionAux != null)
                             {
-                                continue;
+                                string idGnoss = organizacionAux.Cargar(pHarvesterServices, pConfig, pResourceApi, "organization", pDicIdentificadores, pDicRutas, pRabbitConf);
+                                pDicIdentificadores["organization"].Add(idGnoss);
+                                dicOrganizacionesCargadas[item.EntidadTitulacion.EntidadRef] = idGnoss;
+                                doctorado.entidadTitulacion = dicOrganizacionesCargadas[item.EntidadTitulacion.EntidadRef];
                             }
-                            string idGnoss = organizacionAux.Cargar(pHarvesterServices, pConfig, pResourceApi, "organization", pDicIdentificadores, pDicRutas, pRabbitConf);
-                            pDicIdentificadores["organization"].Add(idGnoss);
-                            dicOrganizacionesCargadas[organizacion.Key] = idGnoss;
                         }
                         else
                         {
-                            dicOrganizacionesCargadas[organizacion.Key] = organizacion.Value;
+                            doctorado.entidadTitulacion = dicOrganizacionesCargadas[item.EntidadTitulacion.EntidadRef];
                         }
-
-                        doctorado.entidadTitulacion = dicOrganizacionesCargadas[item.EntidadTitulacion.EntidadRef];
                     }
-                }
 
-                doctorado.fechaTitulacion = item.FechaTitulacion;
+                    doctorado.fechaTitulacion = item.FechaTitulacion;
 
-                if (item.PaisEntidadTitulacion != null && !string.IsNullOrEmpty(item.PaisEntidadTitulacion.Id))
-                {
-                    doctorado.paisEntidadTitulacion = IdentificadorPais(item.PaisEntidadTitulacion.Id, pResourceApi);
-                    crisIdentifier += $@"{item.PaisEntidadTitulacion.Id}___";
-                }
-
-                if (item.CcaaRegionEntidadTitulacion != null && !string.IsNullOrEmpty(item.CcaaRegionEntidadTitulacion.Id))
-                {
-                    doctorado.cAutonEntidadTitulacion = IdentificadorRegion(item.CcaaRegionEntidadTitulacion.Id, pResourceApi);
-                    crisIdentifier += $@"{item.CcaaRegionEntidadTitulacion.Id}___";
-                }
-
-                if (!string.IsNullOrEmpty(item.CiudadEntidadTitulacion))
-                {
-                    doctorado.ciudadEntidadTitulacion = item.CiudadEntidadTitulacion;
-                    crisIdentifier += $@"{item.CiudadEntidadTitulacion}___";
-                }
-
-                if (item.EntidadTitulacionDEA != null && !string.IsNullOrEmpty(item.EntidadTitulacionDEA.EntidadRef))
-                {
-                    Dictionary<string, string> dicOrganizaciones = Empresa.ObtenerOrganizacionesBBDD(new HashSet<string>() { item.EntidadTitulacionDEA.EntidadRef }, pResourceApi);
-                    Dictionary<string, string> dicOrganizacionesCargadas = new Dictionary<string, string>();
-                    foreach (KeyValuePair<string, string> organizacion in dicOrganizaciones)
+                    if (item.PaisEntidadTitulacion != null && !string.IsNullOrEmpty(item.PaisEntidadTitulacion.Id))
                     {
-                        crisIdentifier += $@"{RemoveDiacritics(organizacion.Key)}___";
+                        doctorado.paisEntidadTitulacion = IdentificadorPais(item.PaisEntidadTitulacion.Id, pResourceApi);
+                        crisIdentifier += $@"{item.PaisEntidadTitulacion.Id}___";
+                    }
 
-                        if (string.IsNullOrEmpty(organizacion.Value))
+                    if (item.CcaaRegionEntidadTitulacion != null && !string.IsNullOrEmpty(item.CcaaRegionEntidadTitulacion.Id))
+                    {
+                        doctorado.cAutonEntidadTitulacion = IdentificadorRegion(item.CcaaRegionEntidadTitulacion.Id, pResourceApi);
+                        crisIdentifier += $@"{item.CcaaRegionEntidadTitulacion.Id}___";
+                    }
+
+                    if (!string.IsNullOrEmpty(item.CiudadEntidadTitulacion))
+                    {
+                        doctorado.ciudadEntidadTitulacion = item.CiudadEntidadTitulacion;
+                        crisIdentifier += $@"{item.CiudadEntidadTitulacion}___";
+                    }
+
+                    if (item.EntidadTitulacionDEA != null && !string.IsNullOrEmpty(item.EntidadTitulacionDEA.EntidadRef))
+                    {
+                        crisIdentifier += $@"{RemoveDiacritics(item.EntidadTitulacionDEA.EntidadRef)}___";
+
+                        if (!dicOrganizacionesCargadas.ContainsKey(item.EntidadTitulacionDEA.EntidadRef))
                         {
-                            Empresa organizacionAux = Empresa.GetOrganizacionSGI(pHarvesterServices, pConfig, "Organizacion_" + organizacion.Key, pDicRutas);
-                            if (organizacionAux == null)
+                            Empresa organizacionAux = Empresa.GetOrganizacionSGI(pHarvesterServices, pConfig, "Organizacion_" + item.EntidadTitulacionDEA.EntidadRef, pDicRutas);
+                            if (organizacionAux != null)
                             {
-                                continue;
+                                string idGnoss = organizacionAux.Cargar(pHarvesterServices, pConfig, pResourceApi, "organization", pDicIdentificadores, pDicRutas, pRabbitConf);
+                                pDicIdentificadores["organization"].Add(idGnoss);
+                                dicOrganizacionesCargadas[item.EntidadTitulacionDEA.EntidadRef] = idGnoss;
+                                doctorado.entidadTitDEA = dicOrganizacionesCargadas[item.EntidadTitulacionDEA.EntidadRef];
                             }
-                            string idGnoss = organizacionAux.Cargar(pHarvesterServices, pConfig, pResourceApi, "organization", pDicIdentificadores, pDicRutas, pRabbitConf);
-                            pDicIdentificadores["organization"].Add(idGnoss);
-                            dicOrganizacionesCargadas[organizacion.Key] = idGnoss;
                         }
                         else
                         {
-                            dicOrganizacionesCargadas[organizacion.Key] = organizacion.Value;
+                            doctorado.entidadTitDEA = dicOrganizacionesCargadas[item.EntidadTitulacionDEA.EntidadRef];
                         }
-
-                        doctorado.entidadTitDEA = dicOrganizacionesCargadas[item.EntidadTitulacionDEA.EntidadRef];
                     }
-                }
 
-                doctorado.obtencionDEA = item.FechaTitulacionDEA;
-                doctorado.tituloTesis = item.TituloTesis;
-                crisIdentifier += $@"{RemoveDiacritics(doctorado.tituloTesis)}___";
-                doctorado.calificacionObtenida = item.CalificacionObtenida;
-                crisIdentifier += $@"{RemoveDiacritics(doctorado.calificacionObtenida)}___";
+                    doctorado.obtencionDEA = item.FechaTitulacionDEA;
+                    doctorado.tituloTesis = item.TituloTesis;
+                    crisIdentifier += $@"{RemoveDiacritics(doctorado.tituloTesis)}___";
+                    doctorado.calificacionObtenida = item.CalificacionObtenida;
+                    crisIdentifier += $@"{RemoveDiacritics(doctorado.calificacionObtenida)}___";
 
-                Persona director = GetPersonaSGI(pHarvesterServices, pConfig, "Persona_" + item.DirectorTesis, pDicRutas);
-                if (director != null)
-                {
-                    doctorado.nombreDirector = director.Nombre;
-                    doctorado.primApeDirector = director.Apellidos;
-                    doctorado.firmaDirector = (director.Nombre + " " + director.Apellidos).Trim();
-                    crisIdentifier += $@"{RemoveDiacritics(doctorado.firmaDirector)}___";
-                }
-
-                if (item.CoDirectorTesis != null && item.CoDirectorTesis.Count > 0)
-                {
-                    int orden = 1;
-                    doctorado.codirectorTesis = new List<DoctoradosBBDD.Codirector>();
-                    foreach (Director codirectortesis in item.CoDirectorTesis)
+                    Persona director = GetPersonaSGI(pHarvesterServices, pConfig, "Persona_" + item.DirectorTesis, pDicRutas);
+                    if (director != null)
                     {
-                        if (!string.IsNullOrEmpty(codirectortesis.PersonaRef))
+                        doctorado.nombreDirector = director.Nombre;
+                        doctorado.primApeDirector = director.Apellidos;
+                        doctorado.firmaDirector = (director.Nombre + " " + director.Apellidos).Trim();
+                        crisIdentifier += $@"{RemoveDiacritics(doctorado.firmaDirector)}___";
+                    }
+
+                    if (item.CoDirectorTesis != null && item.CoDirectorTesis.Count > 0)
+                    {
+                        int orden = 1;
+                        doctorado.codirectorTesis = new List<DoctoradosBBDD.Codirector>();
+                        foreach (Director codirectortesis in item.CoDirectorTesis)
                         {
-                            Persona codirectorSGI = GetPersonaSGI(pHarvesterServices, pConfig, "Persona_" + codirectortesis.PersonaRef, pDicRutas);
-                            if (codirectorSGI != null)
+                            if (!string.IsNullOrEmpty(codirectortesis.PersonaRef))
                             {
-                                DoctoradosBBDD.Codirector codirector = new DoctoradosBBDD.Codirector();
-                                codirector.firstName = codirectorSGI.Nombre;
-                                codirector.secondFamilyName = codirectorSGI.Apellidos;
-                                codirector.nick = (codirectorSGI.Nombre + " " + codirectorSGI.Apellidos).Trim();
-                                codirector.comment = orden;
-                                doctorado.codirectorTesis.Add(codirector);
-                                orden++;
+                                Persona codirectorSGI = GetPersonaSGI(pHarvesterServices, pConfig, "Persona_" + codirectortesis.PersonaRef, pDicRutas);
+                                if (codirectorSGI != null)
+                                {
+                                    DoctoradosBBDD.Codirector codirector = new DoctoradosBBDD.Codirector();
+                                    codirector.firstName = codirectorSGI.Nombre;
+                                    codirector.secondFamilyName = codirectorSGI.Apellidos;
+                                    codirector.nick = (codirectorSGI.Nombre + " " + codirectorSGI.Apellidos).Trim();
+                                    codirector.comment = orden;
+                                    doctorado.codirectorTesis.Add(codirector);
+                                    orden++;
+                                }
                             }
                         }
                     }
+
+                    doctorado.doctoradoEuropeo = item.DoctoradoEuropeo != null ? (bool)item.DoctoradoEuropeo : false;
+                    crisIdentifier += $@"{doctorado.doctoradoEuropeo}___";
+                    doctorado.fechaDoctorado = item.FechaMencionDoctoradoEuropeo;
+                    doctorado.mencionCalidad = item.MencionCalidad != null ? (bool)item.MencionCalidad : false;
+                    crisIdentifier += $@"{doctorado.mencionCalidad}___";
+                    doctorado.premioExtraordinarioDoctor = item.PremioExtraordinarioDoctor != null ? (bool)item.PremioExtraordinarioDoctor : false;
+                    crisIdentifier += $@"{doctorado.premioExtraordinarioDoctor}___";
+                    doctorado.fechaPremioDoctor = item.FechaPremioExtraordinarioDoctor;
+                    doctorado.tituloHomologado = item.TituloHomologado != null ? (bool)item.TituloHomologado : false;
+                    crisIdentifier += $@"{doctorado.tituloHomologado}___";
+                    doctorado.fechaHomologado = item.FechaHomologacion;
+
+                    // CrisIdentifier
+                    doctorado.crisIdentifier = crisIdentifier;
+
+                    listaDoctorados.Add(doctorado);
                 }
-
-                doctorado.doctoradoEuropeo = item.DoctoradoEuropeo != null ? (bool)item.DoctoradoEuropeo : false;
-                crisIdentifier += $@"{doctorado.doctoradoEuropeo}___";
-                doctorado.fechaDoctorado = item.FechaMencionDoctoradoEuropeo;
-                doctorado.mencionCalidad = item.MencionCalidad != null ? (bool)item.MencionCalidad : false;
-                crisIdentifier += $@"{doctorado.mencionCalidad}___";
-                doctorado.premioExtraordinarioDoctor = item.PremioExtraordinarioDoctor != null ? (bool)item.PremioExtraordinarioDoctor : false;
-                crisIdentifier += $@"{doctorado.premioExtraordinarioDoctor}___";
-                doctorado.fechaPremioDoctor = item.FechaPremioExtraordinarioDoctor;
-                doctorado.tituloHomologado = item.TituloHomologado != null ? (bool)item.TituloHomologado : false;
-                crisIdentifier += $@"{doctorado.tituloHomologado}___";
-                doctorado.fechaHomologado = item.FechaHomologacion;
-
-                // CrisIdentifier
-                doctorado.crisIdentifier = crisIdentifier;
-
-                listaDoctorados.Add(doctorado);
             }
 
             return listaDoctorados;
@@ -2039,78 +2028,77 @@ namespace OAI_PMH.Models.SGI.PersonalData
         {
             List<PosgradoBBDD> listaPosgrados = new List<PosgradoBBDD>();
 
-            foreach (Posgrado item in pListaPosgradosSGI)
+            if (pListaPosgradosSGI != null && pListaPosgradosSGI.Count > 0)
             {
-                PosgradoBBDD posgrado = new PosgradoBBDD();
+                HashSet<string> listaOrgsAux = new HashSet<string>(pListaPosgradosSGI.Select(item => item?.EntidadTitulacion?.EntidadRef).Where(x => !string.IsNullOrEmpty(x)));
+                Dictionary<string, string> dicOrganizacionesCargadas = Empresa.ObtenerOrganizacionesBBDD(listaOrgsAux, pResourceApi);
 
-                string crisIdentifier = string.Empty;
-
-                posgrado.nombreTitulo = item.NombreTituloPosgrado;
-                crisIdentifier += $@"{RemoveDiacritics(posgrado.nombreTitulo)}___";
-
-                if (item.EntidadTitulacion != null && !string.IsNullOrEmpty(item.EntidadTitulacion.EntidadRef))
+                foreach (Posgrado item in pListaPosgradosSGI)
                 {
-                    Dictionary<string, string> dicOrganizaciones = Empresa.ObtenerOrganizacionesBBDD(new HashSet<string>() { item.EntidadTitulacion.EntidadRef }, pResourceApi);
-                    Dictionary<string, string> dicOrganizacionesCargadas = new Dictionary<string, string>();
-                    foreach (KeyValuePair<string, string> organizacion in dicOrganizaciones)
-                    {
-                        crisIdentifier += $@"{RemoveDiacritics(organizacion.Key)}___";
+                    PosgradoBBDD posgrado = new PosgradoBBDD();
 
-                        if (string.IsNullOrEmpty(organizacion.Value))
+                    string crisIdentifier = string.Empty;
+
+                    posgrado.nombreTitulo = item.NombreTituloPosgrado;
+                    crisIdentifier += $@"{RemoveDiacritics(posgrado.nombreTitulo)}___";
+
+                    if (item.EntidadTitulacion != null && !string.IsNullOrEmpty(item.EntidadTitulacion.EntidadRef))
+                    {
+                        crisIdentifier += $@"{RemoveDiacritics(item.EntidadTitulacion.EntidadRef)}___";
+
+                        if (!dicOrganizacionesCargadas.ContainsKey(item.EntidadTitulacion.EntidadRef))
                         {
-                            Empresa organizacionAux = Empresa.GetOrganizacionSGI(pHarvesterServices, pConfig, "Organizacion_" + organizacion.Key, pDicRutas);
-                            if (organizacionAux == null)
+                            Empresa organizacionAux = Empresa.GetOrganizacionSGI(pHarvesterServices, pConfig, "Organizacion_" + item.EntidadTitulacion.EntidadRef, pDicRutas);
+                            if (organizacionAux != null)
                             {
-                                continue;
+                                string idGnoss = organizacionAux.Cargar(pHarvesterServices, pConfig, pResourceApi, "organization", pDicIdentificadores, pDicRutas, pRabbitConf);
+                                pDicIdentificadores["organization"].Add(idGnoss);
+                                dicOrganizacionesCargadas[item.EntidadTitulacion.EntidadRef] = idGnoss;
+                                posgrado.entidadTitulacion = dicOrganizacionesCargadas[item.EntidadTitulacion.EntidadRef];
                             }
-                            string idGnoss = organizacionAux.Cargar(pHarvesterServices, pConfig, pResourceApi, "organization", pDicIdentificadores, pDicRutas, pRabbitConf);
-                            pDicIdentificadores["organization"].Add(idGnoss);
-                            dicOrganizacionesCargadas[organizacion.Key] = idGnoss;
                         }
                         else
                         {
-                            dicOrganizacionesCargadas[organizacion.Key] = organizacion.Value;
+                            posgrado.entidadTitulacion = dicOrganizacionesCargadas[item.EntidadTitulacion.EntidadRef];
                         }
-
-                        posgrado.entidadTitulacion = dicOrganizacionesCargadas[item.EntidadTitulacion.EntidadRef];
                     }
+
+                    posgrado.fechaTitulacion = item.FechaTitulacion;
+
+                    if (item.PaisEntidadTitulacion != null && !string.IsNullOrEmpty(item.PaisEntidadTitulacion.Id))
+                    {
+                        posgrado.paisEntidadTitulacion = IdentificadorPais(item.PaisEntidadTitulacion.Id, pResourceApi);
+                        crisIdentifier += $@"{item.PaisEntidadTitulacion.Id}___";
+                    }
+
+                    if (item.CcaaRegionEntidadTitulacion != null && !string.IsNullOrEmpty(item.CcaaRegionEntidadTitulacion.Id))
+                    {
+                        posgrado.cAutonEntidadTitulacion = IdentificadorRegion(item.CcaaRegionEntidadTitulacion.Id, pResourceApi);
+                        crisIdentifier += $@"{item.CcaaRegionEntidadTitulacion.Id}___";
+                    }
+
+                    if (!string.IsNullOrEmpty(item.CiudadEntidadTitulacion))
+                    {
+                        posgrado.ciudadEntidadTitulacion = item.CiudadEntidadTitulacion;
+                        crisIdentifier += $@"{item.CiudadEntidadTitulacion}___";
+                    }
+
+                    if (item.TipoFormacionHomologada != null && !string.IsNullOrEmpty(item.TipoFormacionHomologada.Nombre))
+                    {
+                        posgrado.tipoFormacion = FormationType(item.TipoFormacionHomologada.Nombre, pResourceApi);
+                    }
+
+                    posgrado.calificacionObtenida = item.CalificacionObtenida;
+                    crisIdentifier += $@"{posgrado.calificacionObtenida}___";
+                    posgrado.tituloHomologado = item.TituloHomologado != null ? (bool)item.TituloHomologado : false;
+                    crisIdentifier += $@"{posgrado.tituloHomologado}___";
+                    posgrado.fechaHomologacion = item.FechaHomologacion;
+
+                    // CrisIdentifier
+                    posgrado.crisIdentifier = crisIdentifier;
+
+                    listaPosgrados.Add(posgrado);
                 }
-
-                posgrado.fechaTitulacion = item.FechaTitulacion;
-
-                if (item.PaisEntidadTitulacion != null && !string.IsNullOrEmpty(item.PaisEntidadTitulacion.Id))
-                {
-                    posgrado.paisEntidadTitulacion = IdentificadorPais(item.PaisEntidadTitulacion.Id, pResourceApi);
-                    crisIdentifier += $@"{item.PaisEntidadTitulacion.Id}___";
-                }
-
-                if (item.CcaaRegionEntidadTitulacion != null && !string.IsNullOrEmpty(item.CcaaRegionEntidadTitulacion.Id))
-                {
-                    posgrado.cAutonEntidadTitulacion = IdentificadorRegion(item.CcaaRegionEntidadTitulacion.Id, pResourceApi);
-                    crisIdentifier += $@"{item.CcaaRegionEntidadTitulacion.Id}___";
-                }
-
-                if (!string.IsNullOrEmpty(item.CiudadEntidadTitulacion))
-                {
-                    posgrado.ciudadEntidadTitulacion = item.CiudadEntidadTitulacion;
-                    crisIdentifier += $@"{item.CiudadEntidadTitulacion}___";
-                }
-
-                if (item.TipoFormacionHomologada != null && !string.IsNullOrEmpty(item.TipoFormacionHomologada.Nombre))
-                {
-                    posgrado.tipoFormacion = FormationType(item.TipoFormacionHomologada.Nombre, pResourceApi);
-                }
-
-                posgrado.calificacionObtenida = item.CalificacionObtenida;
-                crisIdentifier += $@"{posgrado.calificacionObtenida}___";
-                posgrado.tituloHomologado = item.TituloHomologado != null ? (bool)item.TituloHomologado : false;
-                crisIdentifier += $@"{posgrado.tituloHomologado}___";
-                posgrado.fechaHomologacion = item.FechaHomologacion;
-
-                // CrisIdentifier
-                posgrado.crisIdentifier = crisIdentifier;
-
-                listaPosgrados.Add(posgrado);
             }
 
             return listaPosgrados;
@@ -2131,90 +2119,89 @@ namespace OAI_PMH.Models.SGI.PersonalData
         {
             List<FormacionEspecializadaBBDD> listaFormEspecializada = new List<FormacionEspecializadaBBDD>();
 
-            foreach (FormacionEspecializada item in pListaEspecializadaSGI)
+            if (pListaEspecializadaSGI != null && pListaEspecializadaSGI.Count > 0)
             {
-                FormacionEspecializadaBBDD formEspecializada = new FormacionEspecializadaBBDD();
+                HashSet<string> listaOrgsAux = new HashSet<string>(pListaEspecializadaSGI.Select(item => item?.EntidadTitulacion?.EntidadRef).Where(x => !string.IsNullOrEmpty(x)));
+                Dictionary<string, string> dicOrganizacionesCargadas = Empresa.ObtenerOrganizacionesBBDD(listaOrgsAux, pResourceApi);
 
-                string crisIdentifier = "020.020.000.000___";
-
-                formEspecializada.nombreTitulo = item.NombreTitulo;
-                crisIdentifier += $@"{RemoveDiacritics(formEspecializada.nombreTitulo)}___";
-
-                if (item.EntidadTitulacion != null && !string.IsNullOrEmpty(item.EntidadTitulacion.EntidadRef))
+                foreach (FormacionEspecializada item in pListaEspecializadaSGI)
                 {
-                    Dictionary<string, string> dicOrganizaciones = Empresa.ObtenerOrganizacionesBBDD(new HashSet<string>() { item.EntidadTitulacion.EntidadRef }, pResourceApi);
-                    Dictionary<string, string> dicOrganizacionesCargadas = new Dictionary<string, string>();
-                    foreach (KeyValuePair<string, string> organizacion in dicOrganizaciones)
-                    {
-                        crisIdentifier += $@"{RemoveDiacritics(organizacion.Key)}___";
+                    FormacionEspecializadaBBDD formEspecializada = new FormacionEspecializadaBBDD();
 
-                        if (string.IsNullOrEmpty(organizacion.Value))
+                    string crisIdentifier = "020.020.000.000___";
+
+                    formEspecializada.nombreTitulo = item.NombreTitulo;
+                    crisIdentifier += $@"{RemoveDiacritics(formEspecializada.nombreTitulo)}___";
+
+                    if (item.EntidadTitulacion != null && !string.IsNullOrEmpty(item.EntidadTitulacion.EntidadRef))
+                    {
+                        crisIdentifier += $@"{RemoveDiacritics(item.EntidadTitulacion.EntidadRef)}___";
+
+                        if (!dicOrganizacionesCargadas.ContainsKey(item.EntidadTitulacion.EntidadRef))
                         {
-                            Empresa organizacionAux = Empresa.GetOrganizacionSGI(pHarvesterServices, pConfig, "Organizacion_" + organizacion.Key, pDicRutas);
-                            if (organizacionAux == null)
+                            Empresa organizacionAux = Empresa.GetOrganizacionSGI(pHarvesterServices, pConfig, "Organizacion_" + item.EntidadTitulacion.EntidadRef, pDicRutas);
+                            if (organizacionAux != null)
                             {
-                                continue;
+                                string idGnoss = organizacionAux.Cargar(pHarvesterServices, pConfig, pResourceApi, "organization", pDicIdentificadores, pDicRutas, pRabbitConf);
+                                pDicIdentificadores["organization"].Add(idGnoss);
+                                dicOrganizacionesCargadas[item.EntidadTitulacion.EntidadRef] = idGnoss;
+                                formEspecializada.entidadTitulacion = dicOrganizacionesCargadas[item.EntidadTitulacion.EntidadRef];
                             }
-                            string idGnoss = organizacionAux.Cargar(pHarvesterServices, pConfig, pResourceApi, "organization", pDicIdentificadores, pDicRutas, pRabbitConf);
-                            pDicIdentificadores["organization"].Add(idGnoss);
-                            dicOrganizacionesCargadas[organizacion.Key] = idGnoss;
                         }
                         else
                         {
-                            dicOrganizacionesCargadas[organizacion.Key] = organizacion.Value;
+                            formEspecializada.entidadTitulacion = dicOrganizacionesCargadas[item.EntidadTitulacion.EntidadRef];
                         }
-
-                        formEspecializada.entidadTitulacion = dicOrganizacionesCargadas[item.EntidadTitulacion.EntidadRef];
                     }
+
+                    formEspecializada.fechaFinalizacion = item.FechaTitulacion;
+
+                    if (item.PaisEntidadTitulacion != null && !string.IsNullOrEmpty(item.PaisEntidadTitulacion.Id))
+                    {
+                        formEspecializada.paisEntidadTitulacion = IdentificadorPais(item.PaisEntidadTitulacion.Id, pResourceApi);
+                        crisIdentifier += $@"{item.PaisEntidadTitulacion.Id}___";
+                    }
+
+                    if (item.CcaaRegionEntidadTitulacion != null && !string.IsNullOrEmpty(item.CcaaRegionEntidadTitulacion.Id))
+                    {
+                        formEspecializada.cAutonEntidadTitulacion = IdentificadorRegion(item.CcaaRegionEntidadTitulacion.Id, pResourceApi);
+                        crisIdentifier += $@"{item.CcaaRegionEntidadTitulacion.Id}___";
+                    }
+
+                    if (!string.IsNullOrEmpty(item.CiudadEntidadTitulacion))
+                    {
+                        formEspecializada.ciudadEntidadTitulacion = item.CiudadEntidadTitulacion;
+                        crisIdentifier += $@"{item.CiudadEntidadTitulacion}___";
+                    }
+
+                    if (item.DuracionTitulacion.HasValue)
+                    {
+                        formEspecializada.duracionHoras = item.DuracionTitulacion.Value;
+                        crisIdentifier += $@"{formEspecializada.duracionHoras}___";
+                    }
+
+                    if (item.TipoFormacion != null && !string.IsNullOrEmpty(item.TipoFormacion.Nombre))
+                    {
+                        formEspecializada.tipoFormacion = FormationType(item.TipoFormacion.Nombre, pResourceApi);
+                    }
+
+                    formEspecializada.objetivosEntidad = item.Objetivos;
+                    crisIdentifier += $@"{RemoveDiacritics(formEspecializada.objetivosEntidad)}___";
+
+                    if (item.ResponsableFormacion != null)
+                    {
+                        formEspecializada.firma = item.ResponsableFormacion.NombreCompleto;
+                        crisIdentifier += $@"{RemoveDiacritics(formEspecializada.firma)}___";
+                        formEspecializada.nombre = item.ResponsableFormacion.Nombre;
+                        formEspecializada.primApe = item.ResponsableFormacion.PrimerApellido;
+                        formEspecializada.segunApe = item.ResponsableFormacion.SegundoApellido;
+                    }
+
+                    // CrisIdentifier
+                    formEspecializada.crisIdentifier = crisIdentifier;
+
+                    listaFormEspecializada.Add(formEspecializada);
                 }
-
-                formEspecializada.fechaFinalizacion = item.FechaTitulacion;
-
-                if (item.PaisEntidadTitulacion != null && !string.IsNullOrEmpty(item.PaisEntidadTitulacion.Id))
-                {
-                    formEspecializada.paisEntidadTitulacion = IdentificadorPais(item.PaisEntidadTitulacion.Id, pResourceApi);
-                    crisIdentifier += $@"{item.PaisEntidadTitulacion.Id}___";
-                }
-
-                if (item.CcaaRegionEntidadTitulacion != null && !string.IsNullOrEmpty(item.CcaaRegionEntidadTitulacion.Id))
-                {
-                    formEspecializada.cAutonEntidadTitulacion = IdentificadorRegion(item.CcaaRegionEntidadTitulacion.Id, pResourceApi);
-                    crisIdentifier += $@"{item.CcaaRegionEntidadTitulacion.Id}___";
-                }
-
-                if (!string.IsNullOrEmpty(item.CiudadEntidadTitulacion))
-                {
-                    formEspecializada.ciudadEntidadTitulacion = item.CiudadEntidadTitulacion;
-                    crisIdentifier += $@"{item.CiudadEntidadTitulacion}___";
-                }
-
-                if (item.DuracionTitulacion.HasValue)
-                {
-                    formEspecializada.duracionHoras = item.DuracionTitulacion.Value;
-                    crisIdentifier += $@"{formEspecializada.duracionHoras}___";
-                }
-
-                if (item.TipoFormacion != null && !string.IsNullOrEmpty(item.TipoFormacion.Nombre))
-                {
-                    formEspecializada.tipoFormacion = FormationType(item.TipoFormacion.Nombre, pResourceApi);
-                }
-
-                formEspecializada.objetivosEntidad = item.Objetivos;
-                crisIdentifier += $@"{RemoveDiacritics(formEspecializada.objetivosEntidad)}___";
-
-                if (item.ResponsableFormacion != null)
-                {
-                    formEspecializada.firma = item.ResponsableFormacion.NombreCompleto;
-                    crisIdentifier += $@"{RemoveDiacritics(formEspecializada.firma)}___";
-                    formEspecializada.nombre = item.ResponsableFormacion.Nombre;
-                    formEspecializada.primApe = item.ResponsableFormacion.PrimerApellido;
-                    formEspecializada.segunApe = item.ResponsableFormacion.SegundoApellido;
-                }
-
-                // CrisIdentifier
-                formEspecializada.crisIdentifier = crisIdentifier;
-
-                listaFormEspecializada.Add(formEspecializada);
             }
 
             return listaFormEspecializada;

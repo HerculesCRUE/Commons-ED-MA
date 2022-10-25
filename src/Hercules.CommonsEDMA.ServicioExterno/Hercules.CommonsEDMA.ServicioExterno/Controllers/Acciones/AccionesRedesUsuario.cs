@@ -343,7 +343,12 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
             {
                 string propiedad = item.id;
                 string dataViejo = item.valor;
-                string dataNuevo = pDataUser.dataUser.FirstOrDefault(x => x.nombre == item.nombre).valor;
+                var dataNuevoTmp = pDataUser.dataUser.FirstOrDefault(x => x.nombre == item.nombre);
+                string dataNuevo = String.Empty;
+                if (dataNuevoTmp != null)
+                {
+                    dataNuevo = dataNuevoTmp.valor;
+                }
                 if (dataNuevo == null)
                 {
                     dataNuevo = string.Empty;

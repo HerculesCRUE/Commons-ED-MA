@@ -1403,7 +1403,10 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
 
                     });
                 }
-                catch (Exception ext) { new Exception("Ha habido un error al procesar los datos de los usuarios:" + ext.Message); }
+                catch (Exception ext) { 
+                    throw new ArgumentException("Ha habido un error al procesar los datos de los usuarios: " + ext.Message);
+
+                }
 
             });
 
@@ -1485,7 +1488,9 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
 
                     });
                 }
-                catch (Exception ext) { new Exception("Ha habido un error al procesar los datos de los documentos:" + ext.Message); }
+                catch (Exception ext) {
+                    throw new ArgumentException("Ha habido un error al procesar los datos de los documentos: " + ext.Message);
+                }
 
             });
 
@@ -1580,7 +1585,9 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
 
                     });
                 }
-                catch (Exception ext) { new Exception("Ha habido un error al procesar los datos de los proyectos:" + ext.Message); }
+                catch (Exception ext) {
+                    throw new ArgumentException("Ha habido un error al procesar los datos de los proyectos: " + ext.Message);
+                }
 
             });
 
@@ -1690,7 +1697,9 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
                         researchersIds = e.ContainsKey("listaAutoresIds") ? e["listaAutoresIds"].value.Split(";").ToList() : new List<string>(),
                     });
                 }
-                catch (Exception ext) { new Exception("Ha habido un error al procesar los datos de las patentes:" + ext.Message); }
+                catch (Exception ext) {
+                    throw new ArgumentException("Ha habido un error al procesar los datos de las patentes: " + ext.Message);
+                }
             });
 
 
