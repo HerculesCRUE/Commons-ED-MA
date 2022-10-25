@@ -23,6 +23,7 @@ using System.Text;
 using System.Threading;
 using System.Xml.Serialization;
 using Utilidades;
+using static Gnoss.ApiWrapper.ApiModel.SparqlObject;
 
 namespace Harvester
 {
@@ -275,6 +276,27 @@ namespace Harvester
                             {
                                 proyectoSGI = Proyecto.GetProyectoSGI(harvesterServices, _Config, id, pDicRutas);
                                 string idGnossProy = proyectoSGI.Cargar(harvesterServices, pConfig, mResourceApi, "project", pDicIdentificadores, pDicRutas, pRabbitConf);
+
+                                //Selecciono los miembros para ser notificados
+                                List<string> listadoMiembros = proyectoSGI.Equipo.Select(x => x.PersonaRef).ToList();
+
+                                //Busco en BBDD (solo los que tengan CV)
+                                string select = "SELECT ?person";
+                                string where = $@"WHERE {{
+                                                    ?cv <http://w3id.org/roh/cvOf> ?person .
+                                                    ?person <http://w3id.org/roh/crisIdentifier> ?crisID .
+                                                    FILTER(?crisID in ('{string.Join("','", listadoMiembros)}'))
+                                                }}";
+                                SparqlObject resultData = mResourceApi.VirtuosoQueryMultipleGraph(select, where, new List<string> { "curriculumvitae", "person" });
+                                foreach (Dictionary<string, Data> fila in resultData.results.bindings)
+                                {
+                                    if (fila.ContainsKey("person"))
+                                    {
+                                        //Notifico a los miembros
+                                        UtilidadesLoader.EnvioNotificacion("NOTIFICACION_GRUPO", fila["person"].value, "harvesterProyecto" + idGnossProy);
+                                    }
+                                }
+
                                 pDicIdentificadores["project"].Add(idGnossProy);
                                 File.AppendAllText(pDicRutas[pSet][directorioPendientes], id + Environment.NewLine);
                             }
@@ -362,6 +384,27 @@ namespace Harvester
                             {
                                 autorizacionSGI = Autorizacion.GetAutorizacionSGI(harvesterServices, _Config, id, pDicRutas);
                                 string idGnossAutorizacion = autorizacionSGI.Cargar(harvesterServices, pConfig, mResourceApi, "projectauthorization", pDicIdentificadores, pDicRutas, pRabbitConf);
+
+                                string solicitante = autorizacionSGI.solicitanteRef;
+                                string responsable = autorizacionSGI.responsableRef;
+                                List<string> listado = new List<string>() { solicitante, responsable };
+
+                                //Busco los miembros en BBDD (solo los que tengan CV)
+                                string select = "SELECT ?person";
+                                string where = $@"WHERE {{
+                                                    ?cv <http://w3id.org/roh/cvOf> ?person .
+                                                    ?person <http://w3id.org/roh/crisIdentifier> ?crisID .
+                                                    FILTER(?crisID in ('{string.Join("','", listado)}'))
+                                                }}";
+                                SparqlObject resultData = mResourceApi.VirtuosoQueryMultipleGraph(select, where, new List<string> { "curriculumvitae", "person" });
+                                foreach (Dictionary<string, Data> fila in resultData.results.bindings)
+                                {
+                                    if (fila.ContainsKey("person"))
+                                    {
+                                        UtilidadesLoader.EnvioNotificacion("NOTIFICACION_AUTORIZACION", fila["person"].value, "harvesterAutorizacion");
+                                    }
+                                }
+
                                 pDicIdentificadores["projectauthorization"].Add(idGnossAutorizacion);
                                 File.AppendAllText(pDicRutas[pSet][directorioPendientes], id + Environment.NewLine);
                             }
@@ -379,6 +422,28 @@ namespace Harvester
                             {
                                 invencion = Invencion.GetInvencionSGI(harvesterServices, _Config, id, pDicRutas);
                                 string idGnossInv = invencion.Cargar(harvesterServices, pConfig, mResourceApi, "patent", pDicIdentificadores, pDicRutas, pRabbitConf);
+
+                                //Selecciono los inventores para ser notificados
+                                List<string> listadoMiembros = invencion.inventores.Select(x => x.inventorRef).ToList();
+                                //listadoMiembros.AddRange(invencion.titulares.Select(x => x.titularRef).ToList());
+
+                                //Busco en BBDD (solo los que tengan CV)
+                                string select = "SELECT ?person";
+                                string where = $@"WHERE {{
+                                                    ?cv <http://w3id.org/roh/cvOf> ?person .
+                                                    ?person <http://w3id.org/roh/crisIdentifier> ?crisID .
+                                                    FILTER(?crisID in ('{string.Join("','", listadoMiembros)}'))
+                                                }}";
+                                SparqlObject resultData = mResourceApi.VirtuosoQueryMultipleGraph(select, where, new List<string> { "curriculumvitae", "person" });
+                                foreach (Dictionary<string, Data> fila in resultData.results.bindings)
+                                {
+                                    if (fila.ContainsKey("person"))
+                                    {
+                                        //Notifico a los miembros
+                                        UtilidadesLoader.EnvioNotificacion("NOTIFICACION_GRUPO", fila["person"].value, "harvesterInvencion" + idGnossInv);
+                                    }
+                                }
+
                                 pDicIdentificadores["patent"].Add(idGnossInv);
                                 File.AppendAllText(pDicRutas[pSet][directorioPendientes], id + Environment.NewLine);
                             }
@@ -396,6 +461,27 @@ namespace Harvester
                             {
                                 grupo = Grupo.GetGrupoSGI(harvesterServices, _Config, id, pDicRutas);
                                 string idGnossGrupo = grupo.Cargar(harvesterServices, pConfig, mResourceApi, "group", pDicIdentificadores, pDicRutas, pRabbitConf);
+
+                                //Selecciono los miembros del grupo para ser notificados
+                                List<string> listadoMiembros = grupo.equipo.Select(x => x.personaRef).ToList();
+
+                                //Busco los miembros en BBDD (solo los que tengan CV)
+                                string select = "SELECT ?person";
+                                string where = $@"WHERE {{
+                                                    ?cv <http://w3id.org/roh/cvOf> ?person .
+                                                    ?person <http://w3id.org/roh/crisIdentifier> ?crisID .
+                                                    FILTER(?crisID in ('{string.Join("','", listadoMiembros)}'))
+                                                }}";
+                                SparqlObject resultData = mResourceApi.VirtuosoQueryMultipleGraph(select, where, new List<string> { "curriculumvitae", "person" });
+                                foreach (Dictionary<string, Data> fila in resultData.results.bindings)
+                                {
+                                    if (fila.ContainsKey("person"))
+                                    {
+                                        //Notifico a los miembros
+                                        UtilidadesLoader.EnvioNotificacion("NOTIFICACION_GRUPO", fila["person"].value, "harvesterGrupo" + idGnossGrupo);
+                                    }
+                                }
+
                                 pDicIdentificadores["group"].Add(idGnossGrupo);
                                 File.AppendAllText(pDicRutas[pSet][directorioPendientes], id + Environment.NewLine);
                             }
