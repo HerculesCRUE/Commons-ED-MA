@@ -23,30 +23,6 @@ namespace OAI_PMH.Services
             _ConfigService = pConfig;
             string token = GetToken(pConfig, pTokenGestor, pTokenPii);
             return token;
-            // TODO: Revisar por qué no actualiza bien el token si aparentemente parece que el código está correcto.
-            //if (lastUpdate != default)
-            //{
-            //    TimeSpan diff = DateTime.UtcNow.Subtract(lastUpdate);
-            //    if (diff.TotalSeconds > 300)
-            //    {
-            //        if (diff.TotalSeconds < 1800)
-            //        {
-            //            accessToken = RefreshToken(pConfig);
-            //            lastUpdate = DateTime.UtcNow;
-            //        }
-            //        else
-            //        {
-            //            accessToken = GetToken(pConfig, pTokenGestor, pTokenPii);
-            //            lastUpdate = DateTime.UtcNow;
-            //        }
-            //    }
-            //}
-            //else
-            //{
-            //    accessToken = GetToken(pConfig, pTokenGestor, pTokenPii);
-            //    lastUpdate = DateTime.UtcNow;
-            //}
-            //return accessToken;
         }
 
         public static IRestResponse httpCall(RestClient pRestClient, RestRequest pRestRequest)

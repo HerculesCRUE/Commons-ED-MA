@@ -32,32 +32,38 @@ namespace OAI_PMH.Controllers
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public FileResult Get(OaiVerb verb, string identifier = "", string metadataPrefix = "", string from = "", string until = "", string set = "", string resumptionToken = "")
         {
-            _configOAI.BaseUrl = () =>
+            try
             {
-                Uri baseUri = new(_Config.GetConfigUrl());
-                return baseUri.AbsoluteUri;
-            };
-            identifier = identifier.Replace(" ", "+");
+                _configOAI.BaseUrl = () =>
+                {
+                    Uri baseUri = new(_Config.GetConfigUrl());
+                    return baseUri.AbsoluteUri;
+                };
+                identifier = identifier.Replace(" ", "+");
 
-            if (string.IsNullOrEmpty(until) && !string.IsNullOrEmpty(from))
+                if (string.IsNullOrEmpty(until) && !string.IsNullOrEmpty(from))
+                {
+                    until = DateTime.UtcNow.ToString("yyyy-MM-ddThh:mm:ssZ");
+                }
+
+                ArgumentContainer arguments = new(verb.ToString(), metadataPrefix, resumptionToken, identifier, from, until, set);
+                MetadataFormatRepository metadataFormatRepository = new();
+                RecordRepository recordRepository = new(_Config);
+                SetRepository setRepository = new(_configOAI);
+                DataProvider provider = new(_configOAI, metadataFormatRepository, recordRepository, setRepository);
+                XDocument document = provider.ToXDocument(DateTime.UtcNow, arguments);
+
+                var memoryStream = new MemoryStream();
+                var xmlWriter = XmlWriter.Create(memoryStream);
+
+                document.WriteTo(xmlWriter);
+                xmlWriter.Flush();
+                byte[] array = memoryStream.ToArray();
+                return File(array, "application/xml");
+            }catch(Exception ex)
             {
-                until = DateTime.UtcNow.ToString("yyyy-MM-ddThh:mm:ssZ");
+                throw;
             }
-
-            ArgumentContainer arguments = new(verb.ToString(), metadataPrefix, resumptionToken, identifier, from, until, set);
-            MetadataFormatRepository metadataFormatRepository = new();
-            RecordRepository recordRepository = new(_Config);
-            SetRepository setRepository = new(_configOAI);
-            DataProvider provider = new(_configOAI, metadataFormatRepository, recordRepository, setRepository);
-            XDocument document = provider.ToXDocument(DateTime.UtcNow, arguments);
-
-            var memoryStream = new MemoryStream();
-            var xmlWriter = XmlWriter.Create(memoryStream);
-
-            document.WriteTo(xmlWriter);
-            xmlWriter.Flush();
-            byte[] array = memoryStream.ToArray();
-            return File(array, "application/xml");
         }
     }
 }

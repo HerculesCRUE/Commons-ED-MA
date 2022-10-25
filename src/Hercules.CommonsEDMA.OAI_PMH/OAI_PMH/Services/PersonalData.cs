@@ -156,6 +156,10 @@ namespace OAI_PMH.Services
             List<Thread> hilos = new List<Thread>();
 
             Persona dataPersona = GetDatosPersona(identifier, pConfig);
+            if (dataPersona == null)
+            {
+                return null;
+            }
 
             DatosPersonales datosPersonales = null;
             DatosContacto datosContacto = null;
@@ -286,8 +290,7 @@ namespace OAI_PMH.Services
             {
                 return null;
             }
-            var json = JObject.Parse(response.Content);
-            return JsonConvert.DeserializeObject<Persona>(json.ToString());
+            return JsonConvert.DeserializeObject<Persona>(response.Content);
         }
 
         /// <summary>

@@ -46,22 +46,12 @@ namespace OAI_PMH.Services
             client.AddDefaultHeader("Authorization", "Bearer " + accessToken);
             var request = new RestRequest(Method.GET);
             IRestResponse response = Token.httpCall(client, request);
-            var json = JObject.Parse(response.Content);
-            empresa = JsonConvert.DeserializeObject<Empresa>(json.ToString());
-            DatosContacto datosContacto = null;
-            hilos.Add(new Thread(() => datosContacto = GetDatosContacto(identifier, pConfig)));
-            // Inicio hilos.
-            foreach (Thread th in hilos)
+            if (string.IsNullOrEmpty(response.Content))
             {
-                th.Start();
+                return null;
             }
-
-            // Espero a que estén listos.
-            foreach (Thread th in hilos)
-            {
-                th.Join();
-            }
-            empresa.DatosContacto = datosContacto;
+            empresa = JsonConvert.DeserializeObject<Empresa>(response.Content);
+            empresa.DatosContacto = GetDatosContacto(identifier, pConfig);
             return empresa;
         }
 
