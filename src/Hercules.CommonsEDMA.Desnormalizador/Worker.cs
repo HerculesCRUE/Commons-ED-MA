@@ -137,16 +137,16 @@ namespace Hercules.CommonsEDMA.Desnormalizador
                     try
                     {
                         Thread.Sleep(1000);
-                        List<string> files = Directory.GetFiles(_directoryPendingCV).OrderBy(x => x).ToList();
+                        List<string> filesPendingCV = Directory.GetFiles(_directoryPendingCV).OrderBy(x => x).ToList();
 
-                        if (files.Count > 0)
+                        if (filesPendingCV.Count > 0)
                         {
                             //Items máximos a procesar
                             int maxItems = 500;
 
                             //Item para agrupar los IDs
                             Dictionary<DenormalizerItemQueue.ItemType, HashSet<string>> agrupados = new Dictionary<DenormalizerItemQueue.ItemType, HashSet<string>>();
-                            foreach (string file in files)
+                            foreach (string file in filesPendingCV)
                             {
                                 filesToProcess.Add(file);
                                 DenormalizerItemQueue denormalizerItemQueue = JsonConvert.DeserializeObject<DenormalizerItemQueue>(File.ReadAllText(file));
@@ -222,16 +222,16 @@ namespace Hercules.CommonsEDMA.Desnormalizador
                     try
                     {
                         Thread.Sleep(1000);
-                        List<string> files = System.IO.Directory.GetFiles(_directoryPending).OrderBy(x => x).ToList();
+                        List<string> filesPending = System.IO.Directory.GetFiles(_directoryPending).OrderBy(x => x).ToList();
 
-                        if (files.Count > 0)
+                        if (filesPending.Count > 0)
                         {
                             //Items máximos a procesar
                             int maxItems = 500;
 
                             //Item para agrupar los IDs
                             Dictionary<DenormalizerItemQueue.ItemType, HashSet<string>> agrupados = new Dictionary<DenormalizerItemQueue.ItemType, HashSet<string>>();
-                            foreach (string file in files)
+                            foreach (string file in filesPending)
                             {
                                 filesToProcess.Add(file);
                                 DenormalizerItemQueue denormalizerItemQueue = JsonConvert.DeserializeObject<DenormalizerItemQueue>(File.ReadAllText(file));
