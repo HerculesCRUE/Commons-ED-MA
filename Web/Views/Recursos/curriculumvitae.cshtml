@@ -416,6 +416,29 @@ $(function() {
         
     </div>
 </div>
+<div id="modal-warning-importacion" class="modal modal-top modal-wide fade " data-backdrop="static" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <p class="modal-title"><span class="material-icons">send</span>@Html.Translate("GESTIONAR_DUPLICADOS")<span class="numpasos"></span></p>
+                <span class="material-icons cerrar" data-dismiss="modal" aria-label="Close">close</span>
+            </div>
+            <div class="modal-body">
+                <div class="alert">
+                    <p class="alert-title">
+                        <span class="material-icons">warning</span>
+                        @Html.Translate("IMPORTACION_EN_PROCESO")
+                        
+                    </p>
+                </div>
+                <p>
+                    @Html.Translate("IMPORTACION_EN_PROCESO_MENSAJE")
+                </p>
+            </div>
+        </div>
+        
+    </div>
+</div>
 <div id="modal-repetir-duplicidad" class="modal modal-top modal-wide fade show duplicidades" data-backdrop="static" tabindex="-1" role="dialog">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
