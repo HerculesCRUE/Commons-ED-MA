@@ -56,9 +56,9 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
             {
                 while (true)
                 {
-                    int limit = 500;
-                    String select = @"select ?document ?isValidatedCargado ?isValidatedCargar";
-                    String where = @$"where{{
+                    int limitDocumentosValidados = 500;
+                    String selectDocumentosValidados = @"select ?document ?isValidatedCargado ?isValidatedCargar";
+                    String whereDocumentosValidados = @$"where{{
                                 ?document a <http://purl.org/ontology/bibo/Document>.
                                 {filter}
                                 MINUS
@@ -87,10 +87,10 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
                                     }}
                                 }}
                                 FILTER(?isValidatedCargado!= ?isValidatedCargar OR !BOUND(?isValidatedCargado) )
-                            }} limit {limit}";
-                    SparqlObject resultado = mResourceApi.VirtuosoQuery(select, where, "document");
+                            }} limit {limitDocumentosValidados}";
+                    SparqlObject resultadoDocumentosValidados = mResourceApi.VirtuosoQuery(selectDocumentosValidados, whereDocumentosValidados, "document");
 
-                    Parallel.ForEach(resultado.results.bindings, new ParallelOptions { MaxDegreeOfParallelism = ActualizadorBase.numParallel }, fila =>
+                    Parallel.ForEach(resultadoDocumentosValidados.results.bindings, new ParallelOptions { MaxDegreeOfParallelism = ActualizadorBase.numParallel }, fila =>
                     {
                         string document = fila["document"].value;
                         string isValidatedCargar = fila["isValidatedCargar"].value;
@@ -102,7 +102,7 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
                         ActualizadorTriple(document, "http://w3id.org/roh/isValidated", isValidatedCargado, isValidatedCargar);
                     });
 
-                    if (resultado.results.bindings.Count != limit)
+                    if (resultadoDocumentosValidados.results.bindings.Count != limitDocumentosValidados)
                     {
                         break;
                     }
@@ -139,9 +139,9 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
                 while (true)
                 {
                     //Añadimos a documentos
-                    int limit = 500;
-                    String select = @"select distinct ?doc ?grupo  ";
-                    String where = @$"where{{
+                    int limitInsercionPertenenciaGrupos = 500;
+                    String selectInsercionPertenenciaGrupos = @"select distinct ?doc ?grupo  ";
+                    String whereInsercionPertenenciaGrupos = @$"where{{
                                     {filter}
                                     {{
                                         {{
@@ -206,10 +206,10 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
                                         ?doc a <http://purl.org/ontology/bibo/Document>.
                                         ?doc <http://w3id.org/roh/isProducedBy> ?grupo.
                                     }}
-                                }}order by desc(?doc) limit {limit}";
-                    SparqlObject resultado = mResourceApi.VirtuosoQueryMultipleGraph(select, where, new List<string>() { "document", "curriculumvitae", "person", "group" });
-                    InsercionMultiple(resultado.results.bindings, "http://w3id.org/roh/isProducedBy", "doc", "grupo");
-                    if (resultado.results.bindings.Count != limit)
+                                }}order by desc(?doc) limit {limitInsercionPertenenciaGrupos}";
+                    SparqlObject resultadoInsercionPertenenciaGrupos = mResourceApi.VirtuosoQueryMultipleGraph(selectInsercionPertenenciaGrupos, whereInsercionPertenenciaGrupos, new List<string>() { "document", "curriculumvitae", "person", "group" });
+                    InsercionMultiple(resultadoInsercionPertenenciaGrupos.results.bindings, "http://w3id.org/roh/isProducedBy", "doc", "grupo");
+                    if (resultadoInsercionPertenenciaGrupos.results.bindings.Count != limitInsercionPertenenciaGrupos)
                     {
                         break;
                     }
@@ -218,9 +218,9 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
                 while (true)
                 {
                     //Eliminamos de documentos
-                    int limit = 500;
-                    String select = @"select distinct ?doc ?grupo  ";
-                    String where = @$"where{{
+                    int limitEliminacionPertenenciaGrupos = 500;
+                    String selectEliminacionPertenenciaGrupos = @"select distinct ?doc ?grupo  ";
+                    String whereEliminacionPertenenciaGrupos = @$"where{{
                                     {filter}
                                     {{
                                         ?grupo a <http://xmlns.com/foaf/0.1/Group>.
@@ -285,10 +285,10 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
                                             }}
                                         }}
                                     }}
-                                }}order by desc(?doc) limit {limit}";
-                    var resultado = mResourceApi.VirtuosoQueryMultipleGraph(select, where, new List<string>() { "document", "curriculumvitae", "person", "group" });
-                    EliminacionMultiple(resultado.results.bindings, "http://w3id.org/roh/isProducedBy", "doc", "grupo");
-                    if (resultado.results.bindings.Count != limit)
+                                }}order by desc(?doc) limit {limitEliminacionPertenenciaGrupos}";
+                    SparqlObject resultadoEliminacionPertenenciaGrupos = mResourceApi.VirtuosoQueryMultipleGraph(selectEliminacionPertenenciaGrupos, whereEliminacionPertenenciaGrupos, new List<string>() { "document", "curriculumvitae", "person", "group" });
+                    EliminacionMultiple(resultadoEliminacionPertenenciaGrupos.results.bindings, "http://w3id.org/roh/isProducedBy", "doc", "grupo");
+                    if (resultadoEliminacionPertenenciaGrupos.results.bindings.Count != limitEliminacionPertenenciaGrupos)
                     {
                         break;
                     }
@@ -324,9 +324,9 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
                 //Actualizamos los datos
                 while (true)
                 {
-                    int limit = 500;
-                    String select = @"select ?document ?numCitasCargadas IF (BOUND (?numCitasACargar), ?numCitasACargar, 0 ) as ?numCitasACargar";
-                    String where = @$"where{{
+                    int limitNumeroCitasMaximas = 500;
+                    String selectNumeroCitasMaximas = @"select ?document ?numCitasCargadas IF (BOUND (?numCitasACargar), ?numCitasACargar, 0 ) as ?numCitasACargar";
+                    String whereNumeroCitasMaximas = @$"where{{
                                 ?document a <http://purl.org/ontology/bibo/Document>.
                                 {filter}
                                 OPTIONAL
@@ -352,10 +352,10 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
                                   }}
                                 }}
                                 FILTER(?numCitasCargadas!= ?numCitasACargar OR !BOUND(?numCitasCargadas) )
-                            }} limit {limit}";
-                    SparqlObject resultado = mResourceApi.VirtuosoQuery(select, where, "document");
+                            }} limit {limitNumeroCitasMaximas}";
+                    SparqlObject resultadoNumeroCitasMaximas = mResourceApi.VirtuosoQuery(selectNumeroCitasMaximas, whereNumeroCitasMaximas, "document");
 
-                    Parallel.ForEach(resultado.results.bindings, new ParallelOptions { MaxDegreeOfParallelism = ActualizadorBase.numParallel }, fila =>
+                    Parallel.ForEach(resultadoNumeroCitasMaximas.results.bindings, new ParallelOptions { MaxDegreeOfParallelism = ActualizadorBase.numParallel }, fila =>
                     {
                         string document = fila["document"].value;
                         string numCitasACargar = fila["numCitasACargar"].value;
@@ -367,7 +367,7 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
                         ActualizadorTriple(document, "http://w3id.org/roh/citationCount", numCitasCargadas, numCitasACargar);
                     });
 
-                    if (resultado.results.bindings.Count != limit)
+                    if (resultadoNumeroCitasMaximas.results.bindings.Count != limitNumeroCitasMaximas)
                     {
                         break;
                     }
@@ -405,8 +405,8 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
                 while (true)
                 {
                     int limit = 500;
-                    String select = @"select ?document ?categoryNode ";
-                    String where = @$"where{{
+                    String selectEliminacionAreasDocumentos = @"select ?document ?categoryNode ";
+                    String whereEliminacionAreasDocumentos = @$"where{{
                                 select distinct ?document ?hasKnowledgeAreaAux  ?categoryNode
                                 where{{
                                     {filter}
@@ -418,14 +418,14 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
                                     }}
                                }}
                             }}group by ?document ?categoryNode HAVING (COUNT(*) > 1) limit {limit}";
-                    SparqlObject resultado = mResourceApi.VirtuosoQueryMultipleGraph(select, where, new List<string>() { "document", "taxonomy" });
+                    SparqlObject resultadoEliminacionAreasDocumentos = mResourceApi.VirtuosoQueryMultipleGraph(selectEliminacionAreasDocumentos, whereEliminacionAreasDocumentos, new List<string>() { "document", "taxonomy" });
 
-                    Parallel.ForEach(resultado.results.bindings, new ParallelOptions { MaxDegreeOfParallelism = ActualizadorBase.numParallel }, fila =>
+                    Parallel.ForEach(resultadoEliminacionAreasDocumentos.results.bindings, new ParallelOptions { MaxDegreeOfParallelism = ActualizadorBase.numParallel }, fila =>
                     {
                         string document = fila["document"].value;
                         string categoryNode = fila["categoryNode"].value;
-                        select = @"select ?document ?hasKnowledgeArea ?categoryNode ";
-                        where = @$"where{{
+                        string selectEliminacionAreasDocumentosIn = @"select ?document ?hasKnowledgeArea ?categoryNode ";
+                        string whereEliminacionAreasDocumentosIn = @$"where{{
                                     FILTER(?document=<{document}>)
                                     FILTER(?categoryNode =<{categoryNode}>)
                                     {{ 
@@ -440,9 +440,9 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
                                         }}
                                     }}
                                 }}";
-                        resultado = mResourceApi.VirtuosoQueryMultipleGraph(select, where, new List<string>() { "document", "taxonomy" });
+                        SparqlObject resultadoEliminacionAreasDocumentosIn = mResourceApi.VirtuosoQueryMultipleGraph(selectEliminacionAreasDocumentosIn, whereEliminacionAreasDocumentosIn, new List<string>() { "document", "taxonomy" });
                         List<RemoveTriples> triplesRemove = new();
-                        foreach (string hasKnowledgeArea in resultado.results.bindings.GetRange(1, resultado.results.bindings.Count - 1).Select(x => x["hasKnowledgeArea"].value).ToList())
+                        foreach (string hasKnowledgeArea in resultadoEliminacionAreasDocumentosIn.results.bindings.GetRange(1, resultadoEliminacionAreasDocumentosIn.results.bindings.Count - 1).Select(x => x["hasKnowledgeArea"].value).ToList())
                         {
                             triplesRemove.Add(new RemoveTriples()
                             {
@@ -457,7 +457,7 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
                     });
 
 
-                    if (resultado.results.bindings.Count != limit)
+                    if (resultadoEliminacionAreasDocumentos.results.bindings.Count != limit)
                     {
                         break;
                     }
@@ -466,26 +466,24 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
 
 
                 //Cargamos el tesauro
-                Dictionary<string, string> dicAreasBroader = new();
-                {
-                    String select = @"select distinct * ";
-                    String where = @$"where{{
-                                ?concept a <http://www.w3.org/2008/05/skos#Concept>.
-                                ?concept <http://purl.org/dc/elements/1.1/source> 'researcharea'
-                                OPTIONAL{{?concept <http://www.w3.org/2008/05/skos#broader> ?broader}}
-                            }}";
-                    SparqlObject resultado = mResourceApi.VirtuosoQuery(select, where, "taxonomy");
+                Dictionary<string, string> dicAreasBroader = new();                
+                String selectDicAreasBroader = @"select distinct * ";
+                String whereDicAreasBroader = @$"where{{
+                            ?concept a <http://www.w3.org/2008/05/skos#Concept>.
+                            ?concept <http://purl.org/dc/elements/1.1/source> 'researcharea'
+                            OPTIONAL{{?concept <http://www.w3.org/2008/05/skos#broader> ?broader}}
+                        }}";
+                SparqlObject resultadoDicAreasBroader = mResourceApi.VirtuosoQuery(selectDicAreasBroader, whereDicAreasBroader, "taxonomy");
 
-                    foreach (Dictionary<string, SparqlObject.Data> fila in resultado.results.bindings)
+                foreach (Dictionary<string, SparqlObject.Data> fila in resultadoDicAreasBroader.results.bindings)
+                {
+                    string concept = fila["concept"].value;
+                    string broader = "";
+                    if (fila.ContainsKey("broader"))
                     {
-                        string concept = fila["concept"].value;
-                        string broader = "";
-                        if (fila.ContainsKey("broader"))
-                        {
-                            broader = fila["broader"].value;
-                        }
-                        dicAreasBroader.Add(concept, broader);
+                        broader = fila["broader"].value;
                     }
+                    dicAreasBroader.Add(concept, broader);
                 }
 
 
