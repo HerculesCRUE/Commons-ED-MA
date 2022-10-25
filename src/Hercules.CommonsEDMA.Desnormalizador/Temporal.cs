@@ -519,8 +519,7 @@ namespace Hercules.CommonsEDMA.Desnormalizador
                 {
                     //Añadimos a documentos
                     int limit = 500;
-                    //TODO eliminar from
-                    String select = @"select distinct ?doc max(?project) as ?project  from <http://gnoss.com/curriculumvitae.owl>  from <http://gnoss.com/person.owl> from <http://gnoss.com/project.owl>  ";
+                    String select = @"select distinct ?doc max(?project) as ?project";
                     String where = @$"where{{
                                     {filter}
                                     {{
@@ -548,7 +547,7 @@ namespace Hercules.CommonsEDMA.Desnormalizador
                                         ?doc <http://w3id.org/roh/project> ?X.
                                     }}
                                 }}order by desc(?doc) limit {limit}";
-                    SparqlObject resultado = resourceApi.VirtuosoQuery(select, where, "document");
+                    SparqlObject resultado = resourceApi.VirtuosoQueryMultipleGraph(select, where, new() { "document", "curriculumvitae" , "person", "project" });
                     actualizadorDocument.InsercionMultiple(resultado.results.bindings, "http://w3id.org/roh/project", "doc", "project");
                     if (resultado.results.bindings.Count != limit)
                     {
@@ -574,8 +573,7 @@ namespace Hercules.CommonsEDMA.Desnormalizador
                 {
                     //Añadimos a documentos
                     int limit = 500;
-                    //TODO eliminar from
-                    String select = @"select ?doc MAX(?project) as ?project  from <http://gnoss.com/curriculumvitae.owl>  from <http://gnoss.com/person.owl> from <http://gnoss.com/project.owl>  ";
+                    String select = @"select ?doc MAX(?project) as ?project";
                     String where = @$"where{{
                                     {filter}
                                     {{
@@ -603,7 +601,7 @@ namespace Hercules.CommonsEDMA.Desnormalizador
                                         ?doc <http://w3id.org/roh/project> ?projectX.
                                     }}
                                 }}group by ?doc order by desc(?doc) limit {limit}";
-                    SparqlObject resultado = resourceApi.VirtuosoQuery(select, where, "document");
+                    SparqlObject resultado = resourceApi.VirtuosoQueryMultipleGraph(select, where, new() { "document" , "curriculumvitae", "person", "project" });
                     ac.InsercionMultiple(resultado.results.bindings, "http://w3id.org/roh/project", "doc", "project");
                     if (resultado.results.bindings.Count != limit)
                     {
