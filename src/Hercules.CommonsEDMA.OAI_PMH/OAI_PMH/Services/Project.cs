@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 namespace OAI_PMH.Services
 {
     public class Project
-    {        
+    {
         public static Dictionary<string, DateTime> GetModifiedProjects(string from, ConfigService pConfig)
         {
             string accessToken = Token.CheckToken(pConfig);
@@ -40,8 +40,12 @@ namespace OAI_PMH.Services
             string identifier = id.Split('_')[1];
             List<Thread> hilos = new List<Thread>();
 
-            Proyecto proyectoAux = null;
-            hilos.Add(new Thread(() => proyectoAux = GetDatosProyecto(identifier, pConfig)));
+            Proyecto proyectoAux = GetDatosProyecto(identifier, pConfig);
+
+            if (proyectoAux == null)
+            {
+                return null;
+            }
 
             ContextoProyecto contexto = null;
             hilos.Add(new Thread(() => contexto = GetContexto(identifier, pConfig)));
@@ -112,16 +116,12 @@ namespace OAI_PMH.Services
             RestClient client = new(pConfig.GetConfigSGI() + "/api/sgicsp/proyectos/" + id);
             client.AddDefaultHeader("Authorization", "Bearer " + accessToken);
             var request = new RestRequest(Method.GET);
-            IRestResponse response = Token.httpCall(client, request);        
-            try
-            {
-                var json = JObject.Parse(response.Content);
-                proyecto = JsonConvert.DeserializeObject<Proyecto>(json.ToString());
-            }
-            catch
+            IRestResponse response = Token.httpCall(client, request);
+            if (string.IsNullOrEmpty(response.Content))
             {
                 return null;
             }
+            proyecto = JsonConvert.DeserializeObject<Proyecto>(response.Content);
             return proyecto;
         }
 
