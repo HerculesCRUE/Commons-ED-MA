@@ -1,7 +1,6 @@
 ﻿using Gnoss.ApiWrapper;
 using Gnoss.ApiWrapper.ApiModel;
 using Gnoss.ApiWrapper.Model;
-using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -21,9 +20,6 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
         private static CommunityApi mCommunityAPI = null;
         private static Guid? mIDComunidad = null;
         private static string RUTA_PREFIJOS = $@"{System.AppDomain.CurrentDomain.SetupInformation.ApplicationBase}Models{Path.DirectorySeparatorChar}JSON{Path.DirectorySeparatorChar}prefijos.json";
-        private static string mPrefijos = string.Join(" ", JsonConvert.DeserializeObject<List<string>>(File.ReadAllText(RUTA_PREFIJOS)));
-        private static string COLOR_GRAFICAS = "#6cafe3";
-        private static string COLOR_GRAFICAS_HORIZONTAL = "#6cafe3"; //#1177ff
         #endregion
 
         private static ResourceApi resourceApi
@@ -47,48 +43,14 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
             }
         }
 
-        private static CommunityApi communityApi
-        {
-            get
-            {
-                while (mCommunityAPI == null)
-                {
-                    try
-                    {
-                        mCommunityAPI = new CommunityApi(RUTA_OAUTH);
-                    }
-                    catch (Exception)
-                    {
-                        Console.WriteLine("No se ha podido iniciar CommunityApi");
-                        Console.WriteLine($"Contenido OAuth: {System.IO.File.ReadAllText(RUTA_OAUTH)}");
-                        Thread.Sleep(10000);
-                    }
-                }
-                return mCommunityAPI;
-            }
-        }
-
-        private static Guid idComunidad
-        {
-            get
-            {
-                while (!mIDComunidad.HasValue)
-                {
-                    try
-                    {
-                        mIDComunidad = communityApi.GetCommunityId();
-                    }
-                    catch (Exception)
-                    {
-                        Console.WriteLine("No se ha podido obtener el ID de la comnunidad");
-                        Console.WriteLine($"Contenido OAuth: {System.IO.File.ReadAllText(RUTA_OAUTH)}");
-                        Thread.Sleep(10000);
-                    }
-                }
-                return mIDComunidad.Value;
-            }
-        }
-
+        /// <summary>
+        /// Método que obtiene las anotaciones en los ROs
+        /// </summary>
+        /// <param name="idRO">Id del RO.</param>
+        /// <param name="idUser">Id del usuario.</param>
+        /// <param name="rdfType">rdfType del RO sobre el que se quiere obtener las anotaciones.</param>
+        /// <param name="ontology">La ontología del RO.</param>
+        /// <returns>Listado de diccionarios, relación entre el id de.</returns>
         public List<Dictionary<string, string>> GetOwnAnnotationsInRO(string idRO, string idUser, string rdfType, string ontology)
         {
 
@@ -96,8 +58,8 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
 
             // "http://purl.org/ontology/bibo/Document", "document"
             // "http://w3id.org/roh/ResearchObject", "researchobject"
-            //typesRO.Add("document", "http://purl.org/ontology/bibo/Document");
-            //typesRO.Add("researchobject", "http://w3id.org/roh/ResearchObject");
+            // typesRO.Add("document", "http://purl.org/ontology/bibo/Document");
+            // typesRO.Add("researchobject", "http://w3id.org/roh/ResearchObject");
 
 
             // Obtengo el id del RO si es Guid
@@ -131,22 +93,6 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
 
             // Obtenemos todos los datos de los perfiles y Añadimos el perfil creado a los datos de la oferta
             string select = "select distinct ?s ?date ?texto ";
-
-            //string filterRO = "";
-            //switch (ontology)
-            //{
-            //    case "document":
-            //        filterRO = @$"
-            //            ?s <http://w3id.org/roh/document> ?document.
-            //            FILTER(?document = <{idRO}>)) ";
-            //        break;
-
-            //    case "researchobject":
-            //        filterRO = @$"
-            //            ?s <http://w3id.org/roh/researchobject> ?ro.
-            //            FILTER(?ro = <{idRO}>)) ";
-            //        break;
-            //}
 
             string where = @$"where {{
 
@@ -209,7 +155,16 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
             return typesRO;
         }
 
-
+        /// <summary>
+        /// Método que crea o edita una anotación
+        /// </summary>
+        /// <param name="idRO">Id del RO.</param>
+        /// <param name="idUser">Id del usuario.</param>
+        /// <param name="rdfType">rdfType del RO sobre el que se quiere crear las anotaciones.</param>
+        /// <param name="ontology">La ontología del RO.</param>
+        /// <param name="texto">Texto de la anotación.</param>
+        /// <param name="idAnnotation">Id de la anotación por si es una edición.</param>
+        /// <returns>string con el ID de la anotación.</returns>
         public string CreateNewAnnotation(string idRO, string idUser, string rdfType, string ontology, string texto, string idAnnotation = null)
         {
 
@@ -328,6 +283,12 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
 
         }
 
+
+        /// <summary>
+        /// Borrar la anotación
+        /// </summary>
+        /// <param name="idAnnotation">Id de la anotación.</param>
+        /// <returns>bool si se ha borrado.</returns>
         public bool DeleteAnnotation(string idAnnotation)
         {
             // Obtengo el id del RO si es Guid
@@ -336,6 +297,11 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
             return resourceApi.PersistentDelete(guidAnnotation);
         }
 
+        /// <summary>
+        /// Obtener el id del usuario GNOSS_USER creador de la anotación
+        /// </summary>
+        /// <param name="idAnnotation">Id de la anotación.</param>
+        /// <returns>string GNOSS_USER del usuario.</returns>
         public string getUserFromAnnotation(string idAnnotation)
         {
             string select = "SELECT DISTINCT ?usuario ";

@@ -1488,7 +1488,9 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
 
                     });
                 }
-                catch (Exception ext) { new Exception("Ha habido un error al procesar los datos de los documentos:" + ext.Message); }
+                catch (Exception ext) {
+                    throw new ArgumentException("Ha habido un error al procesar los datos de los documentos: " + ext.Message);
+                }
 
             });
 
