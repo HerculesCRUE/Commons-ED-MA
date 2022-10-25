@@ -251,28 +251,7 @@ namespace Hercules.CommonsEDMA.Desnormalizador
                                 List<List<string>> listLists = ActualizadorBase.SplitList(agrupados[type].ToList(), maxItems).ToList();
                                 foreach (List<string> listIn in listLists)
                                 {
-                                    switch (type)
-                                    {
-                                        case DenormalizerItemQueue.ItemType.person:
-                                            ActualizadorEDMA.DesnormalizarDatosPersonas(pPersons: listIn);
-                                            break;
-                                        case DenormalizerItemQueue.ItemType.group:
-                                            ActualizadorEDMA.DesnormalizarDatosGrupos(pGroups: listIn);
-                                            break;
-                                        case DenormalizerItemQueue.ItemType.project:
-                                            ActualizadorEDMA.DesnormalizarDatosProyectos(pProjects: listIn);
-                                            break;
-                                        case DenormalizerItemQueue.ItemType.document:
-                                            ActualizadorEDMA.DesnormalizarDatosDocumento(pDocuments: listIn);
-                                            break;
-                                        case DenormalizerItemQueue.ItemType.researchobject:
-                                            ActualizadorEDMA.DesnormalizarDatosResearchObject(pROs: listIn);
-                                            break;
-                                        case DenormalizerItemQueue.ItemType.patent:
-                                            ActualizadorEDMA.DesnormalizarDatosPatentes(pPatents: listIn);
-                                            break;
-
-                                    }
+                                    DesnormalizarLista(type, listIn);
                                 }
                             }
 
@@ -293,6 +272,32 @@ namespace Hercules.CommonsEDMA.Desnormalizador
 
                 }
             }).Start();
+        }
+
+        private void DesnormalizarLista(DenormalizerItemQueue.ItemType pType, List<string> pItems)
+        {
+            switch (pType)
+            {
+                case DenormalizerItemQueue.ItemType.person:
+                    ActualizadorEDMA.DesnormalizarDatosPersonas(pPersons: pItems);
+                    break;
+                case DenormalizerItemQueue.ItemType.group:
+                    ActualizadorEDMA.DesnormalizarDatosGrupos(pGroups: pItems);
+                    break;
+                case DenormalizerItemQueue.ItemType.project:
+                    ActualizadorEDMA.DesnormalizarDatosProyectos(pProjects: pItems);
+                    break;
+                case DenormalizerItemQueue.ItemType.document:
+                    ActualizadorEDMA.DesnormalizarDatosDocumento(pDocuments: pItems);
+                    break;
+                case DenormalizerItemQueue.ItemType.researchobject:
+                    ActualizadorEDMA.DesnormalizarDatosResearchObject(pROs: pItems);
+                    break;
+                case DenormalizerItemQueue.ItemType.patent:
+                    ActualizadorEDMA.DesnormalizarDatosPatentes(pPatents: pItems);
+                    break;
+
+            }
         }
 
         /// <summary>
@@ -323,28 +328,7 @@ namespace Hercules.CommonsEDMA.Desnormalizador
                                     List<List<string>> listLists = ActualizadorBase.SplitList(denormalizerItemQueue._items.ToList(), maxItems).ToList();
                                     foreach (List<string> listIn in listLists)
                                     {
-                                        switch (denormalizerItemQueue._itemType)
-                                        {
-                                            case DenormalizerItemQueue.ItemType.person:
-                                                ActualizadorEDMA.DesnormalizarDatosPersonas(pPersons: listIn);
-                                                break;
-                                            case DenormalizerItemQueue.ItemType.group:
-                                                ActualizadorEDMA.DesnormalizarDatosGrupos(pGroups: listIn);
-                                                break;
-                                            case DenormalizerItemQueue.ItemType.project:
-                                                ActualizadorEDMA.DesnormalizarDatosProyectos(pProjects: listIn);
-                                                break;
-                                            case DenormalizerItemQueue.ItemType.document:
-                                                ActualizadorEDMA.DesnormalizarDatosDocumento(pDocuments: listIn);
-                                                break;
-                                            case DenormalizerItemQueue.ItemType.researchobject:
-                                                ActualizadorEDMA.DesnormalizarDatosResearchObject(pROs: listIn);
-                                                break;
-                                            case DenormalizerItemQueue.ItemType.patent:
-                                                ActualizadorEDMA.DesnormalizarDatosPatentes(pPatents: listIn);
-                                                break;
-
-                                        }
+                                        DesnormalizarLista(denormalizerItemQueue._itemType, listIn);
                                     }
                                     File.Delete(file);
                                 }
