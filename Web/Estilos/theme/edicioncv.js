@@ -1,4 +1,5 @@
 var urlEdicionCV = url_servicio_editorcv + "EdicionCV/";
+var urlImportacionCV = url_servicio_editorcv+"ImportadoCV/";
 var urlEnvioDSpaceCV = url_servicio_editorcv + "EnvioDSpace/";
 var urlEnvioValidacionCV = url_servicio_editorcv + "EnvioValidacion/";
 var urlGuardadoCV = url_servicio_editorcv + "GuardadoCV/";
@@ -8,12 +9,44 @@ var tooltips = { section: {}, items: {} };
 var edicionCV = {
 	idCV: null,
 	idPerson: null,
-	init: function () {
+	init: async function () {
 		this.idCV = $('.contenido-cv').attr('about');
 		this.idPerson = $('.contenido-cv').attr('personid');
+		if(await this.importacion()){
+			$("#modal-warning-importacion").modal("show");
+			$("#modal-warning-importacion").on("hidden.bs.modal",(e)=>{
+				this.config();
+				duplicadosCV.init();
+			})
+			return;
+		}
 		this.config();
 		duplicadosCV.init();
 		return;
+	},
+	importacion: async function(){
+		var url = urlImportacionCV +"FechaCheck"
+		var formData = {};
+		var importacion = false;
+		formData.pCVID = "";
+		await $.ajax({
+			url: url,
+			type: 'POST',
+			data: formData,
+			cache: false,
+			processData: false,
+			enctype: 'multipart/form-data',
+			contentType: false,
+			success: function (response) {
+				if (response) {
+					if(response === 'true'){
+						importacion = true;
+					}
+				}
+			}
+		});
+		return importacion;
+
 	},
 	config: function () {
 		// Quito los tooltips del panel de navegación
