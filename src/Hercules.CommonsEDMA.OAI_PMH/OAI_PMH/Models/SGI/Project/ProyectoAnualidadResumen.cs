@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
-namespace OAI_PMH.Models.SGI.Project
+﻿namespace OAI_PMH.Models.SGI.Project
 {
     /// <summary>
     /// Anualidades de un Proyecto

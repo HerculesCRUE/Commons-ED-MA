@@ -1,9 +1,6 @@
 ﻿using OAI_PMH.Models.SGI.ActividadDocente;
 using OAI_PMH.Models.SGI.FormacionAcademica;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace OAI_PMH.Models.SGI.PersonalData
 {
