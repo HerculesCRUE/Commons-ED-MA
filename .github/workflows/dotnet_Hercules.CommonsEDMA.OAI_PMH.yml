@@ -1,4 +1,4 @@
-name: Build_Sonar_HerculesCommonsEDMA.OAI_PMH
+name: Build_Sonar_Hercules.CommonsEDMA.OAI_PMH
 on:
   push:
     branches:
@@ -39,9 +39,9 @@ jobs:
       - name: Build and analyze
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
-          SONAR_TOKEN_Hercules_CommonsEDMA_OAI_PMH: ${{ secrets.SONAR_TOKEN_Hercules_CommonsEDMA_OAI_PMH }}
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN_HERCULES_COMMONSEDMA_OAI_PMH }}
         shell: powershell
         run: |
-          .\.sonar\scanner\dotnet-sonarscanner begin /k:"Hercules.CommonsEDMA.OAI_PMH" /o:"herculescrue" /d:sonar.OAI_PMH="${{ secrets.SONAR_TOKEN_Hercules_CommonsEDMA_OAI_PMH }}" /d:sonar.host.url="https://sonarcloud.io"
-          dotnet build src/Hercules.CommonsEDMA.OAI_PMH/OAI_PMH
-          .\.sonar\scanner\dotnet-sonarscanner end /d:sonar.OAI_PMH="${{ secrets.SONAR_TOKEN_Hercules_CommonsEDMA_OAI_PMH }}"
+          .\.sonar\scanner\dotnet-sonarscanner begin /k:"Hercules.CommonsEDMA.OAI_PMH" /o:"herculescrue" /d:sonar.login="${{ secrets.SONAR_TOKEN_HERCULES_COMMONSEDMA_OAI_PMH }}" /d:sonar.host.url="https://sonarcloud.io"
+          dotnet build src/Hercules.CommonsEDMA.OAI_PMH
+          .\.sonar\scanner\dotnet-sonarscanner end /d:sonar.login="${{ secrets.SONAR_TOKEN_HERCULES_COMMONSEDMA_OAI_PMH }}"
