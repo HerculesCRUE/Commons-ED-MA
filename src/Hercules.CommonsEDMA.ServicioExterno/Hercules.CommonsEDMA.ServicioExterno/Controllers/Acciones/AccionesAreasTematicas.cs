@@ -117,13 +117,10 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
                     throw new Exception("No hay configuración para el tipo '" + pType + "'");
                     //break;
             }
-            if (!string.IsNullOrEmpty(pAnioInicio) || !string.IsNullOrEmpty(pAnioInicio))
+            if (!string.IsNullOrEmpty(pAnioInicio))
             {
                 filtroElemento += $@"?documento dct:issued ?fecha.";
-                if (!string.IsNullOrEmpty(pAnioInicio))
-                {
-                    filtroElemento += $@"FILTER(?fecha>={pAnioInicio}0000000000)";
-                }
+                filtroElemento += $@"FILTER(?fecha>={pAnioInicio}0000000000)";
                 if (!string.IsNullOrEmpty(pAnioFin))
                 {
                     filtroElemento += $@"FILTER(?fecha<={int.Parse(pAnioFin) + 1}0000000000)";
@@ -236,13 +233,10 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
                     throw new Exception("No hay configuración para el tipo '" + pType + "'");
                     break;
             }
-            if (!string.IsNullOrEmpty(pAnioInicio) || !string.IsNullOrEmpty(pAnioInicio))
+            if (!string.IsNullOrEmpty(pAnioInicio))
             {
                 filtroElemento += $@"?documento dct:issued ?fecha.";
-                if (!string.IsNullOrEmpty(pAnioInicio))
-                {
-                    filtroElemento += $@"FILTER(?fecha>={pAnioInicio}0000000000)";
-                }
+                filtroElemento += $@"FILTER(?fecha>={pAnioInicio}0000000000)";
                 if (!string.IsNullOrEmpty(pAnioFin))
                 {
                     filtroElemento += $@"FILTER(?fecha<={int.Parse(pAnioFin) + 1}0000000000)";

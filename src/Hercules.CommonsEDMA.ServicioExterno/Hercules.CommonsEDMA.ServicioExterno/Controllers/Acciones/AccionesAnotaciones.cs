@@ -198,7 +198,9 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
                     typesRO.Add(longs);
 
                 }
-                catch (Exception ext) { new Exception("Ha habido un error al procesar los datos de los usuarios:" + ext.Message); }
+                catch (Exception ext) {
+                    throw new ArgumentException("Ha habido un error al procesar los datos de los usuarios: " + ext.Message);
+                }
 
             });
 
@@ -346,9 +348,17 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
             SparqlObject sparqlObject = resourceApi.VirtuosoQueryMultipleGraph(select, where,new List<string>() { "annotation", "person" });
 
             // Carga los datos en el objeto
-            if (sparqlObject != null && sparqlObject.results != null && sparqlObject.results.bindings != null && sparqlObject.results.bindings.Count != 0)
+            if (sparqlObject != null && sparqlObject.results != null && sparqlObject.results.bindings != null && sparqlObject.results.bindings.Count > 0)
             {
-                return sparqlObject.results.bindings.FirstOrDefault()["usuario"].value.Split("/").LastOrDefault();
+                Dictionary<string, SparqlObject.Data> bind = sparqlObject.results.bindings.FirstOrDefault();
+                if (bind != null && bind.ContainsKey("usuario"))
+                {
+                    return bind["usuario"].value.Split("/").LastOrDefault();
+                }
+                else
+                {
+                    return "";
+                }
             }
             else
             {
