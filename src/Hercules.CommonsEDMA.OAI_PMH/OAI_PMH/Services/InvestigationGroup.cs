@@ -27,7 +27,7 @@ namespace OAI_PMH.Services
             RestClient client = new(pConfig.GetConfigSGI() + "/api/sgicsp/grupos/modificados-ids?q=fechaModificacion=ge=\"" + from + "\""); // TODO: Revisar url petición.
             client.AddDefaultHeader("Authorization", "Bearer " + accessToken);
             var request = new RestRequest(Method.GET);
-            IRestResponse response = Token.httpCall(client, request,true);
+            IRestResponse response = Token.httpCall(client, request);
 
             if (!string.IsNullOrEmpty(response.Content))
             {

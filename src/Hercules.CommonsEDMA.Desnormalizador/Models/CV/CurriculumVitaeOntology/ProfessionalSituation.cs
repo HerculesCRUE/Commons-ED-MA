@@ -36,10 +36,5 @@ namespace CurriculumvitaeOntology
 			base.GetProperties();
 			propList.Add(new StringOntologyProperty("roh:title", this.Roh_title));
 		}
-
-		internal override void GetEntities()
-		{
-			base.GetEntities();
-		} 
 	}
 }

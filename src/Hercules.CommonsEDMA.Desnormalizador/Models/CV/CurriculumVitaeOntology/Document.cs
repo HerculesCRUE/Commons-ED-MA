@@ -38,14 +38,8 @@ namespace CurriculumvitaeOntology
 
 		internal override void GetProperties()
 		{
-			base.GetProperties();
 			propList.Add(new StringOntologyProperty("dc:title", this.Dc_title));
 			propList.Add(new StringOntologyProperty("foaf:topic", this.Foaf_topic));
 		}
-
-		internal override void GetEntities()
-		{
-			base.GetEntities();
-		} 
 	}
 }

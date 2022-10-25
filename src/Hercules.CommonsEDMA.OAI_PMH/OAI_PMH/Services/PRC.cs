@@ -20,7 +20,7 @@ namespace OAI_PMH.Services
             RestClient client = new(pConfig.GetConfigSGI() + "/api/sgiprc/producciones-cientificas/estado?q=fechaEstado=ge=\"" + from + "\"");
             client.AddDefaultHeader("Authorization", "Bearer " + accessToken);
             var request = new RestRequest(Method.GET);
-            IRestResponse response = Token.httpCall(client, request, true);
+            IRestResponse response = Token.httpCall(client, request);
             if (!string.IsNullOrEmpty(response.Content))
             {
                 List<ProduccionCientificaEstado> listaValidaciones = JsonConvert.DeserializeObject<List<ProduccionCientificaEstado>>(response.Content);
