@@ -1342,7 +1342,7 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
             listSources.Add("Hércules", "http://w3id.org/roh/citationCount");
             listSources.Add("Semantic Scholar", "http://w3id.org/roh/semanticScholarcitationCount");
 
-            foreach (string filter in filters)
+            foreach (string filter in filtersActualizarHIndex)
             {
                 //Eliminamos HIndex
                 while (true)
