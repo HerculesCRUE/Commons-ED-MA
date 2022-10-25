@@ -295,6 +295,7 @@ namespace Harvester
                         #region - PRC
                         case "PRC":
                             bool eliminar = false;
+                            //Identificador de la publicacion
                             string idRecurso = id.Split("||")[0];
                             if (id.StartsWith("Eliminar_"))
                             {
