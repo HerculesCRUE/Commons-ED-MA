@@ -313,46 +313,60 @@ namespace Harvester
 
                             foreach (KeyValuePair<string, string> item in data)
                             {
-                                if (!string.IsNullOrEmpty(item.Value))
+                                //Consigo los miembros del documento
+                                List<string> listadoMiembros = UtilidadesLoader.ConseguirMiembrosPRC(idRecurso);
+
+                                if (string.IsNullOrEmpty(item.Value))
                                 {
-                                    if (item.Key == "projectAux")
+                                    continue;
+                                }
+
+                                if (item.Key == "projectAux")
+                                {
+                                    Borrado(guid, "http://w3id.org/roh/projectAux", item.Value);
+
+                                    UtilidadesLoader.EnvioNotificacionesMiembros(listadoMiembros, "harvesterPRC", "NOTIFICACION_ELIMINACION_PRC");
+
+                                }
+                                else if (item.Key == "validationStatusPRC" && item.Value != "validado")
+                                {
+                                    switch (estado)
                                     {
-                                        Borrado(guid, "http://w3id.org/roh/projectAux", item.Value);
+                                        case "VALIDADO":
+                                            Modificacion(guid, "http://w3id.org/roh/validationStatusPRC", "validado", item.Value);
+                                            UtilidadesLoader.EnvioNotificacionesMiembros(listadoMiembros, "harvesterPRC", "NOTIFICACION_MODIFICACION_VALIDADA_PRC");
+                                            break;
+                                        default:
+                                            Modificacion(guid, "http://w3id.org/roh/validationStatusPRC", "rechazado", item.Value);
+                                            UtilidadesLoader.EnvioNotificacionesMiembros(listadoMiembros, "harvesterPRC", "NOTIFICACION_MODIFICACION_RECHAZADA_PRC");
+                                            break;
                                     }
-                                    else if (item.Key == "validationStatusPRC" && item.Value != "validado")
+                                }
+                                else if (item.Key == "validationDeleteStatusPRC" && eliminar)
+                                {
+                                    if (estado.Equals("VALIDADO"))
                                     {
-                                        switch (estado)
-                                        {
-                                            case "VALIDADO":
-                                                Modificacion(guid, "http://w3id.org/roh/validationStatusPRC", "validado", item.Value);
-                                                break;
-                                            default:
-                                                Modificacion(guid, "http://w3id.org/roh/validationStatusPRC", "rechazado", item.Value);
-                                                break;
-                                        }
-                                    }
-                                    else if (item.Key == "validationDeleteStatusPRC" && eliminar)
-                                    {
-                                        if (estado.Equals("VALIDADO"))
-                                        {
-                                            BorrarPublicacion(idRecurso);
-                                        }
-                                        else
-                                        {
-                                            Modificacion(guid, "http://w3id.org/roh/validationDeleteStatusPRC", "rechazado", item.Value);
-                                        }
+                                        BorrarPublicacion(idRecurso);
+                                        UtilidadesLoader.EnvioNotificacionesMiembros(listadoMiembros, "harvesterPRC", "NOTIFICACION_ELIMINACION_ACEPTADA_PRC");
                                     }
                                     else
                                     {
-                                        switch (estado)
-                                        {
-                                            case "VALIDADO":
-                                                Modificacion(guid, "http://w3id.org/roh/isValidated", "true", item.Value);
-                                                break;
-                                            default:
-                                                Modificacion(guid, "http://w3id.org/roh/isValidated", "false", item.Value);
-                                                break;
-                                        }
+                                        Modificacion(guid, "http://w3id.org/roh/validationDeleteStatusPRC", "rechazado", item.Value);
+                                        UtilidadesLoader.EnvioNotificacionesMiembros(listadoMiembros, "harvesterPRC", "NOTIFICACION_ELIMINACION_RECHAZADA_PRC");
+                                    }
+                                }
+                                else
+                                {
+                                    switch (estado)
+                                    {
+                                        case "VALIDADO":
+                                            Modificacion(guid, "http://w3id.org/roh/isValidated", "true", item.Value);
+                                            UtilidadesLoader.EnvioNotificacionesMiembros(listadoMiembros, "harvesterPRC", "NOTIFICACION_VALIDADO_PRC");
+                                            break;
+                                        default:
+                                            Modificacion(guid, "http://w3id.org/roh/isValidated", "false", item.Value);
+                                            UtilidadesLoader.EnvioNotificacionesMiembros(listadoMiembros, "harvesterPRC", "NOTIFICACION_NOVALIDADO_PRC");
+                                            break;
                                     }
                                 }
                             }
@@ -418,7 +432,7 @@ namespace Harvester
                                 //Selecciono los miembros del grupo para ser notificados
                                 List<string> listadoMiembros = grupo.equipo.Select(x => x.personaRef).ToList();
                                 UtilidadesLoader.EnvioNotificacionesMiembros(listadoMiembros, "harvesterGrupo", "NOTIFICACION_GRUPO" + idGnossGrupo);
-                                
+
                                 pDicIdentificadores["group"].Add(idGnossGrupo);
                                 File.AppendAllText(pDicRutas[pSet][directorioPendientes], id + Environment.NewLine);
                             }
@@ -434,7 +448,7 @@ namespace Harvester
             }
         }
 
-        public void ProcesarItems(string pRutaProcesado,string pRutaPendiente)
+        public void ProcesarItems(string pRutaProcesado, string pRutaPendiente)
         {
             // Guardado de IDs erróneos.
             List<string> identificadoresACargar = File.ReadAllLines(pRutaPendiente).Distinct().ToList();
@@ -443,7 +457,8 @@ namespace Harvester
             if (identificadoresNoCargados.Count > 0)
             {
                 File.WriteAllText(pRutaPendiente, string.Join("\n", identificadoresNoCargados));
-            }else if (File.Exists(pRutaPendiente))
+            }
+            else if (File.Exists(pRutaPendiente))
             {
                 File.Delete(pRutaPendiente);
             }
