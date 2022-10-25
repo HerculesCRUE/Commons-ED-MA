@@ -27,7 +27,7 @@ namespace OAI_PMH.Services
             RestClient client = new(pConfig.GetConfigSGI() + "/api/sgicsp/autorizaciones/modificadas-ids?q=fechaModificacion=ge=\"" + from + "\"");
             client.AddDefaultHeader("Authorization", "Bearer " + accessToken);
             var request = new RestRequest(Method.GET);
-            IRestResponse response = Token.httpCall(client, request,true);
+            IRestResponse response = Token.httpCall(client, request);
             if (!string.IsNullOrEmpty(response.Content))
             {
                 idList = response.Content[1..^1].Split(',').ToList();

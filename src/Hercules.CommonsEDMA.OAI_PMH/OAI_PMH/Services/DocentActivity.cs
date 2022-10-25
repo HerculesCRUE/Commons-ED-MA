@@ -19,7 +19,7 @@ namespace OAI_PMH.Services
             RestClient client = new(pConfig.GetConfigSGI() + "/api/sgp/actividad-docente/modificados-ids?q=fechaModificacion=ge=\"" + from + "\"" + ";tipoActividad=\"030.040.000.000\"");
             client.AddDefaultHeader("Authorization", "Bearer " + accessToken);
             var request = new RestRequest(Method.GET);
-            IRestResponse response = Token.httpCall(client, request,true);
+            IRestResponse response = Token.httpCall(client, request);
 
             if (!string.IsNullOrEmpty(response.Content))
             {
@@ -60,7 +60,7 @@ namespace OAI_PMH.Services
             RestClient client = new(pConfig.GetConfigSGI() + "/api/sgp/actividad-docente/modificados-ids?q=fechaModificacion=ge=\"" + from + "\"" + ";tipoActividad=\"030.010.000.000\"");
             client.AddDefaultHeader("Authorization", "Bearer " + accessToken);
             var request = new RestRequest(Method.GET);
-            IRestResponse response = Token.httpCall(client, request,true);
+            IRestResponse response = Token.httpCall(client, request);
 
             if (!string.IsNullOrEmpty(response.Content))
             {
@@ -101,7 +101,7 @@ namespace OAI_PMH.Services
             RestClient client = new(pConfig.GetConfigSGI() + "/api/sgp/actividad-docente/modificados-ids?q=fechaModificacion=ge=\"" + from + "\"" + ";tipoActividad=\"030.060.000.000\"");
             client.AddDefaultHeader("Authorization", "Bearer " + accessToken);
             var request = new RestRequest(Method.GET);
-            IRestResponse response = Token.httpCall(client, request,true);
+            IRestResponse response = Token.httpCall(client, request);
 
             if (!String.IsNullOrEmpty(response.Content))
             {

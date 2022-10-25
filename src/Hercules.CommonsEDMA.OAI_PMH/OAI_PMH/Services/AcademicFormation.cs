@@ -19,7 +19,7 @@ namespace OAI_PMH.Services
             RestClient client = new(pConfig.GetConfigSGI() + "/api/sgp/formacion/modificados-ids?q=fechaModificacion=ge=\"" + from + "\"" + ";tipoFormacion=\"020.010.010.000\"");
             client.AddDefaultHeader("Authorization", "Bearer " + accessToken);
             var request = new RestRequest(Method.GET);
-            IRestResponse response = Token.httpCall(client, request,true);
+            IRestResponse response = Token.httpCall(client, request);
 
             if (!string.IsNullOrEmpty(response.Content))
             {
@@ -60,7 +60,7 @@ namespace OAI_PMH.Services
             RestClient client = new(pConfig.GetConfigSGI() + "/api/sgp/formacion/modificados-ids?q=fechaModificacion=ge=\"" + from + "\"" + ";tipoFormacion=\"020.010.020.000\"");
             client.AddDefaultHeader("Authorization", "Bearer " + accessToken);
             var request = new RestRequest(Method.GET);
-            IRestResponse response = Token.httpCall(client, request,true);
+            IRestResponse response = Token.httpCall(client, request);
 
             if (!String.IsNullOrEmpty(response.Content))
             {
@@ -101,7 +101,7 @@ namespace OAI_PMH.Services
             RestClient client = new(pConfig.GetConfigSGI() + "/api/sgp/formacion/modificados-ids?q=fechaModificacion=ge=\"" + from + "\"" + ";tipoFormacion=\"020.010.030.000\"");
             client.AddDefaultHeader("Authorization", "Bearer " + accessToken);
             var request = new RestRequest(Method.GET);
-            IRestResponse response = Token.httpCall(client, request,true);
+            IRestResponse response = Token.httpCall(client, request);
 
             if (!String.IsNullOrEmpty(response.Content))
             {
@@ -142,7 +142,7 @@ namespace OAI_PMH.Services
             RestClient client = new(pConfig.GetConfigSGI() + "/api/sgp/formacion/modificados-ids?q=fechaModificacion=ge=\"" + from + "\"" + ";tipoFormacion=\"020.020.000.000\"");
             client.AddDefaultHeader("Authorization", "Bearer " + accessToken);
             var request = new RestRequest(Method.GET);
-            IRestResponse response = Token.httpCall(client, request,true);
+            IRestResponse response = Token.httpCall(client, request);
 
             if (!String.IsNullOrEmpty(response.Content))
             {

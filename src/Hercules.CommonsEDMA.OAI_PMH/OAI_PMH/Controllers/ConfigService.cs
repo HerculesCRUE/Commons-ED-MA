@@ -20,20 +20,12 @@ namespace OAI_PMH.Controllers
         private string UsernameTokenPII { get; set; }
         private string PasswordTokenPII { get; set; }
 
+        // Logs
+        private string LogPath { get; set; }
+
         // URLs
         private string url_sgi { get; set; }
         private string ConfigUrl { get; set; }
-        private string UrlBaseToken { get; set; }
-        private string UrlBaseProyecto { get; set; }
-        private string UrlBasePersona { get; set; }
-        private string UrlBaseOrganizacion { get; set; }
-        private string UrlBaseEstructuraOrganica { get; set; }
-        private string UrlBaseFormacionAcademica { get; set; }
-        private string UrlBaseActividadDocente { get; set; }
-        private string UrlBaseProduccionCientifica { get; set; }
-        private string UrlBaseAutorizacion { get; set; }
-        private string UrlBaseInvenciones { get; set; }
-        private string UrlBaseGrupos { get; set; }
 
         /// <summary>
         /// Constructor.
@@ -41,6 +33,31 @@ namespace OAI_PMH.Controllers
         public ConfigService()
         {
             configuracion = new ConfigurationBuilder().AddJsonFile($@"{System.AppDomain.CurrentDomain.SetupInformation.ApplicationBase}appsettings.json").Build();
+        }
+
+        /// <summary>
+        /// Obtiene la ruta de Logs.
+        /// </summary>
+        /// <returns></returns>
+        public string GetLogPath()
+        {
+            if (string.IsNullOrEmpty(LogPath))
+            {
+                string connectionString = string.Empty;
+                IDictionary environmentVariables = Environment.GetEnvironmentVariables();
+                if (environmentVariables.Contains("LogPath"))
+                {
+                    connectionString = environmentVariables["LogPath"] as string;
+                }
+                else
+                {
+                    connectionString = configuracion["LogPath"];
+                }
+
+                LogPath = connectionString;
+            }
+
+            return LogPath;
         }
 
         /// <summary>
