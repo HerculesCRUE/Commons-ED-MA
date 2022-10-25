@@ -42,6 +42,6 @@ jobs:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN_Hercules_CommonsEDMA_Harvester }}
         shell: powershell
         run: |
-          .\.sonar\scanner\dotnet-sonarscanner begin /k:"HerculesCRUE_HerculesED" /o:"herculescrue" /d:sonar.login="${{ secrets.SONAR_TOKEN_Hercules_CommonsEDMA_Harvester }}" /d:sonar.host.url="https://sonarcloud.io"
+          .\.sonar\scanner\dotnet-sonarscanner begin /k:"Hercules.CommonsEDMA.Harvester" /o:"herculescrue" /d:sonar.login="${{ secrets.SONAR_TOKEN_Hercules_CommonsEDMA_Harvester }}" /d:sonar.host.url="https://sonarcloud.io"
           dotnet build src/Hercules.CommonsEDMA.Harvester
           .\.sonar\scanner\dotnet-sonarscanner end /d:sonar.login="${{ secrets.SONAR_TOKEN_Hercules_CommonsEDMA_Harvester }}"
