@@ -40,19 +40,19 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
         /// <param name="pDocuments">ID de documentos</param>
         public void ActualizarDocumentosValidados(List<string> pDocuments = null)
         {
-            HashSet<string> filters = new HashSet<string>();
+            HashSet<string> filtersDocumentosValidados = new HashSet<string>();
             if (pDocuments != null && pDocuments.Count > 0)
             {
-                filters.Add($" FILTER(?document in (<{string.Join(">,<", pDocuments)}>))");
+                filtersDocumentosValidados.Add($" FILTER(?document in (<{string.Join(">,<", pDocuments)}>))");
             }
-            if (filters.Count == 0)
+            if (filtersDocumentosValidados.Count == 0)
             {
-                filters.Add("");
+                filtersDocumentosValidados.Add("");
             }
             //Eliminamos los duplicados
             EliminarDuplicados("document", "http://purl.org/ontology/bibo/Document", "http://w3id.org/roh/isValidated");
 
-            foreach (string filter in filters)
+            foreach (string filter in filtersDocumentosValidados)
             {
                 while (true)
                 {
@@ -120,21 +120,21 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
         /// <param name="pDocuments">IDs de los documentos</param>
         public void ActualizarPertenenciaGrupos(List<string> pGroups = null, List<string> pDocuments = null)
         {
-            HashSet<string> filters = new HashSet<string>();
+            HashSet<string> filtersPertenenciaGrupos = new HashSet<string>();
             if (pGroups != null && pGroups.Count > 0)
             {
-                filters.Add($" FILTER(?grupo in (<{string.Join(">,<", pGroups)}>))");
+                filtersPertenenciaGrupos.Add($" FILTER(?grupo in (<{string.Join(">,<", pGroups)}>))");
             }
             if (pDocuments != null && pDocuments.Count > 0)
             {
-                filters.Add($" FILTER(?doc in (<{string.Join(">,<", pDocuments)}>))");
+                filtersPertenenciaGrupos.Add($" FILTER(?doc in (<{string.Join(">,<", pDocuments)}>))");
             }
-            if (filters.Count == 0)
+            if (filtersPertenenciaGrupos.Count == 0)
             {
-                filters.Add("");
+                filtersPertenenciaGrupos.Add("");
             }
 
-            foreach (string filter in filters)
+            foreach (string filter in filtersPertenenciaGrupos)
             {
                 while (true)
                 {
@@ -306,20 +306,20 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
         /// <param name="pDocuments">IDs de documentos</param>
         public void ActualizarNumeroCitasMaximas(List<string> pDocuments = null)
         {
-            HashSet<string> filters = new HashSet<string>();
+            HashSet<string> filtersNumeroCitasMaximas = new HashSet<string>();
             if (pDocuments != null && pDocuments.Count > 0)
             {
-                filters.Add($" FILTER(?document in (<{string.Join(">,<", pDocuments)}>))");
+                filtersNumeroCitasMaximas.Add($" FILTER(?document in (<{string.Join(">,<", pDocuments)}>))");
             }
-            if (filters.Count == 0)
+            if (filtersNumeroCitasMaximas.Count == 0)
             {
-                filters.Add("");
+                filtersNumeroCitasMaximas.Add("");
             }
 
             //Eliminamos los duplicados
             EliminarDuplicados("document", "http://purl.org/ontology/bibo/Document", "http://w3id.org/roh/citationCount");
 
-            foreach (string filter in filters)
+            foreach (string filter in filtersNumeroCitasMaximas)
             {
                 //Actualizamos los datos
                 while (true)
@@ -389,17 +389,17 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
             //external-->http://w3id.org/roh/externalKnowledgeArea
             //enriched-->http://w3id.org/roh/enrichedKnowledgeArea
 
-            HashSet<string> filters = new HashSet<string>();
+            HashSet<string> filtersAreasDocumentos = new HashSet<string>();
             if (pDocuments != null && pDocuments.Count > 0)
             {
-                filters.Add($" FILTER(?document in (<{string.Join(">,<", pDocuments)}>))");
+                filtersAreasDocumentos.Add($" FILTER(?document in (<{string.Join(">,<", pDocuments)}>))");
             }
-            if (filters.Count == 0)
+            if (filtersAreasDocumentos.Count == 0)
             {
-                filters.Add("");
+                filtersAreasDocumentos.Add("");
             }
 
-            foreach (string filter in filters)
+            foreach (string filter in filtersAreasDocumentos)
             {
                 //Eliminamos las categorías duplicadas
                 while (true)
@@ -584,16 +584,16 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
             //external-->http://w3id.org/roh/externalKeywords
             //enriched-->http://w3id.org/roh/enrichedKeywords@@@http://w3id.org/roh/title
 
-            HashSet<string> filters = new HashSet<string>();
+            HashSet<string> filtersTagsDocumentos = new HashSet<string>();
             if (pDocuments != null && pDocuments.Count > 0)
             {
-                filters.Add($" FILTER(?document in (<{string.Join(">,<", pDocuments)}>))");
+                filtersTagsDocumentos.Add($" FILTER(?document in (<{string.Join(">,<", pDocuments)}>))");
             }
-            if (filters.Count == 0)
+            if (filtersTagsDocumentos.Count == 0)
             {
-                filters.Add("");
+                filtersTagsDocumentos.Add("");
             }
-            foreach (string filter in filters)
+            foreach (string filter in filtersTagsDocumentos)
             {
                 while (true)
                 {
@@ -726,18 +726,18 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
         /// <param name="pDocuments">ID de documentos</param>
         public void ActualizarAnios(List<string> pDocuments = null)
         {
-            HashSet<string> filters = new HashSet<string>();
+            HashSet<string> filtersAnios = new HashSet<string>();
             if (pDocuments != null && pDocuments.Count > 0)
             {
-                filters.Add($" FILTER(?document in (<{string.Join(">,<", pDocuments)}>))");
+                filtersAnios.Add($" FILTER(?document in (<{string.Join(">,<", pDocuments)}>))");
             }
-            if (filters.Count == 0)
+            if (filtersAnios.Count == 0)
             {
-                filters.Add("");
+                filtersAnios.Add("");
             }
 
             EliminarDuplicados("document", "http://purl.org/ontology/bibo/Document", "http://w3id.org/roh/year");
-            foreach (string filter in filters)
+            foreach (string filter in filtersAnios)
             {
                 //Inserciones
                 while (true)
@@ -784,7 +784,6 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
             }
         }
 
-
         /// <summary>
         /// Insertamos en la propiedad http://w3id.org/roh/genderIP de los http://purl.org/ontology/bibo/Document 
         /// el gender del primer autor (si esta validado) y '-' si el primer autor no está validado o está validado pero no tiene gender
@@ -792,20 +791,20 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
         /// <param name="pDocuments">ID de documentos</param>
         public void ActualizarGenderAutorPrincipal(List<string> pDocuments = null)
         {
-            HashSet<string> filters = new HashSet<string>();
+            HashSet<string> filtersGenderAutorPrincipal = new HashSet<string>();
             if (pDocuments != null && pDocuments.Count > 0)
             {
-                filters.Add($" FILTER(?document in (<{string.Join(">,<", pDocuments)}>))");
+                filtersGenderAutorPrincipal.Add($" FILTER(?document in (<{string.Join(">,<", pDocuments)}>))");
             }
-            if (filters.Count == 0)
+            if (filtersGenderAutorPrincipal.Count == 0)
             {
-                filters.Add("");
+                filtersGenderAutorPrincipal.Add("");
             }
 
             //Eliminamos los duplicados
             EliminarDuplicados("document", "http://purl.org/ontology/bibo/Document", "http://w3id.org/roh/genderIP");
 
-            foreach (string filter in filters)
+            foreach (string filter in filtersGenderAutorPrincipal)
             {
                 while (true)
                 {
@@ -884,20 +883,20 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
         /// <param name="pDocuments">ID de documentos</param>
         public void ActualizarPositionAutorPrincipal(List<string> pDocuments = null)
         {
-            HashSet<string> filters = new HashSet<string>();
+            HashSet<string> filtersPositionAutorPrincipal = new HashSet<string>();
             if (pDocuments != null && pDocuments.Count > 0)
             {
-                filters.Add($" FILTER(?document in (<{string.Join(">,<", pDocuments)}>))");
+                filtersPositionAutorPrincipal.Add($" FILTER(?document in (<{string.Join(">,<", pDocuments)}>))");
             }
-            if (filters.Count == 0)
+            if (filtersPositionAutorPrincipal.Count == 0)
             {
-                filters.Add("");
+                filtersPositionAutorPrincipal.Add("");
             }
 
             //Eliminamos los duplicados
             EliminarDuplicados("document", "http://purl.org/ontology/bibo/Document", "http://w3id.org/roh/positionIP");
 
-            foreach (string filter in filters)
+            foreach (string filter in filtersPositionAutorPrincipal)
             {
                 //Actualizamos los datos
                 while (true)
@@ -970,16 +969,16 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
         /// <param name="pDocuments">ID de documentos</param>
         public void EliminarDocumentosSinAutoresSGI(List<string> pDocuments = null)
         {
-            HashSet<string> filters = new HashSet<string>();
+            HashSet<string> filtersDocumentosSinAutoresSGI = new HashSet<string>();
             if (pDocuments != null && pDocuments.Count > 0)
             {
-                filters.Add($" FILTER(?document in (<{string.Join(">,<", pDocuments)}>))");
+                filtersDocumentosSinAutoresSGI.Add($" FILTER(?document in (<{string.Join(">,<", pDocuments)}>))");
             }
-            if (filters.Count == 0)
+            if (filtersDocumentosSinAutoresSGI.Count == 0)
             {
-                filters.Add("");
+                filtersDocumentosSinAutoresSGI.Add("");
             }
-            foreach (string filter in filters)
+            foreach (string filter in filtersDocumentosSinAutoresSGI)
             {
                 while (true)
                 {
@@ -1021,17 +1020,17 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
         /// <param name="pDocuments">IDs de los documentos</param>
         public void ModificarNombreRevistaDesnormalizado(List<string> pDocuments = null)
         {
-            HashSet<string> filters = new HashSet<string>();
+            HashSet<string> filtersNombreRevistaDesnormalizado = new HashSet<string>();
             if (pDocuments != null && pDocuments.Count > 0)
             {
-                filters.Add($" FILTER(?document in (<{string.Join(">,<", pDocuments)}>))");
+                filtersNombreRevistaDesnormalizado.Add($" FILTER(?document in (<{string.Join(">,<", pDocuments)}>))");
             }
-            if (filters.Count == 0)
+            if (filtersNombreRevistaDesnormalizado.Count == 0)
             {
-                filters.Add("");
+                filtersNombreRevistaDesnormalizado.Add("");
             }
 
-            foreach (string filter in filters)
+            foreach (string filter in filtersNombreRevistaDesnormalizado)
             {
                 while (true)
                 {
@@ -1076,17 +1075,17 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
         /// <param name="pDocuments">IDs de los documentos</param>
         public void ModificarEditorialRevistaDesnormalizado(List<string> pDocuments = null)
         {
-            HashSet<string> filters = new HashSet<string>();
+            HashSet<string> filtersEditorialRevistaDesnormalizado = new HashSet<string>();
             if (pDocuments != null && pDocuments.Count > 0)
             {
-                filters.Add($" FILTER(?document in (<{string.Join(">,<", pDocuments)}>))");
+                filtersEditorialRevistaDesnormalizado.Add($" FILTER(?document in (<{string.Join(">,<", pDocuments)}>))");
             }
-            if (filters.Count == 0)
+            if (filtersEditorialRevistaDesnormalizado.Count == 0)
             {
-                filters.Add("");
+                filtersEditorialRevistaDesnormalizado.Add("");
             }
 
-            foreach (string filter in filters)
+            foreach (string filter in filtersEditorialRevistaDesnormalizado)
             {
                 while (true)
                 {
@@ -1131,17 +1130,17 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
         /// <param name="pDocuments">IDs de los documentos</param>
         public void ModificarISSNRevistaDesnormalizado(List<string> pDocuments = null)
         {
-            HashSet<string> filters = new HashSet<string>();
+            HashSet<string> filtersISSNRevistaDesnormalizado = new HashSet<string>();
             if (pDocuments != null && pDocuments.Count > 0)
             {
-                filters.Add($" FILTER(?document in (<{string.Join(">,<", pDocuments)}>))");
+                filtersISSNRevistaDesnormalizado.Add($" FILTER(?document in (<{string.Join(">,<", pDocuments)}>))");
             }
-            if (filters.Count == 0)
+            if (filtersISSNRevistaDesnormalizado.Count == 0)
             {
-                filters.Add("");
+                filtersISSNRevistaDesnormalizado.Add("");
             }
 
-            foreach (string filter in filters)
+            foreach (string filter in filtersISSNRevistaDesnormalizado)
             {
                 while (true)
                 {
@@ -1185,17 +1184,17 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
         /// <param name="pDocuments">IDs de documentos</param>
         public void ActualizarIndicesImpacto(List<string> pDocuments = null)
         {
-            HashSet<string> filters = new HashSet<string>();
+            HashSet<string> filtersIndicesImpacto = new HashSet<string>();
             if (pDocuments != null && pDocuments.Count > 0)
             {
-                filters.Add($" FILTER(?document in (<{string.Join(">,<", pDocuments)}>))");
+                filtersIndicesImpacto.Add($" FILTER(?document in (<{string.Join(">,<", pDocuments)}>))");
             }
-            if (filters.Count == 0)
+            if (filtersIndicesImpacto.Count == 0)
             {
-                filters.Add("");
+                filtersIndicesImpacto.Add("");
             }
 
-            foreach (string filter in filters)
+            foreach (string filter in filtersIndicesImpacto)
             {
                 //Insertamos las auxiliares http://w3id.org/roh/ImpactIndex con categorías
                 while (true)
@@ -1679,20 +1678,20 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
         /// <param name="pDocuments">IDs de documentos</param>
         public void ActualizarNumeroVinculados(List<string> pDocuments = null)
         {
-            HashSet<string> filters = new HashSet<string>();
+            HashSet<string> filtersNumeroVinculados = new HashSet<string>();
             if (pDocuments != null && pDocuments.Count > 0)
             {
-                filters.Add($" FILTER(?document in (<{string.Join(">,<", pDocuments)}>))");
+                filtersNumeroVinculados.Add($" FILTER(?document in (<{string.Join(">,<", pDocuments)}>))");
             }
-            if (filters.Count == 0)
+            if (filtersNumeroVinculados.Count == 0)
             {
-                filters.Add("");
+                filtersNumeroVinculados.Add("");
             }
 
             //Eliminamos los duplicados
             EliminarDuplicados("document", "http://purl.org/ontology/bibo/Document", "http://w3id.org/roh/linkedCount");
 
-            foreach (string filter in filters)
+            foreach (string filter in filtersNumeroVinculados)
             {
                 //Actualizamos los datos
                 while (true)
@@ -1750,7 +1749,6 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
             }
         }
                
-
         /// <summary>
         /// Método para inserción múltiple de indices de impacto
         /// </summary>
