@@ -18,7 +18,6 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers
     {
 
 
-
         /// <summary>
         /// Controlador para obtener los thesaurus usados por las ofertas.
         /// </summary>
