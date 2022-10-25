@@ -1469,7 +1469,7 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
                     }
                 }
 
-                
+
 
                 while (true)
                 {
@@ -1588,7 +1588,7 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
                     {
                         break;
                     }
-                }               
+                }
 
                 while (true)
                 {
@@ -1627,9 +1627,9 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
                 while (true)
                 {
                     //Actualizamos H-Index
-                    int limit = 500;
-                    String select = @"select ?person ?hIndexCargado ?hIndexACargar";
-                    String where = @$"where{{
+                    int limitActualizarHIndex = 500;
+                    String selectActualizarHIndex = @"select ?person ?hIndexCargado ?hIndexACargar";
+                    String whereActualizarHIndex = @$"where{{
                                 ?person a <http://xmlns.com/foaf/0.1/Person>.     
                                 {filter}
                                 OPTIONAL
@@ -1642,10 +1642,10 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
                                     ?hIndexEntity <http://w3id.org/roh/citationSource> 'Hércules'.    
                                 }}
                                 FILTER(?hIndexCargado!= ?hIndexACargar OR (!BOUND(?hIndexCargado) AND BOUND(?hIndexACargar)) OR (BOUND(?hIndexCargado) AND !BOUND(?hIndexACargar)) )
-                            }} limit {limit}";
-                    SparqlObject resultado = mResourceApi.VirtuosoQuery(select, where, "person");
+                            }} limit {limitActualizarHIndex}";
+                    SparqlObject resultadoActualizarHIndex = mResourceApi.VirtuosoQuery(selectActualizarHIndex, whereActualizarHIndex, "person");
 
-                    Parallel.ForEach(resultado.results.bindings, new ParallelOptions { MaxDegreeOfParallelism = ActualizadorBase.numParallel }, fila =>
+                    Parallel.ForEach(resultadoActualizarHIndex.results.bindings, new ParallelOptions { MaxDegreeOfParallelism = ActualizadorBase.numParallel }, fila =>
                     {
                         string person = fila["person"].value;
                         string hIndexACargar = fila["hIndexACargar"].value;
@@ -1657,7 +1657,7 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
                         ActualizadorTriple(person, "http://w3id.org/roh/h-index", hIndexCargado, hIndexACargar);
                     });
 
-                    if (resultado.results.bindings.Count != limit)
+                    if (resultadoActualizarHIndex.results.bindings.Count != limitActualizarHIndex)
                     {
                         break;
                     }
@@ -1680,24 +1680,20 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
                     {
                         string idAux = mResourceApi.GraphsUrl + "items/HIndexCitationCount_" + guid.ToString().ToLower() + "_" + Guid.NewGuid().ToString().ToLower();
                         string person = fila["person"].value;
-                        {
-                            TriplesToInclude t = new();
-                            t.Predicate = "http://w3id.org/roh/hIndexCitationCount|http://w3id.org/roh/citationCount";
-                            t.NewValue = idAux + "|" + fila["citationCount"].value;
-                            triples[guid].Add(t);
-                        }
-                        {
-                            TriplesToInclude t = new();
-                            t.Predicate = "http://w3id.org/roh/hIndexCitationCount|http://w3id.org/roh/publicationNumber";
-                            t.NewValue = idAux + "|" + fila["publicationNumber"].value;
-                            triples[guid].Add(t);
-                        }
-                        {
-                            TriplesToInclude t = new();
-                            t.Predicate = "http://w3id.org/roh/hIndexCitationCount|http://w3id.org/roh/citationSource";
-                            t.NewValue = idAux + "|" + fila["citationSource"].value;
-                            triples[guid].Add(t);
-                        }
+                        TriplesToInclude t = new();
+                        t.Predicate = "http://w3id.org/roh/hIndexCitationCount|http://w3id.org/roh/citationCount";
+                        t.NewValue = idAux + "|" + fila["citationCount"].value;
+                        triples[guid].Add(t);
+
+                        TriplesToInclude tpublicationNumber = new();
+                        tpublicationNumber.Predicate = "http://w3id.org/roh/hIndexCitationCount|http://w3id.org/roh/publicationNumber";
+                        tpublicationNumber.NewValue = idAux + "|" + fila["publicationNumber"].value;
+                        triples[guid].Add(tpublicationNumber);
+
+                        TriplesToInclude tcitationSource = new();
+                        tcitationSource.Predicate = "http://w3id.org/roh/hIndexCitationCount|http://w3id.org/roh/citationSource";
+                        tcitationSource.NewValue = idAux + "|" + fila["citationSource"].value;
+                        triples[guid].Add(tcitationSource);
                     }
                     if (triples[guid].Count > 0)
                     {
@@ -1783,18 +1779,16 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
                     {
                         string idAux = mResourceApi.GraphsUrl + "items/HIndex_" + guid.ToString().ToLower() + "_" + Guid.NewGuid().ToString().ToLower();
                         string person = fila["person"].value;
-                        {
-                            TriplesToInclude t = new();
-                            t.Predicate = "http://w3id.org/roh/hIndex|http://w3id.org/roh/h-index";
-                            t.NewValue = idAux + "|" + fila["hIndexCalculado"].value;
-                            triples[guid].Add(t);
-                        }
-                        {
-                            TriplesToInclude t = new();
-                            t.Predicate = "http://w3id.org/roh/hIndex|http://w3id.org/roh/citationSource";
-                            t.NewValue = idAux + "|" + fila["source"].value;
-                            triples[guid].Add(t);
-                        }
+
+                        TriplesToInclude thIndexCalculado = new();
+                        thIndexCalculado.Predicate = "http://w3id.org/roh/hIndex|http://w3id.org/roh/h-index";
+                        thIndexCalculado.NewValue = idAux + "|" + fila["hIndexCalculado"].value;
+                        triples[guid].Add(thIndexCalculado);
+
+                        TriplesToInclude tsource = new();
+                        tsource.Predicate = "http://w3id.org/roh/hIndex|http://w3id.org/roh/citationSource";
+                        tsource.NewValue = idAux + "|" + fila["source"].value;
+                        triples[guid].Add(tsource);
                     }
                     if (triples[guid].Count > 0)
                     {
