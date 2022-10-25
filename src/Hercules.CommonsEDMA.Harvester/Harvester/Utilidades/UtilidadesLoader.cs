@@ -204,9 +204,9 @@ namespace Utilidades
                     }
                 }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-
+                mResourceApi.Log.Error(ex.Message);
             }
         }
 
@@ -232,7 +232,9 @@ namespace Utilidades
                     }
                 }
             }
-            catch (Exception) { 
+            catch (Exception ex)
+            {
+                mResourceApi.Log.Error(ex.Message);
                 return listadoMiembros; 
             }
 
