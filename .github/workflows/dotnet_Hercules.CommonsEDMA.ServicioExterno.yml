@@ -39,9 +39,9 @@ jobs:
       - name: Build and analyze
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
-          SONAR_TOKEN_Hercules_CommonsEDMA_ServicioExterno: ${{ secrets.SONAR_TOKEN_Hercules_CommonsEDMA_ServicioExterno }}
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN_HERCULES_COMMONSEDMA_SERVICIOEXTERNO }}
         shell: powershell
         run: |
-          .\.sonar\scanner\dotnet-sonarscanner begin /k:"Hercules.CommonsEDMA.ServicioExterno" /o:"herculescrue" /d:sonar.ServicioExterno="${{ secrets.SONAR_TOKEN_Hercules_CommonsEDMA_ServicioExterno }}" /d:sonar.host.url="https://sonarcloud.io"
-          dotnet build src/Hercules.CommonsEDMA.ServicioExterno/Hercules.CommonsEDMA.ServicioExterno
-          .\.sonar\scanner\dotnet-sonarscanner end /d:sonar.ServicioExterno="${{ secrets.SONAR_TOKEN_Hercules_CommonsEDMA_ServicioExterno }}"
+          .\.sonar\scanner\dotnet-sonarscanner begin /k:"Hercules.CommonsEDMA.ServicioExterno" /o:"herculescrue" /d:sonar.login="${{ secrets.SONAR_TOKEN_HERCULES_COMMONSEDMA_SERVICIOEXTERNO }}" /d:sonar.host.url="https://sonarcloud.io"
+          dotnet build src/Hercules.CommonsEDMA.ServicioExterno/Hercules.CommonsEDMA.ServicioExterno -c Release 
+          .\.sonar\scanner\dotnet-sonarscanner end /d:sonar.login="${{ secrets.SONAR_TOKEN_HERCULES_COMMONSEDMA_SERVICIOEXTERNO }}"

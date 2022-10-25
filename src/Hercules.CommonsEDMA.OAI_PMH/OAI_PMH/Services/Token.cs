@@ -21,7 +21,15 @@ namespace OAI_PMH.Services
         public static string CheckToken(ConfigService pConfig, bool pTokenGestor = true, bool pTokenPii = false)
         {
             _ConfigService = pConfig;
-            string token = GetToken(pConfig, pTokenGestor, pTokenPii);
+            string token = string.Empty;
+            try
+            {
+                token = GetToken(pConfig, pTokenGestor, pTokenPii);
+            }
+            catch
+            {
+                
+            }
             return token;
             // TODO: Revisar por qué no actualiza bien el token si aparentemente parece que el código está correcto.
             //if (lastUpdate != default)
