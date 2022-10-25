@@ -293,7 +293,7 @@ namespace Harvester
                                     if (fila.ContainsKey("person"))
                                     {
                                         //Notifico a los miembros
-                                        UtilidadesLoader.EnvioNotificacion("NOTIFICACION_GRUPO", fila["person"].value, "harvesterProyecto" + idGnossProy);
+                                        UtilidadesLoader.EnvioNotificacion(fila["person"].value, "harvesterProyecto", "NOTIFICACION_GRUPO " + idGnossProy);
                                     }
                                 }
 
@@ -401,7 +401,7 @@ namespace Harvester
                                 {
                                     if (fila.ContainsKey("person"))
                                     {
-                                        UtilidadesLoader.EnvioNotificacion("NOTIFICACION_AUTORIZACION", fila["person"].value, "harvesterAutorizacion");
+                                        UtilidadesLoader.EnvioNotificacion(fila["person"].value, "harvesterAutorizacion", "NOTIFICACION_AUTORIZACION");
                                     }
                                 }
 
@@ -426,21 +426,23 @@ namespace Harvester
                                 //Selecciono los inventores para ser notificados
                                 List<string> listadoMiembros = invencion.inventores.Select(x => x.inventorRef).ToList();
                                 //listadoMiembros.AddRange(invencion.titulares.Select(x => x.titularRef).ToList());
-
-                                //Busco en BBDD (solo los que tengan CV)
-                                string select = "SELECT ?person";
-                                string where = $@"WHERE {{
+                                if (listadoMiembros.Any())
+                                {
+                                    //Busco en BBDD (solo los que tengan CV)
+                                    string select = "SELECT ?person";
+                                    string where = $@"WHERE {{
                                                     ?cv <http://w3id.org/roh/cvOf> ?person .
                                                     ?person <http://w3id.org/roh/crisIdentifier> ?crisID .
                                                     FILTER(?crisID in ('{string.Join("','", listadoMiembros)}'))
                                                 }}";
-                                SparqlObject resultData = mResourceApi.VirtuosoQueryMultipleGraph(select, where, new List<string> { "curriculumvitae", "person" });
-                                foreach (Dictionary<string, Data> fila in resultData.results.bindings)
-                                {
-                                    if (fila.ContainsKey("person"))
+                                    SparqlObject resultData = mResourceApi.VirtuosoQueryMultipleGraph(select, where, new List<string> { "curriculumvitae", "person" });
+                                    foreach (Dictionary<string, Data> fila in resultData.results.bindings)
                                     {
-                                        //Notifico a los miembros
-                                        UtilidadesLoader.EnvioNotificacion("NOTIFICACION_GRUPO", fila["person"].value, "harvesterInvencion" + idGnossInv);
+                                        if (fila.ContainsKey("person"))
+                                        {
+                                            //Notifico a los miembros
+                                            UtilidadesLoader.EnvioNotificacion(fila["person"].value, "harvesterInvencion","NOTIFICACION_GRUPO " + idGnossInv);
+                                        }
                                     }
                                 }
 
@@ -464,21 +466,23 @@ namespace Harvester
 
                                 //Selecciono los miembros del grupo para ser notificados
                                 List<string> listadoMiembros = grupo.equipo.Select(x => x.personaRef).ToList();
-
-                                //Busco los miembros en BBDD (solo los que tengan CV)
-                                string select = "SELECT ?person";
-                                string where = $@"WHERE {{
+                                if (listadoMiembros.Any())
+                                {
+                                    //Busco los miembros en BBDD (solo los que tengan CV)
+                                    string select = "SELECT ?person";
+                                    string where = $@"WHERE {{
                                                     ?cv <http://w3id.org/roh/cvOf> ?person .
                                                     ?person <http://w3id.org/roh/crisIdentifier> ?crisID .
                                                     FILTER(?crisID in ('{string.Join("','", listadoMiembros)}'))
                                                 }}";
-                                SparqlObject resultData = mResourceApi.VirtuosoQueryMultipleGraph(select, where, new List<string> { "curriculumvitae", "person" });
-                                foreach (Dictionary<string, Data> fila in resultData.results.bindings)
-                                {
-                                    if (fila.ContainsKey("person"))
+                                    SparqlObject resultData = mResourceApi.VirtuosoQueryMultipleGraph(select, where, new List<string> { "curriculumvitae", "person" });
+                                    foreach (Dictionary<string, Data> fila in resultData.results.bindings)
                                     {
-                                        //Notifico a los miembros
-                                        UtilidadesLoader.EnvioNotificacion("NOTIFICACION_GRUPO", fila["person"].value, "harvesterGrupo" + idGnossGrupo);
+                                        if (fila.ContainsKey("person"))
+                                        {
+                                            //Notifico a los miembros
+                                            UtilidadesLoader.EnvioNotificacion(fila["person"].value, "harvesterGrupo", "NOTIFICACION_GRUPO" + idGnossGrupo);
+                                        }
                                     }
                                 }
 
