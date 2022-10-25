@@ -1,6 +1,7 @@
 ﻿using Gnoss.ApiWrapper;
 using Microsoft.Extensions.Hosting;
 using System;
+using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -24,8 +25,8 @@ namespace Harvester
         {
             try
             {
-                ResourceApi mResourceApi = new ResourceApi($@"{AppDomain.CurrentDomain.SetupInformation.ApplicationBase}Config\OAuthV3.config");
-                CommunityApi mCommunityApi = new CommunityApi($@"{AppDomain.CurrentDomain.SetupInformation.ApplicationBase}Config\OAuthV3.config");
+                ResourceApi mResourceApi = new ResourceApi($@"{AppDomain.CurrentDomain.SetupInformation.ApplicationBase}Config{Path.DirectorySeparatorChar}ConfigOAuth{Path.DirectorySeparatorChar}OAuthV3.config");
+                CommunityApi mCommunityApi = new CommunityApi($@"{AppDomain.CurrentDomain.SetupInformation.ApplicationBase}Config{Path.DirectorySeparatorChar}ConfigOAuth{Path.DirectorySeparatorChar}OAuthV3.config");
                 Loader loader = new Loader(mResourceApi);
                 loader.LoadMainEntities();
             }
