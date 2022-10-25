@@ -129,14 +129,11 @@ namespace OAI_PMH.Models.SGI.Organization
         /// <summary>
         /// Obtiene datos adicionales de organizaciones.
         /// </summary>
-        /// <param name="pHarvesterServices"></param>
-        /// <param name="pConfig"></param>
         /// <param name="pResourceApi"></param>
         /// <param name="pIdGnoss"></param>
         /// <returns></returns>
-        public static OrganizacionBBDD GetOrganizacionBBDD(IHarvesterServices pHarvesterServices, ReadConfig pConfig, ResourceApi pResourceApi, string pIdGnoss)
+        public static OrganizacionBBDD GetOrganizacionBBDD(ResourceApi pResourceApi, string pIdGnoss)
         {
-            SparqlObject resultadoQuery = null;
             StringBuilder select = new StringBuilder(), where = new StringBuilder();
 
             // Consulta sparql.
@@ -147,7 +144,7 @@ namespace OAI_PMH.Models.SGI.Organization
             where.Append($@"OPTIONAL{{<{pIdGnoss}> <https://www.w3.org/2006/vcard/ns#locality> ?localidad. }}");
             where.Append("} ");
 
-            resultadoQuery = pResourceApi.VirtuosoQuery(select.ToString(), where.ToString(), "organization");
+            SparqlObject resultadoQuery = pResourceApi.VirtuosoQuery(select.ToString(), where.ToString(), "organization");
 
             if (resultadoQuery != null && resultadoQuery.results != null && resultadoQuery.results.bindings != null && resultadoQuery.results.bindings.Count > 0)
             {
