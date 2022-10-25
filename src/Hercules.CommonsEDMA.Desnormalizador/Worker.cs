@@ -57,85 +57,6 @@ namespace Hercules.CommonsEDMA.Desnormalizador
         /// <returns></returns>
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
         {
-            //TODO Eliminar
-            bool insertarColas = false;
-            if (insertarColas)
-            {
-                Temporal.InsertarColaDesnormalizador(new RabbitServiceWriterDenormalizer(_configService), _configService.GetDenormalizerQueueRabbit());
-            }
-
-
-            //TODO eliminar
-            bool crearPersonas = false;
-            if (crearPersonas)
-            {
-                Temporal.CrearPersonas();
-            }
-
-            //TODO eliminar
-            bool vincularDocsProy = false;
-            if (vincularDocsProy)
-            {
-                Temporal.ActualizarPertenenciaDocumentosProyectos();
-            }
-
-            //TODO eliminar
-            bool eliminarCVs = false;
-            if (eliminarCVs)
-            {
-                Temporal.EliminarCVs();
-            }
-
-            //TODO eliminar entidades cv
-            bool eliminarEntidadesCV = false;
-            if (eliminarEntidadesCV)
-            {
-                Temporal.EliminarEntidadesCV();
-            }
-
-            //TODO 
-            bool elimnarDatosAdicionales = false;
-            if (elimnarDatosAdicionales)
-            {
-                Temporal.ElimnarDatosAdicionales();
-            }
-
-
-            //TODO eliminar
-            bool DesnormalizarTodo = false;
-            if (DesnormalizarTodo)
-            {
-                while (true)
-                {
-                    ActualizadorEDMA.DesnormalizarTodo(_configService);
-                    Thread.Sleep(5000);
-                }
-            }
-
-            //TODO eliminar
-            bool DesnormalizarCV = false;
-            if (DesnormalizarCV)
-            {
-                while (true)
-                {
-                    ActualizadorEDMA.DesnormalizarDatosCV();
-                    Thread.Sleep(5000);
-                }
-            }
-
-            //TODO eliminar
-            bool ActualizarPertenenciaProyectosTemporal = false;
-            if (ActualizarPertenenciaProyectosTemporal)
-            {
-                while (true)
-                {
-                    Temporal.ActualizarPertenenciaProyectosTemporal();
-                    Thread.Sleep(5000);
-                }
-            }
-
-            
-
             ListenToQueue();            
 
             ProcessItemsPendingCV();
@@ -145,10 +66,6 @@ namespace Hercules.CommonsEDMA.Desnormalizador
             ProcessItemsError();
 
             ProcessComplete();
-
-
-
-            //TODO exporatciones pendientes que lleven mucho tiempo pasar a error
         }
 
 
