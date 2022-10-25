@@ -215,6 +215,7 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers
             SparqlObject sparqlObject = resourceApi.VirtuosoQueryMultipleGraph(select, where, new List<string> { "document", "maindocument" });
 
             Quote quote = new();
+            quote.autores = new();
 
             foreach (Dictionary<string, SparqlObject.Data> fila in sparqlObject.results.bindings)
             {
