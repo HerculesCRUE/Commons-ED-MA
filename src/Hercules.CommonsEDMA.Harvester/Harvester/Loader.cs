@@ -23,6 +23,7 @@ using System.Text;
 using System.Threading;
 using System.Xml.Serialization;
 using Utilidades;
+using static Gnoss.ApiWrapper.ApiModel.SparqlObject;
 
 namespace Harvester
 {
@@ -396,6 +397,27 @@ namespace Harvester
                             {
                                 grupo = Grupo.GetGrupoSGI(harvesterServices, _Config, id, pDicRutas);
                                 string idGnossGrupo = grupo.Cargar(harvesterServices, pConfig, mResourceApi, "group", pDicIdentificadores, pDicRutas, pRabbitConf);
+
+                                //Selecciono los miembros del grupo para ser notificados
+                                List<string> listadoMiembros = grupo.equipo.Select(x => x.personaRef).ToList();
+
+                                //Busco los miembros en BBDD (solo los que tengan CV)
+                                string select = "SELECT ?person";
+                                string where = $@"WHERE {{
+                                                    ?cv <http://w3id.org/roh/cvOf> ?person .
+                                                    ?person <http://w3id.org/roh/crisIdentifier> ?crisID .
+                                                    FILTER(?crisID in ('{string.Join("','", listadoMiembros)}'))
+                                                }}";
+                                SparqlObject resultData = mResourceApi.VirtuosoQueryMultipleGraph(select, where, new List<string> { "curriculumvitae", "person" });
+                                foreach (Dictionary<string, Data> fila in resultData.results.bindings)
+                                {
+                                    if (fila.ContainsKey("person"))
+                                    {
+                                        //Notifico a los miembros
+                                        UtilidadesLoader.EnvioNotificacion("NOTIFICACION_GRUPO", fila["person"].value, "nuevoGrupo" + idGnossGrupo);
+                                    }
+                                }
+
                                 pDicIdentificadores["group"].Add(idGnossGrupo);
                                 File.AppendAllText(pDicRutas[pSet][directorioPendientes], id + Environment.NewLine);
                             }
