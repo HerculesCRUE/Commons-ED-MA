@@ -10,6 +10,14 @@
 |Cambios de la Versión|Versión inicial|
 
 # Introducción
+[![SonarCloud](https://sonarcloud.io/images/project_badges/sonarcloud-white.svg)](https://sonarcloud.io/summary/new_code?id=Hercules.CommonsEDMA.Harvester)
+
+[![Bugs](https://sonarcloud.io/api/project_badges/measure?project=Hercules.CommonsEDMA.Harvester&metric=bugs)](https://sonarcloud.io/summary/new_code?id=Hercules.CommonsEDMA.Harvester)
+[![Reliability Rating](https://sonarcloud.io/api/project_badges/measure?project=Hercules.CommonsEDMA.Harvester&metric=reliability_rating)](https://sonarcloud.io/summary/new_code?id=Hercules.CommonsEDMA.Harvester)
+[![Reliability Rating](https://sonarcloud.io/api/project_badges/measure?project=Hercules.CommonsEDMA.Harvester&metric=reliability_rating)](https://sonarcloud.io/summary/new_code?id=Hercules.CommonsEDMA.Harvester)
+[![Duplicated Lines (%)](https://sonarcloud.io/api/project_badges/measure?project=Hercules.CommonsEDMA.Harvester&metric=duplicated_lines_density)](https://sonarcloud.io/summary/new_code?id=Hercules.CommonsEDMA.Harvester)
+
+
 El servicio de carga de datos por parte del SGI se ocupa de recolectar los datos recibidos por medio del [servicio OAI-PMH](https://github.com/HerculesCRUE/HerculesED/tree/main/src/Hercules.ED.OAI_PMH) y cargarlos en base de datos (BBDD). 
 Este servicio automatiza la lectura de los ficheros recibidos por medio del [servicio OAI-PMH](https://github.com/HerculesCRUE/HerculesED/tree/main/src/Hercules.ED.OAI_PMH) y la inserción de los datos en BBDD.
 
