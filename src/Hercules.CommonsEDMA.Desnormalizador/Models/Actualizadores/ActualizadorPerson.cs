@@ -32,21 +32,21 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
         public void ActualizarPertenenciaLineas(List<string> pPersons = null, List<string> pGroups = null)
         {
             string fechaActual = DateTime.UtcNow.ToString("yyyyMMdd000000");
-            HashSet<string> filters = new HashSet<string>();
+            HashSet<string> filtersActualizarPertenenciaLineas = new HashSet<string>();
             if (pPersons != null && pPersons.Count > 0)
             {
-                filters.Add($" FILTER(?person in (<{string.Join(">,<", pPersons)}>))");
+                filtersActualizarPertenenciaLineas.Add($" FILTER(?person in (<{string.Join(">,<", pPersons)}>))");
             }
             if (pGroups != null && pGroups.Count > 0)
             {
-                filters.Add($" ?groupAux <http://vivoweb.org/ontology/core#relates> ?relatesAux. ?relatesAux <http://w3id.org/roh/roleOf> ?person.  FILTER(?groupAux in (<{string.Join(">,<", pGroups)}>))");
+                filtersActualizarPertenenciaLineas.Add($" ?groupAux <http://vivoweb.org/ontology/core#relates> ?relatesAux. ?relatesAux <http://w3id.org/roh/roleOf> ?person.  FILTER(?groupAux in (<{string.Join(">,<", pGroups)}>))");
             }
-            if (filters.Count == 0)
+            if (filtersActualizarPertenenciaLineas.Count == 0)
             {
-                filters.Add("");
+                filtersActualizarPertenenciaLineas.Add("");
             }
 
-            foreach (string filter in filters)
+            foreach (string filter in filtersActualizarPertenenciaLineas)
             {
                 while (true)
                 {
@@ -151,17 +151,17 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
             //Eliminamos los duplicados
             EliminarDuplicados("person", "http://xmlns.com/foaf/0.1/Person", "http://w3id.org/roh/publicationsNumber");
 
-            HashSet<string> filters = new HashSet<string>();
+            HashSet<string> filtersActualizarNumeroPublicacionesValidadas = new HashSet<string>();
             if (pPersons != null && pPersons.Count > 0)
             {
-                filters.Add($" FILTER(?person in (<{string.Join(">,<", pPersons)}>))");
+                filtersActualizarNumeroPublicacionesValidadas.Add($" FILTER(?person in (<{string.Join(">,<", pPersons)}>))");
             }
-            if (filters.Count == 0)
+            if (filtersActualizarNumeroPublicacionesValidadas.Count == 0)
             {
-                filters.Add("");
+                filtersActualizarNumeroPublicacionesValidadas.Add("");
             }
 
-            foreach (string filter in filters)
+            foreach (string filter in filtersActualizarNumeroPublicacionesValidadas)
             {
                 //Actualizamos los datos
                 while (true)
@@ -222,17 +222,17 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
             //Eliminamos los duplicados
             EliminarDuplicados("person", "http://xmlns.com/foaf/0.1/Person", "http://w3id.org/roh/publicPublicationsNumber");
 
-            HashSet<string> filters = new HashSet<string>();
+            HashSet<string> filtersActualizarNumeroPublicacionesPublicas = new HashSet<string>();
             if (pPersons != null && pPersons.Count > 0)
             {
-                filters.Add($" FILTER(?person in (<{string.Join(">,<", pPersons)}>))");
+                filtersActualizarNumeroPublicacionesPublicas.Add($" FILTER(?person in (<{string.Join(">,<", pPersons)}>))");
             }
-            if (filters.Count == 0)
+            if (filtersActualizarNumeroPublicacionesPublicas.Count == 0)
             {
-                filters.Add("");
+                filtersActualizarNumeroPublicacionesPublicas.Add("");
             }
 
-            foreach (string filter in filters)
+            foreach (string filter in filtersActualizarNumeroPublicacionesPublicas)
             {
 
                 //Actualizamos los datos
@@ -307,21 +307,21 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
             //Eliminamos los duplicados
             EliminarDuplicados("person", "http://xmlns.com/foaf/0.1/Person", "http://w3id.org/roh/ipNumber");
 
-            HashSet<string> filters = new HashSet<string>();
+            HashSet<string> filtersActualizarNumeroIPProyectos = new HashSet<string>();
             if (pPersons != null && pPersons.Count > 0)
             {
-                filters.Add($" FILTER(?person in (<{string.Join(">,<", pPersons)}>))");
+                filtersActualizarNumeroIPProyectos.Add($" FILTER(?person in (<{string.Join(">,<", pPersons)}>))");
             }
             if (pProjects != null && pProjects.Count > 0)
             {
-                filters.Add($" ?project <http://vivoweb.org/ontology/core#relates> ?relatesAux. ?relatesAux <http://w3id.org/roh/roleOf> ?person.  FILTER(?project in (<{string.Join(">,<", pProjects)}>))");
+                filtersActualizarNumeroIPProyectos.Add($" ?project <http://vivoweb.org/ontology/core#relates> ?relatesAux. ?relatesAux <http://w3id.org/roh/roleOf> ?person.  FILTER(?project in (<{string.Join(">,<", pProjects)}>))");
             }
-            if (filters.Count == 0)
+            if (filtersActualizarNumeroIPProyectos.Count == 0)
             {
-                filters.Add("");
+                filtersActualizarNumeroIPProyectos.Add("");
             }
 
-            foreach (string filter in filters)
+            foreach (string filter in filtersActualizarNumeroIPProyectos)
             {
 
                 //Actualizamos los datos
@@ -385,21 +385,21 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
             //Eliminamos los duplicados
             EliminarDuplicados("person", "http://xmlns.com/foaf/0.1/Person", "http://w3id.org/roh/projectsNumber");
 
-            HashSet<string> filters = new HashSet<string>();
+            HashSet<string> filtersActualizarNumeroProyectosValidados = new HashSet<string>();
             if (pPersons != null && pPersons.Count > 0)
             {
-                filters.Add($" FILTER(?person in (<{string.Join(">,<", pPersons)}>))");
+                filtersActualizarNumeroProyectosValidados.Add($" FILTER(?person in (<{string.Join(">,<", pPersons)}>))");
             }
             if (pProjects != null && pProjects.Count > 0)
             {
-                filters.Add($" ?project <http://vivoweb.org/ontology/core#relates> ?relatesAux. ?relatesAux <http://w3id.org/roh/roleOf> ?person.  FILTER(?project in (<{string.Join(">,<", pProjects)}>))");
+                filtersActualizarNumeroProyectosValidados.Add($" ?project <http://vivoweb.org/ontology/core#relates> ?relatesAux. ?relatesAux <http://w3id.org/roh/roleOf> ?person.  FILTER(?project in (<{string.Join(">,<", pProjects)}>))");
             }
-            if (filters.Count == 0)
+            if (filtersActualizarNumeroProyectosValidados.Count == 0)
             {
-                filters.Add("");
+                filtersActualizarNumeroProyectosValidados.Add("");
             }
 
-            foreach (string filter in filters)
+            foreach (string filter in filtersActualizarNumeroProyectosValidados)
             {
 
                 //Actualizamos los datos
@@ -461,21 +461,21 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
             //Eliminamos los duplicados
             EliminarDuplicados("person", "http://xmlns.com/foaf/0.1/Person", "http://w3id.org/roh/publicProjectsNumber");
 
-            HashSet<string> filters = new HashSet<string>();
+            HashSet<string> filtersActualizarNumeroProyectosPublicos = new HashSet<string>();
             if (pPersons != null && pPersons.Count > 0)
             {
-                filters.Add($" FILTER(?person in (<{string.Join(">,<", pPersons)}>))");
+                filtersActualizarNumeroProyectosPublicos.Add($" FILTER(?person in (<{string.Join(">,<", pPersons)}>))");
             }
             if (pProjects != null && pProjects.Count > 0)
             {
-                filters.Add($" ?project <http://vivoweb.org/ontology/core#relates> ?relatesAux. ?relatesAux <http://w3id.org/roh/roleOf> ?person.  FILTER(?project in (<{string.Join(">,<", pProjects)}>))");
+                filtersActualizarNumeroProyectosPublicos.Add($" ?project <http://vivoweb.org/ontology/core#relates> ?relatesAux. ?relatesAux <http://w3id.org/roh/roleOf> ?person.  FILTER(?project in (<{string.Join(">,<", pProjects)}>))");
             }
-            if (filters.Count == 0)
+            if (filtersActualizarNumeroProyectosPublicos.Count == 0)
             {
-                filters.Add("");
+                filtersActualizarNumeroProyectosPublicos.Add("");
             }
 
-            foreach (string filter in filters)
+            foreach (string filter in filtersActualizarNumeroProyectosPublicos)
             {
 
                 //Actualizamos los datos
@@ -541,21 +541,21 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
             //Eliminamos los duplicados
             EliminarDuplicados("person", "http://xmlns.com/foaf/0.1/Person", "http://w3id.org/roh/publicResearchObjectsNumber");
 
-            HashSet<string> filters = new HashSet<string>();
+            HashSet<string> filtersActualizarNumeroResearchObjectsPublicos = new HashSet<string>();
             if (pPersons != null && pPersons.Count > 0)
             {
-                filters.Add($" FILTER(?person in (<{string.Join(">,<", pPersons)}>))");
+                filtersActualizarNumeroResearchObjectsPublicos.Add($" FILTER(?person in (<{string.Join(">,<", pPersons)}>))");
             }
             if (pResearchObjects != null && pResearchObjects.Count > 0)
             {
-                filters.Add($" ?project <http://vivoweb.org/ontology/core#relates> ?relatesAux. ?relatesAux <http://w3id.org/roh/roleOf> ?person.  FILTER(?project in (<{string.Join(">,<", pResearchObjects)}>))");
+                filtersActualizarNumeroResearchObjectsPublicos.Add($" ?project <http://vivoweb.org/ontology/core#relates> ?relatesAux. ?relatesAux <http://w3id.org/roh/roleOf> ?person.  FILTER(?project in (<{string.Join(">,<", pResearchObjects)}>))");
             }
-            if (filters.Count == 0)
+            if (filtersActualizarNumeroResearchObjectsPublicos.Count == 0)
             {
-                filters.Add("");
+                filtersActualizarNumeroResearchObjectsPublicos.Add("");
             }
 
-            foreach (string filter in filters)
+            foreach (string filter in filtersActualizarNumeroResearchObjectsPublicos)
             {
                 //Actualizamos los datos
                 while (true)
@@ -617,17 +617,17 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
         /// <param name="pPersons">ID de las personas</param>
         public void ActualizarAreasPersonas(List<string> pPersons = null)
         {
-            HashSet<string> filters = new HashSet<string>();
+            HashSet<string> filtersActualizarAreasPersonas = new HashSet<string>();
             if (pPersons != null && pPersons.Count > 0)
             {
-                filters.Add($" FILTER(?person in (<{string.Join(">,<", pPersons)}>))");
+                filtersActualizarAreasPersonas.Add($" FILTER(?person in (<{string.Join(">,<", pPersons)}>))");
             }
-            if (filters.Count == 0)
+            if (filtersActualizarAreasPersonas.Count == 0)
             {
-                filters.Add("");
+                filtersActualizarAreasPersonas.Add("");
             }
 
-            foreach (string filter in filters)
+            foreach (string filter in filtersActualizarAreasPersonas)
             {
                 //Eliminamos las categorías duplicadas
                 while (true)
@@ -815,17 +815,17 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
             //Eliminamos los duplicados
             EliminarDuplicados("person", "http://xmlns.com/foaf/0.1/Person", "http://w3id.org/roh/themedAreasNumber");
 
-            HashSet<string> filters = new HashSet<string>();
+            HashSet<string> filtersActualizarNumeroAreasTematicas = new HashSet<string>();
             if (pPersons != null && pPersons.Count > 0)
             {
-                filters.Add($" FILTER(?person in (<{string.Join(">,<", pPersons)}>))");
+                filtersActualizarNumeroAreasTematicas.Add($" FILTER(?person in (<{string.Join(">,<", pPersons)}>))");
             }
-            if (filters.Count == 0)
+            if (filtersActualizarNumeroAreasTematicas.Count == 0)
             {
-                filters.Add("");
+                filtersActualizarNumeroAreasTematicas.Add("");
             }
 
-            foreach (string filter in filters)
+            foreach (string filter in filtersActualizarNumeroAreasTematicas)
             {
 
                 //Actualizamos los datos
@@ -905,21 +905,21 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
             //Eliminamos los duplicados
             EliminarDuplicados("person", "http://xmlns.com/foaf/0.1/Person", "http://w3id.org/roh/publicCollaboratorsNumber");
 
-            HashSet<string> filters = new HashSet<string>();
+            HashSet<string> filtersActualizarNumeroColaboradoresPublicos = new HashSet<string>();
             if (pPersons != null && pPersons.Count > 0)
             {
-                filters.Add($" FILTER(?person in (<{string.Join(">,<", pPersons)}>))");
+                filtersActualizarNumeroColaboradoresPublicos.Add($" FILTER(?person in (<{string.Join(">,<", pPersons)}>))");
             }
             if (pProjects != null && pProjects.Count > 0)
             {
-                filters.Add($" ?projectAux <http://vivoweb.org/ontology/core#relates> ?relatesAux. ?relatesAux <http://w3id.org/roh/roleOf> ?person.  FILTER(?projectAux in (<{string.Join(">,<", pProjects)}>))");
+                filtersActualizarNumeroColaboradoresPublicos.Add($" ?projectAux <http://vivoweb.org/ontology/core#relates> ?relatesAux. ?relatesAux <http://w3id.org/roh/roleOf> ?person.  FILTER(?projectAux in (<{string.Join(">,<", pProjects)}>))");
             }
-            if (filters.Count == 0)
+            if (filtersActualizarNumeroColaboradoresPublicos.Count == 0)
             {
-                filters.Add("");
+                filtersActualizarNumeroColaboradoresPublicos.Add("");
             }
 
-            foreach (string filter in filters)
+            foreach (string filter in filtersActualizarNumeroColaboradoresPublicos)
             {
                 while (true)
                 {
@@ -1009,22 +1009,22 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
             //Eliminamos los duplicados
             EliminarDuplicados("person", "http://xmlns.com/foaf/0.1/Person", "http://w3id.org/roh/isIPGroupActually");
 
-            HashSet<string> filters = new HashSet<string>();
+            HashSet<string> filtersActualizarIPGruposActuales = new HashSet<string>();
             if (pPersons != null && pPersons.Count > 0)
             {
-                filters.Add($" FILTER(?person in (<{string.Join(">,<", pPersons)}>))");
+                filtersActualizarIPGruposActuales.Add($" FILTER(?person in (<{string.Join(">,<", pPersons)}>))");
             }
             if (pGroups != null && pGroups.Count > 0)
             {
-                filters.Add($" ?groupAux <http://vivoweb.org/ontology/core#relates> ?member. ?member <http://w3id.org/roh/roleOf> ?person. FILTER(?groupAux in (<{string.Join(">,<", pGroups)}>))");
+                filtersActualizarIPGruposActuales.Add($" ?groupAux <http://vivoweb.org/ontology/core#relates> ?member. ?member <http://w3id.org/roh/roleOf> ?person. FILTER(?groupAux in (<{string.Join(">,<", pGroups)}>))");
             }
 
-            if (filters.Count == 0)
+            if (filtersActualizarIPGruposActuales.Count == 0)
             {
-                filters.Add("");
+                filtersActualizarIPGruposActuales.Add("");
             }
 
-            foreach (string filter in filters)
+            foreach (string filter in filtersActualizarIPGruposActuales)
             {
                 while (true)
                 {
@@ -1090,21 +1090,21 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
             //Eliminamos los duplicados
             EliminarDuplicados("person", "http://xmlns.com/foaf/0.1/Person", "http://w3id.org/roh/isIPGroupHistorically");
 
-            HashSet<string> filters = new HashSet<string>();
+            HashSet<string> filtersActualizarIPGruposHistoricos = new HashSet<string>();
             if (pPersons != null && pPersons.Count > 0)
             {
-                filters.Add($" FILTER(?person in (<{string.Join(">,<", pPersons)}>))");
+                filtersActualizarIPGruposHistoricos.Add($" FILTER(?person in (<{string.Join(">,<", pPersons)}>))");
             }
             if (pGroups != null && pGroups.Count > 0)
             {
-                filters.Add($" ?groupAux <http://vivoweb.org/ontology/core#relates> ?member. ?member <http://w3id.org/roh/roleOf> ?person. FILTER(?groupAux in (<{string.Join(">,<", pGroups)}>))");
+                filtersActualizarIPGruposHistoricos.Add($" ?groupAux <http://vivoweb.org/ontology/core#relates> ?member. ?member <http://w3id.org/roh/roleOf> ?person. FILTER(?groupAux in (<{string.Join(">,<", pGroups)}>))");
             }
-            if (filters.Count == 0)
+            if (filtersActualizarIPGruposHistoricos.Count == 0)
             {
-                filters.Add("");
+                filtersActualizarIPGruposHistoricos.Add("");
             }
 
-            foreach (string filter in filters)
+            foreach (string filter in filtersActualizarIPGruposHistoricos)
             {
                 while (true)
                 {
@@ -1167,21 +1167,21 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
             //Eliminamos los duplicados
             EliminarDuplicados("person", "http://xmlns.com/foaf/0.1/Person", "http://w3id.org/roh/isIPProjectActually");
 
-            HashSet<string> filters = new HashSet<string>();
+            HashSet<string> filtersActualizarIPProyectosActuales = new HashSet<string>();
             if (pPersons != null && pPersons.Count > 0)
             {
-                filters.Add($" FILTER(?person in (<{string.Join(">,<", pPersons)}>))");
+                filtersActualizarIPProyectosActuales.Add($" FILTER(?person in (<{string.Join(">,<", pPersons)}>))");
             }
             if (pProjects != null && pProjects.Count > 0)
             {
-                filters.Add($" ?projectAux <http://vivoweb.org/ontology/core#relates> ?member. ?member <http://w3id.org/roh/roleOf> ?person. FILTER(?projectAux in (<{string.Join(">,<", pProjects)}>))");
+                filtersActualizarIPProyectosActuales.Add($" ?projectAux <http://vivoweb.org/ontology/core#relates> ?member. ?member <http://w3id.org/roh/roleOf> ?person. FILTER(?projectAux in (<{string.Join(">,<", pProjects)}>))");
             }
-            if (filters.Count == 0)
+            if (filtersActualizarIPProyectosActuales.Count == 0)
             {
-                filters.Add("");
+                filtersActualizarIPProyectosActuales.Add("");
             }
 
-            foreach (string filter in filters)
+            foreach (string filter in filtersActualizarIPProyectosActuales)
             {
                 while (true)
                 {
@@ -1247,21 +1247,21 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
             //Eliminamos los duplicados
             EliminarDuplicados("person", "http://xmlns.com/foaf/0.1/Person", "http://w3id.org/roh/isIPProjectHistorically");
 
-            HashSet<string> filters = new HashSet<string>();
+            HashSet<string> filtersActualizarIPProyectosHistoricos = new HashSet<string>();
             if (pPersons != null && pPersons.Count > 0)
             {
-                filters.Add($" FILTER(?person in (<{string.Join(">,<", pPersons)}>))");
+                filtersActualizarIPProyectosHistoricos.Add($" FILTER(?person in (<{string.Join(">,<", pPersons)}>))");
             }
             if (pProjects != null && pProjects.Count > 0)
             {
-                filters.Add($" ?projectAux <http://vivoweb.org/ontology/core#relates> ?member. ?member <http://w3id.org/roh/roleOf> ?person. FILTER(?projectAux in (<{string.Join(">,<", pProjects)}>))");
+                filtersActualizarIPProyectosHistoricos.Add($" ?projectAux <http://vivoweb.org/ontology/core#relates> ?member. ?member <http://w3id.org/roh/roleOf> ?person. FILTER(?projectAux in (<{string.Join(">,<", pProjects)}>))");
             }
-            if (filters.Count == 0)
+            if (filtersActualizarIPProyectosHistoricos.Count == 0)
             {
-                filters.Add("");
+                filtersActualizarIPProyectosHistoricos.Add("");
             }
 
-            foreach (string filter in filters)
+            foreach (string filter in filtersActualizarIPProyectosHistoricos)
             {
                 while (true)
                 {
@@ -1319,21 +1319,21 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
         /// <param name="pProjects">ID de los proyectos</param>
         public void ActualizarHIndex(List<string> pDocuments = null, List<string> pPersons = null)
         {
-            HashSet<string> filters = new HashSet<string>();
+            HashSet<string> filtersActualizarHIndex = new HashSet<string>();
             if (pDocuments != null && pDocuments.Count > 0)
             {
-                filters.Add($@" ?document a <http://purl.org/ontology/bibo/Document>.                               
+                filtersActualizarHIndex.Add($@" ?document a <http://purl.org/ontology/bibo/Document>.                               
 	                            ?document <http://purl.org/ontology/bibo/authorList> ?autores.
 	                            ?autores <http://www.w3.org/1999/02/22-rdf-syntax-ns#member> ?person.
                                 FILTER(?document in (<{string.Join(">,<", pDocuments)}>,<>))");
             }
             if (pPersons != null && pPersons.Count > 0)
             {
-                filters.Add($" FILTER(?person in (<{string.Join(">,<", pPersons)}>,<>))");
+                filtersActualizarHIndex.Add($" FILTER(?person in (<{string.Join(">,<", pPersons)}>,<>))");
             }
-            if (filters.Count == 0)
+            if (filtersActualizarHIndex.Count == 0)
             {
-                filters.Add("");
+                filtersActualizarHIndex.Add("");
             }
 
             Dictionary<string, string> listSources = new Dictionary<string, string>();

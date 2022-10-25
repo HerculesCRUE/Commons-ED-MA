@@ -113,36 +113,36 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
         /// <param name="pPatents">ID de patentes</param>
         public void CrearCVs(List<string> pPersons = null, List<string> pProjects = null, List<string> pGroups = null, List<string> pDocuments = null, List<string> pROs = null, List<string> pPatents = null)
         {
-            HashSet<string> filters = new HashSet<string>();
+            HashSet<string> filtersCrearCVs = new HashSet<string>();
             if (pPersons != null && pPersons.Count > 0)
             {
-                filters.Add($" FILTER(?person in (<{string.Join(">,<", pPersons)}>))");
+                filtersCrearCVs.Add($" FILTER(?person in (<{string.Join(">,<", pPersons)}>))");
             }
             if (pProjects != null && pProjects.Count > 0)
             {
-                filters.Add($" ?projectAux <http://vivoweb.org/ontology/core#relates> ?relatesAux. ?relatesAux <http://w3id.org/roh/roleOf> ?person.  FILTER(?projectAux in (<{string.Join(">,<", pProjects)}>))");
+                filtersCrearCVs.Add($" ?projectAux <http://vivoweb.org/ontology/core#relates> ?relatesAux. ?relatesAux <http://w3id.org/roh/roleOf> ?person.  FILTER(?projectAux in (<{string.Join(">,<", pProjects)}>))");
             }
             if (pGroups != null && pGroups.Count > 0)
             {
-                filters.Add($" ?groupAux <http://vivoweb.org/ontology/core#relates> ?relatesAux. ?relatesAux <http://w3id.org/roh/roleOf> ?person.  FILTER(?groupAux in (<{string.Join(">,<", pGroups)}>))");
+                filtersCrearCVs.Add($" ?groupAux <http://vivoweb.org/ontology/core#relates> ?relatesAux. ?relatesAux <http://w3id.org/roh/roleOf> ?person.  FILTER(?groupAux in (<{string.Join(">,<", pGroups)}>))");
             }
             if (pDocuments != null && pDocuments.Count > 0)
             {
-                filters.Add($" ?docAux <http://purl.org/ontology/bibo/authorList> ?autoresAux. ?autoresAux <http://www.w3.org/1999/02/22-rdf-syntax-ns#member> ?person.  FILTER(?docAux in (<{string.Join(">,<", pDocuments)}>))");
+                filtersCrearCVs.Add($" ?docAux <http://purl.org/ontology/bibo/authorList> ?autoresAux. ?autoresAux <http://www.w3.org/1999/02/22-rdf-syntax-ns#member> ?person.  FILTER(?docAux in (<{string.Join(">,<", pDocuments)}>))");
             }
             if (pROs != null && pROs.Count > 0)
             {
-                filters.Add($" ?roAux <http://purl.org/ontology/bibo/authorList> ?autoresAux. ?autoresAux <http://www.w3.org/1999/02/22-rdf-syntax-ns#member> ?person.  FILTER(?roAux in (<{string.Join(">,<", pROs)}>))");
+                filtersCrearCVs.Add($" ?roAux <http://purl.org/ontology/bibo/authorList> ?autoresAux. ?autoresAux <http://www.w3.org/1999/02/22-rdf-syntax-ns#member> ?person.  FILTER(?roAux in (<{string.Join(">,<", pROs)}>))");
             }
             if (pPatents != null && pPatents.Count > 0)
             {
-                filters.Add($" ?patentAux <http://purl.org/ontology/bibo/authorList> ?autoresAux. ?autoresAux <http://www.w3.org/1999/02/22-rdf-syntax-ns#member> ?person.  FILTER(?patentAux in (<{string.Join(">,<", pPatents)}>))");
+                filtersCrearCVs.Add($" ?patentAux <http://purl.org/ontology/bibo/authorList> ?autoresAux. ?autoresAux <http://www.w3.org/1999/02/22-rdf-syntax-ns#member> ?person.  FILTER(?patentAux in (<{string.Join(">,<", pPatents)}>))");
             }
-            if (filters.Count == 0)
+            if (filtersCrearCVs.Count == 0)
             {
-                filters.Add("");
+                filtersCrearCVs.Add("");
             }
-            foreach (string filter in filters)
+            foreach (string filter in filtersCrearCVs)
             {
                 while (true)
                 {
@@ -207,22 +207,22 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
         /// <param name="pCVs">IDs del CV</param>
         public void ModificarDocumentos(List<string> pPersons = null, List<string> pDocuments = null, List<string> pCVs = null)
         {
-            HashSet<string> filters = new HashSet<string>();
+            HashSet<string> filtersModificarDocumentos = new HashSet<string>();
             if (pPersons != null && pPersons.Count > 0)
             {
-                filters.Add($" FILTER(?person in (<{string.Join(">,<", pPersons)}>))");
+                filtersModificarDocumentos.Add($" FILTER(?person in (<{string.Join(">,<", pPersons)}>))");
             }
             if (pDocuments != null && pDocuments.Count > 0)
             {
-                filters.Add($" FILTER(?document in (<{string.Join(">,<", pDocuments)}>))");
+                filtersModificarDocumentos.Add($" FILTER(?document in (<{string.Join(">,<", pDocuments)}>))");
             }
             if (pCVs != null && pCVs.Count > 0)
             {
-                filters.Add($" FILTER(?cv in (<{string.Join(">,<", pCVs)}>))");
+                filtersModificarDocumentos.Add($" FILTER(?cv in (<{string.Join(">,<", pCVs)}>))");
             }
-            if (filters.Count == 0)
+            if (filtersModificarDocumentos.Count == 0)
             {
-                filters.Add("");
+                filtersModificarDocumentos.Add("");
             }
 
             foreach (string filter in filters)
@@ -359,25 +359,25 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
         ///// <param name="pCVs">IDs del CV</param>
         //public void CambiarPrivacidadDocumentos(List<string> pPersons = null, List<string> pDocuments = null, List<string> pCVs = null)
         //{
-        //    HashSet<string> filters = new HashSet<string>();
+        //    HashSet<string> filtersCambiarPrivacidadDocumentos = new HashSet<string>();
         //    if (pPersons != null && pPersons.Count > 0)
         //    {
-        //        filters.Add($" FILTER(?person in (<{string.Join(">,<", pPersons)}>))");
+        //        filtersCambiarPrivacidadDocumentos.Add($" FILTER(?person in (<{string.Join(">,<", pPersons)}>))");
         //    }
         //    if (pDocuments != null && pDocuments.Count > 0)
         //    {
-        //        filters.Add($" FILTER(?document in (<{string.Join(">,<", pDocuments)}>))");
+        //        filtersCambiarPrivacidadDocumentos.Add($" FILTER(?document in (<{string.Join(">,<", pDocuments)}>))");
         //    }
         //    if (pCVs != null && pCVs.Count > 0)
         //    {
-        //        filters.Add($" FILTER(?cv in (<{string.Join(">,<", pCVs)}>))");
+        //        filtersCambiarPrivacidadDocumentos.Add($" FILTER(?cv in (<{string.Join(">,<", pCVs)}>))");
         //    }
         //    if (filters.Count == 0)
         //    {
-        //        filters.Add("");
+        //        filtersCambiarPrivacidadDocumentos.Add("");
         //    }
 
-        //    foreach (string filter in filters)
+        //    foreach (string filter in filtersCambiarPrivacidadDocumentos)
         //    {
 
         //        while (true)
@@ -419,25 +419,25 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
         /// <param name="pCVs">IDs del CV</param>
         public void ModificarResearchObjects(List<string> pPersons = null, List<string> pROs = null, List<string> pCVs = null)
         {
-            HashSet<string> filters = new HashSet<string>();
+            HashSet<string> filtersModificarResearchObjects = new HashSet<string>();
             if (pPersons != null && pPersons.Count > 0)
             {
-                filters.Add($" FILTER(?person in ( <{string.Join(">,<", pPersons)}>))");
+                filtersModificarResearchObjects.Add($" FILTER(?person in ( <{string.Join(">,<", pPersons)}>))");
             }
             if (pROs != null && pROs.Count > 0)
             {
-                filters.Add($" FILTER(?ro in ( <{string.Join(">,<", pROs)}>))");
+                filtersModificarResearchObjects.Add($" FILTER(?ro in ( <{string.Join(">,<", pROs)}>))");
             }
             if (pCVs != null && pCVs.Count > 0)
             {
-                filters.Add($" FILTER(?cv in ( <{string.Join(">,<", pCVs)}>))");
+                filtersModificarResearchObjects.Add($" FILTER(?cv in ( <{string.Join(">,<", pCVs)}>))");
             }
-            if (filters.Count == 0)
+            if (filtersModificarResearchObjects.Count == 0)
             {
-                filters.Add("");
+                filtersModificarResearchObjects.Add("");
             }
 
-            foreach (string filter in filters)
+            foreach (string filter in filtersModificarResearchObjects)
             {
                 while (true)
                 {
@@ -536,25 +536,25 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
         /// <param name="pCVs">IDs del CV</param>
         public void CambiarPrivacidadResearchObjects(List<string> pPersons = null, List<string> pROs = null, List<string> pCVs = null)
         {
-            HashSet<string> filters = new HashSet<string>();
+            HashSet<string> filtersCambiarPrivacidadResearchObjects = new HashSet<string>();
             if (pPersons != null && pPersons.Count > 0)
             {
-                filters.Add($" FILTER(?person in (<{string.Join(">,<", pPersons)}>))");
+                filtersCambiarPrivacidadResearchObjects.Add($" FILTER(?person in (<{string.Join(">,<", pPersons)}>))");
             }
             if (pROs != null && pROs.Count > 0)
             {
-                filters.Add($" FILTER(?ro in (<{string.Join(">,<", pROs)}>))");
+                filtersCambiarPrivacidadResearchObjects.Add($" FILTER(?ro in (<{string.Join(">,<", pROs)}>))");
             }
             if (pCVs != null && pCVs.Count > 0)
             {
-                filters.Add($" FILTER(?cv in (<{string.Join(">,<", pCVs)}>))");
+                filtersCambiarPrivacidadResearchObjects.Add($" FILTER(?cv in (<{string.Join(">,<", pCVs)}>))");
             }
-            if (filters.Count == 0)
+            if (filtersCambiarPrivacidadResearchObjects.Count == 0)
             {
-                filters.Add("");
+                filtersCambiarPrivacidadResearchObjects.Add("");
             }
 
-            foreach (string filter in filters)
+            foreach (string filter in filtersCambiarPrivacidadResearchObjects)
             {
                 while (true)
                 {
@@ -594,25 +594,25 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
         /// <param name="pCVs">IDs del CV</param>
         public void ModificarProyectos(List<string> pPersons = null, List<string> pProjects = null, List<string> pCVs = null)
         {
-            HashSet<string> filters = new HashSet<string>();
+            HashSet<string> filtersModificarProyectos = new HashSet<string>();
             if (pPersons != null && pPersons.Count > 0)
             {
-                filters.Add($" FILTER(?person in (<{string.Join(">,<", pPersons)}>))");
+                filtersModificarProyectos.Add($" FILTER(?person in (<{string.Join(">,<", pPersons)}>))");
             }
             if (pProjects != null && pProjects.Count > 0)
             {
-                filters.Add($" FILTER(?project in (<{string.Join(">,<", pProjects)}>))");
+                filtersModificarProyectos.Add($" FILTER(?project in (<{string.Join(">,<", pProjects)}>))");
             }
             if (pCVs != null && pCVs.Count > 0)
             {
-                filters.Add($" FILTER(?cv in (<{string.Join(">,<", pCVs)}>))");
+                filtersModificarProyectos.Add($" FILTER(?cv in (<{string.Join(">,<", pCVs)}>))");
             }
-            if (filters.Count == 0)
+            if (filtersModificarProyectos.Count == 0)
             {
-                filters.Add("");
+                filtersModificarProyectos.Add("");
             }
 
-            foreach (string filter in filters)
+            foreach (string filter in filtersModificarProyectos)
             {
                 while (true)
                 {
@@ -736,25 +736,25 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
         /// <param name="pCVs">IDs de los CVs</param>
         public void ModificarGrupos(List<string> pPersons = null, List<string> pGroups = null, List<string> pCVs = null)
         {
-            HashSet<string> filters = new HashSet<string>();
+            HashSet<string> filtersModificarGrupos = new HashSet<string>();
             if (pPersons != null && pPersons.Count > 0)
             {
-                filters.Add($" FILTER(?person in (<{string.Join(">,<", pPersons)}>))");
+                filtersModificarGrupos.Add($" FILTER(?person in (<{string.Join(">,<", pPersons)}>))");
             }
             if (pGroups != null && pGroups.Count > 0)
             {
-                filters.Add($" FILTER(?group in (<{string.Join(">,<", pGroups)}>))");
+                filtersModificarGrupos.Add($" FILTER(?group in (<{string.Join(">,<", pGroups)}>))");
             }
             if (pCVs != null && pCVs.Count > 0)
             {
-                filters.Add($" FILTER(?cv in (<{string.Join(">,<", pCVs)}>))");
+                filtersModificarGrupos.Add($" FILTER(?cv in (<{string.Join(">,<", pCVs)}>))");
             }
-            if (filters.Count == 0)
+            if (filtersModificarGrupos.Count == 0)
             {
-                filters.Add("");
+                filtersModificarGrupos.Add("");
             }
 
-            foreach (string filter in filters)
+            foreach (string filter in filtersModificarGrupos)
             {
                 while (true)
                 {
@@ -855,25 +855,25 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
         /// <param name="pCVs">IDs del CV</param>
         public void ModificarPatentes(List<string> pPersons = null, List<string> pPatents = null, List<string> pCVs = null)
         {
-            HashSet<string> filters = new HashSet<string>();
+            HashSet<string> filtersModificarPatentes = new HashSet<string>();
             if (pPersons != null && pPersons.Count > 0)
             {
-                filters.Add($" FILTER(?person in (<{string.Join(">,<", pPersons)}>))");
+                filtersModificarPatentes.Add($" FILTER(?person in (<{string.Join(">,<", pPersons)}>))");
             }
             if (pPatents != null && pPatents.Count > 0)
             {
-                filters.Add($" FILTER(?patent in (<{string.Join(">,<", pPatents)}>))");
+                filtersModificarPatentes.Add($" FILTER(?patent in (<{string.Join(">,<", pPatents)}>))");
             }
             if (pCVs != null && pCVs.Count > 0)
             {
-                filters.Add($" FILTER(?cv in (<{string.Join(">,<", pCVs)}>))");
+                filtersModificarPatentes.Add($" FILTER(?cv in (<{string.Join(">,<", pCVs)}>))");
             }
-            if (filters.Count == 0)
+            if (filtersModificarPatentes.Count == 0)
             {
-                filters.Add("");
+                filtersModificarPatentes.Add("");
             }
 
-            foreach (string filter in filters)
+            foreach (string filter in filtersModificarPatentes)
             {
                 while (true)
                 {
@@ -1057,21 +1057,18 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
             listaSecciones.Add(new CVSection("060.030.100.000", "accreditation", "http://w3id.org/roh/Accreditation", "http://w3id.org/roh/scientificActivity", "http://w3id.org/roh/otherAchievements", "http://w3id.org/roh/RelatedOtherAchievement"));
 
 
-
-
-
-            HashSet<string> filters = new HashSet<string>();
+            HashSet<string> filtersModificarElementosCV = new HashSet<string>();
             if (pPersons != null && pPersons.Count > 0)
             {
-                filters.Add($" FILTER(?person in (<{string.Join(">,<", pPersons)}>))");
+                filtersModificarElementosCV.Add($" FILTER(?person in (<{string.Join(">,<", pPersons)}>))");
             }
             if (pCVs != null && pCVs.Count > 0)
             {
-                filters.Add($" FILTER(?cv in (<{string.Join(">,<", pCVs)}>))");
+                filtersModificarElementosCV.Add($" FILTER(?cv in (<{string.Join(">,<", pCVs)}>))");
             }
-            if (filters.Count == 0)
+            if (filtersModificarElementosCV.Count == 0)
             {
-                filters.Add("");
+                filtersModificarElementosCV.Add("");
             }
 
             List<string> querySectionsAniadir = new List<string>();
@@ -1143,7 +1140,7 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
                 querySectionsEliminar.Add(querySectionEliminar);
             }
 
-            foreach (string filter in filters)
+            foreach (string filter in filtersModificarElementosCV)
             {
                 List<string> listaFroms = new List<string>() { "curriculumvitae", "person" };
                 listaFroms.AddRange(listaSecciones.Select(x => x.graph));
@@ -1232,23 +1229,23 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
             listaOrgs.Add(new OrgTitleCVTitleOrg("tutorship", "http://w3id.org/roh/Tutorship", "", "http://w3id.org/roh/conductedByTitle", "http://w3id.org/roh/conductedBy"));
 
 
-            HashSet<string> filters = new HashSet<string>();
+            HashSet<string> filtersModificarOrganizacionesCV = new HashSet<string>();
             if (pPersons != null && pPersons.Count > 0)
             {
-                filters.Add($" FILTER(?person in (<{string.Join(">,<", pPersons)}>))");
+                filtersModificarOrganizacionesCV.Add($" FILTER(?person in (<{string.Join(">,<", pPersons)}>))");
             }
             if (pCVs != null && pCVs.Count > 0)
             {
-                filters.Add($" FILTER(?cv in (<{string.Join(">,<", pCVs)}>))");
+                filtersModificarOrganizacionesCV.Add($" FILTER(?cv in (<{string.Join(">,<", pCVs)}>))");
             }
-            if (filters.Count == 0)
+            if (filtersModificarOrganizacionesCV.Count == 0)
             {
-                filters.Add("");
+                filtersModificarOrganizacionesCV.Add("");
             }
 
             foreach (OrgTitleCVTitleOrg section in listaOrgs)
             {
-                foreach (string filter in filters)
+                foreach (string filter in filtersModificarOrganizacionesCV)
                 {
                     while (true)
                     {
@@ -1333,17 +1330,17 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
         /// <param name="pCVs">IDs de cvs</param>
         public void EliminarDuplicados(List<string> pCVs = null)
         {
-            HashSet<string> filters = new HashSet<string>();
+            HashSet<string> filtersEliminarDuplicados = new HashSet<string>();
             if (pCVs != null && pCVs.Count > 0)
             {
-                filters.Add($" FILTER(?cv in (<{string.Join(">,<", pCVs)}>))");
+                filtersEliminarDuplicados.Add($" FILTER(?cv in (<{string.Join(">,<", pCVs)}>))");
             }
-            if (filters.Count == 0)
+            if (filtersEliminarDuplicados.Count == 0)
             {
-                filters.Add("");
+                filtersEliminarDuplicados.Add("");
             }
 
-            foreach (string filter in filters)
+            foreach (string filter in filtersEliminarDuplicados)
             {
                 while (true)
                 {
@@ -1392,14 +1389,14 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
         /// <param name="pCVs">IDs de cvs</param>
         public void EliminarItemsEliminados(List<string> pCVs = null)
         {
-            HashSet<string> filters = new HashSet<string>();
+            HashSet<string> filtersEliminarItemsEliminados = new HashSet<string>();
             if (pCVs != null && pCVs.Count > 0)
             {
-                filters.Add($" FILTER(?cv in (<{string.Join(">,<", pCVs)}>))");
+                filtersEliminarItemsEliminados.Add($" FILTER(?cv in (<{string.Join(">,<", pCVs)}>))");
             }
-            if (filters.Count == 0)
+            if (filtersEliminarItemsEliminados.Count == 0)
             {
-                filters.Add("");
+                filtersEliminarItemsEliminados.Add("");
             }
 
             List<string> graphs = new List<string>();
@@ -1432,7 +1429,7 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
             graphs.Add("researchobject");
             graphs.Add("curriculumvitae");
 
-            foreach (string filter in filters)
+            foreach (string filter in filtersEliminarItemsEliminados)
             {
                 while (true)
                 {
