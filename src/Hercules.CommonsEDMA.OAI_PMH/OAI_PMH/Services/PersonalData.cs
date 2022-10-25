@@ -1,17 +1,12 @@
 ﻿using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 using OAI_PMH.Controllers;
 using OAI_PMH.Models.SGI.ActividadDocente;
 using OAI_PMH.Models.SGI.FormacionAcademica;
-using OAI_PMH.Models.SGI.OrganicStructure;
 using OAI_PMH.Models.SGI.PersonalData;
 using RestSharp;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace OAI_PMH.Services
 {
@@ -153,7 +148,6 @@ namespace OAI_PMH.Services
         public static Persona GetPersona(string id, ConfigService pConfig)
         {
             string identifier = id.Split('_')[1];
-            List<Thread> hilos = new List<Thread>();
 
             Persona dataPersona = GetDatosPersona(identifier, pConfig);
             if (dataPersona == null)
@@ -177,81 +171,19 @@ namespace OAI_PMH.Services
 
             if (dataPersona.Activo.HasValue && dataPersona.Activo.Value)
             {
-                hilos.Add(new Thread(() =>
-                    datosPersonales = GetDatosPersonales(identifier, pConfig)
-                ));
-
-
-                hilos.Add(new Thread(() =>
-                    datosContacto = GetDatosContacto(identifier, pConfig)
-                ));
-
-
-                hilos.Add(new Thread(() =>
-                    vinculacion = GetVinculacion(identifier, pConfig)
-                ));
-
-
-                hilos.Add(new Thread(() =>
-                    datosAcademicos = GetDatosAcademicos(identifier, pConfig)
-                ));
-
-
-                hilos.Add(new Thread(() =>
-                    fotografia = GetFotografia(identifier, pConfig)
-                ));
-
-
-                hilos.Add(new Thread(() =>
-                    sexenio = GetSexenios(identifier, pConfig)
-                ));
-
-
-                hilos.Add(new Thread(() =>
-                    listaFormacionAcademica = DocentActivity.GetAcademicFormationProvided(identifier, pConfig)
-                ));
-
-
-                hilos.Add(new Thread(() =>
-                    listaSeminarios = DocentActivity.GetSeminars(identifier, pConfig)
-                ));
-
-
-                hilos.Add(new Thread(() =>
-                    listaTesis = DocentActivity.GetTesis(identifier, pConfig)
-                ));
-
-
-                hilos.Add(new Thread(() =>
-                    listaCiclos = AcademicFormation.GetFormacionAcademicaCiclos(identifier, pConfig)
-                ));
-
-
-                hilos.Add(new Thread(() =>
-                    listaDoctorados = AcademicFormation.GetFormacionAcademicaDoctorados(identifier, pConfig)
-                ));
-
-
-                hilos.Add(new Thread(() =>
-                    listaEspecializada = AcademicFormation.GetFormacionAcademicaEspecializada(identifier, pConfig)
-                ));
-
-
-                hilos.Add(new Thread(() =>
-                    listaPosgrado = AcademicFormation.GetFormacionAcademicaPosgrado(identifier, pConfig)
-                ));
-
-                // Inicio hilos.
-                foreach (Thread th in hilos)
-                {
-                    th.Start();
-                }
-
-                // Espero a que estén listos.
-                foreach (Thread th in hilos)
-                {
-                    th.Join();
-                }
+                datosPersonales = GetDatosPersonales(identifier, pConfig);
+                datosContacto = GetDatosContacto(identifier, pConfig);
+                vinculacion = GetVinculacion(identifier, pConfig);
+                datosAcademicos = GetDatosAcademicos(identifier, pConfig);
+                fotografia = GetFotografia(identifier, pConfig);
+                sexenio = GetSexenios(identifier, pConfig);
+                listaFormacionAcademica = DocentActivity.GetAcademicFormationProvided(identifier, pConfig);
+                listaSeminarios = DocentActivity.GetSeminars(identifier, pConfig);
+                listaTesis = DocentActivity.GetTesis(identifier, pConfig);
+                listaCiclos = AcademicFormation.GetFormacionAcademicaCiclos(identifier, pConfig);
+                listaDoctorados = AcademicFormation.GetFormacionAcademicaDoctorados(identifier, pConfig);
+                listaEspecializada = AcademicFormation.GetFormacionAcademicaEspecializada(identifier, pConfig);
+                listaPosgrado = AcademicFormation.GetFormacionAcademicaPosgrado(identifier, pConfig);
             }
 
             Persona persona = dataPersona;

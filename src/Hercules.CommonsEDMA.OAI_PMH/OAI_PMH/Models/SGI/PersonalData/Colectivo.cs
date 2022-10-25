@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
-namespace OAI_PMH.Models.SGI.PersonalData
+﻿namespace OAI_PMH.Models.SGI.PersonalData
 {
     /// <summary>
     /// Listado de colectivos que tiene la Universidad

@@ -11,12 +11,8 @@ using OAI_PMH.Services;
 using OaiPmhNet;
 using OaiPmhNet.Converters;
 using OaiPmhNet.Models;
-using Serilog;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Xml.Linq;
 
 namespace OAI_PMH.Models.OAIPMH
