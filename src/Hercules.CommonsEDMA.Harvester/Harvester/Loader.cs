@@ -279,23 +279,7 @@ namespace Harvester
 
                                 //Selecciono los miembros para ser notificados
                                 List<string> listadoMiembros = proyectoSGI.Equipo.Select(x => x.PersonaRef).ToList();
-
-                                //Busco en BBDD (solo los que tengan CV)
-                                string select = "SELECT ?person";
-                                string where = $@"WHERE {{
-                                                    ?cv <http://w3id.org/roh/cvOf> ?person .
-                                                    ?person <http://w3id.org/roh/crisIdentifier> ?crisID .
-                                                    FILTER(?crisID in ('{string.Join("','", listadoMiembros)}'))
-                                                }}";
-                                SparqlObject resultData = mResourceApi.VirtuosoQueryMultipleGraph(select, where, new List<string> { "curriculumvitae", "person" });
-                                foreach (Dictionary<string, Data> fila in resultData.results.bindings)
-                                {
-                                    if (fila.ContainsKey("person"))
-                                    {
-                                        //Notifico a los miembros
-                                        UtilidadesLoader.EnvioNotificacion("NOTIFICACION_GRUPO", fila["person"].value, "harvesterProyecto" + idGnossProy);
-                                    }
-                                }
+                                UtilidadesLoader.EnvioNotificacionesMiembros(listadoMiembros, "harvesterProyecto", "NOTIFICACION_GRUPO " + idGnossProy);
 
                                 pDicIdentificadores["project"].Add(idGnossProy);
                                 File.AppendAllText(pDicRutas[pSet][directorioPendientes], id + Environment.NewLine);
@@ -311,6 +295,7 @@ namespace Harvester
                         #region - PRC
                         case "PRC":
                             bool eliminar = false;
+                            //Identificador de la publicacion
                             string idRecurso = id.Split("||")[0];
                             if (id.StartsWith("Eliminar_"))
                             {
@@ -328,46 +313,60 @@ namespace Harvester
 
                             foreach (KeyValuePair<string, string> item in data)
                             {
-                                if (!string.IsNullOrEmpty(item.Value))
+                                //Consigo los miembros del documento
+                                List<string> listadoMiembros = UtilidadesLoader.ConseguirMiembrosPRC(idRecurso);
+
+                                if (string.IsNullOrEmpty(item.Value))
                                 {
-                                    if (item.Key == "projectAux")
+                                    continue;
+                                }
+
+                                if (item.Key == "projectAux")
+                                {
+                                    Borrado(guid, "http://w3id.org/roh/projectAux", item.Value);
+
+                                    UtilidadesLoader.EnvioNotificacionesMiembros(listadoMiembros, "harvesterPRC", "NOTIFICACION_ELIMINACION_PRC");
+
+                                }
+                                else if (item.Key == "validationStatusPRC" && item.Value != "validado")
+                                {
+                                    switch (estado)
                                     {
-                                        Borrado(guid, "http://w3id.org/roh/projectAux", item.Value);
+                                        case "VALIDADO":
+                                            Modificacion(guid, "http://w3id.org/roh/validationStatusPRC", "validado", item.Value);
+                                            UtilidadesLoader.EnvioNotificacionesMiembros(listadoMiembros, "harvesterPRC", "NOTIFICACION_MODIFICACION_VALIDADA_PRC");
+                                            break;
+                                        default:
+                                            Modificacion(guid, "http://w3id.org/roh/validationStatusPRC", "rechazado", item.Value);
+                                            UtilidadesLoader.EnvioNotificacionesMiembros(listadoMiembros, "harvesterPRC", "NOTIFICACION_MODIFICACION_RECHAZADA_PRC");
+                                            break;
                                     }
-                                    else if (item.Key == "validationStatusPRC" && item.Value != "validado")
+                                }
+                                else if (item.Key == "validationDeleteStatusPRC" && eliminar)
+                                {
+                                    if (estado.Equals("VALIDADO"))
                                     {
-                                        switch (estado)
-                                        {
-                                            case "VALIDADO":
-                                                Modificacion(guid, "http://w3id.org/roh/validationStatusPRC", "validado", item.Value);
-                                                break;
-                                            default:
-                                                Modificacion(guid, "http://w3id.org/roh/validationStatusPRC", "rechazado", item.Value);
-                                                break;
-                                        }
-                                    }
-                                    else if (item.Key == "validationDeleteStatusPRC" && eliminar)
-                                    {
-                                        if (estado.Equals("VALIDADO"))
-                                        {
-                                            BorrarPublicacion(idRecurso);
-                                        }
-                                        else
-                                        {
-                                            Modificacion(guid, "http://w3id.org/roh/validationDeleteStatusPRC", "rechazado", item.Value);
-                                        }
+                                        BorrarPublicacion(idRecurso);
+                                        UtilidadesLoader.EnvioNotificacionesMiembros(listadoMiembros, "harvesterPRC", "NOTIFICACION_ELIMINACION_ACEPTADA_PRC");
                                     }
                                     else
                                     {
-                                        switch (estado)
-                                        {
-                                            case "VALIDADO":
-                                                Modificacion(guid, "http://w3id.org/roh/isValidated", "true", item.Value);
-                                                break;
-                                            default:
-                                                Modificacion(guid, "http://w3id.org/roh/isValidated", "false", item.Value);
-                                                break;
-                                        }
+                                        Modificacion(guid, "http://w3id.org/roh/validationDeleteStatusPRC", "rechazado", item.Value);
+                                        UtilidadesLoader.EnvioNotificacionesMiembros(listadoMiembros, "harvesterPRC", "NOTIFICACION_ELIMINACION_RECHAZADA_PRC");
+                                    }
+                                }
+                                else
+                                {
+                                    switch (estado)
+                                    {
+                                        case "VALIDADO":
+                                            Modificacion(guid, "http://w3id.org/roh/isValidated", "true", item.Value);
+                                            UtilidadesLoader.EnvioNotificacionesMiembros(listadoMiembros, "harvesterPRC", "NOTIFICACION_VALIDADO_PRC");
+                                            break;
+                                        default:
+                                            Modificacion(guid, "http://w3id.org/roh/isValidated", "false", item.Value);
+                                            UtilidadesLoader.EnvioNotificacionesMiembros(listadoMiembros, "harvesterPRC", "NOTIFICACION_NOVALIDADO_PRC");
+                                            break;
                                     }
                                 }
                             }
@@ -388,22 +387,7 @@ namespace Harvester
                                 string solicitante = autorizacionSGI.solicitanteRef;
                                 string responsable = autorizacionSGI.responsableRef;
                                 List<string> listado = new List<string>() { solicitante, responsable };
-
-                                //Busco los miembros en BBDD (solo los que tengan CV)
-                                string select = "SELECT ?person";
-                                string where = $@"WHERE {{
-                                                    ?cv <http://w3id.org/roh/cvOf> ?person .
-                                                    ?person <http://w3id.org/roh/crisIdentifier> ?crisID .
-                                                    FILTER(?crisID in ('{string.Join("','", listado)}'))
-                                                }}";
-                                SparqlObject resultData = mResourceApi.VirtuosoQueryMultipleGraph(select, where, new List<string> { "curriculumvitae", "person" });
-                                foreach (Dictionary<string, Data> fila in resultData.results.bindings)
-                                {
-                                    if (fila.ContainsKey("person"))
-                                    {
-                                        UtilidadesLoader.EnvioNotificacion("NOTIFICACION_AUTORIZACION", fila["person"].value, "harvesterAutorizacion");
-                                    }
-                                }
+                                UtilidadesLoader.EnvioNotificacionesMiembros(listado, "harvesterAutorizacion", "NOTIFICACION_AUTORIZACION");
 
                                 pDicIdentificadores["projectauthorization"].Add(idGnossAutorizacion);
                                 File.AppendAllText(pDicRutas[pSet][directorioPendientes], id + Environment.NewLine);
@@ -425,24 +409,7 @@ namespace Harvester
 
                                 //Selecciono los inventores para ser notificados
                                 List<string> listadoMiembros = invencion.inventores.Select(x => x.inventorRef).ToList();
-                                //listadoMiembros.AddRange(invencion.titulares.Select(x => x.titularRef).ToList());
-
-                                //Busco en BBDD (solo los que tengan CV)
-                                string select = "SELECT ?person";
-                                string where = $@"WHERE {{
-                                                    ?cv <http://w3id.org/roh/cvOf> ?person .
-                                                    ?person <http://w3id.org/roh/crisIdentifier> ?crisID .
-                                                    FILTER(?crisID in ('{string.Join("','", listadoMiembros)}'))
-                                                }}";
-                                SparqlObject resultData = mResourceApi.VirtuosoQueryMultipleGraph(select, where, new List<string> { "curriculumvitae", "person" });
-                                foreach (Dictionary<string, Data> fila in resultData.results.bindings)
-                                {
-                                    if (fila.ContainsKey("person"))
-                                    {
-                                        //Notifico a los miembros
-                                        UtilidadesLoader.EnvioNotificacion("NOTIFICACION_GRUPO", fila["person"].value, "harvesterInvencion" + idGnossInv);
-                                    }
-                                }
+                                UtilidadesLoader.EnvioNotificacionesMiembros(listadoMiembros, "harvesterInvencion", "NOTIFICACION_GRUPO " + idGnossInv);
 
                                 pDicIdentificadores["patent"].Add(idGnossInv);
                                 File.AppendAllText(pDicRutas[pSet][directorioPendientes], id + Environment.NewLine);
@@ -464,23 +431,7 @@ namespace Harvester
 
                                 //Selecciono los miembros del grupo para ser notificados
                                 List<string> listadoMiembros = grupo.equipo.Select(x => x.personaRef).ToList();
-
-                                //Busco los miembros en BBDD (solo los que tengan CV)
-                                string select = "SELECT ?person";
-                                string where = $@"WHERE {{
-                                                    ?cv <http://w3id.org/roh/cvOf> ?person .
-                                                    ?person <http://w3id.org/roh/crisIdentifier> ?crisID .
-                                                    FILTER(?crisID in ('{string.Join("','", listadoMiembros)}'))
-                                                }}";
-                                SparqlObject resultData = mResourceApi.VirtuosoQueryMultipleGraph(select, where, new List<string> { "curriculumvitae", "person" });
-                                foreach (Dictionary<string, Data> fila in resultData.results.bindings)
-                                {
-                                    if (fila.ContainsKey("person"))
-                                    {
-                                        //Notifico a los miembros
-                                        UtilidadesLoader.EnvioNotificacion("NOTIFICACION_GRUPO", fila["person"].value, "harvesterGrupo" + idGnossGrupo);
-                                    }
-                                }
+                                UtilidadesLoader.EnvioNotificacionesMiembros(listadoMiembros, "harvesterGrupo", "NOTIFICACION_GRUPO" + idGnossGrupo);
 
                                 pDicIdentificadores["group"].Add(idGnossGrupo);
                                 File.AppendAllText(pDicRutas[pSet][directorioPendientes], id + Environment.NewLine);
@@ -497,7 +448,7 @@ namespace Harvester
             }
         }
 
-        public void ProcesarItems(string pRutaProcesado,string pRutaPendiente)
+        public void ProcesarItems(string pRutaProcesado, string pRutaPendiente)
         {
             // Guardado de IDs erróneos.
             List<string> identificadoresACargar = File.ReadAllLines(pRutaPendiente).Distinct().ToList();
@@ -506,7 +457,8 @@ namespace Harvester
             if (identificadoresNoCargados.Count > 0)
             {
                 File.WriteAllText(pRutaPendiente, string.Join("\n", identificadoresNoCargados));
-            }else if (File.Exists(pRutaPendiente))
+            }
+            else if (File.Exists(pRutaPendiente))
             {
                 File.Delete(pRutaPendiente);
             }
