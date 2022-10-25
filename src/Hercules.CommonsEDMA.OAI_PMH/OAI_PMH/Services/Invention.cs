@@ -60,6 +60,10 @@ namespace OAI_PMH.Services
             List<Thread> hilos = new();
             var request = new RestRequest(Method.GET);
             IRestResponse response = Token.httpCall(client, request);
+            if (string.IsNullOrEmpty(response.Content))
+            {
+                return null;
+            }
             Invencion invencion = JsonConvert.DeserializeObject<Invencion>(response.Content);
             List<SectorAplicacion> sectorAplicacion = null;
             hilos.Add(new Thread(() => sectorAplicacion = GetSectores(identifier, pConfig)));
@@ -73,12 +77,13 @@ namespace OAI_PMH.Services
             hilos.Add(new(() => areasConocimiento = GetAreasConocimiento(identifier, pConfig)));
             List<PeriodoTitularidad> periodosTitularidad = null;
             List<Titular> titulares = new List<Titular>();
-            hilos.Add(new(() => { 
+            hilos.Add(new(() =>
+            {
                 periodosTitularidad = GetPeriodosTitularidad(identifier, pConfig);
-          
+
                 if (periodosTitularidad != null && periodosTitularidad.Any())
                 {
-                    
+
                     foreach (PeriodoTitularidad periodo in periodosTitularidad)
                     {
                         titulares.AddRange(GetTitular(periodo.id.ToString(), pConfig));
