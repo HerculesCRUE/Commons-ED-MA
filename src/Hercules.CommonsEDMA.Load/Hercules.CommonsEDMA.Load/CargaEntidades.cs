@@ -91,7 +91,7 @@ namespace Hercules.CommonsEDMA.Load
         private static string RUTA_XML_THESAURUS = $@"{System.AppDomain.CurrentDomain.SetupInformation.ApplicationBase}Dataset{Path.DirectorySeparatorChar}CVN{Path.DirectorySeparatorChar}Thesaurus.xml";
 
         //Resource API.
-        public static ResourceApi mResourceApi = new ResourceApi($@"{System.AppDomain.CurrentDomain.SetupInformation.ApplicationBase}Config{Path.DirectorySeparatorChar}ConfigOAuth{Path.DirectorySeparatorChar}OAuthV3.config");
+        public static ResourceApi mResourceApi = new ResourceApi($@"{AppDomain.CurrentDomain.SetupInformation.ApplicationBase}Config{Path.DirectorySeparatorChar}ConfigOAuth{Path.DirectorySeparatorChar}OAuthV3.config");
 
         //Identificadores de las tablas.
         private static readonly string idPaises = "ISO_3166";
