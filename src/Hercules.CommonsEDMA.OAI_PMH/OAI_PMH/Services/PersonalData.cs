@@ -25,7 +25,7 @@ namespace OAI_PMH.Services
             RestClient clientCandidatos = new(pConfig.GetConfigSGI() + "/api/sgp/personas/modificadas-ids?q=fechaModificacion=ge=\"1500-01-01T00:00:00Z\"");
             clientCandidatos.AddDefaultHeader("Authorization", "Bearer " + accessToken);
             var requestCandidatos = new RestRequest(Method.GET);
-            IRestResponse responseCandidatos = Token.httpCall(clientCandidatos, requestCandidatos);
+            IRestResponse responseCandidatos = Token.httpCall(clientCandidatos, requestCandidatos, true);
 
             if (!String.IsNullOrEmpty(responseCandidatos.Content))
             {
@@ -43,7 +43,7 @@ namespace OAI_PMH.Services
             RestClient client = new(pConfig.GetConfigSGI() + "/api/sgp/personas/modificadas-ids?q=fechaModificacion=ge=\"" + from + "\"");
             client.AddDefaultHeader("Authorization", "Bearer " + accessToken);
             var request = new RestRequest(Method.GET);
-            IRestResponse response = Token.httpCall(client, request);
+            IRestResponse response = Token.httpCall(client, request, true);
 
             if (!String.IsNullOrEmpty(response.Content))
             {

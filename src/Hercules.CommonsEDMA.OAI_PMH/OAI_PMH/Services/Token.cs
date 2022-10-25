@@ -23,15 +23,18 @@ namespace OAI_PMH.Services
             return token;
         }
 
-        public static IRestResponse httpCall(RestClient pRestClient, RestRequest pRestRequest)
+        public static IRestResponse httpCall(RestClient pRestClient, RestRequest pRestRequest, bool pPermitirRespuestaVacia = false)
         {
             IRestResponse response = null;
-
             while (true)
             {
                 try
                 {
                     response = pRestClient.Execute(pRestRequest);
+                    if (!pPermitirRespuestaVacia && string.IsNullOrEmpty(response.Content))
+                    {
+                        throw new Exception("La respuesta no debería estar vacía");
+                    }
                     break;
                 }
                 catch
