@@ -107,8 +107,6 @@ namespace CurriculumvitaeOntology
 
         internal override void GetProperties()
         {
-            base.GetProperties();
-
             propList.Add(new StringOntologyProperty("foaf:firstName", this.Foaf_firstName));
             propList.Add(new StringOntologyProperty("foaf:familyName", this.Foaf_familyName));
             propList.Add(new StringOntologyProperty("roh:secondFamilyName", this.Roh_secondFamilyName));
@@ -130,7 +128,6 @@ namespace CurriculumvitaeOntology
 
         internal override void GetEntities()
         {
-            base.GetEntities();
             if (Roh_hasFax != null)
             {
                 Roh_hasFax.GetProperties();
