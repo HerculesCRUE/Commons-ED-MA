@@ -150,7 +150,7 @@ namespace Utilidades
 
             return dicResultados;
         }
-        
+
         /// <summary>
         /// Envia una notificación.
         /// </summary>
@@ -182,25 +182,61 @@ namespace Utilidades
 
         public static void EnvioNotificacionesMiembros(List<string> listadoMiembros, string rohType, string mensaje)
         {
-            if (listadoMiembros.Any())
+            try
             {
-                //Busco los miembros en BBDD (solo los que tengan CV)
-                string select = "SELECT ?person";
-                string where = $@"WHERE {{
+                if (listadoMiembros.Any())
+                {
+                    //Busco los miembros en BBDD (solo los que tengan CV)
+                    string select = "SELECT ?person";
+                    string where = $@"WHERE {{
                                     ?cv <http://w3id.org/roh/cvOf> ?person .
                                     ?person <http://w3id.org/roh/crisIdentifier> ?crisID .
                                     FILTER(?crisID in ('{string.Join("','", listadoMiembros)}'))
                                 }}";
-                SparqlObject resultData = mResourceApi.VirtuosoQueryMultipleGraph(select, where, new List<string> { "curriculumvitae", "person" });
+                    SparqlObject resultData = mResourceApi.VirtuosoQueryMultipleGraph(select, where, new List<string> { "curriculumvitae", "person" });
+                    foreach (Dictionary<string, Data> fila in resultData.results.bindings)
+                    {
+                        if (fila.ContainsKey("person"))
+                        {
+                            //Notifico a los miembros
+                            EnvioNotificacion(fila["person"].value, rohType, mensaje);
+                        }
+                    }
+                }
+            }
+            catch (Exception)
+            {
+
+            }
+        }
+
+        public static List<string> ConseguirMiembrosPRC(string idRecurso)
+        {
+            List<string> listadoMiembros = new List<string>();
+            try
+            {
+                //Busco los miembros en BBDD (solo los que tengan CV)
+                string select = "SELECT distinct ?person";
+                string where = $@"where{{
+                                ?s <http://purl.org/ontology/bibo/authorList> ?authorList .
+                                ?authorList <http://www.w3.org/1999/02/22-rdf-syntax-ns#member> ?person .
+                                ?person a <http://xmlns.com/foaf/0.1/Person>.
+                                FILTER (?s=<{idRecurso}>)
+                            }}";
+                SparqlObject resultData = mResourceApi.VirtuosoQueryMultipleGraph(select, where, new List<string> { "curriculumvitae", "person", "document" });
                 foreach (Dictionary<string, Data> fila in resultData.results.bindings)
                 {
                     if (fila.ContainsKey("person"))
                     {
-                        //Notifico a los miembros
-                        EnvioNotificacion(fila["person"].value,rohType, mensaje);
+                        listadoMiembros.Add(fila["person"].value);
                     }
                 }
             }
+            catch (Exception) { 
+                return listadoMiembros; 
+            }
+
+            return listadoMiembros;
         }
 
     }
