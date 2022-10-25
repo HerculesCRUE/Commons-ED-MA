@@ -1347,18 +1347,18 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
                 //Eliminamos HIndex
                 while (true)
                 {
-                    int limit = 500;
-                    String select = @"select ?person ?hIndexEntity  ";
-                    String where = @$"where{{
+                    int limitEliminarHIndex = 500;
+                    String selectEliminarHIndex = @"select ?person ?hIndexEntity  ";
+                    String whereEliminarHIndex = @$"where{{
                                     {filter}
                                     ?person a <http://xmlns.com/foaf/0.1/Person>.
                                     ?person <http://w3id.org/roh/hIndex> ?hIndexEntity.
                                     ?hIndexEntity <http://w3id.org/roh/citationSource> ?citationSource.
                                     FILTER(?citationSource not in ('{string.Join("','", listSources.Keys)}'))
-                                }}order by desc(?person) limit {limit}";
-                    SparqlObject resultado = mResourceApi.VirtuosoQueryMultipleGraph(select, where, new List<string>() { "document", "person" });
-                    EliminacionMultiple(resultado.results.bindings, "http://w3id.org/roh/hIndex", "person", "hIndexEntity");
-                    if (resultado.results.bindings.Count != limit)
+                                }}order by desc(?person) limit {limitEliminarHIndex}";
+                    SparqlObject resultadoEliminarHIndex = mResourceApi.VirtuosoQueryMultipleGraph(selectEliminarHIndex, whereEliminarHIndex, new List<string>() { "document", "person" });
+                    EliminacionMultiple(resultadoEliminarHIndex.results.bindings, "http://w3id.org/roh/hIndex", "person", "hIndexEntity");
+                    if (resultadoEliminarHIndex.results.bindings.Count != limitEliminarHIndex)
                     {
                         break;
                     }
@@ -1367,18 +1367,18 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
                 //Eliminamos HIndexCitationCount
                 while (true)
                 {
-                    int limit = 500;
-                    String select = @"select ?person ?hIndexCitationCount  ";
-                    String where = @$"where{{
+                    int limitEliminarHIndexCitationCount = 500;
+                    String selectEliminarHIndexCitationCount = @"select ?person ?hIndexCitationCount  ";
+                    String whereEliminarHIndexCitationCount = @$"where{{
                                     {filter}
                                     ?person a <http://xmlns.com/foaf/0.1/Person>.
                                     ?person <http://w3id.org/roh/hIndexCitationCount> ?hIndexCitationCount.
                                     ?hIndexCitationCount <http://w3id.org/roh/citationSource> ?citationSource.
                                     FILTER(?citationSource not in ('{string.Join("','", listSources.Keys)}'))
-                                }}order by desc(?person) limit {limit}";
-                    SparqlObject resultado = mResourceApi.VirtuosoQueryMultipleGraph(select, where, new List<string>() { "document", "person" });
-                    EliminacionMultiple(resultado.results.bindings, "http://w3id.org/roh/hIndexCitationCount", "person", "hIndexCitationCount");
-                    if (resultado.results.bindings.Count != limit)
+                                }}order by desc(?person) limit {limitEliminarHIndexCitationCount}";
+                    SparqlObject resultadoEliminarHIndexCitationCount = mResourceApi.VirtuosoQueryMultipleGraph(selectEliminarHIndexCitationCount, whereEliminarHIndexCitationCount, new List<string>() { "document", "person" });
+                    EliminacionMultiple(resultadoEliminarHIndexCitationCount.results.bindings, "http://w3id.org/roh/hIndexCitationCount", "person", "hIndexCitationCount");
+                    if (resultadoEliminarHIndexCitationCount.results.bindings.Count != limitEliminarHIndexCitationCount)
                     {
                         break;
                     }
@@ -1389,9 +1389,9 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
                     while (true)
                     {
                         //Añadimos nº citas
-                        int limit = 500;
-                        String select = @"select *  ";
-                        String where = @$"where{{
+                        int limitAniadirCitas = 500;
+                        String selectAniadirCitas = @"select *  ";
+                        String whereAniadirCitas = @$"where{{
                                     {filter}
                                     ?person a <http://xmlns.com/foaf/0.1/Person>.
                                     {{
@@ -1417,10 +1417,10 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
                                         ?hIndexCitationCount <http://w3id.org/roh/citationSource> ?citationSource.
                                         FILTER(?citationSource='{source}')
                                     }}
-                                }}order by desc(?person) limit {limit}";
-                        SparqlObject resultado = mResourceApi.VirtuosoQueryMultipleGraph(select, where, new List<string>() { "document", "person" });
-                        InsercionHIndexCitationCount(resultado.results.bindings);
-                        if (resultado.results.bindings.Count != limit)
+                                }}order by desc(?person) limit {limitAniadirCitas}";
+                        SparqlObject resultadoAniadirCitas = mResourceApi.VirtuosoQueryMultipleGraph(selectAniadirCitas, whereAniadirCitas, new List<string>() { "document", "person" });
+                        InsercionHIndexCitationCount(resultadoAniadirCitas.results.bindings);
+                        if (resultadoAniadirCitas.results.bindings.Count != limitAniadirCitas)
                         {
                             break;
                         }
@@ -1429,9 +1429,9 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
                     while (true)
                     {
                         //Eliminamos nº citas
-                        int limit = 500;
-                        String select = @"select *  ";
-                        String where = @$"where{{
+                        int limitEliminarCitas = 500;
+                        String selectEliminarCitas = @"select *  ";
+                        String whereEliminarCitas = @$"where{{
                                     {filter}
                                     ?person a <http://xmlns.com/foaf/0.1/Person>.
                                     {{
@@ -1457,12 +1457,12 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
                                             BIND('{source}' as ?citationSource)
                                         }}
                                     }}
-                                }}order by desc(?person) limit {limit}";
-                        SparqlObject resultado = mResourceApi.VirtuosoQueryMultipleGraph(select, where, new List<string>() { "document", "person" });
+                                }}order by desc(?person) limit {limitEliminarCitas}";
+                        SparqlObject resultadoEliminarCitas = mResourceApi.VirtuosoQueryMultipleGraph(selectEliminarCitas, whereEliminarCitas, new List<string>() { "document", "person" });
 
-                        EliminacionMultiple(resultado.results.bindings, "http://w3id.org/roh/hIndexCitationCount", "person", "hIndexCitationCount");
+                        EliminacionMultiple(resultadoEliminarCitas.results.bindings, "http://w3id.org/roh/hIndexCitationCount", "person", "hIndexCitationCount");
 
-                        if (resultado.results.bindings.Count != limit)
+                        if (resultadoEliminarCitas.results.bindings.Count != limitEliminarCitas)
                         {
                             break;
                         }
@@ -1474,9 +1474,9 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
                 while (true)
                 {
                     //Actualizamos AcumulatedPublicationNumber
-                    int limit = 500;
-                    String select = @"select ?person ?hIndexCitationCount ?numAcumuladoCargadas ?numAcumuladoACargar";
-                    String where = @$"where{{
+                    int limitAcumulatedPublicationNumber = 500;
+                    String selectAcumulatedPublicationNumber = @"select ?person ?hIndexCitationCount ?numAcumuladoCargadas ?numAcumuladoACargar";
+                    String whereAcumulatedPublicationNumber = @$"where{{
                                 {filter}
                                 ?person a <http://xmlns.com/foaf/0.1/Person>.
                                 ?person <http://w3id.org/roh/hIndexCitationCount> ?hIndexCitationCount.
@@ -1513,11 +1513,11 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
                                     }}
                                 }}
                                 FILTER(?numAcumuladoCargadas!= ?numAcumuladoACargar OR !BOUND(?numAcumuladoCargadas))
-                            }}order by desc(?person) limit {limit}";
-                    SparqlObject resultado = mResourceApi.VirtuosoQuery(select, where, "person");
-                    ActualizarHIndexCitationCount(resultado.results.bindings);
+                            }}order by desc(?person) limit {limitAcumulatedPublicationNumber}";
+                    SparqlObject resultadoAcumulatedPublicationNumber = mResourceApi.VirtuosoQuery(selectAcumulatedPublicationNumber, whereAcumulatedPublicationNumber, "person");
+                    ActualizarHIndexCitationCount(resultadoAcumulatedPublicationNumber.results.bindings);
 
-                    if (resultado.results.bindings.Count != limit)
+                    if (resultadoAcumulatedPublicationNumber.results.bindings.Count != limitAcumulatedPublicationNumber)
                     {
                         break;
                     }
@@ -1526,9 +1526,9 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
                 while (true)
                 {
                     //Actualizamos hIndexMax
-                    int limit = 500;
-                    String select = @"select ?person ?hIndexCitationCount ?numMaxCargado ?numMaxACargar";
-                    String where = @$"where{{
+                    int limitHIndexMax = 500;
+                    String selectHIndexMax = @"select ?person ?hIndexCitationCount ?numMaxCargado ?numMaxACargar";
+                    String whereHIndexMax = @$"where{{
                                 {filter}
                                 ?person a <http://xmlns.com/foaf/0.1/Person>.
                                 ?person <http://w3id.org/roh/hIndexCitationCount> ?hIndexCitationCount.
@@ -1546,11 +1546,11 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
                                 
                                 BIND(IF(?numAcumuladoCargadas>=?citas,?citas,?numAcumuladoCargadas) as ?numMaxACargar)
                                 FILTER(?numMaxCargado!= ?numMaxACargar OR !BOUND(?numMaxCargado) )
-                            }}order by desc(?person) limit {limit}";
-                    SparqlObject resultado = mResourceApi.VirtuosoQuery(select, where, "person");
-                    ActualizarHIndexCitationCount(resultado.results.bindings);
+                            }}order by desc(?person) limit {limitHIndexMax}";
+                    SparqlObject resultadoHIndexMax = mResourceApi.VirtuosoQuery(selectHIndexMax, whereHIndexMax, "person");
+                    ActualizarHIndexCitationCount(resultadoHIndexMax.results.bindings);
 
-                    if (resultado.results.bindings.Count != limit)
+                    if (resultadoHIndexMax.results.bindings.Count != limitHIndexMax)
                     {
                         break;
                     }
@@ -1559,9 +1559,9 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
                 while (true)
                 {
                     //Añadimos auxiliar H-Index
-                    int limit = 500;
-                    String select = @"select ?person ?source ?hIndexCalculado ";
-                    String where = @$"where{{
+                    int limitHIndex = 500;
+                    String selectHIndex = @"select ?person ?source ?hIndexCalculado ";
+                    String whereHIndex = @$"where{{
                                     {filter}                                    
                                     {{
                                         select ?person ?source MAX(?hIndexMax) as ?hIndexCalculado
@@ -1581,10 +1581,10 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
                                         ?hIndexEntity <http://w3id.org/roh/citationSource> ?source.    
                                         BIND(xsd:int(?hIndexAux) as ?hIndex)
                                     }}
-                                }}order by desc(?person) limit {limit}";
-                    SparqlObject resultado = mResourceApi.VirtuosoQuery(select, where, "person");
-                    InsercionHIndex(resultado.results.bindings);
-                    if (resultado.results.bindings.Count != limit)
+                                }}order by desc(?person) limit {limitHIndex}";
+                    SparqlObject resultadoHIndex = mResourceApi.VirtuosoQuery(selectHIndex, whereHIndex, "person");
+                    InsercionHIndex(resultadoHIndex.results.bindings);
+                    if (resultadoHIndex.results.bindings.Count != limitHIndex)
                     {
                         break;
                     }
@@ -1593,9 +1593,9 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
                 while (true)
                 {
                     //Eliminamos auxiliar H-Index
-                    int limit = 500;
-                    String select = @"select distinct ?person ?hIndexEntity ";
-                    String where = @$"where{{
+                    int limitEliminarHIndex = 500;
+                    String selectEliminarHIndex = @"select distinct ?person ?hIndexEntity ";
+                    String whereEliminarHIndex = @$"where{{
                                     {filter}                                    
                                     ?person a <http://xmlns.com/foaf/0.1/Person>.     
                                     {{                                        
@@ -1615,10 +1615,10 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
                                             BIND(xsd:int(?hIndexMaxAux) as ?hIndexMax).
                                         }}                                        
                                     }}
-                                }}order by desc(?person) limit {limit}";
-                    SparqlObject resultado = mResourceApi.VirtuosoQuery(select, where, "person");
-                    EliminacionMultiple(resultado.results.bindings, "http://w3id.org/roh/hIndex", "person", "hIndexEntity");
-                    if (resultado.results.bindings.Count != limit)
+                                }}order by desc(?person) limit {limitEliminarHIndex}";
+                    SparqlObject resultadoEliminarHIndex = mResourceApi.VirtuosoQuery(selectEliminarHIndex, whereEliminarHIndex, "person");
+                    EliminacionMultiple(resultadoEliminarHIndex.results.bindings, "http://w3id.org/roh/hIndex", "person", "hIndexEntity");
+                    if (resultadoEliminarHIndex.results.bindings.Count != limitEliminarHIndex)
                     {
                         break;
                     }
