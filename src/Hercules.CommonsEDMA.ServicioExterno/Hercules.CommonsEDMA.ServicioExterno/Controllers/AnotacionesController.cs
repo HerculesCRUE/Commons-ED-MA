@@ -7,7 +7,8 @@ using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using Hercules.CommonsEDMA.ServicioExterno.Models;
+using Hercules.CommonsEDMA.ServicioExterno.Controllers.Utilidades;
+
 namespace Hercules.CommonsEDMA.ServicioExterno.Controllers
 {
 

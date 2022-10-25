@@ -79,16 +79,23 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
         {
             get
             {
-                try
+
+                while (mCommunityAPI == null)
                 {
-                    mIDComunidad = communityApi.GetCommunityId();
-                }
-                catch (Exception)
-                {
-                    // resourceApi.Log.Error("Excepcion: " + ex.Message);
-                    return Guid.Empty;
+                    try
+                    {
+                        mIDComunidad = communityApi.GetCommunityId();
+                    }
+                    catch (Exception)
+                    {
+                        Console.WriteLine("No se ha podido iniciar CommunityApi");
+                        Console.WriteLine($"Contenido OAuth: {System.IO.File.ReadAllText(RUTA_OAUTH)}");
+                        Thread.Sleep(10000);
+                        return Guid.Empty;
+                    }
                 }
                 return mIDComunidad.Value;
+
             }
         }
 
