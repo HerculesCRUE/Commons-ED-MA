@@ -25,12 +25,30 @@ namespace OAI_PMH.Services
             string accessToken = Token.CheckToken(pConfig);
             Dictionary<string, DateTime> idDictionary = new();
 
+            #region IDs candidatos
+            HashSet<string> idListCandidatos = new();
+            RestClient clientCandidatos = new(pConfig.GetConfigSGI() + "/api/sgp/personas/modificadas-ids?q=fechaModificacion=ge=\"1500-01-01T00:00:00Z\"");
+            clientCandidatos.AddDefaultHeader("Authorization", "Bearer " + accessToken);
+            var requestCandidatos = new RestRequest(Method.GET);
+            IRestResponse responseCandidatos = Token.httpCall(clientCandidatos, requestCandidatos);
+
+            if (!String.IsNullOrEmpty(responseCandidatos.Content))
+            {
+                List<string> idListCandidatosAux = responseCandidatos.Content[1..^1].Split(',').Distinct().ToList();
+                foreach (string id in idListCandidatosAux)
+                {
+                    string idPersona = "Persona_" + id.Replace("\"", "").Substring(0, id.Replace("\"", "").Length - 1);
+                    idListCandidatos.Add(idPersona);
+                }
+            }
+            #endregion
+
             #region --- Personal Data
             List<string> idList = new();
             RestClient client = new(pConfig.GetConfigSGI() + "/api/sgp/personas/modificadas-ids?q=fechaModificacion=ge=\"" + from + "\"");
             client.AddDefaultHeader("Authorization", "Bearer " + accessToken);
             var request = new RestRequest(Method.GET);
-            IRestResponse response = client.Execute(request);
+            IRestResponse response = Token.httpCall(client, request);
 
             if (!String.IsNullOrEmpty(response.Content))
             {
@@ -41,6 +59,7 @@ namespace OAI_PMH.Services
                     if (!idDictionary.ContainsKey(idPersona))
                     {
                         idDictionary.Add(idPersona, DateTime.UtcNow);
+                        idListCandidatos.Add(idPersona);
                     }
                 }
             }
@@ -55,13 +74,6 @@ namespace OAI_PMH.Services
                 {
                     idDictionary.Add(idPersona, DateTime.UtcNow);
                 }
-                else
-                {
-                    if (DateTime.Compare(item.Value, idDictionary[idPersona]) == 1)
-                    {
-                        idDictionary[idPersona] = item.Value;
-                    }
-                }
             }
 
             dicFormacionAcademica = AcademicFormation.GetModifiedDoctorados(from, pConfig);
@@ -71,13 +83,6 @@ namespace OAI_PMH.Services
                 if (!idDictionary.ContainsKey(idPersona))
                 {
                     idDictionary.Add(idPersona, DateTime.UtcNow);
-                }
-                else
-                {
-                    if (DateTime.Compare(item.Value, idDictionary[idPersona]) == 1)
-                    {
-                        idDictionary[idPersona] = item.Value;
-                    }
                 }
             }
 
@@ -89,13 +94,6 @@ namespace OAI_PMH.Services
                 {
                     idDictionary.Add(idPersona, DateTime.UtcNow);
                 }
-                else
-                {
-                    if (DateTime.Compare(item.Value, idDictionary[idPersona]) == 1)
-                    {
-                        idDictionary[idPersona] = item.Value;
-                    }
-                }
             }
 
             dicFormacionAcademica = AcademicFormation.GetModifiedEspecializada(from, pConfig);
@@ -105,13 +103,6 @@ namespace OAI_PMH.Services
                 if (!idDictionary.ContainsKey(idPersona))
                 {
                     idDictionary.Add(idPersona, DateTime.UtcNow);
-                }
-                else
-                {
-                    if (DateTime.Compare(item.Value, idDictionary[idPersona]) == 1)
-                    {
-                        idDictionary[idPersona] = item.Value;
-                    }
                 }
             }
             #endregion
@@ -125,13 +116,6 @@ namespace OAI_PMH.Services
                 {
                     idDictionary.Add(idPersona, DateTime.UtcNow);
                 }
-                else
-                {
-                    if (DateTime.Compare(item.Value, idDictionary[idPersona]) == 1)
-                    {
-                        idDictionary[idPersona] = item.Value;
-                    }
-                }
             }
 
             dicActividadDocente = DocentActivity.GetModifiedAcademicFormationProvided(from, pConfig);
@@ -141,13 +125,6 @@ namespace OAI_PMH.Services
                 if (!idDictionary.ContainsKey(idPersona))
                 {
                     idDictionary.Add(idPersona, DateTime.UtcNow);
-                }
-                else
-                {
-                    if (DateTime.Compare(item.Value, idDictionary[idPersona]) == 1)
-                    {
-                        idDictionary[idPersona] = item.Value;
-                    }
                 }
             }
 
@@ -159,15 +136,10 @@ namespace OAI_PMH.Services
                 {
                     idDictionary.Add(idPersona, DateTime.UtcNow);
                 }
-                else
-                {
-                    if (DateTime.Compare(item.Value, idDictionary[idPersona]) == 1)
-                    {
-                        idDictionary[idPersona] = item.Value;
-                    }
-                }
             }
             #endregion
+
+            idDictionary = idDictionary.Where(x => idListCandidatos.Contains(x.Key)).ToDictionary(x => x.Key, x => x.Value);
 
             return idDictionary;
         }
@@ -184,6 +156,10 @@ namespace OAI_PMH.Services
             List<Thread> hilos = new List<Thread>();
 
             Persona dataPersona = GetDatosPersona(identifier, pConfig);
+            if (dataPersona == null)
+            {
+                return null;
+            }
 
             DatosPersonales datosPersonales = null;
             DatosContacto datosContacto = null;
@@ -309,13 +285,12 @@ namespace OAI_PMH.Services
             RestClient client = new(pConfig.GetConfigSGI() + "/api/sgp/personas/" + id);
             client.AddDefaultHeader("Authorization", "Bearer " + accessToken);
             var request = new RestRequest(Method.GET);
-            IRestResponse response = client.Execute(request);
+            IRestResponse response = Token.httpCall(client, request);
             if (string.IsNullOrEmpty(response.Content))
             {
                 return null;
             }
-            var json = JObject.Parse(response.Content);
-            return JsonConvert.DeserializeObject<Persona>(json.ToString());
+            return JsonConvert.DeserializeObject<Persona>(response.Content);
         }
 
         /// <summary>
@@ -332,7 +307,7 @@ namespace OAI_PMH.Services
             RestClient client = new(pConfig.GetConfigSGI() + "/api/sgp/datos-personales/persona/" + id);
             client.AddDefaultHeader("Authorization", "Bearer " + accessToken);
             var request = new RestRequest(Method.GET);
-            IRestResponse response = client.Execute(request);
+            IRestResponse response = Token.httpCall(client, request);
             try
             {
                 datosPersonales = JsonConvert.DeserializeObject<DatosPersonales>(response.Content);
@@ -351,7 +326,7 @@ namespace OAI_PMH.Services
             RestClient client = new(pConfig.GetConfigSGI() + "/api/sgp/datos-contacto/persona/" + id);
             client.AddDefaultHeader("Authorization", "Bearer " + accessToken);
             var request = new RestRequest(Method.GET);
-            IRestResponse response = client.Execute(request);
+            IRestResponse response = Token.httpCall(client, request);
             try
             {
                 datosContacto = JsonConvert.DeserializeObject<DatosContacto>(response.Content);
@@ -370,7 +345,7 @@ namespace OAI_PMH.Services
             RestClient client = new(pConfig.GetConfigSGI() + "/api/sgp/vinculaciones/persona/" + id);
             client.AddDefaultHeader("Authorization", "Bearer " + accessToken);
             var request = new RestRequest(Method.GET);
-            IRestResponse response = client.Execute(request);
+            IRestResponse response = Token.httpCall(client, request);
             try
             {
                 vinculacion = JsonConvert.DeserializeObject<Vinculacion>(response.Content);
@@ -389,7 +364,7 @@ namespace OAI_PMH.Services
             RestClient client = new(pConfig.GetConfigSGI() + "/api/sgp/datos-academicos/persona/" + id);
             client.AddDefaultHeader("Authorization", "Bearer " + accessToken);
             var request = new RestRequest(Method.GET);
-            IRestResponse response = client.Execute(request);
+            IRestResponse response = Token.httpCall(client, request);
             try
             {
                 datosAcademicos = JsonConvert.DeserializeObject<DatosAcademicos>(response.Content);
@@ -408,7 +383,7 @@ namespace OAI_PMH.Services
             RestClient client = new(pConfig.GetConfigSGI() + "/api/sgp/personas/" + id + "/fotografia");
             client.AddDefaultHeader("Authorization", "Bearer " + accessToken);
             var request = new RestRequest(Method.GET);
-            IRestResponse response = client.Execute(request);
+            IRestResponse response = Token.httpCall(client, request);
             try
             {
                 fotografia = JsonConvert.DeserializeObject<Fotografia>(response.Content);
@@ -427,7 +402,7 @@ namespace OAI_PMH.Services
             RestClient client = new(pConfig.GetConfigSGI() + "/api/sgp/sexenios/persona/" + id);
             client.AddDefaultHeader("Authorization", "Bearer " + accessToken);
             var request = new RestRequest(Method.GET);
-            IRestResponse response = client.Execute(request);
+            IRestResponse response = Token.httpCall(client, request);
             try
             {
                 sexenios = JsonConvert.DeserializeObject<Sexenio>(response.Content);

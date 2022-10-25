@@ -265,7 +265,7 @@ namespace OAI_PMH.Models.SGI.Project
             if (this.EntidadesConvocantes != null && this.EntidadesConvocantes.Any())
             {
                 ProyectoEntidadConvocante entidadConvocante = this.EntidadesConvocantes[0];
-                OrganizacionBBDD empresa = Empresa.GetOrganizacionBBDD(pHarvesterServices, pConfig, pResourceApi, dicOrganizaciones[entidadConvocante.EntidadRef]);
+                OrganizacionBBDD empresa = Empresa.GetOrganizacionBBDD(pResourceApi, dicOrganizaciones[entidadConvocante.EntidadRef]);
                 if (empresa != null)
                 {
                     project.Roh_conductedByTitle = empresa.title;

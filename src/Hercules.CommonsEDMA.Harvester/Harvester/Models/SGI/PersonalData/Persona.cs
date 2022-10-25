@@ -651,7 +651,7 @@ namespace OAI_PMH.Models.SGI.PersonalData
 
                     if (numIntentos > 6)
                     {
-                        break;
+                        throw new Exception($"Se ha producido un error al cargar el recurso '{recursoCargar.Title}'");
                     }
                     string id = "";
                     if (pListaRecursosCargar.Last() == recursoCargar)
@@ -1395,25 +1395,25 @@ namespace OAI_PMH.Models.SGI.PersonalData
                     Dictionary<string, string> dicOrganizacionesCargadas = new Dictionary<string, string>();
                     foreach (KeyValuePair<string, string> organizacion in dicOrganizaciones)
                     {
-                        Empresa organizacionAux = Empresa.GetOrganizacionSGI(pHarvesterServices, pConfig, "Organizacion_" + organizacion.Key, pDicRutas);
-                        if (organizacionAux != null)
+                        crisIdentifier += $@"{RemoveDiacritics(organizacion.Key)}___";
+
+                        if (string.IsNullOrEmpty(organizacion.Value))
                         {
-                            impartedAcademic.promotedByTitle = organizacionAux.Nombre;
-                            crisIdentifier += $@"{RemoveDiacritics(impartedAcademic.promotedByTitle)}___";
-
-                            if (string.IsNullOrEmpty(organizacion.Value))
+                            Empresa organizacionAux = Empresa.GetOrganizacionSGI(pHarvesterServices, pConfig, "Organizacion_" + organizacion.Key, pDicRutas);
+                            if (organizacionAux == null)
                             {
-                                string idGnoss = organizacionAux.Cargar(pHarvesterServices, pConfig, pResourceApi, "organization", pDicIdentificadores, pDicRutas, pRabbitConf);
-                                pDicIdentificadores["organization"].Add(idGnoss);
-                                dicOrganizacionesCargadas[organizacion.Key] = idGnoss;
+                                continue;
                             }
-                            else
-                            {
-                                dicOrganizacionesCargadas[organizacion.Key] = organizacion.Value;
-                            }
-
-                            impartedAcademic.promotedBy = dicOrganizacionesCargadas[item.EntidadRealizacion.EntidadRef];
+                            string idGnoss = organizacionAux.Cargar(pHarvesterServices, pConfig, pResourceApi, "organization", pDicIdentificadores, pDicRutas, pRabbitConf);
+                            pDicIdentificadores["organization"].Add(idGnoss);
+                            dicOrganizacionesCargadas[organizacion.Key] = idGnoss;
                         }
+                        else
+                        {
+                            dicOrganizacionesCargadas[organizacion.Key] = organizacion.Value;
+                        }
+
+                        impartedAcademic.promotedBy = dicOrganizacionesCargadas[item.EntidadRealizacion.EntidadRef];
                     }
                 }
 
@@ -1588,25 +1588,26 @@ namespace OAI_PMH.Models.SGI.PersonalData
                     Dictionary<string, string> dicOrganizacionesCargadas = new Dictionary<string, string>();
                     foreach (KeyValuePair<string, string> organizacion in dicOrganizaciones)
                     {
-                        Empresa organizacionAux = Empresa.GetOrganizacionSGI(pHarvesterServices, pConfig, "Organizacion_" + organizacion.Key, pDicRutas);
-                        if (organizacionAux != null)
+                        crisIdentifier += $@"{RemoveDiacritics(organizacion.Key)}___";
+
+                        if (string.IsNullOrEmpty(organizacion.Value))
                         {
-                            tesis.promotedByTitle = organizacionAux.Nombre;
-                            crisIdentifier += $@"{RemoveDiacritics(tesis.promotedByTitle)}___";
-
-                            if (string.IsNullOrEmpty(organizacion.Value))
+                            Empresa organizacionAux = Empresa.GetOrganizacionSGI(pHarvesterServices, pConfig, "Organizacion_" + organizacion.Key, pDicRutas);
+                            if (organizacionAux == null)
                             {
-                                string idGnoss = organizacionAux.Cargar(pHarvesterServices, pConfig, pResourceApi, "organization", pDicIdentificadores, pDicRutas, pRabbitConf);
-                                pDicIdentificadores["organization"].Add(idGnoss);
-                                dicOrganizacionesCargadas[organizacion.Key] = idGnoss;
-                            }
-                            else
-                            {
-                                dicOrganizacionesCargadas[organizacion.Key] = organizacion.Value;
-                            }
+                                continue;
 
-                            tesis.promotedBy = dicOrganizacionesCargadas[item.EntidadRealizacion.EntidadRef];
+                            }
+                            string idGnoss = organizacionAux.Cargar(pHarvesterServices, pConfig, pResourceApi, "organization", pDicIdentificadores, pDicRutas, pRabbitConf);
+                            pDicIdentificadores["organization"].Add(idGnoss);
+                            dicOrganizacionesCargadas[organizacion.Key] = idGnoss;
                         }
+                        else
+                        {
+                            dicOrganizacionesCargadas[organizacion.Key] = organizacion.Value;
+                        }
+
+                        tesis.promotedBy = dicOrganizacionesCargadas[item.EntidadRealizacion.EntidadRef];
                     }
                 }
 
@@ -1693,25 +1694,25 @@ namespace OAI_PMH.Models.SGI.PersonalData
                     Dictionary<string, string> dicOrganizacionesCargadas = new Dictionary<string, string>();
                     foreach (KeyValuePair<string, string> organizacion in dicOrganizaciones)
                     {
-                        Empresa organizacionAux = Empresa.GetOrganizacionSGI(pHarvesterServices, pConfig, "Organizacion_" + organizacion.Key, pDicRutas);
-                        if (organizacionAux != null)
+                        crisIdentifier += $@"{RemoveDiacritics(organizacion.Key)}___";
+
+                        if (string.IsNullOrEmpty(organizacion.Value))
                         {
-                            curso.promotedByTitle = organizacionAux.Nombre;
-                            crisIdentifier += $@"{RemoveDiacritics(organizacionAux.Nombre)}___";
-
-                            if (string.IsNullOrEmpty(organizacion.Value))
+                            Empresa organizacionAux = Empresa.GetOrganizacionSGI(pHarvesterServices, pConfig, "Organizacion_" + organizacion.Key, pDicRutas);
+                            if (organizacionAux == null)
                             {
-                                string idGnoss = organizacionAux.Cargar(pHarvesterServices, pConfig, pResourceApi, "organization", pDicIdentificadores, pDicRutas, pRabbitConf);
-                                pDicIdentificadores["organization"].Add(idGnoss);
-                                dicOrganizacionesCargadas[organizacion.Key] = idGnoss;
+                                continue;
                             }
-                            else
-                            {
-                                dicOrganizacionesCargadas[organizacion.Key] = organizacion.Value;
-                            }
-
-                            curso.promotedBy = dicOrganizacionesCargadas[item.EntidadOrganizacionEvento.EntidadRef];
+                            string idGnoss = organizacionAux.Cargar(pHarvesterServices, pConfig, pResourceApi, "organization", pDicIdentificadores, pDicRutas, pRabbitConf);
+                            pDicIdentificadores["organization"].Add(idGnoss);
+                            dicOrganizacionesCargadas[organizacion.Key] = idGnoss;
                         }
+                        else
+                        {
+                            dicOrganizacionesCargadas[organizacion.Key] = organizacion.Value;
+                        }
+
+                        curso.promotedBy = dicOrganizacionesCargadas[item.EntidadOrganizacionEvento.EntidadRef];
                     }
                 }
 
@@ -1780,25 +1781,25 @@ namespace OAI_PMH.Models.SGI.PersonalData
                     Dictionary<string, string> dicOrganizacionesCargadas = new Dictionary<string, string>();
                     foreach (KeyValuePair<string, string> organizacion in dicOrganizaciones)
                     {
-                        Empresa organizacionAux = Empresa.GetOrganizacionSGI(pHarvesterServices, pConfig, "Organizacion_" + organizacion.Key, pDicRutas);
-                        if (organizacionAux != null)
+                        crisIdentifier += $@"{RemoveDiacritics(organizacion.Key)}___";
+
+                        if (string.IsNullOrEmpty(organizacion.Value))
                         {
-                            ciclo.entidadTitulacionTitulo = organizacionAux.Nombre;
-                            crisIdentifier += $@"{RemoveDiacritics(ciclo.entidadTitulacionTitulo)}___";
-
-                            if (string.IsNullOrEmpty(organizacion.Value))
+                            Empresa organizacionAux = Empresa.GetOrganizacionSGI(pHarvesterServices, pConfig, "Organizacion_" + organizacion.Key, pDicRutas);
+                            if (organizacionAux == null)
                             {
-                                string idGnoss = organizacionAux.Cargar(pHarvesterServices, pConfig, pResourceApi, "organization", pDicIdentificadores, pDicRutas, pRabbitConf);
-                                pDicIdentificadores["organization"].Add(idGnoss);
-                                dicOrganizacionesCargadas[organizacion.Key] = idGnoss;
+                                continue;
                             }
-                            else
-                            {
-                                dicOrganizacionesCargadas[organizacion.Key] = organizacion.Value;
-                            }
-
-                            ciclo.entidadTitulacion = dicOrganizacionesCargadas[item.EntidadTitulacion.EntidadRef];
+                            string idGnoss = organizacionAux.Cargar(pHarvesterServices, pConfig, pResourceApi, "organization", pDicIdentificadores, pDicRutas, pRabbitConf);
+                            pDicIdentificadores["organization"].Add(idGnoss);
+                            dicOrganizacionesCargadas[organizacion.Key] = idGnoss;
                         }
+                        else
+                        {
+                            dicOrganizacionesCargadas[organizacion.Key] = organizacion.Value;
+                        }
+
+                        ciclo.entidadTitulacion = dicOrganizacionesCargadas[item.EntidadTitulacion.EntidadRef];
                     }
                 }
 
@@ -1894,25 +1895,25 @@ namespace OAI_PMH.Models.SGI.PersonalData
                     Dictionary<string, string> dicOrganizacionesCargadas = new Dictionary<string, string>();
                     foreach (KeyValuePair<string, string> organizacion in dicOrganizaciones)
                     {
-                        Empresa organizacionAux = Empresa.GetOrganizacionSGI(pHarvesterServices, pConfig, "Organizacion_" + organizacion.Key, pDicRutas);
-                        if (organizacionAux != null)
+                        crisIdentifier += $@"{RemoveDiacritics(organizacion.Key)}___";
+
+                        if (string.IsNullOrEmpty(organizacion.Value))
                         {
-                            doctorado.entidadTitulacionTitulo = organizacionAux.Nombre;
-                            crisIdentifier += $@"{RemoveDiacritics(doctorado.entidadTitulacionTitulo)}___";
-
-                            if (string.IsNullOrEmpty(organizacion.Value))
+                            Empresa organizacionAux = Empresa.GetOrganizacionSGI(pHarvesterServices, pConfig, "Organizacion_" + organizacion.Key, pDicRutas);
+                            if (organizacionAux == null)
                             {
-                                string idGnoss = organizacionAux.Cargar(pHarvesterServices, pConfig, pResourceApi, "organization", pDicIdentificadores, pDicRutas, pRabbitConf);
-                                pDicIdentificadores["organization"].Add(idGnoss);
-                                dicOrganizacionesCargadas[organizacion.Key] = idGnoss;
+                                continue;
                             }
-                            else
-                            {
-                                dicOrganizacionesCargadas[organizacion.Key] = organizacion.Value;
-                            }
-
-                            doctorado.entidadTitulacion = dicOrganizacionesCargadas[item.EntidadTitulacion.EntidadRef];
+                            string idGnoss = organizacionAux.Cargar(pHarvesterServices, pConfig, pResourceApi, "organization", pDicIdentificadores, pDicRutas, pRabbitConf);
+                            pDicIdentificadores["organization"].Add(idGnoss);
+                            dicOrganizacionesCargadas[organizacion.Key] = idGnoss;
                         }
+                        else
+                        {
+                            dicOrganizacionesCargadas[organizacion.Key] = organizacion.Value;
+                        }
+
+                        doctorado.entidadTitulacion = dicOrganizacionesCargadas[item.EntidadTitulacion.EntidadRef];
                     }
                 }
 
@@ -1942,25 +1943,25 @@ namespace OAI_PMH.Models.SGI.PersonalData
                     Dictionary<string, string> dicOrganizacionesCargadas = new Dictionary<string, string>();
                     foreach (KeyValuePair<string, string> organizacion in dicOrganizaciones)
                     {
-                        Empresa organizacionAux = Empresa.GetOrganizacionSGI(pHarvesterServices, pConfig, "Organizacion_" + organizacion.Key, pDicRutas);
-                        if (organizacionAux != null)
+                        crisIdentifier += $@"{RemoveDiacritics(organizacion.Key)}___";
+
+                        if (string.IsNullOrEmpty(organizacion.Value))
                         {
-                            doctorado.entidadTitDEATitulo = organizacionAux.Nombre;
-                            crisIdentifier += $@"{RemoveDiacritics(doctorado.entidadTitDEATitulo)}___";
-
-                            if (string.IsNullOrEmpty(organizacion.Value))
+                            Empresa organizacionAux = Empresa.GetOrganizacionSGI(pHarvesterServices, pConfig, "Organizacion_" + organizacion.Key, pDicRutas);
+                            if (organizacionAux == null)
                             {
-                                string idGnoss = organizacionAux.Cargar(pHarvesterServices, pConfig, pResourceApi, "organization", pDicIdentificadores, pDicRutas, pRabbitConf);
-                                pDicIdentificadores["organization"].Add(idGnoss);
-                                dicOrganizacionesCargadas[organizacion.Key] = idGnoss;
+                                continue;
                             }
-                            else
-                            {
-                                dicOrganizacionesCargadas[organizacion.Key] = organizacion.Value;
-                            }
-
-                            doctorado.entidadTitDEA = dicOrganizacionesCargadas[item.EntidadTitulacionDEA.EntidadRef];
+                            string idGnoss = organizacionAux.Cargar(pHarvesterServices, pConfig, pResourceApi, "organization", pDicIdentificadores, pDicRutas, pRabbitConf);
+                            pDicIdentificadores["organization"].Add(idGnoss);
+                            dicOrganizacionesCargadas[organizacion.Key] = idGnoss;
                         }
+                        else
+                        {
+                            dicOrganizacionesCargadas[organizacion.Key] = organizacion.Value;
+                        }
+
+                        doctorado.entidadTitDEA = dicOrganizacionesCargadas[item.EntidadTitulacionDEA.EntidadRef];
                     }
                 }
 
@@ -2053,25 +2054,25 @@ namespace OAI_PMH.Models.SGI.PersonalData
                     Dictionary<string, string> dicOrganizacionesCargadas = new Dictionary<string, string>();
                     foreach (KeyValuePair<string, string> organizacion in dicOrganizaciones)
                     {
-                        Empresa organizacionAux = Empresa.GetOrganizacionSGI(pHarvesterServices, pConfig, "Organizacion_" + organizacion.Key, pDicRutas);
-                        if (organizacionAux != null)
+                        crisIdentifier += $@"{RemoveDiacritics(organizacion.Key)}___";
+
+                        if (string.IsNullOrEmpty(organizacion.Value))
                         {
-                            posgrado.entidadTitulacionTitulo = organizacionAux.Nombre;
-                            crisIdentifier += $@"{RemoveDiacritics(posgrado.entidadTitulacionTitulo)}___";
-
-                            if (string.IsNullOrEmpty(organizacion.Value))
+                            Empresa organizacionAux = Empresa.GetOrganizacionSGI(pHarvesterServices, pConfig, "Organizacion_" + organizacion.Key, pDicRutas);
+                            if (organizacionAux == null)
                             {
-                                string idGnoss = organizacionAux.Cargar(pHarvesterServices, pConfig, pResourceApi, "organization", pDicIdentificadores, pDicRutas, pRabbitConf);
-                                pDicIdentificadores["organization"].Add(idGnoss);
-                                dicOrganizacionesCargadas[organizacion.Key] = idGnoss;
+                                continue;
                             }
-                            else
-                            {
-                                dicOrganizacionesCargadas[organizacion.Key] = organizacion.Value;
-                            }
-
-                            posgrado.entidadTitulacion = dicOrganizacionesCargadas[item.EntidadTitulacion.EntidadRef];
+                            string idGnoss = organizacionAux.Cargar(pHarvesterServices, pConfig, pResourceApi, "organization", pDicIdentificadores, pDicRutas, pRabbitConf);
+                            pDicIdentificadores["organization"].Add(idGnoss);
+                            dicOrganizacionesCargadas[organizacion.Key] = idGnoss;
                         }
+                        else
+                        {
+                            dicOrganizacionesCargadas[organizacion.Key] = organizacion.Value;
+                        }
+
+                        posgrado.entidadTitulacion = dicOrganizacionesCargadas[item.EntidadTitulacion.EntidadRef];
                     }
                 }
 
@@ -2145,25 +2146,25 @@ namespace OAI_PMH.Models.SGI.PersonalData
                     Dictionary<string, string> dicOrganizacionesCargadas = new Dictionary<string, string>();
                     foreach (KeyValuePair<string, string> organizacion in dicOrganizaciones)
                     {
-                        Empresa organizacionAux = Empresa.GetOrganizacionSGI(pHarvesterServices, pConfig, "Organizacion_" + organizacion.Key, pDicRutas);
-                        if (organizacionAux != null)
+                        crisIdentifier += $@"{RemoveDiacritics(organizacion.Key)}___";
+
+                        if (string.IsNullOrEmpty(organizacion.Value))
                         {
-                            formEspecializada.entidadTitulacionTitulo = organizacionAux.Nombre;
-                            crisIdentifier += $@"{RemoveDiacritics(formEspecializada.entidadTitulacionTitulo)}___";
-
-                            if (string.IsNullOrEmpty(organizacion.Value))
+                            Empresa organizacionAux = Empresa.GetOrganizacionSGI(pHarvesterServices, pConfig, "Organizacion_" + organizacion.Key, pDicRutas);
+                            if (organizacionAux == null)
                             {
-                                string idGnoss = organizacionAux.Cargar(pHarvesterServices, pConfig, pResourceApi, "organization", pDicIdentificadores, pDicRutas, pRabbitConf);
-                                pDicIdentificadores["organization"].Add(idGnoss);
-                                dicOrganizacionesCargadas[organizacion.Key] = idGnoss;
+                                continue;
                             }
-                            else
-                            {
-                                dicOrganizacionesCargadas[organizacion.Key] = organizacion.Value;
-                            }
-
-                            formEspecializada.entidadTitulacion = dicOrganizacionesCargadas[item.EntidadTitulacion.EntidadRef];
+                            string idGnoss = organizacionAux.Cargar(pHarvesterServices, pConfig, pResourceApi, "organization", pDicIdentificadores, pDicRutas, pRabbitConf);
+                            pDicIdentificadores["organization"].Add(idGnoss);
+                            dicOrganizacionesCargadas[organizacion.Key] = idGnoss;
                         }
+                        else
+                        {
+                            dicOrganizacionesCargadas[organizacion.Key] = organizacion.Value;
+                        }
+
+                        formEspecializada.entidadTitulacion = dicOrganizacionesCargadas[item.EntidadTitulacion.EntidadRef];
                     }
                 }
 

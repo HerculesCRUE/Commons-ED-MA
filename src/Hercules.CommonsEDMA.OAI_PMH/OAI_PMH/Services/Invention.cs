@@ -28,7 +28,7 @@ namespace OAI_PMH.Services
             RestClient client = new(pConfig.GetConfigSGI() + "/api/sgipii/invenciones/modificados-ids?q=fechaModificacion=ge=\"" + from + "\"");
             client.AddDefaultHeader("Authorization", "Bearer " + accessToken);
             var request = new RestRequest(Method.GET);
-            IRestResponse response = client.Execute(request);
+            IRestResponse response = Token.httpCall(client, request);
 
             if (!string.IsNullOrEmpty(response.Content))
             {
@@ -59,7 +59,11 @@ namespace OAI_PMH.Services
             client.AddDefaultHeader("Authorization", "Bearer " + accessToken);
             List<Thread> hilos = new();
             var request = new RestRequest(Method.GET);
-            IRestResponse response = client.Execute(request);
+            IRestResponse response = Token.httpCall(client, request);
+            if (string.IsNullOrEmpty(response.Content))
+            {
+                return null;
+            }
             Invencion invencion = JsonConvert.DeserializeObject<Invencion>(response.Content);
             List<SectorAplicacion> sectorAplicacion = null;
             hilos.Add(new Thread(() => sectorAplicacion = GetSectores(identifier, pConfig)));
@@ -73,12 +77,13 @@ namespace OAI_PMH.Services
             hilos.Add(new(() => areasConocimiento = GetAreasConocimiento(identifier, pConfig)));
             List<PeriodoTitularidad> periodosTitularidad = null;
             List<Titular> titulares = new List<Titular>();
-            hilos.Add(new(() => { 
+            hilos.Add(new(() =>
+            {
                 periodosTitularidad = GetPeriodosTitularidad(identifier, pConfig);
-          
+
                 if (periodosTitularidad != null && periodosTitularidad.Any())
                 {
-                    
+
                     foreach (PeriodoTitularidad periodo in periodosTitularidad)
                     {
                         titulares.AddRange(GetTitular(periodo.id.ToString(), pConfig));
@@ -123,7 +128,7 @@ namespace OAI_PMH.Services
             RestClient client = new(pConfig.GetConfigSGI() + "/api/sgipii/invenciones/" + identifier + "/solicitudesproteccion");
             client.AddDefaultHeader("Authorization", "Bearer " + accessToken);
             var request = new RestRequest(Method.GET);
-            IRestResponse response = client.Execute(request);
+            IRestResponse response = Token.httpCall(client, request);
             try
             {
                 return JsonConvert.DeserializeObject<List<SolicitudProteccion>>(response.Content);
@@ -147,7 +152,7 @@ namespace OAI_PMH.Services
             RestClient client = new(pConfig.GetConfigSGI() + "/api/sgipii/periodostitularidad/" + identifier + "/titulares");
             client.AddDefaultHeader("Authorization", "Bearer " + accessToken);
             var request = new RestRequest(Method.GET);
-            IRestResponse response = client.Execute(request);
+            IRestResponse response = Token.httpCall(client, request);
             try
             {
                 return JsonConvert.DeserializeObject<List<Titular>>(response.Content);
@@ -171,7 +176,7 @@ namespace OAI_PMH.Services
             RestClient client = new(pConfig.GetConfigSGI() + "/api/sgipii/invenciones/" + identifier + "/periodostitularidad");
             client.AddDefaultHeader("Authorization", "Bearer " + accessToken);
             var request = new RestRequest(Method.GET);
-            IRestResponse response = client.Execute(request);
+            IRestResponse response = Token.httpCall(client, request);
             try
             {
                 return JsonConvert.DeserializeObject<List<PeriodoTitularidad>>(response.Content);
@@ -195,7 +200,7 @@ namespace OAI_PMH.Services
             RestClient client = new(pConfig.GetConfigSGI() + "/api/sgipii/invenciones/" + identifier + "/areasconocimiento");
             client.AddDefaultHeader("Authorization", "Bearer " + accessToken);
             var request = new RestRequest(Method.GET);
-            IRestResponse response = client.Execute(request);
+            IRestResponse response = Token.httpCall(client, request);
             try
             {
                 return JsonConvert.DeserializeObject<List<AreaConocimiento>>(response.Content);
@@ -219,7 +224,7 @@ namespace OAI_PMH.Services
             RestClient client = new(pConfig.GetConfigSGI() + "/api/sgipii/invenciones/" + identifier + "/sectoresaplicacion");
             client.AddDefaultHeader("Authorization", "Bearer " + accessToken);
             var request = new RestRequest(Method.GET);
-            IRestResponse response = client.Execute(request);
+            IRestResponse response = Token.httpCall(client, request);
             try
             {
                 return JsonConvert.DeserializeObject<List<SectorAplicacion>>(response.Content);
@@ -243,7 +248,7 @@ namespace OAI_PMH.Services
             RestClient client = new(pConfig.GetConfigSGI() + "/api/sgipii/invenciones/" + identifier + "/invenciondocumentos");
             client.AddDefaultHeader("Authorization", "Bearer " + accessToken);
             var request = new RestRequest(Method.GET);
-            IRestResponse response = client.Execute(request);
+            IRestResponse response = Token.httpCall(client, request);
             try
             {
                 return JsonConvert.DeserializeObject<List<InvencionDocumento>>(response.Content);
@@ -267,7 +272,7 @@ namespace OAI_PMH.Services
             RestClient client = new(pConfig.GetConfigSGI() + "/api/sgipii/invenciones/" + identifier + "/gastos");
             client.AddDefaultHeader("Authorization", "Bearer " + accessToken);
             var request = new RestRequest(Method.GET);
-            IRestResponse response = client.Execute(request);
+            IRestResponse response = Token.httpCall(client, request);
             try
             {
                 return JsonConvert.DeserializeObject<List<InvencionGastos>>(response.Content);
@@ -291,7 +296,7 @@ namespace OAI_PMH.Services
             RestClient client = new(pConfig.GetConfigSGI() + "/api/sgipii/invenciones/" + identifier + "/palabrasclave");
             client.AddDefaultHeader("Authorization", "Bearer " + accessToken);
             var request = new RestRequest(Method.GET);
-            IRestResponse response = client.Execute(request);
+            IRestResponse response = Token.httpCall(client, request);
             try
             {
                 return JsonConvert.DeserializeObject<List<PalabraClave>>(response.Content);
@@ -315,7 +320,7 @@ namespace OAI_PMH.Services
             RestClient client = new(pConfig.GetConfigSGI() + "/api/sgipii/invenciones/" + identifier + "/invencion-inventores");
             client.AddDefaultHeader("Authorization", "Bearer " + accessToken);
             var request = new RestRequest(Method.GET);
-            IRestResponse response = client.Execute(request);
+            IRestResponse response = Token.httpCall(client, request);
             try
             {
                 return JsonConvert.DeserializeObject<List<Inventor>>(response.Content);

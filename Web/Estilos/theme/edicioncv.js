@@ -1089,6 +1089,9 @@ var edicionCV = {
 		if (typeof checkAllCVWrapper != 'undefined') {
 			checkAllCVWrapper();
 		}
+		if (typeof aniadirComportamientoCompararItems != 'undefined') {
+			aniadirComportamientoCompararItems();
+		}
 
 		$('#navegacion-cv li.nav-item a').tooltip('dispose');
 	},

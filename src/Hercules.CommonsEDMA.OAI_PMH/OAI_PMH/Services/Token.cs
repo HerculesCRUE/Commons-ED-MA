@@ -21,46 +21,29 @@ namespace OAI_PMH.Services
         public static string CheckToken(ConfigService pConfig, bool pTokenGestor = true, bool pTokenPii = false)
         {
             _ConfigService = pConfig;
-            string token = "";
-            while (string.IsNullOrEmpty(token))
+            string token = GetToken(pConfig, pTokenGestor, pTokenPii);
+            return token;
+        }
+
+        public static IRestResponse httpCall(RestClient pRestClient, RestRequest pRestRequest)
+        {
+            IRestResponse response = null;
+
+            while (true)
             {
                 try
                 {
-                    token = GetToken(pConfig, pTokenGestor, pTokenPii);
+                    response = pRestClient.Execute(pRestRequest);
+                    break;
                 }
-                catch (Exception ex)
+                catch
                 {
-                    Console.WriteLine(ex.Message);
-                    Thread.Sleep(5000);
+                    return null;
                 }
             }
-            return token;
-            // TODO: Revisar por qué no actualiza bien el token si aparentemente parece que el código está correcto.
-            //if (lastUpdate != default)
-            //{
-            //    TimeSpan diff = DateTime.UtcNow.Subtract(lastUpdate);
-            //    if (diff.TotalSeconds > 300)
-            //    {
-            //        if (diff.TotalSeconds < 1800)
-            //        {
-            //            accessToken = RefreshToken(pConfig);
-            //            lastUpdate = DateTime.UtcNow;
-            //        }
-            //        else
-            //        {
-            //            accessToken = GetToken(pConfig, pTokenGestor, pTokenPii);
-            //            lastUpdate = DateTime.UtcNow;
-            //        }
-            //    }
-            //}
-            //else
-            //{
-            //    accessToken = GetToken(pConfig, pTokenGestor, pTokenPii);
-            //    lastUpdate = DateTime.UtcNow;
-            //}
-            //return accessToken;
-        }
 
+            return response;
+        }
 
         protected static async Task<string> httpCall(string pUrl, string pMethod, FormUrlEncodedContent pBody)
         {
@@ -81,14 +64,14 @@ namespace OAI_PMH.Services
                         }
                         catch
                         {
-                            intentos--;
+                            //intentos--;
                             if (intentos == 0)
                             {
                                 throw;
                             }
                             else
                             {
-                                Thread.Sleep(1000);
+                                Thread.Sleep(60000);
                             }
                         }
                     }

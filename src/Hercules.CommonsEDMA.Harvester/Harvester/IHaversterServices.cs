@@ -28,7 +28,7 @@ namespace Harvester
     {
         public List<IdentifierOAIPMH> ListIdentifiers(string from, ReadConfig pConfig, string until = null, string set = null)
         {
-            List<IdentifierOAIPMH> idList = new();
+            List<IdentifierOAIPMH> idList = null;
             string uri = $@"{pConfig.GetUrlOaiPmh()}?verb=ListIdentifiers&metadataPrefix=EDMA";
             if (from != null)
             {
@@ -44,7 +44,7 @@ namespace Harvester
             }
 
             WebRequest wrGETURL = WebRequest.Create(uri);
-            wrGETURL.Timeout = 1800000;
+            wrGETURL.Timeout = 3600000;
             Stream stream = wrGETURL.GetResponse().GetResponseStream();
 
             XDocument XMLresponse = XDocument.Load(stream);
@@ -53,6 +53,7 @@ namespace Harvester
 
             if (idListElement != null)
             {
+                idList = new List<IdentifierOAIPMH>();
                 IEnumerable<XElement> headerList = idListElement.Descendants(nameSpace + "header");
 
                 foreach (var header in headerList)
@@ -131,31 +132,15 @@ namespace Harvester
         }
         public string GetRecord(string id, ReadConfig pConfig, string file = null)
         {
-            int contador = 1;
-            while (true)
-            {
-                try
-                {
-                    string uri = $@"{pConfig.GetUrlOaiPmh()}?verb=GetRecord&identifier=" + id + "&metadataPrefix=EDMA";
-                    WebRequest wrGETURL = WebRequest.Create(uri);
-                    Stream stream = wrGETURL.GetResponse().GetResponseStream();
-                    XDocument XMLresponse = XDocument.Load(stream);
-                    XNamespace nameSpace = XMLresponse.Root.GetDefaultNamespace();
-                    string record = XMLresponse.Root.Element(nameSpace + "GetRecord").Descendants(nameSpace + "metadata").First().FirstNode.ToString();
-                    record = record.Replace("xmlns=\"" + nameSpace + "\"", "");
-                    return record;
-                }
-                catch (Exception)
-                {
-                    contador++;
-                    Thread.Sleep(5000);
-                }
-
-                if (contador > 3)
-                {
-                    return null;
-                }
-            }
+            string uri = $@"{pConfig.GetUrlOaiPmh()}?verb=GetRecord&identifier=" + id + "&metadataPrefix=EDMA";
+            WebRequest wrGETURL = WebRequest.Create(uri);
+            wrGETURL.Timeout = 172800000; // 48h
+            Stream stream = wrGETURL.GetResponse().GetResponseStream();
+            XDocument XMLresponse = XDocument.Load(stream);
+            XNamespace nameSpace = XMLresponse.Root.GetDefaultNamespace();
+            string record = XMLresponse.Root.Element(nameSpace + "GetRecord").Descendants(nameSpace + "metadata").First().FirstNode.ToString();
+            record = record.Replace("xmlns=\"" + nameSpace + "\"", "");
+            return record;
         }
     }
 

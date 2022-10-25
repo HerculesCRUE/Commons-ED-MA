@@ -24,53 +24,86 @@ namespace Harvester
             this.HaversterServices = haversterServices;
         }
 
-        public List<string> Harvest(ReadConfig pConfig, string pSet, string pFecha)
+        public void Harvest(ReadConfig pConfig, string pSet, string pFecha)
         {
             // Obtención de los IDs.
             HashSet<string> listaIdsSinRepetir = new HashSet<string>();
 
             List<IdentifierOAIPMH> idList = HaversterServices.ListIdentifiers(pFecha, pConfig, set: pSet);
-            foreach (var id in idList)
+
+            if (idList != null)
             {
-                listaIdsSinRepetir.Add(id.Identifier);
-            }
-            List<string> listaIdsOrdenados = listaIdsSinRepetir.ToList();
-            listaIdsOrdenados.Sort();
+                foreach (var id in idList)
+                {
+                    listaIdsSinRepetir.Add(id.Identifier);
+                }
+                List<string> listaIdsOrdenados = listaIdsSinRepetir.ToList();
+                listaIdsOrdenados.Sort();
 
-            // Guardado de los IDs.
-            string directorio = pConfig.GetLogCargas() + $@"/{pSet}/pending/";
-            if (!Directory.Exists(directorio))
+                // Guardado de los IDs.
+                string directorio = pConfig.GetLogCargas() + $@"/{pSet}/pending/";
+                if (!Directory.Exists(directorio))
+                {
+                    Directory.CreateDirectory(directorio);
+                }
+
+                File.WriteAllLines(directorio + $@"{pSet}_{pFecha.Replace(":", "-")}.txt", listaIdsOrdenados);
+
+                // Se actualiza la última fecha de carga.
+                UpdateLastDate(pConfig, pSet, DateTime.Now.ToString("yyyy'-'MM'-'dd'T'HH':'mm':'ss'Z'"));
+            }
+            else
             {
-                Directory.CreateDirectory(directorio);
+                // No se han podido obtener los IDs.
             }
-
-            File.WriteAllLines(directorio + $@"{pSet}_{pFecha.Replace(":", "-")}.txt", listaIdsOrdenados);
-
-            return listaIdsOrdenados;
         }
 
-        public List<string> HarvestPRC(ReadConfig pConfig, string pSet, string pFecha)
+        /// <summary>
+        /// Modifica el fichero con la última fecha.
+        /// </summary>
+        /// <param name="pConfig"></param>
+        public void UpdateLastDate(ReadConfig pConfig, string pSet, string pFecha)
+        {
+            if (!Directory.Exists(pConfig.GetLastUpdateDate()))
+            {
+                Directory.CreateDirectory(pConfig.GetLastUpdateDate());
+            }
+
+            File.WriteAllText(pConfig.GetLastUpdateDate() + $@"\\lastUpdateDate_{pSet}.txt", pFecha);
+        }
+
+        public void HarvestPRC(ReadConfig pConfig, string pSet, string pFecha)
         {
             // Obtención de los IDs.
             HashSet<string> listaIdsSinRepetir = new HashSet<string>();
 
             List<ListRecordsOAIPMH> idList = HaversterServices.ListRecords(pFecha, pConfig, set: pSet);
-            foreach (var id in idList)
-            {
-                listaIdsSinRepetir.Add(id.Identifier + "||" + id.Estado);
-            }
-            List<string> listaIdsOrdenados = listaIdsSinRepetir.ToList();
-            listaIdsOrdenados.Sort();
 
-            // Guardado de los IDs.
-            string directorio = pConfig.GetLogCargas() + $@"/{pSet}/pending/";
-            if (!Directory.Exists(directorio))
+            if (idList != null && idList.Any())
             {
-                Directory.CreateDirectory(directorio);
-            }
-            File.WriteAllLines(directorio + $@"{pSet}_{pFecha.Replace(":", "-")}.txt", listaIdsOrdenados);
+                foreach (var id in idList)
+                {
+                    listaIdsSinRepetir.Add(id.Identifier + "||" + id.Estado);
+                }
+                List<string> listaIdsOrdenados = listaIdsSinRepetir.ToList();
+                listaIdsOrdenados.Sort();
 
-            return listaIdsOrdenados;
+                // Guardado de los IDs.
+                string directorio = pConfig.GetLogCargas() + $@"/{pSet}/pending/";
+                if (!Directory.Exists(directorio))
+                {
+                    Directory.CreateDirectory(directorio);
+                }
+
+                File.WriteAllLines(directorio + $@"{pSet}_{pFecha.Replace(":", "-")}.txt", listaIdsOrdenados);
+
+                // Se actualiza la última fecha de carga.
+                UpdateLastDate(pConfig, pSet, DateTime.Now.ToString("yyyy'-'MM'-'dd'T'HH':'mm':'ss'Z'"));
+            }
+            else
+            {
+                // No se han podido obtener los IDs.
+            }
         }
     }
 }
