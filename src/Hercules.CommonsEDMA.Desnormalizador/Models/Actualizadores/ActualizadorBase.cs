@@ -409,7 +409,6 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
             });
         }
 
-        //TODO comenrtario
         protected void ActualizarPropiedadMiembrosProyectoGrupoPatente(List<Dictionary<string, Data>> pFilas, string pTipo)
         {
             List<string> ids = pFilas.Select(x => x[pTipo].value).Distinct().ToList();
@@ -468,6 +467,30 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
                     var resultadoModificar = mResourceApi.ModifyPropertiesLoadedResources(triplesModify);
                 }
             });
+        }
+
+        protected Dictionary<string, string> ObtenerAreasBroader()
+        {
+            Dictionary<string, string> dicAreasBroader = new();
+            String selectCargarTesauro = @"select distinct * ";
+            String whereCargarTesauro = @$"where{{
+                                ?concept a <http://www.w3.org/2008/05/skos#Concept>.
+                                ?concept <http://purl.org/dc/elements/1.1/source> 'researcharea'
+                                OPTIONAL{{?concept <http://www.w3.org/2008/05/skos#broader> ?broader}}
+                            }}";
+            SparqlObject resultadoCargarTesauro = mResourceApi.VirtuosoQuery(selectCargarTesauro, whereCargarTesauro, "taxonomy");
+
+            foreach (Dictionary<string, SparqlObject.Data> fila in resultadoCargarTesauro.results.bindings)
+            {
+                string concept = fila["concept"].value;
+                string broader = "";
+                if (fila.ContainsKey("broader"))
+                {
+                    broader = fila["broader"].value;
+                }
+                dicAreasBroader.Add(concept, broader);
+            }
+            return dicAreasBroader;
         }
 
     }

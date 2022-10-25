@@ -57,7 +57,7 @@ namespace Hercules.CommonsEDMA.Desnormalizador
         /// <returns></returns>
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
         {
-            ListenToQueue();            
+            ListenToQueue();
 
             ProcessItemsPendingCV();
 
@@ -137,16 +137,16 @@ namespace Hercules.CommonsEDMA.Desnormalizador
                     try
                     {
                         Thread.Sleep(1000);
-                        List<string> files = Directory.GetFiles(_directoryPendingCV).OrderBy(x => x).ToList();
+                        List<string> filesPendingCV = Directory.GetFiles(_directoryPendingCV).OrderBy(x => x).ToList();
 
-                        if (files.Count > 0)
+                        if (filesPendingCV.Count > 0)
                         {
                             //Items máximos a procesar
                             int maxItems = 500;
 
                             //Item para agrupar los IDs
                             Dictionary<DenormalizerItemQueue.ItemType, HashSet<string>> agrupados = new Dictionary<DenormalizerItemQueue.ItemType, HashSet<string>>();
-                            foreach (string file in files)
+                            foreach (string file in filesPendingCV)
                             {
                                 filesToProcess.Add(file);
                                 DenormalizerItemQueue denormalizerItemQueue = JsonConvert.DeserializeObject<DenormalizerItemQueue>(File.ReadAllText(file));
@@ -155,7 +155,7 @@ namespace Hercules.CommonsEDMA.Desnormalizador
                                     agrupados[denormalizerItemQueue._itemType] = new HashSet<string>();
                                 }
                                 agrupados[denormalizerItemQueue._itemType].UnionWith(denormalizerItemQueue._items);
-                                if (agrupados.Where(x => x.Value.Count > maxItems).Count() > 0)
+                                if (agrupados.Any(x => x.Value.Count > maxItems))
                                 {
                                     break;
                                 }
@@ -222,16 +222,16 @@ namespace Hercules.CommonsEDMA.Desnormalizador
                     try
                     {
                         Thread.Sleep(1000);
-                        List<string> files = System.IO.Directory.GetFiles(_directoryPending).OrderBy(x => x).ToList();
+                        List<string> filesPending = System.IO.Directory.GetFiles(_directoryPending).OrderBy(x => x).ToList();
 
-                        if (files.Count > 0)
+                        if (filesPending.Count > 0)
                         {
                             //Items máximos a procesar
                             int maxItems = 500;
 
                             //Item para agrupar los IDs
                             Dictionary<DenormalizerItemQueue.ItemType, HashSet<string>> agrupados = new Dictionary<DenormalizerItemQueue.ItemType, HashSet<string>>();
-                            foreach (string file in files)
+                            foreach (string file in filesPending)
                             {
                                 filesToProcess.Add(file);
                                 DenormalizerItemQueue denormalizerItemQueue = JsonConvert.DeserializeObject<DenormalizerItemQueue>(File.ReadAllText(file));
@@ -251,28 +251,7 @@ namespace Hercules.CommonsEDMA.Desnormalizador
                                 List<List<string>> listLists = ActualizadorBase.SplitList(agrupados[type].ToList(), maxItems).ToList();
                                 foreach (List<string> listIn in listLists)
                                 {
-                                    switch (type)
-                                    {
-                                        case DenormalizerItemQueue.ItemType.person:
-                                            ActualizadorEDMA.DesnormalizarDatosPersonas(pPersons: listIn);
-                                            break;
-                                        case DenormalizerItemQueue.ItemType.group:
-                                            ActualizadorEDMA.DesnormalizarDatosGrupos(pGroups: listIn);
-                                            break;
-                                        case DenormalizerItemQueue.ItemType.project:
-                                            ActualizadorEDMA.DesnormalizarDatosProyectos(pProjects: listIn);
-                                            break;
-                                        case DenormalizerItemQueue.ItemType.document:
-                                            ActualizadorEDMA.DesnormalizarDatosDocumento(pDocuments: listIn);
-                                            break;
-                                        case DenormalizerItemQueue.ItemType.researchobject:
-                                            ActualizadorEDMA.DesnormalizarDatosResearchObject(pROs: listIn);
-                                            break;
-                                        case DenormalizerItemQueue.ItemType.patent:
-                                            ActualizadorEDMA.DesnormalizarDatosPatentes(pPatents: listIn);
-                                            break;
-
-                                    }
+                                    DesnormalizarLista(type, listIn);
                                 }
                             }
 
@@ -293,6 +272,32 @@ namespace Hercules.CommonsEDMA.Desnormalizador
 
                 }
             }).Start();
+        }
+
+        private void DesnormalizarLista(DenormalizerItemQueue.ItemType pType, List<string> pItems)
+        {
+            switch (pType)
+            {
+                case DenormalizerItemQueue.ItemType.person:
+                    ActualizadorEDMA.DesnormalizarDatosPersonas(pPersons: pItems);
+                    break;
+                case DenormalizerItemQueue.ItemType.group:
+                    ActualizadorEDMA.DesnormalizarDatosGrupos(pGroups: pItems);
+                    break;
+                case DenormalizerItemQueue.ItemType.project:
+                    ActualizadorEDMA.DesnormalizarDatosProyectos(pProjects: pItems);
+                    break;
+                case DenormalizerItemQueue.ItemType.document:
+                    ActualizadorEDMA.DesnormalizarDatosDocumento(pDocuments: pItems);
+                    break;
+                case DenormalizerItemQueue.ItemType.researchobject:
+                    ActualizadorEDMA.DesnormalizarDatosResearchObject(pROs: pItems);
+                    break;
+                case DenormalizerItemQueue.ItemType.patent:
+                    ActualizadorEDMA.DesnormalizarDatosPatentes(pPatents: pItems);
+                    break;
+
+            }
         }
 
         /// <summary>
@@ -323,32 +328,11 @@ namespace Hercules.CommonsEDMA.Desnormalizador
                                     List<List<string>> listLists = ActualizadorBase.SplitList(denormalizerItemQueue._items.ToList(), maxItems).ToList();
                                     foreach (List<string> listIn in listLists)
                                     {
-                                        switch (denormalizerItemQueue._itemType)
-                                        {
-                                            case DenormalizerItemQueue.ItemType.person:
-                                                ActualizadorEDMA.DesnormalizarDatosPersonas(pPersons: listIn);
-                                                break;
-                                            case DenormalizerItemQueue.ItemType.group:
-                                                ActualizadorEDMA.DesnormalizarDatosGrupos(pGroups: listIn);
-                                                break;
-                                            case DenormalizerItemQueue.ItemType.project:
-                                                ActualizadorEDMA.DesnormalizarDatosProyectos(pProjects: listIn);
-                                                break;
-                                            case DenormalizerItemQueue.ItemType.document:
-                                                ActualizadorEDMA.DesnormalizarDatosDocumento(pDocuments: listIn);
-                                                break;
-                                            case DenormalizerItemQueue.ItemType.researchobject:
-                                                ActualizadorEDMA.DesnormalizarDatosResearchObject(pROs: listIn);
-                                                break;
-                                            case DenormalizerItemQueue.ItemType.patent:
-                                                ActualizadorEDMA.DesnormalizarDatosPatentes(pPatents: listIn);
-                                                break;
-
-                                        }
+                                        DesnormalizarLista(denormalizerItemQueue._itemType, listIn);
                                     }
                                     File.Delete(file);
                                 }
-                                catch(Exception ex)
+                                catch (Exception ex)
                                 {
                                     FileLogger.Log(ex);
                                 }
