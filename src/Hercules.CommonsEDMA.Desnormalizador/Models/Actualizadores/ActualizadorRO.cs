@@ -8,8 +8,6 @@ using System.Text;
 using System.Threading.Tasks;
 namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
 {
-    //TODO comentarios completados
-
     /// <summary>
     /// Clase para actualizar propiedades de documentos
     /// </summary>
