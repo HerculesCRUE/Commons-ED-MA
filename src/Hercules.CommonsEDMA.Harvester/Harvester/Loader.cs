@@ -380,6 +380,30 @@ namespace Harvester
                             {
                                 invencion = Invencion.GetInvencionSGI(harvesterServices, _Config, id, pDicRutas);
                                 string idGnossInv = invencion.Cargar(harvesterServices, pConfig, mResourceApi, "patent", pDicIdentificadores, pDicRutas, pRabbitConf);
+
+                                //Selecciono los inventores para ser notificados
+                                List<string> listadoMiembros = invencion.inventores.Select(x => x.inventorRef).ToList();
+                                //listadoMiembros.AddRange(invencion.titulares.Select(x => x.titularRef).ToList());
+
+                                //Busco en BBDD (solo los que tengan CV)
+                                string select = "SELECT ?person";
+                                string where = $@"WHERE {{
+                                                    ?cv <http://w3id.org/roh/cvOf> ?person .
+                                                    ?person <http://w3id.org/roh/crisIdentifier> ?crisID .
+                                                    FILTER(?crisID in ('{string.Join("','", listadoMiembros)}'))
+                                                }}";
+                                SparqlObject resultData = mResourceApi.VirtuosoQueryMultipleGraph(select, where, new List<string> { "curriculumvitae", "person" });
+                                foreach (Dictionary<string, Data> fila in resultData.results.bindings)
+                                {
+                                    if (fila.ContainsKey("person"))
+                                    {
+                                        //Notifico a los miembros
+                                        UtilidadesLoader.EnvioNotificacion("NOTIFICACION_GRUPO", fila["person"].value, "harvesterInvencion" + idGnossInv);
+                                    }
+                                }
+
+
+
                                 pDicIdentificadores["patent"].Add(idGnossInv);
                                 File.AppendAllText(pDicRutas[pSet][directorioPendientes], id + Environment.NewLine);
                             }
