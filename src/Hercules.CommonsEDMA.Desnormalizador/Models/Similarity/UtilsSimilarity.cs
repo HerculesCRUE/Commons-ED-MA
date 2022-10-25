@@ -194,71 +194,48 @@ where
                     #endregion
 
                     #region Obtenemos etiquetas
-
-                    //TODO cambiar
-                    switch (mType)
+                    while (true)
                     {
-                        case "research_paper":
-                            offset = 0;
-                            while (true)
-                            {
-                                select = "select * where{select ?doc ?tag";
+                        select = "select * where{select ?doc ?tag";      
+                        switch (mType)
+                        {
+                            case "research_paper":
                                 where = $@"
-where
-{{
-	?doc a <{mRdfType}>.
-	?doc <http://vivoweb.org/ontology/core#freeTextKeyword> ?tagAux.
-    ?tagAux <http://w3id.org/roh/title> ?tag
-    FILTER(?doc in(<{string.Join(">,<", idsAux)}>))
-}} ORDER BY ASC(?doc)}} LIMIT {limit} OFFSET {offset}";
-                                response = mResourceApi.VirtuosoQuery(select, where, mGraph);
-                                offset += limit;
-                                foreach (Dictionary<string, SparqlObject.Data> fila in response.results.bindings)
-                                {
-                                    string id = fila["doc"].value;
-                                    string tag = fila["tag"].value.Trim();
-                                    EnrichmentSimilarityItem enrichmentSimilarityItem = respuesta[id];
-                                    if (enrichmentSimilarityItem != null)
-                                    {
-                                        enrichmentSimilarityItem.specific_descriptors.Add(new List<object>() { tag, 1 });
-                                    }
-                                }
-                                if (response.results.bindings.Count < limit)
-                                {
-                                    break;
-                                }
-                            }
-                            break;
-                        case "code_project":
-                            offset = 0;
-                            while (true)
-                            {
-                                select = "select * where{select ?doc ?tag";
+                                        where
+                                        {{
+	                                        ?doc a <{mRdfType}>.
+	                                        ?doc <http://vivoweb.org/ontology/core#freeTextKeyword> ?tagAux.
+                                            ?tagAux <http://w3id.org/roh/title> ?tag
+                                            FILTER(?doc in(<{string.Join(">,<", idsAux)}>))
+                                        }} ORDER BY ASC(?doc)}} LIMIT {limit} OFFSET {offset}";
+                                break;
+                            case "code_project":
                                 where = $@"
-where
-{{
-	?doc a <{mRdfType}>.
-	?doc <http://vivoweb.org/ontology/core#freeTextKeyword> ?tag.
-    FILTER(?doc in(<{string.Join(">,<", idsAux)}>))
-}}  ORDER BY ASC(?doc)}} LIMIT {limit} OFFSET {offset}";
-                                response = mResourceApi.VirtuosoQuery(select, where, mGraph);
-                                offset += limit;
-                                foreach (Dictionary<string, SparqlObject.Data> fila in response.results.bindings)
-                                {
-                                    string id = fila["doc"].value;
-                                    string tag = fila["tag"].value.Trim();
-                                    EnrichmentSimilarityItem enrichmentSimilarityItem = respuesta[id];
-                                    if (enrichmentSimilarityItem != null)
-                                    {
-                                        enrichmentSimilarityItem.specific_descriptors.Add(new List<object>() { tag, 1 });
-                                    }
-                                }
-                                if (response.results.bindings.Count < limit)
-                                {
-                                    break;
-                                }
+                                        where
+                                        {{
+	                                        ?doc a <{mRdfType}>.
+	                                        ?doc <http://vivoweb.org/ontology/core#freeTextKeyword> ?tag.
+                                            FILTER(?doc in(<{string.Join(">,<", idsAux)}>))
+                                        }}  ORDER BY ASC(?doc)}} LIMIT {limit} OFFSET {offset}";
+                                break;
+                        }
+
+                        response = mResourceApi.VirtuosoQuery(select, where, mGraph);
+                        offset += limit;
+                        foreach (Dictionary<string, SparqlObject.Data> fila in response.results.bindings)
+                        {
+                            string id = fila["doc"].value;
+                            string tag = fila["tag"].value.Trim();
+                            EnrichmentSimilarityItem enrichmentSimilarityItem = respuesta[id];
+                            if (enrichmentSimilarityItem != null)
+                            {
+                                enrichmentSimilarityItem.specific_descriptors.Add(new List<object>() { tag, 1 });
                             }
+                        }
+                        if (response.results.bindings.Count < limit)
+                        {
                             break;
+                        }
                     }
 
 
@@ -323,7 +300,7 @@ where
     }}
     FILTER(?doc in(<{string.Join(">,<", idsAux)}>))
 }} ORDER BY ASC(?doc)}} LIMIT {limit} OFFSET {offset}";
-                        response = mResourceApi.VirtuosoQueryMultipleGraph(select, where,new List<string>() { mGraph,"taxonomy" });
+                        response = mResourceApi.VirtuosoQueryMultipleGraph(select, where, new List<string>() { mGraph, "taxonomy" });
                         offset += limit;
                         foreach (Dictionary<string, SparqlObject.Data> fila in response.results.bindings)
                         {
@@ -466,7 +443,7 @@ where{{
     ?id <http://w3id.org/roh/isValidated> 'true'.
 
 }}";
-                List<string> listID = mResourceApi.VirtuosoQueryMultipleGraph(select, where,new List<string>() { graph, "curriculumvitae" }).results.bindings.Select(x => x["id"].value).ToList();
+                List<string> listID = mResourceApi.VirtuosoQueryMultipleGraph(select, where, new List<string>() { graph, "curriculumvitae" }).results.bindings.Select(x => x["id"].value).ToList();
                 dicSimilarsAux = dicSimilarsAux.Where(x => listID.Contains(x.Key)).ToDictionary(x => x.Key, x => x.Value);
             }
             List<KeyValuePair<Guid, Dictionary<string, float>>> dicSimilars = dicSimilarsAux.ToDictionary(x => mResourceApi.GetShortGuid(x.Key), x => x.Value).ToList();
