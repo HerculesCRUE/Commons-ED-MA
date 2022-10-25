@@ -1734,7 +1734,7 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
         /// <param name="pDatosCargar">Datos</param>
         private void InsertarDocumentosCV(SparqlObject pDatosCargar)
         {
-            Dictionary<Guid, List<TriplesToInclude>> triplesToInclude = new();
+            Dictionary<Guid, List<TriplesToInclude>> triplesToIncludeDocuments = new();
             foreach (Dictionary<string, SparqlObject.Data> fila in pDatosCargar.results.bindings)
             {
                 string cv = fila["cv"].value;
@@ -1782,20 +1782,20 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
                 TriplesToInclude tr1 = new(idEntityAux + "|" + document, predicadoEntidad);
                 listaTriples.Add(tr1);
 
-                Guid idCV = mResourceApi.GetShortGuid(cv);
-                if (triplesToInclude.ContainsKey(idCV))
+                Guid idCVDocument = mResourceApi.GetShortGuid(cv);
+                if (triplesToIncludeDocuments.ContainsKey(idCVDocument))
                 {
-                    triplesToInclude[idCV].AddRange(listaTriples);
+                    triplesToIncludeDocuments[idCVDocument].AddRange(listaTriples);
                 }
                 else
                 {
-                    triplesToInclude.Add(mResourceApi.GetShortGuid(cv), listaTriples);
+                    triplesToIncludeDocuments.Add(mResourceApi.GetShortGuid(cv), listaTriples);
                 }
             }
 
-            Parallel.ForEach(triplesToInclude.Keys, new ParallelOptions { MaxDegreeOfParallelism = ActualizadorBase.numParallel }, idCV =>
+            Parallel.ForEach(triplesToIncludeDocuments.Keys, new ParallelOptions { MaxDegreeOfParallelism = ActualizadorBase.numParallel }, idCV =>
             {
-                List<List<TriplesToInclude>> listasDeListas = SplitList(triplesToInclude[idCV], 50).ToList();
+                List<List<TriplesToInclude>> listasDeListas = SplitList(triplesToIncludeDocuments[idCV], 50).ToList();
                 foreach (List<TriplesToInclude> triples in listasDeListas)
                 {
                     mResourceApi.InsertPropertiesLoadedResources(new() { { idCV, triples } });
@@ -1809,7 +1809,7 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
         /// <param name="pDatosCargar">Datos</param>
         private void PublicarDocumentosCV(SparqlObject pDatosCargar)
         {
-            Dictionary<Guid, List<TriplesToModify>> triplesToModify = new();
+            Dictionary<Guid, List<TriplesToModify>> triplesToModifyDocuments = new();
             foreach (Dictionary<string, SparqlObject.Data> fila in pDatosCargar.results.bindings)
             {
                 string cv = fila["cv"].value;
@@ -1825,20 +1825,20 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
                     Predicate = "http://w3id.org/roh/scientificActivity|" + propItem + "|http://w3id.org/roh/isPublic"
                 };
 
-                Guid idCV = mResourceApi.GetShortGuid(cv);
-                if (triplesToModify.ContainsKey(idCV))
+                Guid idCVDocumentsModify = mResourceApi.GetShortGuid(cv);
+                if (triplesToModifyDocuments.ContainsKey(idCVDocumentsModify))
                 {
-                    triplesToModify[idCV].Add(triple);
+                    triplesToModifyDocuments[idCVDocumentsModify].Add(triple);
                 }
                 else
                 {
-                    triplesToModify.Add(mResourceApi.GetShortGuid(cv), new List<TriplesToModify>() { triple });
+                    triplesToModifyDocuments.Add(mResourceApi.GetShortGuid(cv), new List<TriplesToModify>() { triple });
                 }
             }
 
-            Parallel.ForEach(triplesToModify.Keys, new ParallelOptions { MaxDegreeOfParallelism = ActualizadorBase.numParallel }, idCV =>
+            Parallel.ForEach(triplesToModifyDocuments.Keys, new ParallelOptions { MaxDegreeOfParallelism = ActualizadorBase.numParallel }, idCV =>
             {
-                List<List<TriplesToModify>> listasDeListas = SplitList(triplesToModify[idCV], 50).ToList();
+                List<List<TriplesToModify>> listasDeListas = SplitList(triplesToModifyDocuments[idCV], 50).ToList();
                 foreach (List<TriplesToModify> triples in listasDeListas)
                 {
                     mResourceApi.ModifyPropertiesLoadedResources(new() { { idCV, triples } });
@@ -1852,7 +1852,7 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
         /// <param name="pDatosCargar">Datos</param>
         private void EliminarDocumentosCV(SparqlObject pDatosCargar)
         {
-            Dictionary<Guid, List<RemoveTriples>> triplesToDelete = new();
+            Dictionary<Guid, List<RemoveTriples>> triplesToDeleteDocument = new();
             foreach (Dictionary<string, SparqlObject.Data> fila in pDatosCargar.results.bindings)
             {
                 string cv = fila["cv"].value;
@@ -1877,20 +1877,20 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
                 RemoveTriples removeTriple = new();
                 removeTriple.Predicate = "http://w3id.org/roh/scientificActivity|" + property;
                 removeTriple.Value = scientificActivity + "|" + item;
-                Guid idCV = mResourceApi.GetShortGuid(cv);
-                if (triplesToDelete.ContainsKey(idCV))
+                Guid idCVDocumentsDelete = mResourceApi.GetShortGuid(cv);
+                if (triplesToDeleteDocument.ContainsKey(idCVDocumentsDelete))
                 {
-                    triplesToDelete[idCV].Add(removeTriple);
+                    triplesToDeleteDocument[idCVDocumentsDelete].Add(removeTriple);
                 }
                 else
                 {
-                    triplesToDelete.Add(idCV, new() { removeTriple });
+                    triplesToDeleteDocument.Add(idCVDocumentsDelete, new() { removeTriple });
                 }
             }
 
-            Parallel.ForEach(triplesToDelete.Keys, new ParallelOptions { MaxDegreeOfParallelism = ActualizadorBase.numParallel }, idCV =>
+            Parallel.ForEach(triplesToDeleteDocument.Keys, new ParallelOptions { MaxDegreeOfParallelism = ActualizadorBase.numParallel }, idCV =>
             {
-                List<List<RemoveTriples>> listasDeListas = SplitList(triplesToDelete[idCV], 50).ToList();
+                List<List<RemoveTriples>> listasDeListas = SplitList(triplesToDeleteDocument[idCV], 50).ToList();
                 foreach (List<RemoveTriples> triples in listasDeListas)
                 {
                     mResourceApi.DeletePropertiesLoadedResources(new() { { idCV, triples } });
@@ -1904,7 +1904,7 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
         /// <param name="pDatosCargar">Datos</param>
         private void InsertarResearchObjectsCV(SparqlObject pDatosCargar)
         {
-            Dictionary<Guid, List<TriplesToInclude>> triplesToInclude = new();
+            Dictionary<Guid, List<TriplesToInclude>> triplesToIncludeRO = new();
             foreach (Dictionary<string, SparqlObject.Data> fila in pDatosCargar.results.bindings)
             {
                 string cv = fila["cv"].value;
@@ -1931,20 +1931,20 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
                 TriplesToInclude tr1 = new(idEntityAux + "|" + ro, predicadoEntidad);
                 listaTriples.Add(tr1);
 
-                Guid idCV = mResourceApi.GetShortGuid(cv);
-                if (triplesToInclude.ContainsKey(idCV))
+                Guid idCVIncludeRO = mResourceApi.GetShortGuid(cv);
+                if (triplesToIncludeRO.ContainsKey(idCVIncludeRO))
                 {
-                    triplesToInclude[idCV].AddRange(listaTriples);
+                    triplesToIncludeRO[idCVIncludeRO].AddRange(listaTriples);
                 }
                 else
                 {
-                    triplesToInclude.Add(mResourceApi.GetShortGuid(cv), listaTriples);
+                    triplesToIncludeRO.Add(mResourceApi.GetShortGuid(cv), listaTriples);
                 }
             }
 
-            Parallel.ForEach(triplesToInclude.Keys, new ParallelOptions { MaxDegreeOfParallelism = ActualizadorBase.numParallel }, idCV =>
+            Parallel.ForEach(triplesToIncludeRO.Keys, new ParallelOptions { MaxDegreeOfParallelism = ActualizadorBase.numParallel }, idCV =>
             {
-                List<List<TriplesToInclude>> listasDeListas = SplitList(triplesToInclude[idCV], 50).ToList();
+                List<List<TriplesToInclude>> listasDeListas = SplitList(triplesToIncludeRO[idCV], 50).ToList();
                 foreach (List<TriplesToInclude> triples in listasDeListas)
                 {
                     mResourceApi.InsertPropertiesLoadedResources(new() { { idCV, triples } });
@@ -1958,7 +1958,7 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
         /// <param name="pDatosCargar">Datos</param>
         private void PublicarResearchObjectsCV(SparqlObject pDatosCargar)
         {
-            Dictionary<Guid, List<TriplesToModify>> triplesToModify = new();
+            Dictionary<Guid, List<TriplesToModify>> triplesToModifyRO = new();
             foreach (Dictionary<string, SparqlObject.Data> fila in pDatosCargar.results.bindings)
             {
                 string cv = fila["cv"].value;
@@ -1974,20 +1974,20 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
                     Predicate = "http://w3id.org/roh/researchObject|" + propItem + "|http://w3id.org/roh/isPublic"
                 };
 
-                Guid idCV = mResourceApi.GetShortGuid(cv);
-                if (triplesToModify.ContainsKey(idCV))
+                Guid idCVModifyRO = mResourceApi.GetShortGuid(cv);
+                if (triplesToModifyRO.ContainsKey(idCVModifyRO))
                 {
-                    triplesToModify[idCV].Add(triple);
+                    triplesToModifyRO[idCVModifyRO].Add(triple);
                 }
                 else
                 {
-                    triplesToModify.Add(mResourceApi.GetShortGuid(cv), new List<TriplesToModify>() { triple });
+                    triplesToModifyRO.Add(mResourceApi.GetShortGuid(cv), new List<TriplesToModify>() { triple });
                 }
             }
 
-            Parallel.ForEach(triplesToModify.Keys, new ParallelOptions { MaxDegreeOfParallelism = ActualizadorBase.numParallel }, idCV =>
+            Parallel.ForEach(triplesToModifyRO.Keys, new ParallelOptions { MaxDegreeOfParallelism = ActualizadorBase.numParallel }, idCV =>
             {
-                List<List<TriplesToModify>> listasDeListas = SplitList(triplesToModify[idCV], 50).ToList();
+                List<List<TriplesToModify>> listasDeListas = SplitList(triplesToModifyRO[idCV], 50).ToList();
                 foreach (List<TriplesToModify> triples in listasDeListas)
                 {
                     mResourceApi.ModifyPropertiesLoadedResources(new() { { idCV, triples } });
@@ -2001,7 +2001,7 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
         /// <param name="pDatosCargar">Datos</param>
         private void EliminarResearchObjectsCV(SparqlObject pDatosCargar)
         {
-            Dictionary<Guid, List<RemoveTriples>> triplesToDelete = new();
+            Dictionary<Guid, List<RemoveTriples>> triplesToDeleteRO = new();
             foreach (Dictionary<string, SparqlObject.Data> fila in pDatosCargar.results.bindings)
             {
                 string cv = fila["cv"].value;
@@ -2012,20 +2012,20 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
                 RemoveTriples removeTriple = new();
                 removeTriple.Predicate = "http://w3id.org/roh/researchObject|" + property;
                 removeTriple.Value = researchObject + "|" + item;
-                Guid idCV = mResourceApi.GetShortGuid(cv);
-                if (triplesToDelete.ContainsKey(idCV))
+                Guid idCVDeleteRO = mResourceApi.GetShortGuid(cv);
+                if (triplesToDeleteRO.ContainsKey(idCVDeleteRO))
                 {
-                    triplesToDelete[idCV].Add(removeTriple);
+                    triplesToDeleteRO[idCVDeleteRO].Add(removeTriple);
                 }
                 else
                 {
-                    triplesToDelete.Add(idCV, new() { removeTriple });
+                    triplesToDeleteRO.Add(idCVDeleteRO, new() { removeTriple });
                 }
             }
 
-            Parallel.ForEach(triplesToDelete.Keys, new ParallelOptions { MaxDegreeOfParallelism = ActualizadorBase.numParallel }, idCV =>
+            Parallel.ForEach(triplesToDeleteRO.Keys, new ParallelOptions { MaxDegreeOfParallelism = ActualizadorBase.numParallel }, idCV =>
             {
-                List<List<RemoveTriples>> listasDeListas = SplitList(triplesToDelete[idCV], 50).ToList();
+                List<List<RemoveTriples>> listasDeListas = SplitList(triplesToDeleteRO[idCV], 50).ToList();
                 foreach (List<RemoveTriples> triples in listasDeListas)
                 {
                     mResourceApi.DeletePropertiesLoadedResources(new() { { idCV, triples } });
@@ -2040,7 +2040,7 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
         private void InsertarProyectosCV(SparqlObject pDatosCargar)
         {
             //http://gnoss.com/items/scientificexperienceproject_SEP1
-            Dictionary<Guid, List<TriplesToInclude>> triplesToInclude = new();
+            Dictionary<Guid, List<TriplesToInclude>> triplesToIncludeProjects = new();
             foreach (Dictionary<string, SparqlObject.Data> fila in pDatosCargar.results.bindings)
             {
                 string cv = fila["cv"].value;
@@ -2079,20 +2079,20 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
                 TriplesToInclude tr1 = new(idEntityAux + "|" + project, predicadoEntidad);
                 listaTriples.Add(tr1);
 
-                Guid idCV = mResourceApi.GetShortGuid(cv);
-                if (triplesToInclude.ContainsKey(idCV))
+                Guid idCVIncludeProjects = mResourceApi.GetShortGuid(cv);
+                if (triplesToIncludeProjects.ContainsKey(idCVIncludeProjects))
                 {
-                    triplesToInclude[idCV].AddRange(listaTriples);
+                    triplesToIncludeProjects[idCVIncludeProjects].AddRange(listaTriples);
                 }
                 else
                 {
-                    triplesToInclude.Add(mResourceApi.GetShortGuid(cv), listaTriples);
+                    triplesToIncludeProjects.Add(mResourceApi.GetShortGuid(cv), listaTriples);
                 }
             }
 
-            Parallel.ForEach(triplesToInclude.Keys, new ParallelOptions { MaxDegreeOfParallelism = ActualizadorBase.numParallel }, idCV =>
+            Parallel.ForEach(triplesToIncludeProjects.Keys, new ParallelOptions { MaxDegreeOfParallelism = ActualizadorBase.numParallel }, idCV =>
             {
-                mResourceApi.InsertPropertiesLoadedResources(new Dictionary<Guid, List<TriplesToInclude>>() { { idCV, triplesToInclude[idCV] } });
+                mResourceApi.InsertPropertiesLoadedResources(new Dictionary<Guid, List<TriplesToInclude>>() { { idCV, triplesToIncludeProjects[idCV] } });
             });
         }
 
@@ -2102,7 +2102,7 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
         /// <param name="pDatosCargar">Datos</param>
         private void EliminarProyectosCV(SparqlObject pDatosCargar)
         {
-            Dictionary<Guid, List<RemoveTriples>> triplesToDelete = new();
+            Dictionary<Guid, List<RemoveTriples>> triplesToDeleteProject = new();
             foreach (Dictionary<string, SparqlObject.Data> fila in pDatosCargar.results.bindings)
             {
                 string cv = fila["cv"].value;
@@ -2124,20 +2124,20 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
                 RemoveTriples removeTriple = new();
                 removeTriple.Predicate = "http://w3id.org/roh/scientificExperience|" + property;
                 removeTriple.Value = scientificExperience + "|" + item;
-                Guid idCV = mResourceApi.GetShortGuid(cv);
-                if (triplesToDelete.ContainsKey(idCV))
+                Guid idCVDeleteProject = mResourceApi.GetShortGuid(cv);
+                if (triplesToDeleteProject.ContainsKey(idCVDeleteProject))
                 {
-                    triplesToDelete[idCV].Add(removeTriple);
+                    triplesToDeleteProject[idCVDeleteProject].Add(removeTriple);
                 }
                 else
                 {
-                    triplesToDelete.Add(idCV, new List<RemoveTriples>() { removeTriple });
+                    triplesToDeleteProject.Add(idCVDeleteProject, new List<RemoveTriples>() { removeTriple });
                 }
             }
 
-            Parallel.ForEach(triplesToDelete.Keys, new ParallelOptions { MaxDegreeOfParallelism = ActualizadorBase.numParallel }, idCV =>
+            Parallel.ForEach(triplesToDeleteProject.Keys, new ParallelOptions { MaxDegreeOfParallelism = ActualizadorBase.numParallel }, idCV =>
             {
-                mResourceApi.DeletePropertiesLoadedResources(new Dictionary<Guid, List<RemoveTriples>>() { { idCV, triplesToDelete[idCV] } });
+                mResourceApi.DeletePropertiesLoadedResources(new Dictionary<Guid, List<RemoveTriples>>() { { idCV, triplesToDeleteProject[idCV] } });
             });
         }
 
