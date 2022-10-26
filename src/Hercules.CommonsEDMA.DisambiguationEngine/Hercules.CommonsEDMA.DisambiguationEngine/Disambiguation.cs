@@ -375,7 +375,7 @@ namespace Hercules.CommonsEDMA.DisambiguationEngine.Models
         public static Dictionary<string, HashSet<string>> Disambiguate(List<DisambiguableEntity> pItems, List<DisambiguableEntity> pItemBBDD, bool pDisambiguateItems = true, float pUmbral = 0.8f, float pToleranciaNombres = 0f)
         {
             //En esta variable se almacenarán todas las equivalencias encontradas con su peso
-            Dictionary<string, Dictionary<string, float>> listaEquivalencias = new Dictionary<string, Dictionary<string, float>>();
+            Dictionary<string, Dictionary<string, float>> listaEquivalenciasDisambiguate = new Dictionary<string, Dictionary<string, float>>();
             #region Diccionarios auxiliares para la desmbiguación
             Dictionary<string, string> dicNomPersonasDesnormalizadas = new Dictionary<string, string>();
             Dictionary<string, string> dicTitulosDesnormalizados = new Dictionary<string, string>();
@@ -424,7 +424,7 @@ namespace Hercules.CommonsEDMA.DisambiguationEngine.Models
                     while (cambiosItems)
                     {
                         Dictionary<string, Dictionary<string, float>> listaEquivalenciasItemsACargar = ApplyDisambiguation(disambiguationDataItemsACargarAux, null, listaDistintos, dicNomPersonasDesnormalizadas, dicTitulosDesnormalizados, pToleranciaNombres);
-                        cambiosItems = ProcesarEquivalencias(pItems, null, listaEquivalenciasItemsACargar, disambiguationDataItemsACargarAux, disambiguationDataItemsBBDD, listaEquivalencias, listaDistintos, pUmbral);
+                        cambiosItems = ProcesarEquivalencias(pItems, null, listaEquivalenciasItemsACargar, disambiguationDataItemsACargarAux, disambiguationDataItemsBBDD, listaEquivalenciasDisambiguate, listaDistintos, pUmbral);
                         if (cambiosItems)
                         {
                             cambios = true;
@@ -440,7 +440,7 @@ namespace Hercules.CommonsEDMA.DisambiguationEngine.Models
                     while (cambiosBBDD)
                     {
                         Dictionary<string, Dictionary<string, float>> listaEquivalenciasItemsACargar = ApplyDisambiguation(disambiguationDataItemsACargarAux, disambiguationDataItemsBBDD, listaDistintos, dicNomPersonasDesnormalizadas, dicTitulosDesnormalizados, pToleranciaNombres);
-                        cambiosBBDD = ProcesarEquivalencias(pItems, pItemBBDD, listaEquivalenciasItemsACargar, disambiguationDataItemsACargarAux, disambiguationDataItemsBBDD, listaEquivalencias, listaDistintos, pUmbral);
+                        cambiosBBDD = ProcesarEquivalencias(pItems, pItemBBDD, listaEquivalenciasItemsACargar, disambiguationDataItemsACargarAux, disambiguationDataItemsBBDD, listaEquivalenciasDisambiguate, listaDistintos, pUmbral);
                         if (cambiosBBDD)
                         {
                             cambios = true;
@@ -452,9 +452,9 @@ namespace Hercules.CommonsEDMA.DisambiguationEngine.Models
             //Preparamos el objeto a devolver
             Dictionary<string, HashSet<string>> listadoEquivalencias = new Dictionary<string, HashSet<string>>();
             //Comprobamos errores
-            foreach (string id in listaEquivalencias.Keys)
+            foreach (string id in listaEquivalenciasDisambiguate.Keys)
             {
-                List<string> itemsBBDD = listaEquivalencias[id].Keys.Where(x => !Guid.TryParse(x.Split('|')[1], out Guid auxB)).ToList();
+                List<string> itemsBBDD = listaEquivalenciasDisambiguate[id].Keys.Where(x => !Guid.TryParse(x.Split('|')[1], out Guid auxB)).ToList();
                 if (itemsBBDD.Count > 1)
                 {
                     throw new Exception("Error, no puede un item apuntar a más de un ítem de BBDD");
@@ -465,17 +465,17 @@ namespace Hercules.CommonsEDMA.DisambiguationEngine.Models
             HashSet<string> cargados = new HashSet<string>();
 
             //Añadimos los que están vinculados con BBDD
-            foreach (string id in listaEquivalencias.Keys)
+            foreach (string id in listaEquivalenciasDisambiguate.Keys)
             {
                 bool idBBDD = !Guid.TryParse(id.Split('|')[1], out Guid auxA);
-                foreach (string id2 in listaEquivalencias[id].Keys)
+                foreach (string id2 in listaEquivalenciasDisambiguate[id].Keys)
                 {
                     bool id2BBDD = !Guid.TryParse(id2.Split('|')[1], out Guid auxB);
                     if (idBBDD && id2BBDD)
                     {
                         throw new Exception("Error, no puede un item apuntar a más de un ítem de BBDD");
                     }
-                    float similitud = listaEquivalencias[id][id2];
+                    float similitud = listaEquivalenciasDisambiguate[id][id2];
                     if (similitud >= pUmbral)
                     {
                         if (idBBDD && !id2BBDD)
@@ -519,7 +519,7 @@ namespace Hercules.CommonsEDMA.DisambiguationEngine.Models
                     aniadidos[id2] = id;
                 }
             }
-            foreach (string id in listaEquivalencias.Keys)
+            foreach (string id in listaEquivalenciasDisambiguate.Keys)
             {
                 bool idBBDD = !Guid.TryParse(id.Split('|')[1], out Guid auxA);
                 //Si no es de BBDD y no está cargado buscamos el más similar de los de BBDD
@@ -528,12 +528,12 @@ namespace Hercules.CommonsEDMA.DisambiguationEngine.Models
                     string idEquivalenteBBDD = "";
                     float maxEquivalencia = 0;
                     int num = 0;
-                    foreach (string id2 in listaEquivalencias[id].Keys)
+                    foreach (string id2 in listaEquivalenciasDisambiguate[id].Keys)
                     {
                         bool id2BBDD = !Guid.TryParse(id2.Split('|')[1], out Guid auxB);
                         if (!id2BBDD && cargados.Contains(id2))
                         {
-                            float similitud = listaEquivalencias[id][id2];
+                            float similitud = listaEquivalenciasDisambiguate[id][id2];
                             if (similitud >= pUmbral)
                             {
                                 num++;
@@ -578,17 +578,17 @@ namespace Hercules.CommonsEDMA.DisambiguationEngine.Models
                     aniadidos[id2] = id;
                 }
             }
-            foreach (string id in listaEquivalencias.Keys)
+            foreach (string id in listaEquivalenciasDisambiguate.Keys)
             {
                 bool idBBDD = !Guid.TryParse(id.Split('|')[1], out Guid auxA);
-                foreach (string id2 in listaEquivalencias[id].Keys)
+                foreach (string id2 in listaEquivalenciasDisambiguate[id].Keys)
                 {
                     bool id2BBDD = !Guid.TryParse(id2.Split('|')[1], out Guid auxB);
                     if (idBBDD && id2BBDD)
                     {
                         throw new Exception("Error, no puede un item apuntar a más de un ítem de BBDD");
                     }
-                    float similitud = listaEquivalencias[id][id2];
+                    float similitud = listaEquivalenciasDisambiguate[id][id2];
                     if (similitud >= pUmbral)
                     {
                         if (!idBBDD && !id2BBDD)
