@@ -83,7 +83,7 @@ namespace CurriculumvitaeOntology
 
 			Roh_researchObject.GetProperties();
 			Roh_researchObject.GetEntities();
-			OntologyEntity entityRoh_researchObject = new($"{ActualizadorBase.GetUrlPrefix("roh")}ResearchObjects", "http://w3id.org/roh/ResearchObjects", "roh:researchObject", Roh_researchObject.propList, Roh_researchObject.entList);
+			OntologyEntity entityRoh_researchObject = new($"{ActualizadorBase.GetUrlPrefix("roh")}ResearchObjects", $"{ActualizadorBase.GetUrlPrefix("roh")}ResearchObjects", "roh:researchObject", Roh_researchObject.propList, Roh_researchObject.entList);
 			entList.Add(entityRoh_researchObject);
 		} 
 

@@ -860,7 +860,7 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
                         {
                             numAreasTematicasCargadas = fila["numAreasTematicasCargadas"].value;
                         }
-                        ActualizadorTriple(person, "http://w3id.org/roh/themedAreasNumber", numAreasTematicasCargadas, numAreasTematicasACargar);
+                        ActualizadorTriple(person, $"{GetUrlPrefix("roh")}themedAreasNumber", numAreasTematicasCargadas, numAreasTematicasACargar);
                     });
 
                     if (resultadoActualizarNumeroAreasTematicas.results.bindings.Count != limitActualizarNumeroAreasTematicas)

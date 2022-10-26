@@ -229,9 +229,9 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
 
                 //Asignamos foaf:firstName
                 Dictionary<string, string> propiedadesPersonProject = new Dictionary<string, string>();
-                propiedadesPersonProject["http://xmlns.com/foaf/0.1/firstName"] = "http://xmlns.com/foaf/0.1/firstName";
-                propiedadesPersonProject["http://xmlns.com/foaf/0.1/lastName"] = "http://xmlns.com/foaf/0.1/familyName";
-                propiedadesPersonProject["--"] = "http://w3id.org/roh/secondFamilyName";
+                propiedadesPersonProject[$"{GetUrlPrefix("foaf")}firstName"] = $"{GetUrlPrefix("foaf")}firstName";
+                propiedadesPersonProject[$"{GetUrlPrefix("foaf")}lastName"] = $"{GetUrlPrefix("foaf")}familyName";
+                propiedadesPersonProject["--"] = $"{GetUrlPrefix("roh")}secondFamilyName";
                 foreach (string propPerson in propiedadesPersonProject.Keys)
                 {
                     string propProject = propiedadesPersonProject[propPerson];
@@ -326,7 +326,7 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
                                     }}
                                 }}order by desc(?project) limit {limitCrearMiembros}";
                     SparqlObject resultadoCrearMiembros = mResourceApi.VirtuosoQuery(selectCrearMiembros, whereCrearMiembros, "project");
-                    InsercionMultiple(resultadoCrearMiembros.results.bindings, "http://w3id.org/roh/membersProject", "project", "person");
+                    InsercionMultiple(resultadoCrearMiembros.results.bindings, $"{GetUrlPrefix("roh")}membersProject", "project", "person");
                     if (resultadoCrearMiembros.results.bindings.Count != limitCrearMiembros)
                     {
                         break;
