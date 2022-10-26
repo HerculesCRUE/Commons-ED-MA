@@ -87,6 +87,7 @@ if(item0.HasValue){
 			fileRoh_filePDF.Read(dataRoh_filePDF, 0, Convert.ToInt32(lengthRoh_filePDF));
 			string nameRoh_filePDF = Roh_filePDF;
 			pResource.AttachFile(dataRoh_filePDF, "http://w3id.org/roh/filePDF", nameRoh_filePDF);
+			fileRoh_filePDF.Dispose();
 		}
 	}
 }
