@@ -170,7 +170,7 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
                     List<CV> listaCVCargar = GenerateCVFromPersons(persons);
                     Parallel.ForEach(listaCVCargar, new ParallelOptions { MaxDegreeOfParallelism = ActualizadorBase.numParallel }, cv =>
                     {
-                        ComplexOntologyResource resource = cv.ToGnossApiResource(mResourceApi,null);
+                        ComplexOntologyResource resource = cv.ToGnossApiResource(mResourceApi, null);
                         int numIntentos = 0;
                         while (!resource.Uploaded)
                         {
@@ -1752,16 +1752,16 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
                 switch (typeDocument)
                 {
                     case "SAD1":
-                        rdftype = "http://w3id.org/roh/RelatedScientificPublication";
-                        property = "http://w3id.org/roh/scientificPublications";
+                        rdftype = $"{GetUrlPrefix("roh")}RelatedScientificPublication";
+                        property = $"{GetUrlPrefix("roh")}scientificPublications";
                         break;
                     case "SAD2":
-                        rdftype = "http://w3id.org/roh/RelatedWorkSubmittedConferences";
-                        property = "http://w3id.org/roh/worksSubmittedConferences";
+                        rdftype = $"{GetUrlPrefix("roh")}RelatedWorkSubmittedConferences";
+                        property = $"{GetUrlPrefix("roh")}worksSubmittedConferences";
                         break;
                     case "SAD3":
-                        rdftype = "http://w3id.org/roh/RelatedWorkSubmittedSeminars";
-                        property = "http://w3id.org/roh/worksSubmittedSeminars";
+                        rdftype = $"{GetUrlPrefix("roh")}RelatedWorkSubmittedSeminars";
+                        property = $"{GetUrlPrefix("roh")}worksSubmittedSeminars";
                         break;
                 }
 
@@ -1911,8 +1911,8 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
                 string researchObject = fila["researchObject"].value;
                 string ro = fila["ro"].value;
 
-                string rdftype = "http://w3id.org/roh/RelatedResearchObject";
-                string property = "http://w3id.org/roh/researchObjects";
+                string rdftype = $"{GetUrlPrefix("roh")}RelatedResearchObject";
+                string property = $"{GetUrlPrefix("roh")}researchObjects";
 
                 //Obtenemos la auxiliar en la que cargar la entidad  
                 string rdfTypePrefix = AniadirPrefijo(rdftype);
@@ -1922,12 +1922,12 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
                 string idEntityAux = researchObject + "|" + idNewAux;
 
                 //Privacidad            
-                string predicadoPrivacidad = "http://w3id.org/roh/researchObject|" + property + "|http://w3id.org/roh/isPublic";
+                string predicadoPrivacidad = $"{GetUrlPrefix("roh")}researchObject|{property}|{GetUrlPrefix("roh")}isPublic";
                 TriplesToInclude tr2 = new(idEntityAux + "|true", predicadoPrivacidad);
                 listaTriples.Add(tr2);
 
                 //Entidad
-                string predicadoEntidad = "http://w3id.org/roh/researchObject|" + property + "|http://vivoweb.org/ontology/core#relatedBy";
+                string predicadoEntidad = $"{GetUrlPrefix("roh")}researchObject|{property}|{GetUrlPrefix("vivo")}relatedBy";
                 TriplesToInclude tr1 = new(idEntityAux + "|" + ro, predicadoEntidad);
                 listaTriples.Add(tr1);
 
@@ -2008,9 +2008,9 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
                 string researchObject = fila["researchObject"].value;
                 string item = fila["item"].value;
 
-                string property = "http://w3id.org/roh/researchObjects";
+                string property = $"{GetUrlPrefix("roh")}researchObjects";
                 RemoveTriples removeTriple = new();
-                removeTriple.Predicate = "http://w3id.org/roh/researchObject|" + property;
+                removeTriple.Predicate = $"{GetUrlPrefix("roh")}researchObject|{property}";
                 removeTriple.Value = researchObject + "|" + item;
                 Guid idCVDeleteRO = mResourceApi.GetShortGuid(cv);
                 if (triplesToDeleteRO.ContainsKey(idCVDeleteRO))
@@ -2053,12 +2053,12 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
                 switch (typeProject)
                 {
                     case "SEP1":
-                        rdftype = "http://w3id.org/roh/RelatedCompetitiveProject";
-                        property = "http://w3id.org/roh/competitiveProjects";
+                        rdftype = $"{GetUrlPrefix("roh")}RelatedCompetitiveProject";
+                        property = $"{GetUrlPrefix("roh")}competitiveProjects";
                         break;
                     case "SEP2":
-                        rdftype = "http://w3id.org/roh/RelatedNonCompetitiveProject";
-                        property = "http://w3id.org/roh/nonCompetitiveProjects";
+                        rdftype = $"{GetUrlPrefix("roh")}RelatedNonCompetitiveProject";
+                        property = $"{GetUrlPrefix("roh")}nonCompetitiveProjects";
                         break;
                 }
 
@@ -2070,12 +2070,12 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
                 string idEntityAux = scientificExperience + "|" + idNewAux;
 
                 //Privacidad, true (son proyectos oficiales)
-                string predicadoPrivacidad = "http://w3id.org/roh/scientificExperience|" + property + "|http://w3id.org/roh/isPublic";
+                string predicadoPrivacidad = $"{GetUrlPrefix("roh")}scientificExperience|{property}|{GetUrlPrefix("roh")}isPublic";
                 TriplesToInclude tr2 = new(idEntityAux + "|true", predicadoPrivacidad);
                 listaTriples.Add(tr2);
 
                 //Entidad
-                string predicadoEntidad = "http://w3id.org/roh/scientificExperience|" + property + "|http://vivoweb.org/ontology/core#relatedBy";
+                string predicadoEntidad = $"{GetUrlPrefix("roh")}scientificExperience|{property}|{GetUrlPrefix("vivo")}relatedBy";
                 TriplesToInclude tr1 = new(idEntityAux + "|" + project, predicadoEntidad);
                 listaTriples.Add(tr1);
 
