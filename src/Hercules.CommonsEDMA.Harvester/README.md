@@ -14,7 +14,7 @@
 
 [![Bugs](https://sonarcloud.io/api/project_badges/measure?project=Hercules.CommonsEDMA.Harvester&metric=bugs)](https://sonarcloud.io/summary/new_code?id=Hercules.CommonsEDMA.Harvester)
 [![Reliability Rating](https://sonarcloud.io/api/project_badges/measure?project=Hercules.CommonsEDMA.Harvester&metric=reliability_rating)](https://sonarcloud.io/summary/new_code?id=Hercules.CommonsEDMA.Harvester)
-[![Reliability Rating](https://sonarcloud.io/api/project_badges/measure?project=Hercules.CommonsEDMA.Harvester&metric=reliability_rating)](https://sonarcloud.io/summary/new_code?id=Hercules.CommonsEDMA.Harvester)
+[![Lines of Code](https://sonarcloud.io/api/project_badges/measure?project=Hercules.CommonsEDMA.Harvester&metric=ncloc)](https://sonarcloud.io/dashboard?id=Hercules.CommonsEDMA.Harvester)
 [![Duplicated Lines (%)](https://sonarcloud.io/api/project_badges/measure?project=Hercules.CommonsEDMA.Harvester&metric=duplicated_lines_density)](https://sonarcloud.io/summary/new_code?id=Hercules.CommonsEDMA.Harvester)
 
 
