@@ -976,85 +976,85 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
             List<CVSection> listaSecciones = new List<CVSection>();
 
             //Situación profesional actual
-            listaSecciones.Add(new CVSection("010.010.000.000", "position", $"{dicPrefix["vivo"]}Position", $"{dicPrefix["roh"]}professionalSituation", $"{dicPrefix["roh"]}currentProfessionalSituation", $"{dicPrefix["roh"]}RelatedCurrentProfessionalSituation"));
+            listaSecciones.Add(new CVSection("010.010.000.000", "position", $"{GetUrlPrefix("vivo")}Position", $"{GetUrlPrefix("roh")}professionalSituation", $"{GetUrlPrefix("roh")}currentProfessionalSituation", $"{GetUrlPrefix("roh")}RelatedCurrentProfessionalSituation"));
             //Cargos y actividades desempeñados con anterioridad
-            listaSecciones.Add(new CVSection("010.020.000.000", "position", $"{dicPrefix["vivo"]}Position", $"{dicPrefix["roh"]}professionalSituation", $"{dicPrefix["roh"]}previousPositions", $"{dicPrefix["roh"]}RelatedPreviousPositions"));
+            listaSecciones.Add(new CVSection("010.020.000.000", "position", $"{GetUrlPrefix("vivo")}Position", $"{GetUrlPrefix("roh")}professionalSituation", $"{GetUrlPrefix("roh")}previousPositions", $"{GetUrlPrefix("roh")}RelatedPreviousPositions"));
 
             //Estudios de 1º y 2º ciclo, y antiguos ciclos
-            listaSecciones.Add(new CVSection("020.010.010.000", "academicdegree", $"{dicPrefix["vivo"]}AcademicDegree", $"{dicPrefix["roh"]}qualifications", $"{dicPrefix["roh"]}firstSecondCycles", $"{dicPrefix["roh"]}RelatedFirstSecondCycles"));
+            listaSecciones.Add(new CVSection("020.010.010.000", "academicdegree", $"{GetUrlPrefix("vivo")}AcademicDegree", $"{GetUrlPrefix("roh")}qualifications", $"{GetUrlPrefix("roh")}firstSecondCycles", $"{GetUrlPrefix("roh")}RelatedFirstSecondCycles"));
             //Doctorados
-            listaSecciones.Add(new CVSection("020.010.020.000", "academicdegree", $"{dicPrefix["vivo"]}AcademicDegree", $"{dicPrefix["roh"]}qualifications", $"{dicPrefix["roh"]}doctorates", $"{dicPrefix["roh"]}RelatedDoctorates"));
+            listaSecciones.Add(new CVSection("020.010.020.000", "academicdegree", $"{GetUrlPrefix("vivo")}AcademicDegree", $"{GetUrlPrefix("roh")}qualifications", $"{GetUrlPrefix("roh")}doctorates", $"{GetUrlPrefix("roh")}RelatedDoctorates"));
             //Conocimiento de idiomas
-            listaSecciones.Add(new CVSection("020.060.000.000", "languagecertificate", $"{dicPrefix["roh"]}LanguageCertificate", $"{dicPrefix["roh"]}qualifications", $"{dicPrefix["roh"]}languageSkills", $"{dicPrefix["roh"]}RelatedLanguageSkills"));
+            listaSecciones.Add(new CVSection("020.060.000.000", "languagecertificate", $"{GetUrlPrefix("roh")}LanguageCertificate", $"{GetUrlPrefix("roh")}qualifications", $"{GetUrlPrefix("roh")}languageSkills", $"{GetUrlPrefix("roh")}RelatedLanguageSkills"));
             //Otra formación universitaria de posgrado
-            listaSecciones.Add(new CVSection("020.010.030.000", "academicdegree", $"{dicPrefix["vivo"]}AcademicDegree", $"{dicPrefix["roh"]}qualifications", $"{dicPrefix["roh"]}postgraduates", $"{dicPrefix["roh"]}RelatedPostGraduates"));
+            listaSecciones.Add(new CVSection("020.010.030.000", "academicdegree", $"{GetUrlPrefix("vivo")}AcademicDegree", $"{GetUrlPrefix("roh")}qualifications", $"{GetUrlPrefix("roh")}postgraduates", $"{GetUrlPrefix("roh")}RelatedPostGraduates"));
             //Formación especializada
-            listaSecciones.Add(new CVSection("020.020.000.000", "academicdegree", $"{dicPrefix["vivo"]}AcademicDegree", $"{dicPrefix["roh"]}qualifications", $"{dicPrefix["roh"]}specialisedTraining", $"{dicPrefix["roh"]}RelatedSpecialisedTrainings"));
+            listaSecciones.Add(new CVSection("020.020.000.000", "academicdegree", $"{GetUrlPrefix("vivo")}AcademicDegree", $"{GetUrlPrefix("roh")}qualifications", $"{GetUrlPrefix("roh")}specialisedTraining", $"{GetUrlPrefix("roh")}RelatedSpecialisedTrainings"));
             //Cursos y semin. mejora docente
-            listaSecciones.Add(new CVSection("020.050.000.000", "academicdegree", $"{dicPrefix["vivo"]}AcademicDegree", $"{dicPrefix["roh"]}qualifications", $"{dicPrefix["roh"]}coursesAndSeminars", $"{dicPrefix["roh"]}RelatedCoursesAndSeminars"));
+            listaSecciones.Add(new CVSection("020.050.000.000", "academicdegree", $"{GetUrlPrefix("vivo")}AcademicDegree", $"{GetUrlPrefix("roh")}qualifications", $"{GetUrlPrefix("roh")}coursesAndSeminars", $"{GetUrlPrefix("roh")}RelatedCoursesAndSeminars"));
 
             //Dirección tesis y/o proyectos
-            listaSecciones.Add(new CVSection("030.040.000.000", "thesissupervision", $"{dicPrefix["roh"]}ThesisSupervision", $"{dicPrefix["roh"]}teachingExperience", $"{dicPrefix["roh"]}thesisSupervisions", $"{dicPrefix["roh"]}RelatedThesisSupervisions"));
+            listaSecciones.Add(new CVSection("030.040.000.000", "thesissupervision", $"{GetUrlPrefix("roh")}ThesisSupervision", $"{GetUrlPrefix("roh")}teachingExperience", $"{GetUrlPrefix("roh")}thesisSupervisions", $"{GetUrlPrefix("roh")}RelatedThesisSupervisions"));
             //Formación académica impartida
-            listaSecciones.Add(new CVSection("030.010.000.000", "impartedacademictraining", $"{dicPrefix["roh"]}ImpartedAcademicTraining", $"{dicPrefix["roh"]}teachingExperience", $"{dicPrefix["roh"]}impartedAcademicTrainings", $"{dicPrefix["roh"]}RelatedImpartedAcademicTrainings"));
+            listaSecciones.Add(new CVSection("030.010.000.000", "impartedacademictraining", $"{GetUrlPrefix("roh")}ImpartedAcademicTraining", $"{GetUrlPrefix("roh")}teachingExperience", $"{GetUrlPrefix("roh")}impartedAcademicTrainings", $"{GetUrlPrefix("roh")}RelatedImpartedAcademicTrainings"));
             //Tutorías académicas
-            listaSecciones.Add(new CVSection("030.050.000.000", "tutorship", $"{dicPrefix["roh"]}Tutorship", $"{dicPrefix["roh"]}teachingExperience", $"{dicPrefix["roh"]}academicTutorials", $"{dicPrefix["roh"]}RelatedAcademicTutorials"));
+            listaSecciones.Add(new CVSection("030.050.000.000", "tutorship", $"{GetUrlPrefix("roh")}Tutorship", $"{GetUrlPrefix("roh")}teachingExperience", $"{GetUrlPrefix("roh")}academicTutorials", $"{GetUrlPrefix("roh")}RelatedAcademicTutorials"));
             //Cursos y semin. impartidos
-            listaSecciones.Add(new CVSection("030.060.000.000", "impartedcoursesseminars", $"{dicPrefix["roh"]}ImpartedCoursesSeminars", $"{dicPrefix["roh"]}teachingExperience", $"{dicPrefix["roh"]}impartedCoursesSeminars", $"{dicPrefix["roh"]}RelatedImpartedCoursesSeminars"));
+            listaSecciones.Add(new CVSection("030.060.000.000", "impartedcoursesseminars", $"{GetUrlPrefix("roh")}ImpartedCoursesSeminars", $"{GetUrlPrefix("roh")}teachingExperience", $"{GetUrlPrefix("roh")}impartedCoursesSeminars", $"{GetUrlPrefix("roh")}RelatedImpartedCoursesSeminars"));
             //Publicaciones docentes
-            listaSecciones.Add(new CVSection("030.070.000.000", "teachingpublication", $"{dicPrefix["roh"]}TeachingPublication", $"{dicPrefix["roh"]}teachingExperience", $"{dicPrefix["roh"]}teachingPublications", $"{dicPrefix["roh"]}RelatedTeachingPublications"));
+            listaSecciones.Add(new CVSection("030.070.000.000", "teachingpublication", $"{GetUrlPrefix("roh")}TeachingPublication", $"{GetUrlPrefix("roh")}teachingExperience", $"{GetUrlPrefix("roh")}teachingPublications", $"{GetUrlPrefix("roh")}RelatedTeachingPublications"));
             //Participac. proyectos innov. docente
-            listaSecciones.Add(new CVSection("030.080.000.000", "teachingproject", $"{dicPrefix["roh"]}TeachingProject", $"{dicPrefix["roh"]}teachingExperience", $"{dicPrefix["roh"]}teachingProjects", $"{dicPrefix["roh"]}RelatedTeachingProjects"));
+            listaSecciones.Add(new CVSection("030.080.000.000", "teachingproject", $"{GetUrlPrefix("roh")}TeachingProject", $"{GetUrlPrefix("roh")}teachingExperience", $"{GetUrlPrefix("roh")}teachingProjects", $"{GetUrlPrefix("roh")}RelatedTeachingProjects"));
             //Participac. congresos formac. docente
-            listaSecciones.Add(new CVSection("030.090.000.000", "teachingcongress", $"{dicPrefix["roh"]}TeachingCongress", $"{dicPrefix["roh"]}teachingExperience", $"{dicPrefix["roh"]}teachingCongress", $"{dicPrefix["roh"]}RelatedTeachingCongress"));
+            listaSecciones.Add(new CVSection("030.090.000.000", "teachingcongress", $"{GetUrlPrefix("roh")}TeachingCongress", $"{GetUrlPrefix("roh")}teachingExperience", $"{GetUrlPrefix("roh")}teachingCongress", $"{GetUrlPrefix("roh")}RelatedTeachingCongress"));
             //Premios innov. docente
-            listaSecciones.Add(new CVSection("060.030.080.000", "accreditation", $"{dicPrefix["roh"]}Accreditation", $"{dicPrefix["roh"]}teachingExperience", $"{dicPrefix["roh"]}teachingInnovationAwardsReceived", $"{dicPrefix["roh"]}RelatedTeachingInnovationAwardsReceived"));
+            listaSecciones.Add(new CVSection("060.030.080.000", "accreditation", $"{GetUrlPrefix("roh")}Accreditation", $"{GetUrlPrefix("roh")}teachingExperience", $"{GetUrlPrefix("roh")}teachingInnovationAwardsReceived", $"{GetUrlPrefix("roh")}RelatedTeachingInnovationAwardsReceived"));
             //Otras actividades
-            listaSecciones.Add(new CVSection("030.100.000.000", "activity", $"{dicPrefix["roh"]}Activity", $"{dicPrefix["roh"]}teachingExperience", $"{dicPrefix["roh"]}otherActivities", $"{dicPrefix["roh"]}RelatedOtherActivities"));
+            listaSecciones.Add(new CVSection("030.100.000.000", "activity", $"{GetUrlPrefix("roh")}Activity", $"{GetUrlPrefix("roh")}teachingExperience", $"{GetUrlPrefix("roh")}otherActivities", $"{GetUrlPrefix("roh")}RelatedOtherActivities"));
             //Aportaciones relevantes
-            listaSecciones.Add(new CVSection("030.110.000.000", "activity", $"{dicPrefix["roh"]}Activity", $"{dicPrefix["roh"]}teachingExperience", $"{dicPrefix["roh"]}mostRelevantContributions", $"{dicPrefix["roh"]}RelatedMostRelevantContributions"));
+            listaSecciones.Add(new CVSection("030.110.000.000", "activity", $"{GetUrlPrefix("roh")}Activity", $"{GetUrlPrefix("roh")}teachingExperience", $"{GetUrlPrefix("roh")}mostRelevantContributions", $"{GetUrlPrefix("roh")}RelatedMostRelevantContributions"));
 
             //Obras artísticas dirigidas
-            listaSecciones.Add(new CVSection("050.020.030.000", "supervisedartisticproject", $"{dicPrefix["roh"]}SupervisedArtisticProject", $"{dicPrefix["roh"]}scientificExperience", $"{dicPrefix["roh"]}supervisedArtisticProjects", $"{dicPrefix["roh"]}RelatedSupervisedArtisticProject"));
+            listaSecciones.Add(new CVSection("050.020.030.000", "supervisedartisticproject", $"{GetUrlPrefix("roh")}SupervisedArtisticProject", $"{GetUrlPrefix("roh")}scientificExperience", $"{GetUrlPrefix("roh")}supervisedArtisticProjects", $"{GetUrlPrefix("roh")}RelatedSupervisedArtisticProject"));
             //Resultados tecnológicos
-            listaSecciones.Add(new CVSection("050.030.020.000", "technologicalresult", $"{dicPrefix["roh"]}TechnologicalResult", $"{dicPrefix["roh"]}scientificExperience", $"{dicPrefix["roh"]}technologicalResults", $"{dicPrefix["roh"]}RelatedTechnologicalResult"));
+            listaSecciones.Add(new CVSection("050.030.020.000", "technologicalresult", $"{GetUrlPrefix("roh")}TechnologicalResult", $"{GetUrlPrefix("roh")}scientificExperience", $"{GetUrlPrefix("roh")}technologicalResults", $"{GetUrlPrefix("roh")}RelatedTechnologicalResult"));
 
             //Comités científicos, técnicos y/o asesores
-            listaSecciones.Add(new CVSection("060.020.010.000", "committee", $"{dicPrefix["roh"]}Committee", $"{dicPrefix["roh"]}scientificActivity", $"{dicPrefix["roh"]}committees", $"{dicPrefix["roh"]}RelatedCommittee"));
+            listaSecciones.Add(new CVSection("060.020.010.000", "committee", $"{GetUrlPrefix("roh")}Committee", $"{GetUrlPrefix("roh")}scientificActivity", $"{GetUrlPrefix("roh")}committees", $"{GetUrlPrefix("roh")}RelatedCommittee"));
             //Organiz. activ. I+D+i
-            listaSecciones.Add(new CVSection("060.020.030.000", "activity", $"{dicPrefix["roh"]}Activity", $"{dicPrefix["roh"]}scientificActivity", $"{dicPrefix["roh"]}activitiesOrganization", $"{dicPrefix["roh"]}RelatedActivityOrganization"));
+            listaSecciones.Add(new CVSection("060.020.030.000", "activity", $"{GetUrlPrefix("roh")}Activity", $"{GetUrlPrefix("roh")}scientificActivity", $"{GetUrlPrefix("roh")}activitiesOrganization", $"{GetUrlPrefix("roh")}RelatedActivityOrganization"));
             //Gestión I+D+i
-            listaSecciones.Add(new CVSection("060.020.040.000", "activity", $"{dicPrefix["roh"]}Activity", $"{dicPrefix["roh"]}scientificActivity", $"{dicPrefix["roh"]}activitiesManagement", $"{dicPrefix["roh"]}RelatedActivityManagement"));
+            listaSecciones.Add(new CVSection("060.020.040.000", "activity", $"{GetUrlPrefix("roh")}Activity", $"{GetUrlPrefix("roh")}scientificActivity", $"{GetUrlPrefix("roh")}activitiesManagement", $"{GetUrlPrefix("roh")}RelatedActivityManagement"));
             //Producción científica
-            listaSecciones.Add(new CVSection("060.010.000.000", "scientificproduction", $"{dicPrefix["roh"]}ScientificProduction", $"{dicPrefix["roh"]}scientificActivity", $"{dicPrefix["roh"]}scientificProduction", $"{dicPrefix["roh"]}RelatedScientificProduction"));
+            listaSecciones.Add(new CVSection("060.010.000.000", "scientificproduction", $"{GetUrlPrefix("roh")}ScientificProduction", $"{GetUrlPrefix("roh")}scientificActivity", $"{GetUrlPrefix("roh")}scientificProduction", $"{GetUrlPrefix("roh")}RelatedScientificProduction"));
             //Otras actividades divulgación
-            listaSecciones.Add(new CVSection("060.010.040.000", "activity", $"{dicPrefix["roh"]}Activity", $"{dicPrefix["roh"]}scientificActivity", $"{dicPrefix["roh"]}otherDisseminationActivities", $"{dicPrefix["roh"]}RelatedOtherDisseminationActivity"));
+            listaSecciones.Add(new CVSection("060.010.040.000", "activity", $"{GetUrlPrefix("roh")}Activity", $"{GetUrlPrefix("roh")}scientificActivity", $"{GetUrlPrefix("roh")}otherDisseminationActivities", $"{GetUrlPrefix("roh")}RelatedOtherDisseminationActivity"));
             //Foros y comités
-            listaSecciones.Add(new CVSection("060.020.050.000", "activity", $"{dicPrefix["roh"]}Activity", $"{dicPrefix["roh"]}scientificActivity", $"{dicPrefix["roh"]}forums", $"{dicPrefix["roh"]}RelatedForum"));
+            listaSecciones.Add(new CVSection("060.020.050.000", "activity", $"{GetUrlPrefix("roh")}Activity", $"{GetUrlPrefix("roh")}scientificActivity", $"{GetUrlPrefix("roh")}forums", $"{GetUrlPrefix("roh")}RelatedForum"));
             //Evaluación y revisión de proyectos y artículos de I+D+i
-            listaSecciones.Add(new CVSection("060.020.060.000", "activity", $"{dicPrefix["roh"]}Activity", $"{dicPrefix["roh"]}scientificActivity", $"{dicPrefix["roh"]}researchEvaluations", $"{dicPrefix["roh"]}RelatedResearchEvaluation"));
+            listaSecciones.Add(new CVSection("060.020.060.000", "activity", $"{GetUrlPrefix("roh")}Activity", $"{GetUrlPrefix("roh")}scientificActivity", $"{GetUrlPrefix("roh")}researchEvaluations", $"{GetUrlPrefix("roh")}RelatedResearchEvaluation"));
             //Estancias en centros I+D+i
-            listaSecciones.Add(new CVSection("060.010.050.000", "stay", $"{dicPrefix["roh"]}Stay", $"{dicPrefix["roh"]}scientificActivity", $"{dicPrefix["roh"]}stays", $"{dicPrefix["roh"]}RelatedStay"));
+            listaSecciones.Add(new CVSection("060.010.050.000", "stay", $"{GetUrlPrefix("roh")}Stay", $"{GetUrlPrefix("roh")}scientificActivity", $"{GetUrlPrefix("roh")}stays", $"{GetUrlPrefix("roh")}RelatedStay"));
             //Ayudas y becas obtenidas
-            listaSecciones.Add(new CVSection("060.030.010.000", "grant", $"{dicPrefix["vivo"]}Grant", $"{dicPrefix["roh"]}scientificActivity", $"{dicPrefix["roh"]}grants", $"{dicPrefix["roh"]}RelatedGrant"));
+            listaSecciones.Add(new CVSection("060.030.010.000", "grant", $"{GetUrlPrefix("vivo")}Grant", $"{GetUrlPrefix("roh")}scientificActivity", $"{GetUrlPrefix("roh")}grants", $"{GetUrlPrefix("roh")}RelatedGrant"));
             //Otros modos de colaboración
-            listaSecciones.Add(new CVSection("060.020.020.000", "collaboration", $"{dicPrefix["roh"]}Collaboration", $"{dicPrefix["roh"]}scientificActivity", $"{dicPrefix["roh"]}otherCollaborations", $"{dicPrefix["roh"]}RelatedOtherCollaboration"));
+            listaSecciones.Add(new CVSection("060.020.020.000", "collaboration", $"{GetUrlPrefix("roh")}Collaboration", $"{GetUrlPrefix("roh")}scientificActivity", $"{GetUrlPrefix("roh")}otherCollaborations", $"{GetUrlPrefix("roh")}RelatedOtherCollaboration"));
             //Sdades. Científicas y Asoc. Profesionales
-            listaSecciones.Add(new CVSection("060.030.020.000", "society", $"{dicPrefix["roh"]}Society", $"{dicPrefix["roh"]}scientificActivity", $"{dicPrefix["roh"]}societies", $"{dicPrefix["roh"]}RelatedSociety"));
+            listaSecciones.Add(new CVSection("060.030.020.000", "society", $"{GetUrlPrefix("roh")}Society", $"{GetUrlPrefix("roh")}scientificActivity", $"{GetUrlPrefix("roh")}societies", $"{GetUrlPrefix("roh")}RelatedSociety"));
             //Consejos editoriales
-            listaSecciones.Add(new CVSection("060.030.030.000", "council", $"{dicPrefix["roh"]}Council", $"{dicPrefix["roh"]}scientificActivity", $"{dicPrefix["roh"]}councils", $"{dicPrefix["roh"]}RelatedCouncil"));
+            listaSecciones.Add(new CVSection("060.030.030.000", "council", $"{GetUrlPrefix("roh")}Council", $"{GetUrlPrefix("roh")}scientificActivity", $"{GetUrlPrefix("roh")}councils", $"{GetUrlPrefix("roh")}RelatedCouncil"));
             //Redes de cooperación
-            listaSecciones.Add(new CVSection("060.030.040.000", "network", $"{dicPrefix["roh"]}Network", $"{dicPrefix["roh"]}scientificActivity", $"{dicPrefix["roh"]}networks", $"{dicPrefix["roh"]}RelatedNetwork"));
+            listaSecciones.Add(new CVSection("060.030.040.000", "network", $"{GetUrlPrefix("roh")}Network", $"{GetUrlPrefix("roh")}scientificActivity", $"{GetUrlPrefix("roh")}networks", $"{GetUrlPrefix("roh")}RelatedNetwork"));
             //Premios, menciones y distinc.
-            listaSecciones.Add(new CVSection("060.030.050.000", "accreditation", $"{dicPrefix["roh"]}Accreditation", $"{dicPrefix["roh"]}scientificActivity", $"{dicPrefix["roh"]}prizes", $"{dicPrefix["roh"]}RelatedPrize"));
+            listaSecciones.Add(new CVSection("060.030.050.000", "accreditation", $"{GetUrlPrefix("roh")}Accreditation", $"{GetUrlPrefix("roh")}scientificActivity", $"{GetUrlPrefix("roh")}prizes", $"{GetUrlPrefix("roh")}RelatedPrize"));
             //Otras distinc. carrera profes./empr.
-            listaSecciones.Add(new CVSection("060.030.060.000", "accreditation", $"{dicPrefix["roh"]}Accreditation", $"{dicPrefix["roh"]}scientificActivity", $"{dicPrefix["roh"]}otherDistinctions", $"{dicPrefix["roh"]}RelatedOtherDistinction"));
+            listaSecciones.Add(new CVSection("060.030.060.000", "accreditation", $"{GetUrlPrefix("roh")}Accreditation", $"{GetUrlPrefix("roh")}scientificActivity", $"{GetUrlPrefix("roh")}otherDistinctions", $"{GetUrlPrefix("roh")}RelatedOtherDistinction"));
             //Períodos activ. investigadora
-            listaSecciones.Add(new CVSection("060.030.070.000", "accreditation", $"{dicPrefix["roh"]}Accreditation", $"{dicPrefix["roh"]}scientificActivity", $"{dicPrefix["roh"]}researchActivityPeriods", $"{dicPrefix["roh"]}RelatedResearchActivityPeriod"));
+            listaSecciones.Add(new CVSection("060.030.070.000", "accreditation", $"{GetUrlPrefix("roh")}Accreditation", $"{GetUrlPrefix("roh")}scientificActivity", $"{GetUrlPrefix("roh")}researchActivityPeriods", $"{GetUrlPrefix("roh")}RelatedResearchActivityPeriod"));
             //Acreditaciones/reconocimientos
-            listaSecciones.Add(new CVSection("060.030.090.000", "accreditation", $"{dicPrefix["roh"]}Accreditation", $"{dicPrefix["roh"]}scientificActivity", $"{dicPrefix["roh"]}obtainedRecognitions", $"{dicPrefix["roh"]}RelatedObtainedRecognition"));
+            listaSecciones.Add(new CVSection("060.030.090.000", "accreditation", $"{GetUrlPrefix("roh")}Accreditation", $"{GetUrlPrefix("roh")}scientificActivity", $"{GetUrlPrefix("roh")}obtainedRecognitions", $"{GetUrlPrefix("roh")}RelatedObtainedRecognition"));
             //Resumen de otros méritos
-            listaSecciones.Add(new CVSection("060.030.100.000", "accreditation", $"{dicPrefix["roh"]}Accreditation", $"{dicPrefix["roh"]}scientificActivity", $"{dicPrefix["roh"]}otherAchievements", $"{dicPrefix["roh"]}RelatedOtherAchievement"));
+            listaSecciones.Add(new CVSection("060.030.100.000", "accreditation", $"{GetUrlPrefix("roh")}Accreditation", $"{GetUrlPrefix("roh")}scientificActivity", $"{GetUrlPrefix("roh")}otherAchievements", $"{GetUrlPrefix("roh")}RelatedOtherAchievement"));
 
 
             HashSet<string> filtersModificarElementosCV = new HashSet<string>();
