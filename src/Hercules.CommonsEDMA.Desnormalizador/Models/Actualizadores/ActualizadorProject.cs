@@ -33,7 +33,7 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
         public void ActualizarProyectosValidados(List<string> pProjects = null)
         {
             //Eliminamos los duplicados
-            EliminarDuplicados("project", "http://vivoweb.org/ontology/core#Project", "http://w3id.org/roh/isValidated");
+            EliminarDuplicados("project", $"{GetUrlPrefix("vivo")}Project", $"{GetUrlPrefix("roh")}isValidated");
 
             HashSet<string> filtersActualizarProyectosValidados = new HashSet<string>();
             if (pProjects != null && pProjects.Count > 0)
@@ -80,7 +80,7 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
                         {
                             isValidatedCargado = fila["isValidatedCargado"].value;
                         }
-                        ActualizadorTriple(project, "http://w3id.org/roh/isValidated", isValidatedCargado, isValidatedCargar);
+                        ActualizadorTriple(project, $"{GetUrlPrefix("roh")}isValidated", isValidatedCargado, isValidatedCargar);
                     });
 
                     if (resultadoActualizarProyectosValidados.results.bindings.Count != limitActualizarProyectosValidados)
