@@ -15,6 +15,6 @@
 
 [![Bugs](https://sonarcloud.io/api/project_badges/measure?project=Hercules.CommonsEDMA.ConfigLoad&metric=bugs)](https://sonarcloud.io/summary/new_code?id=Hercules.CommonsEDMA.ConfigLoad)
 [![Reliability Rating](https://sonarcloud.io/api/project_badges/measure?project=Hercules.CommonsEDMA.ConfigLoad&metric=reliability_rating)](https://sonarcloud.io/summary/new_code?id=Hercules.CommonsEDMA.ConfigLoad)
-[![Reliability Rating](https://sonarcloud.io/api/project_badges/measure?project=Hercules.CommonsEDMA.ConfigLoad&metric=reliability_rating)](https://sonarcloud.io/summary/new_code?id=Hercules.CommonsEDMA.ConfigLoad)
+[![Lines of Code](https://sonarcloud.io/api/project_badges/measure?project=Hercules.CommonsEDMA.ConfigLoad=ncloc)](https://sonarcloud.io/dashboard?id=Hercules.CommonsEDMA.ConfigLoad)
 [![Duplicated Lines (%)](https://sonarcloud.io/api/project_badges/measure?project=Hercules.CommonsEDMA.ConfigLoad&metric=duplicated_lines_density)](https://sonarcloud.io/summary/new_code?id=Hercules.CommonsEDMA.ConfigLoad)
 
