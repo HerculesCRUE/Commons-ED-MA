@@ -356,7 +356,7 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
                                     }}
                                 }}order by desc(?project) limit {limitEliminarMiembros}";
                     SparqlObject resultadoEliminarMiembros = mResourceApi.VirtuosoQuery(selectEliminarMiembros, whereEliminarMiembros, "project");
-                    EliminacionMultiple(resultadoEliminarMiembros.results.bindings, "http://w3id.org/roh/membersProject", "project", "person");
+                    EliminacionMultiple(resultadoEliminarMiembros.results.bindings, $"{GetUrlPrefix("roh")}membersProject", "project", "person");
                     if (resultadoEliminarMiembros.results.bindings.Count != limitEliminarMiembros)
                     {
                         break;
@@ -631,7 +631,7 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
                         {
                             numDocumentosCargados = fila["numDocumentosCargados"].value;
                         }
-                        ActualizadorTriple(project, "http://w3id.org/roh/publicationsNumber", numDocumentosCargados, numDocumentosACargar);
+                        ActualizadorTriple(project, $"{GetUrlPrefix("roh")}publicationsNumber", numDocumentosCargados, numDocumentosACargar);
                     });
 
                     if (resultadoActualizarNumeroPublicaciones.results.bindings.Count != limitActualizarNumeroPublicaciones)

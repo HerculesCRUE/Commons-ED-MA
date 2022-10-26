@@ -201,7 +201,7 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
                         {
                             numDocumentosCargados = fila["numDocumentosCargados"].value;
                         }
-                        ActualizadorTriple(person, "http://w3id.org/roh/publicationsNumber", numDocumentosCargados, numDocumentosACargar);
+                        ActualizadorTriple(person, $"{GetUrlPrefix("roh")}publicationsNumber", numDocumentosCargados, numDocumentosACargar);
                     });
 
                     if (resultadoActualizarNumeroPublicacionesValidadas.results.bindings.Count != limitActualizarNumeroPublicacionesValidadas)
@@ -285,7 +285,7 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
                         {
                             numDocumentosCargados = fila["numDocumentosCargados"].value;
                         }
-                        ActualizadorTriple(person, "http://w3id.org/roh/publicPublicationsNumber", numDocumentosCargados, numDocumentosACargar);
+                        ActualizadorTriple(person, $"{GetUrlPrefix("roh")}publicPublicationsNumber", numDocumentosCargados, numDocumentosACargar);
                     });
 
                     if (resultadoActualizarNumeroPublicacionesPublicas.results.bindings.Count != limitActualizarNumeroPublicacionesPublicas)
@@ -305,7 +305,7 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
         public void ActualizarNumeroIPProyectos(List<string> pPersons = null, List<string> pProjects = null)
         {
             //Eliminamos los duplicados
-            EliminarDuplicados("person", "http://xmlns.com/foaf/0.1/Person", "http://w3id.org/roh/ipNumber");
+            EliminarDuplicados("person", $"{GetUrlPrefix("foaf")}Person", $"{GetUrlPrefix("roh")}ipNumber");
 
             HashSet<string> filtersActualizarNumeroIPProyectos = new HashSet<string>();
             if (pPersons != null && pPersons.Count > 0)
@@ -459,7 +459,7 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
         public void ActualizarNumeroProyectosPublicos(List<string> pPersons = null, List<string> pProjects = null)
         {
             //Eliminamos los duplicados
-            EliminarDuplicados("person", "http://xmlns.com/foaf/0.1/Person", "http://w3id.org/roh/publicProjectsNumber");
+            EliminarDuplicados("person", $"{GetUrlPrefix("foaf")}Person", $"{GetUrlPrefix("roh")}publicProjectsNumber");
 
             HashSet<string> filtersActualizarNumeroProyectosPublicos = new HashSet<string>();
             if (pPersons != null && pPersons.Count > 0)
@@ -525,7 +525,7 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
                         {
                             numProyectosCargados = fila["numProyectosCargados"].value;
                         }
-                        ActualizadorTriple(person, "http://w3id.org/roh/publicProjectsNumber", numProyectosCargados, numProyectosACargar);
+                        ActualizadorTriple(person, $"{GetUrlPrefix("roh")}publicProjectsNumber", numProyectosCargados, numProyectosACargar);
                     });
 
                     if (resultadoActualizarNumeroProyectosPublicos.results.bindings.Count != limitActualizarNumeroProyectosPublicos)
@@ -539,7 +539,7 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
         public void ActualizarNumeroResearchObjectsPublicos(List<string> pPersons = null, List<string> pResearchObjects = null)
         {
             //Eliminamos los duplicados
-            EliminarDuplicados("person", "http://xmlns.com/foaf/0.1/Person", "http://w3id.org/roh/publicResearchObjectsNumber");
+            EliminarDuplicados("person", $"{GetUrlPrefix("foaf")}Person", $"{GetUrlPrefix("roh")}publicResearchObjectsNumber");
 
             HashSet<string> filtersActualizarNumeroResearchObjectsPublicos = new HashSet<string>();
             if (pPersons != null && pPersons.Count > 0)
@@ -597,7 +597,7 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
                         {
                             numResearchObjectsCargados = fila["numResearchObjectsCargados"].value;
                         }
-                        ActualizadorTriple(person, "http://w3id.org/roh/publicResearchObjectsNumber", numResearchObjectsCargados, numResearchObjectsACargar);
+                        ActualizadorTriple(person, $"{GetUrlPrefix("roh")}publicResearchObjectsNumber", numResearchObjectsCargados, numResearchObjectsACargar);
                     });
 
                     if (resultadoActualizarNumeroResearchObjectsPublicos.results.bindings.Count != limitActualizarNumeroResearchObjectsPublicos)
@@ -791,7 +791,7 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
         public void ActualizarNumeroAreasTematicas(List<string> pPersons = null)
         {
             //Eliminamos los duplicados
-            EliminarDuplicados("person", "http://xmlns.com/foaf/0.1/Person", "http://w3id.org/roh/themedAreasNumber");
+            EliminarDuplicados("person", $"{GetUrlPrefix("foaf")}Person", $"{GetUrlPrefix("roh")}themedAreasNumber");
 
             HashSet<string> filtersActualizarNumeroAreasTematicas = new HashSet<string>();
             if (pPersons != null && pPersons.Count > 0)
@@ -1120,7 +1120,7 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
                         {
                             datoActual = fila["datoActual"].value;
                         }
-                        ActualizadorTriple(person, "http://w3id.org/roh/isIPGroupHistorically", datoActual, datoCargar);
+                        ActualizadorTriple(person, $"{GetUrlPrefix("roh")}isIPGroupHistorically", datoActual, datoCargar);
                     });
 
                     if (resultadoActualizarIPGruposHistoricos.results.bindings.Count != limitActualizarIPGruposHistoricos)
@@ -1315,10 +1315,10 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
             }
 
             Dictionary<string, string> listSources = new Dictionary<string, string>();
-            listSources.Add("SCOPUS", "http://w3id.org/roh/scopusCitationCount");
-            listSources.Add("WOS", "http://w3id.org/roh/wosCitationCount");
-            listSources.Add("Hércules", "http://w3id.org/roh/citationCount");
-            listSources.Add("Semantic Scholar", "http://w3id.org/roh/semanticScholarcitationCount");
+            listSources.Add("SCOPUS", $"{GetUrlPrefix("roh")}scopusCitationCount");
+            listSources.Add("WOS", $"{GetUrlPrefix("roh")}wosCitationCount");
+            listSources.Add("Hércules", $"{GetUrlPrefix("roh")}citationCount");
+            listSources.Add("Semantic Scholar", $"{GetUrlPrefix("roh")}semanticScholarcitationCount");
 
             foreach (string filter in filtersActualizarHIndex)
             {

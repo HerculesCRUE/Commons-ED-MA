@@ -1294,7 +1294,7 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
                             {
                                 string indiceImpactoAEliminar = fila["impactIndexDoc"].value;
                                 RemoveTriples t = new();
-                                t.Predicate = "http://w3id.org/roh/impactIndex";
+                                t.Predicate = $"{GetUrlPrefix("roh")}impactIndex";
                                 t.Value = indiceImpactoAEliminar;
                                 triples[guid].Add(t);
                             }
@@ -1654,7 +1654,7 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
                         {
                             impactIndexInYearCargado = fila["impactIndexInYearCargado"].value;
                         }
-                        ActualizadorTriple(document, "http://w3id.org/roh/impactIndexInYear", impactIndexInYearCargado, impactIndexInYearCargar);
+                        ActualizadorTriple(document, $"{GetUrlPrefix("roh")}impactIndexInYear", impactIndexInYearCargado, impactIndexInYearCargar);
                     });
 
                     if (resultadoActualizarImpactDoc.results.bindings.Count != limitActualizarImpactDoc)
