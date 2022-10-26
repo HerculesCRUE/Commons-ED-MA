@@ -15,7 +15,7 @@
 
 [![Bugs](https://sonarcloud.io/api/project_badges/measure?project=Hercules.CommonsEDMA.OAI_PMH&metric=bugs)](https://sonarcloud.io/summary/new_code?id=Hercules.CommonsEDMA.OAI_PMH)
 [![Reliability Rating](https://sonarcloud.io/api/project_badges/measure?project=Hercules.CommonsEDMA.OAI_PMH&metric=reliability_rating)](https://sonarcloud.io/summary/new_code?id=Hercules.CommonsEDMA.OAI_PMH)
-[![Reliability Rating](https://sonarcloud.io/api/project_badges/measure?project=Hercules.CommonsEDMA.OAI_PMH&metric=reliability_rating)](https://sonarcloud.io/summary/new_code?id=Hercules.CommonsEDMA.OAI_PMH)
+[![Lines of Code](https://sonarcloud.io/api/project_badges/measure?project=Hercules.CommonsEDMA.OAI_PMH&metric=ncloc)](https://sonarcloud.io/dashboard?id=Hercules.CommonsEDMA.OAI_PMH)
 [![Duplicated Lines (%)](https://sonarcloud.io/api/project_badges/measure?project=Hercules.CommonsEDMA.OAI_PMH&metric=duplicated_lines_density)](https://sonarcloud.io/summary/new_code?id=Hercules.CommonsEDMA.OAI_PMH)
 
 
