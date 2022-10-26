@@ -11,9 +11,10 @@
 
 [![SonarCloud](https://sonarcloud.io/images/project_badges/sonarcloud-white.svg)](https://sonarcloud.io/summary/new_code?id=Hercules.CommonsEDMA.Desnormalizador)
 
-[![Bugs](https://sonarcloud.io/api/project_badges/measure?project=Hercules.CommonsEDMA.Desnormalizador&metric=bugs)](https://sonarcloud.io/summary/new_code?id=Hercules.CommonsEDMA.Desnormalizador)
-[![Reliability Rating](https://sonarcloud.io/api/project_badges/measure?project=Hercules.CommonsEDMA.Desnormalizador&metric=reliability_rating)](https://sonarcloud.io/summary/new_code?id=Hercules.CommonsEDMA.Desnormalizador)
-[![Reliability Rating](https://sonarcloud.io/api/project_badges/measure?project=Hercules.CommonsEDMA.Desnormalizador&metric=reliability_rating)](https://sonarcloud.io/summary/new_code?id=Hercules.CommonsEDMA.Desnormalizador)
+[![Reliability](https://sonarcloud.io/api/project_badges/measure?project=Hercules.CommonsEDMA.Desnormalizador&metric=reliability_rating)](https://sonarcloud.io/summary/new_code?id=Hercules.CommonsEDMA.Desnormalizador)
+[![Security](https://sonarcloud.io/api/project_badges/measure?project=Hercules.CommonsEDMA.Desnormalizador&metric=security_rating)](https://sonarcloud.io/summary/new_code?id=Hercules.CommonsEDMA.Desnormalizador)
+[![Maintainability](https://sonarcloud.io/api/project_badges/measure?project=Hercules.CommonsEDMA.Desnormalizador&metric=maintainability_rating)](https://sonarcloud.io/summary/new_code?id=Hercules.CommonsEDMA.Desnormalizador)
+[![Security Review](https://sonarcloud.io/api/project_badges/measure?project=Hercules.CommonsEDMA.Desnormalizador&metric=security_review_rating)](https://sonarcloud.io/summary/new_code?id=Hercules.CommonsEDMA.Desnormalizador)
 [![Duplicated Lines (%)](https://sonarcloud.io/api/project_badges/measure?project=Hercules.CommonsEDMA.Desnormalizador&metric=duplicated_lines_density)](https://sonarcloud.io/summary/new_code?id=Hercules.CommonsEDMA.Desnormalizador)
 
 
