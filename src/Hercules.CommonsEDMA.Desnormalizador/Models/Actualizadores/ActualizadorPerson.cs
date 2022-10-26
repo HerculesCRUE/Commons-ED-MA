@@ -86,7 +86,7 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
                                     }}                                    
                                 }}order by desc(?person) limit {limitAniadirLineas}";
                     SparqlObject resultadoAniadirLineas = mResourceApi.VirtuosoQueryMultipleGraph(selectAniadirLineas, whereAniadirLineas, new List<string>() { "group", "person" });
-                    InsercionMultiple(resultadoAniadirLineas.results.bindings, "http://w3id.org/roh/lineResearch", "person", "linea");
+                    InsercionMultiple(resultadoAniadirLineas.results.bindings, $"{GetUrlPrefix("roh")}lineResearch", "person", "linea");
                     if (resultadoAniadirLineas.results.bindings.Count != limitAniadirLineas)
                     {
                         break;
@@ -131,7 +131,7 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
                                     }}
                                 }}order by desc(?person) limit {limitEliminarLineas}";
                     var resultadoEliminarLineas = mResourceApi.VirtuosoQueryMultipleGraph(selectEliminarLineas, whereEliminarLineas, new List<string>() { "group", "person" });
-                    EliminacionMultiple(resultadoEliminarLineas.results.bindings, "http://w3id.org/roh/lineResearch", "person", "linea");
+                    EliminacionMultiple(resultadoEliminarLineas.results.bindings, $"{GetUrlPrefix("roh")}lineResearch", "person", "linea");
                     if (resultadoEliminarLineas.results.bindings.Count != limitEliminarLineas)
                     {
                         break;
@@ -149,7 +149,7 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
         public void ActualizarNumeroPublicacionesValidadas(List<string> pPersons = null)
         {
             //Eliminamos los duplicados
-            EliminarDuplicados("person", "http://xmlns.com/foaf/0.1/Person", "http://w3id.org/roh/publicationsNumber");
+            EliminarDuplicados("person", "http://xmlns.com/foaf/0.1/Person", $"{GetUrlPrefix("roh")}publicationsNumber");
 
             HashSet<string> filtersActualizarNumeroPublicacionesValidadas = new HashSet<string>();
             if (pPersons != null && pPersons.Count > 0)
@@ -220,7 +220,7 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
         public void ActualizarNumeroPublicacionesPublicas(List<string> pPersons = null)
         {
             //Eliminamos los duplicados
-            EliminarDuplicados("person", "http://xmlns.com/foaf/0.1/Person", "http://w3id.org/roh/publicPublicationsNumber");
+            EliminarDuplicados("person", "http://xmlns.com/foaf/0.1/Person", $"{GetUrlPrefix("roh")}publicPublicationsNumber");
 
             HashSet<string> filtersActualizarNumeroPublicacionesPublicas = new HashSet<string>();
             if (pPersons != null && pPersons.Count > 0)
@@ -363,7 +363,7 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
                         {
                             numIPCargados = fila["numIPCargados"].value;
                         }
-                        ActualizadorTriple(person, "http://w3id.org/roh/ipNumber", numIPCargados, numIPACargar);
+                        ActualizadorTriple(person, $"{GetUrlPrefix("roh")}ipNumber", numIPCargados, numIPACargar);
                     });
 
                     if (resultadoActualizarNumeroIPProyectos.results.bindings.Count != limitActualizarNumeroIPProyectos)
@@ -383,7 +383,7 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
         public void ActualizarNumeroProyectosValidados(List<string> pPersons = null, List<string> pProjects = null)
         {
             //Eliminamos los duplicados
-            EliminarDuplicados("person", "http://xmlns.com/foaf/0.1/Person", "http://w3id.org/roh/projectsNumber");
+            EliminarDuplicados("person", "http://xmlns.com/foaf/0.1/Person", $"{GetUrlPrefix("roh")}projectsNumber");
 
             HashSet<string> filtersActualizarNumeroProyectosValidados = new HashSet<string>();
             if (pPersons != null && pPersons.Count > 0)
@@ -1659,17 +1659,17 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
                         string idAux = mResourceApi.GraphsUrl + "items/HIndexCitationCount_" + guid.ToString().ToLower() + "_" + Guid.NewGuid().ToString().ToLower();
                         string person = fila["person"].value;
                         TriplesToInclude t = new();
-                        t.Predicate = "http://w3id.org/roh/hIndexCitationCount|http://w3id.org/roh/citationCount";
+                        t.Predicate = $"{GetUrlPrefix("roh")}hIndexCitationCount|http://w3id.org/roh/citationCount";
                         t.NewValue = idAux + "|" + fila["citationCount"].value;
                         triples[guid].Add(t);
 
                         TriplesToInclude tpublicationNumber = new();
-                        tpublicationNumber.Predicate = "http://w3id.org/roh/hIndexCitationCount|http://w3id.org/roh/publicationNumber";
+                        tpublicationNumber.Predicate = $"{GetUrlPrefix("roh")}hIndexCitationCount|http://w3id.org/roh/publicationNumber";
                         tpublicationNumber.NewValue = idAux + "|" + fila["publicationNumber"].value;
                         triples[guid].Add(tpublicationNumber);
 
                         TriplesToInclude tcitationSource = new();
-                        tcitationSource.Predicate = "http://w3id.org/roh/hIndexCitationCount|http://w3id.org/roh/citationSource";
+                        tcitationSource.Predicate = $"{GetUrlPrefix("roh")}hIndexCitationCount|http://w3id.org/roh/citationSource";
                         tcitationSource.NewValue = idAux + "|" + fila["citationSource"].value;
                         triples[guid].Add(tcitationSource);
                     }

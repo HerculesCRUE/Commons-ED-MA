@@ -428,7 +428,7 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
                                     }}
                                 }}order by desc(?proyecto) limit {limitAniadirGrupos}";
                     SparqlObject resultadoAniadirGrupos = mResourceApi.VirtuosoQueryMultipleGraph(selectAniadirGrupos, whereAniadirGrupos, new List<string>() { "project", "person", "group" });
-                    InsercionMultiple(resultadoAniadirGrupos.results.bindings, "http://w3id.org/roh/isProducedBy", "proyecto", "group");
+                    InsercionMultiple(resultadoAniadirGrupos.results.bindings, $"{GetUrlPrefix("roh")}isProducedBy", "proyecto", "group");
                     if (resultadoAniadirGrupos.results.bindings.Count != limitAniadirGrupos)
                     {
                         break;
@@ -474,7 +474,7 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
                                     }}
                                 }}order by desc(?proyecto) limit {limitEliminarGrupos}";
                     SparqlObject resultadoEliminarGrupos = mResourceApi.VirtuosoQueryMultipleGraph(selectEliminarGrupos, whereEliminarGrupos, new List<string>() { "project", "person", "group" });
-                    EliminacionMultiple(resultadoEliminarGrupos.results.bindings, "http://w3id.org/roh/isProducedBy", "proyecto", "group");
+                    EliminacionMultiple(resultadoEliminarGrupos.results.bindings, $"{GetUrlPrefix("roh")}isProducedBy", "proyecto", "group");
                     if (resultadoEliminarGrupos.results.bindings.Count != limitEliminarGrupos)
                     {
                         break;
@@ -494,7 +494,7 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
         public void ActualizarNumeroAreasTematicas(List<string> pProjects = null, List<string> pDocuments = null)
         {
             //Eliminamos los duplicados
-            EliminarDuplicados("project", "http://vivoweb.org/ontology/core#Project", "http://w3id.org/roh/themedAreasNumber");
+            EliminarDuplicados("project", "http://vivoweb.org/ontology/core#Project", $"{GetUrlPrefix("roh")}themedAreasNumber");
 
             HashSet<string> filtersActualizarNumeroAreasTematicas = new HashSet<string>();
             if (pProjects != null && pProjects.Count > 0)
@@ -556,7 +556,7 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
                         {
                             numAreasTematicasCargadas = fila["numAreasTematicasCargadas"].value;
                         }
-                        ActualizadorTriple(project, "http://w3id.org/roh/themedAreasNumber", numAreasTematicasCargadas, numAreasTematicasACargar);
+                        ActualizadorTriple(project, $"{GetUrlPrefix("roh")}themedAreasNumber", numAreasTematicasCargadas, numAreasTematicasACargar);
                     });
 
                     if (resultadoActualizarNumeroAreasTematicas.results.bindings.Count != limitActualizarNumeroAreasTematicas)
@@ -577,7 +577,7 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
         public void ActualizarNumeroPublicaciones(List<string> pProjects = null, List<string> pDocuments = null)
         {
             //Eliminamos los duplicados
-            EliminarDuplicados("project", "http://vivoweb.org/ontology/core#Project", "http://w3id.org/roh/publicationsNumber");
+            EliminarDuplicados("project", "http://vivoweb.org/ontology/core#Project", $"{GetUrlPrefix("roh")}publicationsNumber");
 
             HashSet<string> filtersActualizarNumeroPublicaciones = new HashSet<string>();
             if (pProjects != null && pProjects.Count > 0)
@@ -652,7 +652,7 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
         public void ActualizarNumeroColaboradores(List<string> pProjects = null, List<string> pDocuments = null)
         {
             //Eliminamos los duplicados
-            EliminarDuplicados("project", "http://vivoweb.org/ontology/core#Project", "http://w3id.org/roh/collaboratorsNumber");
+            EliminarDuplicados("project", "http://vivoweb.org/ontology/core#Project", $"{GetUrlPrefix("roh")}collaboratorsNumber");
 
             HashSet<string> filtersActualizarNumeroColaboradores = new HashSet<string>();
             if (pProjects != null && pProjects.Count > 0)
@@ -729,7 +729,7 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
                         {
                             numColaboradoresCargados = fila["numColaboradoresCargados"].value;
                         }
-                        ActualizadorTriple(project, "http://w3id.org/roh/collaboratorsNumber", numColaboradoresCargados, numColaboradoresACargar);
+                        ActualizadorTriple(project, $"{GetUrlPrefix("roh")}collaboratorsNumber", numColaboradoresCargados, numColaboradoresACargar);
                     });
 
                     if (resultadoActualizarNumeroColaboradores.results.bindings.Count != limitActualizarNumeroColaboradores)
@@ -750,7 +750,7 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
         public void ActualizarNumeroMiembros(List<string> pProjects = null)
         {
             //Eliminamos los duplicados
-            EliminarDuplicados("project", "http://vivoweb.org/ontology/core#Project", "http://w3id.org/roh/researchersNumber");
+            EliminarDuplicados("project", "http://vivoweb.org/ontology/core#Project", $"{GetUrlPrefix("roh")}researchersNumber");
 
             HashSet<string> filtersActualizarNumeroMiembros = new HashSet<string>();
             if (pProjects != null && pProjects.Count > 0)
@@ -799,7 +799,7 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
                         {
                             numMiembrosCargados = fila["numMiembrosCargados"].value;
                         }
-                        ActualizadorTriple(project, "http://w3id.org/roh/researchersNumber", numMiembrosCargados, numMiembrosACargar);
+                        ActualizadorTriple(project, $"{GetUrlPrefix("roh")}researchersNumber", numMiembrosCargados, numMiembrosACargar);
                     });
 
                     if (resultadoActualizarNumeroMiembros.results.bindings.Count != limitActualizarNumeroMiembros)
@@ -820,7 +820,7 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
         public void ActualizarAniosInicio(List<string> pProjects = null)
         {
             //Eliminamos los duplicados
-            EliminarDuplicados("project", "http://vivoweb.org/ontology/core#Project", "http://w3id.org/roh/yearStart");
+            EliminarDuplicados("project", "http://vivoweb.org/ontology/core#Project", $"{GetUrlPrefix("roh")}yearStart");
 
             HashSet<string> filtersActualizarAniosInicio = new HashSet<string>();
             if (pProjects != null && pProjects.Count > 0)
@@ -869,7 +869,7 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
                         {
                             yearCargado = fila["yearCargado"].value;
                         }
-                        ActualizadorTriple(project, "http://w3id.org/roh/yearStart", yearCargado, yearCargar);
+                        ActualizadorTriple(project, $"{GetUrlPrefix("roh")}yearStart", yearCargado, yearCargar);
                     });
 
                     if (resultadoActualizarAniosInicio.results.bindings.Count != limitActualizarAniosInicio)
@@ -889,7 +889,7 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
         public void ActualizarAniosFin(List<string> pProjects = null)
         {
             //Eliminamos los duplicados
-            EliminarDuplicados("project", "http://vivoweb.org/ontology/core#Project", "http://w3id.org/roh/yearEnd");
+            EliminarDuplicados("project", "http://vivoweb.org/ontology/core#Project", $"{GetUrlPrefix("roh")}yearEnd");
 
             HashSet<string> filtersActualizarAniosFin = new HashSet<string>();
             if (pProjects != null && pProjects.Count > 0)
@@ -938,7 +938,7 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
                         {
                             yearCargado = fila["yearCargado"].value;
                         }
-                        ActualizadorTriple(project, "http://w3id.org/roh/yearEnd", yearCargado, yearCargar);
+                        ActualizadorTriple(project, $"{GetUrlPrefix("roh")}yearEnd", yearCargado, yearCargar);
                     });
 
                     if (resultadoActualizarAniosFin.results.bindings.Count != limitActualizarAniosFin)

@@ -115,7 +115,7 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
                 Dictionary<string, string> propiedadesPersonPatent = new Dictionary<string, string>();
                 propiedadesPersonPatent["http://xmlns.com/foaf/0.1/firstName"] = "http://xmlns.com/foaf/0.1/firstName";
                 propiedadesPersonPatent["http://xmlns.com/foaf/0.1/lastName"] = "http://xmlns.com/foaf/0.1/familyName";
-                propiedadesPersonPatent["--"] = "http://w3id.org/roh/secondFamilyName";
+                propiedadesPersonPatent["--"] = $"{GetUrlPrefix("roh")}secondFamilyName";
                 foreach (string propPerson in propiedadesPersonPatent.Keys)
                 {
                     string propPatent = propiedadesPersonPatent[propPerson];

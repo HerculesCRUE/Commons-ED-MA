@@ -48,7 +48,7 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
                 filtersDocumentosValidados.Add("");
             }
             //Eliminamos los duplicados
-            EliminarDuplicados("document", $"{GetUrlPrefix("bibo")}Document", "http://w3id.org/roh/isValidated");
+            EliminarDuplicados("document", $"{GetUrlPrefix("bibo")}Document", $"{GetUrlPrefix("roh")}isValidated");
 
             foreach (string filter in filtersDocumentosValidados)
             {
@@ -362,7 +362,7 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
                         {
                             numCitasCargadas = fila["numCitasCargadas"].value;
                         }
-                        ActualizadorTriple(document, "http://w3id.org/roh/citationCount", numCitasCargadas, numCitasACargar);
+                        ActualizadorTriple(document, $"{GetUrlPrefix("roh")}citationCount", numCitasCargadas, numCitasACargar);
                     });
 
                     if (resultadoNumeroCitasMaximas.results.bindings.Count != limitNumeroCitasMaximas)
@@ -557,7 +557,7 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
                                 }}
                             }} limit {limitEliminamosAreasDocumentos}";
                     SparqlObject resultadoEliminamosAreasDocumentos = mResourceApi.VirtuosoQueryMultipleGraph(selectEliminamosAreasDocumentos, whereEliminamosAreasDocumentos, new List<string>() { "document", "taxonomy" });
-                    EliminarCategorias(resultadoEliminamosAreasDocumentos, "document", "http://w3id.org/roh/hasKnowledgeArea");
+                    EliminarCategorias(resultadoEliminamosAreasDocumentos, "document", $"{GetUrlPrefix("roh")}hasKnowledgeArea");
                     if (resultadoEliminamosAreasDocumentos.results.bindings.Count != limitEliminamosAreasDocumentos)
                     {
                         break;
@@ -732,7 +732,7 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
                 filtersAnios.Add("");
             }
 
-            EliminarDuplicados("document", $"{GetUrlPrefix("bibo")}Document", "http://w3id.org/roh/year");
+            EliminarDuplicados("document", $"{GetUrlPrefix("bibo")}Document", $"{GetUrlPrefix("roh")}year");
             foreach (string filter in filtersAnios)
             {
                 //Inserciones
@@ -769,7 +769,7 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
                         {
                             yearCargado = fila["yearCargado"].value;
                         }
-                        ActualizadorTriple(document, "http://w3id.org/roh/year", yearCargado, yearCargar);
+                        ActualizadorTriple(document, $"{GetUrlPrefix("roh")}year", yearCargado, yearCargar);
                     });
 
                     if (resultadoActualizarAnios.results.bindings.Count != limitActualizarAnios)
@@ -798,7 +798,7 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
             }
 
             //Eliminamos los duplicados
-            EliminarDuplicados("document", $"{GetUrlPrefix("bibo")}Document", "http://w3id.org/roh/genderIP");
+            EliminarDuplicados("document", $"{GetUrlPrefix("bibo")}Document", $"{GetUrlPrefix("roh")}genderIP");
 
             foreach (string filter in filtersGenderAutorPrincipal)
             {
@@ -859,7 +859,7 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
                         {
                             genderIPCargado = fila["genderIPCargado"].value;
                         }
-                        ActualizadorTriple(document, "http://w3id.org/roh/genderIP", genderIPCargado, genderIPACargar);
+                        ActualizadorTriple(document, $"{GetUrlPrefix("roh")}genderIP", genderIPCargado, genderIPACargar);
                     });
 
                     if (resultadoGenderAutorPrincipal.results.bindings.Count != limitGenderAutorPrincipal)
@@ -890,7 +890,7 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
             }
 
             //Eliminamos los duplicados
-            EliminarDuplicados("document", $"{GetUrlPrefix("bibo")}Document", "http://w3id.org/roh/positionIP");
+            EliminarDuplicados("document", $"{GetUrlPrefix("bibo")}Document", $"{GetUrlPrefix("roh")}positionIP");
 
             foreach (string filter in filtersPositionAutorPrincipal)
             {
@@ -947,7 +947,7 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
                         {
                             positionIPCargado = fila["positionIPCargado"].value;
                         }
-                        ActualizadorTriple(document, "http://w3id.org/roh/positionIP", positionIPCargado, positionIPACargar);
+                        ActualizadorTriple(document, $"{GetUrlPrefix("roh")}positionIP", positionIPCargado, positionIPACargar);
                     });
 
                     if (resultadoPositionAutorPrincipal.results.bindings.Count != limitPositionAutorPrincipal)
@@ -1045,7 +1045,7 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
                         //Entidad principal
                         string mainEntity = fila["document"].value;
                         //Predicado
-                        string predicado = "http://w3id.org/roh/hasPublicationVenueJournalText";
+                        string predicado = $"{GetUrlPrefix("roh")}hasPublicationVenueJournalText";
                         //Valor antiguo
                         string valorAntiguo = "";
                         if (fila.ContainsKey("nombreDesnormalizadoRevista"))
@@ -1353,7 +1353,7 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
                                 {
                                     publicationPositionCargado = impactIndexDoc + "|" + fila["publicationPositionCargado"].value;
                                 }
-                                ActualizadorTriple(document, "http://w3id.org/roh/impactIndex|http://w3id.org/roh/publicationPosition", publicationPositionCargado, publicationPositionCargar);
+                                ActualizadorTriple(document, $"{GetUrlPrefix("roh")}impactIndex|http://w3id.org/roh/publicationPosition", publicationPositionCargado, publicationPositionCargar);
                             }
                         });
                     }
@@ -1406,7 +1406,7 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
                                 {
                                     journalNumberInCatCargado = impactIndexDoc + "|" + fila["journalNumberInCatCargado"].value;
                                 }
-                                ActualizadorTriple(document, "http://w3id.org/roh/impactIndex|http://w3id.org/roh/journalNumberInCat", journalNumberInCatCargado, journalNumberInCatCargar);
+                                ActualizadorTriple(document, $"{GetUrlPrefix("roh")}impactIndex|http://w3id.org/roh/journalNumberInCat", journalNumberInCatCargado, journalNumberInCatCargar);
                             }
                         });
                     }
@@ -1458,7 +1458,7 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
                                 {
                                     quartileCargado = impactIndexDoc + "|" + fila["quartileCargado"].value;
                                 }
-                                ActualizadorTriple(document, "http://w3id.org/roh/impactIndex|http://w3id.org/roh/quartile", quartileCargado, quartileCargar);
+                                ActualizadorTriple(document, $"{GetUrlPrefix("roh")}impactIndex|http://w3id.org/roh/quartile", quartileCargado, quartileCargar);
                             }
                         });
                     }
@@ -1547,7 +1547,7 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
                             {
                                 string indiceImpactoAEliminar = fila["impactIndexDoc"].value;
                                 RemoveTriples t = new();
-                                t.Predicate = "http://w3id.org/roh/impactIndex";
+                                t.Predicate = $"{GetUrlPrefix("roh")}impactIndex";
                                 t.Value = indiceImpactoAEliminar;
                                 triples[guid].Add(t);
                             }
@@ -1566,7 +1566,7 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
 
                 //Actualizamos cuartiles del doc
                 //Eliminamos los duplicados
-                EliminarDuplicados("document", $"{GetUrlPrefix("bibo")}Document", "http://w3id.org/roh/quartile");
+                EliminarDuplicados("document", $"{GetUrlPrefix("bibo")}Document", $"{GetUrlPrefix("roh")}quartile");
                 while (true)
                 {
                     int limitActualizarQuartil = 500;
@@ -1685,7 +1685,7 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
             }
 
             //Eliminamos los duplicados
-            EliminarDuplicados("document", $"{GetUrlPrefix("bibo")}Document", "http://w3id.org/roh/linkedCount");
+            EliminarDuplicados("document", $"{GetUrlPrefix("bibo")}Document", $"{GetUrlPrefix("roh")}linkedCount");
 
             foreach (string filter in filtersNumeroVinculados)
             {
@@ -1734,7 +1734,7 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
                         {
                             numLinkedCargados = fila["numLinkedCargados"].value;
                         }
-                        ActualizadorTriple(document, "http://w3id.org/roh/linkedCount", numLinkedCargados, numLinkedACargar);
+                        ActualizadorTriple(document, $"{GetUrlPrefix("roh")}linkedCount", numLinkedCargados, numLinkedACargar);
                     });
 
                     if (resultadoNumeroVinculados.results.bindings.Count != limitNumeroVinculados)

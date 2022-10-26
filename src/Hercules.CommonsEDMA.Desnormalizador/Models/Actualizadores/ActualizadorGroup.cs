@@ -148,7 +148,7 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
                 Dictionary<string, string> propiedadesPersonGroup = new Dictionary<string, string>();
                 propiedadesPersonGroup["http://xmlns.com/foaf/0.1/firstName"] = "http://xmlns.com/foaf/0.1/firstName";
                 propiedadesPersonGroup["http://xmlns.com/foaf/0.1/lastName"] = "http://xmlns.com/foaf/0.1/familyName";
-                propiedadesPersonGroup["--"] = "http://w3id.org/roh/secondFamilyName";
+                propiedadesPersonGroup["--"] = $"{GetUrlPrefix("roh")}secondFamilyName";
                 foreach (string propPerson in propiedadesPersonGroup.Keys)
                 {
                     string propGroup = propiedadesPersonGroup[propPerson];
@@ -244,7 +244,7 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
                                     }}
                                 }}order by desc(?group) limit {limit}";
                     SparqlObject resultado = mResourceApi.VirtuosoQuery(select, where, "group");
-                    InsercionMultiple(resultado.results.bindings, "http://w3id.org/roh/membersGroup", "group", "person");
+                    InsercionMultiple(resultado.results.bindings, $"{GetUrlPrefix("roh")}membersGroup", "group", "person");
                     if (resultado.results.bindings.Count != limit)
                     {
                         break;
@@ -274,7 +274,7 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
                                     }}
                                 }}order by desc(?group) limit {limit}";
                     SparqlObject resultado = mResourceApi.VirtuosoQuery(select, where, "group");
-                    EliminacionMultiple(resultado.results.bindings, "http://w3id.org/roh/membersGroup", "group", "person");
+                    EliminacionMultiple(resultado.results.bindings, $"{GetUrlPrefix("roh")}membersGroup", "group", "person");
                     if (resultado.results.bindings.Count != limit)
                     {
                         break;
@@ -293,7 +293,7 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
         public void ActualizarGruposValidados(List<string> pGroups = null)
         {
             //Eliminamos los duplicados
-            EliminarDuplicados("group", "http://xmlns.com/foaf/0.1/Group", "http://w3id.org/roh/isValidated");
+            EliminarDuplicados("group", "http://xmlns.com/foaf/0.1/Group", $"{GetUrlPrefix("roh")}isValidated");
 
             HashSet<string> filtersActualizarGruposValidados = new HashSet<string>();
             if (pGroups != null && pGroups.Count > 0)
@@ -342,7 +342,7 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
                         {
                             isValidatedCargado = fila["isValidatedCargado"].value;
                         }
-                        ActualizadorTriple(group, "http://w3id.org/roh/isValidated", isValidatedCargado, isValidatedCargar);
+                        ActualizadorTriple(group, $"{GetUrlPrefix("roh")}isValidated", isValidatedCargado, isValidatedCargar);
                     });
 
                     if (resultado.results.bindings.Count != limit)
@@ -362,7 +362,7 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
         public void ActualizarNumeroMiembros(List<string> pGroups = null)
         {
             //Eliminamos los duplicados
-            EliminarDuplicados("group", "http://xmlns.com/foaf/0.1/Group", "http://w3id.org/roh/membersNumber");
+            EliminarDuplicados("group", "http://xmlns.com/foaf/0.1/Group", $"{GetUrlPrefix("roh")}membersNumber");
 
             HashSet<string> filtersActualizarNumeroMiembros = new HashSet<string>();
             if (pGroups != null && pGroups.Count > 0)
@@ -748,7 +748,7 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
                         {
                             numAreasTematicasCargadas = fila["numAreasTematicasCargadas"].value;
                         }
-                        ActualizadorTriple(group, "http://w3id.org/roh/themedAreasNumber", numAreasTematicasCargadas, numAreasTematicasACargar);
+                        ActualizadorTriple(group, $"{GetUrlPrefix("roh")}themedAreasNumber", numAreasTematicasCargadas, numAreasTematicasACargar);
                     });
 
                     if (resultado.results.bindings.Count != limit)
@@ -1054,7 +1054,7 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
                             }}
                             }}}}order by (?group) limit {limit}";
                     SparqlObject resultado = mResourceApi.VirtuosoQueryMultipleGraph(select, where,new List<string>() { "group", "person", "document", "taxonomy" });
-                    EliminarCategorias(resultado, "group", "http://w3id.org/roh/hasKnowledgeArea");
+                    EliminarCategorias(resultado, "group", $"{GetUrlPrefix("roh")}hasKnowledgeArea");
                     if (resultado.results.bindings.Count != limit)
                     {
                         break;
