@@ -29,7 +29,7 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
         /// <summary>
         /// Lista con los prefijos
         /// </summary>
-        public readonly static Dictionary<string, string> dicPrefix = new()
+        private readonly static Dictionary<string, string> dicPrefix = new()
         {
             { "rdf", "http://www.w3.org/1999/02/22-rdf-syntax-ns#" },
             { "rdfs", "http://www.w3.org/2000/01/rdf-schema#" },
@@ -46,6 +46,12 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
             { "gn", "http://www.geonames.org/ontology#" },
             { "skos", "http://www.w3.org/2008/05/skos#" }
         };
+
+        public string GetUrlPrefix(string pPrefix)
+        {
+            return dicPrefix[pPrefix];
+        }
+
 
         /// <summary>
         /// Constructor
