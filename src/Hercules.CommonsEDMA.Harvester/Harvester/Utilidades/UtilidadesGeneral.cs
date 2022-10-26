@@ -45,7 +45,7 @@ namespace Utilidades
 
         public static string DicPaisesContienePais(string pais)
         {
-            if (dicPaisesXML.ContainsKey(pais)) 
+            if (dicPaisesXML.ContainsKey(pais))
             {
                 if (dicPaises.ContainsKey(dicPaisesXML[pais]))
                 {
