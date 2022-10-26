@@ -1747,38 +1747,38 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
                     isValidated = fila["isValidated"].value;
                 }
 
-                string rdftype = "";
-                string property = "";
+                string rdftypeDoc = "";
+                string propertyDoc = "";
                 switch (typeDocument)
                 {
                     case "SAD1":
-                        rdftype = $"{GetUrlPrefix("roh")}RelatedScientificPublication";
-                        property = $"{GetUrlPrefix("roh")}scientificPublications";
+                        rdftypeDoc = $"{GetUrlPrefix("roh")}RelatedScientificPublication";
+                        propertyDoc = $"{GetUrlPrefix("roh")}scientificPublications";
                         break;
                     case "SAD2":
-                        rdftype = $"{GetUrlPrefix("roh")}RelatedWorkSubmittedConferences";
-                        property = $"{GetUrlPrefix("roh")}worksSubmittedConferences";
+                        rdftypeDoc = $"{GetUrlPrefix("roh")}RelatedWorkSubmittedConferences";
+                        propertyDoc = $"{GetUrlPrefix("roh")}worksSubmittedConferences";
                         break;
                     case "SAD3":
-                        rdftype = $"{GetUrlPrefix("roh")}RelatedWorkSubmittedSeminars";
-                        property = $"{GetUrlPrefix("roh")}worksSubmittedSeminars";
+                        rdftypeDoc = $"{GetUrlPrefix("roh")}RelatedWorkSubmittedSeminars";
+                        propertyDoc = $"{GetUrlPrefix("roh")}worksSubmittedSeminars";
                         break;
                 }
 
                 //Obtenemos la auxiliar en la que cargar la entidad  
-                string rdfTypePrefix = AniadirPrefijo(rdftype);
+                string rdfTypePrefix = AniadirPrefijo(rdftypeDoc);
                 rdfTypePrefix = rdfTypePrefix.Substring(rdfTypePrefix.IndexOf(":") + 1);
                 string idNewAux = mResourceApi.GraphsUrl + "items/" + rdfTypePrefix + "_" + mResourceApi.GetShortGuid(cv) + "_" + Guid.NewGuid();
                 List<TriplesToInclude> listaTriples = new();
                 string idEntityAux = scientificActivity + "|" + idNewAux;
 
                 //Privacidad            
-                string predicadoPrivacidad = $"{GetUrlPrefix("roh")}scientificActivity|" + property + "|http://w3id.org/roh/isPublic";
+                string predicadoPrivacidad = $"{GetUrlPrefix("roh")}scientificActivity|" + propertyDoc + "|http://w3id.org/roh/isPublic";
                 TriplesToInclude tr2 = new(idEntityAux + "|" + isValidated, predicadoPrivacidad);
                 listaTriples.Add(tr2);
 
                 //Entidad
-                string predicadoEntidad = $"{GetUrlPrefix("roh")}scientificActivity|" + property + "|http://vivoweb.org/ontology/core#relatedBy";
+                string predicadoEntidad = $"{GetUrlPrefix("roh")}scientificActivity|" + propertyDoc + "|http://vivoweb.org/ontology/core#relatedBy";
                 TriplesToInclude tr1 = new(idEntityAux + "|" + document, predicadoEntidad);
                 listaTriples.Add(tr1);
 
