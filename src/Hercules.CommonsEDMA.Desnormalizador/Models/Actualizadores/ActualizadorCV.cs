@@ -1773,12 +1773,12 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
                 string idEntityAux = scientificActivity + "|" + idNewAux;
 
                 //Privacidad            
-                string predicadoPrivacidad = "http://w3id.org/roh/scientificActivity|" + property + "|http://w3id.org/roh/isPublic";
+                string predicadoPrivacidad = $"{GetUrlPrefix("roh")}scientificActivity|" + property + "|http://w3id.org/roh/isPublic";
                 TriplesToInclude tr2 = new(idEntityAux + "|" + isValidated, predicadoPrivacidad);
                 listaTriples.Add(tr2);
 
                 //Entidad
-                string predicadoEntidad = "http://w3id.org/roh/scientificActivity|" + property + "|http://vivoweb.org/ontology/core#relatedBy";
+                string predicadoEntidad = $"{GetUrlPrefix("roh")}scientificActivity|" + property + "|http://vivoweb.org/ontology/core#relatedBy";
                 TriplesToInclude tr1 = new(idEntityAux + "|" + document, predicadoEntidad);
                 listaTriples.Add(tr1);
 
@@ -1822,7 +1822,7 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
                 {
                     OldValue = scientificActivity + "|" + item + "|false",
                     NewValue = scientificActivity + "|" + item + "|true",
-                    Predicate = "http://w3id.org/roh/scientificActivity|" + propItem + "|http://w3id.org/roh/isPublic"
+                    Predicate = $"{GetUrlPrefix("roh")}scientificActivity|" + propItem + "|http://w3id.org/roh/isPublic"
                 };
 
                 Guid idCVDocumentsModify = mResourceApi.GetShortGuid(cv);
@@ -1864,18 +1864,18 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
                 switch (typeDocument)
                 {
                     case "SAD1":
-                        property = "http://w3id.org/roh/scientificPublications";
+                        property = $"{GetUrlPrefix("roh")}scientificPublications";
                         break;
                     case "SAD2":
-                        property = "http://w3id.org/roh/worksSubmittedConferences";
+                        property = $"{GetUrlPrefix("roh")}worksSubmittedConferences";
                         break;
                     case "SAD3":
-                        property = "http://w3id.org/roh/worksSubmittedSeminars";
+                        property = $"{GetUrlPrefix("roh")}worksSubmittedSeminars";
                         break;
                 }
 
                 RemoveTriples removeTriple = new();
-                removeTriple.Predicate = "http://w3id.org/roh/scientificActivity|" + property;
+                removeTriple.Predicate = $"{GetUrlPrefix("roh")}scientificActivity|" + property;
                 removeTriple.Value = scientificActivity + "|" + item;
                 Guid idCVDocumentsDelete = mResourceApi.GetShortGuid(cv);
                 if (triplesToDeleteDocument.ContainsKey(idCVDocumentsDelete))
@@ -1971,7 +1971,7 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
                 {
                     OldValue = researchObject + "|" + item + "|false",
                     NewValue = researchObject + "|" + item + "|true",
-                    Predicate = "http://w3id.org/roh/researchObject|" + propItem + "|http://w3id.org/roh/isPublic"
+                    Predicate = $"{GetUrlPrefix("roh")}researchObject|" + propItem + "|http://w3id.org/roh/isPublic"
                 };
 
                 Guid idCVModifyRO = mResourceApi.GetShortGuid(cv);
@@ -2114,15 +2114,15 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
                 switch (typeProject)
                 {
                     case "SEP1":
-                        property = "http://w3id.org/roh/competitiveProjects";
+                        property = $"{GetUrlPrefix("roh")}competitiveProjects";
                         break;
                     case "SEP2":
-                        property = "http://w3id.org/roh/nonCompetitiveProjects";
+                        property = $"{GetUrlPrefix("roh")}nonCompetitiveProjects";
                         break;
                 }
 
                 RemoveTriples removeTriple = new();
-                removeTriple.Predicate = "http://w3id.org/roh/scientificExperience|" + property;
+                removeTriple.Predicate = $"{GetUrlPrefix("roh")}scientificExperience|" + property;
                 removeTriple.Value = scientificExperience + "|" + item;
                 Guid idCVDeleteProject = mResourceApi.GetShortGuid(cv);
                 if (triplesToDeleteProject.ContainsKey(idCVDeleteProject))

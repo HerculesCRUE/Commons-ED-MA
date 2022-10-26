@@ -47,7 +47,7 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
             { "skos", "http://www.w3.org/2008/05/skos#" }
         };
 
-        public string GetUrlPrefix(string pPrefix)
+        public static string GetUrlPrefix(string pPrefix)
         {
             return dicPrefix[pPrefix];
         }
@@ -161,7 +161,7 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
                     {
                         valorAnterior = documentGetKeywords[id];
                     }
-                    ActualizadorTriple(id, "http://w3id.org/roh/getKeyWords", valorAnterior, "true");
+                    ActualizadorTriple(id, $"{GetUrlPrefix("roh")}getKeyWords", valorAnterior, "true");
                 });
 
             }
@@ -367,11 +367,11 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
                     string propMiembro = "";
                     if (fila["ip"].value == "true")
                     {
-                        propMiembro = "http://w3id.org/roh/mainResearchers";
+                        propMiembro = $"{GetUrlPrefix("roh")}mainResearchers";
                     }
                     else
                     {
-                        propMiembro = "http://w3id.org/roh/researchers";
+                        propMiembro = $"{GetUrlPrefix("roh")}researchers";
                     }
                     {
                         TriplesToInclude t = new();

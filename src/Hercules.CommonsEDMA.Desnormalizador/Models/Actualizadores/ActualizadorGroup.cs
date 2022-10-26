@@ -820,7 +820,7 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
                                     }}                                    
                                 }}order by desc(?group) limit {limit}";
                     SparqlObject resultado = mResourceApi.VirtuosoQueryMultipleGraph(select, where,new List<string>() { "group" ,"person"});
-                    InsercionMultiple(resultado.results.bindings, "http://w3id.org/roh/lineResearch", "group", "linea");
+                    InsercionMultiple(resultado.results.bindings, $"{GetUrlPrefix("roh")}lineResearch", "group", "linea");
                     if (resultado.results.bindings.Count != limit)
                     {
                         break;
