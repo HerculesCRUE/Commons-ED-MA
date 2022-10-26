@@ -494,7 +494,7 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
         public void ActualizarNumeroAreasTematicas(List<string> pProjects = null, List<string> pDocuments = null)
         {
             //Eliminamos los duplicados
-            EliminarDuplicados("project", "http://vivoweb.org/ontology/core#Project", $"{GetUrlPrefix("roh")}themedAreasNumber");
+            EliminarDuplicados("project", $"{GetUrlPrefix("vivo")}Project", $"{GetUrlPrefix("roh")}themedAreasNumber");
 
             HashSet<string> filtersActualizarNumeroAreasTematicas = new HashSet<string>();
             if (pProjects != null && pProjects.Count > 0)
@@ -577,7 +577,7 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
         public void ActualizarNumeroPublicaciones(List<string> pProjects = null, List<string> pDocuments = null)
         {
             //Eliminamos los duplicados
-            EliminarDuplicados("project", "http://vivoweb.org/ontology/core#Project", $"{GetUrlPrefix("roh")}publicationsNumber");
+            EliminarDuplicados("project", $"{GetUrlPrefix("vivo")}Project", $"{GetUrlPrefix("roh")}publicationsNumber");
 
             HashSet<string> filtersActualizarNumeroPublicaciones = new HashSet<string>();
             if (pProjects != null && pProjects.Count > 0)
@@ -652,7 +652,7 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
         public void ActualizarNumeroColaboradores(List<string> pProjects = null, List<string> pDocuments = null)
         {
             //Eliminamos los duplicados
-            EliminarDuplicados("project", "http://vivoweb.org/ontology/core#Project", $"{GetUrlPrefix("roh")}collaboratorsNumber");
+            EliminarDuplicados("project", $"{GetUrlPrefix("vivo")}Project", $"{GetUrlPrefix("roh")}collaboratorsNumber");
 
             HashSet<string> filtersActualizarNumeroColaboradores = new HashSet<string>();
             if (pProjects != null && pProjects.Count > 0)
@@ -750,7 +750,7 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
         public void ActualizarNumeroMiembros(List<string> pProjects = null)
         {
             //Eliminamos los duplicados
-            EliminarDuplicados("project", "http://vivoweb.org/ontology/core#Project", $"{GetUrlPrefix("roh")}researchersNumber");
+            EliminarDuplicados("project", $"{GetUrlPrefix("vivo")}Project", $"{GetUrlPrefix("roh")}researchersNumber");
 
             HashSet<string> filtersActualizarNumeroMiembros = new HashSet<string>();
             if (pProjects != null && pProjects.Count > 0)
@@ -820,7 +820,7 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
         public void ActualizarAniosInicio(List<string> pProjects = null)
         {
             //Eliminamos los duplicados
-            EliminarDuplicados("project", "http://vivoweb.org/ontology/core#Project", $"{GetUrlPrefix("roh")}yearStart");
+            EliminarDuplicados("project", $"{GetUrlPrefix("vivo")}Project", $"{GetUrlPrefix("roh")}yearStart");
 
             HashSet<string> filtersActualizarAniosInicio = new HashSet<string>();
             if (pProjects != null && pProjects.Count > 0)
@@ -889,7 +889,7 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
         public void ActualizarAniosFin(List<string> pProjects = null)
         {
             //Eliminamos los duplicados
-            EliminarDuplicados("project", "http://vivoweb.org/ontology/core#Project", $"{GetUrlPrefix("roh")}yearEnd");
+            EliminarDuplicados("project", $"{GetUrlPrefix("vivo")}Project", $"{GetUrlPrefix("roh")}yearEnd");
 
             HashSet<string> filtersActualizarAniosFin = new HashSet<string>();
             if (pProjects != null && pProjects.Count > 0)

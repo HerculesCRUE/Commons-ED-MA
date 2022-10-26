@@ -666,7 +666,7 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
                                 }}
                             }} limit {limitEliminamosTagsDocumentos}";
                     SparqlObject resultadoEliminamosTagsDocumentos = mResourceApi.VirtuosoQuery(selectEliminamosTagsDocumentos, whereEliminamosTagsDocumentos, "document");
-                    EliminacionMultiple(resultadoEliminamosTagsDocumentos.results.bindings, "http://vivoweb.org/ontology/core#freeTextKeyword", "document", "tagAux");
+                    EliminacionMultiple(resultadoEliminamosTagsDocumentos.results.bindings, $"{GetUrlPrefix("vivo")}freeTextKeyword", "document", "tagAux");
                     if (resultadoEliminamosTagsDocumentos.results.bindings.Count != limitEliminamosTagsDocumentos)
                     {
                         break;
@@ -703,7 +703,7 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
                         foreach (Dictionary<string, SparqlObject.Data> filaEliminamosDuplicadosIn in resultadoEliminamosDuplicadosIn.results.bindings.GetRange(1, resultadoEliminamosDuplicadosIn.results.bindings.Count - 1))
                         {
                             string value = filaEliminamosDuplicadosIn["data"].value;
-                            ActualizadorTriple(document, "http://vivoweb.org/ontology/core#freeTextKeyword", value, "");
+                            ActualizadorTriple(document, $"{GetUrlPrefix("vivo")}freeTextKeyword", value, "");
                         }
                     });
                     if (resultadoEliminamosDuplicados.results.bindings.Count != limitEliminamosDuplicados)

@@ -674,7 +674,7 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
                         {
                             triplesRemove.Add(new RemoveTriples()
                             {
-                                Predicate = "http://vivoweb.org/ontology/core#hasResearchArea",
+                                Predicate = $"{GetUrlPrefix("vivo")}hasResearchArea",
                                 Value = hasKnowledgeArea
                             }); ;
                         }
@@ -730,7 +730,7 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
                             }}
                             }}order by (?person) limit {limitInsertarCategoria}";
                     SparqlObject resultadoInsertarCategoria = mResourceApi.VirtuosoQueryMultipleGraph(selectInsertarCategoria, whereInsertarCategoria, new List<string>() { "person", "taxonomy", "document" });
-                    InsertarCategorias(resultadoInsertarCategoria, dicAreasBroader, mResourceApi.GraphsUrl, "person", "http://vivoweb.org/ontology/core#hasResearchArea");
+                    InsertarCategorias(resultadoInsertarCategoria, dicAreasBroader, mResourceApi.GraphsUrl, "person", $"{GetUrlPrefix("vivo")}hasResearchArea");
                     if (resultadoInsertarCategoria.results.bindings.Count != limitInsertarCategoria)
                     {
                         break;
@@ -773,7 +773,7 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
                             }}
                             }}order by (?person) limit {limitEliminarCategoria}";
                     SparqlObject resultadoEliminarCategoria = mResourceApi.VirtuosoQueryMultipleGraph(selectEliminarCategoria, whereEliminarCategoria, new List<string>() { "person", "taxonomy", "document" });
-                    EliminarCategorias(resultadoEliminarCategoria, "person", "http://vivoweb.org/ontology/core#hasResearchArea");
+                    EliminarCategorias(resultadoEliminarCategoria, "person", $"{GetUrlPrefix("vivo")}hasResearchArea");
                     if (resultadoEliminarCategoria.results.bindings.Count != limitEliminarCategoria)
                     {
                         break;

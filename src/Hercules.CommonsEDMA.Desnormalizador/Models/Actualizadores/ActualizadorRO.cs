@@ -244,7 +244,7 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
                             }}
                             }}}}order by (?ro) limit {limitInsertamos}";
                     SparqlObject resultadoInsertamos = mResourceApi.VirtuosoQuery(selectInsertamos, whereInsertamos, "researchobject");
-                    InsercionMultiple(resultadoInsertamos.results.bindings, "http://vivoweb.org/ontology/core#freeTextKeyword", "ro", "tag");
+                    InsercionMultiple(resultadoInsertamos.results.bindings, $"{GetUrlPrefix("vivo")}freeTextKeyword", "ro", "tag");
                     if (resultadoInsertamos.results.bindings.Count != limitInsertamos)
                     {
                         break;
@@ -276,7 +276,7 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
                             }}
                             }}}} limit {limitEliminamos}";
                     SparqlObject resultadoEliminamos = mResourceApi.VirtuosoQuery(selectEliminamos, whereEliminamos, "researchobject");
-                    EliminacionMultiple(resultadoEliminamos.results.bindings, "http://vivoweb.org/ontology/core#freeTextKeyword", "ro", "tag");
+                    EliminacionMultiple(resultadoEliminamos.results.bindings, $"{GetUrlPrefix("vivo")}freeTextKeyword", "ro", "tag");
                     if (resultadoEliminamos.results.bindings.Count != limitEliminamos)
                     {
                         break;

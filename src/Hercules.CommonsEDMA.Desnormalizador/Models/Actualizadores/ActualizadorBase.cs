@@ -131,7 +131,7 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
                     {
                         string idAux = mResourceApi.GraphsUrl + "items/KeyWord_" + guid.ToString().ToLower() + "_" + Guid.NewGuid().ToString().ToLower();
                         TriplesToInclude t = new();
-                        t.Predicate = "http://vivoweb.org/ontology/core#freeTextKeyword|http://w3id.org/roh/title";
+                        t.Predicate = $"{GetUrlPrefix("vivo")}freeTextKeyword|http://w3id.org/roh/title";
                         t.NewValue = idAux + "|" + value;
                         triples[guid].Add(t);
                     }
