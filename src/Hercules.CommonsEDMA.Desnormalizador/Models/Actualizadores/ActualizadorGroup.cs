@@ -35,17 +35,17 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
         {
             string fechaActual = DateTime.UtcNow.ToString("yyyyMMdd000000");
 
-            HashSet<string> filters = new HashSet<string>();
+            HashSet<string> filtersActualizarMiembros = new HashSet<string>();
             if (pGroups != null && pGroups.Count > 0)
             {
-                filters.Add($" FILTER(?group in (<{string.Join(">,<", pGroups)}>))");
+                filtersActualizarMiembros.Add($" FILTER(?group in (<{string.Join(">,<", pGroups)}>))");
             }
-            if (filters.Count == 0)
+            if (filtersActualizarMiembros.Count == 0)
             {
-                filters.Add("");
+                filtersActualizarMiembros.Add("");
             }
 
-            foreach (string filter in filters)
+            foreach (string filter in filtersActualizarMiembros)
             {
 
                 //Creamos los miembros
@@ -210,16 +210,16 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
         /// <param name="pGroups">IDs de los grupos</param>
         public void ActualizarMiembrosUnificados(List<string> pGroups = null)
         {
-            HashSet<string> filters = new HashSet<string>();
+            HashSet<string> filtersActualizarMiembrosUnificados = new HashSet<string>();
             if (pGroups != null && pGroups.Count > 0)
             {
-                filters.Add($" FILTER(?group in(<{string.Join(">,<", pGroups)}>))");
+                filtersActualizarMiembrosUnificados.Add($" FILTER(?group in(<{string.Join(">,<", pGroups)}>))");
             }
-            if (filters.Count == 0)
+            if (filtersActualizarMiembrosUnificados.Count == 0)
             {
-                filters.Add("");
+                filtersActualizarMiembrosUnificados.Add("");
             }
-            foreach (string filter in filters)
+            foreach (string filter in filtersActualizarMiembrosUnificados)
             {
                 //Creamos los miembros
                 while (true)
@@ -295,17 +295,17 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
             //Eliminamos los duplicados
             EliminarDuplicados("group", "http://xmlns.com/foaf/0.1/Group", "http://w3id.org/roh/isValidated");
 
-            HashSet<string> filters = new HashSet<string>();
+            HashSet<string> filtersActualizarGruposValidados = new HashSet<string>();
             if (pGroups != null && pGroups.Count > 0)
             {
-                filters.Add($" FILTER(?group in (<{string.Join(">,<", pGroups)}>))");
+                filtersActualizarGruposValidados.Add($" FILTER(?group in (<{string.Join(">,<", pGroups)}>))");
             }
-            if (filters.Count == 0)
+            if (filtersActualizarGruposValidados.Count == 0)
             {
-                filters.Add("");
+                filtersActualizarGruposValidados.Add("");
             }
 
-            foreach (string filter in filters)
+            foreach (string filter in filtersActualizarGruposValidados)
             {
 
                 while (true)
@@ -364,17 +364,17 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
             //Eliminamos los duplicados
             EliminarDuplicados("group", "http://xmlns.com/foaf/0.1/Group", "http://w3id.org/roh/membersNumber");
 
-            HashSet<string> filters = new HashSet<string>();
+            HashSet<string> filtersActualizarNumeroMiembros = new HashSet<string>();
             if (pGroups != null && pGroups.Count > 0)
             {
-                filters.Add($" FILTER(?group in (<{string.Join(">,<", pGroups)}>))");
+                filtersActualizarNumeroMiembros.Add($" FILTER(?group in (<{string.Join(">,<", pGroups)}>))");
             }
-            if (filters.Count == 0)
+            if (filtersActualizarNumeroMiembros.Count == 0)
             {
-                filters.Add("");
+                filtersActualizarNumeroMiembros.Add("");
             }
 
-            foreach (string filter in filters)
+            foreach (string filter in filtersActualizarNumeroMiembros)
             {
 
                 while (true)
@@ -432,17 +432,17 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
             //Eliminamos los duplicados
             EliminarDuplicados("group", "http://xmlns.com/foaf/0.1/Group", "http://w3id.org/roh/collaboratorsNumber");
 
-            HashSet<string> filters = new HashSet<string>();
+            HashSet<string> filtersActualizarNumeroColaboradores = new HashSet<string>();
             if (pGroups != null && pGroups.Count > 0)
             {
-                filters.Add($" FILTER(?group in (<{string.Join(">,<", pGroups)}>))");
+                filtersActualizarNumeroColaboradores.Add($" FILTER(?group in (<{string.Join(">,<", pGroups)}>))");
             }
-            if (filters.Count == 0)
+            if (filtersActualizarNumeroColaboradores.Count == 0)
             {
-                filters.Add("");
+                filtersActualizarNumeroColaboradores.Add("");
             }
 
-            foreach (string filter in filters)
+            foreach (string filter in filtersActualizarNumeroColaboradores)
             {
 
                 while (true)
@@ -543,21 +543,21 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
             //Eliminamos los duplicados
             EliminarDuplicados("group", "http://xmlns.com/foaf/0.1/Group", "http://w3id.org/roh/projectsNumber");
 
-            HashSet<string> filters = new HashSet<string>();
+            HashSet<string> filtersActualizarNumeroProyectos = new HashSet<string>();
             if (pGroups != null && pGroups.Count > 0)
             {
-                filters.Add($" FILTER(?group in (<{string.Join(">,<", pGroups)}>))");
+                filtersActualizarNumeroProyectos.Add($" FILTER(?group in (<{string.Join(">,<", pGroups)}>))");
             }
             if (pProjects != null && pProjects.Count > 0)
             {
-                filters.Add($" ?project <http://w3id.org/roh/isProducedBy> ?group.  FILTER(?project in (<{string.Join(">,<", pProjects)}>))");
+                filtersActualizarNumeroProyectos.Add($" ?project <http://w3id.org/roh/isProducedBy> ?group.  FILTER(?project in (<{string.Join(">,<", pProjects)}>))");
             }
-            if (filters.Count == 0)
+            if (filtersActualizarNumeroProyectos.Count == 0)
             {
-                filters.Add("");
+                filtersActualizarNumeroProyectos.Add("");
             }
 
-            foreach (string filter in filters)
+            foreach (string filter in filtersActualizarNumeroProyectos)
             {
 
                 //Actualizamos los datos
@@ -621,17 +621,17 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
             //Eliminamos los duplicados
             EliminarDuplicados("group", "http://xmlns.com/foaf/0.1/Group", "http://w3id.org/roh/publicationsNumber");
 
-            HashSet<string> filters = new HashSet<string>();
+            HashSet<string> filtersActualizarNumeroPublicaciones = new HashSet<string>();
             if (pGroups != null && pGroups.Count > 0)
             {
-                filters.Add($" FILTER(?group in (<{string.Join(">,<", pGroups)}>))");
+                filtersActualizarNumeroPublicaciones.Add($" FILTER(?group in (<{string.Join(">,<", pGroups)}>))");
             }
-            if (filters.Count == 0)
+            if (filtersActualizarNumeroPublicaciones.Count == 0)
             {
-                filters.Add("");
+                filtersActualizarNumeroPublicaciones.Add("");
             }
 
-            foreach (string filter in filters)
+            foreach (string filter in filtersActualizarNumeroPublicaciones)
             {
 
                 //Actualizamos los datos
@@ -692,19 +692,18 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
             //Eliminamos los duplicados
             EliminarDuplicados("group", "http://xmlns.com/foaf/0.1/Group", "http://w3id.org/roh/themedAreasNumber");
 
-            HashSet<string> filters = new HashSet<string>();
+            HashSet<string> filtersActualizarNumeroAreasTematicas = new HashSet<string>();
             if (pGroups != null && pGroups.Count > 0)
             {
-                filters.Add($" FILTER(?group in (<{string.Join(">,<", pGroups)}>))");
+                filtersActualizarNumeroAreasTematicas.Add($" FILTER(?group in (<{string.Join(">,<", pGroups)}>))");
             }
-            if (filters.Count == 0)
+            if (filtersActualizarNumeroAreasTematicas.Count == 0)
             {
-                filters.Add("");
+                filtersActualizarNumeroAreasTematicas.Add("");
             }
 
-            foreach (string filter in filters)
+            foreach (string filter in filtersActualizarNumeroAreasTematicas)
             {
-
                 //Actualizamos los datos
                 while (true)
                 {
@@ -770,17 +769,17 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
         {
             string fechaActual = DateTime.UtcNow.ToString("yyyyMMdd000000");
 
-            HashSet<string> filters = new HashSet<string>();
+            HashSet<string> filtersActualizarPertenenciaLineas = new HashSet<string>();
             if (pGroups != null && pGroups.Count > 0)
             {
-                filters.Add($" FILTER(?group in (<{string.Join(">,<", pGroups)}>))");
+                filtersActualizarPertenenciaLineas.Add($" FILTER(?group in (<{string.Join(">,<", pGroups)}>))");
             }
-            if (filters.Count == 0)
+            if (filtersActualizarPertenenciaLineas.Count == 0)
             {
-                filters.Add("");
+                filtersActualizarPertenenciaLineas.Add("");
             }
 
-            foreach (string filter in filters)
+            foreach (string filter in filtersActualizarPertenenciaLineas)
             {
 
                 while (true)
@@ -883,17 +882,17 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
         /// <param name="pGroups">IDs de los grupos</param>
         public void ActualizarAreasGrupos(List<string> pGroups = null)
         {
-            HashSet<string> filters = new HashSet<string>();
+            HashSet<string> filtersActualizarAreasGrupos = new HashSet<string>();
             if (pGroups != null && pGroups.Count > 0)
             {
-                filters.Add($" FILTER(?group in (<{string.Join(">,<", pGroups)}>))");
+                filtersActualizarAreasGrupos.Add($" FILTER(?group in (<{string.Join(">,<", pGroups)}>))");
             }
-            if (filters.Count == 0)
+            if (filtersActualizarAreasGrupos.Count == 0)
             {
-                filters.Add("");
+                filtersActualizarAreasGrupos.Add("");
             }
 
-            foreach (string filter in filters)
+            foreach (string filter in filtersActualizarAreasGrupos)
             {
 
                 //Eliminamos las categorías duplicadas

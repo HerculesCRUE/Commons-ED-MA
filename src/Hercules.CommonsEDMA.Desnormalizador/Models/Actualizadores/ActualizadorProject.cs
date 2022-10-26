@@ -10,8 +10,6 @@ using static Gnoss.ApiWrapper.ApiModel.SparqlObject;
 
 namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
 {
-    //TODO comentarios completados
-
     /// <summary>
     /// Clase para actualizar propiedades de proyectos
     /// </summary>
@@ -37,24 +35,22 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
             //Eliminamos los duplicados
             EliminarDuplicados("project", "http://vivoweb.org/ontology/core#Project", "http://w3id.org/roh/isValidated");
 
-            HashSet<string> filters = new HashSet<string>();
+            HashSet<string> filtersActualizarProyectosValidados = new HashSet<string>();
             if (pProjects != null && pProjects.Count > 0)
             {
-                filters.Add($" FILTER(?project in(<{string.Join(">,<", pProjects)}>))");
+                filtersActualizarProyectosValidados.Add($" FILTER(?project in(<{string.Join(">,<", pProjects)}>))");
             }
-            if (filters.Count == 0)
+            if (filtersActualizarProyectosValidados.Count == 0)
             {
-                filters.Add("");
+                filtersActualizarProyectosValidados.Add("");
             }
-            foreach (string filter in filters)
+            foreach (string filter in filtersActualizarProyectosValidados)
             {
-
-
                 while (true)
                 {
-                    int limit = 500;
-                    String select = @"select ?project ?isValidatedCargado ?isValidatedCargar ";
-                    String where = @$"where{{
+                    int limitActualizarProyectosValidados = 500;
+                    String selectActualizarProyectosValidados = @"select ?project ?isValidatedCargado ?isValidatedCargar ";
+                    String whereActualizarProyectosValidados = @$"where{{
                             ?project a <http://vivoweb.org/ontology/core#Project>.
                             {filter}
                             OPTIONAL
@@ -72,10 +68,10 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
                               }}
                             }}
                             FILTER(?isValidatedCargado!= ?isValidatedCargar OR !BOUND(?isValidatedCargado) )
-                            }} limit {limit}";
-                    SparqlObject resultado = mResourceApi.VirtuosoQuery(select, where, "project");
+                            }} limit {limitActualizarProyectosValidados}";
+                    SparqlObject resultadoActualizarProyectosValidados = mResourceApi.VirtuosoQuery(selectActualizarProyectosValidados, whereActualizarProyectosValidados, "project");
 
-                    Parallel.ForEach(resultado.results.bindings, new ParallelOptions { MaxDegreeOfParallelism = ActualizadorBase.numParallel }, fila =>
+                    Parallel.ForEach(resultadoActualizarProyectosValidados.results.bindings, new ParallelOptions { MaxDegreeOfParallelism = ActualizadorBase.numParallel }, fila =>
                     {
                         string project = fila["project"].value;
                         string isValidatedCargar = fila["isValidatedCargar"].value;
@@ -87,7 +83,7 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
                         ActualizadorTriple(project, "http://w3id.org/roh/isValidated", isValidatedCargado, isValidatedCargar);
                     });
 
-                    if (resultado.results.bindings.Count != limit)
+                    if (resultadoActualizarProyectosValidados.results.bindings.Count != limitActualizarProyectosValidados)
                     {
                         break;
                     }
@@ -108,24 +104,23 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
             //Si el proyecto a terminado, han de aparecer todos los participantes que haya tenido,
             //pero si sigue activo solamente los participantes actuales
 
-            HashSet<string> filters = new HashSet<string>();
+            HashSet<string> filtersActualizarMiembros = new HashSet<string>();
             if (pProjects != null && pProjects.Count > 0)
             {
-                filters.Add($" FILTER(?project in(<{string.Join(">,<", pProjects)}>))");
+                filtersActualizarMiembros.Add($" FILTER(?project in(<{string.Join(">,<", pProjects)}>))");
             }
-            if (filters.Count == 0)
+            if (filtersActualizarMiembros.Count == 0)
             {
-                filters.Add("");
+                filtersActualizarMiembros.Add("");
             }
-            foreach (string filter in filters)
+            foreach (string filter in filtersActualizarMiembros)
             {
-
                 //Creamos los miembros
                 while (true)
                 {
-                    int limit = 500;
-                    String select = @"select distinct ?project ?person ?comment ?nick ?nombre ?ip ";
-                    String where = @$"where{{
+                    int limitCrearMiembros = 500;
+                    String selectCrearMiembros = @"select distinct ?project ?person ?comment ?nick ?nombre ?ip ";
+                    String whereCrearMiembros = @$"where{{
                                     {filter}
                                     {{
                                         select distinct ?project ?person ?comment ?nick ?nombre ?ip
@@ -166,10 +161,10 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
                                             BIND('false' as ?ip)
                                         }}
                                     }}
-                                }}order by desc(?project) limit {limit}";
-                    SparqlObject resultado = mResourceApi.VirtuosoQueryMultipleGraph(select, where, new List<string>() { "project", "person" });
-                    InsercionMiembrosProyectoGrupo(resultado.results.bindings, "project");
-                    if (resultado.results.bindings.Count != limit)
+                                }}order by desc(?project) limit {limitCrearMiembros}";
+                    SparqlObject resultadoCrearMiembros = mResourceApi.VirtuosoQueryMultipleGraph(selectCrearMiembros, whereCrearMiembros, new List<string>() { "project", "person" });
+                    InsercionMiembrosProyectoGrupo(resultadoCrearMiembros.results.bindings, "project");
+                    if (resultadoCrearMiembros.results.bindings.Count != limitCrearMiembros)
                     {
                         break;
                     }
@@ -178,9 +173,9 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
                 //Eliminamos los miembros
                 while (true)
                 {
-                    int limit = 500;
-                    String select = @"select distinct ?project ?propPersonAux ?personAux ";
-                    String where = @$"where{{
+                    int limitEliminarMiembros = 500;
+                    String selectEliminarMiembros = @"select distinct ?project ?propPersonAux ?personAux ";
+                    String whereEliminarMiembros = @$"where{{
                                     {filter}
                                     {{
                                         ?project a <http://vivoweb.org/ontology/core#Project>.
@@ -223,10 +218,10 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
                                             }}
                                         }}
                                     }}                                    
-                                }}order by desc(?project) limit {limit}";
-                    SparqlObject resultado = mResourceApi.VirtuosoQueryMultipleGraph(select, where, new List<string>() { "project", "person" });
-                    EliminacionMiembrosProyectoGrupo(resultado.results.bindings, "project");
-                    if (resultado.results.bindings.Count != limit)
+                                }}order by desc(?project) limit {limitEliminarMiembros}";
+                    SparqlObject resultadoEliminarMiembros = mResourceApi.VirtuosoQueryMultipleGraph(selectEliminarMiembros, whereEliminarMiembros, new List<string>() { "project", "person" });
+                    EliminacionMiembrosProyectoGrupo(resultadoEliminarMiembros.results.bindings, "project");
+                    if (resultadoEliminarMiembros.results.bindings.Count != limitEliminarMiembros)
                     {
                         break;
                     }
@@ -242,9 +237,9 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
                     string propProject = propiedadesPersonProject[propPerson];
                     while (true)
                     {
-                        int limit = 500;
-                        String select = @"select distinct ?project ?personAux ?propPersonAux ?property ?propertyLoad ?propertyToLoad ";
-                        String where = @$"where{{
+                        int limitAsignarName = 500;
+                        String selectAsignarName = @"select distinct ?project ?personAux ?propPersonAux ?property ?propertyLoad ?propertyToLoad ";
+                        String whereAsignarName = @$"where{{
                                     {filter}
                                     {{
                                         select distinct ?project ?personAux ?propPersonAux ?property ?propertyLoad ?propertyToLoad
@@ -277,10 +272,10 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
                                             )
                                         }}
                                     }}
-                                }}order by desc(?project) limit {limit}";
-                        SparqlObject resultado = mResourceApi.VirtuosoQueryMultipleGraph(select, where, new List<string>() { "project", "person" });
-                        ActualizarPropiedadMiembrosProyectoGrupoPatente(resultado.results.bindings, "project");
-                        if (resultado.results.bindings.Count != limit)
+                                }}order by desc(?project) limit {limitAsignarName}";
+                        SparqlObject resultadoAsignarName = mResourceApi.VirtuosoQueryMultipleGraph(selectAsignarName, whereAsignarName, new List<string>() { "project", "person" });
+                        ActualizarPropiedadMiembrosProyectoGrupoPatente(resultadoAsignarName.results.bindings, "project");
+                        if (resultadoAsignarName.results.bindings.Count != limitAsignarName)
                         {
                             break;
                         }
@@ -297,23 +292,23 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
         /// <param name="pProjects">IDs de los proyectos</param>
         public void ActualizarMiembrosUnificados(List<string> pProjects = null)
         {
-            HashSet<string> filters = new HashSet<string>();
+            HashSet<string> filtersActualizarMiembrosUnificados = new HashSet<string>();
             if (pProjects != null && pProjects.Count > 0)
             {
-                filters.Add($" FILTER(?project in(<{string.Join(">,<", pProjects)}>))");
+                filtersActualizarMiembrosUnificados.Add($" FILTER(?project in(<{string.Join(">,<", pProjects)}>))");
             }
-            if (filters.Count == 0)
+            if (filtersActualizarMiembrosUnificados.Count == 0)
             {
-                filters.Add("");
+                filtersActualizarMiembrosUnificados.Add("");
             }
-            foreach (string filter in filters)
+            foreach (string filter in filtersActualizarMiembrosUnificados)
             {
                 //Creamos los miembros
                 while (true)
                 {
-                    int limit = 500;
-                    String select = @"select distinct ?project ?person ";
-                    String where = @$"where{{
+                    int limitCrearMiembros = 500;
+                    String selectCrearMiembros = @"select distinct ?project ?person ";
+                    String whereCrearMiembros = @$"where{{
                                     {filter}
                                     {{                                        
                                         select distinct ?project ?person
@@ -329,10 +324,10 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
                                         ?project a <http://vivoweb.org/ontology/core#Project>.
                                         ?project <http://w3id.org/roh/membersProject> ?person.
                                     }}
-                                }}order by desc(?project) limit {limit}";
-                    SparqlObject resultado = mResourceApi.VirtuosoQuery(select, where, "project");
-                    InsercionMultiple(resultado.results.bindings, "http://w3id.org/roh/membersProject", "project", "person");
-                    if (resultado.results.bindings.Count != limit)
+                                }}order by desc(?project) limit {limitCrearMiembros}";
+                    SparqlObject resultadoCrearMiembros = mResourceApi.VirtuosoQuery(selectCrearMiembros, whereCrearMiembros, "project");
+                    InsercionMultiple(resultadoCrearMiembros.results.bindings, "http://w3id.org/roh/membersProject", "project", "person");
+                    if (resultadoCrearMiembros.results.bindings.Count != limitCrearMiembros)
                     {
                         break;
                     }
@@ -341,9 +336,9 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
                 //Eliminamos los miembros
                 while (true)
                 {
-                    int limit = 500;
-                    String select = @"select distinct ?project ?person ";
-                    String where = @$"where{{
+                    int limitEliminarMiembros = 500;
+                    String selectEliminarMiembros = @"select distinct ?project ?person ";
+                    String whereEliminarMiembros = @$"where{{
                                     {filter}
                                     {{         
                                         ?project a <http://vivoweb.org/ontology/core#Project>.
@@ -359,10 +354,10 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
                                             ?rol <http://www.w3.org/1999/02/22-rdf-syntax-ns#member> ?person      
                                         }}
                                     }}
-                                }}order by desc(?project) limit {limit}";
-                    SparqlObject resultado = mResourceApi.VirtuosoQuery(select, where, "project");
-                    EliminacionMultiple(resultado.results.bindings, "http://w3id.org/roh/membersProject", "project", "person");
-                    if (resultado.results.bindings.Count != limit)
+                                }}order by desc(?project) limit {limitEliminarMiembros}";
+                    SparqlObject resultadoEliminarMiembros = mResourceApi.VirtuosoQuery(selectEliminarMiembros, whereEliminarMiembros, "project");
+                    EliminacionMultiple(resultadoEliminarMiembros.results.bindings, "http://w3id.org/roh/membersProject", "project", "person");
+                    if (resultadoEliminarMiembros.results.bindings.Count != limitEliminarMiembros)
                     {
                         break;
                     }
@@ -379,27 +374,27 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
         /// <param name="pProjects">IDs de los proyectos</param>
         public void ActualizarPertenenciaGrupos(List<string> pGroups = null, List<string> pProjects = null)
         {
-            HashSet<string> filters = new HashSet<string>();
+            HashSet<string> filtersActualizarPertenenciaGrupos = new HashSet<string>();
             if (pProjects != null && pProjects.Count > 0)
             {
-                filters.Add($" FILTER(?proyecto in (<{string.Join(">,<", pProjects)}>))");
+                filtersActualizarPertenenciaGrupos.Add($" FILTER(?proyecto in (<{string.Join(">,<", pProjects)}>))");
             }
             if (pGroups != null && pGroups.Count > 0)
             {
-                filters.Add($" FILTER(?group in (<{string.Join(">,<", pGroups)}>))");
+                filtersActualizarPertenenciaGrupos.Add($" FILTER(?group in (<{string.Join(">,<", pGroups)}>))");
             }
-            if (filters.Count == 0)
+            if (filtersActualizarPertenenciaGrupos.Count == 0)
             {
-                filters.Add("");
+                filtersActualizarPertenenciaGrupos.Add("");
             }
-            foreach (string filter in filters)
+            foreach (string filter in filtersActualizarPertenenciaGrupos)
             {
                 while (true)
                 {
                     //Añadimos a grupos
-                    int limit = 500;
-                    String select = @"select distinct ?proyecto  ?group  ";
-                    String where = @$"where{{
+                    int limitAniadirGrupos = 500;
+                    String selectAniadirGrupos = @"select distinct ?proyecto  ?group  ";
+                    String whereAniadirGrupos = @$"where{{
                                     {filter}
                                     {{
                                         select ?proyecto ?group
@@ -431,10 +426,10 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
                                         ?group a <http://xmlns.com/foaf/0.1/Group>.
                                         ?proyecto <http://w3id.org/roh/isProducedBy> ?group.
                                     }}
-                                }}order by desc(?proyecto) limit {limit}";
-                    SparqlObject resultado = mResourceApi.VirtuosoQueryMultipleGraph(select, where, new List<string>() { "project", "person", "group" });
-                    InsercionMultiple(resultado.results.bindings, "http://w3id.org/roh/isProducedBy", "proyecto", "group");
-                    if (resultado.results.bindings.Count != limit)
+                                }}order by desc(?proyecto) limit {limitAniadirGrupos}";
+                    SparqlObject resultadoAniadirGrupos = mResourceApi.VirtuosoQueryMultipleGraph(selectAniadirGrupos, whereAniadirGrupos, new List<string>() { "project", "person", "group" });
+                    InsercionMultiple(resultadoAniadirGrupos.results.bindings, "http://w3id.org/roh/isProducedBy", "proyecto", "group");
+                    if (resultadoAniadirGrupos.results.bindings.Count != limitAniadirGrupos)
                     {
                         break;
                     }
@@ -443,9 +438,9 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
                 while (true)
                 {
                     //Eliminamos de grupos
-                    int limit = 500;
-                    String select = @"select distinct ?proyecto  ?group ";
-                    String where = @$"where{{
+                    int limitEliminarGrupos = 500;
+                    String selectEliminarGrupos = @"select distinct ?proyecto  ?group ";
+                    String whereEliminarGrupos = @$"where{{
                                     {filter}
                                     {{
                                         ?proyecto a <http://vivoweb.org/ontology/core#Project>.
@@ -477,10 +472,10 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
                                             FILTER(?fechaGroupEndAux >= ?fechaProjInitAux AND ?fechaGroupInitAux <= ?fechaProjEndAux)                                                                            
                                         }}
                                     }}
-                                }}order by desc(?proyecto) limit {limit}";
-                    var resultado = mResourceApi.VirtuosoQueryMultipleGraph(select, where, new List<string>() { "project", "person", "group" });
-                    EliminacionMultiple(resultado.results.bindings, "http://w3id.org/roh/isProducedBy", "proyecto", "group");
-                    if (resultado.results.bindings.Count != limit)
+                                }}order by desc(?proyecto) limit {limitEliminarGrupos}";
+                    SparqlObject resultadoEliminarGrupos = mResourceApi.VirtuosoQueryMultipleGraph(selectEliminarGrupos, whereEliminarGrupos, new List<string>() { "project", "person", "group" });
+                    EliminacionMultiple(resultadoEliminarGrupos.results.bindings, "http://w3id.org/roh/isProducedBy", "proyecto", "group");
+                    if (resultadoEliminarGrupos.results.bindings.Count != limitEliminarGrupos)
                     {
                         break;
                     }
@@ -501,27 +496,27 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
             //Eliminamos los duplicados
             EliminarDuplicados("project", "http://vivoweb.org/ontology/core#Project", "http://w3id.org/roh/themedAreasNumber");
 
-            HashSet<string> filters = new HashSet<string>();
+            HashSet<string> filtersActualizarNumeroAreasTematicas = new HashSet<string>();
             if (pProjects != null && pProjects.Count > 0)
             {
-                filters.Add($" FILTER(?project in(<{string.Join(">,<", pProjects)}>))");
+                filtersActualizarNumeroAreasTematicas.Add($" FILTER(?project in(<{string.Join(">,<", pProjects)}>))");
             }
             if (pDocuments != null && pDocuments.Count > 0)
             {
-                filters.Add($" ?docAux <http://w3id.org/roh/project> ?project.  FILTER(?docAux in (<{string.Join(">,<", pDocuments)}>))");
+                filtersActualizarNumeroAreasTematicas.Add($" ?docAux <http://w3id.org/roh/project> ?project.  FILTER(?docAux in (<{string.Join(">,<", pDocuments)}>))");
             }
-            if (filters.Count == 0)
+            if (filtersActualizarNumeroAreasTematicas.Count == 0)
             {
-                filters.Add("");
+                filtersActualizarNumeroAreasTematicas.Add("");
             }
-            foreach (string filter in filters)
+            foreach (string filter in filtersActualizarNumeroAreasTematicas)
             {
                 //Actualizamos los datos
                 while (true)
                 {
-                    int limit = 500;
-                    String select = @"select ?project  ?numAreasTematicasCargadas ?numAreasTematicasACargar  ";
-                    String where = @$"  where
+                    int limitActualizarNumeroAreasTematicas = 500;
+                    String selectActualizarNumeroAreasTematicas = @"select ?project  ?numAreasTematicasCargadas ?numAreasTematicasACargar  ";
+                    String whereActualizarNumeroAreasTematicas = @$"  where
                                         {{
                                             ?project a <http://vivoweb.org/ontology/core#Project>.
                                             {filter}
@@ -549,10 +544,10 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
                                               }}Group by ?project 
                                             }}
                                             FILTER(?numAreasTematicasCargadas!= ?numAreasTematicasACargar OR !BOUND(?numAreasTematicasCargadas) )
-                                        }} limit {limit}";
-                    SparqlObject resultado = mResourceApi.VirtuosoQueryMultipleGraph(select, where, new List<string>() { "project", "document", "taxonomy" });
+                                        }} limit {limitActualizarNumeroAreasTematicas}";
+                    SparqlObject resultadoActualizarNumeroAreasTematicas = mResourceApi.VirtuosoQueryMultipleGraph(selectActualizarNumeroAreasTematicas, whereActualizarNumeroAreasTematicas, new List<string>() { "project", "document", "taxonomy" });
 
-                    Parallel.ForEach(resultado.results.bindings, new ParallelOptions { MaxDegreeOfParallelism = ActualizadorBase.numParallel }, fila =>
+                    Parallel.ForEach(resultadoActualizarNumeroAreasTematicas.results.bindings, new ParallelOptions { MaxDegreeOfParallelism = ActualizadorBase.numParallel }, fila =>
                     {
                         string project = fila["project"].value;
                         string numAreasTematicasACargar = fila["numAreasTematicasACargar"].value;
@@ -564,7 +559,7 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
                         ActualizadorTriple(project, "http://w3id.org/roh/themedAreasNumber", numAreasTematicasCargadas, numAreasTematicasACargar);
                     });
 
-                    if (resultado.results.bindings.Count != limit)
+                    if (resultadoActualizarNumeroAreasTematicas.results.bindings.Count != limitActualizarNumeroAreasTematicas)
                     {
                         break;
                     }
@@ -584,27 +579,27 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
             //Eliminamos los duplicados
             EliminarDuplicados("project", "http://vivoweb.org/ontology/core#Project", "http://w3id.org/roh/publicationsNumber");
 
-            HashSet<string> filters = new HashSet<string>();
+            HashSet<string> filtersActualizarNumeroPublicaciones = new HashSet<string>();
             if (pProjects != null && pProjects.Count > 0)
             {
-                filters.Add($" FILTER(?project in(<{string.Join(">,<", pProjects)}>))");
+                filtersActualizarNumeroPublicaciones.Add($" FILTER(?project in(<{string.Join(">,<", pProjects)}>))");
             }
             if (pDocuments != null && pDocuments.Count > 0)
             {
-                filters.Add($" ?docAux <http://w3id.org/roh/project> ?project.  FILTER(?docAux in (<{string.Join(">,<", pDocuments)}>))");
+                filtersActualizarNumeroPublicaciones.Add($" ?docAux <http://w3id.org/roh/project> ?project.  FILTER(?docAux in (<{string.Join(">,<", pDocuments)}>))");
             }
-            if (filters.Count == 0)
+            if (filtersActualizarNumeroPublicaciones.Count == 0)
             {
-                filters.Add("");
+                filtersActualizarNumeroPublicaciones.Add("");
             }
-            foreach (string filter in filters)
+            foreach (string filter in filtersActualizarNumeroPublicaciones)
             {
                 //Actualizamos los datos
                 while (true)
                 {
-                    int limit = 500;
-                    String select = @"select ?project  ?numDocumentosCargados ?numDocumentosACargar   ";
-                    String where = @$"where{{
+                    int limitActualizarNumeroPublicaciones = 500;
+                    String selectActualizarNumeroPublicaciones = @"select ?project  ?numDocumentosCargados ?numDocumentosACargar   ";
+                    String whereActualizarNumeroPublicaciones = @$"where{{
                             ?project a <http://vivoweb.org/ontology/core#Project>.
                             {filter}
                             OPTIONAL
@@ -624,10 +619,10 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
                               }}Group by ?project 
                             }}
                             FILTER(?numDocumentosCargados!= ?numDocumentosACargar OR !BOUND(?numDocumentosCargados) )
-                            }} limit {limit}";
-                    SparqlObject resultado = mResourceApi.VirtuosoQueryMultipleGraph(select, where, new List<string>() { "project", "document", "person" });
+                            }} limit {limitActualizarNumeroPublicaciones}";
+                    SparqlObject resultadoActualizarNumeroPublicaciones = mResourceApi.VirtuosoQueryMultipleGraph(selectActualizarNumeroPublicaciones, whereActualizarNumeroPublicaciones, new List<string>() { "project", "document", "person" });
 
-                    Parallel.ForEach(resultado.results.bindings, new ParallelOptions { MaxDegreeOfParallelism = ActualizadorBase.numParallel }, fila =>
+                    Parallel.ForEach(resultadoActualizarNumeroPublicaciones.results.bindings, new ParallelOptions { MaxDegreeOfParallelism = ActualizadorBase.numParallel }, fila =>
                     {
                         string project = fila["project"].value;
                         string numDocumentosACargar = fila["numDocumentosACargar"].value;
@@ -639,7 +634,7 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
                         ActualizadorTriple(project, "http://w3id.org/roh/publicationsNumber", numDocumentosCargados, numDocumentosACargar);
                     });
 
-                    if (resultado.results.bindings.Count != limit)
+                    if (resultadoActualizarNumeroPublicaciones.results.bindings.Count != limitActualizarNumeroPublicaciones)
                     {
                         break;
                     }
@@ -659,27 +654,27 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
             //Eliminamos los duplicados
             EliminarDuplicados("project", "http://vivoweb.org/ontology/core#Project", "http://w3id.org/roh/collaboratorsNumber");
 
-            HashSet<string> filters = new HashSet<string>();
+            HashSet<string> filtersActualizarNumeroColaboradores = new HashSet<string>();
             if (pProjects != null && pProjects.Count > 0)
             {
-                filters.Add($" FILTER(?project in(<{string.Join(">,<", pProjects)}>))");
+                filtersActualizarNumeroColaboradores.Add($" FILTER(?project in(<{string.Join(">,<", pProjects)}>))");
             }
             if (pDocuments != null && pDocuments.Count > 0)
             {
-                filters.Add($" ?docAux <http://w3id.org/roh/project> ?project.  FILTER(?docAux in (<{string.Join(">,<", pDocuments)}>))");
+                filtersActualizarNumeroColaboradores.Add($" ?docAux <http://w3id.org/roh/project> ?project.  FILTER(?docAux in (<{string.Join(">,<", pDocuments)}>))");
             }
-            if (filters.Count == 0)
+            if (filtersActualizarNumeroColaboradores.Count == 0)
             {
-                filters.Add("");
+                filtersActualizarNumeroColaboradores.Add("");
             }
-            foreach (string filter in filters)
+            foreach (string filter in filtersActualizarNumeroColaboradores)
             {
 
                 while (true)
                 {
-                    int limit = 500;
-                    String select = @"select ?project ?numColaboradoresCargados ?numColaboradoresACargar ";
-                    String where = @$"where{{
+                    int limitActualizarNumeroColaboradores = 500;
+                    String selectActualizarNumeroColaboradores = @"select ?project ?numColaboradoresCargados ?numColaboradoresACargar ";
+                    String whereActualizarNumeroColaboradores = @$"where{{
                             ?project a <http://vivoweb.org/ontology/core#Project>.
                             ?project <http://w3id.org/roh/isValidated> 'true'.
                             {filter}
@@ -722,10 +717,10 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
                               }}Group by ?project 
                             }}
                             FILTER(?numColaboradoresCargados!= ?numColaboradoresACargar OR !BOUND(?numColaboradoresCargados) )
-                            }} limit {limit}";
-                    SparqlObject resultado = mResourceApi.VirtuosoQueryMultipleGraph(select, where, new List<string>() { "project", "document", "person" });
+                            }} limit {limitActualizarNumeroColaboradores}";
+                    SparqlObject resultadoActualizarNumeroColaboradores = mResourceApi.VirtuosoQueryMultipleGraph(selectActualizarNumeroColaboradores, whereActualizarNumeroColaboradores, new List<string>() { "project", "document", "person" });
 
-                    Parallel.ForEach(resultado.results.bindings, new ParallelOptions { MaxDegreeOfParallelism = ActualizadorBase.numParallel }, fila =>
+                    Parallel.ForEach(resultadoActualizarNumeroColaboradores.results.bindings, new ParallelOptions { MaxDegreeOfParallelism = ActualizadorBase.numParallel }, fila =>
                     {
                         string project = fila["project"].value;
                         string numColaboradoresACargar = fila["numColaboradoresACargar"].value;
@@ -737,7 +732,7 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
                         ActualizadorTriple(project, "http://w3id.org/roh/collaboratorsNumber", numColaboradoresCargados, numColaboradoresACargar);
                     });
 
-                    if (resultado.results.bindings.Count != limit)
+                    if (resultadoActualizarNumeroColaboradores.results.bindings.Count != limitActualizarNumeroColaboradores)
                     {
                         break;
                     }
@@ -757,22 +752,22 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
             //Eliminamos los duplicados
             EliminarDuplicados("project", "http://vivoweb.org/ontology/core#Project", "http://w3id.org/roh/researchersNumber");
 
-            HashSet<string> filters = new HashSet<string>();
+            HashSet<string> filtersActualizarNumeroMiembros = new HashSet<string>();
             if (pProjects != null && pProjects.Count > 0)
             {
-                filters.Add($" FILTER(?project in(<{string.Join(">,<", pProjects)}>))");
+                filtersActualizarNumeroMiembros.Add($" FILTER(?project in(<{string.Join(">,<", pProjects)}>))");
             }
-            if (filters.Count == 0)
+            if (filtersActualizarNumeroMiembros.Count == 0)
             {
-                filters.Add("");
+                filtersActualizarNumeroMiembros.Add("");
             }
-            foreach (string filter in filters)
+            foreach (string filter in filtersActualizarNumeroMiembros)
             {
                 while (true)
                 {
-                    int limit = 500;
-                    String select = @"select ?project ?numMiembrosCargados ?numMiembrosACargar ";
-                    String where = @$"where{{
+                    int limitActualizarNumeroMiembros = 500;
+                    String selectActualizarNumeroMiembros = @"select ?project ?numMiembrosCargados ?numMiembrosACargar ";
+                    String whereActualizarNumeroMiembros = @$"where{{
                             ?project a <http://vivoweb.org/ontology/core#Project>.
                             ?project <http://w3id.org/roh/isValidated> 'true'.
                             {filter}
@@ -792,10 +787,10 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
                               }}Group by ?project 
                             }}
                             FILTER(?numMiembrosCargados!= ?numMiembrosACargar OR !BOUND(?numMiembrosCargados) )
-                            }} limit {limit}";
-                    SparqlObject resultado = mResourceApi.VirtuosoQueryMultipleGraph(select, where, new List<string>() { "project", "document", "person" });
+                            }} limit {limitActualizarNumeroMiembros}";
+                    SparqlObject resultadoActualizarNumeroMiembros = mResourceApi.VirtuosoQueryMultipleGraph(selectActualizarNumeroMiembros, whereActualizarNumeroMiembros, new List<string>() { "project", "document", "person" });
 
-                    Parallel.ForEach(resultado.results.bindings, new ParallelOptions { MaxDegreeOfParallelism = ActualizadorBase.numParallel }, fila =>
+                    Parallel.ForEach(resultadoActualizarNumeroMiembros.results.bindings, new ParallelOptions { MaxDegreeOfParallelism = ActualizadorBase.numParallel }, fila =>
                     {
                         string project = fila["project"].value;
                         string numMiembrosACargar = fila["numMiembrosACargar"].value;
@@ -807,7 +802,7 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
                         ActualizadorTriple(project, "http://w3id.org/roh/researchersNumber", numMiembrosCargados, numMiembrosACargar);
                     });
 
-                    if (resultado.results.bindings.Count != limit)
+                    if (resultadoActualizarNumeroMiembros.results.bindings.Count != limitActualizarNumeroMiembros)
                     {
                         break;
                     }
@@ -827,25 +822,25 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
             //Eliminamos los duplicados
             EliminarDuplicados("project", "http://vivoweb.org/ontology/core#Project", "http://w3id.org/roh/yearStart");
 
-            HashSet<string> filters = new HashSet<string>();
+            HashSet<string> filtersActualizarAniosInicio = new HashSet<string>();
             if (pProjects != null && pProjects.Count > 0)
             {
-                filters.Add($" FILTER(?project in(<{string.Join(">,<", pProjects)}>))");
+                filtersActualizarAniosInicio.Add($" FILTER(?project in(<{string.Join(">,<", pProjects)}>))");
             }
-            if (filters.Count == 0)
+            if (filtersActualizarAniosInicio.Count == 0)
             {
-                filters.Add("");
+                filtersActualizarAniosInicio.Add("");
             }
 
-            foreach (string filter in filters)
+            foreach (string filter in filtersActualizarAniosInicio)
             {
                 //Inserciones
                 while (true)
                 {
-                    int limit = 500;
+                    int limitActualizarAniosInicio = 500;
 
-                    String select = @"select distinct * where{select ?project ?yearCargado ?yearCargar  ";
-                    String where = @$"where{{
+                    String selectActualizarAniosInicio = @"select distinct * where{select ?project ?yearCargado ?yearCargar  ";
+                    String whereActualizarAniosInicio = @$"where{{
                                 ?project a <http://vivoweb.org/ontology/core#Project>.
                                 {filter}
                                 OPTIONAL{{
@@ -858,10 +853,10 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
                                 
                                 FILTER(?yearCargado!= ?yearCargar)
 
-                            }}}} limit {limit}";
-                    SparqlObject resultado = mResourceApi.VirtuosoQuery(select, where, "project");
+                            }}}} limit {limitActualizarAniosInicio}";
+                    SparqlObject resultadoActualizarAniosInicio = mResourceApi.VirtuosoQuery(selectActualizarAniosInicio, whereActualizarAniosInicio, "project");
 
-                    Parallel.ForEach(resultado.results.bindings, new ParallelOptions { MaxDegreeOfParallelism = ActualizadorBase.numParallel }, fila =>
+                    Parallel.ForEach(resultadoActualizarAniosInicio.results.bindings, new ParallelOptions { MaxDegreeOfParallelism = ActualizadorBase.numParallel }, fila =>
                     {
                         string project = fila["project"].value;
                         string yearCargar = "";
@@ -877,7 +872,7 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
                         ActualizadorTriple(project, "http://w3id.org/roh/yearStart", yearCargado, yearCargar);
                     });
 
-                    if (resultado.results.bindings.Count != limit)
+                    if (resultadoActualizarAniosInicio.results.bindings.Count != limitActualizarAniosInicio)
                     {
                         break;
                     }
@@ -896,25 +891,25 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
             //Eliminamos los duplicados
             EliminarDuplicados("project", "http://vivoweb.org/ontology/core#Project", "http://w3id.org/roh/yearEnd");
 
-            HashSet<string> filters = new HashSet<string>();
+            HashSet<string> filtersActualizarAniosFin = new HashSet<string>();
             if (pProjects != null && pProjects.Count > 0)
             {
-                filters.Add($" FILTER(?project in(<{string.Join(">,<", pProjects)}>))");
+                filtersActualizarAniosFin.Add($" FILTER(?project in(<{string.Join(">,<", pProjects)}>))");
             }
-            if (filters.Count == 0)
+            if (filtersActualizarAniosFin.Count == 0)
             {
-                filters.Add("");
+                filtersActualizarAniosFin.Add("");
             }
 
-            foreach (string filter in filters)
+            foreach (string filter in filtersActualizarAniosFin)
             {
                 //Inserciones
                 while (true)
                 {
-                    int limit = 500;
+                    int limitActualizarAniosFin = 500;
 
-                    String select = @"select distinct * where{select ?project ?yearCargado ?yearCargar  ";
-                    String where = @$"where{{
+                    String selectActualizarAniosFin = @"select distinct * where{select ?project ?yearCargado ?yearCargar  ";
+                    String whereActualizarAniosFin = @$"where{{
                                 ?project a <http://vivoweb.org/ontology/core#Project>.
                                 {filter}
                                 OPTIONAL{{
@@ -927,10 +922,10 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
                                 
                                 FILTER(?yearCargado!= ?yearCargar)
 
-                            }}}} limit {limit}";
-                    SparqlObject resultado = mResourceApi.VirtuosoQuery(select, where, "project");
+                            }}}} limit {limitActualizarAniosFin}";
+                    SparqlObject resultadoActualizarAniosFin = mResourceApi.VirtuosoQuery(selectActualizarAniosFin, whereActualizarAniosFin, "project");
 
-                    Parallel.ForEach(resultado.results.bindings, new ParallelOptions { MaxDegreeOfParallelism = ActualizadorBase.numParallel }, fila =>
+                    Parallel.ForEach(resultadoActualizarAniosFin.results.bindings, new ParallelOptions { MaxDegreeOfParallelism = ActualizadorBase.numParallel }, fila =>
                     {
                         string project = fila["project"].value;
                         string yearCargar = "";
@@ -946,7 +941,7 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
                         ActualizadorTriple(project, "http://w3id.org/roh/yearEnd", yearCargado, yearCargar);
                     });
 
-                    if (resultado.results.bindings.Count != limit)
+                    if (resultadoActualizarAniosFin.results.bindings.Count != limitActualizarAniosFin)
                     {
                         break;
                     }

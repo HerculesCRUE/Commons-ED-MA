@@ -69,15 +69,12 @@ namespace CurriculumvitaeOntology
 
 		internal override void GetProperties()
 		{
-			base.GetProperties();
 			propList.Add(new StringOntologyProperty("roh:cvOf", this.IdRoh_cvOf));
 			propList.Add(new StringOntologyProperty("foaf:name", this.Foaf_name));
 		}
 
 		internal override void GetEntities()
 		{
-			base.GetEntities();
-
 			Roh_personalData.GetProperties();
 			Roh_personalData.GetEntities();
 			OntologyEntity entityRoh_personalData = new("http://w3id.org/roh/PersonalData", "http://w3id.org/roh/PersonalData", "roh:personalData", Roh_personalData.propList, Roh_personalData.entList);

@@ -41,15 +41,9 @@ namespace CurriculumvitaeOntology
 
 		internal override void GetProperties()
 		{
-			base.GetProperties();
 			propList.Add(new StringOntologyProperty("roh:hasExtension", this.Roh_hasExtension));
 			propList.Add(new StringOntologyProperty("roh:hasInternationalCode", this.Roh_hasInternationalCode));
 			propList.Add(new StringOntologyProperty("vcard:hasValue", this.Vcard_hasValue));
 		}
-
-		internal override void GetEntities()
-		{
-			base.GetEntities();
-		} 
 	}
 }

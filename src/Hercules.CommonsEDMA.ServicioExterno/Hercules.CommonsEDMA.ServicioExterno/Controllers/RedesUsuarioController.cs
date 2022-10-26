@@ -1,11 +1,11 @@
 ﻿using Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones;
 using Hercules.CommonsEDMA.ServicioExterno.Models.RedesUsuario;
-using Hercules.CommonsEDMA.ServicioExterno.Models;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Http;
+using Hercules.CommonsEDMA.ServicioExterno.Controllers.Utilidades;
 
 namespace Hercules.CommonsEDMA.ServicioExterno.Controllers
 {

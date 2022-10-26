@@ -113,54 +113,54 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
         /// <param name="pPatents">ID de patentes</param>
         public void CrearCVs(List<string> pPersons = null, List<string> pProjects = null, List<string> pGroups = null, List<string> pDocuments = null, List<string> pROs = null, List<string> pPatents = null)
         {
-            HashSet<string> filters = new HashSet<string>();
+            HashSet<string> filtersCrearCVs = new HashSet<string>();
             if (pPersons != null && pPersons.Count > 0)
             {
-                filters.Add($" FILTER(?person in (<{string.Join(">,<", pPersons)}>))");
+                filtersCrearCVs.Add($" FILTER(?person in (<{string.Join(">,<", pPersons)}>))");
             }
             if (pProjects != null && pProjects.Count > 0)
             {
-                filters.Add($" ?projectAux <http://vivoweb.org/ontology/core#relates> ?relatesAux. ?relatesAux <http://w3id.org/roh/roleOf> ?person.  FILTER(?projectAux in (<{string.Join(">,<", pProjects)}>))");
+                filtersCrearCVs.Add($" ?projectAux <http://vivoweb.org/ontology/core#relates> ?relatesAux. ?relatesAux <http://w3id.org/roh/roleOf> ?person.  FILTER(?projectAux in (<{string.Join(">,<", pProjects)}>))");
             }
             if (pGroups != null && pGroups.Count > 0)
             {
-                filters.Add($" ?groupAux <http://vivoweb.org/ontology/core#relates> ?relatesAux. ?relatesAux <http://w3id.org/roh/roleOf> ?person.  FILTER(?groupAux in (<{string.Join(">,<", pGroups)}>))");
+                filtersCrearCVs.Add($" ?groupAux <http://vivoweb.org/ontology/core#relates> ?relatesAux. ?relatesAux <http://w3id.org/roh/roleOf> ?person.  FILTER(?groupAux in (<{string.Join(">,<", pGroups)}>))");
             }
             if (pDocuments != null && pDocuments.Count > 0)
             {
-                filters.Add($" ?docAux <http://purl.org/ontology/bibo/authorList> ?autoresAux. ?autoresAux <http://www.w3.org/1999/02/22-rdf-syntax-ns#member> ?person.  FILTER(?docAux in (<{string.Join(">,<", pDocuments)}>))");
+                filtersCrearCVs.Add($" ?docAux <http://purl.org/ontology/bibo/authorList> ?autoresAux. ?autoresAux <http://www.w3.org/1999/02/22-rdf-syntax-ns#member> ?person.  FILTER(?docAux in (<{string.Join(">,<", pDocuments)}>))");
             }
             if (pROs != null && pROs.Count > 0)
             {
-                filters.Add($" ?roAux <http://purl.org/ontology/bibo/authorList> ?autoresAux. ?autoresAux <http://www.w3.org/1999/02/22-rdf-syntax-ns#member> ?person.  FILTER(?roAux in (<{string.Join(">,<", pROs)}>))");
+                filtersCrearCVs.Add($" ?roAux <http://purl.org/ontology/bibo/authorList> ?autoresAux. ?autoresAux <http://www.w3.org/1999/02/22-rdf-syntax-ns#member> ?person.  FILTER(?roAux in (<{string.Join(">,<", pROs)}>))");
             }
             if (pPatents != null && pPatents.Count > 0)
             {
-                filters.Add($" ?patentAux <http://purl.org/ontology/bibo/authorList> ?autoresAux. ?autoresAux <http://www.w3.org/1999/02/22-rdf-syntax-ns#member> ?person.  FILTER(?patentAux in (<{string.Join(">,<", pPatents)}>))");
+                filtersCrearCVs.Add($" ?patentAux <http://purl.org/ontology/bibo/authorList> ?autoresAux. ?autoresAux <http://www.w3.org/1999/02/22-rdf-syntax-ns#member> ?person.  FILTER(?patentAux in (<{string.Join(">,<", pPatents)}>))");
             }
-            if (filters.Count == 0)
+            if (filtersCrearCVs.Count == 0)
             {
-                filters.Add("");
+                filtersCrearCVs.Add("");
             }
-            foreach (string filter in filters)
+            foreach (string filter in filtersCrearCVs)
             {
                 while (true)
                 {
                     //Creamos CVs
-                    int limit = 50;
-                    String select = @"SELECT distinct ?person  ";
-                    String where = @$"  where{{
+                    int limitCrearCVs = 50;
+                    String selectCrearCVs = @"SELECT distinct ?person  ";
+                    String whereCrearCVs = @$"  where{{
                                             {filter}
                                             ?person a <http://xmlns.com/foaf/0.1/Person>.
                                             ?person <http://w3id.org/roh/isActive> 'true'.
                                             MINUS{{ ?cv  <http://w3id.org/roh/cvOf> ?person}}
-                                        }} limit {limit}";
+                                        }} limit {limitCrearCVs}";
 
-                    SparqlObject resultado = mResourceApi.VirtuosoQueryMultipleGraph(select, where, new List<string>() { "person", "curriculumvitae", "project", "group", "document", "researchobject" });
+                    SparqlObject resultadoCrearCVs = mResourceApi.VirtuosoQueryMultipleGraph(selectCrearCVs, whereCrearCVs, new List<string>() { "person", "curriculumvitae", "project", "group", "document", "researchobject" });
 
                     // Personas que no poseen actualmente un CV y deberían tenerlo
                     List<string> persons = new();
-                    foreach (Dictionary<string, SparqlObject.Data> fila in resultado.results.bindings)
+                    foreach (Dictionary<string, SparqlObject.Data> fila in resultadoCrearCVs.results.bindings)
                     {
                         persons.Add(fila["person"].value);
                     }
@@ -190,7 +190,7 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
                         }
                     });
 
-                    if (resultado.results.bindings.Count != limit)
+                    if (resultadoCrearCVs.results.bindings.Count != limitCrearCVs)
                     {
                         break;
                     }
@@ -207,32 +207,32 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
         /// <param name="pCVs">IDs del CV</param>
         public void ModificarDocumentos(List<string> pPersons = null, List<string> pDocuments = null, List<string> pCVs = null)
         {
-            HashSet<string> filters = new HashSet<string>();
+            HashSet<string> filtersModificarDocumentos = new HashSet<string>();
             if (pPersons != null && pPersons.Count > 0)
             {
-                filters.Add($" FILTER(?person in (<{string.Join(">,<", pPersons)}>))");
+                filtersModificarDocumentos.Add($" FILTER(?person in (<{string.Join(">,<", pPersons)}>))");
             }
             if (pDocuments != null && pDocuments.Count > 0)
             {
-                filters.Add($" FILTER(?document in (<{string.Join(">,<", pDocuments)}>))");
+                filtersModificarDocumentos.Add($" FILTER(?document in (<{string.Join(">,<", pDocuments)}>))");
             }
             if (pCVs != null && pCVs.Count > 0)
             {
-                filters.Add($" FILTER(?cv in (<{string.Join(">,<", pCVs)}>))");
+                filtersModificarDocumentos.Add($" FILTER(?cv in (<{string.Join(">,<", pCVs)}>))");
             }
-            if (filters.Count == 0)
+            if (filtersModificarDocumentos.Count == 0)
             {
-                filters.Add("");
+                filtersModificarDocumentos.Add("");
             }
 
-            foreach (string filter in filters)
+            foreach (string filter in filtersModificarDocumentos)
             {
                 while (true)
                 {
                     //Añadimos documentos
-                    int limit = 500;
-                    String select = @"select distinct ?cv ?scientificActivity ?document ?isValidated ?typeDocument ";
-                    String where = @$"where{{
+                    int limitAniadirDocumentos = 500;
+                    String selectAniadirDocumentos = @"select distinct ?cv ?scientificActivity ?document ?isValidated ?typeDocument ";
+                    String whereAniadirDocumentos = @$"where{{
                                     {filter}
                                     {{
                                         #DESEABLES
@@ -277,10 +277,10 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
                                                 BIND(""SAD3"" as ?typeDocument)
                                         }}
                                     }}
-                                }}order by desc(?cv) limit {limit}";
-                    SparqlObject resultado = mResourceApi.VirtuosoQueryMultipleGraph(select, where, new List<string>() { "curriculumvitae", "document", "person", "scientificactivitydocument" });
-                    InsertarDocumentosCV(resultado);
-                    if (resultado.results.bindings.Count != limit)
+                                }}order by desc(?cv) limit {limitAniadirDocumentos}";
+                    SparqlObject resultadoAniadirDocumentos = mResourceApi.VirtuosoQueryMultipleGraph(selectAniadirDocumentos, whereAniadirDocumentos, new List<string>() { "curriculumvitae", "document", "person", "scientificactivitydocument" });
+                    InsertarDocumentosCV(resultadoAniadirDocumentos);
+                    if (resultadoAniadirDocumentos.results.bindings.Count != limitAniadirDocumentos)
                     {
                         break;
                     }
@@ -289,9 +289,9 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
                 while (true)
                 {
                     //Elminamos documentos
-                    int limit = 500;
-                    String select = @"select distinct ?cv ?scientificActivity ?item ?typeDocument ";
-                    String where = @$"where{{
+                    int limitEliminarDocumentos = 500;
+                    String selectEliminarDocumentos = @"select distinct ?cv ?scientificActivity ?item ?typeDocument ";
+                    String whereEliminarDocumentos = @$"where{{
                                     {filter}                                    
                                     {{
                                         #ACTUALES
@@ -335,10 +335,10 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
                                             ?scientificActivityDocument  <http://purl.org/dc/elements/1.1/identifier> ?typeDocument.
                                         }}                                        
                                     }}
-                                }}order by desc(?cv) limit {limit}";
-                    SparqlObject resultado = mResourceApi.VirtuosoQueryMultipleGraph(select, where, new List<string>() { "curriculumvitae", "document", "person", "scientificactivitydocument" });
-                    EliminarDocumentosCV(resultado);
-                    if (resultado.results.bindings.Count != limit)
+                                }}order by desc(?cv) limit {limitEliminarDocumentos}";
+                    SparqlObject resultadoEliminarDocumentos = mResourceApi.VirtuosoQueryMultipleGraph(selectEliminarDocumentos, whereEliminarDocumentos, new List<string>() { "curriculumvitae", "document", "person", "scientificactivitydocument" });
+                    EliminarDocumentosCV(resultadoEliminarDocumentos);
+                    if (resultadoEliminarDocumentos.results.bindings.Count != limitEliminarDocumentos)
                     {
                         break;
                     }
@@ -359,25 +359,25 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
         ///// <param name="pCVs">IDs del CV</param>
         //public void CambiarPrivacidadDocumentos(List<string> pPersons = null, List<string> pDocuments = null, List<string> pCVs = null)
         //{
-        //    HashSet<string> filters = new HashSet<string>();
+        //    HashSet<string> filtersCambiarPrivacidadDocumentos = new HashSet<string>();
         //    if (pPersons != null && pPersons.Count > 0)
         //    {
-        //        filters.Add($" FILTER(?person in (<{string.Join(">,<", pPersons)}>))");
+        //        filtersCambiarPrivacidadDocumentos.Add($" FILTER(?person in (<{string.Join(">,<", pPersons)}>))");
         //    }
         //    if (pDocuments != null && pDocuments.Count > 0)
         //    {
-        //        filters.Add($" FILTER(?document in (<{string.Join(">,<", pDocuments)}>))");
+        //        filtersCambiarPrivacidadDocumentos.Add($" FILTER(?document in (<{string.Join(">,<", pDocuments)}>))");
         //    }
         //    if (pCVs != null && pCVs.Count > 0)
         //    {
-        //        filters.Add($" FILTER(?cv in (<{string.Join(">,<", pCVs)}>))");
+        //        filtersCambiarPrivacidadDocumentos.Add($" FILTER(?cv in (<{string.Join(">,<", pCVs)}>))");
         //    }
         //    if (filters.Count == 0)
         //    {
-        //        filters.Add("");
+        //        filtersCambiarPrivacidadDocumentos.Add("");
         //    }
 
-        //    foreach (string filter in filters)
+        //    foreach (string filter in filtersCambiarPrivacidadDocumentos)
         //    {
 
         //        while (true)
@@ -419,32 +419,32 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
         /// <param name="pCVs">IDs del CV</param>
         public void ModificarResearchObjects(List<string> pPersons = null, List<string> pROs = null, List<string> pCVs = null)
         {
-            HashSet<string> filters = new HashSet<string>();
+            HashSet<string> filtersModificarResearchObjects = new HashSet<string>();
             if (pPersons != null && pPersons.Count > 0)
             {
-                filters.Add($" FILTER(?person in ( <{string.Join(">,<", pPersons)}>))");
+                filtersModificarResearchObjects.Add($" FILTER(?person in ( <{string.Join(">,<", pPersons)}>))");
             }
             if (pROs != null && pROs.Count > 0)
             {
-                filters.Add($" FILTER(?ro in ( <{string.Join(">,<", pROs)}>))");
+                filtersModificarResearchObjects.Add($" FILTER(?ro in ( <{string.Join(">,<", pROs)}>))");
             }
             if (pCVs != null && pCVs.Count > 0)
             {
-                filters.Add($" FILTER(?cv in ( <{string.Join(">,<", pCVs)}>))");
+                filtersModificarResearchObjects.Add($" FILTER(?cv in ( <{string.Join(">,<", pCVs)}>))");
             }
-            if (filters.Count == 0)
+            if (filtersModificarResearchObjects.Count == 0)
             {
-                filters.Add("");
+                filtersModificarResearchObjects.Add("");
             }
 
-            foreach (string filter in filters)
+            foreach (string filter in filtersModificarResearchObjects)
             {
                 while (true)
                 {
                     //Añadimos documentos
-                    int limit = 500;
-                    String select = @"select distinct ?cv ?researchObject ?ro ";
-                    String where = @$"where{{
+                    int limitAniadirDocumentos = 500;
+                    String selectAniadirDocumentos = @"select distinct ?cv ?researchObject ?ro ";
+                    String whereAniadirDocumentos = @$"where{{
                                     {filter}
                                     {{
                                         #DESEABLES
@@ -471,10 +471,10 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
                                         ?researchObject <http://w3id.org/roh/researchObjects> ?item.
                                         ?item <http://vivoweb.org/ontology/core#relatedBy> ?ro.
                                     }}
-                                }}order by desc(?cv) limit {limit}";
-                    SparqlObject resultado = mResourceApi.VirtuosoQueryMultipleGraph(select, where, new List<string>() { "curriculumvitae", "researchobject", "person" });
-                    InsertarResearchObjectsCV(resultado);
-                    if (resultado.results.bindings.Count != limit)
+                                }}order by desc(?cv) limit {limitAniadirDocumentos}";
+                    SparqlObject resultadoAniadirDocumentos = mResourceApi.VirtuosoQueryMultipleGraph(selectAniadirDocumentos, whereAniadirDocumentos, new List<string>() { "curriculumvitae", "researchobject", "person" });
+                    InsertarResearchObjectsCV(resultadoAniadirDocumentos);
+                    if (resultadoAniadirDocumentos.results.bindings.Count != limitAniadirDocumentos)
                     {
                         break;
                     }
@@ -483,9 +483,9 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
                 while (true)
                 {
                     //Elminamos documentos
-                    int limit = 500;
-                    String select = @"select distinct ?cv ?researchObject ?item ";
-                    String where = @$"where{{
+                    int limitEliminarDocumentos = 500;
+                    String selectEliminarDocumentos = @"select distinct ?cv ?researchObject ?item ";
+                    String whereEliminarDocumentos = @$"where{{
                                     {filter}                                    
                                     {{
                                         #ACTUALES
@@ -512,10 +512,10 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
                                             ?autor <http://www.w3.org/1999/02/22-rdf-syntax-ns#member> ?person.
                                         }}                                      
                                     }}
-                                }}order by desc(?cv) limit {limit}";
-                    SparqlObject resultado = mResourceApi.VirtuosoQueryMultipleGraph(select, where, new List<string>() { "curriculumvitae", "researchobject", "person" });
-                    EliminarResearchObjectsCV(resultado);
-                    if (resultado.results.bindings.Count != limit)
+                                }}order by desc(?cv) limit {limitEliminarDocumentos}";
+                    SparqlObject resultadoEliminarDocumentos = mResourceApi.VirtuosoQueryMultipleGraph(selectEliminarDocumentos, whereEliminarDocumentos, new List<string>() { "curriculumvitae", "researchobject", "person" });
+                    EliminarResearchObjectsCV(resultadoEliminarDocumentos);
+                    if (resultadoEliminarDocumentos.results.bindings.Count != limitEliminarDocumentos)
                     {
                         break;
                     }
@@ -536,32 +536,32 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
         /// <param name="pCVs">IDs del CV</param>
         public void CambiarPrivacidadResearchObjects(List<string> pPersons = null, List<string> pROs = null, List<string> pCVs = null)
         {
-            HashSet<string> filters = new HashSet<string>();
+            HashSet<string> filtersCambiarPrivacidadResearchObjects = new HashSet<string>();
             if (pPersons != null && pPersons.Count > 0)
             {
-                filters.Add($" FILTER(?person in (<{string.Join(">,<", pPersons)}>))");
+                filtersCambiarPrivacidadResearchObjects.Add($" FILTER(?person in (<{string.Join(">,<", pPersons)}>))");
             }
             if (pROs != null && pROs.Count > 0)
             {
-                filters.Add($" FILTER(?ro in (<{string.Join(">,<", pROs)}>))");
+                filtersCambiarPrivacidadResearchObjects.Add($" FILTER(?ro in (<{string.Join(">,<", pROs)}>))");
             }
             if (pCVs != null && pCVs.Count > 0)
             {
-                filters.Add($" FILTER(?cv in (<{string.Join(">,<", pCVs)}>))");
+                filtersCambiarPrivacidadResearchObjects.Add($" FILTER(?cv in (<{string.Join(">,<", pCVs)}>))");
             }
-            if (filters.Count == 0)
+            if (filtersCambiarPrivacidadResearchObjects.Count == 0)
             {
-                filters.Add("");
+                filtersCambiarPrivacidadResearchObjects.Add("");
             }
 
-            foreach (string filter in filters)
+            foreach (string filter in filtersCambiarPrivacidadResearchObjects)
             {
                 while (true)
                 {
                     //Publicamos los documentos
-                    int limit = 500;
-                    String select = @"select distinct ?cv ?researchObject ?propItem ?item ";
-                    String where = @$"where{{
+                    int limitCambiarPrivacidadResearchObjects = 500;
+                    String selectCambiarPrivacidadResearchObjects = @"select distinct ?cv ?researchObject ?propItem ?item ";
+                    String whereCambiarPrivacidadResearchObjects = @$"where{{
                                     {filter}
                                     {{
                                         ?person a <http://xmlns.com/foaf/0.1/Person>.                                            
@@ -574,10 +574,10 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
                                         ?item <http://vivoweb.org/ontology/core#relatedBy> ?ro.
                                         ?item <http://w3id.org/roh/isPublic> 'false'.
                                     }}
-                                }}order by desc(?cv) limit {limit}";
-                    SparqlObject resultado = mResourceApi.VirtuosoQueryMultipleGraph(select, where, new List<string>() { "curriculumvitae", "researchobject", "person" });
-                    PublicarResearchObjectsCV(resultado);
-                    if (resultado.results.bindings.Count != limit)
+                                }}order by desc(?cv) limit {limitCambiarPrivacidadResearchObjects}";
+                    SparqlObject resultadoCambiarPrivacidadResearchObjects = mResourceApi.VirtuosoQueryMultipleGraph(selectCambiarPrivacidadResearchObjects, whereCambiarPrivacidadResearchObjects, new List<string>() { "curriculumvitae", "researchobject", "person" });
+                    PublicarResearchObjectsCV(resultadoCambiarPrivacidadResearchObjects);
+                    if (resultadoCambiarPrivacidadResearchObjects.results.bindings.Count != limitCambiarPrivacidadResearchObjects)
                     {
                         break;
                     }
@@ -594,32 +594,32 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
         /// <param name="pCVs">IDs del CV</param>
         public void ModificarProyectos(List<string> pPersons = null, List<string> pProjects = null, List<string> pCVs = null)
         {
-            HashSet<string> filters = new HashSet<string>();
+            HashSet<string> filtersModificarProyectos = new HashSet<string>();
             if (pPersons != null && pPersons.Count > 0)
             {
-                filters.Add($" FILTER(?person in (<{string.Join(">,<", pPersons)}>))");
+                filtersModificarProyectos.Add($" FILTER(?person in (<{string.Join(">,<", pPersons)}>))");
             }
             if (pProjects != null && pProjects.Count > 0)
             {
-                filters.Add($" FILTER(?project in (<{string.Join(">,<", pProjects)}>))");
+                filtersModificarProyectos.Add($" FILTER(?project in (<{string.Join(">,<", pProjects)}>))");
             }
             if (pCVs != null && pCVs.Count > 0)
             {
-                filters.Add($" FILTER(?cv in (<{string.Join(">,<", pCVs)}>))");
+                filtersModificarProyectos.Add($" FILTER(?cv in (<{string.Join(">,<", pCVs)}>))");
             }
-            if (filters.Count == 0)
+            if (filtersModificarProyectos.Count == 0)
             {
-                filters.Add("");
+                filtersModificarProyectos.Add("");
             }
 
-            foreach (string filter in filters)
+            foreach (string filter in filtersModificarProyectos)
             {
                 while (true)
                 {
                     //Añadimos proyectos
-                    int limit = 500;
-                    String select = @"select distinct ?cv ?scientificExperience ?project ?typeProject ";
-                    String where = @$"where{{
+                    int limitAniadirProyectos = 500;
+                    String selectAniadirProyectos = @"select distinct ?cv ?scientificExperience ?project ?typeProject ";
+                    String whereAniadirProyectos = @$"where{{
                                     {filter}
                                     {{
                                         #DESEABLES
@@ -659,10 +659,10 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
                                                 BIND(""SEP2"" as ?typeProject)
                                         }}
                                     }}
-                                }}order by desc(?cv) limit {limit}";
-                    SparqlObject resultado = mResourceApi.VirtuosoQueryMultipleGraph(select, where, new List<string>() { "curriculumvitae", "project", "person", "scientificexperienceproject" });
-                    InsertarProyectosCV(resultado);
-                    if (resultado.results.bindings.Count != limit)
+                                }}order by desc(?cv) limit {limitAniadirProyectos}";
+                    SparqlObject resultadoAniadirProyectos = mResourceApi.VirtuosoQueryMultipleGraph(selectAniadirProyectos, whereAniadirProyectos, new List<string>() { "curriculumvitae", "project", "person", "scientificexperienceproject" });
+                    InsertarProyectosCV(resultadoAniadirProyectos);
+                    if (resultadoAniadirProyectos.results.bindings.Count != limitAniadirProyectos)
                     {
                         break;
                     }
@@ -671,9 +671,9 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
                 while (true)
                 {
                     //Elminamos proyectos
-                    int limit = 500;
-                    String select = @"select distinct ?cv ?scientificExperience ?project ?item ?typeProject ";
-                    String where = @$"where{{
+                    int limitEliminarProyectos = 500;
+                    String selectEliminarProyectos = @"select distinct ?cv ?scientificExperience ?project ?item ?typeProject ";
+                    String whereEliminarProyectos = @$"where{{
                                     {filter}
                                     
                                         #ACTUALES
@@ -713,10 +713,10 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
                                             ?scientificExperienceProject <http://purl.org/dc/elements/1.1/identifier> ?typeProject.
                                         }}
                                     }}
-                                }}order by desc(?cv) limit {limit}";
-                    SparqlObject resultado = mResourceApi.VirtuosoQueryMultipleGraph(select, where, new List<string>() { "curriculumvitae", "project", "person", "scientificexperienceproject" });
-                    EliminarProyectosCV(resultado);
-                    if (resultado.results.bindings.Count != limit)
+                                }}order by desc(?cv) limit {limitEliminarProyectos}";
+                    SparqlObject resultadoEliminarProyectos = mResourceApi.VirtuosoQueryMultipleGraph(selectEliminarProyectos, whereEliminarProyectos, new List<string>() { "curriculumvitae", "project", "person", "scientificexperienceproject" });
+                    EliminarProyectosCV(resultadoEliminarProyectos);
+                    if (resultadoEliminarProyectos.results.bindings.Count != limitEliminarProyectos)
                     {
                         break;
                     }
@@ -736,35 +736,35 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
         /// <param name="pCVs">IDs de los CVs</param>
         public void ModificarGrupos(List<string> pPersons = null, List<string> pGroups = null, List<string> pCVs = null)
         {
-            HashSet<string> filters = new HashSet<string>();
+            HashSet<string> filtersModificarGrupos = new HashSet<string>();
             if (pPersons != null && pPersons.Count > 0)
             {
-                filters.Add($" FILTER(?person in (<{string.Join(">,<", pPersons)}>))");
+                filtersModificarGrupos.Add($" FILTER(?person in (<{string.Join(">,<", pPersons)}>))");
             }
             if (pGroups != null && pGroups.Count > 0)
             {
-                filters.Add($" FILTER(?group in (<{string.Join(">,<", pGroups)}>))");
+                filtersModificarGrupos.Add($" FILTER(?group in (<{string.Join(">,<", pGroups)}>))");
             }
             if (pCVs != null && pCVs.Count > 0)
             {
-                filters.Add($" FILTER(?cv in (<{string.Join(">,<", pCVs)}>))");
+                filtersModificarGrupos.Add($" FILTER(?cv in (<{string.Join(">,<", pCVs)}>))");
             }
-            if (filters.Count == 0)
+            if (filtersModificarGrupos.Count == 0)
             {
-                filters.Add("");
+                filtersModificarGrupos.Add("");
             }
 
-            foreach (string filter in filters)
+            foreach (string filter in filtersModificarGrupos)
             {
                 while (true)
                 {
                     //Añadimos grupos
-                    int limit = 500;
-                    String select = @"select distinct ?cv ?idSection ?item 
+                    int limitAniadirGrupos = 500;
+                    String selectAniadirGrupos = @"select distinct ?cv ?idSection ?item 
                                         'http://w3id.org/roh/RelatedGroup' as ?rdfTypeAux 
                                         'http://w3id.org/roh/scientificExperience' as ?sectionProperty
                                         'http://w3id.org/roh/groups' as ?auxProperty  ";
-                    String where = @$"where{{
+                    String whereAniadirGrupos = @$"where{{
                                     {filter} 
                                     {{
                                         #DESEABLES                                        
@@ -790,11 +790,11 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
                                         ?idSection <http://w3id.org/roh/groups> ?auxSection.
                                         ?auxSection <http://vivoweb.org/ontology/core#relatedBy> ?item.
                                     }}
-                                }}order by desc(?cv) limit {limit}";
-                    SparqlObject resultado = mResourceApi.VirtuosoQueryMultipleGraph(select, where, new List<string>() { "curriculumvitae", "group", "person" });
-                    InsertarItemsCV(resultado);
+                                }}order by desc(?cv) limit {limitAniadirGrupos}";
+                    SparqlObject resultadoAniadirGrupos = mResourceApi.VirtuosoQueryMultipleGraph(selectAniadirGrupos, whereAniadirGrupos, new List<string>() { "curriculumvitae", "group", "person" });
+                    InsertarItemsCV(resultadoAniadirGrupos);
 
-                    if (resultado.results.bindings.Count != limit)
+                    if (resultadoAniadirGrupos.results.bindings.Count != limitAniadirGrupos)
                     {
                         break;
                     }
@@ -803,11 +803,11 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
                 while (true)
                 {
                     //Elminamos grupos
-                    int limit = 500;
-                    String select = @"select distinct ?cv ?idSection ?auxEntity 
+                    int limitEliminarGrupos = 500;
+                    String selectEliminarGrupos = @"select distinct ?cv ?idSection ?auxEntity 
                                         'http://w3id.org/roh/scientificExperience' as ?sectionProperty
                                         'http://w3id.org/roh/groups' as ?auxProperty ";
-                    String where = @$"where{{
+                    String whereEliminarGrupos = @$"where{{
                                     {filter}                                    
                                     {{
                                         #ACTUALES
@@ -832,10 +832,10 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
                                         ?group <http://vivoweb.org/ontology/core#relates> ?rol.
                                         ?rol <http://w3id.org/roh/roleOf> ?person.
                                     }}
-                                }}order by desc(?cv) limit {limit}";
-                    SparqlObject resultado = mResourceApi.VirtuosoQueryMultipleGraph(select, where, new List<string>() { "curriculumvitae", "group", "person" });
-                    EliminarItemsCV(resultado);
-                    if (resultado.results.bindings.Count != limit)
+                                }}order by desc(?cv) limit {limitEliminarGrupos}";
+                    SparqlObject resultadoEliminarGrupos = mResourceApi.VirtuosoQueryMultipleGraph(selectEliminarGrupos, whereEliminarGrupos, new List<string>() { "curriculumvitae", "group", "person" });
+                    EliminarItemsCV(resultadoEliminarGrupos);
+                    if (resultadoEliminarGrupos.results.bindings.Count != limitEliminarGrupos)
                     {
                         break;
                     }
@@ -855,34 +855,34 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
         /// <param name="pCVs">IDs del CV</param>
         public void ModificarPatentes(List<string> pPersons = null, List<string> pPatents = null, List<string> pCVs = null)
         {
-            HashSet<string> filters = new HashSet<string>();
+            HashSet<string> filtersModificarPatentes = new HashSet<string>();
             if (pPersons != null && pPersons.Count > 0)
             {
-                filters.Add($" FILTER(?person in (<{string.Join(">,<", pPersons)}>))");
+                filtersModificarPatentes.Add($" FILTER(?person in (<{string.Join(">,<", pPersons)}>))");
             }
             if (pPatents != null && pPatents.Count > 0)
             {
-                filters.Add($" FILTER(?patent in (<{string.Join(">,<", pPatents)}>))");
+                filtersModificarPatentes.Add($" FILTER(?patent in (<{string.Join(">,<", pPatents)}>))");
             }
             if (pCVs != null && pCVs.Count > 0)
             {
-                filters.Add($" FILTER(?cv in (<{string.Join(">,<", pCVs)}>))");
+                filtersModificarPatentes.Add($" FILTER(?cv in (<{string.Join(">,<", pCVs)}>))");
             }
-            if (filters.Count == 0)
+            if (filtersModificarPatentes.Count == 0)
             {
-                filters.Add("");
+                filtersModificarPatentes.Add("");
             }
 
-            foreach (string filter in filters)
+            foreach (string filter in filtersModificarPatentes)
             {
                 while (true)
                 {
                     //Añadimos patentes
-                    int limit = 500;
-                    String select = @"select distinct ?cv ?idSection ?item 'http://w3id.org/roh/RelatedPatent' as ?rdfTypeAux 
+                    int limitAniadirPatentes = 500;
+                    String selectAniadirPatentes = @"select distinct ?cv ?idSection ?item 'http://w3id.org/roh/RelatedPatent' as ?rdfTypeAux 
                                         'http://w3id.org/roh/scientificExperience' as ?sectionProperty
                                         'http://w3id.org/roh/patents' as ?auxProperty ";
-                    String where = @$"where{{
+                    String whereAniadirPatentes = @$"where{{
                                     {filter}
                                     {{
                                         #DESEABLES                                        
@@ -908,10 +908,10 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
                                         ?idSection <http://w3id.org/roh/patents> ?auxSection.
                                         ?auxSection <http://vivoweb.org/ontology/core#relatedBy> ?item.
                                     }}
-                                }}order by desc(?cv) limit {limit}";
-                    SparqlObject resultado = mResourceApi.VirtuosoQueryMultipleGraph(select, where, new List<string>() { "curriculumvitae", "patent", "person" });
-                    InsertarItemsCV(resultado);
-                    if (resultado.results.bindings.Count != limit)
+                                }}order by desc(?cv) limit {limitAniadirPatentes}";
+                    SparqlObject resultadoAniadirPatentes = mResourceApi.VirtuosoQueryMultipleGraph(selectAniadirPatentes, whereAniadirPatentes, new List<string>() { "curriculumvitae", "patent", "person" });
+                    InsertarItemsCV(resultadoAniadirPatentes);
+                    if (resultadoAniadirPatentes.results.bindings.Count != limitAniadirPatentes)
                     {
                         break;
                     }
@@ -920,12 +920,12 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
                 while (true)
                 {
                     //Elminamos patentes
-                    int limit = 500;
-                    String select = @"select distinct ?cv ?idSection ?auxEntity 
+                    int limitEliminarPatentes = 500;
+                    String selectEliminarPatentes = @"select distinct ?cv ?idSection ?auxEntity 
                                         'http://w3id.org/roh/scientificExperience' as ?sectionProperty
                                         'http://w3id.org/roh/patents' as ?auxProperty      
                                         ?group ";
-                    String where = @$"where{{
+                    String whereEliminarPatentes = @$"where{{
                                     {filter}                                    
                                     {{
                                         #ACTUALES
@@ -950,10 +950,10 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
                                         ?group <http://vivoweb.org/ontology/core#relates> ?rol.
                                         ?rol <http://w3id.org/roh/roleOf> ?person.
                                     }}
-                                }}order by desc(?cv) limit {limit}";
-                    SparqlObject resultado = mResourceApi.VirtuosoQueryMultipleGraph(select, where, new List<string>() { "curriculumvitae", "patent", "person" });
-                    EliminarItemsCV(resultado);
-                    if (resultado.results.bindings.Count != limit)
+                                }}order by desc(?cv) limit {limitEliminarPatentes}";
+                    SparqlObject resultadoEliminarPatentes = mResourceApi.VirtuosoQueryMultipleGraph(selectEliminarPatentes, whereEliminarPatentes, new List<string>() { "curriculumvitae", "patent", "person" });
+                    EliminarItemsCV(resultadoEliminarPatentes);
+                    if (resultadoEliminarPatentes.results.bindings.Count != limitEliminarPatentes)
                     {
                         break;
                     }
@@ -1057,21 +1057,18 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
             listaSecciones.Add(new CVSection("060.030.100.000", "accreditation", "http://w3id.org/roh/Accreditation", "http://w3id.org/roh/scientificActivity", "http://w3id.org/roh/otherAchievements", "http://w3id.org/roh/RelatedOtherAchievement"));
 
 
-
-
-
-            HashSet<string> filters = new HashSet<string>();
+            HashSet<string> filtersModificarElementosCV = new HashSet<string>();
             if (pPersons != null && pPersons.Count > 0)
             {
-                filters.Add($" FILTER(?person in (<{string.Join(">,<", pPersons)}>))");
+                filtersModificarElementosCV.Add($" FILTER(?person in (<{string.Join(">,<", pPersons)}>))");
             }
             if (pCVs != null && pCVs.Count > 0)
             {
-                filters.Add($" FILTER(?cv in (<{string.Join(">,<", pCVs)}>))");
+                filtersModificarElementosCV.Add($" FILTER(?cv in (<{string.Join(">,<", pCVs)}>))");
             }
-            if (filters.Count == 0)
+            if (filtersModificarElementosCV.Count == 0)
             {
-                filters.Add("");
+                filtersModificarElementosCV.Add("");
             }
 
             List<string> querySectionsAniadir = new List<string>();
@@ -1143,7 +1140,7 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
                 querySectionsEliminar.Add(querySectionEliminar);
             }
 
-            foreach (string filter in filters)
+            foreach (string filter in filtersModificarElementosCV)
             {
                 List<string> listaFroms = new List<string>() { "curriculumvitae", "person" };
                 listaFroms.AddRange(listaSecciones.Select(x => x.graph));
@@ -1151,16 +1148,16 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
                 {
 
                     //Añadimos items
-                    int limit = 500;
-                    String select = @$"select distinct ?cv ?idSection ?rdfTypeAux ?item ?sectionProperty ?auxProperty ?crisIdentifier ";
-                    String where = @$"where{{
+                    int limitAniadirItems = 500;
+                    String selectAniadirItems = @$"select distinct ?cv ?idSection ?rdfTypeAux ?item ?sectionProperty ?auxProperty ?crisIdentifier ";
+                    String whereAniadirItems = @$"where{{
                                     {filter}
                                     {string.Join("UNION", querySectionsAniadir)}
-                                }}order by desc(?cv) limit {limit}";
+                                }}order by desc(?cv) limit {limitAniadirItems}";
 
-                    SparqlObject resultado = mResourceApi.VirtuosoQueryMultipleGraph(select, where, listaFroms);
-                    InsertarItemsCV(resultado);
-                    if (resultado.results.bindings.Count != limit)
+                    SparqlObject resultadoAniadirItems = mResourceApi.VirtuosoQueryMultipleGraph(selectAniadirItems, whereAniadirItems, listaFroms);
+                    InsertarItemsCV(resultadoAniadirItems);
+                    if (resultadoAniadirItems.results.bindings.Count != limitAniadirItems)
                     {
                         break;
                     }
@@ -1169,15 +1166,15 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
                 while (true)
                 {
                     //Eliminamos items
-                    int limit = 500;
-                    String select = @$"select distinct ?cv ?idSection ?auxEntity ?sectionProperty ?auxProperty ";
-                    String where = @$"where{{
+                    int limitEliminarItems = 500;
+                    String selectEliminarItems = @$"select distinct ?cv ?idSection ?auxEntity ?sectionProperty ?auxProperty ";
+                    String whereEliminarItems = @$"where{{
                                     {filter}
                                     {string.Join("UNION", querySectionsEliminar)}
-                                }}order by desc(?cv) limit {limit}";
-                    SparqlObject resultado = mResourceApi.VirtuosoQueryMultipleGraph(select, where, listaFroms);
-                    EliminarItemsCV(resultado);
-                    if (resultado.results.bindings.Count != limit)
+                                }}order by desc(?cv) limit {limitEliminarItems}";
+                    SparqlObject resultadoEliminarItems = mResourceApi.VirtuosoQueryMultipleGraph(selectEliminarItems, whereEliminarItems, listaFroms);
+                    EliminarItemsCV(resultadoEliminarItems);
+                    if (resultadoEliminarItems.results.bindings.Count != limitEliminarItems)
                     {
                         break;
                     }
@@ -1232,23 +1229,23 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
             listaOrgs.Add(new OrgTitleCVTitleOrg("tutorship", "http://w3id.org/roh/Tutorship", "", "http://w3id.org/roh/conductedByTitle", "http://w3id.org/roh/conductedBy"));
 
 
-            HashSet<string> filters = new HashSet<string>();
+            HashSet<string> filtersModificarOrganizacionesCV = new HashSet<string>();
             if (pPersons != null && pPersons.Count > 0)
             {
-                filters.Add($" FILTER(?person in (<{string.Join(">,<", pPersons)}>))");
+                filtersModificarOrganizacionesCV.Add($" FILTER(?person in (<{string.Join(">,<", pPersons)}>))");
             }
             if (pCVs != null && pCVs.Count > 0)
             {
-                filters.Add($" FILTER(?cv in (<{string.Join(">,<", pCVs)}>))");
+                filtersModificarOrganizacionesCV.Add($" FILTER(?cv in (<{string.Join(">,<", pCVs)}>))");
             }
-            if (filters.Count == 0)
+            if (filtersModificarOrganizacionesCV.Count == 0)
             {
-                filters.Add("");
+                filtersModificarOrganizacionesCV.Add("");
             }
 
             foreach (OrgTitleCVTitleOrg section in listaOrgs)
             {
-                foreach (string filter in filters)
+                foreach (string filter in filtersModificarOrganizacionesCV)
                 {
                     while (true)
                     {
@@ -1261,18 +1258,18 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
                             i++;
                         }
 
-                        int limit = 500;
-                        String select = @$"select *  ";
-                        String where = @$"where{{
+                        int limitModificarOrganizacionesCV = 500;
+                        String selectModificarOrganizacionesCV = @$"select *  ";
+                        String whereModificarOrganizacionesCV = @$"where{{
                                     ?s0 a <{section.rdfType}>.
                                     {filterPropAux}
                                     OPTIONAL{{?s{i} <{section.propTituloDesnormalizado}> ?orgTituloDesnormalizado.}}
                                     ?s{i} <{section.propOrganizacion}> ?org.
                                     ?org <http://w3id.org/roh/title> ?titleOrg.
                                     FILTER(?orgTituloDesnormalizado!=?titleOrg)
-                                }}limit {limit}";
-                        SparqlObject resultado = mResourceApi.VirtuosoQueryMultipleGraph(select, where, new List<string>() { section.graph, "organization" });
-                        Parallel.ForEach(resultado.results.bindings, new ParallelOptions { MaxDegreeOfParallelism = ActualizadorBase.numParallel }, fila =>
+                                }}limit {limitModificarOrganizacionesCV}";
+                        SparqlObject resultadoModificarOrganizacionesCV = mResourceApi.VirtuosoQueryMultipleGraph(selectModificarOrganizacionesCV, whereModificarOrganizacionesCV, new List<string>() { section.graph, "organization" });
+                        Parallel.ForEach(resultadoModificarOrganizacionesCV.results.bindings, new ParallelOptions { MaxDegreeOfParallelism = ActualizadorBase.numParallel }, fila =>
                         {
                             //Entidad principal
                             string mainEntity = fila["s0"].value;
@@ -1318,7 +1315,7 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
                             }
                             ActualizadorTriple(mainEntity, predicado, valorAntiguo, valorNuevo);
                         });
-                        if (resultado.results.bindings.Count != limit)
+                        if (resultadoModificarOrganizacionesCV.results.bindings.Count != limitModificarOrganizacionesCV)
                         {
                             break;
                         }
@@ -1333,32 +1330,32 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
         /// <param name="pCVs">IDs de cvs</param>
         public void EliminarDuplicados(List<string> pCVs = null)
         {
-            HashSet<string> filters = new HashSet<string>();
+            HashSet<string> filtersEliminarDuplicados = new HashSet<string>();
             if (pCVs != null && pCVs.Count > 0)
             {
-                filters.Add($" FILTER(?cv in (<{string.Join(">,<", pCVs)}>))");
+                filtersEliminarDuplicados.Add($" FILTER(?cv in (<{string.Join(">,<", pCVs)}>))");
             }
-            if (filters.Count == 0)
+            if (filtersEliminarDuplicados.Count == 0)
             {
-                filters.Add("");
+                filtersEliminarDuplicados.Add("");
             }
 
-            foreach (string filter in filters)
+            foreach (string filter in filtersEliminarDuplicados)
             {
                 while (true)
                 {
-                    int limit = 500;
-                    String select = @$"select * where{{ select ?cv ?item count(?o2) as ?numItems  ";
-                    String where = @$"  where{{
+                    int limitEliminarDuplicados = 500;
+                    String selectEliminarDuplicados = @$"select * where{{ select ?cv ?item count(?o2) as ?numItems  ";
+                    String whereEliminarDuplicados = @$"  where{{
                                             ?cv a <http://w3id.org/roh/CV>.
                                             ?cv ?p1 ?o1.
                                             ?o1 ?p2 ?o2.
                                             ?o2 <http://vivoweb.org/ontology/core#relatedBy> ?item.
                                             {filter}
                                         }}
-                                    }}group by ?cv ?item HAVING (?numItems > 1)  order by desc(?cv) limit {limit}";
-                    SparqlObject resultado = mResourceApi.VirtuosoQuery(select, where, "curriculumvitae");
-                    Parallel.ForEach(resultado.results.bindings, new ParallelOptions { MaxDegreeOfParallelism = ActualizadorBase.numParallel }, fila =>
+                                    }}group by ?cv ?item HAVING (?numItems > 1)  order by desc(?cv) limit {limitEliminarDuplicados}";
+                    SparqlObject resultadoEliminarDuplicados = mResourceApi.VirtuosoQuery(selectEliminarDuplicados, whereEliminarDuplicados, "curriculumvitae");
+                    Parallel.ForEach(resultadoEliminarDuplicados.results.bindings, new ParallelOptions { MaxDegreeOfParallelism = ActualizadorBase.numParallel }, fila =>
                     {
                         string cv = fila["cv"].value;
                         string item = fila["item"].value;
@@ -1378,7 +1375,7 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
                         }
 
                     });
-                    if (resultado.results.bindings.Count != limit)
+                    if (resultadoEliminarDuplicados.results.bindings.Count != limitEliminarDuplicados)
                     {
                         break;
                     }
@@ -1392,14 +1389,14 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
         /// <param name="pCVs">IDs de cvs</param>
         public void EliminarItemsEliminados(List<string> pCVs = null)
         {
-            HashSet<string> filters = new HashSet<string>();
+            HashSet<string> filtersEliminarItemsEliminados = new HashSet<string>();
             if (pCVs != null && pCVs.Count > 0)
             {
-                filters.Add($" FILTER(?cv in (<{string.Join(">,<", pCVs)}>))");
+                filtersEliminarItemsEliminados.Add($" FILTER(?cv in (<{string.Join(">,<", pCVs)}>))");
             }
-            if (filters.Count == 0)
+            if (filtersEliminarItemsEliminados.Count == 0)
             {
-                filters.Add("");
+                filtersEliminarItemsEliminados.Add("");
             }
 
             List<string> graphs = new List<string>();
@@ -1432,24 +1429,24 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
             graphs.Add("researchobject");
             graphs.Add("curriculumvitae");
 
-            foreach (string filter in filters)
+            foreach (string filter in filtersEliminarItemsEliminados)
             {
                 while (true)
                 {
-                    int limit = 500;
-                    String select = @$"select ?cv ?p1 ?o1 ?p2 ?o2 ?item ";
-                    String where = @$"  where{{
+                    int limitEliminarItemsEliminados = 500;
+                    String selectEliminarItemsEliminados = @$"select ?cv ?p1 ?o1 ?p2 ?o2 ?item ";
+                    String whereEliminarItemsEliminados = @$"  where{{
                                             ?cv a <http://w3id.org/roh/CV>.
                                             ?cv ?p1 ?o1.
                                             ?o1 ?p2 ?o2.
                                             ?o2 <http://vivoweb.org/ontology/core#relatedBy> ?item.
                                             MINUS{{?item a ?rdfType}}
                                             {filter}
-                                        }}limit {limit}";
-                    SparqlObject resultado = mResourceApi.VirtuosoQueryMultipleGraph(select, where, graphs);
+                                        }}limit {limitEliminarItemsEliminados}";
+                    SparqlObject resultadoEliminarItemsEliminados = mResourceApi.VirtuosoQueryMultipleGraph(selectEliminarItemsEliminados, whereEliminarItemsEliminados, graphs);
 
                     Dictionary<Guid, List<RemoveTriples>> triplesEliminar = new Dictionary<Guid, List<RemoveTriples>>();
-                    foreach (var fila in resultado.results.bindings)
+                    foreach (var fila in resultadoEliminarItemsEliminados.results.bindings)
                     {
                         Guid cv = mResourceApi.GetShortGuid(fila["cv"].value);
                         string p1 = fila["p1"].value;
@@ -1473,7 +1470,7 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
                     {
                         mResourceApi.DeletePropertiesLoadedResources(new Dictionary<Guid, List<RemoveTriples>>() { { item.Key, item.Value } });
                     });
-                    if (resultado.results.bindings.Count != limit)
+                    if (resultadoEliminarItemsEliminados.results.bindings.Count != limitEliminarItemsEliminados)
                     {
                         break;
                     }
@@ -1498,18 +1495,18 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
 
                 //Nombre
                 {
-                    String select = @"SELECT DISTINCT ?person ?name ?firstName ?lastName";
-                    String where = @$"where{{
+                    String selectNombre = @"SELECT DISTINCT ?person ?name ?firstName ?lastName";
+                    String whereNombre = @$"where{{
                                         ?person a <http://xmlns.com/foaf/0.1/Person>.
                                         ?person <http://xmlns.com/foaf/0.1/name> ?name.
                                         OPTIONAL{{?person <http://xmlns.com/foaf/0.1/firstName> ?firstName}}
                                         OPTIONAL{{?person <http://xmlns.com/foaf/0.1/lastName> ?lastName}}
                                         FILTER( ?person IN ( {personasIDsStr} )).
                         }}";
-                    SparqlObject resultado = mResourceApi.VirtuosoQuery(select, where, "person");
+                    SparqlObject resultadoNombre = mResourceApi.VirtuosoQuery(selectNombre, whereNombre, "person");
 
                     // Personas que no poseen actualmente un CV
-                    foreach (Dictionary<string, SparqlObject.Data> fila in resultado.results.bindings)
+                    foreach (Dictionary<string, SparqlObject.Data> fila in resultadoNombre.results.bindings)
                     {
                         string person = fila["person"].value;
                         string name = fila["name"].value;
@@ -1564,16 +1561,16 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
 
                 //Email
                 {
-                    String select = @"SELECT DISTINCT ?person ?email";
-                    String where = @$"where{{
+                    String selectEmail = @"SELECT DISTINCT ?person ?email";
+                    String whereEmail = @$"where{{
                                         ?person a <http://xmlns.com/foaf/0.1/Person>.
                                         ?person <https://www.w3.org/2006/vcard/ns#email> ?email.
                                         FILTER( ?person IN ( {personasIDsStr} )).
                         }}";
-                    SparqlObject resultado = mResourceApi.VirtuosoQuery(select, where, "person");
+                    SparqlObject resultadoEmail = mResourceApi.VirtuosoQuery(selectEmail, whereEmail, "person");
 
                     // Personas que no poseen actualmente un CV
-                    foreach (Dictionary<string, SparqlObject.Data> fila in resultado.results.bindings)
+                    foreach (Dictionary<string, SparqlObject.Data> fila in resultadoEmail.results.bindings)
                     {
                         string person = fila["person"].value;
                         string email = fila["email"].value;
@@ -1587,16 +1584,16 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
 
                 //Teléfono
                 {
-                    String select = @"SELECT DISTINCT ?person ?telephone";
-                    String where = @$"where{{
+                    String selectTelefono = @"SELECT DISTINCT ?person ?telephone";
+                    String whereTelefono = @$"where{{
                                         ?person a <http://xmlns.com/foaf/0.1/Person>.
                                         ?person <https://www.w3.org/2006/vcard/ns#hasTelephone> ?telephone.
                                         FILTER( ?person IN ( {personasIDsStr} )).
                         }}";
-                    SparqlObject resultado = mResourceApi.VirtuosoQuery(select, where, "person");
+                    SparqlObject resultadoTelefono = mResourceApi.VirtuosoQuery(selectTelefono, whereTelefono, "person");
 
                     // Personas que no poseen actualmente un CV
-                    foreach (Dictionary<string, SparqlObject.Data> fila in resultado.results.bindings)
+                    foreach (Dictionary<string, SparqlObject.Data> fila in resultadoTelefono.results.bindings)
                     {
                         string person = fila["person"].value;
                         string telephone = fila["telephone"].value;
@@ -1610,16 +1607,16 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
 
                 //Página
                 {
-                    String select = @"SELECT DISTINCT ?person ?homepage";
-                    String where = @$"where{{
+                    String selectPagina = @"SELECT DISTINCT ?person ?homepage";
+                    String wherePagina = @$"where{{
                                         ?person a <http://xmlns.com/foaf/0.1/Person>.
                                         ?person <http://xmlns.com/foaf/0.1/homepage> ?homepage.
                                         FILTER( ?person IN ( {personasIDsStr} )).
                         }}";
-                    SparqlObject resultado = mResourceApi.VirtuosoQuery(select, where, "person");
+                    SparqlObject resultadoPagina = mResourceApi.VirtuosoQuery(selectPagina, wherePagina, "person");
 
                     // Personas que no poseen actualmente un CV
-                    foreach (Dictionary<string, SparqlObject.Data> fila in resultado.results.bindings)
+                    foreach (Dictionary<string, SparqlObject.Data> fila in resultadoPagina.results.bindings)
                     {
                         string person = fila["person"].value;
                         string homepage = fila["homepage"].value;
@@ -1635,18 +1632,18 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
                 //SCOPUS
                 //ResearcherId
                 {
-                    String select = @"SELECT DISTINCT ?person ?orcid ?scopusId ?researcherId";
-                    String where = @$"where{{
+                    String selectIDs = @"SELECT DISTINCT ?person ?orcid ?scopusId ?researcherId";
+                    String whereIDs = @$"where{{
                                         ?person a <http://xmlns.com/foaf/0.1/Person>.
                                         OPTIONAL{{?person <http://w3id.org/roh/ORCID> ?orcid.}}
                                         OPTIONAL{{?person <http://vivoweb.org/ontology/core#scopusId> ?scopusId.}}
                                         OPTIONAL{{?person <http://vivoweb.org/ontology/core#researcherId> ?researcherId.}}
                                         FILTER( ?person IN ( {personasIDsStr} )).
                         }}";
-                    SparqlObject resultado = mResourceApi.VirtuosoQuery(select, where, "person");
+                    SparqlObject resultadoIDs = mResourceApi.VirtuosoQuery(selectIDs, whereIDs, "person");
 
                     // Personas que no poseen actualmente un CV
-                    foreach (Dictionary<string, SparqlObject.Data> fila in resultado.results.bindings)
+                    foreach (Dictionary<string, SparqlObject.Data> fila in resultadoIDs.results.bindings)
                     {
                         string person = fila["person"].value;
                         string orcid = "";
@@ -1676,16 +1673,16 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
 
                 //Otros IDs
                 {
-                    String select = @"SELECT DISTINCT ?person ?semanticScholarId";
-                    String where = @$"where{{
+                    String selectIDsOther = @"SELECT DISTINCT ?person ?semanticScholarId";
+                    String whereIDsOther = @$"where{{
                                         ?person a <http://xmlns.com/foaf/0.1/Person>.
                                         ?person <http://w3id.org/roh/semanticScholarId> ?semanticScholarId.
                                         FILTER( ?person IN ( {personasIDsStr} )).
                         }}";
-                    SparqlObject resultado = mResourceApi.VirtuosoQuery(select, where, "person");
+                    SparqlObject resultadoIDsOther = mResourceApi.VirtuosoQuery(selectIDsOther, whereIDsOther, "person");
 
                     // Personas que no poseen actualmente un CV
-                    foreach (Dictionary<string, SparqlObject.Data> fila in resultado.results.bindings)
+                    foreach (Dictionary<string, SparqlObject.Data> fila in resultadoIDsOther.results.bindings)
                     {
                         string person = fila["person"].value;
                         string semanticScholarId = fila["semanticScholarId"].value;
@@ -1703,16 +1700,16 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
 
                 //Direccion
                 {
-                    String select = @"SELECT DISTINCT ?person ?address";
-                    String where = @$"where{{
+                    String selectDireccion = @"SELECT DISTINCT ?person ?address";
+                    String whereDireccion = @$"where{{
                                         ?person a <http://xmlns.com/foaf/0.1/Person>.
                                         ?person <https://www.w3.org/2006/vcard/ns#address> ?address.
                                         FILTER( ?person IN ( {personasIDsStr} )).
                         }}";
-                    SparqlObject resultado = mResourceApi.VirtuosoQuery(select, where, "person");
+                    SparqlObject resultadoDireccion = mResourceApi.VirtuosoQuery(selectDireccion, whereDireccion, "person");
 
                     // Personas que no poseen actualmente un CV
-                    foreach (Dictionary<string, SparqlObject.Data> fila in resultado.results.bindings)
+                    foreach (Dictionary<string, SparqlObject.Data> fila in resultadoDireccion.results.bindings)
                     {
                         string person = fila["person"].value;
                         string address = fila["address"].value;
@@ -1737,7 +1734,7 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
         /// <param name="pDatosCargar">Datos</param>
         private void InsertarDocumentosCV(SparqlObject pDatosCargar)
         {
-            Dictionary<Guid, List<TriplesToInclude>> triplesToInclude = new();
+            Dictionary<Guid, List<TriplesToInclude>> triplesToIncludeDocuments = new();
             foreach (Dictionary<string, SparqlObject.Data> fila in pDatosCargar.results.bindings)
             {
                 string cv = fila["cv"].value;
@@ -1785,20 +1782,20 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
                 TriplesToInclude tr1 = new(idEntityAux + "|" + document, predicadoEntidad);
                 listaTriples.Add(tr1);
 
-                Guid idCV = mResourceApi.GetShortGuid(cv);
-                if (triplesToInclude.ContainsKey(idCV))
+                Guid idCVDocument = mResourceApi.GetShortGuid(cv);
+                if (triplesToIncludeDocuments.ContainsKey(idCVDocument))
                 {
-                    triplesToInclude[idCV].AddRange(listaTriples);
+                    triplesToIncludeDocuments[idCVDocument].AddRange(listaTriples);
                 }
                 else
                 {
-                    triplesToInclude.Add(mResourceApi.GetShortGuid(cv), listaTriples);
+                    triplesToIncludeDocuments.Add(mResourceApi.GetShortGuid(cv), listaTriples);
                 }
             }
 
-            Parallel.ForEach(triplesToInclude.Keys, new ParallelOptions { MaxDegreeOfParallelism = ActualizadorBase.numParallel }, idCV =>
+            Parallel.ForEach(triplesToIncludeDocuments.Keys, new ParallelOptions { MaxDegreeOfParallelism = ActualizadorBase.numParallel }, idCV =>
             {
-                List<List<TriplesToInclude>> listasDeListas = SplitList(triplesToInclude[idCV], 50).ToList();
+                List<List<TriplesToInclude>> listasDeListas = SplitList(triplesToIncludeDocuments[idCV], 50).ToList();
                 foreach (List<TriplesToInclude> triples in listasDeListas)
                 {
                     mResourceApi.InsertPropertiesLoadedResources(new() { { idCV, triples } });
@@ -1812,7 +1809,7 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
         /// <param name="pDatosCargar">Datos</param>
         private void PublicarDocumentosCV(SparqlObject pDatosCargar)
         {
-            Dictionary<Guid, List<TriplesToModify>> triplesToModify = new();
+            Dictionary<Guid, List<TriplesToModify>> triplesToModifyDocuments = new();
             foreach (Dictionary<string, SparqlObject.Data> fila in pDatosCargar.results.bindings)
             {
                 string cv = fila["cv"].value;
@@ -1828,20 +1825,20 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
                     Predicate = "http://w3id.org/roh/scientificActivity|" + propItem + "|http://w3id.org/roh/isPublic"
                 };
 
-                Guid idCV = mResourceApi.GetShortGuid(cv);
-                if (triplesToModify.ContainsKey(idCV))
+                Guid idCVDocumentsModify = mResourceApi.GetShortGuid(cv);
+                if (triplesToModifyDocuments.ContainsKey(idCVDocumentsModify))
                 {
-                    triplesToModify[idCV].Add(triple);
+                    triplesToModifyDocuments[idCVDocumentsModify].Add(triple);
                 }
                 else
                 {
-                    triplesToModify.Add(mResourceApi.GetShortGuid(cv), new List<TriplesToModify>() { triple });
+                    triplesToModifyDocuments.Add(mResourceApi.GetShortGuid(cv), new List<TriplesToModify>() { triple });
                 }
             }
 
-            Parallel.ForEach(triplesToModify.Keys, new ParallelOptions { MaxDegreeOfParallelism = ActualizadorBase.numParallel }, idCV =>
+            Parallel.ForEach(triplesToModifyDocuments.Keys, new ParallelOptions { MaxDegreeOfParallelism = ActualizadorBase.numParallel }, idCV =>
             {
-                List<List<TriplesToModify>> listasDeListas = SplitList(triplesToModify[idCV], 50).ToList();
+                List<List<TriplesToModify>> listasDeListas = SplitList(triplesToModifyDocuments[idCV], 50).ToList();
                 foreach (List<TriplesToModify> triples in listasDeListas)
                 {
                     mResourceApi.ModifyPropertiesLoadedResources(new() { { idCV, triples } });
@@ -1855,7 +1852,7 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
         /// <param name="pDatosCargar">Datos</param>
         private void EliminarDocumentosCV(SparqlObject pDatosCargar)
         {
-            Dictionary<Guid, List<RemoveTriples>> triplesToDelete = new();
+            Dictionary<Guid, List<RemoveTriples>> triplesToDeleteDocument = new();
             foreach (Dictionary<string, SparqlObject.Data> fila in pDatosCargar.results.bindings)
             {
                 string cv = fila["cv"].value;
@@ -1880,20 +1877,20 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
                 RemoveTriples removeTriple = new();
                 removeTriple.Predicate = "http://w3id.org/roh/scientificActivity|" + property;
                 removeTriple.Value = scientificActivity + "|" + item;
-                Guid idCV = mResourceApi.GetShortGuid(cv);
-                if (triplesToDelete.ContainsKey(idCV))
+                Guid idCVDocumentsDelete = mResourceApi.GetShortGuid(cv);
+                if (triplesToDeleteDocument.ContainsKey(idCVDocumentsDelete))
                 {
-                    triplesToDelete[idCV].Add(removeTriple);
+                    triplesToDeleteDocument[idCVDocumentsDelete].Add(removeTriple);
                 }
                 else
                 {
-                    triplesToDelete.Add(idCV, new() { removeTriple });
+                    triplesToDeleteDocument.Add(idCVDocumentsDelete, new() { removeTriple });
                 }
             }
 
-            Parallel.ForEach(triplesToDelete.Keys, new ParallelOptions { MaxDegreeOfParallelism = ActualizadorBase.numParallel }, idCV =>
+            Parallel.ForEach(triplesToDeleteDocument.Keys, new ParallelOptions { MaxDegreeOfParallelism = ActualizadorBase.numParallel }, idCV =>
             {
-                List<List<RemoveTriples>> listasDeListas = SplitList(triplesToDelete[idCV], 50).ToList();
+                List<List<RemoveTriples>> listasDeListas = SplitList(triplesToDeleteDocument[idCV], 50).ToList();
                 foreach (List<RemoveTriples> triples in listasDeListas)
                 {
                     mResourceApi.DeletePropertiesLoadedResources(new() { { idCV, triples } });
@@ -1907,7 +1904,7 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
         /// <param name="pDatosCargar">Datos</param>
         private void InsertarResearchObjectsCV(SparqlObject pDatosCargar)
         {
-            Dictionary<Guid, List<TriplesToInclude>> triplesToInclude = new();
+            Dictionary<Guid, List<TriplesToInclude>> triplesToIncludeRO = new();
             foreach (Dictionary<string, SparqlObject.Data> fila in pDatosCargar.results.bindings)
             {
                 string cv = fila["cv"].value;
@@ -1934,20 +1931,20 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
                 TriplesToInclude tr1 = new(idEntityAux + "|" + ro, predicadoEntidad);
                 listaTriples.Add(tr1);
 
-                Guid idCV = mResourceApi.GetShortGuid(cv);
-                if (triplesToInclude.ContainsKey(idCV))
+                Guid idCVIncludeRO = mResourceApi.GetShortGuid(cv);
+                if (triplesToIncludeRO.ContainsKey(idCVIncludeRO))
                 {
-                    triplesToInclude[idCV].AddRange(listaTriples);
+                    triplesToIncludeRO[idCVIncludeRO].AddRange(listaTriples);
                 }
                 else
                 {
-                    triplesToInclude.Add(mResourceApi.GetShortGuid(cv), listaTriples);
+                    triplesToIncludeRO.Add(mResourceApi.GetShortGuid(cv), listaTriples);
                 }
             }
 
-            Parallel.ForEach(triplesToInclude.Keys, new ParallelOptions { MaxDegreeOfParallelism = ActualizadorBase.numParallel }, idCV =>
+            Parallel.ForEach(triplesToIncludeRO.Keys, new ParallelOptions { MaxDegreeOfParallelism = ActualizadorBase.numParallel }, idCV =>
             {
-                List<List<TriplesToInclude>> listasDeListas = SplitList(triplesToInclude[idCV], 50).ToList();
+                List<List<TriplesToInclude>> listasDeListas = SplitList(triplesToIncludeRO[idCV], 50).ToList();
                 foreach (List<TriplesToInclude> triples in listasDeListas)
                 {
                     mResourceApi.InsertPropertiesLoadedResources(new() { { idCV, triples } });
@@ -1961,7 +1958,7 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
         /// <param name="pDatosCargar">Datos</param>
         private void PublicarResearchObjectsCV(SparqlObject pDatosCargar)
         {
-            Dictionary<Guid, List<TriplesToModify>> triplesToModify = new();
+            Dictionary<Guid, List<TriplesToModify>> triplesToModifyRO = new();
             foreach (Dictionary<string, SparqlObject.Data> fila in pDatosCargar.results.bindings)
             {
                 string cv = fila["cv"].value;
@@ -1977,20 +1974,20 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
                     Predicate = "http://w3id.org/roh/researchObject|" + propItem + "|http://w3id.org/roh/isPublic"
                 };
 
-                Guid idCV = mResourceApi.GetShortGuid(cv);
-                if (triplesToModify.ContainsKey(idCV))
+                Guid idCVModifyRO = mResourceApi.GetShortGuid(cv);
+                if (triplesToModifyRO.ContainsKey(idCVModifyRO))
                 {
-                    triplesToModify[idCV].Add(triple);
+                    triplesToModifyRO[idCVModifyRO].Add(triple);
                 }
                 else
                 {
-                    triplesToModify.Add(mResourceApi.GetShortGuid(cv), new List<TriplesToModify>() { triple });
+                    triplesToModifyRO.Add(mResourceApi.GetShortGuid(cv), new List<TriplesToModify>() { triple });
                 }
             }
 
-            Parallel.ForEach(triplesToModify.Keys, new ParallelOptions { MaxDegreeOfParallelism = ActualizadorBase.numParallel }, idCV =>
+            Parallel.ForEach(triplesToModifyRO.Keys, new ParallelOptions { MaxDegreeOfParallelism = ActualizadorBase.numParallel }, idCV =>
             {
-                List<List<TriplesToModify>> listasDeListas = SplitList(triplesToModify[idCV], 50).ToList();
+                List<List<TriplesToModify>> listasDeListas = SplitList(triplesToModifyRO[idCV], 50).ToList();
                 foreach (List<TriplesToModify> triples in listasDeListas)
                 {
                     mResourceApi.ModifyPropertiesLoadedResources(new() { { idCV, triples } });
@@ -2004,7 +2001,7 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
         /// <param name="pDatosCargar">Datos</param>
         private void EliminarResearchObjectsCV(SparqlObject pDatosCargar)
         {
-            Dictionary<Guid, List<RemoveTriples>> triplesToDelete = new();
+            Dictionary<Guid, List<RemoveTriples>> triplesToDeleteRO = new();
             foreach (Dictionary<string, SparqlObject.Data> fila in pDatosCargar.results.bindings)
             {
                 string cv = fila["cv"].value;
@@ -2015,20 +2012,20 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
                 RemoveTriples removeTriple = new();
                 removeTriple.Predicate = "http://w3id.org/roh/researchObject|" + property;
                 removeTriple.Value = researchObject + "|" + item;
-                Guid idCV = mResourceApi.GetShortGuid(cv);
-                if (triplesToDelete.ContainsKey(idCV))
+                Guid idCVDeleteRO = mResourceApi.GetShortGuid(cv);
+                if (triplesToDeleteRO.ContainsKey(idCVDeleteRO))
                 {
-                    triplesToDelete[idCV].Add(removeTriple);
+                    triplesToDeleteRO[idCVDeleteRO].Add(removeTriple);
                 }
                 else
                 {
-                    triplesToDelete.Add(idCV, new() { removeTriple });
+                    triplesToDeleteRO.Add(idCVDeleteRO, new() { removeTriple });
                 }
             }
 
-            Parallel.ForEach(triplesToDelete.Keys, new ParallelOptions { MaxDegreeOfParallelism = ActualizadorBase.numParallel }, idCV =>
+            Parallel.ForEach(triplesToDeleteRO.Keys, new ParallelOptions { MaxDegreeOfParallelism = ActualizadorBase.numParallel }, idCV =>
             {
-                List<List<RemoveTriples>> listasDeListas = SplitList(triplesToDelete[idCV], 50).ToList();
+                List<List<RemoveTriples>> listasDeListas = SplitList(triplesToDeleteRO[idCV], 50).ToList();
                 foreach (List<RemoveTriples> triples in listasDeListas)
                 {
                     mResourceApi.DeletePropertiesLoadedResources(new() { { idCV, triples } });
@@ -2043,7 +2040,7 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
         private void InsertarProyectosCV(SparqlObject pDatosCargar)
         {
             //http://gnoss.com/items/scientificexperienceproject_SEP1
-            Dictionary<Guid, List<TriplesToInclude>> triplesToInclude = new();
+            Dictionary<Guid, List<TriplesToInclude>> triplesToIncludeProjects = new();
             foreach (Dictionary<string, SparqlObject.Data> fila in pDatosCargar.results.bindings)
             {
                 string cv = fila["cv"].value;
@@ -2082,20 +2079,20 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
                 TriplesToInclude tr1 = new(idEntityAux + "|" + project, predicadoEntidad);
                 listaTriples.Add(tr1);
 
-                Guid idCV = mResourceApi.GetShortGuid(cv);
-                if (triplesToInclude.ContainsKey(idCV))
+                Guid idCVIncludeProjects = mResourceApi.GetShortGuid(cv);
+                if (triplesToIncludeProjects.ContainsKey(idCVIncludeProjects))
                 {
-                    triplesToInclude[idCV].AddRange(listaTriples);
+                    triplesToIncludeProjects[idCVIncludeProjects].AddRange(listaTriples);
                 }
                 else
                 {
-                    triplesToInclude.Add(mResourceApi.GetShortGuid(cv), listaTriples);
+                    triplesToIncludeProjects.Add(mResourceApi.GetShortGuid(cv), listaTriples);
                 }
             }
 
-            Parallel.ForEach(triplesToInclude.Keys, new ParallelOptions { MaxDegreeOfParallelism = ActualizadorBase.numParallel }, idCV =>
+            Parallel.ForEach(triplesToIncludeProjects.Keys, new ParallelOptions { MaxDegreeOfParallelism = ActualizadorBase.numParallel }, idCV =>
             {
-                mResourceApi.InsertPropertiesLoadedResources(new Dictionary<Guid, List<TriplesToInclude>>() { { idCV, triplesToInclude[idCV] } });
+                mResourceApi.InsertPropertiesLoadedResources(new Dictionary<Guid, List<TriplesToInclude>>() { { idCV, triplesToIncludeProjects[idCV] } });
             });
         }
 
@@ -2105,7 +2102,7 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
         /// <param name="pDatosCargar">Datos</param>
         private void EliminarProyectosCV(SparqlObject pDatosCargar)
         {
-            Dictionary<Guid, List<RemoveTriples>> triplesToDelete = new();
+            Dictionary<Guid, List<RemoveTriples>> triplesToDeleteProject = new();
             foreach (Dictionary<string, SparqlObject.Data> fila in pDatosCargar.results.bindings)
             {
                 string cv = fila["cv"].value;
@@ -2127,20 +2124,20 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
                 RemoveTriples removeTriple = new();
                 removeTriple.Predicate = "http://w3id.org/roh/scientificExperience|" + property;
                 removeTriple.Value = scientificExperience + "|" + item;
-                Guid idCV = mResourceApi.GetShortGuid(cv);
-                if (triplesToDelete.ContainsKey(idCV))
+                Guid idCVDeleteProject = mResourceApi.GetShortGuid(cv);
+                if (triplesToDeleteProject.ContainsKey(idCVDeleteProject))
                 {
-                    triplesToDelete[idCV].Add(removeTriple);
+                    triplesToDeleteProject[idCVDeleteProject].Add(removeTriple);
                 }
                 else
                 {
-                    triplesToDelete.Add(idCV, new List<RemoveTriples>() { removeTriple });
+                    triplesToDeleteProject.Add(idCVDeleteProject, new List<RemoveTriples>() { removeTriple });
                 }
             }
 
-            Parallel.ForEach(triplesToDelete.Keys, new ParallelOptions { MaxDegreeOfParallelism = ActualizadorBase.numParallel }, idCV =>
+            Parallel.ForEach(triplesToDeleteProject.Keys, new ParallelOptions { MaxDegreeOfParallelism = ActualizadorBase.numParallel }, idCV =>
             {
-                mResourceApi.DeletePropertiesLoadedResources(new Dictionary<Guid, List<RemoveTriples>>() { { idCV, triplesToDelete[idCV] } });
+                mResourceApi.DeletePropertiesLoadedResources(new Dictionary<Guid, List<RemoveTriples>>() { { idCV, triplesToDeleteProject[idCV] } });
             });
         }
 
