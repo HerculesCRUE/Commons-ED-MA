@@ -541,7 +541,7 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
         public void ActualizarNumeroProyectos(List<string> pGroups = null, List<string> pProjects = null)
         {
             //Eliminamos los duplicados
-            EliminarDuplicados("group", "http://xmlns.com/foaf/0.1/Group", "http://w3id.org/roh/projectsNumber");
+            EliminarDuplicados("group", $"{GetUrlPrefix("foaf")}Group", $"{GetUrlPrefix("roh")}projectsNumber");
 
             HashSet<string> filtersActualizarNumeroProyectos = new HashSet<string>();
             if (pGroups != null && pGroups.Count > 0)
@@ -598,7 +598,7 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
                         {
                             numProyectosCargados = fila["numProyectosCargados"].value;
                         }
-                        ActualizadorTriple(grupo, "http://w3id.org/roh/projectsNumber", numProyectosCargados, numProyectosACargar);
+                        ActualizadorTriple(grupo, $"{GetUrlPrefix("roh")}projectsNumber", numProyectosCargados, numProyectosACargar);
                     });
 
                     if (resultado.results.bindings.Count != limit)
