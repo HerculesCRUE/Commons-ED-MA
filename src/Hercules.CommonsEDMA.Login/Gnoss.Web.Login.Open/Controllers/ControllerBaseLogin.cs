@@ -508,7 +508,7 @@ namespace Gnoss.Web.Login
         /// </summary>
         /// <returns></returns>
         [NonAction]
-        private DateTime ObtenerValidezCookieUsuario()
+        protected DateTime ObtenerValidezCookieUsuario()
         {
             //establezco la validez inicial de la cookie que será de 1 día o indefinida si el usuario quiere mantener su sesión activa
             DateTime caduca = DateTime.Now.AddDays(1);
