@@ -1,5 +1,6 @@
 ﻿using Gnoss.ApiWrapper;
 using Gnoss.ApiWrapper.ApiModel;
+using Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -33,11 +34,11 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Similarity
             switch (mType)
             {
                 case "research_paper":
-                    mRdfType = "http://purl.org/ontology/bibo/Document";
+                    mRdfType = $"{ActualizadorBase.GetUrlPrefix("bibo")}Document";
                     mGraph = "document";
                     break;
                 case "code_project":
-                    mRdfType = "http://w3id.org/roh/ResearchObject";
+                    mRdfType = $"{ActualizadorBase.GetUrlPrefix("roh")}ResearchObject";
                     mGraph = "researchobject";
                     break;
                 default:
@@ -406,11 +407,11 @@ where
             switch (mType)
             {
                 case "research_paper":
-                    rdfType = "http://purl.org/ontology/bibo/Document";
+                    rdfType = $"{ActualizadorBase.GetUrlPrefix("bibo")}Document";
                     graph = "document";
                     break;
                 case "code_project":
-                    rdfType = "http://w3id.org/roh/ResearchObject";
+                    rdfType = $"{ActualizadorBase.GetUrlPrefix("roh")}ResearchObject";
                     graph = "researchobject";
                     break;
             }

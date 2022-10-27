@@ -92,7 +92,7 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
                         {
                             triplesRemove.Add(new RemoveTriples()
                             {
-                                Predicate = "http://w3id.org/roh/hasKnowledgeArea",
+                                Predicate = $"{GetUrlPrefix("roh")}hasKnowledgeArea",
                                 Value = hasKnowledgeArea
                             }); ;
                         }
@@ -144,7 +144,7 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
                             }}
                             }}}}order by (?ro) limit {limitInsertamos}";
                     SparqlObject resultadoInsertamos = mResourceApi.VirtuosoQueryMultipleGraph(selectInsertamos, whereInsertamos, new List<string>() { "researchobject", "taxonomy" });
-                    InsertarCategorias(resultadoInsertamos, dicAreasBroader, mResourceApi.GraphsUrl, "ro", "http://w3id.org/roh/hasKnowledgeArea");
+                    InsertarCategorias(resultadoInsertamos, dicAreasBroader, mResourceApi.GraphsUrl, "ro", $"{GetUrlPrefix("roh")}hasKnowledgeArea");
                     if (resultadoInsertamos.results.bindings.Count != limitInsertamos)
                     {
                         break;
@@ -184,7 +184,7 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
                             }}
                             }}}} limit {limitEliminamos}";
                     SparqlObject resultadoEliminamos = mResourceApi.VirtuosoQueryMultipleGraph(selectEliminamos, whereEliminamos, new List<string>() { "researchobject", "taxonomy" });
-                    EliminarCategorias(resultadoEliminamos, "ro", "http://w3id.org/roh/hasKnowledgeArea");
+                    EliminarCategorias(resultadoEliminamos, "ro", $"{GetUrlPrefix("roh")}hasKnowledgeArea");
                     if (resultadoEliminamos.results.bindings.Count != limitEliminamos)
                     {
                         break;
@@ -244,7 +244,7 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
                             }}
                             }}}}order by (?ro) limit {limitInsertamos}";
                     SparqlObject resultadoInsertamos = mResourceApi.VirtuosoQuery(selectInsertamos, whereInsertamos, "researchobject");
-                    InsercionMultiple(resultadoInsertamos.results.bindings, "http://vivoweb.org/ontology/core#freeTextKeyword", "ro", "tag");
+                    InsercionMultiple(resultadoInsertamos.results.bindings, $"{GetUrlPrefix("vivo")}freeTextKeyword", "ro", "tag");
                     if (resultadoInsertamos.results.bindings.Count != limitInsertamos)
                     {
                         break;
@@ -276,7 +276,7 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
                             }}
                             }}}} limit {limitEliminamos}";
                     SparqlObject resultadoEliminamos = mResourceApi.VirtuosoQuery(selectEliminamos, whereEliminamos, "researchobject");
-                    EliminacionMultiple(resultadoEliminamos.results.bindings, "http://vivoweb.org/ontology/core#freeTextKeyword", "ro", "tag");
+                    EliminacionMultiple(resultadoEliminamos.results.bindings, $"{GetUrlPrefix("vivo")}freeTextKeyword", "ro", "tag");
                     if (resultadoEliminamos.results.bindings.Count != limitEliminamos)
                     {
                         break;
@@ -354,7 +354,7 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
             }
 
             //Eliminamos los duplicados
-            EliminarDuplicados("researchobject", "http://w3id.org/roh/ResearchObject", "http://w3id.org/roh/linkedCount");
+            EliminarDuplicados("researchobject", $"{GetUrlPrefix("roh")}ResearchObject", $"{GetUrlPrefix("roh")}linkedCount");
 
             foreach (string filter in filtersActualizarNumeroVinculados)
             {
@@ -403,7 +403,7 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
                         {
                             numLinkedCargados = fila["numLinkedCargados"].value;
                         }
-                        ActualizadorTriple(ro, "http://w3id.org/roh/linkedCount", numLinkedCargados, numLinkedACargar);
+                        ActualizadorTriple(ro, $"{GetUrlPrefix("roh")}linkedCount", numLinkedCargados, numLinkedACargar);
                     });
 
                     if (resultadoActualizarNumeroVinculados.results.bindings.Count != limitActualizarNumeroVinculados)
