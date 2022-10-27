@@ -1464,12 +1464,12 @@ namespace Hercules.CommonsEDMA.DisambiguationEngine.Models
                     {
                         for (int i = 0; i < pDataA.Value.Count; i++)
                         {
-                            DisambiguationData dataAAux = pDataA.Value[i];
-                            DisambiguationData dataBAux = pDataB.Value[i];
+                            DisambiguationData dataAAuxTituloResto = pDataA.Value[i];
+                            DisambiguationData dataBAuxTituloResto = pDataB.Value[i];
 
-                            if (dataAAux.config.scoreMinus > 0)
+                            if (dataAAuxTituloResto.config.scoreMinus > 0)
                             {
-                                switch (dataAAux.config.type)
+                                switch (dataAAuxTituloResto.config.type)
                                 {
                                     case DisambiguationDataConfigType.equalsIdentifiers:
                                     case DisambiguationDataConfigType.equalsTitle:
@@ -1478,13 +1478,13 @@ namespace Hercules.CommonsEDMA.DisambiguationEngine.Models
                                     case DisambiguationDataConfigType.algoritmoNombres:
                                         throw new Exception("Si tiene título no debería tener nombres");
                                     case DisambiguationDataConfigType.equalsItem:
-                                        if (!string.IsNullOrEmpty(dataAAux.value) && !string.IsNullOrEmpty(dataBAux.value))
+                                        if (!string.IsNullOrEmpty(dataAAuxTituloResto.value) && !string.IsNullOrEmpty(dataBAuxTituloResto.value))
                                         {
-                                            if (!(dicEqualsItemTituloResto.ContainsKey(dataAAux.value) &&
-                                                dicEqualsItemTituloResto[dataAAux.value].ContainsKey(dataBAux.value) &&
-                                               dicEqualsItemTituloResto[dataAAux.value][dataBAux.value].Contains(dataAAux.property)))
+                                            if (!(dicEqualsItemTituloResto.ContainsKey(dataAAuxTituloResto.value) &&
+                                                dicEqualsItemTituloResto[dataAAuxTituloResto.value].ContainsKey(dataBAuxTituloResto.value) &&
+                                               dicEqualsItemTituloResto[dataAAuxTituloResto.value][dataBAuxTituloResto.value].Contains(dataAAuxTituloResto.property)))
                                             {
-                                                result -= result * dataAAux.config.scoreMinus;
+                                                result -= result * dataAAuxTituloResto.config.scoreMinus;
                                             }
                                         }
                                         break;
@@ -1522,12 +1522,12 @@ namespace Hercules.CommonsEDMA.DisambiguationEngine.Models
                     Dictionary<string, Dictionary<string, HashSet<string>>> dicEqualsItemNombreResto = new Dictionary<string, Dictionary<string, HashSet<string>>>();
                     for (int i = 0; i < pDataA.Value.Count; i++)
                     {
-                        DisambiguationData dataAAux = pDataA.Value[i];
-                        DisambiguationData dataBAux = pDataB.Value[i];
+                        DisambiguationData dataAAuxNombreResto = pDataA.Value[i];
+                        DisambiguationData dataBAuxNombreResto = pDataB.Value[i];
 
-                        if (dataAAux.config.score > 0)
+                        if (dataAAuxNombreResto.config.score > 0)
                         {
-                            switch (dataAAux.config.type)
+                            switch (dataAAuxNombreResto.config.type)
                             {
                                 case DisambiguationDataConfigType.equalsIdentifiers:
                                 case DisambiguationDataConfigType.algoritmoNombres:
@@ -1536,21 +1536,21 @@ namespace Hercules.CommonsEDMA.DisambiguationEngine.Models
                                 case DisambiguationDataConfigType.equalsTitle:
                                     throw new Exception("Si tiene nombre no debería tener titulo");
                                 case DisambiguationDataConfigType.equalsItem:
-                                    if (PesoEqualsItem(ref result, dataAAux.config.score, dataAAux.value, dataBAux.value, pEquivalencesAux))
+                                    if (PesoEqualsItem(ref result, dataAAuxNombreResto.config.score, dataAAuxNombreResto.value, dataBAuxNombreResto.value, pEquivalencesAux))
                                     {
-                                        if (!dicEqualsItemNombreResto.ContainsKey(dataAAux.value))
+                                        if (!dicEqualsItemNombreResto.ContainsKey(dataAAuxNombreResto.value))
                                         {
-                                            dicEqualsItemNombreResto.Add(dataAAux.value, new Dictionary<string, HashSet<string>>());
+                                            dicEqualsItemNombreResto.Add(dataAAuxNombreResto.value, new Dictionary<string, HashSet<string>>());
                                         }
-                                        if (!dicEqualsItemNombreResto[dataAAux.value].ContainsKey(dataBAux.value))
+                                        if (!dicEqualsItemNombreResto[dataAAuxNombreResto.value].ContainsKey(dataBAuxNombreResto.value))
                                         {
-                                            dicEqualsItemNombreResto[dataAAux.value].Add(dataBAux.value, new HashSet<string>());
+                                            dicEqualsItemNombreResto[dataAAuxNombreResto.value].Add(dataBAuxNombreResto.value, new HashSet<string>());
                                         }
-                                        dicEqualsItemNombreResto[dataAAux.value][dataBAux.value].Add(dataAAux.property);
+                                        dicEqualsItemNombreResto[dataAAuxNombreResto.value][dataBAuxNombreResto.value].Add(dataAAuxNombreResto.property);
                                     }
                                     break;
                                 case DisambiguationDataConfigType.equalsItemList:
-                                    result = PesoEqualsItemList(result, dataAAux.config.score, dataAAux.values, dataBAux.values, pEquivalencesAux);
+                                    result = PesoEqualsItemList(result, dataAAuxNombreResto.config.score, dataAAuxNombreResto.values, dataBAuxNombreResto.values, pEquivalencesAux);
                                     break;
                                 default:
                                     throw new Exception("No está implementado.");
@@ -1562,12 +1562,12 @@ namespace Hercules.CommonsEDMA.DisambiguationEngine.Models
                     {
                         for (int i = 0; i < pDataA.Value.Count; i++)
                         {
-                            DisambiguationData dataAAux = pDataA.Value[i];
-                            DisambiguationData dataBAux = pDataB.Value[i];
+                            DisambiguationData dataAAuxNombreResto = pDataA.Value[i];
+                            DisambiguationData dataBAuxNombreResto = pDataB.Value[i];
 
-                            if (dataAAux.config.scoreMinus > 0)
+                            if (dataAAuxNombreResto.config.scoreMinus > 0)
                             {
-                                switch (dataAAux.config.type)
+                                switch (dataAAuxNombreResto.config.type)
                                 {
                                     case DisambiguationDataConfigType.equalsIdentifiers:
                                     case DisambiguationDataConfigType.algoritmoNombres:
@@ -1576,13 +1576,13 @@ namespace Hercules.CommonsEDMA.DisambiguationEngine.Models
                                     case DisambiguationDataConfigType.equalsTitle:
                                         throw new Exception("Si tiene nombre no debería tener titulo");
                                     case DisambiguationDataConfigType.equalsItem:
-                                        if (!string.IsNullOrEmpty(dataAAux.value) && !string.IsNullOrEmpty(dataBAux.value))
+                                        if (!string.IsNullOrEmpty(dataAAuxNombreResto.value) && !string.IsNullOrEmpty(dataBAuxNombreResto.value))
                                         {
-                                            if (!(dicEqualsItemNombreResto.ContainsKey(dataAAux.value) &&
-                                                dicEqualsItemNombreResto[dataAAux.value].ContainsKey(dataBAux.value) &&
-                                               dicEqualsItemNombreResto[dataAAux.value][dataBAux.value].Contains(dataAAux.property)))
+                                            if (!(dicEqualsItemNombreResto.ContainsKey(dataAAuxNombreResto.value) &&
+                                                dicEqualsItemNombreResto[dataAAuxNombreResto.value].ContainsKey(dataBAuxNombreResto.value) &&
+                                               dicEqualsItemNombreResto[dataAAuxNombreResto.value][dataBAuxNombreResto.value].Contains(dataAAuxNombreResto.property)))
                                             {
-                                                result -= result * dataAAux.config.scoreMinus;
+                                                result -= result * dataAAuxNombreResto.config.scoreMinus;
                                             }
                                         }
                                         break;
@@ -1608,33 +1608,33 @@ namespace Hercules.CommonsEDMA.DisambiguationEngine.Models
             Dictionary<string, Dictionary<string, HashSet<string>>> dicEqualsItemResto = new Dictionary<string, Dictionary<string, HashSet<string>>>();
             for (int i = 0; i < pDataA.Value.Count; i++)
             {
-                DisambiguationData dataAAux = pDataA.Value[i];
-                DisambiguationData dataBAux = pDataB.Value[i];
+                DisambiguationData dataAAuxResto = pDataA.Value[i];
+                DisambiguationData dataBAuxResto = pDataB.Value[i];
 
-                if (dataAAux.config.score > 0)
+                if (dataAAuxResto.config.score > 0)
                 {
-                    switch (dataAAux.config.type)
+                    switch (dataAAuxResto.config.type)
                     {
                         case DisambiguationDataConfigType.equalsTitle:
                         case DisambiguationDataConfigType.equalsIdentifiers:
                             //No se comprueba
                             break;
                         case DisambiguationDataConfigType.algoritmoNombres:
-                            float similaridad = GetNameSimilarity(dataAAux.value, dataBAux.value, pDicNomAutoresDesnormalizados, pToleranciaNombres);
-                            result += (1 - result) * similaridad * dataAAux.config.score;
+                            float similaridad = GetNameSimilarity(dataAAuxResto.value, dataBAuxResto.value, pDicNomAutoresDesnormalizados, pToleranciaNombres);
+                            result += (1 - result) * similaridad * dataAAuxResto.config.score;
                             break;
                         case DisambiguationDataConfigType.equalsItem:
-                            if (PesoEqualsItem(ref result, dataAAux.config.score, dataAAux.value, dataBAux.value, pEquivalencesAux))
+                            if (PesoEqualsItem(ref result, dataAAuxResto.config.score, dataAAuxResto.value, dataBAuxResto.value, pEquivalencesAux))
                             {
-                                if (!dicEqualsItemResto.ContainsKey(dataAAux.value))
+                                if (!dicEqualsItemResto.ContainsKey(dataAAuxResto.value))
                                 {
-                                    dicEqualsItemResto.Add(dataAAux.value, new Dictionary<string, HashSet<string>>());
+                                    dicEqualsItemResto.Add(dataAAuxResto.value, new Dictionary<string, HashSet<string>>());
                                 }
-                                if (!dicEqualsItemResto[dataAAux.value].ContainsKey(dataBAux.value))
+                                if (!dicEqualsItemResto[dataAAuxResto.value].ContainsKey(dataBAuxResto.value))
                                 {
-                                    dicEqualsItemResto[dataAAux.value].Add(dataBAux.value, new HashSet<string>());
+                                    dicEqualsItemResto[dataAAuxResto.value].Add(dataBAuxResto.value, new HashSet<string>());
                                 }
-                                dicEqualsItemResto[dataAAux.value][dataBAux.value].Add(dataAAux.property);
+                                dicEqualsItemResto[dataAAuxResto.value][dataBAuxResto.value].Add(dataAAuxResto.property);
                             }
                             break;
                         default:
