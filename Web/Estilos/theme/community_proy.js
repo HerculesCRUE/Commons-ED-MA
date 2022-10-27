@@ -2291,8 +2291,9 @@ function tooltipMatching (pTextoMesh, pUrlMesh, pDicSnomed, pElemento) {
                 <div class="tooltip-content">
                     <a href="${pUrlMesh}" target="_blank" class="tooltip-link">MESH: ${pTextoMesh}</a><br>
                     ${infoSnomed}
-                </div>`
+                </div>`;
 
+    $(pElemento).tooltip('dispose');
     montarTooltip.lanzar($(pElemento), info, 'background-blanco link');
     $(pElemento).tooltip('show');
 }
