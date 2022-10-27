@@ -144,7 +144,8 @@ var exportacionCV = {
 									</article>`;
 				$('.listadoCV').append(articleHTML);
 			}
-			$('.panNavegador').append(`
+			if ($('.panNavegador div.items.dropdown').length == 0) {
+				$('.panNavegador').append(`
 				<div class="items dropdown">
 					<a class="dropdown-toggle" data-toggle="dropdown" aria-expanded="true">
 						<span class="texto" items="5">Ver 5 items</span>
@@ -164,6 +165,7 @@ var exportacionCV = {
 						<li class="actual"><a href="javascript: void(0)" page="1">1</a></li>
 					</ul>
 				</nav>`);
+			}
 			that.pintarPaginacion();
 			OcultarUpdateProgress();
 		});

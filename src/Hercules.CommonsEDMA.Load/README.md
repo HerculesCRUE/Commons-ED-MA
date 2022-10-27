@@ -10,14 +10,14 @@
 |Cambios de la Versión|Versión inicial|
 
 
-
 [![SonarCloud](https://sonarcloud.io/images/project_badges/sonarcloud-white.svg)](https://sonarcloud.io/summary/new_code?id=Hercules.CommonsEDMA.Load)
 
-[![Bugs](https://sonarcloud.io/api/project_badges/measure?project=Hercules.CommonsEDMA.Load&metric=bugs)](https://sonarcloud.io/summary/new_code?id=Hercules.CommonsEDMA.Load)
 [![Reliability Rating](https://sonarcloud.io/api/project_badges/measure?project=Hercules.CommonsEDMA.Load&metric=reliability_rating)](https://sonarcloud.io/summary/new_code?id=Hercules.CommonsEDMA.Load)
-[![Reliability Rating](https://sonarcloud.io/api/project_badges/measure?project=Hercules.CommonsEDMA.Load&metric=reliability_rating)](https://sonarcloud.io/summary/new_code?id=Hercules.CommonsEDMA.Load)
+[![Security Rating](https://sonarcloud.io/api/project_badges/measure?project=Hercules.CommonsEDMA.Load&metric=security_rating)](https://sonarcloud.io/summary/new_code?id=Hercules.CommonsEDMA.Load)
+[![Maintainability Rating](https://sonarcloud.io/api/project_badges/measure?project=Hercules.CommonsEDMA.Load&metric=sqale_rating)](https://sonarcloud.io/summary/new_code?id=Hercules.CommonsEDMA.Load)
 [![Duplicated Lines (%)](https://sonarcloud.io/api/project_badges/measure?project=Hercules.CommonsEDMA.Load&metric=duplicated_lines_density)](https://sonarcloud.io/summary/new_code?id=Hercules.CommonsEDMA.Load)
-
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=Hercules.CommonsEDMA.Load&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=Hercules.CommonsEDMA.Load)
+[![Lines of Code](https://sonarcloud.io/api/project_badges/measure?project=Hercules.CommonsEDMA.Load&metric=ncloc)](https://sonarcloud.io/summary/new_code?id=Hercules.CommonsEDMA.Load)
 
 
 

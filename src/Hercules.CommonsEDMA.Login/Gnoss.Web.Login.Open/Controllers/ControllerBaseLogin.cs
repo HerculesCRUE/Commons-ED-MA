@@ -183,6 +183,10 @@ namespace Gnoss.Web.Login
                 {
                     filaUsuario = dataWrapperUsuario.ListaUsuario.First();
                 }
+                else
+                {
+                    return false;
+                }
 
                 //Autenticamos la password (autenticación completa)
                 if (!pIgnorarPassword && !usuarioCN.ValidarPasswordUsuarioSinActivar(filaUsuario, pContrasenia))

@@ -23,33 +23,9 @@ using System.Threading;
 namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
 {
     [EnableCors("_myAllowSpecificOrigins")]
-    public class AccionesSimilarity
+    public class AccionesSimilarity: GnossGetMainResourceApiDataBase
     {
-        #region --- Constantes   
-        private static string RUTA_OAUTH = $@"{System.AppDomain.CurrentDomain.SetupInformation.ApplicationBase}Config{Path.DirectorySeparatorChar}ConfigOAuth{Path.DirectorySeparatorChar}OAuthV3.config";
-        private static ResourceApi mResourceAPI = null;
-        #endregion
-
-        private static ResourceApi resourceApi
-        {
-            get
-            {
-                while (mResourceAPI == null)
-                {
-                    try
-                    {
-                        mResourceAPI = new ResourceApi(RUTA_OAUTH);
-                    }
-                    catch (Exception)
-                    {
-                        Console.WriteLine("No se ha podido iniciar ResourceApi");
-                        Console.WriteLine($"Contenido OAuth: {System.IO.File.ReadAllText(RUTA_OAUTH)}");
-                        Thread.Sleep(10000);
-                    }
-                }
-                return mResourceAPI;
-            }
-        }
+        
 
         /// <summary>
         /// 
@@ -60,6 +36,9 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
         /// <returns></returns>
         public List<KeyValuePair<Guid, Dictionary<string, float>>> GetSimilarities(string pId, ConfigService pConfig, string pType)
         {
+            
+            
+
             if (!string.IsNullOrEmpty(pConfig.GetUrlSimilarity()))
             {
                 UtilsSimilarity utilsSimilarity = new UtilsSimilarity(pConfig.GetUrlSimilarity(), resourceApi, pType);

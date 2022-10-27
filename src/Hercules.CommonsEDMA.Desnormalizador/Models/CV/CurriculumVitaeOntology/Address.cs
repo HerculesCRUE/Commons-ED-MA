@@ -44,16 +44,10 @@ namespace CurriculumvitaeOntology
 
 		internal override void GetProperties()
 		{
-			base.GetProperties();
 			propList.Add(new StringOntologyProperty("vcard:postal-code", this.Vcard_postal_code));
 			propList.Add(new StringOntologyProperty("vcard:extended-address", this.Vcard_extended_address));
 			propList.Add(new StringOntologyProperty("vcard:street-address", this.Vcard_street_address));
 			propList.Add(new StringOntologyProperty("vcard:locality", this.Vcard_locality));
 		}
-
-		internal override void GetEntities()
-		{
-			base.GetEntities();
-		} 
 	}
 }

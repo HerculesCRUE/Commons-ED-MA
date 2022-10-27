@@ -21,79 +21,9 @@ using System.Threading;
 namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
 {
     [EnableCors("_myAllowSpecificOrigins")]
-    public class AccionesCluster
+    public class AccionesCluster : GnossGetMainResourceApiDataBase
     {
-        #region --- Constantes   
-        private static string RUTA_OAUTH = $@"{System.AppDomain.CurrentDomain.SetupInformation.ApplicationBase}Config{Path.DirectorySeparatorChar}ConfigOAuth{Path.DirectorySeparatorChar}OAuthV3.config";
-        private static ResourceApi mResourceAPI = null;
-        private static CommunityApi mCommunityAPI = null;
-        private static Guid? mIDComunidad = null;
-        private static string RUTA_PREFIJOS = $@"{System.AppDomain.CurrentDomain.SetupInformation.ApplicationBase}Models{Path.DirectorySeparatorChar}JSON{Path.DirectorySeparatorChar}prefijos.json";
-        private static string mPrefijos = string.Join(" ", JsonConvert.DeserializeObject<List<string>>(File.ReadAllText(RUTA_PREFIJOS)));
-        #endregion
 
-        private static ResourceApi resourceApi
-        {
-            get
-            {
-                while (mResourceAPI == null)
-                {
-                    try
-                    {
-                        mResourceAPI = new ResourceApi(RUTA_OAUTH);
-                    }
-                    catch (Exception)
-                    {
-                        Console.WriteLine("No se ha podido iniciar ResourceApi");
-                        Console.WriteLine($"Contenido OAuth: {System.IO.File.ReadAllText(RUTA_OAUTH)}");
-                        Thread.Sleep(10000);
-                    }
-                }
-                return mResourceAPI;
-            }
-        }
-
-        private static CommunityApi communityApi
-        {
-            get
-            {
-                while (mCommunityAPI == null)
-                {
-                    try
-                    {
-                        mCommunityAPI = new CommunityApi(RUTA_OAUTH);
-                    }
-                    catch (Exception)
-                    {
-                        Console.WriteLine("No se ha podido iniciar CommunityApi");
-                        Console.WriteLine($"Contenido OAuth: {System.IO.File.ReadAllText(RUTA_OAUTH)}");
-                        Thread.Sleep(10000);
-                    }
-                }
-                return mCommunityAPI;
-            }
-        }
-
-        private static Guid idComunidad
-        {
-            get
-            {
-                while (!mIDComunidad.HasValue)
-                {
-                    try
-                    {
-                        mIDComunidad = communityApi.GetCommunityId();
-                    }
-                    catch (Exception)
-                    {
-                        Console.WriteLine("No se ha podido obtener el ID de la comnunidad");
-                        Console.WriteLine($"Contenido OAuth: {System.IO.File.ReadAllText(RUTA_OAUTH)}");
-                        Thread.Sleep(10000);
-                    }
-                }
-                return mIDComunidad.Value;
-            }
-        }
 
         /// <summary>
         /// Método público que obtiene una lista de thesaurus.

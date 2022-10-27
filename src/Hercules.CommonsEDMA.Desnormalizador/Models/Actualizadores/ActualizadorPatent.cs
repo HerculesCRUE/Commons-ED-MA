@@ -34,18 +34,18 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
         public void ActualizarPatentesValidadas(List<string> pPatents = null)
         {
             //Eliminamos los duplicados
-            EliminarDuplicados("patent", "http://purl.org/ontology/bibo/Patent", "http://w3id.org/roh/isValidated");
+            EliminarDuplicados("patent", $"{GetUrlPrefix("bibo")}Patent", $"{GetUrlPrefix("roh")}isValidated");
 
-            HashSet<string> filters = new HashSet<string>();
+            HashSet<string> filtersActualizarPatentesValidadas = new HashSet<string>();
             if (pPatents != null && pPatents.Count > 0)
             {
-                filters.Add($" FILTER(?patent in(<{string.Join(">,<", pPatents)}>))");
+                filtersActualizarPatentesValidadas.Add($" FILTER(?patent in(<{string.Join(">,<", pPatents)}>))");
             }
-            if (filters.Count == 0)
+            if (filtersActualizarPatentesValidadas.Count == 0)
             {
-                filters.Add("");
+                filtersActualizarPatentesValidadas.Add("");
             }
-            foreach (string filter in filters)
+            foreach (string filter in filtersActualizarPatentesValidadas)
             {
                 while (true)
                 {
@@ -81,7 +81,7 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
                         {
                             isValidatedCargado = fila["isValidatedCargado"].value;
                         }
-                        ActualizadorTriple(patent, "http://w3id.org/roh/isValidated", isValidatedCargado, isValidatedCargar);
+                        ActualizadorTriple(patent, $"{GetUrlPrefix("roh")}isValidated", isValidatedCargado, isValidatedCargar);
                     });
 
                     if (resultado.results.bindings.Count != limit)
@@ -100,22 +100,22 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
         /// <param name="pPatents">IDs de las patentes</param>
         public void ActualizarMiembros(List<string> pPatents = null)
         {
-            HashSet<string> filters = new HashSet<string>();
+            HashSet<string> filtersActualizarMiembros = new HashSet<string>();
             if (pPatents != null && pPatents.Count > 0)
             {
-                filters.Add($" FILTER(?patent in(<{string.Join(">,<", pPatents)}>))");
+                filtersActualizarMiembros.Add($" FILTER(?patent in(<{string.Join(">,<", pPatents)}>))");
             }
-            if (filters.Count == 0)
+            if (filtersActualizarMiembros.Count == 0)
             {
-                filters.Add("");
+                filtersActualizarMiembros.Add("");
             }
-            foreach (string filter in filters)
+            foreach (string filter in filtersActualizarMiembros)
             {
                 //Asignamos foaf:firstName
                 Dictionary<string, string> propiedadesPersonPatent = new Dictionary<string, string>();
                 propiedadesPersonPatent["http://xmlns.com/foaf/0.1/firstName"] = "http://xmlns.com/foaf/0.1/firstName";
                 propiedadesPersonPatent["http://xmlns.com/foaf/0.1/lastName"] = "http://xmlns.com/foaf/0.1/familyName";
-                propiedadesPersonPatent["--"] = "http://w3id.org/roh/secondFamilyName";
+                propiedadesPersonPatent["--"] = $"{GetUrlPrefix("roh")}secondFamilyName";
                 foreach (string propPerson in propiedadesPersonPatent.Keys)
                 {
                     string propPatent = propiedadesPersonPatent[propPerson];

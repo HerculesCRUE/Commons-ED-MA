@@ -521,20 +521,20 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models
         {
             while (true)
             {
-                string select = "SELECT DISTINCT ?id ?type ?prop ";
-                string where = $@"WHERE {{                                
+                string selectFusion = "SELECT DISTINCT ?id ?type ?prop ";
+                string whereFusion = $@"WHERE {{                                
                                 ?id ?prop <http://gnoss/{resourceApi.GetShortGuid(pIdMalo).ToString().ToUpper()}>.
                                 OPTIONAL{{?id <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> ?type.}}
                                 
                             }} ";
-                SparqlObject resultadoQuery = resourceApi.VirtuosoQuery(select, where, communityID);
-                if (resultadoQuery.results.bindings.Count == 0)
+                SparqlObject resultadoQueryFusion = resourceApi.VirtuosoQuery(selectFusion, whereFusion, communityID);
+                if (resultadoQueryFusion.results.bindings.Count == 0)
                 {
                     break;
                 }
-                if (resultadoQuery != null && resultadoQuery.results != null && resultadoQuery.results.bindings != null && resultadoQuery.results.bindings.Count > 0)
+                if (resultadoQueryFusion != null && resultadoQueryFusion.results != null && resultadoQueryFusion.results.bindings != null && resultadoQueryFusion.results.bindings.Count > 0)
                 {
-                    foreach (Dictionary<string, SparqlObject.Data> fila in resultadoQuery.results.bindings)
+                    foreach (Dictionary<string, SparqlObject.Data> fila in resultadoQueryFusion.results.bindings)
                     {
                         string id = fila["id"].value;
                         string prop = fila["prop"].value;

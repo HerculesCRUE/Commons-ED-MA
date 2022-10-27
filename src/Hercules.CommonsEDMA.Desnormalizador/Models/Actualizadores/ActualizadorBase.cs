@@ -47,6 +47,12 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
             { "skos", "http://www.w3.org/2008/05/skos#" }
         };
 
+        public static string GetUrlPrefix(string pPrefix)
+        {
+            return dicPrefix[pPrefix];
+        }
+
+
         /// <summary>
         /// Constructor
         /// </summary>
@@ -125,7 +131,7 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
                     {
                         string idAux = mResourceApi.GraphsUrl + "items/KeyWord_" + guid.ToString().ToLower() + "_" + Guid.NewGuid().ToString().ToLower();
                         TriplesToInclude t = new();
-                        t.Predicate = "http://vivoweb.org/ontology/core#freeTextKeyword|http://w3id.org/roh/title";
+                        t.Predicate = $"{GetUrlPrefix("vivo")}freeTextKeyword|http://w3id.org/roh/title";
                         t.NewValue = idAux + "|" + value;
                         triples[guid].Add(t);
                     }
@@ -133,15 +139,15 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
                 });
 
 
-                String select = @"select ?id ?getKeyWords ";
-                String where = @$"where
+                String selectInsercionMultipleTags = @"select ?id ?getKeyWords ";
+                String whereInsercionMultipleTags = @$"where
                                 {{
                                     ?id <http://w3id.org/roh/getKeyWords> ?getKeyWords. 
                                     FILTER(?id in (<{string.Join(">,<", ids)}>))
                                 }}";
-                SparqlObject resultado = mResourceApi.VirtuosoQuery(select, where, "document");
+                SparqlObject resultadoInsercionMultipleTags = mResourceApi.VirtuosoQuery(selectInsercionMultipleTags, whereInsercionMultipleTags, "document");
                 Dictionary<string, string> documentGetKeywords = new Dictionary<string, string>();
-                foreach (Dictionary<string, SparqlObject.Data> fila in resultado.results.bindings)
+                foreach (Dictionary<string, SparqlObject.Data> fila in resultadoInsercionMultipleTags.results.bindings)
                 {
                     documentGetKeywords[fila["id"].value] = fila["getKeyWords"].value;
                 }
@@ -155,7 +161,7 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
                     {
                         valorAnterior = documentGetKeywords[id];
                     }
-                    ActualizadorTriple(id, "http://w3id.org/roh/getKeyWords", valorAnterior, "true");
+                    ActualizadorTriple(id, $"{GetUrlPrefix("roh")}getKeyWords", valorAnterior, "true");
                 });
 
             }
@@ -211,30 +217,30 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
             while (true)
             {
                 int limit = 500;
-                String select = @"select ?id count(?data) ";
-                String where = @$"where
+                String selectEliminarDuplicados = @"select ?id count(?data) ";
+                String whereEliminarDuplicados = @$"where
                                 {{
                                     ?id a <{pRdfType}>.
                                     ?id <{pProperty}> ?data. 
                                 }}group by (?id) HAVING (COUNT(?data) > 1) limit {limit}";
-                SparqlObject resultado = mResourceApi.VirtuosoQuery(select, where, pGraph);
+                SparqlObject resultadoEliminarDuplicados = mResourceApi.VirtuosoQuery(selectEliminarDuplicados, whereEliminarDuplicados, pGraph);
 
-                Parallel.ForEach(resultado.results.bindings, new ParallelOptions { MaxDegreeOfParallelism = ActualizadorBase.numParallel }, fila =>
+                Parallel.ForEach(resultadoEliminarDuplicados.results.bindings, new ParallelOptions { MaxDegreeOfParallelism = ActualizadorBase.numParallel }, fila =>
                 {
                     string id = fila["id"].value;
-                    String select2 = @"select ?data ";
-                    String where2 = @$"where
+                    String selectEliminarDuplicadosIn = @"select ?data ";
+                    String whereEliminarDuplicadosIn = @$"where
                             {{
                                 <{id}> <{pProperty}> ?data. 
                             }}";
-                    SparqlObject resultado2 = mResourceApi.VirtuosoQuery(select2, where2, pGraph);
-                    foreach (Dictionary<string, SparqlObject.Data> fila2 in resultado2.results.bindings.GetRange(1, resultado2.results.bindings.Count - 1))
+                    SparqlObject resultadoEliminarDuplicadosIn = mResourceApi.VirtuosoQuery(selectEliminarDuplicadosIn, whereEliminarDuplicadosIn, pGraph);
+                    foreach (Dictionary<string, SparqlObject.Data> filaEliminarDuplicadosIn in resultadoEliminarDuplicadosIn.results.bindings.GetRange(1, resultadoEliminarDuplicadosIn.results.bindings.Count - 1))
                     {
-                        string value = fila2["data"].value;
+                        string value = filaEliminarDuplicadosIn["data"].value;
                         ActualizadorTriple(id, pProperty, value, "");
                     }
                 });
-                if (resultado.results.bindings.Count != limit)
+                if (resultadoEliminarDuplicados.results.bindings.Count != limit)
                 {
                     break;
                 }
@@ -361,11 +367,11 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
                     string propMiembro = "";
                     if (fila["ip"].value == "true")
                     {
-                        propMiembro = "http://w3id.org/roh/mainResearchers";
+                        propMiembro = $"{GetUrlPrefix("roh")}mainResearchers";
                     }
                     else
                     {
-                        propMiembro = "http://w3id.org/roh/researchers";
+                        propMiembro = $"{GetUrlPrefix("roh")}researchers";
                     }
                     {
                         TriplesToInclude t = new();
@@ -409,7 +415,6 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
             });
         }
 
-        //TODO comenrtario
         protected void ActualizarPropiedadMiembrosProyectoGrupoPatente(List<Dictionary<string, Data>> pFilas, string pTipo)
         {
             List<string> ids = pFilas.Select(x => x[pTipo].value).Distinct().ToList();
@@ -468,6 +473,30 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
                     var resultadoModificar = mResourceApi.ModifyPropertiesLoadedResources(triplesModify);
                 }
             });
+        }
+
+        protected Dictionary<string, string> ObtenerAreasBroader()
+        {
+            Dictionary<string, string> dicAreasBroader = new();
+            String selectCargarTesauro = @"select distinct * ";
+            String whereCargarTesauro = @$"where{{
+                                ?concept a <http://www.w3.org/2008/05/skos#Concept>.
+                                ?concept <http://purl.org/dc/elements/1.1/source> 'researcharea'
+                                OPTIONAL{{?concept <http://www.w3.org/2008/05/skos#broader> ?broader}}
+                            }}";
+            SparqlObject resultadoCargarTesauro = mResourceApi.VirtuosoQuery(selectCargarTesauro, whereCargarTesauro, "taxonomy");
+
+            foreach (Dictionary<string, SparqlObject.Data> fila in resultadoCargarTesauro.results.bindings)
+            {
+                string concept = fila["concept"].value;
+                string broader = "";
+                if (fila.ContainsKey("broader"))
+                {
+                    broader = fila["broader"].value;
+                }
+                dicAreasBroader.Add(concept, broader);
+            }
+            return dicAreasBroader;
         }
 
     }

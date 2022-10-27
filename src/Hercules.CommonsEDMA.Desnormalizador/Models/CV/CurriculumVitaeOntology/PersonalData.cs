@@ -15,6 +15,7 @@ using System.Globalization;
 using System.Collections;
 using Gnoss.ApiWrapper.Exceptions;
 using System.Diagnostics.CodeAnalysis;
+using Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores;
 
 namespace CurriculumvitaeOntology
 {
@@ -22,93 +23,32 @@ namespace CurriculumvitaeOntology
     public class PersonalData : GnossOCBase
     {
         public PersonalData() : base() { }
-        public virtual string RdfType { get { return "http://w3id.org/roh/PersonalData"; } }
-        public virtual string RdfsLabel { get { return "http://w3id.org/roh/PersonalData"; } }
+        public virtual string RdfType { get { return $"{ActualizadorBase.GetUrlPrefix("roh")}PersonalData"; } }
+        public virtual string RdfsLabel { get { return $"{ActualizadorBase.GetUrlPrefix("roh")}PersonalData"; } }
         public OntologyEntity Entity { get; set; }
-
-        [LABEL(LanguageEnum.es, "http://xmlns.com/foaf/0.1/firstName")]
-        [RDFProperty("http://xmlns.com/foaf/0.1/firstName")]
         public string Foaf_firstName { get; set; }
-
-        [LABEL(LanguageEnum.es, "http://xmlns.com/foaf/0.1/familyName")]
-        [RDFProperty("http://xmlns.com/foaf/0.1/familyName")]
         public string Foaf_familyName { get; set; }
-
-        [LABEL(LanguageEnum.es, "http://w3id.org/roh/secondFamilyName")]
-        [RDFProperty("http://w3id.org/roh/secondFamilyName")]
         public string Roh_secondFamilyName { get; set; }
-
-
-        [LABEL(LanguageEnum.es, "http://w3id.org/roh/hasFax")]
-        [RDFProperty("http://w3id.org/roh/hasFax")]
         public TelephoneType Roh_hasFax { get; set; }
-
-        [LABEL(LanguageEnum.es, "http://w3id.org/roh/birthplace")]
-        [RDFProperty("http://w3id.org/roh/birthplace")]
         public Address Roh_birthplace { get; set; }
-
-        [LABEL(LanguageEnum.es, "http://w3id.org/roh/otherIds")]
-        [RDFProperty("http://w3id.org/roh/otherIds")]
         public List<Document> Roh_otherIds { get; set; }
-
-        [LABEL(LanguageEnum.es, "https://www.w3.org/2006/vcard/ns#address")]
-        [RDFProperty("https://www.w3.org/2006/vcard/ns#address")]
         public Address Vcard_address { get; set; }
-
         public string IdFoaf_gender { get; set; }
-
-        [LABEL(LanguageEnum.es, "https://www.w3.org/2006/vcard/ns#hasTelephone")]
-        [RDFProperty("https://www.w3.org/2006/vcard/ns#hasTelephone")]
         public TelephoneType Vcard_hasTelephone { get; set; }
-
-        [LABEL(LanguageEnum.es, "http://w3id.org/roh/hasMobilePhone")]
-        [RDFProperty("http://w3id.org/roh/hasMobilePhone")]
         public TelephoneType Roh_hasMobilePhone { get; set; }
-
-        [LABEL(LanguageEnum.es, "http://w3id.org/roh/nie")]
-        [RDFProperty("http://w3id.org/roh/nie")]
         public string Roh_nie { get; set; }
-
-        [LABEL(LanguageEnum.es, "http://vivoweb.org/ontology/core#researcherId")]
-        [RDFProperty("http://vivoweb.org/ontology/core#researcherId")]
         public string Vivo_researcherId { get; set; }
-
-        [LABEL(LanguageEnum.es, "http://vivoweb.org/ontology/core#scopusId")]
-        [RDFProperty("http://vivoweb.org/ontology/core#scopusId")]
         public string Vivo_scopusId { get; set; }
-
-        [LABEL(LanguageEnum.es, "Imagen")]
-        [RDFProperty("http://xmlns.com/foaf/0.1/img")]
         public string Foaf_img { get; set; }
-
-        [LABEL(LanguageEnum.es, "http://w3id.org/roh/dni")]
-        [RDFProperty("http://w3id.org/roh/dni")]
         public string Roh_dni { get; set; }
-
-        [LABEL(LanguageEnum.es, "http://xmlns.com/foaf/0.1/homepage")]
-        [RDFProperty("http://xmlns.com/foaf/0.1/homepage")]
         public string Foaf_homepage { get; set; }
-
-        [LABEL(LanguageEnum.es, "http://w3id.org/roh/ORCID")]
-        [RDFProperty("http://w3id.org/roh/ORCID")]
         public string Roh_ORCID { get; set; }
-
-        [LABEL(LanguageEnum.es, "http://w3id.org/roh/passport")]
-        [RDFProperty("http://w3id.org/roh/passport")]
         public string Roh_passport { get; set; }
-
-        [LABEL(LanguageEnum.es, "https://www.w3.org/2006/vcard/ns#birth-date")]
-        [RDFProperty("https://www.w3.org/2006/vcard/ns#birth-date")]
         public DateTime? Vcard_birth_date { get; set; }
-
-        [LABEL(LanguageEnum.es, "https://www.w3.org/2006/vcard/ns#email")]
-        [RDFProperty("https://www.w3.org/2006/vcard/ns#email")]
         public string Vcard_email { get; set; }
 
         internal override void GetProperties()
         {
-            base.GetProperties();
-
             propList.Add(new StringOntologyProperty("foaf:firstName", this.Foaf_firstName));
             propList.Add(new StringOntologyProperty("foaf:familyName", this.Foaf_familyName));
             propList.Add(new StringOntologyProperty("roh:secondFamilyName", this.Roh_secondFamilyName));
@@ -130,7 +70,6 @@ namespace CurriculumvitaeOntology
 
         internal override void GetEntities()
         {
-            base.GetEntities();
             if (Roh_hasFax != null)
             {
                 Roh_hasFax.GetProperties();

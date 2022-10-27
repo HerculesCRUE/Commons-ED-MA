@@ -8,8 +8,6 @@ using System.Text;
 using System.Threading.Tasks;
 namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
 {
-    //TODO comentarios completados
-
     /// <summary>
     /// Clase para actualizar propiedades de documentos
     /// </summary>
@@ -37,24 +35,24 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
             //usuario-->http://w3id.org/roh/userKnowledgeArea
             //external-->http://w3id.org/roh/externalKnowledgeArea
             //enriched-->http://w3id.org/roh/enrichedKnowledgeArea
-            HashSet<string> filters = new HashSet<string>();
+            HashSet<string> filtersActualizarAreasRO = new HashSet<string>();
             if (pROs != null && pROs.Count > 0)
             {
-                filters.Add($" FILTER(?ro in (<{string.Join(">,<", pROs)}>))");
+                filtersActualizarAreasRO.Add($" FILTER(?ro in (<{string.Join(">,<", pROs)}>))");
             }
-            if (filters.Count == 0)
+            if (filtersActualizarAreasRO.Count == 0)
             {
-                filters.Add("");
+                filtersActualizarAreasRO.Add("");
             }
 
-            foreach (string filter in filters)
+            foreach (string filter in filtersActualizarAreasRO)
             {
                 //Eliminamos las categorías duplicadas
                 while (true)
                 {
-                    int limit = 500;
-                    String select = @"select ?ro ?categoryNode ";
-                    String where = @$"where{{
+                    int limitEliminarDuplicadas = 500;
+                    String selectEliminarDuplicadas = @"select ?ro ?categoryNode ";
+                    String whereEliminarDuplicadas = @$"where{{
                                 select distinct ?ro ?hasKnowledgeAreaAux  ?categoryNode
                                 where{{
                                     {filter}
@@ -65,15 +63,15 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
                                         ?categoryNode <http://www.w3.org/2008/05/skos#narrower> ?hijo.
                                     }}
                                }}
-                            }}group by ?ro ?categoryNode HAVING (COUNT(*) > 1) limit {limit}";
-                    SparqlObject resultado = mResourceApi.VirtuosoQueryMultipleGraph(select, where, new List<string>() { "researchobject", "taxonomy" });
+                            }}group by ?ro ?categoryNode HAVING (COUNT(*) > 1) limit {limitEliminarDuplicadas}";
+                    SparqlObject resultadoEliminarDuplicadas = mResourceApi.VirtuosoQueryMultipleGraph(selectEliminarDuplicadas, whereEliminarDuplicadas, new List<string>() { "researchobject", "taxonomy" });
 
-                    Parallel.ForEach(resultado.results.bindings, new ParallelOptions { MaxDegreeOfParallelism = ActualizadorBase.numParallel }, fila =>
+                    Parallel.ForEach(resultadoEliminarDuplicadas.results.bindings, new ParallelOptions { MaxDegreeOfParallelism = ActualizadorBase.numParallel }, fila =>
                     {
                         string ro = fila["ro"].value;
                         string categoryNode = fila["categoryNode"].value;
-                        select = @"select ?ro ?hasKnowledgeArea   ?categoryNode ";
-                        where = @$"where{{
+                        string selectEliminarDuplicadasIn = @"select ?ro ?hasKnowledgeArea   ?categoryNode ";
+                        string whereEliminarDuplicadasIn = @$"where{{
                                     FILTER(?ro=<{ro}>)
                                     FILTER(?categoryNode =<{categoryNode}>)
                                     {{ 
@@ -88,13 +86,13 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
                                         }}
                                     }}
                                 }}";
-                        resultado = mResourceApi.VirtuosoQueryMultipleGraph(select, where, new List<string>() { "researchobject", "taxonomy" });
+                        SparqlObject resultadoEliminarDuplicadasIn = mResourceApi.VirtuosoQueryMultipleGraph(selectEliminarDuplicadasIn, whereEliminarDuplicadasIn, new List<string>() { "researchobject", "taxonomy" });
                         List<RemoveTriples> triplesRemove = new();
-                        foreach (string hasKnowledgeArea in resultado.results.bindings.GetRange(1, resultado.results.bindings.Count - 1).Select(x => x["hasKnowledgeArea"].value).ToList())
+                        foreach (string hasKnowledgeArea in resultadoEliminarDuplicadasIn.results.bindings.GetRange(1, resultadoEliminarDuplicadasIn.results.bindings.Count - 1).Select(x => x["hasKnowledgeArea"].value).ToList())
                         {
                             triplesRemove.Add(new RemoveTriples()
                             {
-                                Predicate = "http://w3id.org/roh/hasKnowledgeArea",
+                                Predicate = $"{GetUrlPrefix("roh")}hasKnowledgeArea",
                                 Value = hasKnowledgeArea
                             }); ;
                         }
@@ -105,44 +103,21 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
                     });
 
 
-                    if (resultado.results.bindings.Count != limit)
+                    if (resultadoEliminarDuplicadas.results.bindings.Count != limitEliminarDuplicadas)
                     {
                         break;
                     }
                 }
 
-
-
                 //Cargamos el tesauro
-                Dictionary<string, string> dicAreasBroader = new();
-                {
-                    String select = @"select distinct * ";
-                    String where = @$"where{{
-                                ?concept a <http://www.w3.org/2008/05/skos#Concept>.
-                                ?concept <http://purl.org/dc/elements/1.1/source> 'researcharea'
-                                OPTIONAL{{?concept <http://www.w3.org/2008/05/skos#broader> ?broader}}
-                            }}";
-                    SparqlObject resultado = mResourceApi.VirtuosoQuery(select, where, "taxonomy");
-
-                    foreach (Dictionary<string, SparqlObject.Data> fila in resultado.results.bindings)
-                    {
-                        string concept = fila["concept"].value;
-                        string broader = "";
-                        if (fila.ContainsKey("broader"))
-                        {
-                            broader = fila["broader"].value;
-                        }
-                        dicAreasBroader.Add(concept, broader);
-                    }
-                }
-
+                Dictionary<string, string> dicAreasBroader = ObtenerAreasBroader();
 
                 while (true)
                 {
-                    int limit = 500;
+                    int limitInsertamos = 500;
                     //INSERTAMOS
-                    String select = @"select distinct * where{select ?ro ?categoryNode ";
-                    String where = @$"where{{
+                    String selectInsertamos = @"select distinct * where{select ?ro ?categoryNode ";
+                    String whereInsertamos = @$"where{{
                             ?ro a <http://w3id.org/roh/ResearchObject>.
                             {filter}
                             {{
@@ -167,10 +142,10 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
                                     }}
                                 }}
                             }}
-                            }}}}order by (?ro) limit {limit}";
-                    SparqlObject resultado = mResourceApi.VirtuosoQueryMultipleGraph(select, where, new List<string>() { "researchobject", "taxonomy" });
-                    InsertarCategorias(resultado, dicAreasBroader, mResourceApi.GraphsUrl, "ro", "http://w3id.org/roh/hasKnowledgeArea");
-                    if (resultado.results.bindings.Count != limit)
+                            }}}}order by (?ro) limit {limitInsertamos}";
+                    SparqlObject resultadoInsertamos = mResourceApi.VirtuosoQueryMultipleGraph(selectInsertamos, whereInsertamos, new List<string>() { "researchobject", "taxonomy" });
+                    InsertarCategorias(resultadoInsertamos, dicAreasBroader, mResourceApi.GraphsUrl, "ro", $"{GetUrlPrefix("roh")}hasKnowledgeArea");
+                    if (resultadoInsertamos.results.bindings.Count != limitInsertamos)
                     {
                         break;
                     }
@@ -178,10 +153,10 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
 
                 while (true)
                 {
-                    int limit = 500;
+                    int limitEliminamos = 500;
                     //ELIMINAMOS
-                    String select = @"select distinct * where{select ?ro ?hasKnowledgeArea ";
-                    String where = @$"where{{
+                    String selectEliminamos = @"select distinct * where{select ?ro ?hasKnowledgeArea ";
+                    String whereEliminamos = @$"where{{
                             ?ro a <http://w3id.org/roh/ResearchObject>.
                             {filter}
                             {{
@@ -207,10 +182,10 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
                                 }}
                                  
                             }}
-                            }}}} limit {limit}";
-                    SparqlObject resultado = mResourceApi.VirtuosoQueryMultipleGraph(select, where, new List<string>() { "researchobject", "taxonomy" });
-                    EliminarCategorias(resultado, "ro", "http://w3id.org/roh/hasKnowledgeArea");
-                    if (resultado.results.bindings.Count != limit)
+                            }}}} limit {limitEliminamos}";
+                    SparqlObject resultadoEliminamos = mResourceApi.VirtuosoQueryMultipleGraph(selectEliminamos, whereEliminamos, new List<string>() { "researchobject", "taxonomy" });
+                    EliminarCategorias(resultadoEliminamos, "ro", $"{GetUrlPrefix("roh")}hasKnowledgeArea");
+                    if (resultadoEliminamos.results.bindings.Count != limitEliminamos)
                     {
                         break;
                     }
@@ -233,24 +208,24 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
             //enriched-->http://w3id.org/roh/enrichedKeywords
 
 
-            HashSet<string> filters = new HashSet<string>();
+            HashSet<string> filtersActualizarTagsRO = new HashSet<string>();
             if (pROs != null && pROs.Count > 0)
             {
-                filters.Add($" FILTER(?ro in (<{string.Join(">,<", pROs)}>))");
+                filtersActualizarTagsRO.Add($" FILTER(?ro in (<{string.Join(">,<", pROs)}>))");
             }
-            if (filters.Count == 0)
+            if (filtersActualizarTagsRO.Count == 0)
             {
-                filters.Add("");
+                filtersActualizarTagsRO.Add("");
             }
 
-            foreach (string filter in filters)
+            foreach (string filter in filtersActualizarTagsRO)
             {
                 while (true)
                 {
-                    int limit = 500;
+                    int limitInsertamos = 500;
                     //INSERTAMOS
-                    String select = @"select distinct * where{select ?ro ?tag";
-                    String where = @$"where{{
+                    String selectInsertamos = @"select distinct * where{select ?ro ?tag";
+                    String whereInsertamos = @$"where{{
                             ?ro a <http://w3id.org/roh/ResearchObject>.
                             {filter}
                             {{
@@ -267,10 +242,10 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
                                     ?ro <http://vivoweb.org/ontology/core#freeTextKeyword> ?tag.
                                 }}
                             }}
-                            }}}}order by (?ro) limit {limit}";
-                    SparqlObject resultado = mResourceApi.VirtuosoQuery(select, where, "researchobject");
-                    InsercionMultiple(resultado.results.bindings, "http://vivoweb.org/ontology/core#freeTextKeyword", "ro", "tag");
-                    if (resultado.results.bindings.Count != limit)
+                            }}}}order by (?ro) limit {limitInsertamos}";
+                    SparqlObject resultadoInsertamos = mResourceApi.VirtuosoQuery(selectInsertamos, whereInsertamos, "researchobject");
+                    InsercionMultiple(resultadoInsertamos.results.bindings, $"{GetUrlPrefix("vivo")}freeTextKeyword", "ro", "tag");
+                    if (resultadoInsertamos.results.bindings.Count != limitInsertamos)
                     {
                         break;
                     }
@@ -278,10 +253,10 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
 
                 while (true)
                 {
-                    int limit = 500;
+                    int limitEliminamos = 500;
                     //ELIMINAMOS
-                    String select = @"select distinct * where{select ?ro ?tag";
-                    String where = @$"where{{
+                    String selectEliminamos = @"select distinct * where{select ?ro ?tag";
+                    String whereEliminamos = @$"where{{
                             ?ro a <http://w3id.org/roh/ResearchObject>.
                             {filter}
                             {{
@@ -299,10 +274,10 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
                                 }}
                                  
                             }}
-                            }}}} limit {limit}";
-                    SparqlObject resultado = mResourceApi.VirtuosoQuery(select, where, "researchobject");
-                    EliminacionMultiple(resultado.results.bindings, "http://vivoweb.org/ontology/core#freeTextKeyword", "ro", "tag");
-                    if (resultado.results.bindings.Count != limit)
+                            }}}} limit {limitEliminamos}";
+                    SparqlObject resultadoEliminamos = mResourceApi.VirtuosoQuery(selectEliminamos, whereEliminamos, "researchobject");
+                    EliminacionMultiple(resultadoEliminamos.results.bindings, $"{GetUrlPrefix("vivo")}freeTextKeyword", "ro", "tag");
+                    if (resultadoEliminamos.results.bindings.Count != limitEliminamos)
                     {
                         break;
                     }
@@ -316,22 +291,22 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
         /// <param name="pROs">ID de ROs</param>
         public void EliminarROsSinAutoresActivos(List<string> pROs = null)
         {
-            HashSet<string> filters = new HashSet<string>();
+            HashSet<string> filtersEliminarROsSinAutoresActivos = new HashSet<string>();
             if (pROs != null && pROs.Count > 0)
             {
-                filters.Add($" FILTER(?ro in (<{string.Join(">,<", pROs)}>))");
+                filtersEliminarROsSinAutoresActivos.Add($" FILTER(?ro in (<{string.Join(">,<", pROs)}>))");
             }
-            if (filters.Count == 0)
+            if (filtersEliminarROsSinAutoresActivos.Count == 0)
             {
-                filters.Add("");
+                filtersEliminarROsSinAutoresActivos.Add("");
             }
-            foreach (string filter in filters)
+            foreach (string filter in filtersEliminarROsSinAutoresActivos)
             {
                 while (true)
                 {
-                    int limit = 500;
-                    String select = @"select ?ro ";
-                    String where = @$"where{{
+                    int limitEliminarROsSinAutoresActivos = 500;
+                    String selectEliminarROsSinAutoresActivos = @"select ?ro ";
+                    String whereEliminarROsSinAutoresActivos = @$"where{{
                                 ?ro a <http://w3id.org/roh/ResearchObject>.
                                 {filter}
                                 MINUS
@@ -340,10 +315,10 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
                                     ?autores <http://www.w3.org/1999/02/22-rdf-syntax-ns#member> ?person.
                                     ?person <http://w3id.org/roh/isActive> 'true'.
                                 }}
-                            }} limit {limit}";
-                    SparqlObject resultado = mResourceApi.VirtuosoQueryMultipleGraph(select, where, new List<string>() { "researchobject", "person" });
+                            }} limit {limitEliminarROsSinAutoresActivos}";
+                    SparqlObject resultadoEliminarROsSinAutoresActivos = mResourceApi.VirtuosoQueryMultipleGraph(selectEliminarROsSinAutoresActivos, whereEliminarROsSinAutoresActivos, new List<string>() { "researchobject", "person" });
 
-                    Parallel.ForEach(resultado.results.bindings, new ParallelOptions { MaxDegreeOfParallelism = ActualizadorBase.numParallel }, fila =>
+                    Parallel.ForEach(resultadoEliminarROsSinAutoresActivos.results.bindings, new ParallelOptions { MaxDegreeOfParallelism = ActualizadorBase.numParallel }, fila =>
                     {
                         try
                         {
@@ -352,7 +327,7 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
                         catch (Exception) { }
                     });
 
-                    if (resultado.results.bindings.Count != limit)
+                    if (resultadoEliminarROsSinAutoresActivos.results.bindings.Count != limitEliminarROsSinAutoresActivos)
                     {
                         break;
                     }
@@ -368,27 +343,27 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
         /// <param name="pDocuments">IDs de documentos</param>
         public void ActualizarNumeroVinculados(List<string> pROs = null)
         {
-            HashSet<string> filters = new HashSet<string>();
+            HashSet<string> filtersActualizarNumeroVinculados = new HashSet<string>();
             if (pROs != null && pROs.Count > 0)
             {
-                filters.Add($" FILTER(?ro in (<{string.Join(">,<", pROs)}>))");
+                filtersActualizarNumeroVinculados.Add($" FILTER(?ro in (<{string.Join(">,<", pROs)}>))");
             }
-            if (filters.Count == 0)
+            if (filtersActualizarNumeroVinculados.Count == 0)
             {
-                filters.Add("");
+                filtersActualizarNumeroVinculados.Add("");
             }
 
             //Eliminamos los duplicados
-            EliminarDuplicados("researchobject", "http://w3id.org/roh/ResearchObject", "http://w3id.org/roh/linkedCount");
+            EliminarDuplicados("researchobject", $"{GetUrlPrefix("roh")}ResearchObject", $"{GetUrlPrefix("roh")}linkedCount");
 
-            foreach (string filter in filters)
+            foreach (string filter in filtersActualizarNumeroVinculados)
             {
                 //Actualizamos los datos
                 while (true)
                 {
-                    int limit = 500;
-                    String select = @"select ?ro ?numLinkedCargados IF (BOUND (?numLinkedACargar), ?numLinkedACargar, 0 ) as ?numLinkedACargar ";
-                    String where = @$"where{{
+                    int limitActualizarNumeroVinculados = 500;
+                    String selectActualizarNumeroVinculados = @"select ?ro ?numLinkedCargados IF (BOUND (?numLinkedACargar), ?numLinkedACargar, 0 ) as ?numLinkedACargar ";
+                    String whereActualizarNumeroVinculados = @$"where{{
                                 ?ro a <http://w3id.org/roh/ResearchObject>.
                                 {filter}
                                 OPTIONAL
@@ -416,10 +391,10 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
                                   }}
                                 }}
                                 FILTER(?numLinkedCargados!= ?numLinkedACargar OR !BOUND(?numLinkedCargados) )
-                            }} limit {limit}";
-                    SparqlObject resultado = mResourceApi.VirtuosoQueryMultipleGraph(select, where, new List<string>() { "researchobject", "document" });
+                            }} limit {limitActualizarNumeroVinculados}";
+                    SparqlObject resultadoActualizarNumeroVinculados = mResourceApi.VirtuosoQueryMultipleGraph(selectActualizarNumeroVinculados, whereActualizarNumeroVinculados, new List<string>() { "researchobject", "document" });
 
-                    Parallel.ForEach(resultado.results.bindings, new ParallelOptions { MaxDegreeOfParallelism = ActualizadorBase.numParallel }, fila =>
+                    Parallel.ForEach(resultadoActualizarNumeroVinculados.results.bindings, new ParallelOptions { MaxDegreeOfParallelism = ActualizadorBase.numParallel }, fila =>
                     {
                         string ro = fila["ro"].value;
                         string numLinkedACargar = fila["numLinkedACargar"].value;
@@ -428,10 +403,10 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
                         {
                             numLinkedCargados = fila["numLinkedCargados"].value;
                         }
-                        ActualizadorTriple(ro, "http://w3id.org/roh/linkedCount", numLinkedCargados, numLinkedACargar);
+                        ActualizadorTriple(ro, $"{GetUrlPrefix("roh")}linkedCount", numLinkedCargados, numLinkedACargar);
                     });
 
-                    if (resultado.results.bindings.Count != limit)
+                    if (resultadoActualizarNumeroVinculados.results.bindings.Count != limitActualizarNumeroVinculados)
                     {
                         break;
                     }

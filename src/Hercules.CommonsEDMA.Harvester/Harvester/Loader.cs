@@ -122,8 +122,8 @@ namespace Harvester
             dicRutas.Add("PRC", new Dictionary<string, string>() { { $@"{_Config.GetLogCargas()}\PRC\pending", $@"{_Config.GetLogCargas()}\PRC\processed" } });
 
             // Organizaciones.
-            mResourceApi.ChangeOntoly("organization");
-            ProcesarFichero(_Config, "Organizacion", dicIdentificadores, dicRutas, pRabbitConf);
+            //mResourceApi.ChangeOntoly("organization");
+            //ProcesarFichero(_Config, "Organizacion", dicIdentificadores, dicRutas, pRabbitConf);
 
             // Personas. 
             mResourceApi.ChangeOntoly("person");
@@ -134,20 +134,20 @@ namespace Harvester
             ProcesarFichero(_Config, "Proyecto", dicIdentificadores, dicRutas, pRabbitConf);
 
             // Document.
-            mResourceApi.ChangeOntoly("document");
-            ProcesarFichero(_Config, "PRC", dicIdentificadores, dicRutas, pRabbitConf);
+            //mResourceApi.ChangeOntoly("document");
+            //ProcesarFichero(_Config, "PRC", dicIdentificadores, dicRutas, pRabbitConf);
 
             // Autorizaciones.
-            mResourceApi.ChangeOntoly("projectauthorization");
-            ProcesarFichero(_Config, "AutorizacionProyecto", dicIdentificadores, dicRutas, pRabbitConf);
+            //mResourceApi.ChangeOntoly("projectauthorization");
+            //ProcesarFichero(_Config, "AutorizacionProyecto", dicIdentificadores, dicRutas, pRabbitConf);
 
             // Grupos.
             mResourceApi.ChangeOntoly("group");
             ProcesarFichero(_Config, "Grupo", dicIdentificadores, dicRutas, pRabbitConf);
 
             // Patentes.
-            mResourceApi.ChangeOntoly("patent");
-            ProcesarFichero(_Config, "Invencion", dicIdentificadores, dicRutas, pRabbitConf);
+            //mResourceApi.ChangeOntoly("patent");
+            //ProcesarFichero(_Config, "Invencion", dicIdentificadores, dicRutas, pRabbitConf);
         }
 
         /// <summary>
@@ -163,7 +163,7 @@ namespace Harvester
             string fecha = LeerFicheroFecha(_Config, pSet);
 
             Console.WriteLine($"Obteniendo identificadores de {pSet} ({fecha})");
-            if (pPRC == false)
+            if (!pPRC)
             {
                 harvester.Harvest(pConfig, pSet, fecha);
             }
@@ -515,7 +515,6 @@ namespace Harvester
             dicResultados.Add("validationStatusPRC", "");
             dicResultados.Add("validationDeleteStatusPRC", "");
 
-            string valorEnviado = string.Empty;
             StringBuilder select = new StringBuilder();
             StringBuilder where = new StringBuilder();
 
