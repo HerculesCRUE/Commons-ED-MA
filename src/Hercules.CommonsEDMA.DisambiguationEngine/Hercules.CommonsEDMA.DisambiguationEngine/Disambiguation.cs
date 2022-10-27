@@ -467,18 +467,18 @@ namespace Hercules.CommonsEDMA.DisambiguationEngine.Models
             //Añadimos los que están vinculados con BBDD
             foreach (string id in listaEquivalenciasDisambiguate.Keys)
             {
-                bool idBBDD = !Guid.TryParse(id.Split('|')[1], out Guid auxA);
+                bool idBBDDVIncBBDD = !Guid.TryParse(id.Split('|')[1], out Guid auxA);
                 foreach (string id2 in listaEquivalenciasDisambiguate[id].Keys)
                 {
-                    bool id2BBDD = !Guid.TryParse(id2.Split('|')[1], out Guid auxB);
-                    if (idBBDD && id2BBDD)
+                    bool id2BBDDVIncBBDD = !Guid.TryParse(id2.Split('|')[1], out Guid auxB);
+                    if (idBBDDVIncBBDD && id2BBDDVIncBBDD)
                     {
                         throw new Exception("Error, no puede un item apuntar a más de un ítem de BBDD");
                     }
                     float similitud = listaEquivalenciasDisambiguate[id][id2];
                     if (similitud >= pUmbral)
                     {
-                        if (idBBDD && !id2BBDD)
+                        if (idBBDDVIncBBDD && !id2BBDDVIncBBDD)
                         {
                             if (!listadoEquivalencias.ContainsKey(id.Split('|')[1]))
                             {
@@ -492,7 +492,7 @@ namespace Hercules.CommonsEDMA.DisambiguationEngine.Models
                                 }
                             }
                         }
-                        if (!idBBDD && id2BBDD)
+                        if (!idBBDDVIncBBDD && id2BBDDVIncBBDD)
                         {
                             if (!listadoEquivalencias.ContainsKey(id2.Split('|')[1]))
                             {
@@ -580,18 +580,18 @@ namespace Hercules.CommonsEDMA.DisambiguationEngine.Models
             }
             foreach (string id in listaEquivalenciasDisambiguate.Keys)
             {
-                bool idBBDD = !Guid.TryParse(id.Split('|')[1], out Guid auxA);
+                bool idBBDDNoVincBBDD = !Guid.TryParse(id.Split('|')[1], out Guid auxA);
                 foreach (string id2 in listaEquivalenciasDisambiguate[id].Keys)
                 {
-                    bool id2BBDD = !Guid.TryParse(id2.Split('|')[1], out Guid auxB);
-                    if (idBBDD && id2BBDD)
+                    bool id2BBDDNoVincBBDD = !Guid.TryParse(id2.Split('|')[1], out Guid auxB);
+                    if (idBBDDNoVincBBDD && id2BBDDNoVincBBDD)
                     {
                         throw new Exception("Error, no puede un item apuntar a más de un ítem de BBDD");
                     }
                     float similitud = listaEquivalenciasDisambiguate[id][id2];
                     if (similitud >= pUmbral)
                     {
-                        if (!idBBDD && !id2BBDD)
+                        if (!idBBDDNoVincBBDD && !id2BBDDNoVincBBDD)
                         {
                             //Buscamos si está ya añadido                            
                             string aniadir = "";
@@ -1207,85 +1207,7 @@ namespace Hercules.CommonsEDMA.DisambiguationEngine.Models
                                     {
                                         throw new Exception("Todas las entiades del mismo tipo deben tener el mismo scoreMinus");
                                     }
-                                    if (data[i].config.type != item.Value[i].config.type)
-                                    {
-                                        throw new Exception("Todas las entiades del mismo tipo deben tener el mismo type");
-                                    }
-                                    switch (item.Value[i].config.type)
-                                    {
-                                        case DisambiguationDataConfigType.algoritmoNombres:
-                                            if (item.Value[i].value == null)
-                                            {
-                                                item.Value[i].value = "";
-                                            }
-                                            if (item.Value[i].config.score <= 0 && item.Value[i].config.score > 1)
-                                            {
-                                                throw new Exception("La propiedad score en 'algoritmoNombres' debe ser > 0 y <=1");
-                                            }
-                                            if (item.Value[i].config.scoreMinus != 0)
-                                            {
-                                                throw new Exception("La propiedad scoreMinus en 'algoritmoNombres' no hay que configurarla");
-                                            }
-                                            break;
-                                        case DisambiguationDataConfigType.equalsIdentifiers:
-                                            if (item.Value[i].value == null)
-                                            {
-                                                item.Value[i].value = "";
-                                            }
-                                            if (item.Value[i].config.score != 0)
-                                            {
-                                                throw new Exception("La propiedad score en 'equalsIdentifiers' no hay que configurarla");
-                                            }
-                                            if (item.Value[i].config.scoreMinus != 0)
-                                            {
-                                                throw new Exception("La propiedad scoreMinus en 'equalsIdentifiers' no hay que configurarla");
-                                            }
-                                            break;
-                                        case DisambiguationDataConfigType.equalsItem:
-                                            if (item.Value[i].value == null)
-                                            {
-                                                item.Value[i].value = "";
-                                            }
-                                            if (item.Value[i].config.score < 0 && item.Value[i].config.score > 1)
-                                            {
-                                                throw new Exception("La propiedad score en 'equalsItem' debe ser >= 0 y <=1");
-                                            }
-                                            if (item.Value[i].config.scoreMinus < 0 && item.Value[i].config.scoreMinus > 1)
-                                            {
-                                                throw new Exception("La propiedad scoreMinus en 'equalsItem' debe ser >= 0 y <=1");
-                                            }
-                                            break;
-                                        case DisambiguationDataConfigType.equalsTitle:
-                                            if (item.Value[i].value == null)
-                                            {
-                                                item.Value[i].value = "";
-                                            }
-                                            if (item.Value[i].config.score <= 0 && item.Value[i].config.score > 1)
-                                            {
-                                                throw new Exception("La propiedad score en 'equalsTitle' debe ser > 0 y <=1");
-                                            }
-                                            if (item.Value[i].config.scoreMinus != 0)
-                                            {
-                                                throw new Exception("La propiedad scoreMinus en 'equalsTitle' no hay que configurarla");
-                                            }
-                                            break;
-                                        case DisambiguationDataConfigType.equalsItemList:
-                                            if (item.Value[i].values == null)
-                                            {
-                                                item.Value[i].values = new HashSet<string>();
-                                            }
-                                            if (item.Value[i].config.score < 0 && item.Value[i].config.score > 1)
-                                            {
-                                                throw new Exception("La propiedad score en 'equalsItemList' debe ser >= 0 y <=1");
-                                            }
-                                            if (item.Value[i].config.scoreMinus != 0)
-                                            {
-                                                throw new Exception("La propiedad scoreMinus en 'equalsIdentifiers' no hay que configurarla");
-                                            }
-                                            break;
-                                        default:
-                                            throw new Exception("No implementado");
-                                    }
+                                    RealizarComprobacionesInt(data, item, tipo);
                                 }
                             }
                             if (!block && pItemsDataBBDD != null && pItemsDataBBDD.Count > 1)
@@ -1294,104 +1216,7 @@ namespace Hercules.CommonsEDMA.DisambiguationEngine.Models
                                 {
                                     foreach (KeyValuePair<DisambiguableEntity, List<DisambiguationData>> item in pItemsDataBBDD[tipo])
                                     {
-                                        if (data.Count != item.Value.Count)
-                                        {
-                                            throw new Exception("Todas las entiades del mismo tipo deben tener las mismas propiedades");
-                                        }
-                                        for (int i = 0; i < data.Count; i++)
-                                        {
-                                            if (data[i].property != item.Value[i].property)
-                                            {
-                                                throw new Exception("En los items " + tipo + " hay propiedades diferentes");
-                                            }
-                                            if (data[i].config.score != item.Value[i].config.score)
-                                            {
-                                                throw new Exception("Todas las entiades del mismo tipo deben tener el mismo score");
-                                            }
-                                            if (data[i].config.scoreMinus != item.Value[i].config.scoreMinus)
-                                            {
-                                                throw new Exception("Todas las entiades del mismo tipo deben tener el mismo scoreMinus");
-                                            }
-                                            if (data[i].config.type != item.Value[i].config.type)
-                                            {
-                                                throw new Exception("Todas las entiades del mismo tipo deben tener el mismo type");
-                                            }
-                                            switch (item.Value[i].config.type)
-                                            {
-                                                case DisambiguationDataConfigType.algoritmoNombres:
-                                                    if (item.Value[i].value == null)
-                                                    {
-                                                        item.Value[i].value = "";
-                                                    }
-                                                    if (item.Value[i].config.score <= 0 && item.Value[i].config.score > 1)
-                                                    {
-                                                        throw new Exception("La propiedad score en 'algoritmoNombres' debe ser > 0 y <=1");
-                                                    }
-                                                    if (item.Value[i].config.scoreMinus != 0)
-                                                    {
-                                                        throw new Exception("La propiedad scoreMinus en 'algoritmoNombres' no hay que configurarla");
-                                                    }
-                                                    break;
-                                                case DisambiguationDataConfigType.equalsIdentifiers:
-                                                    if (item.Value[i].value == null)
-                                                    {
-                                                        item.Value[i].value = "";
-                                                    }
-                                                    if (item.Value[i].config.score != 0)
-                                                    {
-                                                        throw new Exception("La propiedad score en 'equalsIdentifiers' no hay que configurarla");
-                                                    }
-                                                    if (item.Value[i].config.scoreMinus != 0)
-                                                    {
-                                                        throw new Exception("La propiedad scoreMinus en 'equalsIdentifiers' no hay que configurarla");
-                                                    }
-                                                    break;
-                                                case DisambiguationDataConfigType.equalsItem:
-                                                    if (item.Value[i].value == null)
-                                                    {
-                                                        item.Value[i].value = "";
-                                                    }
-                                                    if (item.Value[i].config.score < 0 && item.Value[i].config.score > 1)
-                                                    {
-                                                        throw new Exception("La propiedad score en 'equalsItem' debe ser >= 0 y <=1");
-                                                    }
-                                                    if (item.Value[i].config.scoreMinus < 0 && item.Value[i].config.scoreMinus > 1)
-                                                    {
-                                                        throw new Exception("La propiedad scoreMinus en 'equalsItem' debe ser >= 0 y <=1");
-                                                    }
-                                                    break;
-                                                case DisambiguationDataConfigType.equalsTitle:
-                                                    if (item.Value[i].value == null)
-                                                    {
-                                                        item.Value[i].value = "";
-                                                    }
-                                                    if (item.Value[i].config.score <= 0 && item.Value[i].config.score > 1)
-                                                    {
-                                                        throw new Exception("La propiedad score en 'equalsTitle' debe ser > 0 y <=1");
-                                                    }
-                                                    if (item.Value[i].config.scoreMinus != 0)
-                                                    {
-                                                        throw new Exception("La propiedad scoreMinus en 'equalsTitle' no hay que configurarla");
-                                                    }
-                                                    break;
-                                                case DisambiguationDataConfigType.equalsItemList:
-                                                    if (item.Value[i].values == null)
-                                                    {
-                                                        item.Value[i].values = new HashSet<string>();
-                                                    }
-                                                    if (item.Value[i].config.score < 0 && item.Value[i].config.score > 1)
-                                                    {
-                                                        throw new Exception("La propiedad score en 'equalsItemList' debe ser >= 0 y <=1");
-                                                    }
-                                                    if (item.Value[i].config.scoreMinus != 0)
-                                                    {
-                                                        throw new Exception("La propiedad scoreMinus en 'equalsIdentifiers' no hay que configurarla");
-                                                    }
-                                                    break;
-                                                default:
-                                                    throw new Exception("No implementado");
-                                            }
-                                        }
+                                        RealizarComprobacionesInt(data, item, tipo);
                                     }
                                 }
                             }
@@ -1400,6 +1225,108 @@ namespace Hercules.CommonsEDMA.DisambiguationEngine.Models
                     }
                 }
                 block = true;
+            }
+        }
+
+        private static void RealizarComprobacionesInt(List<DisambiguationData> pData, KeyValuePair<DisambiguableEntity, List<DisambiguationData>> pItem,string pTipo)
+        {
+            if (pData.Count != pItem.Value.Count)
+            {
+                throw new Exception("Todas las entiades del mismo tipo deben tener las mismas propiedades");
+            }
+            for (int i = 0; i < pData.Count; i++)
+            {
+                if (pData[i].property != pItem.Value[i].property)
+                {
+                    throw new Exception("En los items " + pTipo + " hay propiedades diferentes");
+                }
+                if (pData[i].config.score != pItem.Value[i].config.score)
+                {
+                    throw new Exception("Todas las entiades del mismo tipo deben tener el mismo score");
+                }
+                if (pData[i].config.scoreMinus != pItem.Value[i].config.scoreMinus)
+                {
+                    throw new Exception("Todas las entiades del mismo tipo deben tener el mismo scoreMinus");
+                }
+                if (pData[i].config.type != pItem.Value[i].config.type)
+                {
+                    throw new Exception("Todas las entiades del mismo tipo deben tener el mismo type");
+                }
+                switch (pItem.Value[i].config.type)
+                {
+                    case DisambiguationDataConfigType.algoritmoNombres:
+                        if (pItem.Value[i].value == null)
+                        {
+                            pItem.Value[i].value = "";
+                        }
+                        if (pItem.Value[i].config.score <= 0 && pItem.Value[i].config.score > 1)
+                        {
+                            throw new Exception("La propiedad score en 'algoritmoNombres' debe ser > 0 y <=1");
+                        }
+                        if (pItem.Value[i].config.scoreMinus != 0)
+                        {
+                            throw new Exception("La propiedad scoreMinus en 'algoritmoNombres' no hay que configurarla");
+                        }
+                        break;
+                    case DisambiguationDataConfigType.equalsIdentifiers:
+                        if (pItem.Value[i].value == null)
+                        {
+                            pItem.Value[i].value = "";
+                        }
+                        if (pItem.Value[i].config.score != 0)
+                        {
+                            throw new Exception("La propiedad score en 'equalsIdentifiers' no hay que configurarla");
+                        }
+                        if (pItem.Value[i].config.scoreMinus != 0)
+                        {
+                            throw new Exception("La propiedad scoreMinus en 'equalsIdentifiers' no hay que configurarla");
+                        }
+                        break;
+                    case DisambiguationDataConfigType.equalsItem:
+                        if (pItem.Value[i].value == null)
+                        {
+                            pItem.Value[i].value = "";
+                        }
+                        if (pItem.Value[i].config.score < 0 && pItem.Value[i].config.score > 1)
+                        {
+                            throw new Exception("La propiedad score en 'equalsItem' debe ser >= 0 y <=1");
+                        }
+                        if (pItem.Value[i].config.scoreMinus < 0 && pItem.Value[i].config.scoreMinus > 1)
+                        {
+                            throw new Exception("La propiedad scoreMinus en 'equalsItem' debe ser >= 0 y <=1");
+                        }
+                        break;
+                    case DisambiguationDataConfigType.equalsTitle:
+                        if (pItem.Value[i].value == null)
+                        {
+                            pItem.Value[i].value = "";
+                        }
+                        if (pItem.Value[i].config.score <= 0 && pItem.Value[i].config.score > 1)
+                        {
+                            throw new Exception("La propiedad score en 'equalsTitle' debe ser > 0 y <=1");
+                        }
+                        if (pItem.Value[i].config.scoreMinus != 0)
+                        {
+                            throw new Exception("La propiedad scoreMinus en 'equalsTitle' no hay que configurarla");
+                        }
+                        break;
+                    case DisambiguationDataConfigType.equalsItemList:
+                        if (pItem.Value[i].values == null)
+                        {
+                            pItem.Value[i].values = new HashSet<string>();
+                        }
+                        if (pItem.Value[i].config.score < 0 && pItem.Value[i].config.score > 1)
+                        {
+                            throw new Exception("La propiedad score en 'equalsItemList' debe ser >= 0 y <=1");
+                        }
+                        if (pItem.Value[i].config.scoreMinus != 0)
+                        {
+                            throw new Exception("La propiedad scoreMinus en 'equalsIdentifiers' no hay que configurarla");
+                        }
+                        break;
+                    default:
+                        throw new Exception("No implementado");
+                }
             }
         }
 
@@ -1489,11 +1416,12 @@ namespace Hercules.CommonsEDMA.DisambiguationEngine.Models
                         }
                     }
                 }
+
                 //Resto
                 if (result > 0)
                 {
                     //ItemA ItemB Prop
-                    Dictionary<string, Dictionary<string, HashSet<string>>> dicEqualsItem = new Dictionary<string, Dictionary<string, HashSet<string>>>();
+                    Dictionary<string, Dictionary<string, HashSet<string>>> dicEqualsItemTituloResto = new Dictionary<string, Dictionary<string, HashSet<string>>>();
                     for (int i = 0; i < pDataA.Value.Count; i++)
                     {
                         DisambiguationData dataAAux = pDataA.Value[i];
@@ -1512,15 +1440,15 @@ namespace Hercules.CommonsEDMA.DisambiguationEngine.Models
                                 case DisambiguationDataConfigType.equalsItem:
                                     if (PesoEqualsItem(ref result, dataAAux.config.score, dataAAux.value, dataBAux.value, pEquivalencesAux))
                                     {
-                                        if (!dicEqualsItem.ContainsKey(dataAAux.value))
+                                        if (!dicEqualsItemTituloResto.ContainsKey(dataAAux.value))
                                         {
-                                            dicEqualsItem.Add(dataAAux.value, new Dictionary<string, HashSet<string>>());
+                                            dicEqualsItemTituloResto.Add(dataAAux.value, new Dictionary<string, HashSet<string>>());
                                         }
-                                        if (!dicEqualsItem[dataAAux.value].ContainsKey(dataBAux.value))
+                                        if (!dicEqualsItemTituloResto[dataAAux.value].ContainsKey(dataBAux.value))
                                         {
-                                            dicEqualsItem[dataAAux.value].Add(dataBAux.value, new HashSet<string>());
+                                            dicEqualsItemTituloResto[dataAAux.value].Add(dataBAux.value, new HashSet<string>());
                                         }
-                                        dicEqualsItem[dataAAux.value][dataBAux.value].Add(dataAAux.property);
+                                        dicEqualsItemTituloResto[dataAAux.value][dataBAux.value].Add(dataAAux.property);
                                     }
                                     break;
                                 case DisambiguationDataConfigType.equalsItemList:
@@ -1591,7 +1519,7 @@ namespace Hercules.CommonsEDMA.DisambiguationEngine.Models
                 //Resto
                 if (result > 0)
                 {
-                    Dictionary<string, Dictionary<string, HashSet<string>>> dicEqualsItem = new Dictionary<string, Dictionary<string, HashSet<string>>>();
+                    Dictionary<string, Dictionary<string, HashSet<string>>> dicEqualsItemNombreResto = new Dictionary<string, Dictionary<string, HashSet<string>>>();
                     for (int i = 0; i < pDataA.Value.Count; i++)
                     {
                         DisambiguationData dataAAux = pDataA.Value[i];
@@ -1610,15 +1538,15 @@ namespace Hercules.CommonsEDMA.DisambiguationEngine.Models
                                 case DisambiguationDataConfigType.equalsItem:
                                     if (PesoEqualsItem(ref result, dataAAux.config.score, dataAAux.value, dataBAux.value, pEquivalencesAux))
                                     {
-                                        if (!dicEqualsItem.ContainsKey(dataAAux.value))
+                                        if (!dicEqualsItemNombreResto.ContainsKey(dataAAux.value))
                                         {
-                                            dicEqualsItem.Add(dataAAux.value, new Dictionary<string, HashSet<string>>());
+                                            dicEqualsItemNombreResto.Add(dataAAux.value, new Dictionary<string, HashSet<string>>());
                                         }
-                                        if (!dicEqualsItem[dataAAux.value].ContainsKey(dataBAux.value))
+                                        if (!dicEqualsItemNombreResto[dataAAux.value].ContainsKey(dataBAux.value))
                                         {
-                                            dicEqualsItem[dataAAux.value].Add(dataBAux.value, new HashSet<string>());
+                                            dicEqualsItemNombreResto[dataAAux.value].Add(dataBAux.value, new HashSet<string>());
                                         }
-                                        dicEqualsItem[dataAAux.value][dataBAux.value].Add(dataAAux.property);
+                                        dicEqualsItemNombreResto[dataAAux.value][dataBAux.value].Add(dataAAux.property);
                                     }
                                     break;
                                 case DisambiguationDataConfigType.equalsItemList:
@@ -2122,29 +2050,19 @@ namespace Hercules.CommonsEDMA.DisambiguationEngine.Models
             string textoNormalizado = pText.Normalize(NormalizationForm.FormD);
             System.Text.RegularExpressions.Regex reg = new System.Text.RegularExpressions.Regex("[^a-zA-Z ]");
             string textoSinAcentos = reg.Replace(textoNormalizado, "");
-            while (textoSinAcentos.Contains(" del "))
+            List<string> stringReplaces = new List<string>();
+            stringReplaces.Add(" del ");
+            stringReplaces.Add(" de ");
+            stringReplaces.Add(" la ");
+            stringReplaces.Add(" von ");
+            stringReplaces.Add(" al ");
+            stringReplaces.Add("  ");
+            foreach(string replace in stringReplaces)
             {
-                textoSinAcentos = textoSinAcentos.Replace(" del ", " ");
-            }
-            while (textoSinAcentos.Contains(" de "))
-            {
-                textoSinAcentos = textoSinAcentos.Replace(" de ", " ");
-            }
-            while (textoSinAcentos.Contains(" la "))
-            {
-                textoSinAcentos = textoSinAcentos.Replace(" la ", " ");
-            }
-            while (textoSinAcentos.Contains(" von "))
-            {
-                textoSinAcentos = textoSinAcentos.Replace(" von ", " ");
-            }
-            while (textoSinAcentos.Contains(" al "))
-            {
-                textoSinAcentos = textoSinAcentos.Replace(" al ", " ");
-            }
-            while (textoSinAcentos.Contains("  "))
-            {
-                textoSinAcentos = textoSinAcentos.Replace("  ", " ");
+                while (textoSinAcentos.Contains(replace))
+                {
+                    textoSinAcentos = textoSinAcentos.Replace(replace, " ");
+                }
             }
 
             if (pDicNomAutoresDesnormalizados != null)
