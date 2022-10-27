@@ -13,10 +13,12 @@
 
 [![SonarCloud](https://sonarcloud.io/images/project_badges/sonarcloud-white.svg)](https://sonarcloud.io/summary/new_code?id=Hercules.CommonsEDMA.OAI_PMH)
 
-[![Bugs](https://sonarcloud.io/api/project_badges/measure?project=Hercules.CommonsEDMA.OAI_PMH&metric=bugs)](https://sonarcloud.io/summary/new_code?id=Hercules.CommonsEDMA.OAI_PMH)
 [![Reliability Rating](https://sonarcloud.io/api/project_badges/measure?project=Hercules.CommonsEDMA.OAI_PMH&metric=reliability_rating)](https://sonarcloud.io/summary/new_code?id=Hercules.CommonsEDMA.OAI_PMH)
-[![Reliability Rating](https://sonarcloud.io/api/project_badges/measure?project=Hercules.CommonsEDMA.OAI_PMH&metric=reliability_rating)](https://sonarcloud.io/summary/new_code?id=Hercules.CommonsEDMA.OAI_PMH)
+[![Security Rating](https://sonarcloud.io/api/project_badges/measure?project=Hercules.CommonsEDMA.OAI_PMH&metric=security_rating)](https://sonarcloud.io/summary/new_code?id=Hercules.CommonsEDMA.OAI_PMH)
+[![Maintainability Rating](https://sonarcloud.io/api/project_badges/measure?project=Hercules.CommonsEDMA.OAI_PMH&metric=sqale_rating)](https://sonarcloud.io/summary/new_code?id=Hercules.CommonsEDMA.OAI_PMH)
 [![Duplicated Lines (%)](https://sonarcloud.io/api/project_badges/measure?project=Hercules.CommonsEDMA.OAI_PMH&metric=duplicated_lines_density)](https://sonarcloud.io/summary/new_code?id=Hercules.CommonsEDMA.OAI_PMH)
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=Hercules.CommonsEDMA.OAI_PMH&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=Hercules.CommonsEDMA.OAI_PMH)
+[![Lines of Code](https://sonarcloud.io/api/project_badges/measure?project=Hercules.CommonsEDMA.OAI_PMH&metric=ncloc)](https://sonarcloud.io/summary/new_code?id=Hercules.CommonsEDMA.OAI_PMH)
 
 
 

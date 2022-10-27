@@ -107,6 +107,7 @@ namespace OAI_PMH.Models.OAIPMH
                     }
                     break;
             }
+
             return record;
         }
 

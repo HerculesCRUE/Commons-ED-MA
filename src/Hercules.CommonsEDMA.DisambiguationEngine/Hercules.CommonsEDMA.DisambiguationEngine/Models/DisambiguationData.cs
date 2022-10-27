@@ -46,6 +46,37 @@ namespace Hercules.CommonsEDMA.DisambiguationEngine.Models
         /// Score negativo (0-1)
         /// </summary>
         public float scoreMinus { get; set; }
+
+        /// <summary>
+        /// Constructor vacio
+        /// </summary>
+        public DisambiguationDataConfig()
+        {
+        }
+
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="type">Type</param>
+        /// <param name="score">Score</param>
+        public DisambiguationDataConfig(DisambiguationDataConfigType type, float score)
+        {
+            this.type = type;
+            this.score = score;
+        }
+
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="type">Type</param>
+        /// <param name="score">Score</param>
+        /// <param name="scoreMinus">ScoreMinus</param>
+        public DisambiguationDataConfig(DisambiguationDataConfigType type, float score, float scoreMinus)
+        {
+            this.type = type;
+            this.score = score;
+            this.scoreMinus = scoreMinus;
+        }
     }
 
     /// <summary>
@@ -69,5 +100,54 @@ namespace Hercules.CommonsEDMA.DisambiguationEngine.Models
         /// Valores de la propiedad
         /// </summary>
         public HashSet<string> values { get; set; }
+
+        /// <summary>
+        /// Constructor vacio
+        /// </summary>
+        public DisambiguationData()
+        {
+
+        }
+
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="config">DisambiguationDataConfig</param>
+        /// <param name="property">Property</param>
+        /// <param name="value">Value</param>
+        /// <param name="values">Values</param>
+        public DisambiguationData(DisambiguationDataConfig config, string property, string value, HashSet<string> values)
+        {
+            this.config = config;
+            this.property = property;
+            this.value = value;
+            this.values = values;
+        }
+
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="config">DisambiguationDataConfig</param>
+        /// <param name="property">Property</param>
+        /// <param name="value">Value</param>
+        public DisambiguationData(DisambiguationDataConfig config, string property, string value)
+        {
+            this.config = config;
+            this.property = property;
+            this.value = value;
+        }
+
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="config">DisambiguationDataConfig</param>
+        /// <param name="property">Property</param>
+        /// <param name="value">Value</param>
+        public DisambiguationData(DisambiguationDataConfig config, string property, HashSet<string> values)
+        {
+            this.config = config;
+            this.property = property;
+            this.values = values;
+        }
     }
 }

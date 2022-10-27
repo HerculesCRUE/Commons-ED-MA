@@ -148,23 +148,24 @@ namespace OAI_PMH.Models.SGI.Organization
 
             if (resultadoQuery != null && resultadoQuery.results != null && resultadoQuery.results.bindings != null && resultadoQuery.results.bindings.Count > 0)
             {
-                foreach (Dictionary<string, SparqlObject.Data> fila in resultadoQuery.results.bindings)
+                OrganizacionBBDD organizacion = new OrganizacionBBDD();
+
+                if (!string.IsNullOrEmpty(resultadoQuery.results.bindings.First()["crisIdentifier"].value))
                 {
-                    OrganizacionBBDD organizacion = new OrganizacionBBDD();
-                    if (!string.IsNullOrEmpty(fila["crisIdentifier"].value))
-                    {
-                        organizacion.crisIdentifier = fila["crisIdentifier"].value;
-                    }
-                    if (!string.IsNullOrEmpty(fila["titulo"].value))
-                    {
-                        organizacion.title = fila["titulo"].value;
-                    }
-                    if (fila.ContainsKey("localidad") && !string.IsNullOrEmpty(fila["localidad"].value))
-                    {
-                        organizacion.locality = fila["localidad"].value;
-                    }
-                    return organizacion;
+                    organizacion.crisIdentifier = resultadoQuery.results.bindings.First()["crisIdentifier"].value;
                 }
+
+                if (!string.IsNullOrEmpty(resultadoQuery.results.bindings.First()["titulo"].value))
+                {
+                    organizacion.title = resultadoQuery.results.bindings.First()["titulo"].value;
+                }
+
+                if (!string.IsNullOrEmpty(resultadoQuery.results.bindings.First()["localidad"].value))
+                {
+                    organizacion.locality = resultadoQuery.results.bindings.First()["localidad"].value;
+                }
+
+                return organizacion;
             }
 
             return null;

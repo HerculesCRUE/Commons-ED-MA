@@ -48,7 +48,7 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
                 filtersDocumentosValidados.Add("");
             }
             //Eliminamos los duplicados
-            EliminarDuplicados("document", "http://purl.org/ontology/bibo/Document", "http://w3id.org/roh/isValidated");
+            EliminarDuplicados("document", $"{GetUrlPrefix("bibo")}Document", $"{GetUrlPrefix("roh")}isValidated");
 
             foreach (string filter in filtersDocumentosValidados)
             {
@@ -97,7 +97,7 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
                         {
                             isValidatedCargado = fila["isValidatedCargado"].value;
                         }
-                        ActualizadorTriple(document, "http://w3id.org/roh/isValidated", isValidatedCargado, isValidatedCargar);
+                        ActualizadorTriple(document, $"{GetUrlPrefix("roh")}isValidated", isValidatedCargado, isValidatedCargar);
                     });
 
                     if (resultadoDocumentosValidados.results.bindings.Count != limitDocumentosValidados)
@@ -206,7 +206,7 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
                                     }}
                                 }}order by desc(?doc) limit {limitInsercionPertenenciaGrupos}";
                     SparqlObject resultadoInsercionPertenenciaGrupos = mResourceApi.VirtuosoQueryMultipleGraph(selectInsercionPertenenciaGrupos, whereInsercionPertenenciaGrupos, new List<string>() { "document", "curriculumvitae", "person", "group" });
-                    InsercionMultiple(resultadoInsercionPertenenciaGrupos.results.bindings, "http://w3id.org/roh/isProducedBy", "doc", "grupo");
+                    InsercionMultiple(resultadoInsercionPertenenciaGrupos.results.bindings, $"{GetUrlPrefix("roh")}isProducedBy", "doc", "grupo");
                     if (resultadoInsercionPertenenciaGrupos.results.bindings.Count != limitInsercionPertenenciaGrupos)
                     {
                         break;
@@ -285,7 +285,7 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
                                     }}
                                 }}order by desc(?doc) limit {limitEliminacionPertenenciaGrupos}";
                     SparqlObject resultadoEliminacionPertenenciaGrupos = mResourceApi.VirtuosoQueryMultipleGraph(selectEliminacionPertenenciaGrupos, whereEliminacionPertenenciaGrupos, new List<string>() { "document", "curriculumvitae", "person", "group" });
-                    EliminacionMultiple(resultadoEliminacionPertenenciaGrupos.results.bindings, "http://w3id.org/roh/isProducedBy", "doc", "grupo");
+                    EliminacionMultiple(resultadoEliminacionPertenenciaGrupos.results.bindings, $"{GetUrlPrefix("roh")}isProducedBy", "doc", "grupo");
                     if (resultadoEliminacionPertenenciaGrupos.results.bindings.Count != limitEliminacionPertenenciaGrupos)
                     {
                         break;
@@ -315,7 +315,7 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
             }
 
             //Eliminamos los duplicados
-            EliminarDuplicados("document", "http://purl.org/ontology/bibo/Document", "http://w3id.org/roh/citationCount");
+            EliminarDuplicados("document", $"{GetUrlPrefix("bibo")}Document", $"{GetUrlPrefix("roh")}citationCount");
 
             foreach (string filter in filtersNumeroCitasMaximas)
             {
@@ -362,7 +362,7 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
                         {
                             numCitasCargadas = fila["numCitasCargadas"].value;
                         }
-                        ActualizadorTriple(document, "http://w3id.org/roh/citationCount", numCitasCargadas, numCitasACargar);
+                        ActualizadorTriple(document, $"{GetUrlPrefix("roh")}citationCount", numCitasCargadas, numCitasACargar);
                     });
 
                     if (resultadoNumeroCitasMaximas.results.bindings.Count != limitNumeroCitasMaximas)
@@ -444,7 +444,7 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
                         {
                             triplesRemove.Add(new RemoveTriples()
                             {
-                                Predicate = "http://w3id.org/roh/hasKnowledgeArea",
+                                Predicate = $"{GetUrlPrefix("roh")}hasKnowledgeArea",
                                 Value = hasKnowledgeArea
                             }); ;
                         }
@@ -517,7 +517,7 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
                                 }}
                             }}order by (?document) limit {limitInsertamosAreasDocumentos}";
                     SparqlObject resultadoInsertamosAreasDocumentos = mResourceApi.VirtuosoQueryMultipleGraph(selectInsertamosAreasDocumentos, whereInsertamosAreasDocumentos, new List<string>() { "document", "taxonomy" });
-                    InsertarCategorias(resultadoInsertamosAreasDocumentos, dicAreasBroader, mResourceApi.GraphsUrl, "document", "http://w3id.org/roh/hasKnowledgeArea");
+                    InsertarCategorias(resultadoInsertamosAreasDocumentos, dicAreasBroader, mResourceApi.GraphsUrl, "document", $"{GetUrlPrefix("roh")}hasKnowledgeArea");
                     if (resultadoInsertamosAreasDocumentos.results.bindings.Count != limitInsertamosAreasDocumentos)
                     {
                         break;
@@ -557,7 +557,7 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
                                 }}
                             }} limit {limitEliminamosAreasDocumentos}";
                     SparqlObject resultadoEliminamosAreasDocumentos = mResourceApi.VirtuosoQueryMultipleGraph(selectEliminamosAreasDocumentos, whereEliminamosAreasDocumentos, new List<string>() { "document", "taxonomy" });
-                    EliminarCategorias(resultadoEliminamosAreasDocumentos, "document", "http://w3id.org/roh/hasKnowledgeArea");
+                    EliminarCategorias(resultadoEliminamosAreasDocumentos, "document", $"{GetUrlPrefix("roh")}hasKnowledgeArea");
                     if (resultadoEliminamosAreasDocumentos.results.bindings.Count != limitEliminamosAreasDocumentos)
                     {
                         break;
@@ -666,7 +666,7 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
                                 }}
                             }} limit {limitEliminamosTagsDocumentos}";
                     SparqlObject resultadoEliminamosTagsDocumentos = mResourceApi.VirtuosoQuery(selectEliminamosTagsDocumentos, whereEliminamosTagsDocumentos, "document");
-                    EliminacionMultiple(resultadoEliminamosTagsDocumentos.results.bindings, "http://vivoweb.org/ontology/core#freeTextKeyword", "document", "tagAux");
+                    EliminacionMultiple(resultadoEliminamosTagsDocumentos.results.bindings, $"{GetUrlPrefix("vivo")}freeTextKeyword", "document", "tagAux");
                     if (resultadoEliminamosTagsDocumentos.results.bindings.Count != limitEliminamosTagsDocumentos)
                     {
                         break;
@@ -703,7 +703,7 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
                         foreach (Dictionary<string, SparqlObject.Data> filaEliminamosDuplicadosIn in resultadoEliminamosDuplicadosIn.results.bindings.GetRange(1, resultadoEliminamosDuplicadosIn.results.bindings.Count - 1))
                         {
                             string value = filaEliminamosDuplicadosIn["data"].value;
-                            ActualizadorTriple(document, "http://vivoweb.org/ontology/core#freeTextKeyword", value, "");
+                            ActualizadorTriple(document, $"{GetUrlPrefix("vivo")}freeTextKeyword", value, "");
                         }
                     });
                     if (resultadoEliminamosDuplicados.results.bindings.Count != limitEliminamosDuplicados)
@@ -732,7 +732,7 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
                 filtersAnios.Add("");
             }
 
-            EliminarDuplicados("document", "http://purl.org/ontology/bibo/Document", "http://w3id.org/roh/year");
+            EliminarDuplicados("document", $"{GetUrlPrefix("bibo")}Document", $"{GetUrlPrefix("roh")}year");
             foreach (string filter in filtersAnios)
             {
                 //Inserciones
@@ -769,7 +769,7 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
                         {
                             yearCargado = fila["yearCargado"].value;
                         }
-                        ActualizadorTriple(document, "http://w3id.org/roh/year", yearCargado, yearCargar);
+                        ActualizadorTriple(document, $"{GetUrlPrefix("roh")}year", yearCargado, yearCargar);
                     });
 
                     if (resultadoActualizarAnios.results.bindings.Count != limitActualizarAnios)
@@ -798,7 +798,7 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
             }
 
             //Eliminamos los duplicados
-            EliminarDuplicados("document", "http://purl.org/ontology/bibo/Document", "http://w3id.org/roh/genderIP");
+            EliminarDuplicados("document", $"{GetUrlPrefix("bibo")}Document", $"{GetUrlPrefix("roh")}genderIP");
 
             foreach (string filter in filtersGenderAutorPrincipal)
             {
@@ -859,7 +859,7 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
                         {
                             genderIPCargado = fila["genderIPCargado"].value;
                         }
-                        ActualizadorTriple(document, "http://w3id.org/roh/genderIP", genderIPCargado, genderIPACargar);
+                        ActualizadorTriple(document, $"{GetUrlPrefix("roh")}genderIP", genderIPCargado, genderIPACargar);
                     });
 
                     if (resultadoGenderAutorPrincipal.results.bindings.Count != limitGenderAutorPrincipal)
@@ -890,7 +890,7 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
             }
 
             //Eliminamos los duplicados
-            EliminarDuplicados("document", "http://purl.org/ontology/bibo/Document", "http://w3id.org/roh/positionIP");
+            EliminarDuplicados("document", $"{GetUrlPrefix("bibo")}Document", $"{GetUrlPrefix("roh")}positionIP");
 
             foreach (string filter in filtersPositionAutorPrincipal)
             {
@@ -947,7 +947,7 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
                         {
                             positionIPCargado = fila["positionIPCargado"].value;
                         }
-                        ActualizadorTriple(document, "http://w3id.org/roh/positionIP", positionIPCargado, positionIPACargar);
+                        ActualizadorTriple(document, $"{GetUrlPrefix("roh")}positionIP", positionIPCargado, positionIPACargar);
                     });
 
                     if (resultadoPositionAutorPrincipal.results.bindings.Count != limitPositionAutorPrincipal)
@@ -1045,7 +1045,7 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
                         //Entidad principal
                         string mainEntity = fila["document"].value;
                         //Predicado
-                        string predicado = "http://w3id.org/roh/hasPublicationVenueJournalText";
+                        string predicado = $"{GetUrlPrefix("roh")}hasPublicationVenueJournalText";
                         //Valor antiguo
                         string valorAntiguo = "";
                         if (fila.ContainsKey("nombreDesnormalizadoRevista"))
@@ -1294,7 +1294,7 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
                             {
                                 string indiceImpactoAEliminar = fila["impactIndexDoc"].value;
                                 RemoveTriples t = new();
-                                t.Predicate = "http://w3id.org/roh/impactIndex";
+                                t.Predicate = $"{GetUrlPrefix("roh")}impactIndex";
                                 t.Value = indiceImpactoAEliminar;
                                 triples[guid].Add(t);
                             }
@@ -1353,7 +1353,7 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
                                 {
                                     publicationPositionCargado = impactIndexDoc + "|" + fila["publicationPositionCargado"].value;
                                 }
-                                ActualizadorTriple(document, "http://w3id.org/roh/impactIndex|http://w3id.org/roh/publicationPosition", publicationPositionCargado, publicationPositionCargar);
+                                ActualizadorTriple(document, $"{GetUrlPrefix("roh")}impactIndex|http://w3id.org/roh/publicationPosition", publicationPositionCargado, publicationPositionCargar);
                             }
                         });
                     }
@@ -1406,7 +1406,7 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
                                 {
                                     journalNumberInCatCargado = impactIndexDoc + "|" + fila["journalNumberInCatCargado"].value;
                                 }
-                                ActualizadorTriple(document, "http://w3id.org/roh/impactIndex|http://w3id.org/roh/journalNumberInCat", journalNumberInCatCargado, journalNumberInCatCargar);
+                                ActualizadorTriple(document, $"{GetUrlPrefix("roh")}impactIndex|http://w3id.org/roh/journalNumberInCat", journalNumberInCatCargado, journalNumberInCatCargar);
                             }
                         });
                     }
@@ -1458,7 +1458,7 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
                                 {
                                     quartileCargado = impactIndexDoc + "|" + fila["quartileCargado"].value;
                                 }
-                                ActualizadorTriple(document, "http://w3id.org/roh/impactIndex|http://w3id.org/roh/quartile", quartileCargado, quartileCargar);
+                                ActualizadorTriple(document, $"{GetUrlPrefix("roh")}impactIndex|http://w3id.org/roh/quartile", quartileCargado, quartileCargar);
                             }
                         });
                     }
@@ -1547,7 +1547,7 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
                             {
                                 string indiceImpactoAEliminar = fila["impactIndexDoc"].value;
                                 RemoveTriples t = new();
-                                t.Predicate = "http://w3id.org/roh/impactIndex";
+                                t.Predicate = $"{GetUrlPrefix("roh")}impactIndex";
                                 t.Value = indiceImpactoAEliminar;
                                 triples[guid].Add(t);
                             }
@@ -1566,7 +1566,7 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
 
                 //Actualizamos cuartiles del doc
                 //Eliminamos los duplicados
-                EliminarDuplicados("document", "http://purl.org/ontology/bibo/Document", "http://w3id.org/roh/quartile");
+                EliminarDuplicados("document", $"{GetUrlPrefix("bibo")}Document", $"{GetUrlPrefix("roh")}quartile");
                 while (true)
                 {
                     int limitActualizarQuartil = 500;
@@ -1605,7 +1605,7 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
                         {
                             quartileCargado = fila["quartileCargado"].value;
                         }
-                        ActualizadorTriple(document, "http://w3id.org/roh/quartile", quartileCargado, quartileCargar);
+                        ActualizadorTriple(document, $"{GetUrlPrefix("roh")}quartile", quartileCargado, quartileCargar);
                     });
 
                     if (resultadoActualizarQuartil.results.bindings.Count != limitActualizarQuartil)
@@ -1616,7 +1616,7 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
 
                 //Actualizamos el indice de impacto del doc
                 //Eliminamos los duplicados
-                EliminarDuplicados("document", "http://purl.org/ontology/bibo/Document", "http://w3id.org/roh/impactIndexInYear");
+                EliminarDuplicados("document", $"{GetUrlPrefix("bibo")}Document", $"{GetUrlPrefix("roh")}impactIndexInYear");
                 while (true)
                 {
                     int limitActualizarImpactDoc = 500;
@@ -1654,7 +1654,7 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
                         {
                             impactIndexInYearCargado = fila["impactIndexInYearCargado"].value;
                         }
-                        ActualizadorTriple(document, "http://w3id.org/roh/impactIndexInYear", impactIndexInYearCargado, impactIndexInYearCargar);
+                        ActualizadorTriple(document, $"{GetUrlPrefix("roh")}impactIndexInYear", impactIndexInYearCargado, impactIndexInYearCargar);
                     });
 
                     if (resultadoActualizarImpactDoc.results.bindings.Count != limitActualizarImpactDoc)
@@ -1685,7 +1685,7 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
             }
 
             //Eliminamos los duplicados
-            EliminarDuplicados("document", "http://purl.org/ontology/bibo/Document", "http://w3id.org/roh/linkedCount");
+            EliminarDuplicados("document", $"{GetUrlPrefix("bibo")}Document", $"{GetUrlPrefix("roh")}linkedCount");
 
             foreach (string filter in filtersNumeroVinculados)
             {
@@ -1734,7 +1734,7 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
                         {
                             numLinkedCargados = fila["numLinkedCargados"].value;
                         }
-                        ActualizadorTriple(document, "http://w3id.org/roh/linkedCount", numLinkedCargados, numLinkedACargar);
+                        ActualizadorTriple(document, $"{GetUrlPrefix("roh")}linkedCount", numLinkedCargados, numLinkedACargar);
                     });
 
                     if (resultadoNumeroVinculados.results.bindings.Count != limitNumeroVinculados)
@@ -1765,56 +1765,56 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
                         string document = fila["document"].value;
                         
                         TriplesToInclude t = new();
-                        t.Predicate = "http://w3id.org/roh/impactIndex|http://w3id.org/roh/impactIndexInYear";
+                        t.Predicate = $"{GetUrlPrefix("roh")}impactIndex|http://w3id.org/roh/impactIndexInYear";
                         t.NewValue = idAux + "|" + fila["impactIndexInYear"].value;
                         triples[guid].Add(t);
                         
                         if (fila.ContainsKey("impactSource"))
                         {
                             TriplesToInclude timpactSource = new();
-                            timpactSource.Predicate = "http://w3id.org/roh/impactIndex|http://w3id.org/roh/impactSource";
+                            timpactSource.Predicate = $"{GetUrlPrefix("roh")}impactIndex|http://w3id.org/roh/impactSource";
                             timpactSource.NewValue = idAux + "|" + fila["impactSource"].value;
                             triples[guid].Add(timpactSource);
                         }
                         if (fila.ContainsKey("impactSourceOther"))
                         {
                             TriplesToInclude timpactSourceOther = new();
-                            timpactSourceOther.Predicate = "http://w3id.org/roh/impactIndex|http://w3id.org/roh/impactSourceOther";
+                            timpactSourceOther.Predicate = $"{GetUrlPrefix("roh")}impactIndex|http://w3id.org/roh/impactSourceOther";
                             timpactSourceOther.NewValue = idAux + "|" + fila["impactSourceOther"].value;
                             triples[guid].Add(timpactSourceOther);
                         }
                         if (fila.ContainsKey("categoryTitle"))
                         {
                             TriplesToInclude tcategoryTitle = new();
-                            tcategoryTitle.Predicate = "http://w3id.org/roh/impactIndex|http://w3id.org/roh/impactIndexCategory";
+                            tcategoryTitle.Predicate = $"{GetUrlPrefix("roh")}impactIndex|http://w3id.org/roh/impactIndexCategory";
                             tcategoryTitle.NewValue = idAux + "|" + fila["categoryTitle"].value;
                             triples[guid].Add(tcategoryTitle);
                         }
                         if (fila.ContainsKey("publicationPosition"))
                         {
                             TriplesToInclude tpublicationPosition = new();
-                            tpublicationPosition.Predicate = "http://w3id.org/roh/impactIndex|http://w3id.org/roh/publicationPosition";
+                            tpublicationPosition.Predicate = $"{GetUrlPrefix("roh")}impactIndex|http://w3id.org/roh/publicationPosition";
                             tpublicationPosition.NewValue = idAux + "|" + fila["publicationPosition"].value;
                             triples[guid].Add(tpublicationPosition);
                         }
                         if (fila.ContainsKey("journalNumberInCat"))
                         {
                             TriplesToInclude tjournalNumberInCat = new();
-                            tjournalNumberInCat.Predicate = "http://w3id.org/roh/impactIndex|http://w3id.org/roh/journalNumberInCat";
+                            tjournalNumberInCat.Predicate = $"{GetUrlPrefix("roh")}impactIndex|http://w3id.org/roh/journalNumberInCat";
                             tjournalNumberInCat.NewValue = idAux + "|" + fila["journalNumberInCat"].value;
                             triples[guid].Add(tjournalNumberInCat);
                         }
                         if (fila.ContainsKey("quartile"))
                         {
                             TriplesToInclude tquartile = new();
-                            tquartile.Predicate = "http://w3id.org/roh/impactIndex|http://w3id.org/roh/quartile";
+                            tquartile.Predicate = $"{GetUrlPrefix("roh")}impactIndex|http://w3id.org/roh/quartile";
                             tquartile.NewValue = idAux + "|" + fila["quartile"].value;
                             triples[guid].Add(tquartile);
                         }
                         if (fila.ContainsKey("impactCategory"))
                         {
                             TriplesToInclude timpactCategory = new();
-                            timpactCategory.Predicate = "http://w3id.org/roh/impactIndex|http://w3id.org/roh/impactIndexCategoryEntity";
+                            timpactCategory.Predicate = $"{GetUrlPrefix("roh")}impactIndex|http://w3id.org/roh/impactIndexCategoryEntity";
                             timpactCategory.NewValue = idAux + "|" + fila["impactCategory"].value;
                             triples[guid].Add(timpactCategory);
                         }

@@ -163,7 +163,7 @@ namespace Harvester
             string fecha = LeerFicheroFecha(_Config, pSet);
 
             Console.WriteLine($"Obteniendo identificadores de {pSet} ({fecha})");
-            if (pPRC == false)
+            if (!pPRC)
             {
                 harvester.Harvest(pConfig, pSet, fecha);
             }
@@ -515,7 +515,6 @@ namespace Harvester
             dicResultados.Add("validationStatusPRC", "");
             dicResultados.Add("validationDeleteStatusPRC", "");
 
-            string valorEnviado = string.Empty;
             StringBuilder select = new StringBuilder();
             StringBuilder where = new StringBuilder();
 

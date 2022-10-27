@@ -165,8 +165,8 @@ var exportacionCV = {
 						<li class="actual"><a href="javascript: void(0)" page="1">1</a></li>
 					</ul>
 				</nav>`);
-				that.pintarPaginacion();
 			}
+			that.pintarPaginacion();
 			OcultarUpdateProgress();
 		});
 	},

@@ -73,7 +73,7 @@ namespace Gnoss.Web.Login
             //si el usuario existe ya tiene un token lo modificamos, sino lo guardamos
             if (existeUsuarioVinculado != null)
             {
-                UsuarioVinculadoLoginRedesSociales usuarioRefresco = mEntityContext.UsuarioVinculadoLoginRedesSociales.Where(parametroApp => parametroApp.UsuarioID.Equals(usuarioID) && parametroApp.TipoRedSocial == 7).FirstOrDefault();
+                UsuarioVinculadoLoginRedesSociales usuarioRefresco = mEntityContext.UsuarioVinculadoLoginRedesSociales.Where(parametroApp => parametroApp.UsuarioID.Equals(usuarioID) && parametroApp.TipoRedSocial == 7).First();
 
                 existeUsuarioVinculado.IDenRedSocial = token;
                 usuarioRefresco.IDenRedSocial = refresh_token;

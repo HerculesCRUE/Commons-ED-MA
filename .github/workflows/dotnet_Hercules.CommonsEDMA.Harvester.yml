@@ -1,6 +1,6 @@
 name: Build_Sonar_Hercules.CommonsEDMA.Harvester
 on:
-  push:
+  push: 
     branches:
       - main
   pull_request:
