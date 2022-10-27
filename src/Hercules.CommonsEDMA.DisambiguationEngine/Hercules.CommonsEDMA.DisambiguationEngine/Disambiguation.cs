@@ -467,18 +467,18 @@ namespace Hercules.CommonsEDMA.DisambiguationEngine.Models
             //Añadimos los que están vinculados con BBDD
             foreach (string id in listaEquivalenciasDisambiguate.Keys)
             {
-                bool idBBDD = !Guid.TryParse(id.Split('|')[1], out Guid auxA);
+                bool idBBDDVIncBBDD = !Guid.TryParse(id.Split('|')[1], out Guid auxA);
                 foreach (string id2 in listaEquivalenciasDisambiguate[id].Keys)
                 {
-                    bool id2BBDD = !Guid.TryParse(id2.Split('|')[1], out Guid auxB);
-                    if (idBBDD && id2BBDD)
+                    bool id2BBDDVIncBBDD = !Guid.TryParse(id2.Split('|')[1], out Guid auxB);
+                    if (idBBDDVIncBBDD && id2BBDDVIncBBDD)
                     {
                         throw new Exception("Error, no puede un item apuntar a más de un ítem de BBDD");
                     }
                     float similitud = listaEquivalenciasDisambiguate[id][id2];
                     if (similitud >= pUmbral)
                     {
-                        if (idBBDD && !id2BBDD)
+                        if (idBBDDVIncBBDD && !id2BBDDVIncBBDD)
                         {
                             if (!listadoEquivalencias.ContainsKey(id.Split('|')[1]))
                             {
@@ -492,7 +492,7 @@ namespace Hercules.CommonsEDMA.DisambiguationEngine.Models
                                 }
                             }
                         }
-                        if (!idBBDD && id2BBDD)
+                        if (!idBBDDVIncBBDD && id2BBDDVIncBBDD)
                         {
                             if (!listadoEquivalencias.ContainsKey(id2.Split('|')[1]))
                             {
@@ -580,18 +580,18 @@ namespace Hercules.CommonsEDMA.DisambiguationEngine.Models
             }
             foreach (string id in listaEquivalenciasDisambiguate.Keys)
             {
-                bool idBBDD = !Guid.TryParse(id.Split('|')[1], out Guid auxA);
+                bool idBBDDNoVincBBDD = !Guid.TryParse(id.Split('|')[1], out Guid auxA);
                 foreach (string id2 in listaEquivalenciasDisambiguate[id].Keys)
                 {
-                    bool id2BBDD = !Guid.TryParse(id2.Split('|')[1], out Guid auxB);
-                    if (idBBDD && id2BBDD)
+                    bool id2BBDDNoVincBBDD = !Guid.TryParse(id2.Split('|')[1], out Guid auxB);
+                    if (idBBDDNoVincBBDD && id2BBDDNoVincBBDD)
                     {
                         throw new Exception("Error, no puede un item apuntar a más de un ítem de BBDD");
                     }
                     float similitud = listaEquivalenciasDisambiguate[id][id2];
                     if (similitud >= pUmbral)
                     {
-                        if (!idBBDD && !id2BBDD)
+                        if (!idBBDDNoVincBBDD && !id2BBDDNoVincBBDD)
                         {
                             //Buscamos si está ya añadido                            
                             string aniadir = "";
