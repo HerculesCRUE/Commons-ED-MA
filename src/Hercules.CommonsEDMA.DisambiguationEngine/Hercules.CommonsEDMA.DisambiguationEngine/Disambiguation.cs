@@ -1420,7 +1420,7 @@ namespace Hercules.CommonsEDMA.DisambiguationEngine.Models
                 if (result > 0)
                 {
                     //ItemA ItemB Prop
-                    Dictionary<string, Dictionary<string, HashSet<string>>> dicEqualsItem = new Dictionary<string, Dictionary<string, HashSet<string>>>();
+                    Dictionary<string, Dictionary<string, HashSet<string>>> dicEqualsItemTituloResto = new Dictionary<string, Dictionary<string, HashSet<string>>>();
                     for (int i = 0; i < pDataA.Value.Count; i++)
                     {
                         DisambiguationData dataAAux = pDataA.Value[i];
@@ -1439,15 +1439,15 @@ namespace Hercules.CommonsEDMA.DisambiguationEngine.Models
                                 case DisambiguationDataConfigType.equalsItem:
                                     if (PesoEqualsItem(ref result, dataAAux.config.score, dataAAux.value, dataBAux.value, pEquivalencesAux))
                                     {
-                                        if (!dicEqualsItem.ContainsKey(dataAAux.value))
+                                        if (!dicEqualsItemTituloResto.ContainsKey(dataAAux.value))
                                         {
-                                            dicEqualsItem.Add(dataAAux.value, new Dictionary<string, HashSet<string>>());
+                                            dicEqualsItemTituloResto.Add(dataAAux.value, new Dictionary<string, HashSet<string>>());
                                         }
-                                        if (!dicEqualsItem[dataAAux.value].ContainsKey(dataBAux.value))
+                                        if (!dicEqualsItemTituloResto[dataAAux.value].ContainsKey(dataBAux.value))
                                         {
-                                            dicEqualsItem[dataAAux.value].Add(dataBAux.value, new HashSet<string>());
+                                            dicEqualsItemTituloResto[dataAAux.value].Add(dataBAux.value, new HashSet<string>());
                                         }
-                                        dicEqualsItem[dataAAux.value][dataBAux.value].Add(dataAAux.property);
+                                        dicEqualsItemTituloResto[dataAAux.value][dataBAux.value].Add(dataAAux.property);
                                     }
                                     break;
                                 case DisambiguationDataConfigType.equalsItemList:
@@ -1518,7 +1518,7 @@ namespace Hercules.CommonsEDMA.DisambiguationEngine.Models
                 //Resto
                 if (result > 0)
                 {
-                    Dictionary<string, Dictionary<string, HashSet<string>>> dicEqualsItem = new Dictionary<string, Dictionary<string, HashSet<string>>>();
+                    Dictionary<string, Dictionary<string, HashSet<string>>> dicEqualsItemNombreResto = new Dictionary<string, Dictionary<string, HashSet<string>>>();
                     for (int i = 0; i < pDataA.Value.Count; i++)
                     {
                         DisambiguationData dataAAux = pDataA.Value[i];
@@ -1537,15 +1537,15 @@ namespace Hercules.CommonsEDMA.DisambiguationEngine.Models
                                 case DisambiguationDataConfigType.equalsItem:
                                     if (PesoEqualsItem(ref result, dataAAux.config.score, dataAAux.value, dataBAux.value, pEquivalencesAux))
                                     {
-                                        if (!dicEqualsItem.ContainsKey(dataAAux.value))
+                                        if (!dicEqualsItemNombreResto.ContainsKey(dataAAux.value))
                                         {
-                                            dicEqualsItem.Add(dataAAux.value, new Dictionary<string, HashSet<string>>());
+                                            dicEqualsItemNombreResto.Add(dataAAux.value, new Dictionary<string, HashSet<string>>());
                                         }
-                                        if (!dicEqualsItem[dataAAux.value].ContainsKey(dataBAux.value))
+                                        if (!dicEqualsItemNombreResto[dataAAux.value].ContainsKey(dataBAux.value))
                                         {
-                                            dicEqualsItem[dataAAux.value].Add(dataBAux.value, new HashSet<string>());
+                                            dicEqualsItemNombreResto[dataAAux.value].Add(dataBAux.value, new HashSet<string>());
                                         }
-                                        dicEqualsItem[dataAAux.value][dataBAux.value].Add(dataAAux.property);
+                                        dicEqualsItemNombreResto[dataAAux.value][dataBAux.value].Add(dataAAux.property);
                                     }
                                     break;
                                 case DisambiguationDataConfigType.equalsItemList:
