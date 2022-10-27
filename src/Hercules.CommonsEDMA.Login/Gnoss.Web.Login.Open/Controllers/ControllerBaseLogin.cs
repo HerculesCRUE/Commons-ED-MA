@@ -654,58 +654,6 @@ namespace Gnoss.Web.Login
 
         #endregion
 
-        #region Miembros de ICallbackEventHandler
-
-        /*TODO Migrar a .net core
-
-        string _callbackArg = null;
-
-        void ICallbackEventHandler.RaiseCallbackEvent(string eventArgument)
-        {
-            _callbackArg = eventArgument;
-        }
-
-        string ICallbackEventHandler.GetCallbackResult()
-        {
-            try
-            {
-                string resultado = RaiseCallbackEvent(_callbackArg);
-                mHttpContextAccessor.HttpContext.Session.Remove("listaResultados");
-
-                mLoggingService.GuardarTraza(ObtenerRutaTraza());
-
-                return resultado;
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
-        }
-
-        protected string ObtenerRutaTraza()
-        {
-            string ruta = Path.Combine(mEnv.ContentRootPath, "trazas");
-            //string ruta = this.Server.MapPath(Page.Request.ApplicationPath + "\\trazas");
-
-            if (!string.IsNullOrEmpty(mControladorBase.DominoAplicacion))
-            {
-                ruta += "\\" + mControladorBase.DominoAplicacion;
-                if (!Directory.Exists(ruta))
-                {
-                    Directory.CreateDirectory(ruta);
-                }
-            }
-
-            ruta += "\\traza_" + DateTime.Now.ToString("yyyy-MM-dd") + ".txt";
-
-            return ruta;
-        }
-
-        public string RaiseCallbackEvent(string eventArgument)
-        {
-            return eventArgument;
-        }
-        */
-        #endregion
+        
     }
 }
