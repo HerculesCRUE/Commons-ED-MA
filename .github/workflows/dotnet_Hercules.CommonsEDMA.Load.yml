@@ -1,6 +1,6 @@
 name: Build_Sonar_HerculesCommonsEDMA.Load
 on:
-  push:
+  push: 
     branches:
       - main
   pull_request:

@@ -13,10 +13,12 @@
 
 [![SonarCloud](https://sonarcloud.io/images/project_badges/sonarcloud-white.svg)](https://sonarcloud.io/summary/new_code?id=Hercules.CommonsEDMA.DisambiguationEngine)
 
-[![Bugs](https://sonarcloud.io/api/project_badges/measure?project=Hercules.CommonsEDMA.DisambiguationEngine&metric=bugs)](https://sonarcloud.io/summary/new_code?id=Hercules.CommonsEDMA.DisambiguationEngine)
 [![Reliability Rating](https://sonarcloud.io/api/project_badges/measure?project=Hercules.CommonsEDMA.DisambiguationEngine&metric=reliability_rating)](https://sonarcloud.io/summary/new_code?id=Hercules.CommonsEDMA.DisambiguationEngine)
-[![Reliability Rating](https://sonarcloud.io/api/project_badges/measure?project=Hercules.CommonsEDMA.DisambiguationEngine&metric=reliability_rating)](https://sonarcloud.io/summary/new_code?id=Hercules.CommonsEDMA.DisambiguationEngine)
+[![Security Rating](https://sonarcloud.io/api/project_badges/measure?project=Hercules.CommonsEDMA.DisambiguationEngine&metric=security_rating)](https://sonarcloud.io/summary/new_code?id=Hercules.CommonsEDMA.DisambiguationEngine)
+[![Maintainability Rating](https://sonarcloud.io/api/project_badges/measure?project=Hercules.CommonsEDMA.DisambiguationEngine&metric=sqale_rating)](https://sonarcloud.io/summary/new_code?id=Hercules.CommonsEDMA.DisambiguationEngine)
 [![Duplicated Lines (%)](https://sonarcloud.io/api/project_badges/measure?project=Hercules.CommonsEDMA.DisambiguationEngine&metric=duplicated_lines_density)](https://sonarcloud.io/summary/new_code?id=Hercules.CommonsEDMA.DisambiguationEngine)
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=Hercules.CommonsEDMA.DisambiguationEngine&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=Hercules.CommonsEDMA.DisambiguationEngine)
+[![Lines of Code](https://sonarcloud.io/api/project_badges/measure?project=Hercules.CommonsEDMA.DisambiguationEngine&metric=ncloc)](https://sonarcloud.io/summary/new_code?id=Hercules.CommonsEDMA.DisambiguationEngine)
 
 
 

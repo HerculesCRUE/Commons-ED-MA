@@ -47,6 +47,12 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
             { "skos", "http://www.w3.org/2008/05/skos#" }
         };
 
+        public static string GetUrlPrefix(string pPrefix)
+        {
+            return dicPrefix[pPrefix];
+        }
+
+
         /// <summary>
         /// Constructor
         /// </summary>
@@ -125,7 +131,7 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
                     {
                         string idAux = mResourceApi.GraphsUrl + "items/KeyWord_" + guid.ToString().ToLower() + "_" + Guid.NewGuid().ToString().ToLower();
                         TriplesToInclude t = new();
-                        t.Predicate = "http://vivoweb.org/ontology/core#freeTextKeyword|http://w3id.org/roh/title";
+                        t.Predicate = $"{GetUrlPrefix("vivo")}freeTextKeyword|http://w3id.org/roh/title";
                         t.NewValue = idAux + "|" + value;
                         triples[guid].Add(t);
                     }
@@ -155,7 +161,7 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
                     {
                         valorAnterior = documentGetKeywords[id];
                     }
-                    ActualizadorTriple(id, "http://w3id.org/roh/getKeyWords", valorAnterior, "true");
+                    ActualizadorTriple(id, $"{GetUrlPrefix("roh")}getKeyWords", valorAnterior, "true");
                 });
 
             }
@@ -361,11 +367,11 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
                     string propMiembro = "";
                     if (fila["ip"].value == "true")
                     {
-                        propMiembro = "http://w3id.org/roh/mainResearchers";
+                        propMiembro = $"{GetUrlPrefix("roh")}mainResearchers";
                     }
                     else
                     {
-                        propMiembro = "http://w3id.org/roh/researchers";
+                        propMiembro = $"{GetUrlPrefix("roh")}researchers";
                     }
                     {
                         TriplesToInclude t = new();

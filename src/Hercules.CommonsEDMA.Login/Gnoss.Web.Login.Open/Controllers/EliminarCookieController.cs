@@ -145,14 +145,21 @@ namespace Gnoss.Web.Login
             {
                 if ((Request.Query.ContainsKey("redirect") || Request.Headers.ContainsKey("redirect")) && !hayIframes)
                 {
+                    string redirect = null;
                     if (Request.Headers.ContainsKey("redirect"))
                     {
-                        Response.Redirect(Request.Headers["redirect"]);
+                        redirect = Request.Headers["redirect"];
                     }
                     else if (Request.Query.ContainsKey("redirect"))
                     {
-                        Response.Redirect(Request.Query["redirect"]);
+                        redirect = Request.Query["redirect"];
                     }
+                    if (!string.IsNullOrEmpty(redirect))
+                    {
+                        Response.Redirect(redirect);
+                    }
+
+
 
                 }
             }

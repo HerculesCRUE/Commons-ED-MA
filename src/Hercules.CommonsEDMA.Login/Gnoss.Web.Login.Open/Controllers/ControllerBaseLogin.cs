@@ -183,6 +183,10 @@ namespace Gnoss.Web.Login
                 {
                     filaUsuario = dataWrapperUsuario.ListaUsuario.First();
                 }
+                else
+                {
+                    return false;
+                }
 
                 //Autenticamos la password (autenticación completa)
                 if (!pIgnorarPassword && !usuarioCN.ValidarPasswordUsuarioSinActivar(filaUsuario, pContrasenia))
@@ -192,7 +196,7 @@ namespace Gnoss.Web.Login
 
 
                 PersonaCN personaCN = new PersonaCN(mEntityContext, mLoggingService, mConfigService, mServicesUtilVirtuosoAndReplication);
-                Es.Riam.Gnoss.AD.EntityModel.Models.PersonaDS.Persona filaPersona = personaCN.ObtenerPersonaPorUsuario(filaUsuario.UsuarioID).ListaPersona.FirstOrDefault();
+                Es.Riam.Gnoss.AD.EntityModel.Models.PersonaDS.Persona filaPersona = personaCN.ObtenerPersonaPorUsuario(filaUsuario.UsuarioID).ListaPersona.First();
 
                 mUsuarioID = filaUsuario.UsuarioID;
                 mPersonaID = filaPersona.PersonaID;

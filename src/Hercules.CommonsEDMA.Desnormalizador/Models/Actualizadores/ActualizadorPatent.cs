@@ -34,7 +34,7 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
         public void ActualizarPatentesValidadas(List<string> pPatents = null)
         {
             //Eliminamos los duplicados
-            EliminarDuplicados("patent", "http://purl.org/ontology/bibo/Patent", "http://w3id.org/roh/isValidated");
+            EliminarDuplicados("patent", $"{GetUrlPrefix("bibo")}Patent", $"{GetUrlPrefix("roh")}isValidated");
 
             HashSet<string> filtersActualizarPatentesValidadas = new HashSet<string>();
             if (pPatents != null && pPatents.Count > 0)
@@ -81,7 +81,7 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
                         {
                             isValidatedCargado = fila["isValidatedCargado"].value;
                         }
-                        ActualizadorTriple(patent, "http://w3id.org/roh/isValidated", isValidatedCargado, isValidatedCargar);
+                        ActualizadorTriple(patent, $"{GetUrlPrefix("roh")}isValidated", isValidatedCargado, isValidatedCargar);
                     });
 
                     if (resultado.results.bindings.Count != limit)
@@ -115,7 +115,7 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
                 Dictionary<string, string> propiedadesPersonPatent = new Dictionary<string, string>();
                 propiedadesPersonPatent["http://xmlns.com/foaf/0.1/firstName"] = "http://xmlns.com/foaf/0.1/firstName";
                 propiedadesPersonPatent["http://xmlns.com/foaf/0.1/lastName"] = "http://xmlns.com/foaf/0.1/familyName";
-                propiedadesPersonPatent["--"] = "http://w3id.org/roh/secondFamilyName";
+                propiedadesPersonPatent["--"] = $"{GetUrlPrefix("roh")}secondFamilyName";
                 foreach (string propPerson in propiedadesPersonPatent.Keys)
                 {
                     string propPatent = propiedadesPersonPatent[propPerson];
