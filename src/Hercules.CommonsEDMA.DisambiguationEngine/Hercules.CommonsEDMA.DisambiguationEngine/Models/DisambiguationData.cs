@@ -136,5 +136,18 @@ namespace Hercules.CommonsEDMA.DisambiguationEngine.Models
             this.property = property;
             this.value = value;
         }
+
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="config">DisambiguationDataConfig</param>
+        /// <param name="property">Property</param>
+        /// <param name="value">Value</param>
+        public DisambiguationData(DisambiguationDataConfig config, string property, HashSet<string> values)
+        {
+            this.config = config;
+            this.property = property;
+            this.values = values;
+        }
     }
 }
