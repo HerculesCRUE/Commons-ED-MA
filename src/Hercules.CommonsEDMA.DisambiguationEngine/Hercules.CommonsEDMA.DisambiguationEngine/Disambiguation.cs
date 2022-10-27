@@ -1480,9 +1480,9 @@ namespace Hercules.CommonsEDMA.DisambiguationEngine.Models
                                     case DisambiguationDataConfigType.equalsItem:
                                         if (!string.IsNullOrEmpty(dataAAux.value) && !string.IsNullOrEmpty(dataBAux.value))
                                         {
-                                            if (!(dicEqualsItem.ContainsKey(dataAAux.value) &&
-                                                dicEqualsItem[dataAAux.value].ContainsKey(dataBAux.value) &&
-                                               dicEqualsItem[dataAAux.value][dataBAux.value].Contains(dataAAux.property)))
+                                            if (!(dicEqualsItemTituloResto.ContainsKey(dataAAux.value) &&
+                                                dicEqualsItemTituloResto[dataAAux.value].ContainsKey(dataBAux.value) &&
+                                               dicEqualsItemTituloResto[dataAAux.value][dataBAux.value].Contains(dataAAux.property)))
                                             {
                                                 result -= result * dataAAux.config.scoreMinus;
                                             }
@@ -1578,9 +1578,9 @@ namespace Hercules.CommonsEDMA.DisambiguationEngine.Models
                                     case DisambiguationDataConfigType.equalsItem:
                                         if (!string.IsNullOrEmpty(dataAAux.value) && !string.IsNullOrEmpty(dataBAux.value))
                                         {
-                                            if (!(dicEqualsItem.ContainsKey(dataAAux.value) &&
-                                                dicEqualsItem[dataAAux.value].ContainsKey(dataBAux.value) &&
-                                               dicEqualsItem[dataAAux.value][dataBAux.value].Contains(dataAAux.property)))
+                                            if (!(dicEqualsItemNombreResto.ContainsKey(dataAAux.value) &&
+                                                dicEqualsItemNombreResto[dataAAux.value].ContainsKey(dataBAux.value) &&
+                                               dicEqualsItemNombreResto[dataAAux.value][dataBAux.value].Contains(dataAAux.property)))
                                             {
                                                 result -= result * dataAAux.config.scoreMinus;
                                             }
