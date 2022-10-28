@@ -44,6 +44,7 @@ using Es.Riam.Gnoss.RabbitMQ;
 using Newtonsoft.Json;
 using Es.Riam.Gnoss.AD.ServiciosGenerales;
 using Microsoft.EntityFrameworkCore;
+using System.Security.Cryptography;
 
 namespace Gnoss.Web.Login.SAML
 {
@@ -428,11 +429,10 @@ namespace Gnoss.Web.Login.SAML
             const string valid = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
             const string validNum = "1234567890";
             StringBuilder res = new StringBuilder();
-            Random rnd = new Random();
             while (0 < length--)
             {
-                res.Append(valid[rnd.Next(valid.Length)]);
-                res.Append(validNum[rnd.Next(validNum.Length)]);
+                res.Append(valid[RandomNumberGenerator.GetInt32(valid.Length)]);
+                res.Append(validNum[RandomNumberGenerator.GetInt32(validNum.Length)]);
             }
             return res.ToString();
         }
