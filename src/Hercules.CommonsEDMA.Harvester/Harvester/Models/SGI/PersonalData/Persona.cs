@@ -1032,7 +1032,7 @@ namespace OAI_PMH.Models.SGI.PersonalData
         /// <returns></returns>
         private static PersonOntology.Person DatosPersonaNoBorrar(string pIdRecurso, ResourceApi pResourceApi)
         {
-            // Objeto Persona Final
+            // Objeto persona final
             PersonOntology.Person persona = new PersonOntology.Person();
             persona.Roh_metricPage = new List<PersonOntology.MetricPage>();
             persona.Roh_ignorePublication = new List<PersonOntology.IgnorePublication>();

@@ -625,7 +625,7 @@ class GraficaBarras extends GraficaBase {
         var ctx = $(`<canvas id = "grafica_${this.idPagina}_${this.idGrafica}"></canvas>`)
         $(pContenedor).append(`
         <div class="chartWrapper" >
-            <div class="chartScroll custom-css-scroll">
+            <div class="chartScroll custom-css-scroll custom-css-scroll-proy">
                 <div class="chartAreaWrapper">
                 </div>
             </div>

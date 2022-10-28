@@ -61,7 +61,7 @@ namespace Gnoss.Web.Login
                 if (Request.Cookies.ContainsKey(cookieEnvioKey) || Request.Headers.ContainsKey("nuevoEnvio"))
                 {
                     //Creo una cookie para saber que el resto de dominios ya han sido notificados
-                    mHttpContextAccessor.HttpContext.Response.Cookies.Append(cookieEnvioKey, "true", new CookieOptions { Expires = DateTime.Now.AddDays(1) });
+                    mHttpContextAccessor.HttpContext.Response.Cookies.Append(cookieEnvioKey, "true", new CookieOptions { Expires = DateTime.Now.AddDays(1), Secure = true, HttpOnly = true });
 
                     //El usuario se acaba de conectar, si habia estado en otros dominios, elimino su sesión
                     hayIframes = EliminarCookieRestoDominios(dominio);
@@ -73,7 +73,7 @@ namespace Gnoss.Web.Login
                 //Elimino la cookie del usuario actual conectado
                 if (Request.Cookies.ContainsKey(cookieUsuarioKey))
                 {
-                    Response.Cookies.Append(cookieUsuarioKey, "0", new CookieOptions { Expires = DateTime.Now.AddDays(-1) });
+                    Response.Cookies.Append(cookieUsuarioKey, "0", new CookieOptions { Expires = DateTime.Now.AddDays(-1), Secure = true, HttpOnly = true });
                 }
 
                 string cookieRewriteKey = "_rewrite";
@@ -81,23 +81,23 @@ namespace Gnoss.Web.Login
                 //Elimino la cookie de rewrite
                 if (Request.Cookies.ContainsKey(cookieRewriteKey))
                 {
-                    Response.Cookies.Append(cookieRewriteKey, "0", new CookieOptions { Expires = DateTime.Now.AddDays(-1) });
+                    Response.Cookies.Append(cookieRewriteKey, "0", new CookieOptions { Expires = DateTime.Now.AddDays(-1), Secure = true, HttpOnly = true });
                 }
 
                 if (Request.Cookies.ContainsKey(cookieEnvioKey))
                 {
-                    Response.Cookies.Append(cookieEnvioKey, "0", new CookieOptions { Expires = DateTime.Now.AddDays(-1) });
+                    Response.Cookies.Append(cookieEnvioKey, "0", new CookieOptions { Expires = DateTime.Now.AddDays(-1), Secure = true, HttpOnly = true });
                 }
 
                 if (Request.Cookies.ContainsKey("redireccion"))
                 {
-                    Response.Cookies.Append("redireccion", "0", new CookieOptions { Expires = DateTime.Now.AddDays(-1) });
+                    Response.Cookies.Append("redireccion", "0", new CookieOptions { Expires = DateTime.Now.AddDays(-1), Secure = true, HttpOnly = true });
                 }
 
                 string cookieTokenKey = "tokenDeVuelta";
                 if (Request.Cookies.ContainsKey(cookieTokenKey))
                 {
-                    Response.Cookies.Append(cookieTokenKey, "0", new CookieOptions() { Expires = DateTime.Now.AddDays(-1) });
+                    Response.Cookies.Append(cookieTokenKey, "0", new CookieOptions() { Expires = DateTime.Now.AddDays(-1), Secure = true, HttpOnly = true });
                 }
 
                 string usuarioLogueadoKey = "UsuarioLogueado";
@@ -105,7 +105,9 @@ namespace Gnoss.Web.Login
                 {
                     CookieOptions cookieUsuarioLogueadoOptions = new CookieOptions
                     {
-                        Expires = DateTime.Now.AddDays(-1)
+                        Expires = DateTime.Now.AddDays(-1),
+                        Secure=true,
+                        HttpOnly=true
                     };
 
                     string dominio = DominioAplicacion;
@@ -145,14 +147,21 @@ namespace Gnoss.Web.Login
             {
                 if ((Request.Query.ContainsKey("redirect") || Request.Headers.ContainsKey("redirect")) && !hayIframes)
                 {
+                    string redirect = null;
                     if (Request.Headers.ContainsKey("redirect"))
                     {
-                        Response.Redirect(Request.Headers["redirect"]);
+                        redirect = Request.Headers["redirect"];
                     }
                     else if (Request.Query.ContainsKey("redirect"))
                     {
-                        Response.Redirect(Request.Query["redirect"]);
+                        redirect = Request.Query["redirect"];
                     }
+                    if (!string.IsNullOrEmpty(redirect))
+                    {
+                        Response.Redirect(redirect);
+                    }
+
+
 
                 }
             }

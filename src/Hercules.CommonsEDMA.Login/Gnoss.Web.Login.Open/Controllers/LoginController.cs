@@ -181,84 +181,7 @@ namespace Gnoss.Web.Login
                         }
                     }
 
-                    bool loguear = true;
-                    string mensajeErrorServicioLoginExterno = "";
-                    string urlServicioLoginExterno = "";
-                    List<ParametroAplicacion> filaUrlServicioLoginExt = ParametrosAplicacionDS.Where(parametroApp => parametroApp.Parametro.Equals("urlServicioLoginExterno")).ToList();
-
-                    if (filaUrlServicioLoginExt != null && filaUrlServicioLoginExt.Count > 0)
-                    {
-                        urlServicioLoginExterno = filaUrlServicioLoginExt[0].Valor;
-                    }
-
-                    if (!string.IsNullOrEmpty(urlServicioLoginExterno))
-                    {
-                        Dictionary<string, string> parametros = new Dictionary<string, string>();
-                        string Usuario = login;
-                        parametros.Add("Usuario", Usuario);
-                        string Password = passwd;
-                        parametros.Add("Password", Password);
-
-                        /*Hacemos la llamada con usuario y contraseña y nos devuelve el JSON con*/
-                        //OK+usuarioID -->logueamos al usuario
-                        //KO+Si loguear
-                        //KO+No loguear
-                        //llamada al servicio externo
-                        JsonLoginExterno jsonLogin = null;
-
-                        try
-                        {
-                            jsonLogin = PeticionServicioLoginExterno(urlServicioLoginExterno, UtilWeb.Metodo.POST, parametros);
-                        }
-                        catch (Exception ex)
-                        {
-                            mLoggingService.GuardarLogError(ex);
-                        }
-
-                        if (jsonLogin != null)
-                        {
-                            if (jsonLogin.EstadoLogin.Equals(TipoEstadoLoginExterno.LoginOK))
-                            {
-                                //Obtener login por usuarioID
-                                UsuarioCN usuarioCN = new UsuarioCN(mEntityContext, mLoggingService, mConfigService, mServicesUtilVirtuosoAndReplication);
-                                string loginUsuario = usuarioCN.ObtenerLoginUsuarioPorNombreCorto(usuarioCN.ObtenerNombreCortoUsuarioPorID(jsonLogin.UsuarioID));
-                                usuarioCN.Dispose();
-
-                                bool mismoUsuarioLogueadoJson = ComprobarMismoUsuarioLogueado(loginUsuario);
-
-                                ValidarUsuario(loginUsuario, "", null, true);
-
-                                if (Request.Cookies.ContainsKey(DominioAplicacion + "_Envio"))
-                                {
-                                    CookieOptions options = new CookieOptions();
-                                    options.Expires = DateTime.Now.AddDays(-1);
-                                    Response.Cookies.Append(DominioAplicacion + "_Envio", "0", options);
-                                }
-                                string dominioDeVuelta = UtilDominios.ObtenerDominioUrl(new Uri(redirect1), true);
-
-                                if (!string.IsNullOrEmpty(Request.Query["proyectoID"]))
-                                {
-                                    Guid proyectoID1 = new Guid(Request.Query["proyectoID"]);
-                                    ProyectoCL proyectoCL = new ProyectoCL(mEntityContext, mLoggingService, mRedisCacheWrapper, mConfigService, mVirtuosoAD, mServicesUtilVirtuosoAndReplication);
-                                    GestionProyecto gestorProy = new GestionProyecto(proyectoCL.ObtenerProyectoPorID(proyectoID1), mLoggingService, mEntityContext);
-
-                                    Proyecto proyecto = gestorProy.ListaProyectos[proyectoID1];
-                                    if (proyecto.ListaTipoProyectoEventoAccion.ContainsKey(TipoProyectoEventoAccion.Login))
-                                    {
-                                        proyectoCL.AgregarEventosAccionProyectoPorProyectoYUsuarioID(proyectoID1, mUsuarioID, TipoProyectoEventoAccion.Login);
-                                    }
-                                    proyectoCL.Dispose();
-                                }
-                                EnviarCookies(dominioDeVuelta, redirect1, token1, mismoUsuarioLogueadoJson);
-                            }
-                            else if (jsonLogin.EstadoLogin.Equals(TipoEstadoLoginExterno.LoginKO) && !jsonLogin.Loguear)
-                            {
-                                loguear = false;
-                                mensajeErrorServicioLoginExterno = jsonLogin.InfoExtra;
-                                almohadillaerror += "&" + mensajeErrorServicioLoginExterno;
-                            }
-                        }
-                    }
+                    bool loguear = true;                    
 
                     bool mismoUsuarioLogueado = ComprobarMismoUsuarioLogueado(login);
                     //loguearSinValidar
@@ -283,6 +206,8 @@ namespace Gnoss.Web.Login
                         if (Request.Cookies.ContainsKey(DominioAplicacion + "_Envio"))
                         {
                             CookieOptions options = new CookieOptions();
+                            options.Secure = true;
+                            options.HttpOnly = true;
                             options.Expires = DateTime.Now.AddDays(-1);
                             Response.Cookies.Append(DominioAplicacion + "_Envio", "0", options);
                         }
@@ -805,6 +730,8 @@ namespace Gnoss.Web.Login
                         if (Request.Cookies.ContainsKey(DominioAplicacion + "_Envio"))
                         {
                             CookieOptions options = new CookieOptions();
+                            options.Secure = true;
+                            options.HttpOnly = true;
                             options.Expires = DateTime.Now.AddDays(-1);
                             Response.Cookies.Append(DominioAplicacion + "_Envio", "0", options);
                         }

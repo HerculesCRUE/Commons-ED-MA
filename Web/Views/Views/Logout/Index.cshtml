@@ -1,0 +1,144 @@
+@*[security|||logout/index.cshtml|||hercules]*@
+@model LogoutModel
+@{
+    Layout = null;
+}
+
+
+@{    
+        string nombreComunidad = Model.NombreComunidad;
+}
+
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta name="viewport" content="width=device-width" />                
+        <meta http-equiv="refresh" content="0; url=@Model.UrlIframe&redirect=@System.Net.WebUtility.UrlEncode(Model.UrlRedirect)" />
+        <title>@Html.GetText("LOGOUT", "TITULOPAGINA")</title>
+
+            @* BOOTSTRAP 4 + PROPELLER *@
+            <link rel="stylesheet"
+              href="@Html.GetBaseUrlStatic()/responsive/theme/libraries/bootstrap/bootstrap.min.css?v=@Html.GetVersion()"
+              type="text/css" />       
+            @* PERSONALIZACION TEMA *@
+            <link type="text/css"
+                  rel="stylesheet"
+                  href="@Html.GetBaseUrlStatic()/responsive/theme/theme.css?v=@Html.GetVersion()" />    
+
+                              @* JS y libererías para el sitio web - Theme *@
+            <!-- JQUERY -->
+            <script src="//code.jquery.com/jquery-3.5.1.js"
+                    integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc="
+                    crossorigin="anonymous"></script>
+
+            <!-- JQUERYUI -->
+            <script src="https://code.jquery.com/ui/1.12.0/jquery-ui.js"
+                    integrity="sha256-0YPKAwZP7Mp3ALMRVB2i8GXeEndvCq3eSl/WsAl1Ryk="
+                    crossorigin="anonymous"></script>
+
+            <!-- POPPER + BOOTSTRAP 4 + PROPELLER -->
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+                    integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+                    crossorigin="anonymous"></script>
+            <script src="@Html.GetBaseUrlStatic()/responsive/theme/libraries/bootstrap/bootstrap.min.js?v=@Html.GetVersion()"></script>
+            <script src="@Html.GetBaseUrlStatic()/responsive/theme/libraries/propeller/js/propeller.js?v=@Html.GetVersion()"></script>
+
+            <!-- UNIFICADO JS -->
+            <script type="text/javascript" src="@Html.GetBaseUrlStatic()/js/unificado.js?v=@Html.GetVersion()"></script>
+
+            <!-- AUTOCOMPLETE -->
+            <script type="text/javascript"
+                    src="@Html.GetBaseUrlStatic()/responsive/theme/libraries/autocomplete/jquery.autocomplete.js?v=@Html.GetVersion()"></script>
+
+            <!-- LIGHTGALLERY -->
+            <script type="text/javascript"
+                    src="@Html.GetBaseUrlStatic()/responsive/theme/libraries/lightgallery/js/lightgallery-all.min.js?v=@Html.GetVersion()"></script>
+
+            <!-- SCROLLMAGIC -->
+            <script type="text/javascript"
+                    src="@Html.GetBaseUrlStatic()/responsive/theme/libraries/scrollmagic/ScrollMagic.min.js?v=@Html.GetVersion()"></script>
+
+            <!-- ADDINDICATORS -->
+            <script type="text/javascript"
+                    src="@Html.GetBaseUrlStatic()/responsive/theme/libraries/scrollmagic/debug.addIndicators.min.js?v=@Html.GetVersion()"></script>
+
+            <!-- DATATABLES -->
+            <script type="text/javascript"
+                    src="@Html.GetBaseUrlStatic()/responsive/theme/libraries/datatables/datatables.min.js?v=@Html.GetVersion()"></script>
+
+            <!-- CUSTOM SCROLLBAR -->
+            <script type="text/javascript"
+                    src="@Html.GetBaseUrlStatic()/responsive/theme/libraries/customscroller/js/jquery.mCustomScrollbar.concat.min.js?v=@Html.GetVersion()"></script>
+
+            <!-- JQUERY PROGRESS BAR TIME -->
+            <!-- Documentación: https://www.jqueryscript.net/time-clock/Countdown-Timers-Bootstrap-4-Progressbar.html -->
+            <script type="text/javascript"
+                    src="@Html.GetBaseUrlStatic()/responsive/theme/libraries/progressBarTime/jquery.progressBarTimer.min.js?v=@Html.GetVersion()"></script>
+
+            <!-- JQUERY SLIDE REVEAL -->
+            <script type="text/javascript"
+                    src="@Html.GetBaseUrlStatic()/responsive/theme/libraries/slidereveal/jquery.slidereveal.min.js?v=@Html.GetVersion()"></script>
+
+            <!-- SELECT2 -->
+            <script type="text/javascript"
+                    src="@Html.GetBaseUrlStatic()/responsive/theme/libraries/select2/js/select2.min.js?v=@Html.GetVersion()"></script>
+
+            <!-- MomentJS -->
+            <script type="text/javascript"
+                    src="@Html.GetBaseUrlStatic()/responsive/theme/libraries/momentJS/moment.js?v=@Html.GetVersion()"></script>
+            <script type="text/javascript"
+                    src="@Html.GetBaseUrlStatic()/responsive/theme/libraries/momentJS/moment-timezone-with-data.js?v=@Html.GetVersion()"></script>
+
+            <!-- Toastr -->
+            <script type="text/javascript"
+                    src="@Html.GetBaseUrlStatic()/responsive/theme/libraries/toastr/toastr.min.js?v=@Html.GetVersion()"></script>
+
+            <!-- Google no cookies -->
+            <script type="text/javascript"
+                    src="@Html.GetBaseUrlStatic()/responsive/theme/cookies/googleNoCookies.js?v=@Html.GetVersion()"></script>
+
+            <!-- Simple Donut -->
+            <script type="text/javascript"
+                    src="@Html.GetBaseUrlStatic()/responsive/theme/libraries/simple-donut/simple-donut.js?v=@Html.GetVersion()"></script>
+
+            <!-- PERSONALIZACION JS TEMA  -->
+            <script type="text/javascript"
+                    src="@Html.GetBaseUrlStatic()/responsive/theme/theme.js?v=@Html.GetVersion()"></script>
+    </head>
+
+    <body>
+
+        @* Inicio del panel Logout*@
+        <main role="main">
+            <div class="container">
+                <div class="row">
+                    <div class="col">                      
+                        <div class="panel-centrado d-flex flex-column align-items-center panel-logout">
+                            @* Progress Bar*@
+                            <div class="progress-loader-gnoss" id="loader-cerrando-sesion">                                
+                            </div>
+                            
+                            @* Mensaje de Loading / Cargando *@
+                            <p class="lead text-center mt-3 mb-3 text-muted">@Html.GetText("LOGOUT", "TITULO")</p>
+                            @*<div class="texto-primario" role="status">
+                                <span class="sr-only">Cargando...</span>
+                            </div>
+                            *@
+                            
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </body>
+</html>
+
+<script>        
+    $(document).ready(function () {
+        modalCerrarSesion.init();
+    });
+</script>
+
+
+
+

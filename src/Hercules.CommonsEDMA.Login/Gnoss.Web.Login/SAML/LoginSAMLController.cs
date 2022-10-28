@@ -44,6 +44,7 @@ using Es.Riam.Gnoss.RabbitMQ;
 using Newtonsoft.Json;
 using Es.Riam.Gnoss.AD.ServiciosGenerales;
 using Microsoft.EntityFrameworkCore;
+using System.Security.Cryptography;
 
 namespace Gnoss.Web.Login.SAML
 {
@@ -428,11 +429,10 @@ namespace Gnoss.Web.Login.SAML
             const string valid = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
             const string validNum = "1234567890";
             StringBuilder res = new StringBuilder();
-            Random rnd = new Random();
             while (0 < length--)
             {
-                res.Append(valid[rnd.Next(valid.Length)]);
-                res.Append(validNum[rnd.Next(validNum.Length)]);
+                res.Append(valid[RandomNumberGenerator.GetInt32(valid.Length)]);
+                res.Append(validNum[RandomNumberGenerator.GetInt32(validNum.Length)]);
             }
             return res.ToString();
         }
@@ -485,25 +485,20 @@ namespace Gnoss.Web.Login.SAML
         {
             try
             {
-                mCommunityApi.Log.Info($"{community_short_name} {user_id}");
                 ProyectoCN proyCN = new ProyectoCN(mEntityContext, mLoggingService, mConfigService, mServicesUtilVirtuosoAndReplication);
                 UsuarioCN usuarioCN = new UsuarioCN(mEntityContext, mLoggingService, mConfigService, mServicesUtilVirtuosoAndReplication);
                 Guid proyectoID = proyCN.ObtenerProyectoIDPorNombre(community_short_name);
                 Es.Riam.Gnoss.AD.EncapsuladoDatos.DataWrapperProyecto dataWrapperProyecto = proyCN.ObtenerProyectoPorID(proyectoID);
-                mCommunityApi.Log.Info($"-0");
                 if (!proyectoID.Equals(Guid.Empty))
                 {
-                    mCommunityApi.Log.Info($"-A");
                     Es.Riam.Gnoss.AD.EntityModel.Models.UsuarioDS.ProyectoRolUsuario filaProyectoRolUsuario = usuarioCN.ObtenerRolUsuarioEnProyecto(proyectoID, user_id);
                     if (filaProyectoRolUsuario != null)
                     {
-                        mCommunityApi.Log.Info($"-B");
                         filaProyectoRolUsuario.RolDenegado = "0000000000000000";
                         filaProyectoRolUsuario.RolPermitido = "FFFFFFFFFFFFFFFF";
                     }
                     Es.Riam.Gnoss.Web.Controles.ProyectoGBD.ProyectoGBD proyectoGBD = new Es.Riam.Gnoss.Web.Controles.ProyectoGBD.ProyectoGBD(mEntityContext);
                     Es.Riam.Gnoss.AD.EntityModel.Models.ProyectoDS.AdministradorProyecto filaAdminProyecto = proyectoGBD.CargaAdministradorProyecto.FirstOrDefault(x => x.ProyectoID == proyectoID && x.UsuarioID == user_id);
-                    mCommunityApi.Log.Info($"-C");
                     if (filaAdminProyecto == null)
                     {
                         mEntityContext.AdministradorProyecto.Add(new Es.Riam.Gnoss.AD.EntityModel.Models.ProyectoDS.AdministradorProyecto()
@@ -516,17 +511,17 @@ namespace Gnoss.Web.Login.SAML
                     }
                     mEntityContext.SaveChanges();
 
-                    ProyectoCL proyectoCL = new ProyectoCL(mEntityContext, mLoggingService, mRedisCacheWrapper, mConfigService, mVirtuosoAD, mServicesUtilVirtuosoAndReplication);
-                    proyectoCL.InvalidarHTMLAdministradoresProyecto(proyectoID);
-                    proyectoCL.InvalidarFilaProyecto(proyectoID);
+                    ProyectoCL proyectoCLAlta = new ProyectoCL(mEntityContext, mLoggingService, mRedisCacheWrapper, mConfigService, mVirtuosoAD, mServicesUtilVirtuosoAndReplication);
+                    proyectoCLAlta.InvalidarHTMLAdministradoresProyecto(proyectoID);
+                    proyectoCLAlta.InvalidarFilaProyecto(proyectoID);
 
-                    IdentidadCL identidadCL = new IdentidadCL(mEntityContext, mLoggingService, mRedisCacheWrapper, mConfigService, mServicesUtilVirtuosoAndReplication);
-                    PersonaCN personaCN = new PersonaCN(mEntityContext, mLoggingService, mConfigService, mServicesUtilVirtuosoAndReplication);
-                    Guid? personaID = personaCN.ObtenerPersonaIDPorUsuarioID(user_id);
+                    IdentidadCL identidadCLAlta = new IdentidadCL(mEntityContext, mLoggingService, mRedisCacheWrapper, mConfigService, mServicesUtilVirtuosoAndReplication);
+                    PersonaCN personaCNAlta = new PersonaCN(mEntityContext, mLoggingService, mConfigService, mServicesUtilVirtuosoAndReplication);
+                    Guid? personaIDAlta = personaCNAlta.ObtenerPersonaIDPorUsuarioID(user_id);
 
-                    if (personaID.HasValue)
+                    if (personaIDAlta.HasValue)
                     {
-                        identidadCL.EliminarCacheGestorTodasIdentidadesUsuario(user_id, personaID.Value);
+                        identidadCLAlta.EliminarCacheGestorTodasIdentidadesUsuario(user_id, personaIDAlta.Value);
                     }
                 }
                 else
@@ -545,42 +540,36 @@ namespace Gnoss.Web.Login.SAML
         {
             try
             {
-                mCommunityApi.Log.Info($"{community_short_name} {user_id}");
                 ProyectoCN proyCN = new ProyectoCN(mEntityContext, mLoggingService, mConfigService, mServicesUtilVirtuosoAndReplication);
                 UsuarioCN usuarioCN = new UsuarioCN(mEntityContext, mLoggingService, mConfigService, mServicesUtilVirtuosoAndReplication);
                 Guid proyectoID = proyCN.ObtenerProyectoIDPorNombre(community_short_name);
-                mCommunityApi.Log.Info($"-0");
                 if (!proyectoID.Equals(Guid.Empty))
                 {
-                    mCommunityApi.Log.Info($"-A");
                     Es.Riam.Gnoss.AD.EntityModel.Models.UsuarioDS.ProyectoRolUsuario filaProyectoRolUsuario = usuarioCN.ObtenerRolUsuarioEnProyecto(proyectoID, user_id);
                     if (filaProyectoRolUsuario != null)
                     {
-                        mCommunityApi.Log.Info($"-B");
                         filaProyectoRolUsuario.RolPermitido = "0000000000000000";
                         filaProyectoRolUsuario.RolDenegado = "FFFFFFFFFFFFFFFF";
                     }
                     Es.Riam.Gnoss.Web.Controles.ProyectoGBD.ProyectoGBD proyectoGBD = new Es.Riam.Gnoss.Web.Controles.ProyectoGBD.ProyectoGBD(mEntityContext);
                     Es.Riam.Gnoss.AD.EntityModel.Models.ProyectoDS.AdministradorProyecto filaAdminProyecto = proyectoGBD.CargaAdministradorProyecto.FirstOrDefault(x => x.ProyectoID == proyectoID && x.UsuarioID == user_id);
-                    mCommunityApi.Log.Info($"-C");
                     if (filaAdminProyecto != null)
                     {
-                        mCommunityApi.Log.Info($"-D");
                         mEntityContext.Entry(filaAdminProyecto).State = EntityState.Deleted;
                     }
                     mEntityContext.SaveChanges();
 
-                    ProyectoCL proyectoCL = new ProyectoCL(mEntityContext, mLoggingService, mRedisCacheWrapper, mConfigService, mVirtuosoAD, mServicesUtilVirtuosoAndReplication);
-                    proyectoCL.InvalidarHTMLAdministradoresProyecto(proyectoID);
-                    proyectoCL.InvalidarFilaProyecto(proyectoID);
+                    ProyectoCL proyectoCLBaja = new ProyectoCL(mEntityContext, mLoggingService, mRedisCacheWrapper, mConfigService, mVirtuosoAD, mServicesUtilVirtuosoAndReplication);
+                    proyectoCLBaja.InvalidarHTMLAdministradoresProyecto(proyectoID);
+                    proyectoCLBaja.InvalidarFilaProyecto(proyectoID);
 
-                    IdentidadCL identidadCL = new IdentidadCL(mEntityContext, mLoggingService, mRedisCacheWrapper, mConfigService, mServicesUtilVirtuosoAndReplication);
-                    PersonaCN personaCN = new PersonaCN(mEntityContext, mLoggingService, mConfigService, mServicesUtilVirtuosoAndReplication);
-                    Guid? personaID = personaCN.ObtenerPersonaIDPorUsuarioID(user_id);
+                    IdentidadCL identidadCLBaja = new IdentidadCL(mEntityContext, mLoggingService, mRedisCacheWrapper, mConfigService, mServicesUtilVirtuosoAndReplication);
+                    PersonaCN personaCNBaja = new PersonaCN(mEntityContext, mLoggingService, mConfigService, mServicesUtilVirtuosoAndReplication);
+                    Guid? personaIDBaja = personaCNBaja.ObtenerPersonaIDPorUsuarioID(user_id);
 
-                    if (personaID.HasValue)
+                    if (personaIDBaja.HasValue)
                     {
-                        identidadCL.EliminarCacheGestorTodasIdentidadesUsuario(user_id, personaID.Value);
+                        identidadCLBaja.EliminarCacheGestorTodasIdentidadesUsuario(user_id, personaIDBaja.Value);
                     }
                 }
                 else
