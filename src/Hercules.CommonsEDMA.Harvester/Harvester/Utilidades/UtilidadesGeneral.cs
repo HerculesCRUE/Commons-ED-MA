@@ -8,17 +8,17 @@ namespace Utilidades
 {
     class UtilidadesGeneral
     {
-        public static Dictionary<string, string> dicPaises = new Dictionary<string, string>();
-        public static Dictionary<string, string> dicPaisesXML = new Dictionary<string, string>();
-        public static Dictionary<string, string> dicRegiones = new Dictionary<string, string>();
+        public static Dictionary<string, string> dicPaises = new ();
+        public static Dictionary<string, string> dicPaisesXML = new ();
+        public static Dictionary<string, string> dicRegiones = new ();
 
-        private static string RUTA_PAISES = $@"{System.AppDomain.CurrentDomain.SetupInformation.ApplicationBase}Utilidades/paises.json";
-        private static string RUTA_PAISES_XML = $@"{System.AppDomain.CurrentDomain.SetupInformation.ApplicationBase}Utilidades/paises.xml";
-        private static string RUTA_REGIONES = $@"{System.AppDomain.CurrentDomain.SetupInformation.ApplicationBase}Utilidades/regiones.json";
+        private static string RUTA_PAISES = $@"{System.AppDomain.CurrentDomain.SetupInformation.ApplicationBase}Utilidades{Path.DirectorySeparatorChar}paises.json";
+        private static string RUTA_PAISES_XML = $@"{System.AppDomain.CurrentDomain.SetupInformation.ApplicationBase}Utilidades{Path.DirectorySeparatorChar}paises.xml";
+        private static string RUTA_REGIONES = $@"{System.AppDomain.CurrentDomain.SetupInformation.ApplicationBase}Utilidades{Path.DirectorySeparatorChar}regiones.json";
 
         public static void IniciadorDiccionarioPaises()
         {
-            XmlDocument doc = new XmlDocument();
+            XmlDocument doc = new ();
             doc.LoadXml(File.ReadAllText(RUTA_PAISES_XML));
             string jsonPaisesXml = JsonConvert.SerializeXmlNode(doc);
 

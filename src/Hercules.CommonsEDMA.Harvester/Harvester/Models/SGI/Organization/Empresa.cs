@@ -62,14 +62,14 @@ namespace OAI_PMH.Models.SGI.Organization
         public static Dictionary<string, string> ObtenerOrganizacionesBBDD(HashSet<string> pListaIds, ResourceApi pResourceApi)
         {
             List<List<string>> listasPersonas = SplitList(pListaIds.ToList(), 1000).ToList();
-            Dictionary<string, string> dicOrganizacionesBBDD = new Dictionary<string, string>();
+            Dictionary<string, string> dicOrganizacionesBBDD = new ();
             foreach (string organizacion in pListaIds)
             {
                 dicOrganizacionesBBDD[organizacion] = "";
             }
             foreach (List<string> listaItem in listasPersonas)
             {
-                List<string> listaAux = new List<string>();
+                List<string> listaAux = new ();
                 foreach (string item in listaItem)
                 {
                     if (item.Contains("_"))
@@ -109,7 +109,7 @@ namespace OAI_PMH.Models.SGI.Organization
         public static Empresa GetOrganizacionSGI(IHarvesterServices pHarvesterServices, ReadConfig pConfig, string pId, Dictionary<string, Dictionary<string, string>> pDicRutas)
         {
             // Obtención de datos en bruto.
-            Empresa empresa = new Empresa();
+            Empresa empresa = new ();
             string xmlResult = pHarvesterServices.GetRecord(pId, pConfig);
 
             if (string.IsNullOrEmpty(xmlResult))
@@ -134,7 +134,7 @@ namespace OAI_PMH.Models.SGI.Organization
         /// <returns></returns>
         public static OrganizacionBBDD GetOrganizacionBBDD(ResourceApi pResourceApi, string pIdGnoss)
         {
-            StringBuilder select = new StringBuilder(), where = new StringBuilder();
+            StringBuilder select = new StringBuilder(), where = new ();
 
             // Consulta sparql.
             select.Append("SELECT ?crisIdentifier ?titulo ?localidad ");
@@ -148,7 +148,7 @@ namespace OAI_PMH.Models.SGI.Organization
 
             if (resultadoQuery != null && resultadoQuery.results != null && resultadoQuery.results.bindings != null && resultadoQuery.results.bindings.Count > 0)
             {
-                OrganizacionBBDD organizacion = new OrganizacionBBDD();
+                OrganizacionBBDD organizacion = new ();
 
                 if (!string.IsNullOrEmpty(resultadoQuery.results.bindings.First()["crisIdentifier"].value))
                 {
@@ -185,7 +185,7 @@ namespace OAI_PMH.Models.SGI.Organization
         public static Dictionary<string, string> ObtenerEmpresaBBDD(HashSet<string> pListaIds, ResourceApi pResourceApi)
         {
             List<List<string>> listaEmpresas = SplitList(pListaIds.ToList(), 1000).ToList();
-            Dictionary<string, string> dicEmpresasBBDD = new Dictionary<string, string>();
+            Dictionary<string, string> dicEmpresasBBDD = new ();
             foreach (string empresa in pListaIds)
             {
                 if (empresa.Contains("_"))
@@ -199,7 +199,7 @@ namespace OAI_PMH.Models.SGI.Organization
             }
             foreach (List<string> listaItem in listaEmpresas)
             {
-                List<string> listaAux = new List<string>();
+                List<string> listaAux = new ();
                 foreach (string item in listaItem)
                 {
                     if (item.Contains("_"))
@@ -239,7 +239,7 @@ namespace OAI_PMH.Models.SGI.Organization
         /// <returns></returns>
         public OrganizationOntology.Organization CrearOrganizationOntology(IHarvesterServices pHarvesterServices, ReadConfig pConfig, ResourceApi pResourceApi, Dictionary<string, HashSet<string>> pDicIdentificadores, Dictionary<string, Dictionary<string, string>> pDicRutas)
         {
-            OrganizationOntology.Organization organization = new OrganizationOntology.Organization();
+            OrganizationOntology.Organization organization = new ();
             organization.Roh_crisIdentifier = this.Id;
             organization.Roh_title = this.Nombre;
             organization.Vcard_locality = this.DatosContacto?.Direccion;

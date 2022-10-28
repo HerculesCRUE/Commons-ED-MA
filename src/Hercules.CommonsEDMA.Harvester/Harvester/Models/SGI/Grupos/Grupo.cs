@@ -65,14 +65,14 @@ namespace OAI_PMH.Models.SGI.GruposInvestigacion
         public static Dictionary<string, string> ObtenerGruposBBDD(HashSet<string> pListaIds, ResourceApi pResourceApi)
         {
             List<List<string>> listasPersonas = SplitList(pListaIds.ToList(), 1000).ToList();
-            Dictionary<string, string> dicPersonasBBDD = new Dictionary<string, string>();
+            Dictionary<string, string> dicPersonasBBDD = new();
             foreach (string persona in pListaIds)
             {
                 dicPersonasBBDD[persona] = "";
             }
             foreach (List<string> listaItem in listasPersonas)
             {
-                List<string> listaAux = new List<string>();
+                List<string> listaAux = new();
                 foreach (string item in listaItem)
                 {
                     if (item.Contains("_"))
@@ -112,7 +112,7 @@ namespace OAI_PMH.Models.SGI.GruposInvestigacion
         public static Grupo GetGrupoSGI(IHarvesterServices pHarvesterServices, ReadConfig pConfig, string pId, Dictionary<string, Dictionary<string, string>> pDicRutas)
         {
             // Obtención de datos en bruto.
-            Grupo grupo = new Grupo();
+            Grupo grupo = new();
             string xmlResult = pHarvesterServices.GetRecord(pId, pConfig);
 
             if (string.IsNullOrEmpty(xmlResult))
@@ -128,7 +128,7 @@ namespace OAI_PMH.Models.SGI.GruposInvestigacion
 
             return grupo;
         }
-        
+
         /// <summary>
         /// Crea el objeto Grupo para cargarlo.
         /// </summary>
@@ -141,9 +141,9 @@ namespace OAI_PMH.Models.SGI.GruposInvestigacion
         /// <returns></returns>
         public GroupOntology.Group CrearGroupOntology(IHarvesterServices pHarvesterServices, ReadConfig pConfig, ResourceApi pResourceApi, Dictionary<string, HashSet<string>> pDicIdentificadores, Dictionary<string, Dictionary<string, string>> pDicRutas, RabbitServiceWriterDenormalizer pRabbitConf)
         {
-            GroupOntology.Group groupOntology = new GroupOntology.Group();
+            GroupOntology.Group groupOntology = new();
 
-            HashSet<string> listaIdsPersonas = new HashSet<string>();
+            HashSet<string> listaIdsPersonas = new();
             if (this.equipo != null && this.equipo.Any())
             {
                 foreach (GrupoEquipo grupoEquipo in this.equipo)
@@ -178,7 +178,7 @@ namespace OAI_PMH.Models.SGI.GruposInvestigacion
                 groupOntology.Roh_durationDays = duracion.Item3;
             }
 
-            Dictionary<string, string> dicPersonassCargadas = new Dictionary<string, string>();
+            Dictionary<string, string> dicPersonassCargadas = new();
             foreach (KeyValuePair<string, string> item in dicPersonasBBDD)
             {
                 if (string.IsNullOrEmpty(item.Value))
@@ -198,10 +198,10 @@ namespace OAI_PMH.Models.SGI.GruposInvestigacion
                 }
             }
 
-            List<GroupOntology.BFO_0000023> listaPersonas = new List<GroupOntology.BFO_0000023>();
+            List<GroupOntology.BFO_0000023> listaPersonas = new();
             foreach (GrupoEquipo grupoEquipo in this.equipo)
-            {                
-                GroupOntology.BFO_0000023 persona = new GroupOntology.BFO_0000023();
+            {
+                GroupOntology.BFO_0000023 persona = new();
                 if (dicPersonassCargadas.ContainsKey(grupoEquipo.personaRef))
                 {
                     persona.IdRoh_roleOf = dicPersonasBBDD[grupoEquipo.personaRef];
@@ -230,7 +230,7 @@ namespace OAI_PMH.Models.SGI.GruposInvestigacion
 
             return groupOntology;
         }
-               
+
         /// <summary>
         /// Identificador.
         /// </summary>

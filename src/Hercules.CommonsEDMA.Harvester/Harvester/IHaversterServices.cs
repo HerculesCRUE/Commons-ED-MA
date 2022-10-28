@@ -104,7 +104,7 @@ namespace Harvester
 
                 foreach (var record in recordList)
                 {
-                    ListRecordsOAIPMH identifierRecord = new ListRecordsOAIPMH();
+                    ListRecordsOAIPMH identifierRecord = new();
 
                     var headerList = record.Descendants(nameSpace + "header");
                     foreach (var header in headerList)

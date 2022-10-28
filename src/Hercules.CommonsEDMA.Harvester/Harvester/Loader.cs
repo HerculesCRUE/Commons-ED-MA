@@ -31,10 +31,10 @@ namespace Harvester
     {
         
         private static Harvester harvester;
-        private static IHarvesterServices harvesterServices;
+        private static IHarvesterServices harvesterServices = new();
         private static ReadConfig _Config;
 
-        private static string RUTA_PREFIJOS = $@"{AppDomain.CurrentDomain.SetupInformation.ApplicationBase}Utilidades/prefijos.json";
+        private static string RUTA_PREFIJOS = $@"{AppDomain.CurrentDomain.SetupInformation.ApplicationBase}Utilidades{Path.DirectorySeparatorChar}prefijos.json";
         private static string mPrefijos = string.Join(" ", JsonConvert.DeserializeObject<List<string>>(File.ReadAllText(RUTA_PREFIJOS)));
 
         //Resource API
@@ -46,7 +46,6 @@ namespace Harvester
         /// <param name="pResourceApi">ResourceAPI.</param>
         public Loader(ResourceApi pResourceApi)
         {
-            harvesterServices = new IHarvesterServices();
             harvester = new Harvester(harvesterServices);
             _Config = new ReadConfig();
             mResourceApi = pResourceApi;
@@ -57,7 +56,7 @@ namespace Harvester
         /// </summary>
         public void LoadMainEntities()
         {
-            RabbitServiceWriterDenormalizer rabbitServiceWriterDenormalizer = new RabbitServiceWriterDenormalizer(_Config);
+            RabbitServiceWriterDenormalizer rabbitServiceWriterDenormalizer = new(_Config);
             string expresionCron = _Config.GetCronExpression();
 
             UtilidadesGeneral.IniciadorDiccionarioPaises();
@@ -104,16 +103,16 @@ namespace Harvester
         /// <param name="pRabbitConf"></param>
         public void CargarDatosSGI(RabbitServiceWriterDenormalizer pRabbitConf)
         {
-            Dictionary<string, HashSet<string>> dicIdentificadores = new Dictionary<string, HashSet<string>>();
-            dicIdentificadores.Add("organization", new HashSet<string>());
-            dicIdentificadores.Add("person", new HashSet<string>());
-            dicIdentificadores.Add("project", new HashSet<string>());
-            dicIdentificadores.Add("group", new HashSet<string>());
-            dicIdentificadores.Add("patent", new HashSet<string>());
-            dicIdentificadores.Add("projectauthorization", new HashSet<string>());
-            dicIdentificadores.Add("document", new HashSet<string>());
+            Dictionary<string, HashSet<string>> dicIdentificadores = new();
+            dicIdentificadores.Add("organization", new());
+            dicIdentificadores.Add("person", new());
+            dicIdentificadores.Add("project", new());
+            dicIdentificadores.Add("group", new());
+            dicIdentificadores.Add("patent", new());
+            dicIdentificadores.Add("projectauthorization", new());
+            dicIdentificadores.Add("document", new());
 
-            Dictionary<string, Dictionary<string, string>> dicRutas = new Dictionary<string, Dictionary<string, string>>();
+            Dictionary<string, Dictionary<string, string>> dicRutas = new();
             dicRutas.Add("Organizacion", new Dictionary<string, string>() { { $@"{_Config.GetLogCargas()}\Organizacion\pending", $@"{_Config.GetLogCargas()}\Organizacion\processed" } });
             dicRutas.Add("Persona", new Dictionary<string, string>() { { $@"{_Config.GetLogCargas()}\Persona\pending", $@"{_Config.GetLogCargas()}\Persona\processed" } });
             dicRutas.Add("Proyecto", new Dictionary<string, string>() { { $@"{_Config.GetLogCargas()}\Proyecto\pending", $@"{_Config.GetLogCargas()}\Proyecto\processed" } });
@@ -123,8 +122,8 @@ namespace Harvester
             dicRutas.Add("PRC", new Dictionary<string, string>() { { $@"{_Config.GetLogCargas()}\PRC\pending", $@"{_Config.GetLogCargas()}\PRC\processed" } });
 
             // Organizaciones.
-            //mResourceApi.ChangeOntoly("organization");
-            //ProcesarFichero(_Config, "Organizacion", dicIdentificadores, dicRutas, pRabbitConf);
+            mResourceApi.ChangeOntoly("organization");
+            ProcesarFichero(_Config, "Organizacion", dicIdentificadores, dicRutas, pRabbitConf);
 
             // Personas. 
             mResourceApi.ChangeOntoly("person");
@@ -135,20 +134,20 @@ namespace Harvester
             ProcesarFichero(_Config, "Proyecto", dicIdentificadores, dicRutas, pRabbitConf);
 
             // Document.
-            //mResourceApi.ChangeOntoly("document");
-            //ProcesarFichero(_Config, "PRC", dicIdentificadores, dicRutas, pRabbitConf);
+            mResourceApi.ChangeOntoly("document");
+            ProcesarFichero(_Config, "PRC", dicIdentificadores, dicRutas, pRabbitConf);
 
             // Autorizaciones.
-            //mResourceApi.ChangeOntoly("projectauthorization");
-            //ProcesarFichero(_Config, "AutorizacionProyecto", dicIdentificadores, dicRutas, pRabbitConf);
+            mResourceApi.ChangeOntoly("projectauthorization");
+            ProcesarFichero(_Config, "AutorizacionProyecto", dicIdentificadores, dicRutas, pRabbitConf);
 
             // Grupos.
             mResourceApi.ChangeOntoly("group");
             ProcesarFichero(_Config, "Grupo", dicIdentificadores, dicRutas, pRabbitConf);
 
             // Patentes.
-            //mResourceApi.ChangeOntoly("patent");
-            //ProcesarFichero(_Config, "Invencion", dicIdentificadores, dicRutas, pRabbitConf);
+            mResourceApi.ChangeOntoly("patent");
+            ProcesarFichero(_Config, "Invencion", dicIdentificadores, dicRutas, pRabbitConf);
         }
 
         /// <summary>
@@ -160,7 +159,6 @@ namespace Harvester
         public void GuardarIdentificadores(ReadConfig pConfig, string pSet, bool pPRC = false)
         {
             // Se obtiene la última fecha de actualización del fichero.
-            //string fecha = "1500-01-01T00:00:00Z";
             string fecha = LeerFicheroFecha(_Config, pSet);
 
             Console.WriteLine($"Obteniendo identificadores de {pSet} ({fecha})");
@@ -387,7 +385,7 @@ namespace Harvester
 
                                 string solicitante = autorizacionSGI.solicitanteRef;
                                 string responsable = autorizacionSGI.responsableRef;
-                                List<string> listado = new List<string>() { solicitante, responsable };
+                                List<string> listado = new() { solicitante, responsable };
                                 UtilidadesLoader.EnvioNotificacionesMiembros(listado, "harvesterAutorizacion", "NOTIFICACION_AUTORIZACION");
 
                                 pDicIdentificadores["projectauthorization"].Add(idGnossAutorizacion);
@@ -510,25 +508,22 @@ namespace Harvester
         /// <returns></returns>
         private Dictionary<string, string> GetValues(string pIdRecurso)
         {
-            Dictionary<string, string> dicResultados = new Dictionary<string, string>();
+            Dictionary<string, string> dicResultados = new();
             dicResultados.Add("projectAux", "");
             dicResultados.Add("isValidated", "");
             dicResultados.Add("validationStatusPRC", "");
             dicResultados.Add("validationDeleteStatusPRC", "");
 
-            StringBuilder select = new StringBuilder();
-            StringBuilder where = new StringBuilder();
-
-            select.Append(mPrefijos);
-            select.Append("SELECT DISTINCT ?projectAux ?isValidated ?validationStatusPRC ?validationDeleteStatusPRC ");
-            where.Append("WHERE { ");
-            where.Append("?s a bibo:Document. ");
-            where.Append("OPTIONAL{?s roh:projectAux ?projectAux. } ");
-            where.Append("OPTIONAL{?s roh:isValidated ?isValidated. } ");
-            where.Append("OPTIONAL{?s roh:validationStatusPRC ?validationStatusPRC. } ");
-            where.Append("OPTIONAL{?s roh:validationDeleteStatusPRC ?validationDeleteStatusPRC. } ");
-            where.Append($@"FILTER(?s = <{pIdRecurso}>) ");
-            where.Append("} ");
+            string select = mPrefijos;
+            select += "SELECT DISTINCT ?projectAux ?isValidated ?validationStatusPRC ?validationDeleteStatusPRC ";
+            string where = $@"WHERE {{
+                                ?s a bibo:Document. 
+                                OPTIONAL{{?s roh:projectAux ?projectAux. }}
+                                OPTIONAL{{?s roh:isValidated ?isValidated. }} 
+                                OPTIONAL{{?s roh:validationStatusPRC ?validationStatusPRC. }} 
+                                OPTIONAL{{?s roh:validationDeleteStatusPRC ?validationDeleteStatusPRC. }} 
+                                FILTER(?s = <{pIdRecurso}>) 
+                            }} ";
 
             SparqlObject resultadoQuery = mResourceApi.VirtuosoQuery(select.ToString(), where.ToString(), "document");
 
@@ -566,9 +561,9 @@ namespace Harvester
         /// <param name="pValorNuevo"></param>
         private void Insercion(Guid pGuid, string pPropiedad, string pValorNuevo)
         {
-            Dictionary<Guid, List<TriplesToInclude>> dicInsercion = new Dictionary<Guid, List<TriplesToInclude>>();
-            List<TriplesToInclude> listaTriplesInsercion = new List<TriplesToInclude>();
-            TriplesToInclude triple = new TriplesToInclude();
+            Dictionary<Guid, List<TriplesToInclude>> dicInsercion = new();
+            List<TriplesToInclude> listaTriplesInsercion = new();
+            TriplesToInclude triple = new();
             triple.Predicate = pPropiedad;
             triple.NewValue = pValorNuevo;
             listaTriplesInsercion.Add(triple);
@@ -585,9 +580,9 @@ namespace Harvester
         /// <param name="pValorAntiguo"></param>
         private void Modificacion(Guid pGuid, string pPropiedad, string pValorNuevo, string pValorAntiguo)
         {
-            Dictionary<Guid, List<TriplesToModify>> dicModificacion = new Dictionary<Guid, List<TriplesToModify>>();
-            List<TriplesToModify> listaTriplesModificacion = new List<TriplesToModify>();
-            TriplesToModify triple = new TriplesToModify();
+            Dictionary<Guid, List<TriplesToModify>> dicModificacion = new();
+            List<TriplesToModify> listaTriplesModificacion = new();
+            TriplesToModify triple = new();
             triple.Predicate = pPropiedad;
             triple.NewValue = pValorNuevo;
             triple.OldValue = pValorAntiguo;
@@ -604,9 +599,9 @@ namespace Harvester
         /// <param name="pValorAntiguo"></param>
         private void Borrado(Guid pGuid, string pPropiedad, string pValorAntiguo)
         {
-            Dictionary<Guid, List<RemoveTriples>> dicBorrado = new Dictionary<Guid, List<RemoveTriples>>();
-            List<RemoveTriples> listaTriplesBorrado = new List<RemoveTriples>();
-            RemoveTriples triple = new RemoveTriples();
+            Dictionary<Guid, List<RemoveTriples>> dicBorrado = new();
+            List<RemoveTriples> listaTriplesBorrado = new();
+            RemoveTriples triple = new();
             triple.Predicate = pPropiedad;
             triple.Value = pValorAntiguo;
             triple.Title = false;
@@ -634,7 +629,7 @@ namespace Harvester
                                         }}";
             SparqlObject resultado = mResourceApi.VirtuosoQuery(select, where, "curriculumvitae");
 
-            Dictionary<Guid, List<RemoveTriples>> triplesEliminar = new Dictionary<Guid, List<RemoveTriples>>();
+            Dictionary<Guid, List<RemoveTriples>> triplesEliminar = new();
             foreach (var fila in resultado.results.bindings)
             {
                 Guid cv = mResourceApi.GetShortGuid(fila["cv"].value);

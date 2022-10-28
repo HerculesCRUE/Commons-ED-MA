@@ -27,7 +27,7 @@ namespace Harvester
         public void Harvest(ReadConfig pConfig, string pSet, string pFecha)
         {
             // Obtención de los IDs.
-            HashSet<string> listaIdsSinRepetir = new HashSet<string>();
+            HashSet<string> listaIdsSinRepetir = new ();
 
             List<IdentifierOAIPMH> idList = HaversterServices.ListIdentifiers(pFecha, pConfig, set: pSet);
 
@@ -75,7 +75,7 @@ namespace Harvester
         public void HarvestPRC(ReadConfig pConfig, string pSet, string pFecha)
         {
             // Obtención de los IDs.
-            HashSet<string> listaIdsSinRepetir = new HashSet<string>();
+            HashSet<string> listaIdsSinRepetir = new ();
 
             List<ListRecordsOAIPMH> idList = HaversterServices.ListRecords(pFecha, pConfig, set: pSet);
 

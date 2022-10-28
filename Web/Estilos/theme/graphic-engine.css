@@ -545,3 +545,13 @@
      border: 1px solid var(--c-gris-borde);
      box-sizing: border-box;
  }
+ .listado.vista-grafico div.col-facetas.col-lateral {
+    display:block;
+    left: -320px;
+    transition: 0s;
+ }
+ .listado.vista-grafico.facetas-abiertas .col-facetas.col-lateral {
+    display:block;
+    left: 0px;
+    transition: all ease 0.3s;
+ }

@@ -4412,7 +4412,9 @@ var edicionCV = {
 							var msg = GetText("CV_PROPIEDADIDENTIFICADORREPETIDA", data.error.replace("PROPREPETIDA|", ""));
 							$('#modal-editar-entidad .modal-body>.form-actions').append('<p class="ko" style="display:block">' + msg + '</p>');
 						} else {
-							alert("Error: " + data.error);
+							$(modal).find('.form-actions .ko').remove();
+							$(modal).find(' .form-actions').append('<div class="ko" style="display:block"><p>' + data.error + '</p></div>');
+			
 						}
 						OcultarUpdateProgress();
 					}
