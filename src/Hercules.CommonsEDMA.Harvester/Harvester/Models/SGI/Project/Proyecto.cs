@@ -73,7 +73,7 @@ namespace OAI_PMH.Models.SGI.Project
         public ProjectOntology.Project CrearProjectOntology(IHarvesterServices pHarvesterServices, ReadConfig pConfig, ResourceApi pResourceApi, Dictionary<string, HashSet<string>> pDicIdentificadores, Dictionary<string, Dictionary<string, string>> pDicRutas, RabbitServiceWriterDenormalizer pRabbitConf)
         {
             #region --- Obtenemos los IDs de las personas del proyecto.
-            HashSet<string> listaIdsPersonas = new ();
+            HashSet<string> listaIdsPersonas = new();
             if (this.Equipo != null && this.Equipo.Any())
             {
                 foreach (ProyectoEquipo item in this.Equipo)
@@ -89,7 +89,7 @@ namespace OAI_PMH.Models.SGI.Project
             #endregion
 
             #region --- Obtención de personas
-            Dictionary<string, string> dicPersonasCargadas = new ();
+            Dictionary<string, string> dicPersonasCargadas = new();
             foreach (KeyValuePair<string, string> item in dicPersonasBBDD)
             {
                 if (string.IsNullOrEmpty(item.Value))
@@ -110,7 +110,7 @@ namespace OAI_PMH.Models.SGI.Project
             #endregion
 
             #region --- Obtenemos los IDs de las organizaciones del proyecto.
-            HashSet<string> listaIdsOrganizaciones = new ();
+            HashSet<string> listaIdsOrganizaciones = new();
             if (this.EntidadesFinanciadoras != null && this.EntidadesFinanciadoras.Any())
             {
                 foreach (ProyectoEntidadFinanciadora entidadFinanciadora in this.EntidadesFinanciadoras)
@@ -142,7 +142,7 @@ namespace OAI_PMH.Models.SGI.Project
             #endregion
 
             #region --- Obtención de organizaciones
-            Dictionary<string, string> dicOrganizacionesCargadas = new ();
+            Dictionary<string, string> dicOrganizacionesCargadas = new();
             foreach (KeyValuePair<string, string> item in dicOrganizaciones)
             {
                 if (string.IsNullOrEmpty(item.Value))
@@ -160,7 +160,7 @@ namespace OAI_PMH.Models.SGI.Project
             #endregion
 
             #region --- Construimos el objeto de 'Project'
-            ProjectOntology.Project project = new ();
+            ProjectOntology.Project project = new();
 
             // Crisidentifier
             project.Roh_crisIdentifier = this.Id.ToString();
@@ -216,7 +216,7 @@ namespace OAI_PMH.Models.SGI.Project
                 {
                     if (dicPersonasBBDD.ContainsKey(item.PersonaRef))
                     {
-                        ProjectOntology.BFO_0000023 BFO = new ();
+                        ProjectOntology.BFO_0000023 BFO = new();
                         BFO.Rdf_comment = orden;
                         BFO.IdRoh_roleOf = dicPersonasBBDD[item.PersonaRef];
 
@@ -398,7 +398,7 @@ namespace OAI_PMH.Models.SGI.Project
         public static Proyecto GetProyectoSGI(IHarvesterServices pHarvesterServices, ReadConfig pConfig, string pId, Dictionary<string, Dictionary<string, string>> pDicRutas)
         {
             // Obtención de datos en bruto.
-            Proyecto proyecto = new ();
+            Proyecto proyecto = new();
             string xmlResult = pHarvesterServices.GetRecord(pId, pConfig);
 
             if (string.IsNullOrEmpty(xmlResult))
@@ -424,7 +424,7 @@ namespace OAI_PMH.Models.SGI.Project
         public static Dictionary<string, string> ObtenerProyectoBBDD(HashSet<string> pListaIds, ResourceApi pResourceApi)
         {
             List<List<string>> listaProyecto = SplitList(pListaIds.ToList(), 1000).ToList();
-            Dictionary<string, string> dicProyectosBBDD = new ();
+            Dictionary<string, string> dicProyectosBBDD = new();
             foreach (string organizacion in pListaIds)
             {
                 if (organizacion.Contains("_"))
@@ -438,7 +438,7 @@ namespace OAI_PMH.Models.SGI.Project
             }
             foreach (List<string> listaItem in listaProyecto)
             {
-                List<string> listaAux = new ();
+                List<string> listaAux = new();
                 foreach (string item in listaItem)
                 {
                     if (item.Contains("_"))
@@ -478,7 +478,7 @@ namespace OAI_PMH.Models.SGI.Project
             OrganizacionBBDD organizacionBBDD = GetOrganizacionBBDD(pGnossId, pResourceApi);
 
             // Asignación.
-            ProjectOntology.OrganizationAux organizationAux = new ();
+            ProjectOntology.OrganizationAux organizationAux = new();
             organizationAux.IdRoh_organization = pGnossId;
             organizationAux.Roh_organizationTitle = organizacionBBDD.title;
             organizationAux.Vcard_locality = organizacionBBDD.locality;
@@ -494,22 +494,18 @@ namespace OAI_PMH.Models.SGI.Project
         /// <returns></returns>
         public static OrganizacionBBDD GetOrganizacionBBDD(string pIdGnoss, ResourceApi pResourceApi)
         {
-            SparqlObject resultadoQuery = null;
-            StringBuilder select = new StringBuilder(), where = new ();
+            string select = "SELECT ?crisIdentifier ?titulo ?localidad ";
+            string where = $@"WHERE {{ 
+                                <{pIdGnoss}> <http://w3id.org/roh/crisIdentifier> ?crisIdentifier.
+                                <{pIdGnoss}> <http://w3id.org/roh/title> ?titulo. 
+                                OPTIONAL{{<{pIdGnoss}> <https://www.w3.org/2006/vcard/ns#locality> ?localidad. }}
+                            }} ";
 
-            // Consulta sparql.
-            select.Append("SELECT ?crisIdentifier ?titulo ?localidad ");
-            where.Append("WHERE { ");
-            where.Append($@"<{pIdGnoss}> <http://w3id.org/roh/crisIdentifier> ?crisIdentifier. ");
-            where.Append($@"<{pIdGnoss}> <http://w3id.org/roh/title> ?titulo. ");
-            where.Append($@"OPTIONAL{{<{pIdGnoss}> <https://www.w3.org/2006/vcard/ns#locality> ?localidad. }}");
-            where.Append("} ");
-
-            resultadoQuery = pResourceApi.VirtuosoQuery(select.ToString(), where.ToString(), "organization");
+            SparqlObject resultadoQuery = pResourceApi.VirtuosoQuery(select, where, "organization");
 
             if (resultadoQuery != null && resultadoQuery.results != null && resultadoQuery.results.bindings != null && resultadoQuery.results.bindings.Count > 0)
             {
-                OrganizacionBBDD organizacion = new ();
+                OrganizacionBBDD organizacion = new();
 
                 if (!string.IsNullOrEmpty(resultadoQuery.results.bindings.First()["crisIdentifier"].value))
                 {

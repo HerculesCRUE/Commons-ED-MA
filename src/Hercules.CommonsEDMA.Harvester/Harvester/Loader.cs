@@ -628,7 +628,7 @@ namespace Harvester
                                         }}";
             SparqlObject resultado = mResourceApi.VirtuosoQuery(select, where, "curriculumvitae");
 
-            Dictionary<Guid, List<RemoveTriples>> triplesEliminar = new ();
+            Dictionary<Guid, List<RemoveTriples>> triplesEliminar = new();
             foreach (var fila in resultado.results.bindings)
             {
                 Guid cv = mResourceApi.GetShortGuid(fila["cv"].value);
