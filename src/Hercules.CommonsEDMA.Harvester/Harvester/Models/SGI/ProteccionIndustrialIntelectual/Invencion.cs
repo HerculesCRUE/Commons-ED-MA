@@ -68,7 +68,7 @@ namespace OAI_PMH.Models.SGI.ProteccionIndustrialIntelectual
         /// <returns></returns>
         public PatentOntology.Patent CrearPatentOntology(IHarvesterServices pHarvesterServices, ReadConfig pConfig, ResourceApi pResourceApi, Dictionary<string, HashSet<string>> pDicIdentificadores, Dictionary<string, Dictionary<string, string>> pDicRutas, RabbitServiceWriterDenormalizer pRabbitConf)
         {
-            HashSet<string> listaIdsPersonas = new HashSet<string>();
+            HashSet<string> listaIdsPersonas = new ();
             if (this.inventores != null && this.inventores.Any())
             {
                 foreach (Inventor item in this.inventores)
@@ -80,7 +80,7 @@ namespace OAI_PMH.Models.SGI.ProteccionIndustrialIntelectual
 
             Dictionary<string, string> dicPersonasBBDD = Persona.ObtenerPersonasBBDD(listaIdsPersonas, pResourceApi);
 
-            PatentOntology.Patent patente = new PatentOntology.Patent();
+            PatentOntology.Patent patente = new ();
 
             // CrisIdentifier
             patente.Roh_crisIdentifier = this.id.ToString();
@@ -97,7 +97,7 @@ namespace OAI_PMH.Models.SGI.ProteccionIndustrialIntelectual
             // Descripción
             patente.Roh_qualityDescription = this.descripcion;
 
-            Dictionary<string, string> dicPersonasCargadas = new Dictionary<string, string>();
+            Dictionary<string, string> dicPersonasCargadas = new ();
             foreach (KeyValuePair<string, string> item in dicPersonasBBDD)
             {
                 if (string.IsNullOrEmpty(item.Value))
@@ -118,11 +118,11 @@ namespace OAI_PMH.Models.SGI.ProteccionIndustrialIntelectual
             }
 
             // Autores
-            List<PatentOntology.PersonAux> listaPersonas = new List<PatentOntology.PersonAux>();
+            List<PatentOntology.PersonAux> listaPersonas = new ();
 
             foreach (Inventor inventor in this.inventores)
             {    
-                PatentOntology.PersonAux persona = new PatentOntology.PersonAux();
+                PatentOntology.PersonAux persona = new ();
                 if (dicPersonasCargadas.ContainsKey(inventor.inventorRef) && !string.IsNullOrEmpty(dicPersonasCargadas[inventor.inventorRef]))
                 {
                     persona.IdRdf_member = dicPersonasCargadas[inventor.inventorRef];
@@ -144,7 +144,7 @@ namespace OAI_PMH.Models.SGI.ProteccionIndustrialIntelectual
         public static Dictionary<string, string> ObtenerPatenteBBDD(HashSet<string> pListaIds, ResourceApi pResourceApi)
         {
             List<List<string>> listaPatentes = SplitList(pListaIds.ToList(), 1000).ToList();
-            Dictionary<string, string> dicPatentesBBDD = new Dictionary<string, string>();
+            Dictionary<string, string> dicPatentesBBDD = new ();
             foreach (string patente in pListaIds)
             {
                 if (patente.Contains("_"))
@@ -158,7 +158,7 @@ namespace OAI_PMH.Models.SGI.ProteccionIndustrialIntelectual
             }
             foreach (List<string> listaItem in listaPatentes)
             {
-                List<string> listaAux = new List<string>();
+                List<string> listaAux = new ();
                 foreach (string item in listaItem)
                 {
                     if (item.Contains("_"))
@@ -198,7 +198,7 @@ namespace OAI_PMH.Models.SGI.ProteccionIndustrialIntelectual
         public static Invencion GetInvencionSGI(IHarvesterServices pHarvesterServices, ReadConfig pConfig, string pId, Dictionary<string, Dictionary<string, string>> pDicRutas)
         {
             // Obtención de datos en bruto.
-            Invencion invencion = new Invencion();
+            Invencion invencion = new ();
             string xmlResult = pHarvesterServices.GetRecord(pId, pConfig);
 
             if (string.IsNullOrEmpty(xmlResult))

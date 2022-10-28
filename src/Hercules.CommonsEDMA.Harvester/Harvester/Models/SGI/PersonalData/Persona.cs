@@ -1172,9 +1172,9 @@ namespace OAI_PMH.Models.SGI.PersonalData
 
                     if (fila.ContainsKey("metricGraphic") && !string.IsNullOrEmpty(fila["metricGraphic"].value))
                     {
-                        if (listaMetricPagesBBDD.Any(x => x.order == Int32.Parse(fila["order"].value) && x.title == fila["title"].value))
+                        if (listaMetricPagesBBDD.Any(x => x.order == int.Parse(fila["order"].value) && x.title == fila["title"].value))
                         {
-                            listaMetricPagesBBDD.First(x => x.order == Int32.Parse(fila["order"].value) && x.title == fila["title"].value).idsMetricGraphic.Add(fila["metricGraphic"].value);
+                            listaMetricPagesBBDD.First(x => x.order == int.Parse(fila["order"].value) && x.title == fila["title"].value).idsMetricGraphic.Add(fila["metricGraphic"].value);
                         }
                         else
                         {
@@ -1211,7 +1211,7 @@ namespace OAI_PMH.Models.SGI.PersonalData
                 {
                     foreach (Dictionary<string, SparqlObject.Data> fila in resultadoQueryMetricGraphic.results.bindings)
                     {
-                        PersonOntology.MetricGraphic metricGraphic = new PersonOntology.MetricGraphic();
+                        PersonOntology.MetricGraphic metricGraphic = new ();
                         metricGraphic.Roh_title = fila["title"].value;
                         metricGraphic.Roh_order = Int32.Parse(fila["order"].value);
                         metricGraphic.Roh_pageId = fila["pageId"].value;
@@ -1237,7 +1237,7 @@ namespace OAI_PMH.Models.SGI.PersonalData
             // Construcción de objetos finales.
             foreach (MetricPageBBDD item in listaMetricPagesBBDD)
             {
-                PersonOntology.MetricPage metricPage = new PersonOntology.MetricPage();
+                PersonOntology.MetricPage metricPage = new ();
                 metricPage.Roh_order = item.order;
                 metricPage.Roh_title = item.title;
                 metricPage.Roh_metricGraphic = item.listaGraficas;
@@ -1284,7 +1284,7 @@ namespace OAI_PMH.Models.SGI.PersonalData
             pResourceApi.ChangeOntoly(ontology);
 
             // Creación del objeto a cargar.
-            Department dept = new Department();
+            Department dept = new ();
             dept.Dc_identifier = pCodigoDept;
             dept.Dc_title = pNombreDept;
 
@@ -1330,21 +1330,17 @@ namespace OAI_PMH.Models.SGI.PersonalData
         /// <returns></returns>
         public List<string> ObtenerDataCrisIdentifier(ResourceApi pResourceApi, string pCrisIdentfierPerson, string pOntology, string pCvnCode)
         {
-            List<string> listaDevolver = new List<string>();
+            List<string> listaDevolver = new ();
 
-            string select = string.Empty;
-            string where = string.Empty;
-            SparqlObject resultadoQuery = null;
-
-            select = "SELECT ?crisIdentifier ";
-            where = $@"WHERE {{ 
+            string select = "SELECT ?crisIdentifier ";
+            string where = $@"WHERE {{ 
                                 ?s <http://w3id.org/roh/owner> ?persona.
                                 ?persona <http://w3id.org/roh/crisIdentifier> '{pCrisIdentfierPerson}'.
                                 ?s <http://w3id.org/roh/crisIdentifier> ?crisIdentifier.
                                 ?s <http://w3id.org/roh/cvnCode> '{pCvnCode}'.
                             }}";
 
-            resultadoQuery = pResourceApi.VirtuosoQueryMultipleGraph(select, where, new List<string>() { "person", pOntology });
+            SparqlObject resultadoQuery = pResourceApi.VirtuosoQueryMultipleGraph(select, where, new List<string>() { "person", pOntology });
             if (resultadoQuery != null && resultadoQuery.results != null && resultadoQuery.results.bindings != null && resultadoQuery.results.bindings.Count > 0)
             {
                 foreach (Dictionary<string, SparqlObject.Data> fila in resultadoQuery.results.bindings)
@@ -1372,7 +1368,7 @@ namespace OAI_PMH.Models.SGI.PersonalData
         /// <returns></returns>
         public List<ImpartedAcademicTrainingBBDD> ObtenerImpartedAcademicSGI(RabbitServiceWriterDenormalizer pRabbitConf, List<FormacionAcademicaImpartida> pListaImpartedAcademicSGI, IHarvesterServices pHarvesterServices, ReadConfig pConfig, ResourceApi pResourceApi, Dictionary<string, HashSet<string>> pDicIdentificadores, Dictionary<string, Dictionary<string, string>> pDicRutas)
         {
-            List<ImpartedAcademicTrainingBBDD> listaImpartedAcademic = new List<ImpartedAcademicTrainingBBDD>();
+            List<ImpartedAcademicTrainingBBDD> listaImpartedAcademic = new ();
 
             if (pListaImpartedAcademicSGI != null && pListaImpartedAcademicSGI.Count > 0)
             {
@@ -1381,7 +1377,7 @@ namespace OAI_PMH.Models.SGI.PersonalData
 
                 foreach (FormacionAcademicaImpartida item in pListaImpartedAcademicSGI)
                 {
-                    ImpartedAcademicTrainingBBDD impartedAcademic = new ImpartedAcademicTrainingBBDD();
+                    ImpartedAcademicTrainingBBDD impartedAcademic = new ();
 
                     string crisIdentifier = "030.010.000.000___";
 
@@ -1519,16 +1515,16 @@ namespace OAI_PMH.Models.SGI.PersonalData
         /// <returns></returns>
         public List<TesisBBDD> ObtenerTesisSGI(RabbitServiceWriterDenormalizer pRabbitConf, List<Tesis> pListaTesisSGI, IHarvesterServices pHarvesterServices, ReadConfig pConfig, ResourceApi pResourceApi, Dictionary<string, HashSet<string>> pDicIdentificadores, Dictionary<string, Dictionary<string, string>> pDicRutas)
         {
-            List<TesisBBDD> listaTesis = new List<TesisBBDD>();
+            List<TesisBBDD> listaTesis = new ();
 
             if (pListaTesisSGI != null && pListaTesisSGI.Count > 0)
             {
-                HashSet<string> listaOrgsAux = new HashSet<string>(pListaTesisSGI.Select(item => item?.EntidadRealizacion?.EntidadRef).Where(x => !string.IsNullOrEmpty(x)));
+                HashSet<string> listaOrgsAux = new (pListaTesisSGI.Select(item => item?.EntidadRealizacion?.EntidadRef).Where(x => !string.IsNullOrEmpty(x)));
                 Dictionary<string, string> dicOrganizacionesCargadas = Empresa.ObtenerOrganizacionesBBDD(listaOrgsAux, pResourceApi);
 
                 foreach (Tesis item in pListaTesisSGI)
                 {
-                    TesisBBDD tesis = new TesisBBDD();
+                    TesisBBDD tesis = new ();
                     string crisIdentifier = "030.040.000.000___";
 
                     if (item.TipoProyecto != null && !string.IsNullOrEmpty(item.TipoProyecto.Nombre))
@@ -1618,7 +1614,7 @@ namespace OAI_PMH.Models.SGI.PersonalData
                                 Persona codirectorSGI = GetPersonaSGI(pHarvesterServices, pConfig, "Persona_" + director.PersonaRef, pDicRutas);
                                 if (codirectorSGI != null)
                                 {
-                                    Codirector codirector = new Codirector();
+                                    Codirector codirector = new ();
                                     codirector.firstName = codirectorSGI.Nombre;
                                     codirector.secondFamilyName = codirectorSGI.Apellidos;
                                     codirector.nick = (codirectorSGI.Nombre + " " + codirectorSGI.Apellidos).Trim();
@@ -1652,16 +1648,16 @@ namespace OAI_PMH.Models.SGI.PersonalData
         /// <returns></returns>
         public List<ImpartedCoursesSeminarsBBDD> ObtenerCursosSGI(RabbitServiceWriterDenormalizer pRabbitConf, List<SeminariosCursos> pListaCursosSGI, IHarvesterServices pHarvesterServices, ReadConfig pConfig, ResourceApi pResourceApi, Dictionary<string, HashSet<string>> pDicIdentificadores, Dictionary<string, Dictionary<string, string>> pDicRutas)
         {
-            List<ImpartedCoursesSeminarsBBDD> listaCursos = new List<ImpartedCoursesSeminarsBBDD>();
+            List<ImpartedCoursesSeminarsBBDD> listaCursos = new ();
 
             if (pListaCursosSGI != null && pListaCursosSGI.Count > 0)
             {
-                HashSet<string> listaOrgsAux = new HashSet<string>(pListaCursosSGI.Select(item => item?.EntidadOrganizacionEvento?.EntidadRef).Where(x => !string.IsNullOrEmpty(x)));
+                HashSet<string> listaOrgsAux = new (pListaCursosSGI.Select(item => item?.EntidadOrganizacionEvento?.EntidadRef).Where(x => !string.IsNullOrEmpty(x)));
                 Dictionary<string, string> dicOrganizacionesCargadas = Empresa.ObtenerOrganizacionesBBDD(listaOrgsAux, pResourceApi);
 
                 foreach (SeminariosCursos item in pListaCursosSGI)
                 {
-                    ImpartedCoursesSeminarsBBDD curso = new ImpartedCoursesSeminarsBBDD();
+                    ImpartedCoursesSeminarsBBDD curso = new ();
 
                     string crisIdentifier = "030.060.000.000___";
 
@@ -1759,16 +1755,16 @@ namespace OAI_PMH.Models.SGI.PersonalData
         /// <returns></returns>
         public List<CiclosBBDD> ObtenerCiclosSGI(RabbitServiceWriterDenormalizer pRabbitConf, List<Ciclos> pListaCiclosSGI, IHarvesterServices pHarvesterServices, ReadConfig pConfig, ResourceApi pResourceApi, Dictionary<string, HashSet<string>> pDicIdentificadores, Dictionary<string, Dictionary<string, string>> pDicRutas)
         {
-            List<CiclosBBDD> listaCiclos = new List<CiclosBBDD>();
+            List<CiclosBBDD> listaCiclos = new ();
 
             if (pListaCiclosSGI != null && pListaCiclosSGI.Count > 0)
             {
-                HashSet<string> listaOrgsAux = new HashSet<string>(pListaCiclosSGI.Select(item => item?.EntidadTitulacion?.EntidadRef).Where(x => !string.IsNullOrEmpty(x)));
+                HashSet<string> listaOrgsAux = new (pListaCiclosSGI.Select(item => item?.EntidadTitulacion?.EntidadRef).Where(x => !string.IsNullOrEmpty(x)));
                 Dictionary<string, string> dicOrganizacionesCargadas = Empresa.ObtenerOrganizacionesBBDD(listaOrgsAux, pResourceApi);
 
                 foreach (Ciclos item in pListaCiclosSGI)
                 {
-                    CiclosBBDD ciclo = new CiclosBBDD();
+                    CiclosBBDD ciclo = new ();
 
                     string crisIdentifier = "020.010.010.000___";
 
@@ -1873,18 +1869,18 @@ namespace OAI_PMH.Models.SGI.PersonalData
         /// <returns></returns>
         public List<DoctoradosBBDD> ObtenerDoctoradosSGI(RabbitServiceWriterDenormalizer pRabbitConf, List<Doctorados> pListaDoctoradosSGI, IHarvesterServices pHarvesterServices, ReadConfig pConfig, ResourceApi pResourceApi, Dictionary<string, HashSet<string>> pDicIdentificadores, Dictionary<string, Dictionary<string, string>> pDicRutas)
         {
-            List<DoctoradosBBDD> listaDoctorados = new List<DoctoradosBBDD>();
+            List<DoctoradosBBDD> listaDoctorados = new ();
 
             if (pListaDoctoradosSGI != null && pListaDoctoradosSGI.Count > 0)
             {
-                HashSet<string> listaOrgsAux = new HashSet<string>(pListaDoctoradosSGI.Select(item => item?.EntidadTitulacion?.EntidadRef).Where(x => !string.IsNullOrEmpty(x)));
+                HashSet<string> listaOrgsAux = new (pListaDoctoradosSGI.Select(item => item?.EntidadTitulacion?.EntidadRef).Where(x => !string.IsNullOrEmpty(x)));
                 listaOrgsAux = new HashSet<string>(listaOrgsAux.Union(pListaDoctoradosSGI.Select(item => item?.EntidadTitulacionDEA?.EntidadRef).Where(x => !string.IsNullOrEmpty(x))));
 
                 Dictionary<string, string> dicOrganizacionesCargadas = Empresa.ObtenerOrganizacionesBBDD(listaOrgsAux, pResourceApi);
 
                 foreach (Doctorados item in pListaDoctoradosSGI)
                 {
-                    DoctoradosBBDD doctorado = new DoctoradosBBDD();
+                    DoctoradosBBDD doctorado = new ();
 
                     string crisIdentifier = $@"020.010.020.000___";
 
@@ -1979,7 +1975,7 @@ namespace OAI_PMH.Models.SGI.PersonalData
                                 Persona codirectorSGI = GetPersonaSGI(pHarvesterServices, pConfig, "Persona_" + codirectortesis.PersonaRef, pDicRutas);
                                 if (codirectorSGI != null)
                                 {
-                                    DoctoradosBBDD.Codirector codirector = new DoctoradosBBDD.Codirector();
+                                    DoctoradosBBDD.Codirector codirector = new ();
                                     codirector.firstName = codirectorSGI.Nombre;
                                     codirector.secondFamilyName = codirectorSGI.Apellidos;
                                     codirector.nick = (codirectorSGI.Nombre + " " + codirectorSGI.Apellidos).Trim();
@@ -2026,16 +2022,16 @@ namespace OAI_PMH.Models.SGI.PersonalData
         /// <returns></returns>
         public List<PosgradoBBDD> ObtenerPosgradosSGI(RabbitServiceWriterDenormalizer pRabbitConf, List<Posgrado> pListaPosgradosSGI, IHarvesterServices pHarvesterServices, ReadConfig pConfig, ResourceApi pResourceApi, Dictionary<string, HashSet<string>> pDicIdentificadores, Dictionary<string, Dictionary<string, string>> pDicRutas)
         {
-            List<PosgradoBBDD> listaPosgrados = new List<PosgradoBBDD>();
+            List<PosgradoBBDD> listaPosgrados = new ();
 
             if (pListaPosgradosSGI != null && pListaPosgradosSGI.Count > 0)
             {
-                HashSet<string> listaOrgsAux = new HashSet<string>(pListaPosgradosSGI.Select(item => item?.EntidadTitulacion?.EntidadRef).Where(x => !string.IsNullOrEmpty(x)));
+                HashSet<string> listaOrgsAux = new (pListaPosgradosSGI.Select(item => item?.EntidadTitulacion?.EntidadRef).Where(x => !string.IsNullOrEmpty(x)));
                 Dictionary<string, string> dicOrganizacionesCargadas = Empresa.ObtenerOrganizacionesBBDD(listaOrgsAux, pResourceApi);
 
                 foreach (Posgrado item in pListaPosgradosSGI)
                 {
-                    PosgradoBBDD posgrado = new PosgradoBBDD();
+                    PosgradoBBDD posgrado = new ();
 
                     string crisIdentifier = string.Empty;
 
@@ -2117,16 +2113,16 @@ namespace OAI_PMH.Models.SGI.PersonalData
         /// <returns></returns>
         public List<FormacionEspecializadaBBDD> ObtenerFormacionEspecializadaSGI(RabbitServiceWriterDenormalizer pRabbitConf, List<FormacionEspecializada> pListaEspecializadaSGI, IHarvesterServices pHarvesterServices, ReadConfig pConfig, ResourceApi pResourceApi, Dictionary<string, HashSet<string>> pDicIdentificadores, Dictionary<string, Dictionary<string, string>> pDicRutas)
         {
-            List<FormacionEspecializadaBBDD> listaFormEspecializada = new List<FormacionEspecializadaBBDD>();
+            List<FormacionEspecializadaBBDD> listaFormEspecializada = new ();
 
             if (pListaEspecializadaSGI != null && pListaEspecializadaSGI.Count > 0)
             {
-                HashSet<string> listaOrgsAux = new HashSet<string>(pListaEspecializadaSGI.Select(item => item?.EntidadTitulacion?.EntidadRef).Where(x => !string.IsNullOrEmpty(x)));
+                HashSet<string> listaOrgsAux = new (pListaEspecializadaSGI.Select(item => item?.EntidadTitulacion?.EntidadRef).Where(x => !string.IsNullOrEmpty(x)));
                 Dictionary<string, string> dicOrganizacionesCargadas = Empresa.ObtenerOrganizacionesBBDD(listaOrgsAux, pResourceApi);
 
                 foreach (FormacionEspecializada item in pListaEspecializadaSGI)
                 {
-                    FormacionEspecializadaBBDD formEspecializada = new FormacionEspecializadaBBDD();
+                    FormacionEspecializadaBBDD formEspecializada = new ();
 
                     string crisIdentifier = "020.020.000.000___";
 
@@ -2222,7 +2218,7 @@ namespace OAI_PMH.Models.SGI.PersonalData
             string text = pText.Trim().ToLower();
 
             const string removeChars = "?&^$#@!()+-,:;<>’\'\"._*";
-            StringBuilder sb = new StringBuilder(text.Length);
+            StringBuilder sb = new (text.Length);
             foreach (char x in text.Where(c => !removeChars.Contains(c)))
             {
                 sb.Append(x);
