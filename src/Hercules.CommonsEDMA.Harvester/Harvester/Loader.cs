@@ -158,7 +158,6 @@ namespace Harvester
         public void GuardarIdentificadores(ReadConfig pConfig, string pSet, bool pPRC = false)
         {
             // Se obtiene la última fecha de actualización del fichero.
-            //string fecha = "1500-01-01T00:00:00Z";
             string fecha = LeerFicheroFecha(_Config, pSet);
 
             Console.WriteLine($"Obteniendo identificadores de {pSet} ({fecha})");
@@ -629,7 +628,7 @@ namespace Harvester
                                         }}";
             SparqlObject resultado = mResourceApi.VirtuosoQuery(select, where, "curriculumvitae");
 
-            Dictionary<Guid, List<RemoveTriples>> triplesEliminar = new Dictionary<Guid, List<RemoveTriples>>();
+            Dictionary<Guid, List<RemoveTriples>> triplesEliminar = new ();
             foreach (var fila in resultado.results.bindings)
             {
                 Guid cv = mResourceApi.GetShortGuid(fila["cv"].value);
