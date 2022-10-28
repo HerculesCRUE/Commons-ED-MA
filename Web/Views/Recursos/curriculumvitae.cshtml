@@ -1,5 +1,10 @@
 @*[security|||curriculumvitae|||hercules]*@
 @using System.Reflection;
+@{
+    ViewBag.MA_DISPONIBLE = false;
+    ViewBag.ED_DISPONIBLE = true;
+    @Html.PartialView("../Shared/_ComprobacionEDMA");
+}
 @model ResourceViewModel
 @{ 
     ResourceModel FichaDocumento = Model.Resource;
