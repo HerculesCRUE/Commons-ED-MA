@@ -12,9 +12,9 @@ namespace Utilidades
         public static Dictionary<string, string> dicPaisesXML = new Dictionary<string, string>();
         public static Dictionary<string, string> dicRegiones = new Dictionary<string, string>();
 
-        private static string RUTA_PAISES = $@"{System.AppDomain.CurrentDomain.SetupInformation.ApplicationBase}Utilidades/paises.json";
-        private static string RUTA_PAISES_XML = $@"{System.AppDomain.CurrentDomain.SetupInformation.ApplicationBase}Utilidades/paises.xml";
-        private static string RUTA_REGIONES = $@"{System.AppDomain.CurrentDomain.SetupInformation.ApplicationBase}Utilidades/regiones.json";
+        private static string RUTA_PAISES = $@"{System.AppDomain.CurrentDomain.SetupInformation.ApplicationBase}Utilidades{Path.DirectorySeparatorChar}paises.json";
+        private static string RUTA_PAISES_XML = $@"{System.AppDomain.CurrentDomain.SetupInformation.ApplicationBase}Utilidades{Path.DirectorySeparatorChar}paises.xml";
+        private static string RUTA_REGIONES = $@"{System.AppDomain.CurrentDomain.SetupInformation.ApplicationBase}Utilidades{Path.DirectorySeparatorChar}regiones.json";
 
         public static void IniciadorDiccionarioPaises()
         {
