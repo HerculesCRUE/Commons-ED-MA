@@ -370,6 +370,7 @@ namespace Gnoss.Web.Login
         private void AgregarDominio(string pDominio)
         {
             CookieOptions options = new CookieOptions();
+            options.Secure = true;
             Dictionary<string, string> cookieValues = new Dictionary<string, string>();
 
             //Cabeceras para poder recibir cookies de terceros
@@ -404,6 +405,7 @@ namespace Gnoss.Web.Login
             bool existe = true;
             //Creo la cookie para este usuario
             CookieOptions cookieUsuarioOptions = new CookieOptions();
+            cookieUsuarioOptions.Secure = true;
 
             if (!mHttpContextAccessor.HttpContext.Request.Cookies.ContainsKey("_UsuarioActual"))
             {
@@ -430,6 +432,7 @@ namespace Gnoss.Web.Login
             mHttpContextAccessor.HttpContext.Response.Cookies.Append("_UsuarioActual", UtilCookiesHercules.ToLegacyCookieString(cookieUsuarioValues, mEntityContext), cookieUsuarioOptions);
 
             CookieOptions usuarioLogueadoOptions = new CookieOptions();
+            usuarioLogueadoOptions.Secure = true;
 
             // Creo la cookie para que accedan todos los subdominios del dominio principal. 
             // Ej: servicios.didactalia.net -> .didactalia.net, servicios.gnoss.com -> .gnoss.com
@@ -466,6 +469,7 @@ namespace Gnoss.Web.Login
             RiamDiccionarioSerializable<Guid, Guid> mListaIdentidadOrgMyGnoss = new RiamDiccionarioSerializable<Guid, Guid>();
 
             CookieOptions cookieRewriteoptions = new CookieOptions();
+            cookieRewriteoptions.Secure = true;
             cookieRewriteoptions.Expires = ObtenerValidezCookieUsuario();
 
             Dictionary<string, string> cookieRewriteValues = new Dictionary<string, string>();
