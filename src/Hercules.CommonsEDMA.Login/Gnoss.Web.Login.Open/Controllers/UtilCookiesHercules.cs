@@ -98,7 +98,7 @@ namespace Gnoss.Web.Login.Open.Controllers
             string claveVectorEncriptado = entityContext.ParametroAplicacion.Where(item => item.Parametro.Equals("ClaveVectorEncriptado")).Select(item => item.Valor).FirstOrDefault();
             if (string.IsNullOrEmpty(claveVectorEncriptado))
             {
-                rnd.NextBytes(iv);
+                rnd.GetBytes(iv);
                 ParametroAplicacion paramAplicacion = new ParametroAplicacion("ClaveVectorEncriptado", Convert.ToBase64String(iv));
                 entityContext.ParametroAplicacion.Add(paramAplicacion);
             }
@@ -174,7 +174,7 @@ namespace Gnoss.Web.Login.Open.Controllers
             string claveVectorEncriptado = pEntityContext.ParametroAplicacion.Where(item => item.Parametro.Equals("ClaveVectorEncriptado")).Select(item => item.Valor).FirstOrDefault();
             if (string.IsNullOrEmpty(claveVectorEncriptado))
             {
-                rnd.NextBytes(iv);
+                rnd.GetBytes(iv);
                 ParametroAplicacion paramAplicacion = new ParametroAplicacion("ClaveVectorEncriptado", Convert.ToBase64String(iv));
                 pEntityContext.ParametroAplicacion.Add(paramAplicacion);
             }
