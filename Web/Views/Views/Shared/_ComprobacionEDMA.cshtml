@@ -1,0 +1,22 @@
+@*[security|||shared/_comprobacionedma.cshtml|||hercules]*@
+@{
+	bool ED_HABILITADO = Html.Translate("ED_HABILITADO") == "true";
+	bool MA_HABILITADO = Html.Translate("MA_HABILITADO") == "true";
+	bool disponible = false;
+
+	if ((ViewBag.ED_DISPONIBLE && ED_HABILITADO)|| (ViewBag.MA_DISPONIBLE && MA_HABILITADO))
+	{
+		disponible=true;
+	}
+
+	if (!disponible)
+	{
+		// Si la página no está disponible, tiramos error 404.
+		Context.Response.Redirect(Html.GetComunidad().Url + "/error404");
+	}
+	else if (disponible && !ViewBag.MA_DISPONIBLE && Html.GetIdentidadActual().IsGuestUser)
+	{
+		// Si la página es de ED y el usuario no está logeado, lo redirigimos a la página de login.
+		Context.Response.Redirect(Html.GetComunidad().Url + "/login/redirect" + Context.Request.Path);
+	}
+}
