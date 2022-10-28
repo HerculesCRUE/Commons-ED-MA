@@ -651,7 +651,7 @@ namespace OAI_PMH.Models.SGI.PersonalData
 
                     if (numIntentos > 6)
                     {
-                        throw new Exception($"Se ha producido un error al cargar el recurso '{recursoCargar.Title}'");
+                        throw new AggregateException($"Se ha producido un error al cargar el recurso '{recursoCargar.Title}'");
                     }
                     string id = "";
                     if (pListaRecursosCargar.Last() == recursoCargar)
