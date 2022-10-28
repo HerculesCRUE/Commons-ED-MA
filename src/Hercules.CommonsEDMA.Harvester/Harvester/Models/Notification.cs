@@ -67,7 +67,7 @@ namespace Models.NotificationOntology
 
 		public ComplexOntologyResource ToGnossApiResource(ResourceApi resourceAPI, Guid idrecurso, Guid idarticulo)
 		{
-			ComplexOntologyResource resource = new ComplexOntologyResource();
+			ComplexOntologyResource resource = new ();
 			Ontology ontology = null;
 			GetProperties();
 			if (idrecurso.Equals(Guid.Empty) && idarticulo.Equals(Guid.Empty))

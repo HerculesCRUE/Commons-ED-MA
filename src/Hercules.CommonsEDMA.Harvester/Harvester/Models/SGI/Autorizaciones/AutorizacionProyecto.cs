@@ -57,7 +57,7 @@ namespace Harvester.Models.SGI.Autorizaciones
         public static Autorizacion GetAutorizacionSGI(IHarvesterServices pHarvesterServices, ReadConfig pConfig, string pId, Dictionary<string, Dictionary<string, string>> pDicRutas)
         {
             // Obtención de datos en bruto.
-            Autorizacion autorizacion = new Autorizacion();
+            Autorizacion autorizacion = new ();
             string xmlResult = pHarvesterServices.GetRecord(pId, pConfig);
 
             if (string.IsNullOrEmpty(xmlResult))
@@ -85,7 +85,7 @@ namespace Harvester.Models.SGI.Autorizaciones
         /// <returns></returns>
         public ProjectAuthorization CrearAutorizationOntology(IHarvesterServices pHarvesterServices, ReadConfig pConfig, ResourceApi pResourceApi, Dictionary<string, HashSet<string>> pDicIdentificadores, Dictionary<string, Dictionary<string, string>> pDicRutas)
         {
-            ProjectAuthorization autorizacion = new ProjectAuthorization();
+            ProjectAuthorization autorizacion = new ();
             autorizacion.Roh_crisIdentifier = this.entidadRef;
             autorizacion.Roh_title = this.tituloProyecto;            
             autorizacion.IdRoh_owner = Persona.ObtenerPersonasBBDD(new HashSet<string>() { this.solicitanteRef }, pResourceApi)[this.solicitanteRef];

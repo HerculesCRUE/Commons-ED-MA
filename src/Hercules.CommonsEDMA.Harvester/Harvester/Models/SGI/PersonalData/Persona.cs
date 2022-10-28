@@ -89,7 +89,7 @@ namespace OAI_PMH.Models.SGI.PersonalData
             #region --- TESIS TODO: REVISAR PROPIEDADES
             pResourceApi.ChangeOntoly("thesissupervision");
             List<string> crisIdentifiersTesisBBDD = ObtenerDataCrisIdentifier(pResourceApi, this.Id, "thesissupervision", "030.040.000.000");
-            List<string> crisIdentifiersTesisSGI = new List<string>();
+            List<string> crisIdentifiersTesisSGI = new ();
             List<TesisBBDD> listaTesisSGI = ObtenerTesisSGI(pRabbitConf, this.Tesis, pHarvesterServices, pConfig, pResourceApi, pDicIdentificadores, pDicRutas);
             foreach (TesisBBDD tesisAux in listaTesisSGI)
             {
@@ -126,7 +126,7 @@ namespace OAI_PMH.Models.SGI.PersonalData
             pResourceApi.ChangeOntoly("impartedacademictraining");
 
             List<string> crisIdentifiersImpartedAcademicBBDD = ObtenerDataCrisIdentifier(pResourceApi, this.Id, "impartedacademictraining", "030.010.000.000");
-            List<string> crisIdentifiersImpartedAcademicSGI = new List<string>();
+            List<string> crisIdentifiersImpartedAcademicSGI = new ();
             List<ImpartedAcademicTrainingBBDD> listaImpartedAcademicCargarSGI = ObtenerImpartedAcademicSGI(pRabbitConf, this.FormacionAcademicaImpartida, pHarvesterServices, pConfig, pResourceApi, pDicIdentificadores, pDicRutas);
             foreach (ImpartedAcademicTrainingBBDD tesisAux in listaImpartedAcademicCargarSGI)
             {
@@ -164,7 +164,7 @@ namespace OAI_PMH.Models.SGI.PersonalData
             List<string> crisIdentifiersCursosBBDD = ObtenerDataCrisIdentifier(pResourceApi, this.Id, "impartedcoursesseminars", "030.060.000.000");
             List<ImpartedCoursesSeminarsBBDD> listaCursosSGI = ObtenerCursosSGI(pRabbitConf, this.SeminariosCursos, pHarvesterServices, pConfig, pResourceApi, pDicIdentificadores, pDicRutas);
 
-            List<string> crisIdentifiersCursosSGI = new List<string>();
+            List<string> crisIdentifiersCursosSGI = new ();
             foreach (ImpartedCoursesSeminarsBBDD cursoAux in listaCursosSGI)
             {
                 crisIdentifiersCursosSGI.Add(cursoAux.crisIdentifiers);
@@ -199,7 +199,7 @@ namespace OAI_PMH.Models.SGI.PersonalData
             #region --- CICLOS TODO: REVISAR PROPIEDADES
             pResourceApi.ChangeOntoly("academicdegree");
             List<string> crisIdentifiersCyclesBBDD = ObtenerDataCrisIdentifier(pResourceApi, this.Id, "academicdegree", "020.010.010.000");
-            List<string> crisIdentifiersCyclesSGI = new List<string>();
+            List<string> crisIdentifiersCyclesSGI = new ();
             List<CiclosBBDD> listaCiclosSGI = ObtenerCiclosSGI(pRabbitConf, this.Ciclos, pHarvesterServices, pConfig, pResourceApi, pDicIdentificadores, pDicRutas);
             foreach (CiclosBBDD ciclosAux in listaCiclosSGI)
             {
@@ -235,7 +235,7 @@ namespace OAI_PMH.Models.SGI.PersonalData
             #region --- DOCTORADOS TODO: REVISAR PROPIEDADES
             pResourceApi.ChangeOntoly("academicdegree");
             List<string> crisIdentifiersDoctoradosBBDD = ObtenerDataCrisIdentifier(pResourceApi, this.Id, "academicdegree", "020.010.020.000");
-            List<string> crisIdentifiersDoctoradosSGI = new List<string>();
+            List<string> crisIdentifiersDoctoradosSGI = new ();
             List<DoctoradosBBDD> listaDoctoradosSGI = ObtenerDoctoradosSGI(pRabbitConf, this.Doctorados, pHarvesterServices, pConfig, pResourceApi, pDicIdentificadores, pDicRutas);
             foreach (DoctoradosBBDD doctoradosAux in listaDoctoradosSGI)
             {
@@ -271,7 +271,7 @@ namespace OAI_PMH.Models.SGI.PersonalData
             #region --- POSGRADO TODO: REVISAR PROPIEDADES
             pResourceApi.ChangeOntoly("academicdegree");
             List<string> crisIdentifiersPosgradoBBDD = ObtenerDataCrisIdentifier(pResourceApi, this.Id, "academicdegree", "020.010.030.000");
-            List<string> crisIdentifiersPosgradoSGI = new List<string>();
+            List<string> crisIdentifiersPosgradoSGI = new ();
             List<PosgradoBBDD> listaPosgradosSGI = ObtenerPosgradosSGI(pRabbitConf, this.Posgrado, pHarvesterServices, pConfig, pResourceApi, pDicIdentificadores, pDicRutas);
             foreach (PosgradoBBDD posgradosAux in listaPosgradosSGI)
             {
@@ -307,7 +307,7 @@ namespace OAI_PMH.Models.SGI.PersonalData
             #region --- FORMACIÓN ESPECIALIZADA TODO: REVISAR PROPIEDADES
             pResourceApi.ChangeOntoly("academicdegree");
             List<string> crisIdentifiersEspecializadaBBDD = ObtenerDataCrisIdentifier(pResourceApi, this.Id, "academicdegree", "020.020.000.000");
-            List<string> crisIdentifiersEspecializadaSGI = new List<string>();
+            List<string> crisIdentifiersEspecializadaSGI = new ();
             List<FormacionEspecializadaBBDD> listaEspecializadaSGI = ObtenerFormacionEspecializadaSGI(pRabbitConf, this.FormacionEspecializada, pHarvesterServices, pConfig, pResourceApi, pDicIdentificadores, pDicRutas);
             foreach (FormacionEspecializadaBBDD formacionEspecializadaAux in listaEspecializadaSGI)
             {
@@ -368,7 +368,7 @@ namespace OAI_PMH.Models.SGI.PersonalData
         /// <returns></returns>
         public static List<string> ObtenerDataByCrisIdentifiers(List<string> pListaCrisIdentifiers, ResourceApi pResourceApi, string pOntology, string pCvnCode)
         {
-            List<string> listaTesis = new List<string>();
+            List<string> listaTesis = new ();
 
             string select = string.Empty;
             string where = string.Empty;
@@ -401,14 +401,14 @@ namespace OAI_PMH.Models.SGI.PersonalData
         public static Dictionary<string, string> ObtenerPersonasBBDD(HashSet<string> pListaIds, ResourceApi pResourceApi)
         {
             List<List<string>> listasPersonas = SplitList(pListaIds.ToList(), 1000).ToList();
-            Dictionary<string, string> dicPersonasBBDD = new Dictionary<string, string>();
+            Dictionary<string, string> dicPersonasBBDD = new ();
             foreach (string persona in pListaIds)
             {
                 dicPersonasBBDD[persona] = "";
             }
             foreach (List<string> listaItem in listasPersonas)
             {
-                List<string> listaAux = new List<string>();
+                List<string> listaAux = new ();
                 foreach (string item in listaItem)
                 {
                     if (item.Contains("_"))
@@ -448,7 +448,7 @@ namespace OAI_PMH.Models.SGI.PersonalData
         public static Persona GetPersonaSGI(IHarvesterServices pHarvesterServices, ReadConfig pConfig, string pId, Dictionary<string, Dictionary<string, string>> pDicRutas)
         {
             // Obtención de datos en bruto.
-            Persona persona = new Persona();
+            Persona persona = new ();
             string xmlResult = pHarvesterServices.GetRecord(pId, pConfig);
 
             if (string.IsNullOrEmpty(xmlResult))
@@ -479,7 +479,7 @@ namespace OAI_PMH.Models.SGI.PersonalData
         {
 
             #region --- Obtenemos el ID de la Organización
-            HashSet<string> listaIdsOrganizaciones = new HashSet<string>();
+            HashSet<string> listaIdsOrganizaciones = new ();
             if (!string.IsNullOrEmpty(this.EntidadPropiaRef))
             {
                 listaIdsOrganizaciones.Add(this.EntidadPropiaRef);
@@ -491,7 +491,7 @@ namespace OAI_PMH.Models.SGI.PersonalData
             #endregion
 
             #region --- Obtención de organizaciones
-            Dictionary<string, string> dicOrganizacionesCargadas = new Dictionary<string, string>();
+            Dictionary<string, string> dicOrganizacionesCargadas = new ();
             foreach (KeyValuePair<string, string> item in dicOrganizaciones)
             {
                 if (string.IsNullOrEmpty(item.Value))
@@ -510,7 +510,7 @@ namespace OAI_PMH.Models.SGI.PersonalData
 
 
             #region Construimos el objeto Person
-            PersonOntology.Person persona = new PersonOntology.Person();
+            PersonOntology.Person persona = new ();
 
             // Crisidentifier (Se corresponde al DNI sin letra)
             persona.Roh_crisIdentifier = this.Id;
@@ -558,7 +558,7 @@ namespace OAI_PMH.Models.SGI.PersonalData
             // Correos.
             if (this.Emails != null && this.Emails.Any())
             {
-                persona.Vcard_email = new List<string>();
+                persona.Vcard_email = new ();
                 foreach (Email item in this.Emails)
                 {
                     persona.Vcard_email.Add(item.email);
@@ -584,7 +584,7 @@ namespace OAI_PMH.Models.SGI.PersonalData
             }
 
             // Teléfonos.
-            HashSet<string> telefonos = new HashSet<string>();
+            HashSet<string> telefonos = new ();
             if (this.DatosContacto?.Telefonos != null && this.DatosContacto.Telefonos.Any())
             {
                 foreach (string item in this.DatosContacto.Telefonos)
@@ -639,7 +639,7 @@ namespace OAI_PMH.Models.SGI.PersonalData
         /// <param name="pListaRecursosCargar">Lista de recursos a cargar.</param>
         private static List<string> CargarDatos(List<ComplexOntologyResource> pListaRecursosCargar, ResourceApi pResourceApi)
         {
-            ConcurrentBag<string> idsItems = new ConcurrentBag<string>();
+            ConcurrentBag<string> idsItems = new ();
 
             // Carga.
             Parallel.ForEach(pListaRecursosCargar, new ParallelOptions { MaxDegreeOfParallelism = 6 }, recursoCargar =>
@@ -680,11 +680,11 @@ namespace OAI_PMH.Models.SGI.PersonalData
         /// <returns></returns>
         public List<ComplexOntologyResource> GetThesisSupervision(List<TesisBBDD> pTesisList, ResourceApi pResourceApi, string pIdGnoss)
         {
-            List<ComplexOntologyResource> listaTesisDevolver = new List<ComplexOntologyResource>();
+            List<ComplexOntologyResource> listaTesisDevolver = new ();
 
             foreach (TesisBBDD tesis in pTesisList)
             {
-                ThesissupervisionOntology.ThesisSupervision tesisDevolver = new ThesissupervisionOntology.ThesisSupervision();
+                ThesissupervisionOntology.ThesisSupervision tesisDevolver = new ();
 
                 // CrisIdentifier
                 tesisDevolver.Roh_crisIdentifier = tesis.crisIdentifier;
@@ -712,12 +712,12 @@ namespace OAI_PMH.Models.SGI.PersonalData
                 // En los datos únicamente viene un solo codirector.
                 if (tesis.codirector != null && tesis.codirector.Any())
                 {
-                    ThesissupervisionOntology.PersonAux personaAux = new ThesissupervisionOntology.PersonAux();
+                    ThesissupervisionOntology.PersonAux personaAux = new ();
                     personaAux.Rdf_comment = tesis.codirector[0].comment;
                     personaAux.Foaf_firstName = tesis.codirector[0].firstName;
                     personaAux.Roh_secondFamilyName = tesis.codirector[0].secondFamilyName;
                     personaAux.Foaf_nick = tesis.codirector[0].nick;
-                    tesisDevolver.Roh_codirector = new List<ThesissupervisionOntology.PersonAux>() { personaAux };
+                    tesisDevolver.Roh_codirector = new () { personaAux };
                 }
 
 
@@ -736,11 +736,11 @@ namespace OAI_PMH.Models.SGI.PersonalData
         /// <returns></returns>
         public List<ComplexOntologyResource> GetCycles(List<CiclosBBDD> pCyclesList, ResourceApi pResourceApi, string pIdGnoss)
         {
-            List<ComplexOntologyResource> listaCiclosDevolver = new List<ComplexOntologyResource>();
+            List<ComplexOntologyResource> listaCiclosDevolver = new ();
 
             foreach (CiclosBBDD ciclo in pCyclesList)
             {
-                AcademicdegreeOntology.AcademicDegree ciclosDevolver = new AcademicdegreeOntology.AcademicDegree();
+                AcademicdegreeOntology.AcademicDegree ciclosDevolver = new ();
 
                 ciclosDevolver.IdRoh_owner = pIdGnoss;
                 ciclosDevolver.Roh_cvnCode = "020.010.010.000";
@@ -778,11 +778,11 @@ namespace OAI_PMH.Models.SGI.PersonalData
         /// <returns></returns>
         public List<ComplexOntologyResource> GetDoctorates(List<DoctoradosBBDD> pDoctoratesList, ResourceApi pResourceApi, string pIdGnoss)
         {
-            List<ComplexOntologyResource> listaDoctoradosDevolver = new List<ComplexOntologyResource>();
+            List<ComplexOntologyResource> listaDoctoradosDevolver = new ();
 
             foreach (DoctoradosBBDD doctorado in pDoctoratesList)
             {
-                AcademicdegreeOntology.AcademicDegree doctoradosDevolver = new AcademicdegreeOntology.AcademicDegree();
+                AcademicdegreeOntology.AcademicDegree doctoradosDevolver = new ();
 
                 // CrisIdentifier
                 doctoradosDevolver.Roh_crisIdentifier = doctorado.crisIdentifier;
@@ -829,11 +829,11 @@ namespace OAI_PMH.Models.SGI.PersonalData
         /// <returns></returns>
         public List<ComplexOntologyResource> GetPosgrados(List<PosgradoBBDD> pPosgradosList, ResourceApi pResourceApi, string pIdGnoss)
         {
-            List<ComplexOntologyResource> listaPosgradosDevolver = new List<ComplexOntologyResource>();
+            List<ComplexOntologyResource> listaPosgradosDevolver = new ();
 
             foreach (PosgradoBBDD posgrado in pPosgradosList)
             {
-                AcademicdegreeOntology.AcademicDegree posgradosDevolver = new AcademicdegreeOntology.AcademicDegree();
+                AcademicdegreeOntology.AcademicDegree posgradosDevolver = new ();
 
                 // CrisIdentifier
                 posgradosDevolver.Roh_crisIdentifier = posgrado.crisIdentifier;
@@ -867,11 +867,11 @@ namespace OAI_PMH.Models.SGI.PersonalData
         /// <returns></returns>
         public List<ComplexOntologyResource> GetFormacionEspecializada(List<FormacionEspecializadaBBDD> pEspecializadaList, ResourceApi pResourceApi, string pIdGnoss)
         {
-            List<ComplexOntologyResource> listaPosgradosDevolver = new List<ComplexOntologyResource>();
+            List<ComplexOntologyResource> listaPosgradosDevolver = new ();
 
             foreach (FormacionEspecializadaBBDD formacionEspecializada in pEspecializadaList)
             {
-                AcademicdegreeOntology.AcademicDegree formEspDevolver = new AcademicdegreeOntology.AcademicDegree();
+                AcademicdegreeOntology.AcademicDegree formEspDevolver = new ();
 
                 // CrisIdentifier
                 formEspDevolver.Roh_crisIdentifier = formacionEspecializada.crisIdentifier;
@@ -908,11 +908,11 @@ namespace OAI_PMH.Models.SGI.PersonalData
         /// <returns></returns>
         public List<ComplexOntologyResource> GetImpartedAcademic(List<ImpartedAcademicTrainingBBDD> pImpartedAcademicList, ResourceApi pResourceApi, string pIdGnoss)
         {
-            List<ComplexOntologyResource> listaImpartedDevolver = new List<ComplexOntologyResource>();
+            List<ComplexOntologyResource> listaImpartedDevolver = new ();
 
             foreach (ImpartedAcademicTrainingBBDD impartedAcademic in pImpartedAcademicList)
             {
-                ImpartedacademictrainingOntology.ImpartedAcademicTraining academicDevolver = new ImpartedacademictrainingOntology.ImpartedAcademicTraining();
+                ImpartedacademictrainingOntology.ImpartedAcademicTraining academicDevolver = new ();
 
                 // CrisIdentifier
                 academicDevolver.Roh_crisIdentifier = impartedAcademic.crisIdentifier;
@@ -980,11 +980,11 @@ namespace OAI_PMH.Models.SGI.PersonalData
         /// <returns></returns>
         public List<ComplexOntologyResource> GetCursosSupervision(List<ImpartedCoursesSeminarsBBDD> pTesisList, ResourceApi pResourceApi, string pIdGnoss)
         {
-            List<ComplexOntologyResource> listacursoDevolver = new List<ComplexOntologyResource>();
+            List<ComplexOntologyResource> listacursoDevolver = new ();
 
             foreach (ImpartedCoursesSeminarsBBDD curso in pTesisList)
             {
-                ImpartedcoursesseminarsOntology.ImpartedCoursesSeminars courseDevolver = new ImpartedcoursesseminarsOntology.ImpartedCoursesSeminars();
+                ImpartedcoursesseminarsOntology.ImpartedCoursesSeminars courseDevolver = new ();
 
                 string crisIdentifier = string.Empty;
 
@@ -1033,14 +1033,14 @@ namespace OAI_PMH.Models.SGI.PersonalData
         private static PersonOntology.Person DatosPersonaNoBorrar(string pIdRecurso, ResourceApi pResourceApi)
         {
             // Objeto persona final
-            PersonOntology.Person persona = new PersonOntology.Person();
+            PersonOntology.Person persona = new ();
             persona.Roh_metricPage = new List<PersonOntology.MetricPage>();
             persona.Roh_ignorePublication = new List<PersonOntology.IgnorePublication>();
 
-            HashSet<string> listaMetricPage = new HashSet<string>();
-            HashSet<string> listaIgnorePublications = new HashSet<string>();
+            HashSet<string> listaMetricPage = new ();
+            HashSet<string> listaIgnorePublications = new ();
 
-            List<MetricPageBBDD> listaMetricPagesBBDD = new List<MetricPageBBDD>();
+            List<MetricPageBBDD> listaMetricPagesBBDD = new ();
 
             #region --- Datos de la Persona
             string selectPerson = $@"{mPrefijos} SELECT DISTINCT ?isOtriManager ?isGraphicManager ?ORCID ?scopusId ?researcherId ?semanticScholarId ?gnossUser ?usuarioFigShare ?tokenFigShare ?usuarioGitHub ?tokenGitHub ?metricPage ?useMatching ?ignorePublication ";
@@ -1142,7 +1142,7 @@ namespace OAI_PMH.Models.SGI.PersonalData
             {
                 foreach (Dictionary<string, SparqlObject.Data> fila in resultadoQueryIgnorePublications.results.bindings)
                 {
-                    PersonOntology.IgnorePublication ignorePub = new PersonOntology.IgnorePublication();
+                    PersonOntology.IgnorePublication ignorePub = new ();
                     ignorePub.Foaf_topic = fila["tipo"].value;
                     ignorePub.Roh_title = fila["id"].value;
                     persona.Roh_ignorePublication.Add(ignorePub);
@@ -1165,9 +1165,9 @@ namespace OAI_PMH.Models.SGI.PersonalData
             {
                 foreach (Dictionary<string, SparqlObject.Data> fila in resultadoQueryMetricPage.results.bindings)
                 {
-                    MetricPageBBDD metricPage = new MetricPageBBDD();
+                    MetricPageBBDD metricPage = new ();
                     metricPage.listaGraficas = new List<PersonOntology.MetricGraphic>();
-                    metricPage.order = Int32.Parse(fila["order"].value);
+                    metricPage.order = int.Parse(fila["order"].value);
                     metricPage.title = fila["title"].value;
 
                     if (fila.ContainsKey("metricGraphic") && !string.IsNullOrEmpty(fila["metricGraphic"].value))
