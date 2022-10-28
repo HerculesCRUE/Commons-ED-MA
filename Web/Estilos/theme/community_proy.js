@@ -51,14 +51,18 @@ var cargarCVId = {
 		this.CVId=getCacheWithExpiry(keyCache);
 		if(this.CVId==null)
 		{
-			var urlGetCVUrl = url_servicio_editorcv+'EdicionCV/GetCVUrl?userID='+$('#inpt_usuarioID').val()+ "&lang=" + lang;
-			$.get(urlGetCVUrl, null, function(data) {
-				that.CVId=data;
-				cvUrl = data;
-				that.printCVId();
-				that.printCVIdHomeEd();
-				setCacheWithExpiry(keyCache,data,60000);
-			});
+			var usuarioID=$('#inpt_usuarioID').val();
+			if(usuarioID!='ffffffff-ffff-ffff-ffff-ffffffffffff')
+			{
+				var urlGetCVUrl = url_servicio_editorcv+'EdicionCV/GetCVUrl?userID='+usuarioID+ "&lang=" + lang;
+				$.get(urlGetCVUrl, null, function(data) {
+					that.CVId=data;
+					cvUrl = data;
+					that.printCVId();
+					that.printCVIdHomeEd();
+					setCacheWithExpiry(keyCache,data,60000);
+				});
+			}
 		}
 	},
 	printCVId: function(){
@@ -2481,4 +2485,7 @@ function CheckIfCallIsOtri(idUser) {
 	} else {
         return false
 	}
+}
+
+function refrescarNumElementosNuevos(){
 }
