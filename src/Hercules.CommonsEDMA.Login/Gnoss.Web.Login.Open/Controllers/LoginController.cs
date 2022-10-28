@@ -207,6 +207,7 @@ namespace Gnoss.Web.Login
                         {
                             CookieOptions options = new CookieOptions();
                             options.Secure = true;
+                            options.HttpOnly = true;
                             options.Expires = DateTime.Now.AddDays(-1);
                             Response.Cookies.Append(DominioAplicacion + "_Envio", "0", options);
                         }
@@ -730,6 +731,7 @@ namespace Gnoss.Web.Login
                         {
                             CookieOptions options = new CookieOptions();
                             options.Secure = true;
+                            options.HttpOnly = true;
                             options.Expires = DateTime.Now.AddDays(-1);
                             Response.Cookies.Append(DominioAplicacion + "_Envio", "0", options);
                         }

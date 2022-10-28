@@ -87,18 +87,18 @@ namespace Gnoss.Web.Login
                         //Así la cookie nunca caduca
                         caduca = DateTime.MaxValue;
                     }
-                    Response.Cookies.Append("_UsuarioActual", UtilCookiesHercules.ToLegacyCookieString(cookie, mEntityContext), new CookieOptions { Expires = caduca ,Secure=true});
+                    Response.Cookies.Append("_UsuarioActual", UtilCookiesHercules.ToLegacyCookieString(cookie, mEntityContext), new CookieOptions { Expires = caduca, Secure = true, HttpOnly = true });
                 }
             }
 
             if (cookieRewrite != null && extenderFechaCookie)
             {
-                Response.Cookies.Append("_rewrite", UtilCookiesHercules.ToLegacyCookieString(cookieRewrite, mEntityContext), new CookieOptions { Expires = caduca , Secure = true });
+                Response.Cookies.Append("_rewrite", UtilCookiesHercules.ToLegacyCookieString(cookieRewrite, mEntityContext), new CookieOptions { Expires = caduca, Secure = true, HttpOnly = true });
             }
 
             if (Request.Cookies.ContainsKey("_Envio") && extenderFechaCookie)
             {
-                Response.Cookies.Append("_Envio", Request.Cookies["_Envio"], new CookieOptions { Expires = caduca , Secure = true });
+                Response.Cookies.Append("_Envio", Request.Cookies["_Envio"], new CookieOptions { Expires = caduca, Secure = true, HttpOnly = true });
             }
 
             string redirect = "";

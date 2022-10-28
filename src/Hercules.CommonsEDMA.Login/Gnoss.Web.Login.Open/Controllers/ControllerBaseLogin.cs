@@ -371,6 +371,7 @@ namespace Gnoss.Web.Login
         {
             CookieOptions options = new CookieOptions();
             options.Secure = true;
+            options.HttpOnly = true;
             Dictionary<string, string> cookieValues = new Dictionary<string, string>();
 
             //Cabeceras para poder recibir cookies de terceros
@@ -406,6 +407,7 @@ namespace Gnoss.Web.Login
             //Creo la cookie para este usuario
             CookieOptions cookieUsuarioOptions = new CookieOptions();
             cookieUsuarioOptions.Secure = true;
+            cookieUsuarioOptions.HttpOnly = true;
 
             if (!mHttpContextAccessor.HttpContext.Request.Cookies.ContainsKey("_UsuarioActual"))
             {
@@ -433,6 +435,7 @@ namespace Gnoss.Web.Login
 
             CookieOptions usuarioLogueadoOptions = new CookieOptions();
             usuarioLogueadoOptions.Secure = true;
+            usuarioLogueadoOptions.HttpOnly = true;
 
             // Creo la cookie para que accedan todos los subdominios del dominio principal. 
             // Ej: servicios.didactalia.net -> .didactalia.net, servicios.gnoss.com -> .gnoss.com
@@ -470,6 +473,7 @@ namespace Gnoss.Web.Login
 
             CookieOptions cookieRewriteoptions = new CookieOptions();
             cookieRewriteoptions.Secure = true;
+            cookieRewriteoptions.HttpOnly = true;
             cookieRewriteoptions.Expires = ObtenerValidezCookieUsuario();
 
             Dictionary<string, string> cookieRewriteValues = new Dictionary<string, string>();

@@ -40,10 +40,10 @@ namespace Gnoss.Web.Login.Open.Controllers
                 DateTime caduca = ObtenerValidezCookieUsuario();
                 //obtengo las cookies
                 Dictionary<string, string> cookie = UtilCookiesHercules.FromLegacyCookieString(Request.Cookies["_UsuarioActual"], mEntityContext);
-                Response.Cookies.Append("_UsuarioActual", UtilCookiesHercules.ToLegacyCookieString(cookie, mEntityContext), new CookieOptions { Expires = caduca , Secure = true });
+                Response.Cookies.Append("_UsuarioActual", UtilCookiesHercules.ToLegacyCookieString(cookie, mEntityContext), new CookieOptions { Expires = caduca, Secure = true, HttpOnly = true });
             }
         }
 
-        
+
     }
 }
