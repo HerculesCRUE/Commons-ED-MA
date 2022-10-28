@@ -29,6 +29,7 @@ namespace Harvester
 {
     public class Loader
     {
+        
         private static Harvester harvester;
         private static IHarvesterServices harvesterServices;
         private static ReadConfig _Config;
