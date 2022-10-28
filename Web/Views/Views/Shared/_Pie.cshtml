@@ -16,50 +16,30 @@
         <div class="container-fluid">
             <div class="row row01">
                 <div class="col col-12 col-xl-6 logotipos">
-                    <a href="javascript: void(0);">
+                    <div>
                         <img src="@urlPersonalizacion/theme/resources/logotipos/logo-ministerio.jpg" alt="Ministerio de Ciencia e Innovacion">
-                    </a>
-                    <a href="javascript: void(0);">
+                    </div>
+                    <div>
                         <img src="@urlPersonalizacion/theme/resources/logotipos/logo-um.jpg" alt="Universidad de Murcia">
-                    </a>
+                    </div>
                 </div>
                 <div class="col col-12 col-xl-6 europa">
                     <div class="wrap">
                         <p class="titulo">@Html.Translate("ERDF_TITLE") <span>(@Html.Translate("ERDF"))</span></p>
                         <p>@Html.Translate("ERDF_DESCRIPTION")</p>
                     </div>
-                    <a href="javascript: void(0);">
+                    <div>
                         <img src="@urlPersonalizacion/theme/resources/logotipos/logo-ue.png" alt="Unión Europea">
-                    </a>
+                    </div>
                 </div>
             </div>
             <div class="row row02">
                 <div class="col col-12 col-xl-3 logo">
                     <p>
                         ©@DateTime.Now.Year.ToString()
-                        <a href="javascript: void(0);">Hércules MA</a>
+                        <a>Hércules</a>
                         - @Html.Translate("COPYRIGHT")
                     </p>
-                </div>
-                <div class="col col-12 col-xl-9 enlaces">
-                    <ul>
-                        <li>
-                            <a class="link" href="" data-target="#modal-aviso-legal" data-toggle="modal">@Html.Translate("LEGAL_WARNING")</a>
-                        </li>
-                        <li>
-                            @if (!string.IsNullOrEmpty(Comunidad.ExternalUrlCookieNotice))
-                            {
-                                <a href="@Comunidad.ExternalUrlCookieNotice" target="_blank">@Html.Translate("COOKIES")</a>
-                            }
-                            else
-                            {
-                                <a href="@Comunidad.Url/@Html.GetText("URLSEM", "POLITICACOOKIES")">@Html.Translate("COOKIES")</a>
-                            }
-                        </li>
-                        <li>
-                            <a class="link" href="" data-target="#modal-seguridad" data-toggle="modal">@Html.Translate("SECURITY")</a>
-                        </li>
-                    </ul>
                 </div>
             </div>
         </div>
