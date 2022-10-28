@@ -85,7 +85,7 @@ namespace OAI_PMH.Models.SGI
 
                     if (numIntentos > 6)
                     {
-                        throw new Exception($"Se ha producido un error al modificar el recurso '{resource.Title}'");
+                        throw new InvalidOperationException($"Se ha producido un error al modificar el recurso '{resource.Title}'");
                     }
                     pResourceApi.ModifyComplexOntologyResource(resource, false, false);
                 }                
@@ -102,7 +102,7 @@ namespace OAI_PMH.Models.SGI
 
                     if (numIntentos > 6)
                     {
-                        throw new Exception($"Se ha producido un error al cargar el recurso '{resource.Title}'");
+                        throw new InvalidOperationException($"Se ha producido un error al cargar el recurso '{resource.Title}'");
                     }
                     pResourceApi.LoadComplexSemanticResource(resource, false, false);
                 }
