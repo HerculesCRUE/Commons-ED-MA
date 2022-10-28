@@ -232,40 +232,6 @@
 
         @Html.PartialView("../Shared/_Pie")
 
-        <aside id="menuLateral" class="menuLateral" role="navigation">
-            <div class="header">
-                <div class="wrap-header">
-                    <div class="menu-logo-wrapper">
-                        <div class="menu-toggle">
-                            <a href="javascript: void(0);" class="cerrar texto-blanco">
-                                <span class="material-icons">apps</span>
-                            </a>
-                        </div>
-                        <div class="logo-wrapper">
-                            <a href="javascript: void(0);" class="texto-blanco">
-                                Hércules
-                            </a>
-                        </div>
-                    </div>
-                    <span class="material-icons cerrar">close</span>
-                </div>
-            </div>
-
-            <div class="body">
-                <ul class="nav pmd-sidebar-nav">
-                    <li>
-                        <ul>
-                            @foreach (CommunityModel.TabModel pPestanya in Comunidad.Tabs)
-                            {
-                                <li>
-                                    <a href="@pPestanya.Url">@pPestanya.Name</a>
-                                </li>
-                            }
-                        </ul>
-                    </li>
-                </ul>
-            </div>
-        </aside>
 		<aside id="menuLateralUsuario" class="menuLateral usuario" role="navigation">
             <div class="header">
 				<div class="wrap-header">
