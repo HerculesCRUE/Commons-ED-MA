@@ -31,16 +31,9 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers
         [HttpGet("DatosGraficaPublicaciones")]
         public IActionResult DatosGraficaPublicaciones(string pParametros)
         {
-            DataGraficaPublicaciones datosPublicaciones = null;
-            try
-            {
-                AccionesPublicaciones accionesPublicaciones = new AccionesPublicaciones();
-                datosPublicaciones = accionesPublicaciones.GetDatosGraficaPublicaciones(pParametros);
-            }
-            catch (Exception)
-            {
-                throw;
-            }
+            AccionesPublicaciones accionesPublicaciones = new AccionesPublicaciones();
+            DataGraficaPublicaciones datosPublicaciones = accionesPublicaciones.GetDatosGraficaPublicaciones(pParametros);
+
             return Ok(datosPublicaciones);
         }
 
@@ -52,16 +45,8 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers
         [HttpGet("DatosGraficaProyectos")]
         public IActionResult DatosGraficaProyectos(string pParametros)
         {
-            GraficasProyectos datosProyectos = null;
-            try
-            {
-                AccionesProyecto accionesProyecto = new AccionesProyecto();
-                datosProyectos = accionesProyecto.GetDatosGraficaProyectos(pParametros);
-            }
-            catch (Exception)
-            {
-                throw;
-            }
+            AccionesProyecto accionesProyecto = new AccionesProyecto();
+            GraficasProyectos datosProyectos = accionesProyecto.GetDatosGraficaProyectos(pParametros);
 
             return Ok(datosProyectos);
         }
@@ -77,17 +62,8 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers
         [HttpGet("DatosGraficaAreasTematicas")]
         public IActionResult DatosGraficaAreasTematicas(string pId, string pType, string pAnioInicio, string pAnioFin)
         {
-            DataGraficaAreasTags datos = null;
-
-            try
-            {
-                AccionesAreasTematicas accionesAreasTematicas = new AccionesAreasTematicas();
-                datos = accionesAreasTematicas.DatosGraficaAreasTematicas(pId, pType, pAnioInicio, pAnioFin);
-            }
-            catch (Exception)
-            {
-                throw;
-            }
+            AccionesAreasTematicas accionesAreasTematicas = new AccionesAreasTematicas();
+            DataGraficaAreasTags datos = accionesAreasTematicas.DatosGraficaAreasTematicas(pId, pType, pAnioInicio, pAnioFin);
 
             return Ok(datos);
         }
@@ -104,17 +80,8 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers
         [HttpGet("DatosGraficaAreasTematicasArania")]
         public IActionResult DatosGraficaAreasTematicasArania(string pId, string pType, string pAnioInicio, string pAnioFin, int pNumAreas)
         {
-            List<DataItemRelacion> datos = null;
-
-            try
-            {
-                AccionesAreasTematicas accionesAreasTematicas = new AccionesAreasTematicas();
-                datos = accionesAreasTematicas.DatosGraficaAreasTematicasArania(pId, pType, pAnioInicio, pAnioFin, pNumAreas);
-            }
-            catch (Exception)
-            {
-                throw;
-            }
+            AccionesAreasTematicas accionesAreasTematicas = new AccionesAreasTematicas();
+            List<DataItemRelacion> datos = accionesAreasTematicas.DatosGraficaAreasTematicasArania(pId, pType, pAnioInicio, pAnioFin, pNumAreas);
 
             return Ok(datos);
         }
@@ -131,24 +98,11 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers
         [HttpGet("DatosGraficaMiembrosGrupo")]
         public IActionResult DatosGraficaMiembrosGrupo(string pIdGrupo, string pParametros)
         {
-            List<DataItemRelacion> datosGrupo = null;
-
-            try
-            {
-                AccionesGroup accionGrupo = new AccionesGroup();
-                datosGrupo = accionGrupo.DatosGraficaMiembrosGrupo(pIdGrupo, pParametros);
-            }
-            catch (Exception)
-            {
-                throw;
-            }
+            AccionesGroup accionGrupo = new AccionesGroup();
+            List<DataItemRelacion> datosGrupo = accionGrupo.DatosGraficaMiembrosGrupo(pIdGrupo, pParametros);
 
             return Ok(datosGrupo);
         }
-
-
-
-
 
         /// <summary>
         /// Obtiene los datos para crear la gráfica de colaboradores de un grupo
@@ -160,32 +114,13 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers
         [HttpGet("DatosGraficaColaboradoresGrupo")]
         public IActionResult DatosGraficaColaboradoresGrupo(string pIdGrupo, string pParametros, int pMax)
         {
-            List<DataItemRelacion> datosGrupo = null;
-
-            try
-            {
-                AccionesGroup accionGrupo = new AccionesGroup();
-                datosGrupo = accionGrupo.DatosGraficaColaboradoresGrupo(pIdGrupo, pParametros, pMax);
-            }
-            catch (Exception)
-            {
-                throw;
-            }
+            AccionesGroup accionGrupo = new AccionesGroup();
+            List<DataItemRelacion> datosGrupo = accionGrupo.DatosGraficaColaboradoresGrupo(pIdGrupo, pParametros, pMax);
 
             return Ok(datosGrupo);
         }
 
         #endregion
-
-
-
-
-
-
-
-
-
-
 
         /// <summary>
         /// Controlador para obtener los datos del proyecto en la cabecera de la ficha.
@@ -195,21 +130,11 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers
         [HttpGet("DatosFichaProyecto")]
         public IActionResult DatosFichaProyecto(string pIdProyecto)
         {
-            Dictionary<string, int> datosCabeceraFichas = null;
-
-            try
-            {
-                AccionesProyecto accionProyecto = new AccionesProyecto();
-                datosCabeceraFichas = accionProyecto.GetDatosCabeceraProyecto(pIdProyecto);
-            }
-            catch (Exception)
-            {
-                throw;
-            }
+            AccionesProyecto accionProyecto = new AccionesProyecto();
+            Dictionary<string, int> datosCabeceraFichas = accionProyecto.GetDatosCabeceraProyecto(pIdProyecto);
 
             return Ok(datosCabeceraFichas);
         }
-
 
         /// <summary>
         /// Controlador para obtener los datos de la gráfica de red de colaboradores.
@@ -220,22 +145,11 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers
         [HttpGet("DatosGraficaRedMiembros")]
         public IActionResult DatosGraficaRedMiembros(string pIdProyecto, string pParametros)
         {
-            List<DataItemRelacion> datosRedColaboradores = null;
-
-            try
-            {
-                AccionesProyecto accionProyecto = new AccionesProyecto();
-                datosRedColaboradores = accionProyecto.DatosGraficaRedMiembros(pIdProyecto, pParametros);
-            }
-            catch (Exception)
-            {
-                throw;
-            }
+            AccionesProyecto accionProyecto = new AccionesProyecto();
+            List<DataItemRelacion> datosRedColaboradores = accionProyecto.DatosGraficaRedMiembros(pIdProyecto, pParametros);
 
             return Ok(datosRedColaboradores);
         }
-
-
 
         /// <summary>
         /// Controlador para obtener los datos de la gráfica de red de colaboradores.
@@ -247,17 +161,8 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers
         [HttpGet("DatosGraficaRedColaboradores")]
         public IActionResult DatosGraficaRedColaboradores(string pIdProyecto, string pParametros, int pMax)
         {
-            List<DataItemRelacion> datosRedColaboradores = null;
-
-            try
-            {
-                AccionesProyecto accionProyecto = new AccionesProyecto();
-                datosRedColaboradores = accionProyecto.GetDatosGraficaRedColaboradores(pIdProyecto, pParametros, pMax);
-            }
-            catch (Exception)
-            {
-                throw;
-            }
+            AccionesProyecto accionProyecto = new AccionesProyecto();
+            List<DataItemRelacion> datosRedColaboradores = accionProyecto.GetDatosGraficaRedColaboradores(pIdProyecto, pParametros, pMax);
 
             return Ok(datosRedColaboradores);
         }
@@ -271,17 +176,8 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers
         [HttpGet("DatosGraficaPublicacionesHorizontal")]
         public IActionResult DatosGraficaPublicacionesHorizontal(string pIdProyecto, string pParametros)
         {
-            DataGraficaAreasTags datosPublicaciones = null;
-
-            try
-            {
-                AccionesProyecto accionProyecto = new AccionesProyecto();
-                datosPublicaciones = accionProyecto.GetDatosGraficaPublicacionesHorizontal(pIdProyecto, pParametros);
-            }
-            catch (Exception)
-            {
-                throw;
-            }
+            AccionesProyecto accionProyecto = new AccionesProyecto();
+            DataGraficaAreasTags datosPublicaciones = accionProyecto.GetDatosGraficaPublicacionesHorizontal(pIdProyecto, pParametros);
 
             return Ok(datosPublicaciones);
         }
@@ -294,17 +190,8 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers
         [HttpGet("DatosFichaPersona")]
         public IActionResult DatosFichaPersona(string pIdPersona)
         {
-            Dictionary<string, int> datosCabeceraFichas = null;
-
-            try
-            {
-                AccionesPersona accionPersona = new AccionesPersona();
-                datosCabeceraFichas = accionPersona.GetDatosCabeceraPersona(pIdPersona);
-            }
-            catch (Exception)
-            {
-                throw;
-            }
+            AccionesPersona accionPersona = new AccionesPersona();
+            Dictionary<string, int> datosCabeceraFichas = accionPersona.GetDatosCabeceraPersona(pIdPersona);
 
             return Ok(datosCabeceraFichas);
         }
@@ -317,17 +204,8 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers
         [HttpGet("DatosGruposPersona")]
         public IActionResult DatosGruposPersona(string pIdPersona)
         {
-            List<string> datosPublicacionesPersona = null;
-
-            try
-            {
-                AccionesPersona accionPersona = new AccionesPersona();
-                datosPublicacionesPersona = accionPersona.GetGrupoInvestigacion(pIdPersona);
-            }
-            catch (Exception)
-            {
-                throw;
-            }
+            AccionesPersona accionPersona = new AccionesPersona();
+            List<string> datosPublicacionesPersona = accionPersona.GetGrupoInvestigacion(pIdPersona);
 
             return Ok(datosPublicacionesPersona);
         }
@@ -340,17 +218,8 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers
         [HttpGet("DatosCategoriasPersona")]
         public IActionResult DatosCategoriasPersona(string pIdPersona)
         {
-            List<Dictionary<string, string>> datosPublicacionesPersona = null;
-
-            try
-            {
-                AccionesPersona accionPersona = new AccionesPersona();
-                datosPublicacionesPersona = accionPersona.GetTopicsPersona(pIdPersona);
-            }
-            catch (Exception)
-            {
-                throw;
-            }
+            AccionesPersona accionPersona = new AccionesPersona();
+            List<Dictionary<string, string>> datosPublicacionesPersona = accionPersona.GetTopicsPersona(pIdPersona);
 
             return Ok(datosPublicacionesPersona);
         }
@@ -364,17 +233,8 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers
         [HttpGet("DatosGraficaHorizontalPersonas")]
         public IActionResult DatosGraficaHorizontalPersonas(string pIdPersona, string pParametros)
         {
-            DataGraficaAreasTags datosPublicacionesPersona = null;
-
-            try
-            {
-                AccionesPersona accionPersona = new AccionesPersona();
-                datosPublicacionesPersona = accionPersona.GetDatosGraficaProyectosPersonaHorizontal(pIdPersona, pParametros);
-            }
-            catch (Exception)
-            {
-                throw;
-            }
+            AccionesPersona accionPersona = new AccionesPersona();
+            DataGraficaAreasTags datosPublicacionesPersona = accionPersona.GetDatosGraficaProyectosPersonaHorizontal(pIdPersona, pParametros);
 
             return Ok(datosPublicacionesPersona);
         }
@@ -389,17 +249,8 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers
         [HttpGet("DatosGraficaColaboradoresPersonas")]
         public IActionResult DatosGraficaColaboradoresPersonas(string pIdPersona, string pParametros, int pMax)
         {
-            List<DataItemRelacion> datosPublicacionesPersona = null;
-
-            try
-            {
-                AccionesPersona accionPersona = new AccionesPersona();
-                datosPublicacionesPersona = accionPersona.GetDatosGraficaRedColaboradoresPersonas(pIdPersona, pParametros, pMax);
-            }
-            catch (Exception)
-            {
-                throw;
-            }
+            AccionesPersona accionPersona = new AccionesPersona();
+            List<DataItemRelacion> datosPublicacionesPersona = accionPersona.GetDatosGraficaRedColaboradoresPersonas(pIdPersona, pParametros, pMax);
 
             return Ok(datosPublicacionesPersona);
         }
@@ -413,17 +264,8 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers
         [HttpGet("GetDatosCabeceraDocumento")]
         public IActionResult GetDatosCabeceraDocumento(string pIdDocumento)
         {
-            Dictionary<string, int> datosCabeceraFichas = null;
-
-            try
-            {
-                AccionesPublicaciones accionDocumento = new AccionesPublicaciones();
-                datosCabeceraFichas = accionDocumento.GetDatosCabeceraDocumento(pIdDocumento);
-            }
-            catch (Exception)
-            {
-                throw;
-            }
+            AccionesPublicaciones accionDocumento = new AccionesPublicaciones();
+            Dictionary<string, int> datosCabeceraFichas = accionDocumento.GetDatosCabeceraDocumento(pIdDocumento);
 
             return Ok(datosCabeceraFichas);
 
@@ -437,21 +279,12 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers
         [HttpGet("GetDatosRedesUsuario")]
         public IActionResult GetDatosRedesUsuario(string pIdGnossUser)
         {
-
             if (!Security.CheckUser(new Guid(pIdGnossUser), Request))
             {
                 return StatusCode(StatusCodes.Status401Unauthorized);
             }
-            Dictionary<string, string> datosRedesUsuario = null;
-            try
-            {
-                AccionesRedesUsuario accionDocumento = new AccionesRedesUsuario();
-                //datosRedesUsuario = accionDocumento.GetDataRedesUsuario(pIdGnossUser);
-            }
-            catch (Exception)
-            {
-                throw;
-            }
+            AccionesRedesUsuario accionDocumento = new AccionesRedesUsuario();
+            List<DataUser> datosRedesUsuario = accionDocumento.GetDataRedesUsuario(pIdGnossUser);
 
             return Ok(datosRedesUsuario);
         }
@@ -470,21 +303,11 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers
             {
                 return StatusCode(StatusCodes.Status401Unauthorized);
             }
-            try
-            {
-                AccionesRedesUsuario accionDocumento = new AccionesRedesUsuario();
-                //accionDocumento.SetDataRedesUsuario(pIdGnossUser, pDicDatosAntiguos, pDicDatosNuevos);
-            }
-            catch (Exception)
-            {
-                throw;
-            }
+            AccionesRedesUsuario accionDocumento = new AccionesRedesUsuario();
+            //accionDocumento.SetDataRedesUsuario(pIdGnossUser, pDicDatosAntiguos, pDicDatosNuevos);
 
             return Ok();
         }
-
-
-
 
         /// <summary>
         /// Controlador para obtener la información del usuario en la home de ED.
@@ -494,20 +317,12 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers
         [HttpGet("GetInfoHomeEdUser")]
         public IActionResult GetInfoHomeEdUser(string pIdGnossUser)
         {
-            Dictionary<string, string> datosUsuario = null;
             if (!Security.CheckUser(new Guid(pIdGnossUser), Request))
             {
                 return StatusCode(StatusCodes.Status401Unauthorized);
             }
-            try
-            {
-                AccionesPersona accionP = new AccionesPersona();
-                datosUsuario = accionP.GetInfoHomeEdUser(pIdGnossUser);
-            }
-            catch (Exception)
-            {
-                throw;
-            }
+            AccionesPersona accionP = new AccionesPersona();
+            Dictionary<string, string> datosUsuario = accionP.GetInfoHomeEdUser(pIdGnossUser);
 
             return Ok(datosUsuario);
         }
