@@ -770,19 +770,16 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Utilidades
                 }
                 foreach (string itemB in pItems.Keys)
                 {
-                    if (itemA != itemB)
+                    if (itemA != itemB && string.Compare(itemA, itemB, StringComparison.OrdinalIgnoreCase) > 0)
                     {
-                        if (string.Compare(itemA, itemB, StringComparison.OrdinalIgnoreCase) > 0)
+                        int num = pItems[itemA].Intersect(pItems[itemB]).Count();
+                        if (num > 0)
                         {
-                            int num = pItems[itemA].Intersect(pItems[itemB]).Count();
-                            if (num > 0)
+                            dataQueryRelaciones.idRelacionados.Add(new Datos()
                             {
-                                dataQueryRelaciones.idRelacionados.Add(new Datos()
-                                {
-                                    idRelacionado = itemB,
-                                    numVeces = num
-                                });
-                            }
+                                idRelacionado = itemB,
+                                numVeces = num
+                            });
                         }
                     }
                 }
