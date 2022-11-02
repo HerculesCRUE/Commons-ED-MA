@@ -222,7 +222,7 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
             }
             else
             {
-                throw new Exception("Recurso no creado");
+                throw new OperationCanceledException("Recurso no creado");
             }
         }
 
@@ -271,7 +271,7 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
             }
             else
             {
-                throw new Exception("Recurso no creado");
+                throw new OperationCanceledException("Recurso no creado");
             }
             return true;
         }

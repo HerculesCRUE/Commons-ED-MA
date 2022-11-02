@@ -129,7 +129,7 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
 
             if (!isOtriManager && nuevoEstado != "http://gnoss.com/items/offerstate_001" && nuevoEstado != "http://gnoss.com/items/offerstate_002")
             {
-                throw new Exception("Error al intentar modificar el estado, no tienes permiso para cambiar a este estado");
+                throw new NotSupportedException("Error al intentar modificar el estado, no tienes permiso para cambiar a este estado");
             }
 
 
@@ -146,7 +146,7 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
                 // Compruebo si se tiene permisos para realizar la actualización de la oferta
                 if (!CheckUpdateOffer(userGnossId, oferta.creatorId, Accion.CambiarEstado, estadoActual, nuevoEstado))
                 {
-                    throw new Exception("Error al intentar modificar el estado, no tienes permiso para cambiar a este estado");
+                    throw new NotSupportedException("Error al intentar modificar el estado, no tienes permiso para cambiar a este estado");
                 }
 
 
@@ -627,7 +627,7 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
                     // Compruebo si este usuario tiene permisos para hacer la acción actual
                     if (!CheckUpdateOffer(actUserId, creatorId, Accion.Borrar))
                     {
-                        throw new Exception("Error al intentar borrar el estado, no tienes permiso para borrar este recurso");
+                        throw new NotSupportedException("Error al intentar borrar el estado, no tienes permiso para borrar este recurso");
                     }
                 }
 
@@ -654,7 +654,7 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
             }
             else
             {
-                throw new Exception("Recurso no borrado");
+                throw new InvalidOperationException("Recurso no borrado");
             }
             return true;
         }
@@ -1190,7 +1190,7 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
                     // Compruebo si se tiene permisos para realizar la actualización de la oferta
                     if (!CheckUpdateOffer(userGnossId, creatorId, Accion.Editar))
                     {
-                        throw new Exception("Error al intentar modificar el estado, no tienes permiso para cambiar a este estado");
+                        throw new NotSupportedException("Error al intentar modificar el estado, no tienes permiso para cambiar a este estado");
                     }
 
 
@@ -1236,7 +1236,7 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
             }
             else
             {
-                throw new Exception("Recurso no creado");
+                throw new InvalidOperationException("Recurso no creado");
             }
         }
 

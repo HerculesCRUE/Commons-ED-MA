@@ -22,11 +22,11 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Utilidades
             {
                 userIdCookie = mUserApi.GetUserIDFromCookie(cookie);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-
+                //
             }
-            //Guid userIdCookie=new Guid("d7711fd2-41d2-464b-8838-e42c52213927");
+
             return userIdCookie == pUserId;
         }
 
@@ -42,9 +42,9 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Utilidades
             {
                 userIdCookie = mUserApi.GetUserIDFromCookie(cookie);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-
+                //
             }
             return pUsersId.Contains(userIdCookie);
         }

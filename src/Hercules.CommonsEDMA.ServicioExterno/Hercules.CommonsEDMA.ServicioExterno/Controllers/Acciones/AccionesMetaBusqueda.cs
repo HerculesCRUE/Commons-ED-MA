@@ -855,7 +855,6 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
                     }
                     catch (Exception ex)
                     {
-                        // resourceApi.Log.Error("Excepcion: " + ex.Message);
                         Thread.Sleep(300000);
                     }
                 }

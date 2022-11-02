@@ -33,7 +33,7 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Models.Similarity
                     mGraph = "researchobject";
                     break;
                 default:
-                    throw new Exception("El tipo " + pType + " no está permitido, sólo está permitido 'research_paper' o 'code_project'");
+                    throw new ArgumentException("El tipo " + pType + " no está permitido, sólo está permitido 'research_paper' o 'code_project'");
             }
         }
         public List<string> GetItemsLoaded()

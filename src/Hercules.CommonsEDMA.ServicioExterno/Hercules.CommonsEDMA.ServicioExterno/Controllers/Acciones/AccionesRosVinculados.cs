@@ -88,7 +88,7 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
                 // Compruebo si se tiene permisos para realizar la actualización de la oferta
                 if (!CheckUpdateLink(LongpIdGnossUser, idRecurso, idLinkedRo))
                 {
-                    throw new Exception("Error al intentar modificar el estado, no tienes permiso para cambiar a este estado");
+                    throw new NotSupportedException("Error al intentar modificar el estado, no tienes permiso para cambiar a este estado");
                 }
 
 
@@ -468,7 +468,7 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
                 // Compruebo si se tiene permisos para realizar la actualización del RO
                 if (!CheckUpdateLink(LongpIdGnossUser, idRecurso, idLinkedRo))
                 {
-                    throw new Exception("Error al intentar modificar el estado, no tienes permiso para cambiar a este estado");
+                    throw new NotSupportedException("Error al intentar modificar el estado, no tienes permiso para cambiar a este estado");
                 }
 
 

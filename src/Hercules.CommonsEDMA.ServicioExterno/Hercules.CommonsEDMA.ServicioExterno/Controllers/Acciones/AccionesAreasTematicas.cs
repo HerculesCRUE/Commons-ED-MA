@@ -38,8 +38,7 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
                     filtroElemento = $@"?documento roh:project <{idGrafoBusqueda}>.";
                     break;
                 default:
-                    throw new Exception("No hay configuración para el tipo '" + pType + "'");
-                    //break;
+                    throw new ArgumentException("No hay configuración para el tipo '" + pType + "'");
             }
             if (!string.IsNullOrEmpty(pAnioInicio))
             {
@@ -154,8 +153,7 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
                     filtroElemento = $@"?documento roh:project <{idGrafoBusqueda}>.";
                     break;
                 default:
-                    throw new Exception("No hay configuración para el tipo '" + pType + "'");
-                    break;
+                    throw new ArgumentException("No hay configuración para el tipo '" + pType + "'");
             }
             if (!string.IsNullOrEmpty(pAnioInicio))
             {
