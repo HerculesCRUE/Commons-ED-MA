@@ -1,16 +1,11 @@
 @*[security|||cmspagina/index.cshtml|||hercules]*@
 @model List<CMSBlock>
 @{
-	//CAmbiar ambos por false
-    ViewBag.MA_DISPONIBLE = true;
-    ViewBag.ED_DISPONIBLE = true;
-	if ((short)ViewBag.TipoUbicacionCMSPaginaActual == (short)Es.Riam.Gnoss.AD.CMS.TipoUbicacionCMS.HomeProyecto || (short)ViewBag.TipoUbicacionCMSPaginaActual == (short)Es.Riam.Gnoss.AD.CMS.TipoUbicacionCMS.HomeProyectoMiembro || (short)ViewBag.TipoUbicacionCMSPaginaActual == (short)Es.Riam.Gnoss.AD.CMS.TipoUbicacionCMS.HomeProyectoNoMiembro)
-    {
-		//Home de MA
-		ViewBag.ED_DISPONIBLE = false;
-		ViewBag.MA_DISPONIBLE = true;
-	}
+	
+    ViewBag.ED_DISPONIBLE = Html.GetBodyClassPestanya().Contains("ed_habilitado");
+    ViewBag.MA_DISPONIBLE = Html.GetBodyClassPestanya().Contains("ma_habilitado");
     @Html.PartialView("../Shared/_ComprobacionEDMA");
+
 }
 @{
     Html.SetBodyClass(" layout04 full ");
