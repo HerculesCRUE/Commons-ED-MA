@@ -1,23 +1,16 @@
 ﻿using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections;
+using System.IO;
 
 namespace Hercules.CommonsEDMA.Journals.Config
 {
     public class ConfigService
     {
         // Archivo de configuración.
-        public static IConfigurationRoot configuracion;
+        public static readonly IConfigurationRoot configuracion = new ConfigurationBuilder().AddJsonFile($@"{AppDomain.CurrentDomain.SetupInformation.ApplicationBase}Config{Path.DirectorySeparatorChar}appsettings.json").Build();
 
-        private string rutaDatos { get; set; }
-
-        /// <summary>
-        /// Constructor.
-        /// </summary>
-        public ConfigService()
-        {
-            configuracion = new ConfigurationBuilder().AddJsonFile($@"{System.AppDomain.CurrentDomain.SetupInformation.ApplicationBase}Config/appsettings.json").Build();
-        }
+        private string RutaDatos { get; set; }
 
         /// <summary>
         /// Obtiene la ruta de lectura de los ficheros.
@@ -25,9 +18,9 @@ namespace Hercules.CommonsEDMA.Journals.Config
         /// <returns>Ruta de lectura.</returns>
         public string GetRutaDatos()
         {
-            if (string.IsNullOrEmpty(rutaDatos))
+            if (string.IsNullOrEmpty(RutaDatos))
             {
-                string connectionString = string.Empty;
+                string connectionString;
                 IDictionary environmentVariables = Environment.GetEnvironmentVariables();
                 if (environmentVariables.Contains("RutaDatos"))
                 {
@@ -38,10 +31,10 @@ namespace Hercules.CommonsEDMA.Journals.Config
                     connectionString = configuracion["RutaDatos"];
                 }
 
-                rutaDatos = connectionString;
+                RutaDatos = connectionString;
             }
 
-            return rutaDatos;
+            return RutaDatos;
         }
     }
 }

@@ -35,19 +35,12 @@ namespace Hercules.CommonsEDMA.Journals
             }
         }
 
-
         /// <summary>
-        /// Permite lanzar la escucha después de leer. 
-        /// Contiene un sleep de 30 segundos.
+        /// Finaliza el programa.
         /// </summary>
-        private void OnShutDown()
-        {
-            Thread.Sleep(30000);
-        }
-
         private static void Finalizar()
         {
-            Console.WriteLine("Pulsa intro para finalizar");
+            Console.WriteLine("Pulsa intro para finalizar.");
             Console.ReadLine();
         }
     }
