@@ -33,9 +33,7 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers
             {
                 return StatusCode(StatusCodes.Status401Unauthorized);
             }
-
-            try
-            {
+                        
                 ReadRabbitService rabbitMQService = new ReadRabbitService(_Configuracion);
                 string orcid = Acciones.AccionesFuentesExternas.GetORCID(pUserId);
                 string idGnoss = Acciones.AccionesFuentesExternas.GetIdGnoss(pUserId);
@@ -76,11 +74,7 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers
                         rabbitMQService.PublishMessage(listaDatosGitHub, _Configuracion.GetFuentesExternasQueueRabbit());
                     }
                 }
-            }
-            catch (Exception)
-            {
-                throw;
-            }
+            
 
             return Ok();
         }

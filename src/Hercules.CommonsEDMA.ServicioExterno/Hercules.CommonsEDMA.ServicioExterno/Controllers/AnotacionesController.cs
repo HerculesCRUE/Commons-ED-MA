@@ -36,17 +36,10 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers
             {
                 return StatusCode(StatusCodes.Status401Unauthorized);
             }
-            List<Dictionary<string, string>> anotaciones;
 
-            try
-            {
-                AccionesAnotaciones annotations = new AccionesAnotaciones();
-                anotaciones = annotations.GetOwnAnnotationsInRO(idRO, idUser, rdfType, ontology);
-            }
-            catch (Exception)
-            {
-                throw;
-            }
+            AccionesAnotaciones annotations = new AccionesAnotaciones();
+            List<Dictionary<string, string>> anotaciones = annotations.GetOwnAnnotationsInRO(idRO, idUser, rdfType, ontology);
+
             return Ok(anotaciones);
         }
 
@@ -68,22 +61,15 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers
         [HttpPost("CreateNewAnnotation")]
         public IActionResult CreateNewAnnotation([FromForm] string idRO, [FromForm] string idUser, [FromForm] string rdfType, [FromForm] string ontology, [FromForm] string texto, [FromForm] string idAnnotation = null)
         {
-            string anotacionesId;
             if (!Security.CheckUser(new Guid(idUser), Request))
             {
                 return StatusCode(StatusCodes.Status401Unauthorized);
             }
-            try
-            {
-                AccionesAnotaciones annotations = new AccionesAnotaciones();
-                anotacionesId = annotations.CreateNewAnnotation(idRO, idUser, rdfType, ontology, texto, idAnnotation);
-            }
-            catch (Exception)
-            {
-                throw;
-            }
+            AccionesAnotaciones annotations = new AccionesAnotaciones();
+            string anotacionesId = annotations.CreateNewAnnotation(idRO, idUser, rdfType, ontology, texto, idAnnotation);
+
             return Ok(anotacionesId);
-        } 
+        }
 
         /// <summary>
         /// Metodo para eliminar una anotacion 
@@ -99,14 +85,7 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers
                 return StatusCode(StatusCodes.Status401Unauthorized);
             }
 
-            try
-            {
-                return Ok(annotations.DeleteAnnotation(idAnnotation));
-            }
-            catch (Exception)
-            {
-                throw;
-            }
+            return Ok(annotations.DeleteAnnotation(idAnnotation));
         }
 
     }

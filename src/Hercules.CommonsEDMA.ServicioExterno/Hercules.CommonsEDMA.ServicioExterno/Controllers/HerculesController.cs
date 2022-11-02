@@ -255,7 +255,6 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers
             return Ok(datosPublicacionesPersona);
         }
 
-
         /// <summary>
         /// Controlador para obtener los datos del documento en la cabecera de la ficha.
         /// </summary>
@@ -269,44 +268,6 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers
 
             return Ok(datosCabeceraFichas);
 
-        }
-
-        /// <summary>
-        /// Controlador para obtener los datos de las fuentes de RO.
-        /// </summary>
-        /// <param name="pIdGnossUser">Usuario de gnoss.</param>
-        /// <returns>Diccionario con los datos.</returns>
-        [HttpGet("GetDatosRedesUsuario")]
-        public IActionResult GetDatosRedesUsuario(string pIdGnossUser)
-        {
-            if (!Security.CheckUser(new Guid(pIdGnossUser), Request))
-            {
-                return StatusCode(StatusCodes.Status401Unauthorized);
-            }
-            AccionesRedesUsuario accionDocumento = new AccionesRedesUsuario();
-            List<DataUser> datosRedesUsuario = accionDocumento.GetDataRedesUsuario(pIdGnossUser);
-
-            return Ok(datosRedesUsuario);
-        }
-
-        /// <summary>
-        /// Controlador para modificar los datos de las fuentes de RO.
-        /// </summary>
-        /// <param name="pIdGnossUser">Usuario de gnoss.</param>
-        /// <param name="pDicDatosAntiguos">Datos antiguos a modificar.</param>
-        /// <param name="pDicDatosNuevos">Datos nuevos a modificar.</param>
-        /// <returns>Diccionario con los datos.</returns>
-        [HttpGet("SetDatosRedesUsuario")]
-        public IActionResult SetDatosRedesUsuario(string pIdGnossUser, string pDicDatosAntiguos, string pDicDatosNuevos)
-        {
-            if (!Security.CheckUser(new Guid(pIdGnossUser), Request))
-            {
-                return StatusCode(StatusCodes.Status401Unauthorized);
-            }
-            AccionesRedesUsuario accionDocumento = new AccionesRedesUsuario();
-            //accionDocumento.SetDataRedesUsuario(pIdGnossUser, pDicDatosAntiguos, pDicDatosNuevos);
-
-            return Ok();
         }
 
         /// <summary>

@@ -90,8 +90,6 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers
         ///     - IEEE: [1]autor, autor and autor “titulo”, revista, vol. volumen, año.
         ///     - MLA: autor et al. “titulo” revista volumen (año): paginaInicial-paginaFinal
         ///     
-        /// 
-        /// 
         /// </summary>
         /// <param name="pIdRecurso"></param>
         /// <param name="pFormato"></param>

@@ -64,15 +64,8 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers
         [HttpGet("LoadRosLinked")]
         public IActionResult LoadRosLinked(string pIdROId, string lang = "es")
         {
-            try
-            {
-                AccionesRosVinculados accionesRosVinculados = new();
-                return Ok(accionesRosVinculados.LoadRosLinked(pIdROId, lang));
-            }
-            catch (Exception)
-            {
-                throw;
-            }
+            AccionesRosVinculados accionesRosVinculados = new();
+            return Ok(accionesRosVinculados.LoadRosLinked(pIdROId, lang));
         }
 
 
@@ -93,15 +86,9 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers
             {
                 return StatusCode(StatusCodes.Status401Unauthorized);
             }
-            try
-            {
-                AccionesRosVinculados accionesRosVinculados = new();
-                return Ok(accionesRosVinculados.SearchROs(text, pIdGnossUser, listItemsRelated));
-            }
-            catch (Exception)
-            {
-                throw;
-            }
+
+            AccionesRosVinculados accionesRosVinculados = new();
+            return Ok(accionesRosVinculados.SearchROs(text, pIdGnossUser, listItemsRelated));
         }
 
 
@@ -121,15 +108,8 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers
             {
                 return StatusCode(StatusCodes.Status401Unauthorized);
             }
-            try
-            {
-                AccionesRosVinculados accionesRosVinculados = new AccionesRosVinculados();
-                return Ok(accionesRosVinculados.AddLink(resourceRO, pIdROId, pIdGnossUser, _Configuracion));
-            }
-            catch (Exception)
-            {
-                throw;
-            }
+            AccionesRosVinculados accionesRosVinculados = new AccionesRosVinculados();
+            return Ok(accionesRosVinculados.AddLink(resourceRO, pIdROId, pIdGnossUser, _Configuracion));
         }
 
 
@@ -141,7 +121,6 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers
 
             Dictionary<Guid, bool> result = new();
 
-
             string RUTA_OAUTH = $@"{System.AppDomain.CurrentDomain.SetupInformation.ApplicationBase}Config{Path.DirectorySeparatorChar}ConfigOAuth{Path.DirectorySeparatorChar}OAuthV3.config";
             Gnoss.ApiWrapper.ResourceApi mResourceApi = new Gnoss.ApiWrapper.ResourceApi(RUTA_OAUTH);
 
@@ -152,8 +131,8 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers
             // Añado el vículo
             try
             {
-                String select = @"select ?s ?authorList ";
-                String where = @$"where{{
+                string select = @"select ?s ?authorList ";
+                string where = @$"where{{
                     ?s a <http://purl.org/ontology/bibo/Patent>.
                     ?s <http://purl.org/ontology/bibo/authorList> ?authorList.
                     FILTER(?s=<http://gnoss.com/items/Patent_6075306e-9462-4fde-9878-15b734af1452_d04af817-ffe7-4996-b27a-0f88ade7f068>)
@@ -165,7 +144,7 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers
                     string authorList = fila["authorList"].value;
                     Gnoss.ApiWrapper.Model.TriplesToInclude t = new();
                     t.Predicate = "http://purl.org/ontology/bibo/authorList|http://www.w3.org/1999/02/22-rdf-syntax-ns#member";
-                    t.NewValue = authorList+"|"+ "http://gnoss.com/items/Person_0feb1bbb-baa8-4735-a278-f5aae6ea26d9_8c18036f-348f-4e0b-a2ef-4d96c1db24a8";
+                    t.NewValue = authorList + "|" + "http://gnoss.com/items/Person_0feb1bbb-baa8-4735-a278-f5aae6ea26d9_8c18036f-348f-4e0b-a2ef-4d96c1db24a8";
                     result = mResourceApi.InsertPropertiesLoadedResources(new Dictionary<Guid, List<Gnoss.ApiWrapper.Model.TriplesToInclude>>()
                     {
                         {
