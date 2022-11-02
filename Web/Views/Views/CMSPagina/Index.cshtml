@@ -1,6 +1,18 @@
 @*[security|||cmspagina/index.cshtml|||hercules]*@
 @model List<CMSBlock>
 @{
+	//CAmbiar ambos por false
+    ViewBag.MA_DISPONIBLE = true;
+    ViewBag.ED_DISPONIBLE = true;
+	if ((short)ViewBag.TipoUbicacionCMSPaginaActual == (short)Es.Riam.Gnoss.AD.CMS.TipoUbicacionCMS.HomeProyecto || (short)ViewBag.TipoUbicacionCMSPaginaActual == (short)Es.Riam.Gnoss.AD.CMS.TipoUbicacionCMS.HomeProyectoMiembro || (short)ViewBag.TipoUbicacionCMSPaginaActual == (short)Es.Riam.Gnoss.AD.CMS.TipoUbicacionCMS.HomeProyectoNoMiembro)
+    {
+		//Home de MA
+		ViewBag.ED_DISPONIBLE = false;
+		ViewBag.MA_DISPONIBLE = true;
+	}
+    @Html.PartialView("../Shared/_ComprobacionEDMA");
+}
+@{
     Html.SetBodyClass(" layout04 full ");
     @* Comentado este fichero para que no les sobreescriban css: 01-06-2021 *@
     @* Html.GetListaJS().Add("defer/"+Html.GetBaseUrlStatic() + "/jsNuevo/jquery.demo.js?v=" + Html.GetVersion()); *@
@@ -10,21 +22,6 @@
     {
 
         Html.SetBodyClass(" homeComunidad ");
-        @*
-            CommunityModel comunidad = Html.GetComunidad();
-
-            <script type="application/ld+json">
-            {
-               "@@context": "http://schema.org",
-               "@@type": "WebSite",
-               "url": "@comunidad.Url",
-               "potentialAction": {
-                 "@@type": "SearchAction",
-                 "target": "@comunidad.Url/@Html.GetText("URLSEM", "RECURSOS")?search={search_term_string}",
-                 "query-input": "required name=search_term_string"
-               }
-            }
-            </script>*@
     }
 }
 
