@@ -1,4 +1,8 @@
 @*[security|||shared/layout/_layout.cshtml|||hercules]*@
+@{
+	bool ED_HABILITADO = Html.Translate("ED_HABILITADO") == "true";
+	bool MA_HABILITADO = Html.Translate("MA_HABILITADO") == "true";
+}
 @{ CommunityModel Comunidad = Html.GetComunidad();
     UserIdentityModel IdentidadActual = Html.GetIdentidadActual();
     string avisoCookies = Html.GetCookiesWarning();
@@ -261,37 +265,43 @@
                                     }
                                     <a href="@urlAlertas">@Html.Translate("ALERTAS")</a>
                                 </li>
-                                <li class="liOtros">
-                                    @{
-                                        string urlROs = Comunidad.Url + "/" + Html.Translate("GESTIONROS_URL");
-                                    }
-                                    <a href="@urlROs">@Html.Translate("GESTION_ROS")</a>
-                                </li>
+								@if(ED_HABILITADO)
+								{
+									<li class="liOtros">
+										@{
+											string urlROs = Comunidad.Url + "/" + Html.Translate("GESTIONROS_URL");
+										}
+										<a href="@urlROs">@Html.Translate("GESTION_ROS")</a>
+									</li>
+								}
                             </ul>
                         </div>
                     </div>
-                    <div class="group-collapse curriculumvitae hasCV" style="display:none">
-                        <a href="#curriculumvitae" data-toggle="collapse" aria-expanded="true">@Html.Translate("CURRICULUM")</a>
-                        <div id="curriculumvitae" class="collapse show">
-                            <ul class="pmd-sidebar-nav">
-                                <li class="liOtros liEditarCV">
-                                    <a href="javascript: void(0);">@Html.Translate("EDITAR_CV")</a>
-                                </li>
-                                <li class="liAnadir">
-                                    @{
-                                        string urlImportarCV = Comunidad.Url + "/" + Html.Translate("IMPORTAR_CV_URL");
-                                    }
-                                    <a href="@urlImportarCV">@Html.Translate("IMPORTAR_CV")</a>
-                                </li>
-                                <li class="liOtros">
-                                    @{
-                                        string urlExportarCV = Comunidad.Url + "/" + Html.Translate("EXPORTAR_CV_URL");
-                                    }
-                                    <a href="@urlExportarCV">@Html.Translate("EXPORTAR_CV")</a>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
+					@if(ED_HABILITADO)
+					{
+						<div class="group-collapse curriculumvitae hasCV" style="display:none">
+							<a href="#curriculumvitae" data-toggle="collapse" aria-expanded="true">@Html.Translate("CURRICULUM")</a>
+							<div id="curriculumvitae" class="collapse show">
+								<ul class="pmd-sidebar-nav">
+									<li class="liOtros liEditarCV">
+										<a href="javascript: void(0);">@Html.Translate("EDITAR_CV")</a>
+									</li>
+									<li class="liAnadir">
+										@{
+											string urlImportarCV = Comunidad.Url + "/" + Html.Translate("IMPORTAR_CV_URL");
+										}
+										<a href="@urlImportarCV">@Html.Translate("IMPORTAR_CV")</a>
+									</li>
+									<li class="liOtros">
+										@{
+											string urlExportarCV = Comunidad.Url + "/" + Html.Translate("EXPORTAR_CV_URL");
+										}
+										<a href="@urlExportarCV">@Html.Translate("EXPORTAR_CV")</a>
+									</li>
+								</ul>
+							</div>
+						</div>
+					}
 
                     <div class="group-collapse sexenios-acreditaciones hasCV" style="display:none">
                         <a href="#recuperar-sexenios-acreditaciones" data-toggle="collapse" aria-expanded="true">@Html.Translate("RECUPERAR_SEXENIOS_ACREDITACIONES")</a>
@@ -324,77 +334,88 @@
                         </div>
                     </div>
 
-
-                    <div class="group-collapse cluster  hasCV" style="display:none">
-                        <a href="#cluster" data-toggle="collapse" aria-expanded="true">@Html.Translate("GESTION_CLUSTERS")</a>
-                        <div id="cluster" class="collapse show">
-                            <ul class="pmd-sidebar-nav">
-                                <li class="liCluster">
-                                    @{
-                                        string urlListadoCluster = Comunidad.Url + "/" + Html.Translate("CLUSTER_URL");
-                                    }
-                                    <a href="@urlListadoCluster">@Html.Translate("LISTADO_CLUSTERS")</a>
-                                </li>
-                                <li class="liCluster">
-                                    @{
-                                        string urlNuevoCluster = Comunidad.Url + "/" + Html.Translate("NUEVO_CLUSTER_URL");
-                                    }
-                                    <a href="@urlNuevoCluster">@Html.Translate("NUEVO_CLUSTER")</a>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="group-collapse anotaciones  hasCV" style="display:none">
-                        <a href="#anotaciones" data-toggle="collapse" aria-expanded="true">@Html.Translate("GESTION_ANOTACIONES")</a>
-                        <div id="anotaciones" class="collapse show">
-                            <ul class="pmd-sidebar-nav">
-                                <li class="liComentarios">
-                                    @{
-                                        string urlListadoAnotaciones = Comunidad.Url + "/" + Html.Translate("ANOTACIONES_URL");
-                                    }
-                                    <a href="@urlListadoAnotaciones">@Html.Translate("LISTADO_ANOTACIONES")</a>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="group-collapse indicadores-personales hasCV" style="display:none">
-                        <a href="#indicadorespersonales" data-toggle="collapse" aria-expanded="true">@Html.Translate("INDICADORES")</a>
-                        <div id="indicadorespersonales" class="collapse show">
-                            <ul class="pmd-sidebar-nav">
-                                <li class="liIndicadores">
-                                    @{
-                                        string urlIndicadoresPersonales = Comunidad.Url + "/" + Html.Translate("INDICADORES_PERSONALES_URL");
-                                    }
-                                    <a href="@urlIndicadoresPersonales">@Html.Translate("MIS_INDICADORES")</a>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="group-collapse oferta-tecnologica hasCV" style="display:none">
-                        <a href="#ofertatecnologica" data-toggle="collapse" aria-expanded="true">@Html.Translate("OFERTAS_TECNOLOGICAS")</a>
-                        <div id="ofertatecnologica" class="collapse show">
-                            <ul class="pmd-sidebar-nav">
-                                <li class="liOffer">
-                                    @{
-                                        string urlMisOfertasTecnologicas = Comunidad.Url + "/" + Html.Translate("OFERTA_URL");
-                                    }
-                                    <a href="@urlMisOfertasTecnologicas">@Html.Translate("MIS_OFERTAS_TECNOLOGICAS")</a>
-                                </li>
-                                <li class="liOffer">
-                                    @{
-                                        string urlCrearOfertaTecnologica = Comunidad.Url + "/" + Html.Translate("NUEVA_OFERTA_TECNOLOGICA_URL");
-                                    }
-                                    <a href="@urlCrearOfertaTecnologica">@Html.Translate("NUEVA_OFERTA_TECNOLOGICA")</a>
-                                </li>
-                                <li class="liOffer d-none" id="menu_is_otri">
-                                    @{
-                                        string urlOfertasTecnologicasOtri = Comunidad.Url + "/" + Html.Translate("OFERTA_TECNOLOGICA_OTRI_URL");
-                                    }
-                                    <a href="@urlOfertasTecnologicasOtri">@Html.Translate("GESTIONAR_OFERTA_TECNOLOGICA")</a>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
+					@if(MA_HABILITADO)
+					{
+						<div class="group-collapse cluster  hasCV" style="display:none">
+							<a href="#cluster" data-toggle="collapse" aria-expanded="true">@Html.Translate("GESTION_CLUSTERS")</a>
+							<div id="cluster" class="collapse show">
+								<ul class="pmd-sidebar-nav">
+									<li class="liCluster">
+										@{
+											string urlListadoCluster = Comunidad.Url + "/" + Html.Translate("CLUSTER_URL");
+										}
+										<a href="@urlListadoCluster">@Html.Translate("LISTADO_CLUSTERS")</a>
+									</li>
+									<li class="liCluster">
+										@{
+											string urlNuevoCluster = Comunidad.Url + "/" + Html.Translate("NUEVO_CLUSTER_URL");
+										}
+										<a href="@urlNuevoCluster">@Html.Translate("NUEVO_CLUSTER")</a>
+									</li>
+								</ul>
+							</div>
+						</div>
+					}
+					@if(ED_HABILITADO)
+					{
+						<div class="group-collapse anotaciones  hasCV" style="display:none">
+							<a href="#anotaciones" data-toggle="collapse" aria-expanded="true">@Html.Translate("GESTION_ANOTACIONES")</a>
+							<div id="anotaciones" class="collapse show">
+								<ul class="pmd-sidebar-nav">
+									<li class="liComentarios">
+										@{
+											string urlListadoAnotaciones = Comunidad.Url + "/" + Html.Translate("ANOTACIONES_URL");
+										}
+										<a href="@urlListadoAnotaciones">@Html.Translate("LISTADO_ANOTACIONES")</a>
+									</li>
+								</ul>
+							</div>
+						</div>
+					}
+					@if(MA_HABILITADO)
+					{
+						<div class="group-collapse indicadores-personales hasCV" style="display:none">
+							<a href="#indicadorespersonales" data-toggle="collapse" aria-expanded="true">@Html.Translate("INDICADORES")</a>
+							<div id="indicadorespersonales" class="collapse show">
+								<ul class="pmd-sidebar-nav">
+									<li class="liIndicadores">
+										@{
+											string urlIndicadoresPersonales = Comunidad.Url + "/" + Html.Translate("INDICADORES_PERSONALES_URL");
+										}
+										<a href="@urlIndicadoresPersonales">@Html.Translate("MIS_INDICADORES")</a>
+									</li>
+								</ul>
+							</div>
+						</div>
+					}
+					@if(MA_HABILITADO)
+					{
+						<div class="group-collapse oferta-tecnologica hasCV" style="display:none">
+							<a href="#ofertatecnologica" data-toggle="collapse" aria-expanded="true">@Html.Translate("OFERTAS_TECNOLOGICAS")</a>
+							<div id="ofertatecnologica" class="collapse show">
+								<ul class="pmd-sidebar-nav">
+									<li class="liOffer">
+										@{
+											string urlMisOfertasTecnologicas = Comunidad.Url + "/" + Html.Translate("OFERTA_URL");
+										}
+										<a href="@urlMisOfertasTecnologicas">@Html.Translate("MIS_OFERTAS_TECNOLOGICAS")</a>
+									</li>
+									<li class="liOffer">
+										@{
+											string urlCrearOfertaTecnologica = Comunidad.Url + "/" + Html.Translate("NUEVA_OFERTA_TECNOLOGICA_URL");
+										}
+										<a href="@urlCrearOfertaTecnologica">@Html.Translate("NUEVA_OFERTA_TECNOLOGICA")</a>
+									</li>
+									<li class="liOffer d-none" id="menu_is_otri">
+										@{
+											string urlOfertasTecnologicasOtri = Comunidad.Url + "/" + Html.Translate("OFERTA_TECNOLOGICA_OTRI_URL");
+										}
+										<a href="@urlOfertasTecnologicasOtri">@Html.Translate("GESTIONAR_OFERTA_TECNOLOGICA")</a>
+									</li>
+								</ul>
+							</div>
+						</div>
+					}
 
                     <div class="group-collapse desconectar">
                         <div id="desconectar-usuario" class="collapse show">
