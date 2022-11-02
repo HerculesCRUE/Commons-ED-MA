@@ -15,7 +15,6 @@ using System.Globalization;
 using System.Collections;
 using Gnoss.ApiWrapper.Exceptions;
 using System.Diagnostics.CodeAnalysis;
-//using Person = PersonOntology.Person;
 using OfferState = OfferstateOntology.OfferState;
 
 namespace OfferOntology
@@ -51,12 +50,6 @@ namespace OfferOntology
 			propList.Add(new StringOntologyProperty("schema:availability", this.IdSchema_availability));
 			propList.Add(new DateOntologyProperty("schema:validFrom", this.Schema_validFrom));
 		}
-
-		internal override void GetEntities()
-		{
-			base.GetEntities();
-		} 
-
 
 	}
 }

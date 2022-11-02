@@ -66,11 +66,6 @@ namespace AnnotationOntology
 			propList.Add(new StringOntologyProperty("roh:title", this.Roh_title));
 			propList.Add(new StringOntologyProperty("roh:owner", this.IdRoh_owner));
 		}
-
-		internal override void GetEntities()
-		{
-			base.GetEntities();
-		}
 		public virtual ComplexOntologyResource ToGnossApiResource(ResourceApi resourceAPI, List<string> listaDeCategorias)
 		{
 			return ToGnossApiResource(resourceAPI, listaDeCategorias, Guid.Empty, Guid.Empty);

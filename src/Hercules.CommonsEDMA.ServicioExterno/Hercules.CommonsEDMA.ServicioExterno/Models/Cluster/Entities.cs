@@ -143,7 +143,7 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Models.Cluster
         public bool entity_cv { get; set; }
     }
 
-    //TODO comentarios
+
     public class AutocompleteConfig
     {
         public string property { get; set; }

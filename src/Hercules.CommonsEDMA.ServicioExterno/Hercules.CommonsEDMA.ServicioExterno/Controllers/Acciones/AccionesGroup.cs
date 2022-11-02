@@ -96,7 +96,7 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
                         <http://gnoss/{pIdGroup}> roh:title ?nombre.                        
                 }}";
                 string nombreGrupo = resourceApi.VirtuosoQuery(select, where, idComunidad).results.bindings.First()["nombre"].value;
-                if(nombreGrupo.Length>20)
+                if (nombreGrupo.Length > 20)
                 {
                     nombreGrupo = nombreGrupo.Substring(0, 20) + "...";
                 }
@@ -105,7 +105,7 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
             }
             #endregion
 
-            if (miembros.Union(ip).Count() > 0)
+            if (miembros.Union(ip).Any())
             {
                 #region Relaciones con el grupo
                 {
@@ -493,7 +493,7 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
                 {
                     if (colaboradores.Contains(colaborador))
                     {
-                        string group = "http://gnoss/" + pIdGroup.ToUpper();                       
+                        string group = "http://gnoss/" + pIdGroup.ToUpper();
                         string nombreRelacion = "Documentos";
                         if (!dicRelaciones.ContainsKey(group))
                         {

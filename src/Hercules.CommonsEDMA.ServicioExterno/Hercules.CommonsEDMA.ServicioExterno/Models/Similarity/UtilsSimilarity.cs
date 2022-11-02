@@ -115,7 +115,6 @@ where{{
 
             pIds = respuesta.Where(x => x.Value != null).Select(x => x.Key).ToList();
 
-            //TODO eliminar en función de si no es visible
             if (pIds.Count > 0)
             {
                 #region Obtenemos autores
@@ -146,7 +145,6 @@ where
 
                 #region Obtenemos etiquetas
 
-                //TODO cambiar
                 switch (mType)
                 {
                     case "research_paper":
@@ -254,8 +252,7 @@ where
                     }
                 }
                 #endregion
-
-                //TODO  categorías enriquecidas              
+        
             }
             return respuesta;
         }

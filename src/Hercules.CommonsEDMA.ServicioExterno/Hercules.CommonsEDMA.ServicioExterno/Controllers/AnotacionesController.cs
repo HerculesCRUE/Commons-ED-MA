@@ -94,7 +94,7 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers
         public IActionResult DeleteAnnotation([FromForm] string idAnnotation)
         {
             AccionesAnotaciones annotations = new AccionesAnotaciones();
-            if (!Security.CheckUser(new Guid(annotations.getUserFromAnnotation(idAnnotation)), Request)) // TODO TEST
+            if (!Security.CheckUser(new Guid(annotations.getUserFromAnnotation(idAnnotation)), Request))
             {
                 return StatusCode(StatusCodes.Status401Unauthorized);
             }

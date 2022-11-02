@@ -167,7 +167,7 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
                             listaIniciosCompetitivos.Add(0);
                             listaIniciosNoCompetitivos.Add(0);
                             listaIniciosOtros.Add(item.Value.numProyectosInicio[""]);
-                        }                        
+                        }
                     }
                     else
                     {
@@ -290,12 +290,12 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
                 #endregion
 
                 Dictionary<string, int> numMiembros = new Dictionary<string, int>();
-                numMiembros.Add("1-3",0);
+                numMiembros.Add("1-3", 0);
                 numMiembros.Add("4-10", 0);
                 numMiembros.Add("11-30", 0);
                 numMiembros.Add("30+", 0);
 
-                foreach(KeyValuePair<string, int> item in dicNumMiembrosProyecto)
+                foreach (KeyValuePair<string, int> item in dicNumMiembrosProyecto)
                 {
                     if (item.Value > 0 && item.Value < 4)
                     {
@@ -462,7 +462,7 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
             }
             #endregion
 
-            if (miembros.Union(ip).Count() > 0)
+            if (miembros.Union(ip).Any())
             {
                 #region Relaciones con el proyecto
                 {

@@ -51,10 +51,6 @@ namespace MaturestateOntology
 			propList.Add(new StringOntologyProperty("dc:identifier", this.Dc_identifier));
 		}
 
-		internal override void GetEntities()
-		{
-			base.GetEntities();
-		}
 		public override KeyValuePair<Guid, string> ToAcidData(ResourceApi resourceAPI)
 		{
 			KeyValuePair<Guid, string> valor = new KeyValuePair<Guid, string>();

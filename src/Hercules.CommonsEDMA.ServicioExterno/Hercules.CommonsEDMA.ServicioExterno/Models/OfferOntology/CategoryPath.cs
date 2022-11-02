@@ -39,14 +39,6 @@ namespace OfferOntology
 			propList.Add(new ListStringOntologyProperty("roh:categoryNode", this.IdsRoh_categoryNode));
 		}
 
-		internal override void GetEntities()
-		{
-			base.GetEntities();
-		}
-
-
-
-
 		protected List<object> ObtenerObjetosDePropiedad(object propiedad)
 		{
 			List<object> lista = new List<object>();

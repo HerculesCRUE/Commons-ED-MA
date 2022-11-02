@@ -107,8 +107,6 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
 
                         // Eliminación (Triples).
                         RemoveTriples triple = new RemoveTriples();
-                        //triple.Predicate = "http://w3id.org/roh/linkedRO";
-                        //triple.Predicate = "http://w3id.org/roh/linkedDocument";
                         triple.Predicate = predicateLinkInRO;
                         triple.Value = idLinkedRo;
                         listaTriplesModificacion.Add(triple);
