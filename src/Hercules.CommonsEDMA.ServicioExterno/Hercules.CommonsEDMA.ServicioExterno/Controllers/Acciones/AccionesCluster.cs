@@ -355,7 +355,7 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
                     }}
                     FILTER(?s = <{p}>)
                 }}";
-                sparqlObject = resourceApi.VirtuosoQueryMultipleGraph(select, where, new List<string> { "cluster" ,"person"});
+                sparqlObject = resourceApi.VirtuosoQueryMultipleGraph(select, where, new List<string> { "cluster", "person" });
 
 
                 PerfilCluster perfilCluster = new();
@@ -424,12 +424,12 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
                     }}
                     FILTER(?s = <{p}>)
                 }}";
-                    sparqlObject = resourceApi.VirtuosoQueryMultipleGraph(select, where,new List<string>{ "cluster","person","document","project","organization","department"});
+                    sparqlObject = resourceApi.VirtuosoQueryMultipleGraph(select, where, new List<string> { "cluster", "person", "document", "project", "organization", "department" });
 
                     // Carga los datos en el objeto
                     sparqlObject.results.bindings.ForEach(e =>
                     {
-                        List<string> infoList = new List<string>(); ;
+                        List<string> infoList = new List<string>();
                         if (e.ContainsKey("hasPosition"))
                         {
                             infoList.Add(e["hasPosition"].value);
@@ -772,7 +772,7 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
 
                     FILTER(?idGnoss = <http://gnoss/{userId.ToString().ToUpper()}>)
                 }}";
-            SparqlObject sparqlObject = resourceApi.VirtuosoQueryMultipleGraph(select, where, new List<string> { "person", "cluster"});
+            SparqlObject sparqlObject = resourceApi.VirtuosoQueryMultipleGraph(select, where, new List<string> { "person", "cluster" });
 
 
             // Rellena el los clusters
@@ -835,7 +835,7 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
                         clusterList.Add(cluster);
 
                     }
-                    catch (Exception ex) 
+                    catch (Exception ex)
                     {
                         resourceApi.Log.Error("Excepcion: " + ex.Message);
                     }
@@ -1029,11 +1029,11 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
                 #endregion
 
                 #region Relaciones entre miembros DENTRO DEl CLUSTER
+
+                //Proyectos
                 {
-                    //Proyectos
-                    {
-                        select = "SELECT ?person group_concat(distinct ?project;separator=\",\") as ?projects";
-                        where = $@"
+                    select = "SELECT ?person group_concat(distinct ?project;separator=\",\") as ?projects";
+                    where = $@"
                     WHERE {{ 
                             ?project a 'project'.
                             ?project ?propRol ?rol.
@@ -1041,37 +1041,37 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
                             ?rol <http://www.w3.org/1999/02/22-rdf-syntax-ns#member> ?person.
                             FILTER(?person in (<{string.Join(">,<", colaboradores)}>))
                         }}";
-                        SparqlObject resultadoQuery = resourceApi.VirtuosoQuery(select, where, idComunidad);
-                        Dictionary<string, List<string>> personaProy = new Dictionary<string, List<string>>();
-                        foreach (Dictionary<string, SparqlObject.Data> fila in resultadoQuery.results.bindings)
-                        {
-                            string projects = fila["projects"].value;
-                            string person = fila["person"].value;
-                            personaProy.Add(person, new List<string>(projects.Split(',')));
-                        }
-                        UtilidadesAPI.ProcessRelations("Proyectos", personaProy, ref dicRelaciones);
-                    }
-                    //DOCUMENTOS
+                    SparqlObject resultadoQuery = resourceApi.VirtuosoQuery(select, where, idComunidad);
+                    Dictionary<string, List<string>> personaProy = new Dictionary<string, List<string>>();
+                    foreach (Dictionary<string, SparqlObject.Data> fila in resultadoQuery.results.bindings)
                     {
-                        select = "SELECT ?person group_concat(?document;separator=\",\") as ?documents";
-                        where = $@"
+                        string projects = fila["projects"].value;
+                        string person = fila["person"].value;
+                        personaProy.Add(person, new List<string>(projects.Split(',')));
+                    }
+                    UtilidadesAPI.ProcessRelations("Proyectos", personaProy, ref dicRelaciones);
+                }
+                //DOCUMENTOS
+                {
+                    select = "SELECT ?person group_concat(?document;separator=\",\") as ?documents";
+                    where = $@"
                     WHERE {{ 
                             ?document a 'document'.
                             ?document <http://purl.org/ontology/bibo/authorList> ?authorList.
                             ?authorList <http://www.w3.org/1999/02/22-rdf-syntax-ns#member> ?person.
                             FILTER(?person in (<{string.Join(">,<", colaboradores)}>))
                         }}";
-                        SparqlObject resultadoQuery = resourceApi.VirtuosoQuery(select, where, idComunidad);
-                        Dictionary<string, List<string>> personaDoc = new Dictionary<string, List<string>>();
-                        foreach (Dictionary<string, SparqlObject.Data> fila in resultadoQuery.results.bindings)
-                        {
-                            string documents = fila["documents"].value;
-                            string person = fila["person"].value;
-                            personaDoc.Add(person, new List<string>(documents.Split(',')));
-                        }
-                        UtilidadesAPI.ProcessRelations("Documentos", personaDoc, ref dicRelaciones);
+                    SparqlObject resultadoQuery = resourceApi.VirtuosoQuery(select, where, idComunidad);
+                    Dictionary<string, List<string>> personaDoc = new Dictionary<string, List<string>>();
+                    foreach (Dictionary<string, SparqlObject.Data> fila in resultadoQuery.results.bindings)
+                    {
+                        string documents = fila["documents"].value;
+                        string person = fila["person"].value;
+                        personaDoc.Add(person, new List<string>(documents.Split(',')));
                     }
+                    UtilidadesAPI.ProcessRelations("Documentos", personaDoc, ref dicRelaciones);
                 }
+
                 #endregion
 
 
@@ -1135,14 +1135,12 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
             }
             return items;
 
-
-
         }
 
         /// <summary>
         /// Método público buscar diferentes tags
         /// </summary>
-        /// <param name="pSearch">parámetro que corresponde a la cadena de búsqueda.</param>
+        /// <param name="pClusterId">Identificador del cluster.</param>
         /// <returns>Listado de etiquetas de resultado.</returns>
         public List<string> memberListFromCluser(string pClusterId)
         {
@@ -1161,7 +1159,7 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
                 }}
             }}
             ";
-            SparqlObject sparqlObjectAux = resourceApi.VirtuosoQueryMultipleGraph(select, where, new List<string>{"cluster","person"});
+            SparqlObject sparqlObjectAux = resourceApi.VirtuosoQueryMultipleGraph(select, where, new List<string> { "cluster", "person" });
             List<string> resultados = sparqlObjectAux.results.bindings.Select(x => x["user"].value).Distinct().ToList();
             return resultados;
         }
@@ -1177,7 +1175,7 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
                 }}
             }}
             ";
-            SparqlObject sparqlObjectAux = resourceApi.VirtuosoQueryMultipleGraph(select, where, new List<string> { "cluster" ,"person"});
+            SparqlObject sparqlObjectAux = resourceApi.VirtuosoQueryMultipleGraph(select, where, new List<string> { "cluster", "person" });
             List<string> resultados = sparqlObjectAux.results.bindings.Select(x => x["user"].value).Distinct().ToList();
             string user = resultados.ToList().FirstOrDefault();
             return user;
@@ -1199,7 +1197,7 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
                     }
                     else
                     {
-                        filter = $" AND lcase(?o) like \"% { splitSearch.Last() }%\" ";
+                        filter = $" AND lcase(?o) like \"% {splitSearch.Last()}%\" ";
                     }
                 }
                 else if (searchText.Length > 3)
@@ -1208,13 +1206,13 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
                 }
                 else // Si tiene menos de 4 caracteres y no termina en espacio, buscamos por like
                 {
-                    filter = $"  lcase(?o) like \"{ searchText }%\" OR lcase(?o) like \"% { searchText }%\" ";
+                    filter = $"  lcase(?o) like \"{searchText}%\" OR lcase(?o) like \"% {searchText}%\" ";
                     searchText = "";
                 }
             }
             if (searchText != "")
             {
-                filter = $"bif:contains(?o, \"'{ searchText }'\"){filter}";
+                filter = $"bif:contains(?o, \"'{searchText}'\"){filter}";
             }
             string select = "SELECT DISTINCT ?s ?o ";
             string where = $"WHERE {{ ?s a <http://purl.org/ontology/bibo/Document>. ?s <http://vivoweb.org/ontology/core#freeTextKeyword> ?freeTextKeyword. ?freeTextKeyword <http://w3id.org/roh/title> ?o. FILTER( {filter} )    }} ORDER BY ?o";
@@ -1229,168 +1227,6 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
 
 
         #region Métodos de recolección de datos
-
-        /// <summary>
-        /// Método privado para obtener los tesauros.
-        /// </summary>
-        /// <param name="pListaTesauros">Listado de thesaurus a obtener.</param>
-        /// <returns>Diccionario con las listas de thesaurus.</returns>
-        private Dictionary<string, List<ThesaurusItem>> GetTesauros(List<string> pListaTesauros)
-        {
-            Dictionary<string, List<ThesaurusItem>> elementosTesauros = new Dictionary<string, List<ThesaurusItem>>();
-
-            foreach (string tesauro in pListaTesauros)
-            {
-                string select = "select * ";
-                string where = @$"where {{
-                    ?s a <http://www.w3.org/2008/05/skos#Concept>.
-                    ?s <http://www.w3.org/2008/05/skos#prefLabel> ?nombre.
-                    ?s <http://purl.org/dc/elements/1.1/source> '{tesauro}'
-                    OPTIONAL {{ ?s <http://www.w3.org/2008/05/skos#broader> ?padre }}
-                }} ORDER BY ?padre ?s ";
-                SparqlObject sparqlObject = resourceApi.VirtuosoQuery(select, where, "taxonomy");
-
-                List<ThesaurusItem> items = sparqlObject.results.bindings.Select(x => new ThesaurusItem()
-                {
-                    id = x["s"].value,
-                    name = x["nombre"].value,
-                    parentId = x.ContainsKey("padre") ? x["padre"].value : ""
-                }).ToList();
-
-                elementosTesauros.Add(tesauro, items);
-            }
-
-            return elementosTesauros;
-        }
-
-
-        /// <summary>
-        /// Método privado para obtener las taxonomías de un 'CategoryPath'.
-        /// </summary>
-        /// <param name="terms">Listado de la categoría a obtener.</param>
-        /// <returns>listado de las categorías.</returns>
-        private List<string> LoadCurrentTerms(List<string> terms)
-        {
-
-            string termsTxt = String.Join(',', terms.Select(e => "<" + e + ">"));
-
-            string select = "select ?o";
-            string where = @$"where {{
-                ?s a <http://w3id.org/roh/CategoryPath>.
-                ?s <http://w3id.org/roh/categoryNode> ?o.
-                FILTER(?s IN ({termsTxt}))
-            }}";
-            SparqlObject sparqlObject = resourceApi.VirtuosoQuery(select, where, "cluster");
-
-            List<string> termsRes = new();
-
-            sparqlObject.results.bindings.ForEach(e =>
-            {
-                termsRes.Add(e["o"].value);
-            });
-
-
-
-
-            return termsRes;
-        }
-
-
-        /// <summary>
-        /// Obtiene la categoría padre.
-        /// </summary>
-        /// <param name="pIdTesauro">Categoría a consultar.</param>
-        /// <returns>Categoría padre.</returns>
-        private string ObtenerIdTesauro(string pIdTesauro)
-        {
-            string idTesauro = pIdTesauro.Split(new[] { "researcharea_" }, StringSplitOptions.None)[1];
-            int num1 = Int32.Parse(idTesauro.Split('.')[0]);
-            int num2 = Int32.Parse(idTesauro.Split('.')[1]);
-            int num3 = Int32.Parse(idTesauro.Split('.')[2]);
-            int num4 = Int32.Parse(idTesauro.Split('.')[3]);
-
-            if (num4 != 0)
-            {
-                idTesauro = $@"{resourceApi.GraphsUrl}items/researcharea_{num1}.{num2}.{num3}.0";
-            }
-            else if (num3 != 0 && num4 == 0)
-            {
-                idTesauro = $@"{resourceApi.GraphsUrl}items/researcharea_{num1}.{num2}.0.0";
-            }
-            else if (num2 != 0 && num3 == 0 && num4 == 0)
-            {
-                idTesauro = $@"{resourceApi.GraphsUrl}items/researcharea_{num1}.0.0.0";
-            }
-
-            return idTesauro;
-        }
-
-        /// <summary>
-        /// Obtiene las categorías del tesáuro.
-        /// </summary>
-        /// <returns>Tupla con (clave) diccionario de las idCategorias-idPadre y (valor) diccionario de nombreCategoria-idCategoria.</returns>
-        private static Tuple<Dictionary<string, string>, Dictionary<string, string>> ObtenerDatosTesauro()
-        {
-            Dictionary<string, string> dicAreasBroader = new Dictionary<string, string>();
-            Dictionary<string, string> dicAreasNombre = new Dictionary<string, string>();
-
-            string select = @"SELECT DISTINCT * ";
-            string where = @$"WHERE {{
-                ?concept a <http://www.w3.org/2008/05/skos#Concept>.
-                ?concept <http://www.w3.org/2008/05/skos#prefLabel> ?nombre.
-                ?concept <http://purl.org/dc/elements/1.1/source> 'researcharea'
-                OPTIONAL{{?concept <http://www.w3.org/2008/05/skos#broader> ?broader}}
-                }}";
-            SparqlObject resultado = resourceApi.VirtuosoQuery(select, where, "taxonomy");
-
-            foreach (Dictionary<string, SparqlObject.Data> fila in resultado.results.bindings)
-            {
-                string concept = fila["concept"].value;
-                string nombre = fila["nombre"].value;
-                string broader = "";
-                if (fila.ContainsKey("broader"))
-                {
-                    broader = fila["broader"].value;
-                }
-                dicAreasBroader.Add(concept, broader);
-                if (!dicAreasNombre.ContainsKey(nombre.ToLower()))
-                {
-                    dicAreasNombre.Add(nombre.ToLower(), concept);
-                }
-            }
-
-            Dictionary<string, string> dicAreasUltimoNivel = new Dictionary<string, string>();
-            foreach (KeyValuePair<string, string> item in dicAreasNombre)
-            {
-                bool tieneHijos = false;
-                string id = item.Value.Split(new[] { "researcharea_" }, StringSplitOptions.None)[1];
-                int num1 = Int32.Parse(id.Split('.')[0]);
-                int num2 = Int32.Parse(id.Split('.')[1]);
-                int num3 = Int32.Parse(id.Split('.')[2]);
-                int num4 = Int32.Parse(id.Split('.')[3]);
-
-                if (num2 == 0 && num3 == 0 && num4 == 0)
-                {
-                    tieneHijos = dicAreasNombre.ContainsValue($@"{resourceApi.GraphsUrl}items/researcharea_{num1}.1.0.0");
-                }
-                else if (num3 == 0 && num4 == 0)
-                {
-                    tieneHijos = dicAreasNombre.ContainsValue($@"{resourceApi.GraphsUrl}items/researcharea_{num1}.{num2}.1.0");
-                }
-                else if (num4 == 0)
-                {
-                    tieneHijos = dicAreasNombre.ContainsValue($@"{resourceApi.GraphsUrl}items/researcharea_{num1}.{num2}.{num3}.1");
-                }
-
-                if (!tieneHijos)
-                {
-                    dicAreasUltimoNivel.Add(item.Key, item.Value);
-                }
-            }
-
-            return new Tuple<Dictionary<string, string>, Dictionary<string, string>>(dicAreasBroader, dicAreasUltimoNivel);
-        }
-
 
         /// <summary>
         /// Obtiene los datos de los investigadores de los perfiles indicados.
@@ -1432,7 +1268,7 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
                     }}
                     FILTER(?s in ({string.Join(',', listProfilesIds.Select(e => '<' + e + '>'))}))
                 }}";
-            SparqlObject sparqlObject = resourceApi.VirtuosoQueryMultipleGraph(select, where, new List<string> { "cluster", "person","document","project","organization", "department" });
+            SparqlObject sparqlObject = resourceApi.VirtuosoQueryMultipleGraph(select, where, new List<string> { "cluster", "person", "document", "project", "organization", "department" });
 
 
             // Carga los datos en el objeto
