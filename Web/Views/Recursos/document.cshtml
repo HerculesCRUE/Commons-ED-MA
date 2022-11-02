@@ -1,5 +1,12 @@
 @*[security|||document|||hercules]*@
 @using System.Reflection;
+@{
+	bool ED_HABILITADO = Html.Translate("ED_HABILITADO") == "true";
+	bool MA_HABILITADO = Html.Translate("MA_HABILITADO") == "true";
+    ViewBag.MA_DISPONIBLE = true;
+    ViewBag.ED_DISPONIBLE = true;
+    @Html.PartialView("../Shared/_ComprobacionEDMA");
+}
 @model ResourceViewModel
 @{
     ResourceModel FichaDocumento = Model.Resource;
@@ -216,55 +223,55 @@
 					}
 				}
 				
-				@if (!IdentidadActual.IsGuestUser)
-				{
-					<div class="acciones-ficha-wrap">
-						<ul class="no-list-style d-flex">
-							<li>
-								<div class="acciones-recurso-listado">
-									<div class="dropdown">
-										<a href="#" class="dropdown-toggle btn btn-outline-grey no-flecha" role="button" id="dropdownMasOpciones" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-											<span class="material-icons">more_vert</span>
-										</a>
-										<div class="dropdown-menu basic-dropdown dropdown-icons dropdown-menu-right" aria-labelledby="dropdownMasOpciones">
-											<p class="dropdown-title">@Html.Translate("ACCIONES")</p>
-											<ul class="no-list-style">
-
-												@if (!string.IsNullOrEmpty(urlCV))
-												{
-													<li>
-														<a href="@urlCV" target="_blank" class="item-dropdown">
-															<span class="material-icons">edit</span>
-															<span class="texto">@Html.GetText("COMMON", "EDITAR")</span>
-														</a>
-													</li>
-                                                    <li>
-                                                        <a href="javascript:startVincularRo()" class="item-dropdown">
-                                                            <span class="material-icons">link</span>
-                                                            <span class="texto">@Html.Translate("VINCULAR_RO")</span>
-                                                        </a>
-                                                    </li>
-												}
-                                                <li>
-                                                    <a href="javascript:void(0)" data-toggle="modal" data-target="#modal-nueva-anotacion" class="item-dropdown">
-                                                        <span class="material-icons">edit_note</span>
-                                                        <span class="texto">@Html.Translate("NUEVA_ANOTACION")</span>
-                                                    </a>
-                                                </li>
-                                                <li>
-                                                    <a href="javascript:void(0)" data-toggle="modal" data-target="#modal-citar-publicacion" class="item-dropdown">
-                                                        <span class="material-icons">format_quote</span>
-                                                        <span class="texto">@Html.Translate("CITAR_PUBLICACION")</span>
-                                                    </a>
-                                                </li>
-											</ul>
-										</div>
+				
+				<div class="acciones-ficha-wrap">
+					<ul class="no-list-style d-flex">
+						<li>
+							<div class="acciones-recurso-listado">
+								<div class="dropdown">
+									<a href="#" class="dropdown-toggle btn btn-outline-grey no-flecha" role="button" id="dropdownMasOpciones" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+										<span class="material-icons">more_vert</span>
+									</a>
+									<div class="dropdown-menu basic-dropdown dropdown-icons dropdown-menu-right" aria-labelledby="dropdownMasOpciones">
+										<p class="dropdown-title">@Html.Translate("ACCIONES")</p>
+										<ul class="no-list-style">
+											@if (!string.IsNullOrEmpty(urlCV) && ED_HABILITADO)
+											{
+												<li>
+													<a href="@urlCV" target="_blank" class="item-dropdown">
+														<span class="material-icons">edit</span>
+														<span class="texto">@Html.GetText("COMMON", "EDITAR")</span>
+													</a>
+												</li>
+												<li>
+													<a href="javascript:startVincularRo()" class="item-dropdown">
+														<span class="material-icons">link</span>
+														<span class="texto">@Html.Translate("VINCULAR_RO")</span>
+													</a>
+												</li>
+											}
+											@if (!IdentidadActual.IsGuestUser)
+											{
+												<li>
+													<a href="javascript:void(0)" data-toggle="modal" data-target="#modal-nueva-anotacion" class="item-dropdown">
+														<span class="material-icons">edit_note</span>
+														<span class="texto">@Html.Translate("NUEVA_ANOTACION")</span>
+													</a>
+												</li>
+											}
+											<li>
+												<a href="javascript:void(0)" data-toggle="modal" data-target="#modal-citar-publicacion" class="item-dropdown">
+													<span class="material-icons">format_quote</span>
+													<span class="texto">@Html.Translate("CITAR_PUBLICACION")</span>
+												</a>
+											</li>
+										</ul>
 									</div>
 								</div>
-							</li>
-						</ul>
-					</div>
-				}
+							</div>
+						</li>
+					</ul>
+				</div>
             </div>
             <h3>
                 @{
@@ -371,7 +378,13 @@
                             }
 
                             <li>
-                                <a href="@userUrl" name="@filtroPersona">@nombreFirma</a>
+								@if(MA_HABILITADO)
+								{
+									<a href="@userUrl" name="@filtroPersona">@nombreFirma</a>
+								}else
+								{
+									@nombreFirma
+								}
                                 <sup>@numOrganizacion</sup>
                             </li>
 
