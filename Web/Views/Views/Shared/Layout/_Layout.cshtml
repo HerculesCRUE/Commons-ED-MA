@@ -253,18 +253,16 @@
                     <div class="group-collapse alertas hasCV" style="display:none">
                         <div id="alertas-usuario" class="collapse show">
                             <ul class="pmd-sidebar-nav">
+                                @if(ED_HABILITADO && MA_HABILITADO)
+                                {
 								<li class="liOtros">
                                     @{
                                         
-                                        string urlHome;
-                                        if(MA_HABILITADO){
-                                            urlHome = Comunidad.Url;
-                                        }else{
-                                            urlHome = Comunidad.Url + "/" + Html.Translate("HOMEED_URL");
-                                        }
+                                        string urlHomeED= Comunidad.Url + "/" + Html.Translate("HOMEED_URL");
                                     }
-                                    <a href="@urlHome">@Html.Translate("PAGINA_INICIAL")</a>
+                                    <a href="@urlHomeED">@Html.Translate("PAGINA_INICIAL")</a>
                                 </li>
+                                }
                                 <li class="liNotificaciones nuevos">
                                     @{
                                         string urlAlertas = Comunidad.Url + "/" + Html.Translate("ALERTAS_URL");
