@@ -3,6 +3,13 @@
 @using System.Net.Http
 @using System.Net.Http.Headers
 @using System.Globalization
+@{
+	bool ED_HABILITADO = Html.Translate("ED_HABILITADO") == "true";
+	bool MA_HABILITADO = Html.Translate("MA_HABILITADO") == "true";
+    ViewBag.MA_DISPONIBLE = true;
+    ViewBag.ED_DISPONIBLE = true;
+    @Html.PartialView("../Shared/_ComprobacionEDMA");
+}
 @model ResourceViewModel
 @{
     ResourceModel FichaDocumento = Model.Resource;
@@ -114,7 +121,7 @@
                                     <div class="dropdown-menu basic-dropdown dropdown-icons dropdown-menu-right" aria-labelledby="dropdownMasOpciones">
                                         <p class="dropdown-title">@Html.Translate("ACCIONES")</p>
                                         <ul class="no-list-style">											
-											@if (!string.IsNullOrEmpty(urlCV))
+											@if (!string.IsNullOrEmpty(urlCV) && ED_HABILITADO)
 											{
 												<li>
 													<a href="@urlCV" target="_blank" class="item-dropdown">
@@ -244,7 +251,13 @@
                             }
 
                             <li>
-                                <a href="@userUrl" class="faceta" name="@filtroPersona">@nombreFirma</a>
+								@if(MA_HABILITADO)
+								{
+									<a href="@userUrl" name="@filtroPersona">@nombreFirma</a>
+								}else
+								{
+									@nombreFirma
+								}
                                 <sup>@numOrganizacion</sup>
                             </li>
 
