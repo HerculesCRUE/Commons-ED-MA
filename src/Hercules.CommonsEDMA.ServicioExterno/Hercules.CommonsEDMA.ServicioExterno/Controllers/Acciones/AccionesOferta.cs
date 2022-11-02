@@ -2,7 +2,6 @@
 using Gnoss.ApiWrapper.ApiModel;
 using Gnoss.ApiWrapper.Model;
 using Hercules.CommonsEDMA.ServicioExterno.Models.Offer;
-// using OfferOntology.;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -55,9 +54,6 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
         /// <returns>Diccionario con las listas de thesaurus.</returns>
         public Dictionary<string, List<ThesaurusItem>> GetListThesaurus(List<string> thesaurusTypes, string lang)
         {
-
-            // List<string> thesaurusTypes = new List<string>() { "researcharea" };
-
             try
             {
                 if (thesaurusTypes == null)
@@ -71,7 +67,6 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
                 resourceApi.Log.Error("Excepcion: " + ex.Message);
             }
 
-            //var thesaurus = GetTesauros(thesaurusTypes, lang);
             var thesaurus = UtilidadesAPI.GetTesauros(resourceApi, thesaurusTypes, lang);
 
             return thesaurus;
@@ -223,7 +218,7 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
                     if (texto != "" && longsId != null && oferta != null)
                     {
                         texto = (nuevoEstado != estadoActual) ? "Nuevo estado de la oferta " + getEstado(nuevoEstado).ToString() + " " + texto : "Tienes un mensaje: " + texto;
-                        bool notificacionesEnviadas = UtilidadesAPI.GenerarNotificacion(resourceApi, idRecurso, userGnossId, oferta.creatorId, "editOferta", texto);
+                        UtilidadesAPI.GenerarNotificacion(resourceApi, idRecurso, userGnossId, oferta.creatorId, "editOferta", texto);
                     }
 
                     // Avisamos al gestor otri de que hay nuevas ofertas disponibles para validar
@@ -233,14 +228,14 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
                         // Obtengo los usuarios otri disponibles para el usuario creador de la oferta, y les aviso de que ya pueden activarla
                         GetOtriId(oferta.creatorId).ForEach(idOtri =>
                         {
-                            bool notificacionesEnviadas = UtilidadesAPI.GenerarNotificacion(resourceApi, idRecurso, userGnossId, idOtri, "editOferta", "Hay una nueva oferta tecnológica disponible para validar");
+                            UtilidadesAPI.GenerarNotificacion(resourceApi, idRecurso, userGnossId, idOtri, "editOferta", "Hay una nueva oferta tecnológica disponible para validar");
                         });
                     }
 
                     // Avisamos al investigador creador de la oferta
                     else if (resourceApi != null && nuevoEstado == "http://gnoss.com/items/offerstate_003")
                     {
-                        bool notificacionesEnviadas = UtilidadesAPI.GenerarNotificacion(resourceApi, idRecurso, userGnossId, oferta.creatorId, "editOferta", "La oferta tecnológica ha sido validada");
+                        UtilidadesAPI.GenerarNotificacion(resourceApi, idRecurso, userGnossId, oferta.creatorId, "editOferta", "La oferta tecnológica ha sido validada");
                     }
                 }
 
@@ -913,7 +908,6 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
             {
 
                 // Obtiene el ID largo de los investigadores
-                List<string> numMember = new();
                 Dictionary<Guid, string> relationIDs = new();
                 if (oferta.researchers != null)
                 {
@@ -929,7 +923,6 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
 
 
                 // Obtiene el ID largo de los proyectos
-                List<string> numProj = new();
                 Dictionary<Guid, string> relationProjIDs = new();
                 if (oferta.projects != null)
                 {
@@ -946,7 +939,6 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
 
 
                 // Obtiene el ID largo de los Documentos
-                List<string> numDocs = new();
                 Dictionary<Guid, string> relationDocsIDs = new();
                 if (oferta.documents != null)
                 {
@@ -964,7 +956,6 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
 
 
                 // Obtiene el ID largo de los Documentos
-                List<string> numPII = new();
                 Dictionary<Guid, string> relationPiiIDs = new();
                 if (oferta.pii != null)
                 {
@@ -1015,7 +1006,6 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
                 cRsource.Roh_search = CleanHTML.StripTagsCharArray(cRsource.Roh_search, new string[0], new string[0]);
 
                 // Selectores de los estados de madurez y el sector
-                // cRsource.IdRoh_framingSector = oferta.framingSector != null ? oferta.framingSector : null;
                 cRsource.IdBibo_status = oferta.matureState != null ? oferta.matureState : null;
                 // Añadir evento de creación
                 cRsource.Roh_availabilityChangeEvent = new();
@@ -1696,11 +1686,9 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
                     Dictionary<Guid, List<TriplesToModify>> dicModificacion = new Dictionary<Guid, List<TriplesToModify>>();
                     List<TriplesToModify> listaTriplesModificacion = new List<TriplesToModify>();
 
-
                     // Modificación (Triples).
                     TriplesToModify triple = new TriplesToModify();
                     triple.Predicate = predicado;
-                    // triple.Predicate = "http://w3id.org/roh/isOtriManager";
                     triple.NewValue = nuevoEstado;
                     triple.OldValue = estadoActual;
                     listaTriplesModificacion.Add(triple);
@@ -1713,21 +1701,9 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
                 {
                     resourceApi.Log.Error("Excepcion: " + ex.Message);
                 }
-
-
-
             }
 
             return nuevoEstado;
-
-            //if (uploadedR)
-            //{
-            //    return idRecurso;
-            //}
-            //else
-            //{
-            //    throw new Exception("Recurso no actualizado");
-            //}
         }
 
 
@@ -1747,8 +1723,7 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
                     FILTER(?idGnoss = <http://gnoss/{pIdGnossUser.ToString().ToUpper()}>)
                 }}";
             SparqlObject sparqlObject = resourceApi.VirtuosoQuery(select, where, "person");
-            var userGnossId = string.Empty;
-            var isOtriManager = false;
+            bool isOtriManager = false;
             sparqlObject.results.bindings.ForEach(e =>
             {
                 try

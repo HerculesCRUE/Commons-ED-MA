@@ -258,8 +258,6 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
 
                         // Establece las entidades secundarias a borrar
                         resourceApi.DeleteSecondaryEntitiesList(ref urlSecondaryListEntities);
-                        // Borra los perfiles
-                        // perfiles.ForEach(e => resourceApi.PersistentDelete(e));
                         // borra el recurso
                         resourceApi.PersistentDelete(resourceGuid);
                     }
@@ -1222,7 +1220,7 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
             string where = $"WHERE {{ ?s a <http://purl.org/ontology/bibo/Document>. ?s <http://vivoweb.org/ontology/core#freeTextKeyword> ?freeTextKeyword. ?freeTextKeyword <http://w3id.org/roh/title> ?o. FILTER( {filter} )    }} ORDER BY ?o";
             SparqlObject sparqlObjectAux = resourceApi.VirtuosoQuery(select, where, "document");
             List<string> resultados = sparqlObjectAux.results.bindings.Select(x => x["o"].value).Distinct().ToList();
-            if (resultados.Count() > numMax)
+            if (resultados.Count > numMax)
             {
                 resultados = resultados.ToList().GetRange(0, numMax);
             }
