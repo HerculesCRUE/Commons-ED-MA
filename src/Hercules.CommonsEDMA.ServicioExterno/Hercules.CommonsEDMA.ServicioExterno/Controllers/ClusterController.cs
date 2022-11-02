@@ -7,8 +7,6 @@ using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using static Hercules.CommonsEDMA.ServicioExterno.Models.Cluster.Cluster;
-using static Hercules.CommonsEDMA.ServicioExterno.Models.Cluster.Cluster.PerfilCluster;
 using Hercules.CommonsEDMA.ServicioExterno.Controllers.Utilidades;
 
 namespace Hercules.CommonsEDMA.ServicioExterno.Controllers
@@ -27,17 +25,9 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers
         [HttpGet("GetThesaurus")]
         public IActionResult GetThesaurus(string listThesaurus = "")
         {
-            Dictionary<string, List<ThesaurusItem>> datosThesaurus = null;
+            AccionesCluster cluster = new AccionesCluster();
+            Dictionary<string, List<ThesaurusItem>> datosThesaurus = cluster.GetListThesaurus(listThesaurus);
 
-            try
-            {
-                AccionesCluster cluster = new AccionesCluster();
-                datosThesaurus = cluster.GetListThesaurus(listThesaurus);
-            }
-            catch (Exception)
-            {
-                return BadRequest();
-            }
             return Ok(datosThesaurus);
         }
 
@@ -51,21 +41,13 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers
         [Produces("application/json")]
         public IActionResult SaveCluster([FromForm] string pIdGnossUser, [FromForm] Cluster pDataCluster)
         {
-
-            string idClusterRes = string.Empty;
             if (!Security.CheckUser(new Guid(pIdGnossUser), Request))
             {
                 return StatusCode(StatusCodes.Status401Unauthorized);
             }
-            try
-            {
-                AccionesCluster accionCluster = new AccionesCluster();
-                idClusterRes = accionCluster.SaveCluster(pIdGnossUser, pDataCluster);
-            }
-            catch (Exception)
-            {
-                return BadRequest();
-            }
+
+            AccionesCluster accionCluster = new AccionesCluster();
+            string idClusterRes = accionCluster.SaveCluster(pIdGnossUser, pDataCluster);
             return Ok(idClusterRes);
         }
 
@@ -92,16 +74,8 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers
             {
                 return StatusCode(StatusCodes.Status401Unauthorized);
             }
-          
-            Cluster idClusterRes;
-            try
-            {   
-                idClusterRes = accionCluster.LoadCluster(pIdClusterId);
-            }
-            catch (Exception)
-            {
-                return BadRequest();
-            }
+
+            Cluster idClusterRes = accionCluster.LoadCluster(pIdClusterId);
             return Ok(idClusterRes);
         }
 
@@ -114,16 +88,8 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers
         [HttpPost("LoadProfiles")]
         public IActionResult LoadProfiles([FromForm] Cluster pDataCluster, [FromForm] List<string> pPersons)
         {
-
-            try
-            {
-                AccionesCluster accionCluster = new AccionesCluster();
-                return Ok( accionCluster.LoadProfiles(pDataCluster, pPersons));
-            }
-            catch (Exception)
-            {
-                return BadRequest();
-            }
+            AccionesCluster accionCluster = new AccionesCluster();
+            return Ok(accionCluster.LoadProfiles(pDataCluster, pPersons));
         }
 
         /// <summary>
@@ -140,15 +106,8 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers
             {
                 return StatusCode(StatusCodes.Status401Unauthorized);
             }
-            try
-            {
-                AccionesCluster accionCluster = new AccionesCluster();
-                return Ok(accionCluster.loadSavedProfiles(pIdUser, loadSavedProfiles));
-            }
-            catch (Exception)
-            {
-                return BadRequest();
-            }
+            AccionesCluster accionCluster = new AccionesCluster();
+            return Ok(accionCluster.loadSavedProfiles(pIdUser, loadSavedProfiles));
         }
 
 
@@ -160,17 +119,10 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers
         /// <param name="seleccionados">Determina si se envía el listado de personas desde el cluster o desde las personas</param>
         /// <returns>Objeto que se trata en JS para construir la gráfica.</returns>
         [HttpPost("DatosGraficaColaboradoresCluster")]
-        public IActionResult DatosGraficaColaboradoresCluster ([FromForm] Cluster pCluster, [FromForm] List<string> pPersons, [FromForm] bool seleccionados)
+        public IActionResult DatosGraficaColaboradoresCluster([FromForm] Cluster pCluster, [FromForm] List<string> pPersons, [FromForm] bool seleccionados)
         {
-            try
-            {
-                AccionesCluster accionCluster = new AccionesCluster();
-                return Ok(accionCluster.DatosGraficaColaboradoresCluster(pCluster, pPersons, seleccionados));
-            }
-            catch (Exception)
-            {
-                return BadRequest();
-            }
+            AccionesCluster accionCluster = new AccionesCluster();
+            return Ok(accionCluster.DatosGraficaColaboradoresCluster(pCluster, pPersons, seleccionados));
         }
 
         /// <summary>
@@ -181,17 +133,8 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers
         [HttpPost("DatosGraficaAreasTematicasCluster")]
         public IActionResult DatosGraficaAreasTematicasCluster([FromForm] List<string> pPersons)
         {
-            DataGraficaAreasTags datos = null;
-
-            try
-            {
-                AccionesCluster accionCluster = new AccionesCluster();
-                datos = accionCluster.DatosGraficaAreasTematicas(pPersons);
-            }
-            catch (Exception)
-            {
-                return BadRequest();
-            }
+            AccionesCluster accionCluster = new AccionesCluster();
+            DataGraficaAreasTags datos = accionCluster.DatosGraficaAreasTematicas(pPersons);
 
             return Ok(datos);
         }
@@ -211,17 +154,7 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers
             {
                 return StatusCode(StatusCodes.Status401Unauthorized);
             }
-            bool borrado = false;
-
-            try
-            {
-                
-                borrado = accionCluster.BorrarCluster(pIdClusterId);
-            }
-            catch (Exception)
-            {
-                return BadRequest();
-            }
+            bool borrado = accionCluster.BorrarCluster(pIdClusterId);
 
             return Ok(borrado);
         }
@@ -236,16 +169,8 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers
         [HttpGet("SearchTags")]
         public IActionResult SearchTags([Required] string tagInput)
         {
-            List<string> idClusterRes = new();
-            try
-            {
-                AccionesCluster accionCluster = new AccionesCluster();
-                idClusterRes = accionCluster.SearchTags(tagInput);
-            }
-            catch (Exception)
-            {
-                return BadRequest();
-            }
+            AccionesCluster accionCluster = new AccionesCluster();
+            List<string> idClusterRes = accionCluster.SearchTags(tagInput);
 
             return Ok(idClusterRes);
         }
