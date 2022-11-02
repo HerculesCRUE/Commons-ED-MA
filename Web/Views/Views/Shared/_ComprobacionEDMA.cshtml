@@ -10,9 +10,16 @@
 	}
 
 	if (!disponible)
-	{
-		// Si la página no está disponible, tiramos error 404.
-		Context.Response.Redirect(Html.GetComunidad().Url + "/error404");
+	{		
+		if(Context.Request.Path==""|| Context.Request.Path=="/")
+		{
+			//Estamos intentando entrar a la home y no está MA habilotado
+			Context.Response.Redirect(Html.GetComunidad().Url + "/homeed");
+		}else
+		{
+			// Si la página no está disponible, tiramos error 404.
+			Context.Response.Redirect(Html.GetComunidad().Url + "/error404");
+		}
 	}
 	else if (disponible && !ViewBag.MA_DISPONIBLE && Html.GetIdentidadActual().IsGuestUser)
 	{
