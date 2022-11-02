@@ -36,7 +36,7 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers
             }
             catch (Exception)
             {
-                throw;
+                return BadRequest();
             }
             return Ok(datosThesaurus);
         }
@@ -64,7 +64,7 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers
             }
             catch (Exception)
             {
-                throw;
+                return BadRequest();
             }
             return Ok(idClusterRes);
         }
@@ -100,7 +100,7 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers
             }
             catch (Exception)
             {
-                throw;
+                return BadRequest();
             }
             return Ok(idClusterRes);
         }
@@ -122,7 +122,7 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers
             }
             catch (Exception)
             {
-                throw;
+                return BadRequest();
             }
         }
 
@@ -147,7 +147,7 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers
             }
             catch (Exception)
             {
-                throw;
+                return BadRequest();
             }
         }
 
@@ -169,7 +169,7 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers
             }
             catch (Exception)
             {
-                throw;
+                return BadRequest();
             }
         }
 
@@ -190,7 +190,7 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers
             }
             catch (Exception)
             {
-                throw;
+                return BadRequest();
             }
 
             return Ok(datos);
@@ -220,7 +220,7 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers
             }
             catch (Exception)
             {
-                throw;
+                return BadRequest();
             }
 
             return Ok(borrado);
@@ -244,7 +244,7 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers
             }
             catch (Exception)
             {
-                throw;
+                return BadRequest();
             }
 
             return Ok(idClusterRes);
