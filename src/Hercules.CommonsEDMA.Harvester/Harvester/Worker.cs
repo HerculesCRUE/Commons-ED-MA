@@ -34,7 +34,7 @@ namespace Harvester
             {
                 Console.WriteLine("Se ha producido un error no controlado: " + ex.Message);
                 Console.WriteLine("Pila de llamadas: " + ex.StackTrace);
-                Finalizar(); 
+                Finalizar();
             }
         }
 

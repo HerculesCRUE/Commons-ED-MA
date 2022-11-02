@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Hercules.CommonsEDMA.Journals.Models
 {
@@ -13,7 +11,7 @@ namespace Hercules.CommonsEDMA.Journals.Models
         public string issn { get; set; }
         public string eissn { get; set; }
         public string publicador { get; set; }
-        public HashSet<IndiceImpacto> indicesImpacto { get; set; }        
+        public HashSet<IndiceImpacto> indicesImpacto { get; set; }
 
         public override bool Equals(Object obj)
         {
@@ -26,7 +24,7 @@ namespace Hercules.CommonsEDMA.Journals.Models
             iguales = iguales && this.issn == compare.issn;
             iguales = iguales && this.eissn == compare.eissn;
             iguales = iguales && this.publicador == compare.publicador;
-            iguales = iguales && this.indicesImpacto.Count()== compare.indicesImpacto.Count() && this.indicesImpacto.Count() == this.indicesImpacto.Intersect(compare.indicesImpacto).Count();
+            iguales = iguales && this.indicesImpacto.Count() == compare.indicesImpacto.Count() && this.indicesImpacto.Count() == this.indicesImpacto.Intersect(compare.indicesImpacto).Count();
             return iguales;
         }
 

@@ -17,12 +17,12 @@ namespace Hercules.CommonsEDMA.Journals
 {
     internal class CargaRevistas
     {
-        private static ResourceApi mResourceApi = new ResourceApi($@"{System.AppDomain.CurrentDomain.SetupInformation.ApplicationBase}Config{Path.DirectorySeparatorChar}ConfigOAuth{Path.DirectorySeparatorChar}OAuthV3.config");
+        private static ResourceApi mResourceApi = new ResourceApi($@"{AppDomain.CurrentDomain.SetupInformation.ApplicationBase}Config{Path.DirectorySeparatorChar}ConfigOAuth{Path.DirectorySeparatorChar}OAuthV3.config");
 
-        //Número de hilos para el paralelismo.
+        // Número de hilos para el paralelismo.
         private static int NUM_HILOS = 6;
 
-        //Número máximo de intentos de subida
+        // Número máximo de intentos de subida.
         private static int MAX_INTENTOS = 10;
 
         public static void CargarRevistas()
@@ -33,8 +33,8 @@ namespace Hercules.CommonsEDMA.Journals
             // Diccionario de revistas.
             List<Journal> listaRevistas = new List<Journal>();
 
-            Console.WriteLine("1/7.- Leemos las revistas del Excel");
-            DataSet dataSet = LecturaExcel($@"{System.AppDomain.CurrentDomain.SetupInformation.ApplicationBase}Dataset{Path.DirectorySeparatorChar}{nombreExcel}.xlsx");
+            Console.WriteLine("1/7.- Leemos las revistas del Excel.");
+            DataSet dataSet = LecturaExcel($@"{AppDomain.CurrentDomain.SetupInformation.ApplicationBase}Dataset{Path.DirectorySeparatorChar}{nombreExcel}.xlsx");
 
             if (ComprobarColumnasExcel(dataSet, nombreHoja))
             {
@@ -42,8 +42,8 @@ namespace Hercules.CommonsEDMA.Journals
             }
             else
             {
-                Console.WriteLine("Se ha producido un error al comprobar el Excel");
-                throw new Exception("Se ha producido un error al comprobar el Excel");
+                Console.WriteLine("Se ha producido un error al comprobar el Excel.");
+                throw new Exception("Se ha producido un error al comprobar el Excel.");
             }
 
             // Ordenación de por Key.
@@ -54,27 +54,30 @@ namespace Hercules.CommonsEDMA.Journals
 
             // Carga/Modificación/Borrado de datos de BBDD. 
             ModificarRevistas(listaRevistas);
-            Console.WriteLine("El proceso ha terminado");
+            Console.WriteLine("El proceso ha terminado.");
         }
 
-
+        /// <summary>
+        /// Proceso de creación, borrado y modificación de revistas.
+        /// </summary>
+        /// <param name="pRevistas"></param>
         private static void ModificarRevistas(List<Journal> pRevistas)
         {
-            // Obtenemos las revistas de BBDD
+            // Obtenemos las revistas de BBDD.
             List<string> idRecursosRevistas = ObtenerIDsRevistas();
             List<Journal> dicRevistasBBDD = ObtenerRevistaPorID(idRecursosRevistas).Values.ToList();
 
             mResourceApi.ChangeOntoly("maindocument");
 
-            // Creación 
+            // Creación.
             List<Journal> revistasCargar = pRevistas.Where(x => string.IsNullOrEmpty(x.idJournal)).ToList();
             List<ComplexOntologyResource> listaRecursosCargar = new List<ComplexOntologyResource>();
             ObtenerRevistas(revistasCargar, listaRecursosCargar);
             CargarDatos(listaRecursosCargar);
 
-            Console.WriteLine($"6/7.- Comprobando borrados");
+            Console.WriteLine($"6/7.- Comprobando borrados.");
 
-            // Borrado
+            // Borrado.
             foreach (Journal journal in dicRevistasBBDD)
             {
                 if (!pRevistas.Exists(x => x.idJournal == journal.idJournal))
@@ -85,14 +88,14 @@ namespace Hercules.CommonsEDMA.Journals
                     }
                     catch
                     {
-                        // Si entra por aquí, es error de CORE.
+                        // No debería de entrar por aquí...
                     }
                 }
             }
 
-            Console.WriteLine($"7/7.- Comprobando modificaciones");
+            Console.WriteLine($"7/7.- Comprobando modificaciones.");
 
-            // Modificación            
+            // Modificación.           
             foreach (Journal journalBBDD in dicRevistasBBDD)
             {
                 Journal journalCargar = pRevistas.FirstOrDefault(x => x.idJournal == journalBBDD.idJournal);
@@ -111,13 +114,14 @@ namespace Hercules.CommonsEDMA.Journals
         /// <summary>
         /// Contruye el objeto de Revista.
         /// </summary>
-        /// <param name="pDataSet"></param>
-        /// <param name="pNombreHoja"></param>
-        /// <param name="pListaRevistas"></param>
-        /// <returns></returns>
+        /// <param name="pDataSet">Dataset.</param>
+        /// <param name="pNombreHoja">Nombre de la hoja.</param>
+        /// <param name="pListaRevistas">Lista de revistas.</param>
+        /// <returns>Listado de objetos revistas a cargar.</returns>
         private static List<Journal> GetRevistas(DataSet pDataSet, string pNombreHoja, List<Journal> pListaRevistas)
         {
-            Console.WriteLine("2/7.- Montamos los objetos a cargar");
+            Console.WriteLine("2/7.- Montamos los objetos a cargar.");
+
             // Obtención de la hoja a leer.
             DataTable tabla = pDataSet.Tables[$@"{pNombreHoja}"];
 
@@ -125,7 +129,7 @@ namespace Hercules.CommonsEDMA.Journals
             int revistasSinTitulo = 0;
             int revistasSinIdentificadores = 0;
 
-            // Ordenar DATASET
+            // Ordenar DATASET.
             DataTable tablaRevistas = pDataSet.Tables[tabla.TableName];
             tablaRevistas.DefaultView.Sort = "TITLE ASC, PUBLISHER_NAME ASC, ISSN ASC, EISSN ASC, SOURCE ASC, YEAR ASC";
             tablaRevistas = pDataSet.Tables[tabla.TableName].DefaultView.ToTable();
@@ -136,7 +140,7 @@ namespace Hercules.CommonsEDMA.Journals
             foreach (DataRow fila in tablaRevistas.Rows)
             {
                 numRevista++;
-                Console.Write($"\r3/7.- Procesando fila del excel {numRevista}/{numRevistas}");
+                Console.Write($"\r3/7.- Procesando fila del excel {numRevista}/{numRevistas}.");
 
                 // Si la revista no tiene título, no es válida.
                 if (string.IsNullOrEmpty(fila["TITLE"].ToString()))
@@ -152,7 +156,7 @@ namespace Hercules.CommonsEDMA.Journals
                     continue;
                 }
 
-                // Datos 
+                // Datos.
                 string titleAux = fila["TITLE"].ToString();
                 string editorialAux = fila["PUBLISHER_NAME"].ToString();
                 string issnAux = LimpiarIdentificador(fila["ISSN"].ToString());
@@ -226,8 +230,8 @@ namespace Hercules.CommonsEDMA.Journals
                     else
                     {
                         Categoria categoriaCargada = categorias.First(x => x.nomCategoria == categoria.nomCategoria);
-                        float rangoNuevo = (float)categoria.posicionPublicacion / (float)categoria.numCategoria;
-                        float rangoCargado = (float)categoriaCargada.posicionPublicacion / (float)categoriaCargada.numCategoria;
+                        float rangoNuevo = categoria.posicionPublicacion / (float)categoria.numCategoria;
+                        float rangoCargado = categoriaCargada.posicionPublicacion / (float)categoriaCargada.numCategoria;
 
                         if ((rangoNuevo < rangoCargado) || (rangoNuevo == rangoCargado && categoria.numCategoria > categoriaCargada.numCategoria))
                         {
@@ -238,7 +242,7 @@ namespace Hercules.CommonsEDMA.Journals
                     }
                 }
             }
-            Console.WriteLine($"\r3/7.- Procesando fila del excel {numRevista}/{numRevistas}");
+            Console.WriteLine($"\r3/7.- Procesando fila del excel {numRevista}/{numRevistas}.");
 
             return pListaRevistas;
         }
@@ -291,7 +295,7 @@ namespace Hercules.CommonsEDMA.Journals
                 categoria.nomCategoria = pFila["CATEGORY_DESCRIPTION"].ToString();
             }
 
-            // Ranking y Posición en ranking.
+            // Ranking y posición en ranking.
             if (!string.IsNullOrEmpty(pFila["RANK"].ToString()) && !string.IsNullOrEmpty(pFila["RANK_OUT_OF"].ToString()) && pFila["RANK"].ToString() != "--" && pFila["RANK_OUT_OF"].ToString() != "--")
             {
                 categoria.posicionPublicacion = Int32.Parse(pFila["RANK"].ToString());
@@ -373,7 +377,6 @@ namespace Hercules.CommonsEDMA.Journals
         /// <param name="pEditorial">Editorial.</param>
         /// <param name="pIssn">ISSN</param>
         /// <returns>Revista si la encuentra o null si no la encuentra.</returns>
-        /// <exception cref="Exception"></exception>
         private static Journal ComprobarRevista(List<Journal> pListaRevistas, string pTitulo = null, string pEditorial = null, string pIssn = null, string pEissn = null)
         {
             // No consideramos el EISSN como identificador porque diferentes revistas (con diferentes ISSN que sean tengan algún parentesco) pueden tener la misma versión online.
@@ -436,7 +439,6 @@ namespace Hercules.CommonsEDMA.Journals
         /// Control de errores.
         /// </summary>
         /// <param name="pListaRevistas">Lista de revistas.</param>
-        /// <exception cref="Exception"></exception>
         private static void ComprobarErrores(List<Journal> pListaRevistas)
         {
             #region --- Comprobar que no haya revistas con el mismo ISSN.
@@ -501,7 +503,7 @@ namespace Hercules.CommonsEDMA.Journals
             int limit = 10000;
             int offset = 0;
 
-            while(true)
+            while (true)
             {
                 // Consulta sparql.
                 string select = "SELECT * WHERE { SELECT ?revista ";
@@ -538,7 +540,7 @@ namespace Hercules.CommonsEDMA.Journals
         /// Obtiene los datos de las revistas por el id del recurso.
         /// </summary>
         /// <param name="pListaRevistasIds"></param>
-        /// <returns></returns>
+        /// <returns>Diccionario resultante.</returns>
         private static Dictionary<string, Journal> ObtenerRevistaPorID(List<string> pListaRevistasIds)
         {
             Dictionary<string, Journal> dicResultado = new Dictionary<string, Journal>();
@@ -565,7 +567,7 @@ namespace Hercules.CommonsEDMA.Journals
                                 }} ORDER BY DESC(?revista) }} LIMIT {limit} OFFSET {offset} ";
 
                     SparqlObject resultadoQueryMainDocument = mResourceApi.VirtuosoQueryMultipleGraph(selectMainDocument, whereMainDocument, new List<string>() { "maindocument", "documentformat", "referencesource", "impactindexcategory" });
-                    
+
                     if (resultadoQueryMainDocument == null || resultadoQueryMainDocument.results == null ||
                         resultadoQueryMainDocument.results.bindings == null || resultadoQueryMainDocument.results.bindings.Count == 0)
                     {
@@ -771,7 +773,7 @@ namespace Hercules.CommonsEDMA.Journals
         }
 
         /// <summary>
-        /// Método para dividir listas
+        /// Método para dividir listas.
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="pItems">Listado</param>
@@ -790,7 +792,7 @@ namespace Hercules.CommonsEDMA.Journals
         /// </summary>
         /// <param name="pDataSet">Dataset.</param>
         /// <param name="pNombreHoja">Nombre de la hoja.</param>
-        /// <returns></returns>
+        /// <returns>True si el excel está bin formado, false si no lo está.</returns>
         private static bool ComprobarColumnasExcel(DataSet pDataSet, string pNombreHoja)
         {
             DataTable tabla = pDataSet.Tables[$@"{pNombreHoja}"];
@@ -810,7 +812,7 @@ namespace Hercules.CommonsEDMA.Journals
             {
                 if (!tabla.Columns.Contains(columna))
                 {
-                    Console.WriteLine($@"{DateTime.Now} Columna: " + columna + " erronea");
+                    Console.WriteLine($@"{DateTime.Now} Columna: " + columna + " errónea.");
                     return false;
                 }
             }
@@ -854,11 +856,11 @@ namespace Hercules.CommonsEDMA.Journals
         {
             int numRevista = 0;
             int numRevistas = pListaRevistas.Count;
-            Console.Write($"4/7.- Creando objetos de carga {0}/{numRevistas}");
+            Console.Write($"4/7.- Creando objetos de carga {0}/{numRevistas}.");
             foreach (Journal revista in pListaRevistas)
             {
                 numRevista++;
-                Console.Write($"\r4/7.- Creando objetos de carga {numRevista}/{numRevistas}");
+                Console.Write($"\r4/7.- Creando objetos de carga {numRevista}/{numRevistas}.");
                 MaindocumentOntology.MainDocument revistaCargar = new MaindocumentOntology.MainDocument();
                 revistaCargar.Roh_title = revista.titulo;
                 revistaCargar.Bibo_issn = revista.issn;
@@ -898,11 +900,11 @@ namespace Hercules.CommonsEDMA.Journals
                     revistaCargar.Roh_impactIndex.Add(indiceCargar);
                 }
 
-                //Creamos el recurso.
+                // Se crea el recurso.
                 ComplexOntologyResource resource = revistaCargar.ToGnossApiResource(mResourceApi, null);
                 pListaRecursos.Add(resource);
             }
-            Console.WriteLine($"\r4/7.- Creando objetos de carga {numRevista}/{numRevistas}");
+            Console.WriteLine($"\r4/7.- Creando objetos de carga {numRevista}/{numRevistas}.");
         }
 
         /// <summary>
@@ -914,11 +916,11 @@ namespace Hercules.CommonsEDMA.Journals
             // Carga.
             int numRevista = 0;
             int numRevistas = pListaRecursosCargar.Count;
-            Console.Write($"5/7.- Cargando revistas {0}/{numRevistas}");
+            Console.Write($"5/7.- Cargando revistas {0}/{numRevistas}.");
             foreach (ComplexOntologyResource recursoCargar in pListaRecursosCargar)
             {
                 numRevista++;
-                Console.Write($"\r5/7.- Cargando revistas {numRevista}/{numRevistas}");
+                Console.Write($"\r5/7.- Cargando revistas {numRevista}/{numRevistas}.");
                 int numIntentos = 0;
                 while (!recursoCargar.Uploaded)
                 {
@@ -945,7 +947,7 @@ namespace Hercules.CommonsEDMA.Journals
                 }
             }
 
-            Console.WriteLine($"\r5/7.- Cargando revistas {numRevista}/{numRevistas}");
+            Console.WriteLine($"\r5/7.- Cargando revistas {numRevista}/{numRevistas}.");
         }
 
         /// <summary>

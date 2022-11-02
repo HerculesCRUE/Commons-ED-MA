@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace Hercules.CommonsEDMA.Journals
 {
     public class Worker : BackgroundService
-    {        
+    {
 
         /// <summary>
         /// Contructor.
