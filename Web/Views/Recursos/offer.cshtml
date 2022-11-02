@@ -190,7 +190,7 @@
                                     {
                                         contadorCat++;
                                             <li>
-                                                <a href="@Comunidad.Url/@Html.Translate("OFFER_SEARCH_URL")?roh:lineResearch=@etiqueta">
+                                                <a href="@Comunidad.Url/@Html.Translate("BUSQUEDA_URL_OFERTAS")?roh:lineResearch=@etiqueta">
                                                     <span about="@pOffer.GNOSSID" property="@pOffer.GetPropertyURI(nameof(pOffer.Roh_lineResearch))" class="texto">@etiqueta</span>
                                                 </a>
                                             </li>
@@ -199,7 +199,7 @@
                                     {
                                         contadorCat++;
                                             <li class="ocultar" style="display: none;">
-                                                <a href="@Comunidad.Url/@Html.Translate("OFFER_SEARCH_URL")?roh:lineResearch=@etiqueta">
+                                                <a href="@Comunidad.Url/@Html.Translate("BUSQUEDA_URL_OFERTAS")?roh:lineResearch=@etiqueta">
                                                     <span about="@pOffer.GNOSSID" property="@pOffer.GetPropertyURI(nameof(pOffer.Roh_lineResearch))" class="texto">@etiqueta</span>
                                                 </a>
                                             </li>
@@ -231,7 +231,7 @@
                                     {
                                         contadorAreaConocimiento++;
                                             <li>
-                                                <a href="@Comunidad.Url/@Html.Translate("OFFER_SEARCH_URL")?vivo:freetextKeyword=@descriptor">
+                                                <a href="@Comunidad.Url/@Html.Translate("BUSQUEDA_URL_OFERTAS")?vivo:freetextKeyword=@descriptor">
                                                     <span about="@pOffer.GNOSSID" property="@pOffer.GetPropertyURI(nameof(descriptor))" class="texto">@descriptor</span>
                                                 </a>
                                             </li>
@@ -240,7 +240,7 @@
                                     {
                                         contadorAreaConocimiento++;
                                             <li class="ocultar" style="display: none;">
-                                                <a href="@Comunidad.Url/@Html.Translate("OFFER_SEARCH_URL")?vivo:freetextKeyword=@descriptor">
+                                                <a href="@Comunidad.Url/@Html.Translate("BUSQUEDA_URL_OFERTAS")?vivo:freetextKeyword=@descriptor">
                                                     <span about="@pOffer.GNOSSID" property="@pOffer.GetPropertyURI(nameof(descriptor))" class="texto">@descriptor</span>
                                                 </a>
                                             </li>
@@ -283,7 +283,7 @@
                                             {
                                                 contadorAreaConocimiento++;
                                                 <li>
-                                                    <a href="@Comunidad.Url/@Html.Translate("OFFER_SEARCH_URL")?roh:sectoraplicacion@("@@@")roh:categoryNode=@concept.GNOSSID">
+                                                    <a href="@Comunidad.Url/@Html.Translate("BUSQUEDA_URL_OFERTAS")?roh:sectoraplicacion@("@@@")roh:categoryNode=@concept.GNOSSID">
                                                         <span about="@concept.GNOSSID" property="@concept.GetPropertyURI(nameof(concept.Skos_prefLabel))" class="texto">@concept.Skos_prefLabel</span>
                                                     </a>
                                                 </li>
@@ -292,7 +292,7 @@
                                             {
                                                 contadorAreaConocimiento++;
                                                 <li class="ocultar" style="display: none;">
-                                                    <a href="@Comunidad.Url/@Html.Translate("OFFER_SEARCH_URL")?roh:sectoraplicacion@("@@@")roh:categoryNode=@concept.GNOSSID">
+                                                    <a href="@Comunidad.Url/@Html.Translate("BUSQUEDA_URL_OFERTAS")?roh:sectoraplicacion@("@@@")roh:categoryNode=@concept.GNOSSID">
                                                         <span about="@concept.GNOSSID" property="@concept.GetPropertyURI(nameof(concept.Skos_prefLabel))" class="texto">@concept.Skos_prefLabel</span>
                                                     </a>
                                                 </li>
@@ -341,7 +341,7 @@
                                             {
                                                 contadorAreaConocimiento++;
                                                 <li>
-                                                    <a href="@Comunidad.Url/@Html.Translate("OFFER_SEARCH_URL")?roh:areaprocedencia@("@@@")roh:categoryNode=@area.GNOSSID">
+                                                    <a href="@Comunidad.Url/@Html.Translate("BUSQUEDA_URL_OFERTAS")?roh:areaprocedencia@("@@@")roh:categoryNode=@area.GNOSSID">
                                                         <span about="@area.GNOSSID" property="@area.GetPropertyURI(nameof(area.Skos_prefLabel))" class="texto">@area.Skos_prefLabel</span>
                                                     </a>
                                                 </li>
@@ -350,7 +350,7 @@
                                             {
                                                 contadorAreaConocimiento++;
                                                 <li class="ocultar" style="display: none;">
-                                                    <a href="@Comunidad.Url/@Html.Translate("OFFER_SEARCH_URL")?roh:areaprocedencia@("@@@")roh:categoryNode=@area.GNOSSID">
+                                                    <a href="@Comunidad.Url/@Html.Translate("BUSQUEDA_URL_OFERTAS")?roh:areaprocedencia@("@@@")roh:categoryNode=@area.GNOSSID">
                                                         <span about="@area.GNOSSID" property="@area.GetPropertyURI(nameof(area.Skos_prefLabel))" class="texto">@area.Skos_prefLabel</span>
                                                     </a>
                                                 </li>
@@ -868,7 +868,7 @@
             arg.pIdOfferId = "@pOffer.GNOSSID"
             arg.pIdGnossUser = "@currentId"
             $.post(url, arg, function (data) {
-                window.location = "@Comunidad.Url/@Html.Translate("OFERTA_URL")"
+                window.location = "@Comunidad.Url/@Html.Translate("CMS_URL_OFERTA")"
             });
         }
 

@@ -30,7 +30,7 @@
     */
 
     //Url de la pestaña para mostrarla en el Breadcrumb
-    string urlPestanya = Comunidad.Url + "/" + Html.Translate("CLUSTER_URL");
+    string urlPestanya = Comunidad.Url + "/" + Html.Translate("CMS_URL_CLUSTER");
     //Nombre o título de la pestaña para ponerlo en el Breadcrumb
     string nombrePestanya = Html.Translate("LISTADO_CLUSTERS");
 
@@ -164,7 +164,7 @@
                                         {
                                             contadorAreaConocimiento++;
                                             <li>
-                                                <a href="@Comunidad.Url/@Html.Translate("CLUSTER_URL")?roh:hasKnowledgeArea@("@@@")roh:categoryNode=@area.GNOSSID">
+                                                <a href="@Comunidad.Url/@Html.Translate("CMS_URL_CLUSTER")?roh:hasKnowledgeArea@("@@@")roh:categoryNode=@area.GNOSSID">
                                                     <span about="@area.GNOSSID" property="@area.GetPropertyURI(nameof(area.Skos_prefLabel))" class="texto">@area.Skos_prefLabel</span>
                                                 </a>
                                             </li>
@@ -173,7 +173,7 @@
                                         {
                                             contadorAreaConocimiento++;
                                             <li class="ocultar" style="display: none;">
-                                                <a href="@Comunidad.Url/@Html.Translate("CLUSTER_URL")?roh:hasKnowledgeArea@("@@@")roh:categoryNode=@area.GNOSSID">
+                                                <a href="@Comunidad.Url/@Html.Translate("CMS_URL_CLUSTER")?roh:hasKnowledgeArea@("@@@")roh:categoryNode=@area.GNOSSID">
                                                     <span about="@area.GNOSSID" property="@area.GetPropertyURI(nameof(area.Skos_prefLabel))" class="texto">@area.Skos_prefLabel</span>
                                                 </a>
                                             </li>
@@ -219,7 +219,7 @@
                                 {
                                     contadorCategorias++;
                                     <li>
-                                        <a href="@Comunidad.Url/@Html.Translate("CLUSTER_URL")?vivo:freeTextKeyword@@@@@@roh:title=@etiqueta">
+                                        <a href="@Comunidad.Url/@Html.Translate("CMS_URL_CLUSTER")?vivo:freeTextKeyword@@@@@@roh:title=@etiqueta">
                                             <span about="@pCluster.GNOSSID" property="nameOfItem" class="texto">@etiqueta</span>
                                         </a>
                                     </li>
@@ -228,7 +228,7 @@
                                 {
                                     contadorCategorias++;
                                     <li class="ocultar" style="display: none;">
-                                        <a href="@Comunidad.Url/@Html.Translate("CLUSTER_URL")?vivo:freeTextKeyword@@@@@@roh:title=@etiqueta">
+                                        <a href="@Comunidad.Url/@Html.Translate("CMS_URL_CLUSTER")?vivo:freeTextKeyword@@@@@@roh:title=@etiqueta">
                                             <span about="@pCluster.GNOSSID" property="@nameOfItem" class="texto">@etiqueta</span>
                                         </a>
                                     </li>
@@ -526,7 +526,7 @@
         var arg = {};
         arg.pIdClusterId = "@pCluster.GNOSSID"
         $.post(url, arg, function (data) {
-            window.location = "@Comunidad.Url/@Html.Translate("CLUSTER_URL")"
+            window.location = "@Comunidad.Url/@Html.Translate("CMS_URL_CLUSTER")"
         });
     }
 

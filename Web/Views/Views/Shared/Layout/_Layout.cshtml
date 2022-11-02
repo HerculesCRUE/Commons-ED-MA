@@ -258,14 +258,14 @@
 								<li class="liOtros">
                                     @{
                                         
-                                        string urlHomeED= Comunidad.Url + "/" + Html.Translate("HOMEED_URL");
+                                        string urlHomeED= Comunidad.Url + "/" + Html.Translate("CMS_URL_HOMEED");
                                     }
                                     <a href="@urlHomeED">@Html.Translate("PAGINA_INICIAL")</a>
                                 </li>
                                 }
                                 <li class="liNotificaciones nuevos">
                                     @{
-                                        string urlAlertas = Comunidad.Url + "/" + Html.Translate("ALERTAS_URL");
+                                        string urlAlertas = Comunidad.Url + "/" + Html.Translate("CMS_URL_ALERTAS");
                                     }
                                     <a href="@urlAlertas">@Html.Translate("ALERTAS")</a>
                                 </li>
@@ -273,7 +273,7 @@
 								{
 									<li class="liOtros">
 										@{
-											string urlROs = Comunidad.Url + "/" + Html.Translate("GESTIONROS_URL");
+											string urlROs = Comunidad.Url + "/" + Html.Translate("BUSQUEDA_URL_GESTIONROS");
 										}
 										<a href="@urlROs">@Html.Translate("GESTION_ROS")</a>
 									</li>
@@ -292,13 +292,13 @@
 									</li>
 									<li class="liAnadir">
 										@{
-											string urlImportarCV = Comunidad.Url + "/" + Html.Translate("IMPORTAR_CV_URL");
+											string urlImportarCV = Comunidad.Url + "/" + Html.Translate("CMS_URL_IMPORTAR_CV");
 										}
 										<a href="@urlImportarCV">@Html.Translate("IMPORTAR_CV")</a>
 									</li>
 									<li class="liOtros">
 										@{
-											string urlExportarCV = Comunidad.Url + "/" + Html.Translate("EXPORTAR_CV_URL");
+											string urlExportarCV = Comunidad.Url + "/" + Html.Translate("CMS_URL_EXPORTAR_CV");
 										}
 										<a href="@urlExportarCV">@Html.Translate("EXPORTAR_CV")</a>
 									</li>
@@ -330,7 +330,7 @@
                                 </li>
                                 <li class="liConfiguracion">
                                     @{
-                                        string urlRedes = Comunidad.Url + "/" + Html.Translate("REDES_URL");
+                                        string urlRedes = Comunidad.Url + "/" + Html.Translate("CMS_URL_REDES");
                                     }
                                     <a href="@urlRedes">@Html.Translate("CONFIGURACION")</a>
                                 </li>
@@ -346,13 +346,13 @@
 								<ul class="pmd-sidebar-nav">
 									<li class="liCluster">
 										@{
-											string urlListadoCluster = Comunidad.Url + "/" + Html.Translate("CLUSTER_URL");
+											string urlListadoCluster = Comunidad.Url + "/" + Html.Translate("CMS_URL_CLUSTER");
 										}
 										<a href="@urlListadoCluster">@Html.Translate("LISTADO_CLUSTERS")</a>
 									</li>
 									<li class="liCluster">
 										@{
-											string urlNuevoCluster = Comunidad.Url + "/" + Html.Translate("NUEVO_CLUSTER_URL");
+											string urlNuevoCluster = Comunidad.Url + "/" + Html.Translate("CMS_URL_NUEVO_CLUSTER");
 										}
 										<a href="@urlNuevoCluster">@Html.Translate("NUEVO_CLUSTER")</a>
 									</li>
@@ -368,7 +368,7 @@
 								<ul class="pmd-sidebar-nav">
 									<li class="liComentarios">
 										@{
-											string urlListadoAnotaciones = Comunidad.Url + "/" + Html.Translate("ANOTACIONES_URL");
+											string urlListadoAnotaciones = Comunidad.Url + "/" + Html.Translate("BUSQUEDA_URL_ANOTACIONES");
 										}
 										<a href="@urlListadoAnotaciones">@Html.Translate("LISTADO_ANOTACIONES")</a>
 									</li>
@@ -384,7 +384,7 @@
 								<ul class="pmd-sidebar-nav">
 									<li class="liIndicadores">
 										@{
-											string urlIndicadoresPersonales = Comunidad.Url + "/" + Html.Translate("INDICADORES_PERSONALES_URL");
+											string urlIndicadoresPersonales = Comunidad.Url + "/" + Html.Translate("CMS_URL_INDICADORES_PERSONALES");
 										}
 										<a href="@urlIndicadoresPersonales">@Html.Translate("MIS_INDICADORES")</a>
 									</li>
@@ -400,19 +400,19 @@
 								<ul class="pmd-sidebar-nav">
 									<li class="liOffer">
 										@{
-											string urlMisOfertasTecnologicas = Comunidad.Url + "/" + Html.Translate("OFERTA_URL");
+											string urlMisOfertasTecnologicas = Comunidad.Url + "/" + Html.Translate("CMS_URL_OFERTA");
 										}
 										<a href="@urlMisOfertasTecnologicas">@Html.Translate("MIS_OFERTAS_TECNOLOGICAS")</a>
 									</li>
 									<li class="liOffer">
 										@{
-											string urlCrearOfertaTecnologica = Comunidad.Url + "/" + Html.Translate("NUEVA_OFERTA_TECNOLOGICA_URL");
+											string urlCrearOfertaTecnologica = Comunidad.Url + "/" + Html.Translate("CMS_URL_NUEVA_OFERTA_TECNOLOGICA");
 										}
 										<a href="@urlCrearOfertaTecnologica">@Html.Translate("NUEVA_OFERTA_TECNOLOGICA")</a>
 									</li>
 									<li class="liOffer d-none" id="menu_is_otri">
 										@{
-											string urlOfertasTecnologicasOtri = Comunidad.Url + "/" + Html.Translate("OFERTA_TECNOLOGICA_OTRI_URL");
+											string urlOfertasTecnologicasOtri = Comunidad.Url + "/" + Html.Translate("CMS_URL_GESTION_OFERTA_TECNOLOGICA");
 										}
 										<a href="@urlOfertasTecnologicasOtri">@Html.Translate("GESTIONAR_OFERTA_TECNOLOGICA")</a>
 									</li>
@@ -793,7 +793,7 @@
                 <div class="resultados" id="resultadosMetabuscador" data-url="Search/DoMetaSearch">
                     <ul>
 						@{
-							string urlTab=Comunidad.Url+"/"+Html.Translate("PUBLICACIONES_URL");
+							string urlTab=Comunidad.Url+"/"+Html.Translate("BUSQUEDA_URL_PUBLICACIONES");
 						}
                         <li class="bloque documents" data-urlcomunidad="@urlTab">
                             <p class="title">@Html.Translate("PUBLICACIONES")</p>
@@ -801,7 +801,7 @@
                             </ul>
                         </li>
 						@{
-							urlTab=Comunidad.Url+"/"+Html.Translate("INVESTIGADORES_URL");
+							urlTab=Comunidad.Url+"/"+Html.Translate("BUSQUEDA_URL_INVESTIGADORES");
 						}
                         <li class="bloque persons" data-urlcomunidad="@urlTab">
                             <p class="title">@Html.Translate("INVESTIGADORES")</p>
@@ -809,7 +809,7 @@
                             </ul>
                         </li>
 						@{
-							urlTab=Comunidad.Url+"/"+Html.Translate("GRUPOS_URL");
+							urlTab=Comunidad.Url+"/"+Html.Translate("BUSQUEDA_URL_GRUPOS");
 						}
                         <li class="bloque groups" data-urlcomunidad="@urlTab">
                             <p class="title">@Html.Translate("GRUPOS")</p>
@@ -825,7 +825,7 @@
                             </ul>
                         </li>
 						@{
-							urlTab=Comunidad.Url+"/"+Html.Translate("ROS_URL");
+							urlTab=Comunidad.Url+"/"+Html.Translate("BUSQUEDA_URL_ROS");
 						}
                         <li class="bloque researchObjects" data-urlcomunidad="@urlTab">
                             <p class="title">@Html.Translate("RESEARCHOBJECTS")</p>

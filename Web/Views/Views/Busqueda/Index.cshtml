@@ -28,13 +28,13 @@
 
 <div class="row">
 	
-	<input type="hidden" id="PUBLICACIONES_URL" value="@Html.Translate("PUBLICACIONES_URL")"/>
-	<input type="hidden" id="PERSONAL_INVESTIGADOR_URL" value="@Html.Translate("PERSONAL_INVESTIGADOR_URL")"/>
-	<input type="hidden" id="PROYECTOS_URL" value="@Html.Translate("PROYECTOS_URL")"/>
-	<input type="hidden" id="GRUPOS_URL" value="@Html.Translate("GRUPOS_URL")"/>
-	<input type="hidden" id="RESEARCH_OBJECTS_URL" value="@Html.Translate("RESEARCH_OBJECTS_URL")"/>
-	<input type="hidden" id="OFERTAS_URL" value="@Html.Translate("OFERTAS_URL")"/>
-	<input type="hidden" id="ANOTACIONES_URL" value="@Html.Translate("ANOTACIONES_URL")"/>
+	<input type="hidden" id="PUBLICACIONES_URL" value="@Html.Translate("BUSQUEDA_URL_PUBLICACIONES")"/>
+	<input type="hidden" id="PERSONAL_INVESTIGADOR_URL" value="@Html.Translate("BUSQUEDA_URL_PERSONAL_INVESTIGADOR")"/>
+	<input type="hidden" id="PROYECTOS_URL" value="@Html.Translate("BUSQUEDA_URL_PROYECTOS")"/>
+	<input type="hidden" id="GRUPOS_URL" value="@Html.Translate("BUSQUEDA_URL_GRUPOS")"/>
+	<input type="hidden" id="RESEARCH_OBJECTS_URL" value="@Html.Translate("BUSQUEDA_URL_RESEARCH_OBJECTS")"/>
+	<input type="hidden" id="OFERTAS_URL" value="@Html.Translate("BUSQUEDA_URL_OFERTAS")"/>
+	<input type="hidden" id="ANOTACIONES_URL" value="@Html.Translate("BUSQUEDA_URL_ANOTACIONES")"/>
 
 
     <!-- Ruta de páginas -->
@@ -186,31 +186,31 @@
 			$('#inputLupa').unbind().click(function (event) {				
 				var urlPaginaActual = $('.inpt_urlPaginaActual').val();
 				var search='search';
-				if(document.location.pathname.endsWith(GetText("PUBLICACIONES_URL")))
+				if(document.location.pathname.endsWith(GetText("BUSQUEDA_URL_PUBLICACIONES")))
 				{
 					search='searcherPublications';
 				}
-				else if(document.location.pathname.endsWith(GetText("PERSONAL_INVESTIGADOR_URL")))
+				else if(document.location.pathname.endsWith(GetText("BUSQUEDA_URL_PERSONAL_INVESTIGADOR")))
 				{
 					search='searcherPersons';
 				}
-				else if(document.location.pathname.endsWith(GetText("PROYECTOS_URL")))
+				else if(document.location.pathname.endsWith(GetText("BUSQUEDA_URL_PROYECTOS")))
 				{
 					search='searcherProjects';
 				}
-				else if(document.location.pathname.endsWith(GetText("GRUPOS_URL")))
+				else if(document.location.pathname.endsWith(GetText("BUSQUEDA_URL_GRUPOS")))
 				{
 					search='searcherGroups';
 				}
-				else if(document.location.pathname.endsWith(GetText("RESEARCH_OBJECTS_URL")))
+				else if(document.location.pathname.endsWith(GetText("BUSQUEDA_URL_RESEARCH_OBJECTS")))
 				{
 					search='searcherPublications';
 				}
-				else if(document.location.pathname.endsWith(GetText("OFERTAS_URL")))
+				else if(document.location.pathname.endsWith(GetText("BUSQUEDA_URL_OFERTAS")))
 				{
 					search='searcherOffers';
 				}
-				else if(document.location.pathname.endsWith(GetText("ANOTACIONES_URL")))
+				else if(document.location.pathname.endsWith(GetText("BUSQUEDA_URL_ANOTACIONES")))
 				{
 					search='searcherAnnotations';
 				}

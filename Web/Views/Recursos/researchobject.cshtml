@@ -305,7 +305,7 @@
                                     {
                                         contadorAreaConocimiento++;
                                         <li>
-                                            <a href="@Comunidad.Url/@Html.Translate("ROS_URL")?roh:hasKnowledgeArea@("@@@")roh:categoryNode=@concept.GNOSSID">
+                                            <a href="@Comunidad.Url/@Html.Translate("BUSQUEDA_URL_RESEARCH_OBJECTS")?roh:hasKnowledgeArea@("@@@")roh:categoryNode=@concept.GNOSSID">
                                                 <span about="@concept.GNOSSID" property="@concept.GetPropertyURI(nameof(concept.Skos_prefLabel))" class="texto">@concept.Skos_prefLabel</span>
                                             </a>
                                         </li>
@@ -314,7 +314,7 @@
                                     {
                                         contadorAreaConocimiento++;
                                         <li class="ocultar" style="display: none;">
-                                            <a href="@Comunidad.Url/@Html.Translate("ROS_URL")?roh:hasKnowledgeArea@("@@@")roh:categoryNode=@concept.GNOSSID">
+                                            <a href="@Comunidad.Url/@Html.Translate("BUSQUEDA_URL_RESEARCH_OBJECTS")?roh:hasKnowledgeArea@("@@@")roh:categoryNode=@concept.GNOSSID">
                                                 <span about="@concept.GNOSSID" property="@concept.GetPropertyURI(nameof(concept.Skos_prefLabel))" class="texto">@concept.Skos_prefLabel</span>
                                             </a>
                                         </li>

@@ -33,7 +33,7 @@
         </li>
         <li>
             @{
-                string urlProyectos = Comunidad.Url + "/" + Html.Translate("GRUPOS_URL");
+                string urlProyectos = Comunidad.Url + "/" + Html.Translate("BUSQUEDA_URL_GRUPOS");
             }
             <a href="@urlProyectos">Grupos de investigación</a>
         </li>
@@ -180,7 +180,7 @@
                                         foreach (string linea in pGroup.Roh_lineResearch)
                                         {
                                             <li>
-                                                <a href="@Comunidad.Url/@Html.Translate("GRUPOS_URL")?roh:lineResearch=@linea">@linea</a>
+                                                <a href="@Comunidad.Url/@Html.Translate("BUSQUEDA_URL_GRUPOS")?roh:lineResearch=@linea">@linea</a>
                                             </li>
                                         }
                                     }
@@ -247,7 +247,7 @@
                                                 {
                                                     contadorAreaConocimiento++;
                                                     <li>
-                                                        <a href="@Comunidad.Url/@Html.Translate("GRUPOS_URL")?roh:hasKnowledgeArea@("@@@")roh:categoryNode=@concept.GNOSSID">
+                                                        <a href="@Comunidad.Url/@Html.Translate("BUSQUEDA_URL_GRUPOS")?roh:hasKnowledgeArea@("@@@")roh:categoryNode=@concept.GNOSSID">
                                                             <span about="@concept.GNOSSID" property="@concept.GetPropertyURI(nameof(concept.Skos_prefLabel))" class="texto">@concept.Skos_prefLabel</span>
                                                         </a>
                                                     </li>
@@ -256,7 +256,7 @@
                                                 {
                                                     contadorAreaConocimiento++;
                                                     <li class="ocultar" style="display: none;">
-                                                        <a href="@Comunidad.Url/@Html.Translate("GRUPOS_URL")?roh:hasKnowledgeArea@("@@@")roh:categoryNode=@concept.GNOSSID">
+                                                        <a href="@Comunidad.Url/@Html.Translate("BUSQUEDA_URL_GRUPOS")?roh:hasKnowledgeArea@("@@@")roh:categoryNode=@concept.GNOSSID">
                                                             <span about="@concept.GNOSSID" property="@concept.GetPropertyURI(nameof(concept.Skos_prefLabel))" class="texto">@concept.Skos_prefLabel</span>
                                                         </a>
                                                     </li>

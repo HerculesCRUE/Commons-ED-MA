@@ -74,7 +74,7 @@
                                 <div id="navegacionClonado" class="navegacion clonado">
                                     <ul class="pmd-sidebar-nav" data-url="@Html.GetBaseUrl()@Html.GetUrlPagina()">
                                         @{
-                                            string urlIndicadores=Comunidad.Url+"/"+Html.Translate("URL_PAGINA_INDICADORES");
+                                            string urlIndicadores=Comunidad.Url+"/"+Html.Translate("CMS_URL_INDICADORES");
                                         }
 										@if(MA_HABILITADO)
 										{
@@ -107,7 +107,7 @@
                                             <a href="@Comunidad.Url">@Html.Translate("INICIO")</a>
                                         </li>
                                         @{
-                                            string urlIndicadores=Comunidad.Url+"/"+Html.Translate("URL_PAGINA_INDICADORES");
+                                            string urlIndicadores=Comunidad.Url+"/"+Html.Translate("CMS_URL_INDICADORES");
                                         }
                                         <li class="liIndicadores">
                                             <a href="@urlIndicadores">
