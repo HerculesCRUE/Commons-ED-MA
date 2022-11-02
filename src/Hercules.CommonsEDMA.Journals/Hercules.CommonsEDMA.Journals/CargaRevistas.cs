@@ -17,13 +17,13 @@ namespace Hercules.CommonsEDMA.Journals
 {
     internal class CargaRevistas
     {
-        private static ResourceApi mResourceApi = new ResourceApi($@"{AppDomain.CurrentDomain.SetupInformation.ApplicationBase}Config{Path.DirectorySeparatorChar}ConfigOAuth{Path.DirectorySeparatorChar}OAuthV3.config");
+        private static readonly ResourceApi mResourceApi = new($@"{AppDomain.CurrentDomain.SetupInformation.ApplicationBase}Config{Path.DirectorySeparatorChar}ConfigOAuth{Path.DirectorySeparatorChar}OAuthV3.config");
 
         // Número de hilos para el paralelismo.
-        private static int NUM_HILOS = 6;
+        private static readonly int NUM_HILOS = 6;
 
         // Número máximo de intentos de subida.
-        private static int MAX_INTENTOS = 10;
+        private static readonly int MAX_INTENTOS = 10;
 
         public static void CargarRevistas()
         {
@@ -31,7 +31,7 @@ namespace Hercules.CommonsEDMA.Journals
             string nombreHoja = "revistas";
 
             // Diccionario de revistas.
-            List<Journal> listaRevistas = new List<Journal>();
+            List<Journal> listaRevistas = new();
 
             Console.WriteLine("1/7.- Leemos las revistas del Excel.");
             DataSet dataSet = LecturaExcel($@"{AppDomain.CurrentDomain.SetupInformation.ApplicationBase}Dataset{Path.DirectorySeparatorChar}{nombreExcel}.xlsx");
@@ -71,7 +71,7 @@ namespace Hercules.CommonsEDMA.Journals
 
             // Creación.
             List<Journal> revistasCargar = pRevistas.Where(x => string.IsNullOrEmpty(x.idJournal)).ToList();
-            List<ComplexOntologyResource> listaRecursosCargar = new List<ComplexOntologyResource>();
+            List<ComplexOntologyResource> listaRecursosCargar = new();
             ObtenerRevistas(revistasCargar, listaRecursosCargar);
             CargarDatos(listaRecursosCargar);
 
@@ -103,8 +103,8 @@ namespace Hercules.CommonsEDMA.Journals
                 {
                     if (!journalBBDD.Equals(journalCargar))
                     {
-                        List<ComplexOntologyResource> listaRecursosModificar = new List<ComplexOntologyResource>();
-                        ObtenerRevistas(new List<Journal>() { journalCargar }, listaRecursosModificar);
+                        List<ComplexOntologyResource> listaRecursosModificar = new();
+                        ObtenerRevistas(new() { journalCargar }, listaRecursosModificar);
                         ModificarDatos(listaRecursosCargar);
                     }
                 }
@@ -172,7 +172,7 @@ namespace Hercules.CommonsEDMA.Journals
 
                 if (revista == null)
                 {
-                    revista = new Journal();
+                    revista = new();
                     revista.indicesImpacto = new HashSet<IndiceImpacto>();
                     pListaRevistas.Add(revista);
                 }
@@ -255,8 +255,8 @@ namespace Hercules.CommonsEDMA.Journals
         /// <returns>Índice de impacto.</returns>
         private static IndiceImpacto CrearIndiceImpacto(DataRow pFila, int pAnyo)
         {
-            IndiceImpacto indiceImpacto = new IndiceImpacto();
-            indiceImpacto.categorias = new HashSet<Categoria>();
+            IndiceImpacto indiceImpacto = new();
+            indiceImpacto.categorias = new();
 
             // Fuente.
             indiceImpacto.fuente = pFila["SOURCE"].ToString();
@@ -281,7 +281,7 @@ namespace Hercules.CommonsEDMA.Journals
         /// <returns>Categoría.</returns>
         private static Categoria CrearCategoria(DataRow pFila, int pAnyo)
         {
-            Categoria categoria = new Categoria();
+            Categoria categoria = new();
 
             // Fuente.
             categoria.fuente = pFila["SOURCE"].ToString();
@@ -339,7 +339,7 @@ namespace Hercules.CommonsEDMA.Journals
             }
 
             // Comprobar si el ISSN/EISSN está bien formado.
-            if (pId.Length == 9 && pId.Contains("-") && pId.Split("-")[0].Length == 4 && pId.Split("-")[1].Length == 4)
+            if (pId.Length == 9 && pId.Contains('-') && pId.Split('-')[0].Length == 4 && pId.Split('-')[1].Length == 4)
             {
                 return pId;
             }
@@ -442,7 +442,7 @@ namespace Hercules.CommonsEDMA.Journals
         private static void ComprobarErrores(List<Journal> pListaRevistas)
         {
             #region --- Comprobar que no haya revistas con el mismo ISSN.
-            Dictionary<string, Journal> issns = new Dictionary<string, Journal>();
+            Dictionary<string, Journal> issns = new();
             foreach (Journal revista in pListaRevistas)
             {
                 if (!string.IsNullOrEmpty(revista.issn))
@@ -460,7 +460,7 @@ namespace Hercules.CommonsEDMA.Journals
             #endregion
 
             #region --- Comprobar que no haya revistas con el mismo título y editorial.
-            Dictionary<string, Journal> titulos = new Dictionary<string, Journal>();
+            Dictionary<string, Journal> titulos = new();
             foreach (Journal revista in pListaRevistas)
             {
                 try
@@ -475,7 +475,7 @@ namespace Hercules.CommonsEDMA.Journals
             #endregion
 
             #region --- Comprobar que no haya revistas con el mismo título y EISSN.
-            Dictionary<string, Journal> eissns = new Dictionary<string, Journal>();
+            Dictionary<string, Journal> eissns = new();
             foreach (Journal revista in pListaRevistas)
             {
                 if (!string.IsNullOrEmpty(revista.eissn))
@@ -499,7 +499,7 @@ namespace Hercules.CommonsEDMA.Journals
         /// <returns>Lista con los identificadores.</returns>
         private static List<string> ObtenerIDsRevistas()
         {
-            List<string> idsRecursos = new List<string>();
+            List<string> idsRecursos = new();
             int limit = 10000;
             int offset = 0;
 
@@ -543,7 +543,7 @@ namespace Hercules.CommonsEDMA.Journals
         /// <returns>Diccionario resultante.</returns>
         private static Dictionary<string, Journal> ObtenerRevistaPorID(List<string> pListaRevistasIds)
         {
-            Dictionary<string, Journal> dicResultado = new Dictionary<string, Journal>();
+            Dictionary<string, Journal> dicResultado = new();
             List<List<string>> listaSplit = SplitList(pListaRevistasIds, 1000).ToList();
 
             #region --- MainDocument
@@ -598,7 +598,7 @@ namespace Hercules.CommonsEDMA.Journals
                         }
 
                         // Creación del objeto.
-                        Journal revista = new Journal();
+                        Journal revista = new();
                         revista.idJournal = revistaId;
                         revista.titulo = titulo;
                         revista.issn = issn;
@@ -802,9 +802,19 @@ namespace Hercules.CommonsEDMA.Journals
                 return false;
             }
 
-            List<string> listadoComprobacion = new List<string>()
+            List<string> listadoComprobacion = new()
             {
-                "TITLE","PUBLISHER_NAME","ISSN","EISSN","IMPACT_FACTOR","CATEGORY_DESCRIPTION","RANK","RANK_OUT_OF","QUARTILE_RANK","SOURCE","YEAR"
+                "TITLE",
+                "PUBLISHER_NAME",
+                "ISSN",
+                "EISSN",
+                "IMPACT_FACTOR",
+                "CATEGORY_DESCRIPTION",
+                "RANK",
+                "RANK_OUT_OF",
+                "QUARTILE_RANK",
+                "SOURCE",
+                "YEAR"
             };
 
             // Comprobación de los nombres de las columnas. 
@@ -827,7 +837,7 @@ namespace Hercules.CommonsEDMA.Journals
         /// <returns></returns>
         private static DataSet LecturaExcel(string pRuta)
         {
-            DataSet dataSet = new DataSet();
+            DataSet dataSet = new();
             Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
             using (var stream = File.Open(pRuta, FileMode.Open, FileAccess.Read))
             {
@@ -861,7 +871,7 @@ namespace Hercules.CommonsEDMA.Journals
             {
                 numRevista++;
                 Console.Write($"\r4/7.- Creando objetos de carga {numRevista}/{numRevistas}.");
-                MaindocumentOntology.MainDocument revistaCargar = new MaindocumentOntology.MainDocument();
+                MaindocumentOntology.MainDocument revistaCargar = new();
                 revistaCargar.Roh_title = revista.titulo;
                 revistaCargar.Bibo_issn = revista.issn;
                 revistaCargar.Bibo_eissn = revista.eissn;
@@ -870,7 +880,7 @@ namespace Hercules.CommonsEDMA.Journals
                 revistaCargar.Roh_impactIndex = new List<MaindocumentOntology.ImpactIndex>();
                 foreach (IndiceImpacto indice in revista.indicesImpacto)
                 {
-                    MaindocumentOntology.ImpactIndex indiceCargar = new MaindocumentOntology.ImpactIndex();
+                    MaindocumentOntology.ImpactIndex indiceCargar = new();
                     switch (indice.fuente)
                     {
                         case "wos":
@@ -889,7 +899,7 @@ namespace Hercules.CommonsEDMA.Journals
                     indiceCargar.Roh_impactCategory = new List<MaindocumentOntology.ImpactCategory>();
                     foreach (Categoria categoria in indice.categorias)
                     {
-                        MaindocumentOntology.ImpactCategory categoriaCargar = new MaindocumentOntology.ImpactCategory();
+                        MaindocumentOntology.ImpactCategory categoriaCargar = new();
                         categoriaCargar.Roh_title = categoria.nomCategoria;
                         categoriaCargar.Roh_publicationPosition = categoria.posicionPublicacion;
                         categoriaCargar.Roh_journalNumberInCat = categoria.numCategoria;
