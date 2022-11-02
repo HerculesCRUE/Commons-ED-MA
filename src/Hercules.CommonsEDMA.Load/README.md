@@ -41,9 +41,7 @@ También hay que guardar el excel de las taxonomias (Hércules-CommonsEDMA_Taxon
 
 Dependencias
 ============
-- EnterpriseLibrary.Data.NetCore: v6.3.2
 - ExcelDataReader: v3.6.0
 - ExcelDataReader.DataSet: v3.6.0
-- GnossApiWrapper.NetCore: v1.0.8
-- Newtonsoft.Json: v13.0.1
+- GnossApiWrapper.NetCore: v6.0.6
 - System.Text.Encoding.CodePages: v6.0.0
