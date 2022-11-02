@@ -22,11 +22,8 @@ using System.Xml.Linq;
 namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
 {
     public class AccionesProyecto : GnossGetMainResourceApiDataBase
-    {
-        #region --- Constantes
-        private static string COLOR_GRAFICAS_HORIZONTAL = "#6cafe3"; //#1177ff
-        #endregion
-
+    {        
+        private const string COLOR_GRAFICAS_HORIZONTAL = "#6cafe3";
 
         /// <summary>
         /// Obtiene los datos para crear la gráfico de los proyectos por año.
@@ -196,7 +193,6 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
             #region Gráfico de sectores
             {
                 Dictionary<string, KeyValuePair<string, int>> dicAmbitos = new Dictionary<string, KeyValuePair<string, int>>();
-                Dictionary<string, KeyValuePair<string, int>> dicAmbitosOrdered = new Dictionary<string, KeyValuePair<string, int>>();
 
                 SparqlObject resultadoQuery = null;
                 // Lista a ordenar: Internacional, Unión Europea, Nacional, Autonómica/Regional, Otros/Propio
@@ -227,9 +223,6 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
                         }
                     }
                 }
-
-
-
                 #endregion
 
                 // Se ordenan los datos
@@ -337,25 +330,24 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
         {
             string idGrafoBusqueda = UtilidadesAPI.ObtenerIdBusqueda(resourceApi, pProyecto);
             Dictionary<string, int> dicResultados = new Dictionary<string, int>();
-            SparqlObject resultadoQuery = null;
-            StringBuilder select = new StringBuilder(), where = new StringBuilder();
+            
 
             // Consulta sparql.
-            select.Append(mPrefijos);
-            select.Append("SELECT COUNT(DISTINCT ?persona) AS ?NumParticipantes COUNT(DISTINCT ?documento) AS ?NumPublicaciones COUNT(DISTINCT ?nombreCategoria) AS ?NumCategorias ");
-            where.Append("WHERE {{ "); // Total de Participantes.
-            where.Append($@"<{idGrafoBusqueda}> vivo:relates ?relacion. ");
-            where.Append("?relacion <http://www.w3.org/1999/02/22-rdf-syntax-ns#member> ?persona. ");
-            where.Append("} UNION { "); // Total Publicaciones.
-            where.Append($@"?documento roh:project <{idGrafoBusqueda}>. ");
-            where.Append("} UNION { "); // Total Categorías.
-            where.Append($@"?documento roh:project <{idGrafoBusqueda}>. ");
-            where.Append("?documento roh:hasKnowledgeArea ?area. ");
-            where.Append("?area roh:categoryNode ?categoria. ");
-            where.Append("?categoria skos:prefLabel ?nombreCategoria. ");
-            where.Append("}} ");
+            string select = mPrefijos;
+            select += "SELECT COUNT(DISTINCT ?persona) AS ?NumParticipantes COUNT(DISTINCT ?documento) AS ?NumPublicaciones COUNT(DISTINCT ?nombreCategoria) AS ?NumCategorias ";
+            string where = $@"WHERE {{ 
+                                <{idGrafoBusqueda}> vivo:relates ?relacion. 
+                                ?relacion <http://www.w3.org/1999/02/22-rdf-syntax-ns#member> ?persona.
+                            }} UNION {{ 
+                                ?documento roh:project <{idGrafoBusqueda}>.
+                            }} UNION {{ 
+                                ?documento roh:project <{idGrafoBusqueda}>. 
+                                ?documento roh:hasKnowledgeArea ?area.
+                                ?area roh:categoryNode ?categoria.
+                                ?categoria skos:prefLabel ?nombreCategoria.
+                            }}";
 
-            resultadoQuery = resourceApi.VirtuosoQuery(select.ToString(), where.ToString(), idComunidad);
+            SparqlObject resultadoQuery = resourceApi.VirtuosoQuery(select, where, idComunidad);
 
             if (resultadoQuery != null && resultadoQuery.results != null && resultadoQuery.results.bindings != null && resultadoQuery.results.bindings.Count > 0)
             {
@@ -524,7 +516,7 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
                     {
                         string select = "SELECT ?person group_concat(distinct ?document;separator=\",\") as ?documents";
                         string where = $@"
-                    WHERE {{ 
+                        WHERE {{ 
                             ?document a 'document'.
                             ?document <http://purl.org/ontology/bibo/authorList> ?authorList.
                             ?authorList <http://www.w3.org/1999/02/22-rdf-syntax-ns#member> ?person.
@@ -939,7 +931,6 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
         {
             string idGrafoBusqueda = UtilidadesAPI.ObtenerIdBusqueda(resourceApi, pIdProyecto);
             Dictionary<string, int> dicResultados = new Dictionary<string, int>();
-            SparqlObject resultadoQuery = null;
             StringBuilder select = new StringBuilder(), where = new StringBuilder();
 
             // Consulta sparql.
@@ -962,7 +953,7 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
             where.Append("} ");
             where.Append("GROUP BY (?nombreCategoria) ORDER BY DESC (?numCategorias) ");
 
-            resultadoQuery = resourceApi.VirtuosoQuery(select.ToString(), where.ToString(), idComunidad);
+            SparqlObject resultadoQuery = resourceApi.VirtuosoQuery(select.ToString(), where.ToString(), idComunidad);
 
             if (resultadoQuery != null && resultadoQuery.results != null && resultadoQuery.results.bindings != null && resultadoQuery.results.bindings.Count > 0)
             {
@@ -993,9 +984,9 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
             Models.Graficas.DataGraficaAreasTags.Data data = new Models.Graficas.DataGraficaAreasTags.Data(dicResultadosPorcentaje.Keys.ToList(), new List<Datasets> { datasets });
 
             // Máximo.
-            x xAxes = new x(new Models.Graficas.DataGraficaAreasTags.Ticks(0, 100), new ScaleLabel(true, "Percentage"));
+            x xAxes = new x(new Ticks(0, 100), new ScaleLabel(true, "Percentage"));
 
-            Models.Graficas.DataGraficaAreasTags.Options options = new Models.Graficas.DataGraficaAreasTags.Options("y", new Plugins(null, new Legend(false)), new Models.Graficas.DataGraficaAreasTags.Scales(xAxes));
+            Options options = new Options("y", new Plugins(null, new Legend(false)), new Scales(xAxes));
             DataGraficaAreasTags dataGrafica = new DataGraficaAreasTags("bar", data, options);
 
             return dataGrafica;

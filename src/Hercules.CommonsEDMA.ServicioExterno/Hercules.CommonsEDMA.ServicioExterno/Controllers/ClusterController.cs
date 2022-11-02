@@ -16,7 +16,6 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers
     [EnableCors("_myAllowSpecificOrigins")]
     public class ClusterController : ControllerBase
     {
-        // GET: ClusterController
         /// <summary>
         /// Controlador para obtener los thesaurus usados en el cluster.
         /// </summary>

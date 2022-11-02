@@ -31,16 +31,9 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers
         [HttpGet("GetSimilaritiesDocument")]
         public IActionResult GetSimilaritiesDocument(string pIdDocument)
         {
-            List<KeyValuePair<Guid, Dictionary<string, float>>> listID = new List<KeyValuePair<Guid, Dictionary<string, float>>>();
-            try
-            {
-                AccionesSimilarity accionesSimilarity = new AccionesSimilarity();
-                listID = accionesSimilarity.GetSimilarities(pIdDocument, _Configuracion, "research_paper");
-            }
-            catch (Exception)
-            {
-                throw;
-            }
+            AccionesSimilarity accionesSimilarity = new AccionesSimilarity();
+            List<KeyValuePair<Guid, Dictionary<string, float>>> listID = accionesSimilarity.GetSimilarities(pIdDocument, _Configuracion, "research_paper");
+
             return Ok(listID);
         }
 
@@ -52,17 +45,9 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers
         [HttpGet("GetSimilaritiesResearchObject")]
         public IActionResult GetSimilaritiesResearchObject(string pIdRO)
         {
-            List<KeyValuePair<Guid, Dictionary<string, float>>> listID = new List<KeyValuePair<Guid, Dictionary<string, float>>>();
+            AccionesSimilarity accionesSimilarity = new AccionesSimilarity();
+            List<KeyValuePair<Guid, Dictionary<string, float>>> listID = accionesSimilarity.GetSimilarities(pIdRO, _Configuracion, "code_project");
 
-            try
-            {
-                AccionesSimilarity accionesSimilarity = new AccionesSimilarity();
-                listID = accionesSimilarity.GetSimilarities(pIdRO, _Configuracion, "code_project");
-            }
-            catch (Exception)
-            {
-                throw;
-            }
             return Ok(listID);
         }
     }

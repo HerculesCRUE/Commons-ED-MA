@@ -22,17 +22,8 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers
         [HttpGet("DoMetaSearch")]
         public IActionResult DoMetaSearch(string stringSearch, string lang = "es")
         {
-            Dictionary<string, KeyValuePair<bool, List<ObjectSearch>>> resultBusqueda = null; 
-
-            try
-            {
-                AccionesMetaBusqueda accionBusqueda = new AccionesMetaBusqueda();
-                resultBusqueda = accionBusqueda.Busqueda(stringSearch, lang);
-            }
-            catch (Exception)
-            {
-                throw;
-            }
+            AccionesMetaBusqueda accionBusqueda = new AccionesMetaBusqueda();
+            Dictionary<string, KeyValuePair<bool, List<ObjectSearch>>> resultBusqueda = accionBusqueda.Busqueda(stringSearch, lang);
 
             return Ok(resultBusqueda);
         }
@@ -44,17 +35,8 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers
         [HttpGet("GetNumItems")]
         public IActionResult GetNumItems()
         {
-            Dictionary<string, int> result = null;
-
-            try
-            {
-                AccionesMetaBusqueda accionBusqueda = new AccionesMetaBusqueda();
-                result = accionBusqueda.GetNumItems();
-            }
-            catch (Exception)
-            {
-                throw;
-            }
+            AccionesMetaBusqueda accionBusqueda = new AccionesMetaBusqueda();
+            Dictionary<string, int> result = accionBusqueda.GetNumItems();
 
             return Ok(result);
         }
