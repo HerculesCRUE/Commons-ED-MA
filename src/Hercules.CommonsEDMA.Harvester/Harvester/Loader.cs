@@ -29,6 +29,7 @@ namespace Harvester
 {
     public class Loader
     {
+        
         private static Harvester harvester;
         private static IHarvesterServices harvesterServices = new();
         private static ReadConfig _Config;
@@ -628,7 +629,7 @@ namespace Harvester
                                         }}";
             SparqlObject resultado = mResourceApi.VirtuosoQuery(select, where, "curriculumvitae");
 
-            Dictionary<Guid, List<RemoveTriples>> triplesEliminar = new ();
+            Dictionary<Guid, List<RemoveTriples>> triplesEliminar = new();
             foreach (var fila in resultado.results.bindings)
             {
                 Guid cv = mResourceApi.GetShortGuid(fila["cv"].value);
