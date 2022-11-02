@@ -1,5 +1,10 @@
 @*[security|||group|||hercules]*@
 @using System.Reflection;
+@{
+    ViewBag.MA_DISPONIBLE = true;
+    ViewBag.ED_DISPONIBLE = false;
+    @Html.PartialView("../Shared/_ComprobacionEDMA");
+}
 @model ResourceViewModel
 @{
     ResourceModel FichaDocumento = Model.Resource;

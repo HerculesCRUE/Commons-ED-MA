@@ -255,9 +255,15 @@
                             <ul class="pmd-sidebar-nav">
 								<li class="liOtros">
                                     @{
-                                        string urlHomeED = Comunidad.Url + "/" + Html.Translate("HOMEED_URL");
+                                        
+                                        string urlHome;
+                                        if(MA_HABILITADO){
+                                            urlHome = Comunidad.Url;
+                                        }else{
+                                            urlHome = Comunidad.Url + "/" + Html.Translate("HOMEED_URL");
+                                        }
                                     }
-                                    <a href="@urlHomeED">@Html.Translate("PAGINA_INICIAL")</a>
+                                    <a href="@urlHome">@Html.Translate("PAGINA_INICIAL")</a>
                                 </li>
                                 <li class="liNotificaciones nuevos">
                                     @{
