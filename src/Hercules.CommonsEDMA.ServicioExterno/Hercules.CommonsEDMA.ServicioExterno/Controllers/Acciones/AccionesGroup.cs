@@ -35,11 +35,11 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
 
 
             #region Cargamos nodos
-            {
-                //Miembros
-                string select = $@"{mPrefijos}
+
+            //Miembros
+            string select = $@"{mPrefijos}
                                 select distinct ?person ?nombre ?ip";
-                string where = $@"
+            string where = $@"
                 WHERE {{ 
                         {filtrosPersonas}
                         ?person a 'person'.
@@ -66,27 +66,27 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
                         
                 }}";
 
-                SparqlObject resultadoQuery = resourceApi.VirtuosoQuery(select, where, idComunidad);
-                if (resultadoQuery != null && resultadoQuery.results != null && resultadoQuery.results.bindings != null && resultadoQuery.results.bindings.Count > 0)
+            SparqlObject resultadoQuery = resourceApi.VirtuosoQuery(select, where, idComunidad);
+            if (resultadoQuery != null && resultadoQuery.results != null && resultadoQuery.results.bindings != null && resultadoQuery.results.bindings.Count > 0)
+            {
+                foreach (Dictionary<string, SparqlObject.Data> fila in resultadoQuery.results.bindings)
                 {
-                    foreach (Dictionary<string, SparqlObject.Data> fila in resultadoQuery.results.bindings)
+                    if (!dicNodos.ContainsKey(fila["person"].value))
                     {
-                        if (!dicNodos.ContainsKey(fila["person"].value))
-                        {
-                            dicNodos.Add(fila["person"].value, fila["nombre"].value);
-                        }
-                        if (fila.ContainsKey("ip") && (fila["ip"].value == "1" || fila["ip"].value == "true"))
-                        {
-                            ip.Add(fila["person"].value);
-                        }
-                        else
-                        {
-                            miembros.Add(fila["person"].value);
-                        }
+                        dicNodos.Add(fila["person"].value, fila["nombre"].value);
+                    }
+                    if (fila.ContainsKey("ip") && (fila["ip"].value == "1" || fila["ip"].value == "true"))
+                    {
+                        ip.Add(fila["person"].value);
+                    }
+                    else
+                    {
+                        miembros.Add(fila["person"].value);
                     }
                 }
-                miembros.ExceptWith(ip);
             }
+            miembros.ExceptWith(ip);
+
 
 
             //Grupo
@@ -271,7 +271,7 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
 
                 DataQueryRelaciones dataQueryRelaciones = (dicRelaciones[group].FirstOrDefault(x => x.nombreRelacion == relacionDoc));
                 if (dataQueryRelaciones == null)
-                {                    
+                {
                     dataQueryRelaciones = new DataQueryRelaciones(relacionDoc, new List<Datos>() { new Datos(person, numRelaciones) });
                     dicRelaciones[group].Add(dataQueryRelaciones);
                 }
@@ -338,60 +338,14 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
 
 
             #region Cargamos nodos
-            {
-                //Miembros
-                string select = $@"{mPrefijos}
-                                select distinct ?person ?nombre";
-                string where = $@"
-                WHERE {{ 
-                        {filtrosPersonas}
-                        ?person a 'person'.
-                        ?person foaf:name ?nombre.
-                }}";
+            //Miembros
+            CargaNodosColaboradores(filtrosPersonas, colaboradores, dicNodos);
 
-                SparqlObject resultadoQuery = resourceApi.VirtuosoQuery(select, where, idComunidad);
-                if (resultadoQuery != null && resultadoQuery.results != null && resultadoQuery.results.bindings != null && resultadoQuery.results.bindings.Count > 0)
-                {
-                    foreach (Dictionary<string, SparqlObject.Data> fila in resultadoQuery.results.bindings)
-                    {
-                        if (!dicNodos.ContainsKey(fila["person"].value))
-                        {
-                            dicNodos.Add(fila["person"].value, fila["nombre"].value);
-                        }
-                        colaboradores.Add(fila["person"].value);
-                    }
-                }
-            }
-            {
-                //Grupo
-                string select = $@"{mPrefijos}
-                                select distinct ?nombre ?firstName";
-                string where = $@"
-                WHERE {{ 
-                      OPTIONAL{{<http://gnoss/{pIdGroup}> foaf:firstName ?firstName.}}
-                      OPTIONAL{{<http://gnoss/{pIdGroup}> roh:title ?nombre.}}
-                }}";
+            //Grupo
+            GetGruposColaboradores(pIdGroup, dicNodos);
 
-                string nombreGrupo = "";
-                try
-                {
-                    var bindingRes = resourceApi.VirtuosoQuery(select, where, idComunidad).results.bindings;
-                    if (bindingRes.First().ContainsKey("nombre") && bindingRes.First()["nombre"].value != "")
-                    {
-                        nombreGrupo = bindingRes.First()["nombre"].value;
-                    }
-                    else if (bindingRes.First().ContainsKey("firstName"))
-                    {
-                        nombreGrupo = bindingRes.First()["firstName"].value;
-                    }
-                }
-                catch (Exception ex)
-                {
-                    resourceApi.Log.Error("Excepcion: " + ex.Message);
-                }
-                dicNodos.Add("http://gnoss/" + pIdGroup, nombreGrupo);
-            }
             #endregion
+
             if (colaboradores.Count > 0)
             {
                 #region Relaciones con el grupo
@@ -635,6 +589,63 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
             }
             return items;
         }
+
+        public void CargaNodosColaboradores(string filtrosPersonas, HashSet<string> colaboradores, Dictionary<string, string> dicNodos)
+        {
+            string select = $@"{mPrefijos}
+                                select distinct ?person ?nombre";
+            string where = $@"
+                WHERE {{ 
+                        {filtrosPersonas}
+                        ?person a 'person'.
+                        ?person foaf:name ?nombre.
+                }}";
+
+            SparqlObject resultadoQuery = resourceApi.VirtuosoQuery(select, where, idComunidad);
+            if (resultadoQuery != null && resultadoQuery.results != null && resultadoQuery.results.bindings != null && resultadoQuery.results.bindings.Count > 0)
+            {
+                foreach (Dictionary<string, SparqlObject.Data> fila in resultadoQuery.results.bindings)
+                {
+                    if (!dicNodos.ContainsKey(fila["person"].value))
+                    {
+                        dicNodos.Add(fila["person"].value, fila["nombre"].value);
+                    }
+                    colaboradores.Add(fila["person"].value);
+                }
+            }
+        }
+
+        public void GetGruposColaboradores(string pIdGroup, Dictionary<string, string> dicNodos)
+        {
+            string idGroup = "http://gnoss/" + pIdGroup;
+            string select = $@"{mPrefijos}
+                                select distinct ?nombre ?firstName";
+            string where = $@"
+                WHERE {{ 
+                      OPTIONAL{{<http://gnoss/{pIdGroup}> foaf:firstName ?firstName.}}
+                      OPTIONAL{{<http://gnoss/{pIdGroup}> roh:title ?nombre.}}
+                }}";
+
+            try
+            {
+                var bindingRes = resourceApi.VirtuosoQuery(select, where, idComunidad).results.bindings;
+                if (bindingRes.First().ContainsKey("nombre") && bindingRes.First()["nombre"].value != "")
+                {
+                    dicNodos.Add(idGroup, bindingRes.First()["nombre"].value);
+                }
+                else if (bindingRes.First().ContainsKey("firstName"))
+                {
+                    dicNodos.Add(idGroup, bindingRes.First()["firstName"].value);
+                }
+            }
+            catch (Exception ex)
+            {
+                resourceApi.Log.Error("Excepcion: " + ex.Message);
+            }
+        }
+
+
+
 
     }
 }
