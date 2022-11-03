@@ -11,10 +11,15 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Models
         public List<Datos> idRelacionados { get; set; }
         public DataQueryRelaciones()
         { }
-        public DataQueryRelaciones(string pNombreRelacion, List<Datos> pIdRelacionados)
+        public DataQueryRelaciones(string nombreRelacion)
         {
-            nombreRelacion = pNombreRelacion;
-            idRelacionados = pIdRelacionados;
+            this.nombreRelacion = nombreRelacion;
+            this.idRelacionados = idRelacionados;
+        }
+        public DataQueryRelaciones(string nombreRelacion, List<Datos> idRelacionados)
+        {
+            this.nombreRelacion = nombreRelacion;
+            this.idRelacionados = idRelacionados;
         }
     }
     public class Datos
