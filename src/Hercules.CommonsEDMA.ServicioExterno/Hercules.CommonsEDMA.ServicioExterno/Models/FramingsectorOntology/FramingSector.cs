@@ -62,11 +62,5 @@ namespace FramingsectorOntology
 			return $"{resourceAPI.GraphsUrl}items/FramingsectorOntology_{ResourceID}_{ArticleID}";
 		}
 
-
-		internal void AddResourceTitle(ComplexOntologyResource resource)
-		{
-		}
-
-
 	}
 }

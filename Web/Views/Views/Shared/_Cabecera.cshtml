@@ -106,15 +106,18 @@
                                         <li class="liInicio @if (Comunidad.Url == (Html.GetBaseUrl() + Html.GetUrlPagina()) ){ Html.Raw("active"); }">
                                             <a href="@Comunidad.Url">@Html.Translate("INICIO")</a>
                                         </li>
+
                                         @{
                                             string urlIndicadores=Comunidad.Url+"/"+Html.Translate("CMS_URL_INDICADORES");
                                         }
-                                        <li class="liIndicadores">
-                                            <a href="@urlIndicadores">
-                                                <span class="text">@Html.Translate("INDICADORES")</span>
-                                                <span class="material-icons">bar_chart</span>
-                                            </a>
-                                        </li>
+                                        @if(MA_HABILITADO){  
+                                            <li class="liIndicadores">
+                                                <a href="@urlIndicadores">
+                                                    <span class="text">@Html.Translate("INDICADORES")</span>
+                                                    <span class="material-icons">bar_chart</span>
+                                                </a>
+                                            </li>
+                                        }
                                     </ul>
                                 </div>
                                 <div id ="menuLateralUsuarioTrigger" class="texto-blanco">

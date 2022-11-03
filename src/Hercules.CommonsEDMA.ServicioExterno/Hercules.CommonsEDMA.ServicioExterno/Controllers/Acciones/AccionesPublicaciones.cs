@@ -170,7 +170,6 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
                 }
                 else
                 {
-                    // color = "#e4f5fd";
                     color = "#6cafd3";
                 }
                 List<string> listaColores = UtilidadesAPI.CrearListaColores(dicResultados.Count, color);

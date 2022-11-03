@@ -180,7 +180,7 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
                     try
                     {
                         // Guardo los tripletes
-                        var resultado = resourceApi.InsertPropertiesLoadedResources(triples);
+                        resourceApi.InsertPropertiesLoadedResources(triples);
                     }
                     catch (Exception ex)
                     {
@@ -1835,12 +1835,9 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
 
                 try
                 {
-
                     var idCutted = finalId.Split('_');
                     var item = idCutted[1].Split('.');
                     var lengthItem = item.Count();
-
-                    var lastItems = item.TakeLast(lengthItem - 1);
 
                     for (int i = 0; i < lengthItem; i++)
                     {
@@ -1851,23 +1848,18 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
                             ids[i].Add("0");
                         }
 
-                        localRes.Add(idCutted[0] + '_' + String.Join('.', ids[i]));
+                        localRes.Add(idCutted[0] + '_' + string.Join('.', ids[i]));
                     }
                     resultsAP.Add(localRes.Distinct().ToList());
-
 
                 }
                 catch (Exception ex)
                 {
                     resourceApi.Log.Error("Excepcion: " + ex.Message);
                 }
-
-
             }
 
             return resultsAP;
-
-
         }
 
 

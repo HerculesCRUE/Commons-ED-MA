@@ -62,14 +62,5 @@ namespace OfferstateOntology
 			return $"{resourceAPI.GraphsUrl}items/OfferstateOntology_{ResourceID}_{ArticleID}";
 		}
 
-
-		internal void AddResourceTitle(ComplexOntologyResource resource)
-		{
-		}
-
-
-
-
-
 	}
 }

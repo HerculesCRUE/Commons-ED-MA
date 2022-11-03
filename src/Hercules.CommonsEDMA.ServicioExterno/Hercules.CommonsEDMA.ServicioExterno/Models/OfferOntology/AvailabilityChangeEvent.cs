@@ -29,9 +29,6 @@ namespace OfferOntology
 		public virtual string RdfsLabel { get { return "http://w3id.org/roh/AvailabilityChangeEvent"; } }
 		public OntologyEntity Entity { get; set; }
 
-		[RDFProperty("http://w3id.org/roh/roleOf")]
-		[Required]
-		//public  Person Roh_roleOf  { get; set;} 
 		public string IdRoh_roleOf  { get; set;} 
 
 		[RDFProperty("http://www.schema.org/availability")]

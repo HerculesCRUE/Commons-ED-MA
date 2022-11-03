@@ -74,7 +74,7 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers
                 return StatusCode(StatusCodes.Status401Unauthorized);
             }
 
-            Cluster idClusterRes = accionCluster.LoadCluster(pIdClusterId);
+            Cluster idClusterRes = AccionesCluster.LoadCluster(pIdClusterId);
             return Ok(idClusterRes);
         }
 
