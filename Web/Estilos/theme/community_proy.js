@@ -59,7 +59,12 @@ var cargarCVId = {
 					that.CVId=data;
 					cvUrl = data;
 					that.printCVId();
-					that.printCVIdHomeEd();
+                    var interval = setInterval(() => {
+                        if ($('#menuLateralUsuarioClonado #trabajo a.editcvPub').length > 0) { 
+                            that.printCVIdHomeEd();
+                            clearInterval(interval);
+                        }
+                    }, 100);
 					setCacheWithExpiry(keyCache,data,60000);
 				});
 			}
