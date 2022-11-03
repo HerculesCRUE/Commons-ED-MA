@@ -941,7 +941,7 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
         }
         public int NumTotalDocumentos(string filtroElemento)
         {
-            int numDocumentos=0;
+            int numDocumentos = 0;
             //Nº total de documentos
             string select = $"{mPrefijos} Select count(distinct ?documento) as ?numDocumentos";
             string where = $@"  where
@@ -1004,81 +1004,18 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
             string where = "";
             if (colaboradores.Count > 0)
             {
-                #region Cargamos los nodos
-                {
-                    //Miembros
-                    select = $@"{mPrefijos}
-                                select distinct ?person ?nombre";
-                    where = $@" WHERE
-	                            {{
-                                    ?person a 'person'.
-                                    ?person foaf:name ?nombre.
-                                    FILTER(?person in (<{string.Join(">,<", colaboradores)}>))
-		            
-	                            }}";
+                CargarNodos(colaboradores);
 
-                    SparqlObject resultadoQuery = resourceApi.VirtuosoQuery(select, where, idComunidad);
-                    if (resultadoQuery != null && resultadoQuery.results != null && resultadoQuery.results.bindings != null && resultadoQuery.results.bindings.Count > 0)
-                    {
-                        foreach (Dictionary<string, SparqlObject.Data> fila in resultadoQuery.results.bindings)
-                        {
-                            if (!dicNodos.ContainsKey(fila["person"].value))
-                            {
-
-                                dicNodos.Add(fila["person"].value, fila["nombre"].value);
-                            }
-                        }
-                    }
-                }
-                #endregion
-
-                #region Relaciones entre miembros DENTRO DEl CLUSTER
-
+                //Relaciones entre miembros DENTRO DEl CLUSTER
                 //Proyectos
-                {
-                    select = "SELECT ?person group_concat(distinct ?project;separator=\",\") as ?projects";
-                    where = $@"
-                    WHERE {{ 
-                            ?project a 'project'.
-                            ?project ?propRol ?rol.
-                            FILTER(?propRol in (<http://w3id.org/roh/researchers>,<http://w3id.org/roh/mainResearchers>))
-                            ?rol <http://www.w3.org/1999/02/22-rdf-syntax-ns#member> ?person.
-                            FILTER(?person in (<{string.Join(">,<", colaboradores)}>))
-                        }}";
-                    SparqlObject resultadoQuery = resourceApi.VirtuosoQuery(select, where, idComunidad);
-                    Dictionary<string, List<string>> personaProy = new Dictionary<string, List<string>>();
-                    foreach (Dictionary<string, SparqlObject.Data> fila in resultadoQuery.results.bindings)
-                    {
-                        string projects = fila["projects"].value;
-                        string person = fila["person"].value;
-                        personaProy.Add(person, new List<string>(projects.Split(',')));
-                    }
-                    UtilidadesAPI.ProcessRelations("Proyectos", personaProy, ref dicRelaciones);
-                }
+
+                Dictionary<string, List<string>> personaProy = CargarProyectos(colaboradores);
+                UtilidadesAPI.ProcessRelations("Proyectos", personaProy, ref dicRelaciones);
+
                 //DOCUMENTOS
-                {
-                    select = "SELECT ?person group_concat(?document;separator=\",\") as ?documents";
-                    where = $@"
-                    WHERE {{ 
-                            ?document a 'document'.
-                            ?document <http://purl.org/ontology/bibo/authorList> ?authorList.
-                            ?authorList <http://www.w3.org/1999/02/22-rdf-syntax-ns#member> ?person.
-                            FILTER(?person in (<{string.Join(">,<", colaboradores)}>))
-                        }}";
-                    SparqlObject resultadoQuery = resourceApi.VirtuosoQuery(select, where, idComunidad);
-                    Dictionary<string, List<string>> personaDoc = new Dictionary<string, List<string>>();
-                    foreach (Dictionary<string, SparqlObject.Data> fila in resultadoQuery.results.bindings)
-                    {
-                        string documents = fila["documents"].value;
-                        string person = fila["person"].value;
-                        personaDoc.Add(person, new List<string>(documents.Split(',')));
-                    }
-                    UtilidadesAPI.ProcessRelations("Documentos", personaDoc, ref dicRelaciones);
-                }
 
-                #endregion
-
-
+                Dictionary<string, List<string>> personaDoc = CargarDocumentos(colaboradores);
+                UtilidadesAPI.ProcessRelations("Documentos", personaDoc, ref dicRelaciones);
 
                 int maximasRelaciones = 0;
                 foreach (KeyValuePair<string, List<DataQueryRelaciones>> sujeto in dicRelaciones)
@@ -1139,6 +1076,79 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
             }
             return items;
 
+        }
+
+        public Dictionary<string, List<string>> CargarProyectos(List<string> colaboradores)
+        {
+            Dictionary<string, List<string>> personaProy = new();
+            string select = "SELECT ?person group_concat(distinct ?project;separator=\",\") as ?projects";
+            string where = $@"
+                    WHERE {{ 
+                            ?project a 'project'.
+                            ?project ?propRol ?rol.
+                            FILTER(?propRol in (<http://w3id.org/roh/researchers>,<http://w3id.org/roh/mainResearchers>))
+                            ?rol <http://www.w3.org/1999/02/22-rdf-syntax-ns#member> ?person.
+                            FILTER(?person in (<{string.Join(">,<", colaboradores)}>))
+                        }}";
+            SparqlObject resultadoQuery = resourceApi.VirtuosoQuery(select, where, idComunidad);
+
+            foreach (Dictionary<string, SparqlObject.Data> fila in resultadoQuery.results.bindings)
+            {
+                string projects = fila["projects"].value;
+                string person = fila["person"].value;
+                personaProy.Add(person, new List<string>(projects.Split(',')));
+            }
+            return personaProy;
+        }
+        public Dictionary<string, List<string>> CargarDocumentos(List<string> colaboradores)
+        {
+            Dictionary<string, List<string>> personaDoc = new();
+            string select = "SELECT ?person group_concat(?document;separator=\",\") as ?documents";
+            string where = $@"
+                    WHERE {{ 
+                            ?document a 'document'.
+                            ?document <http://purl.org/ontology/bibo/authorList> ?authorList.
+                            ?authorList <http://www.w3.org/1999/02/22-rdf-syntax-ns#member> ?person.
+                            FILTER(?person in (<{string.Join(">,<", colaboradores)}>))
+                        }}";
+            SparqlObject resultadoQuery = resourceApi.VirtuosoQuery(select, where, idComunidad);
+
+            foreach (Dictionary<string, SparqlObject.Data> fila in resultadoQuery.results.bindings)
+            {
+                string documents = fila["documents"].value;
+                string person = fila["person"].value;
+                personaDoc.Add(person, new List<string>(documents.Split(',')));
+            }
+            return personaDoc;
+        }
+
+        public Dictionary<string, string> CargarNodos(List<string> colaboradores)
+        {
+            Dictionary<string, string> dicNodos = new();
+            //Miembros
+            string select = $@"{mPrefijos}
+                                select distinct ?person ?nombre";
+            string where = $@" WHERE
+	                            {{
+                                    ?person a 'person'.
+                                    ?person foaf:name ?nombre.
+                                    FILTER(?person in (<{string.Join(">,<", colaboradores)}>))
+		            
+	                            }}";
+
+            SparqlObject resultadoQuery = resourceApi.VirtuosoQuery(select, where, idComunidad);
+            if (resultadoQuery != null && resultadoQuery.results != null && resultadoQuery.results.bindings != null && resultadoQuery.results.bindings.Count > 0)
+            {
+                foreach (Dictionary<string, SparqlObject.Data> fila in resultadoQuery.results.bindings)
+                {
+                    if (!dicNodos.ContainsKey(fila["person"].value))
+                    {
+
+                        dicNodos.Add(fila["person"].value, fila["nombre"].value);
+                    }
+                }
+            }
+            return dicNodos;
         }
 
         /// <summary>
