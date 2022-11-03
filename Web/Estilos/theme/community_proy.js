@@ -59,7 +59,12 @@ var cargarCVId = {
 					that.CVId=data;
 					cvUrl = data;
 					that.printCVId();
-					that.printCVIdHomeEd();
+                    var interval = setInterval(() => {
+                        if ($('#menuLateralUsuarioClonado #trabajo a.editcvPub').length > 0) { 
+                            that.printCVIdHomeEd();
+                            clearInterval(interval);
+                        }
+                    }, 100);
 					setCacheWithExpiry(keyCache,data,60000);
 				});
 			}
@@ -70,6 +75,7 @@ var cargarCVId = {
 		{
 			$('#menuLateralUsuario .hasCV').show();
 			$('#menuLateralUsuario li.liEditarCV a').attr('href',this.CVId);
+            $('#curriculumvitae li.liOtros a.editcv').attr('href',this.CVId);
 		}
 	},
 	printCVIdHomeEd: function(){
