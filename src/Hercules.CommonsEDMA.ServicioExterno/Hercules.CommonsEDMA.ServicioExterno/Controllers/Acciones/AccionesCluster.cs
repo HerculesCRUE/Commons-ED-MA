@@ -283,7 +283,7 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
         /// <param name="pIdClusterId">Identificador del cluster</param>
         /// <param name="loadUsuarios"></param>
         /// <returns>Diccionario con las listas de thesaurus.</returns>
-        internal Models.Cluster.Cluster LoadCluster(string pIdClusterId, bool loadUsuarios = true)
+        internal static Models.Cluster.Cluster LoadCluster(string pIdClusterId, bool loadUsuarios = true)
         {
 
             // Obtener datos del cluster
@@ -873,65 +873,14 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
         /// <returns>Objeto que se trata en JS para contruir la gráfica.</returns>
         public DataGraficaAreasTags DatosGraficaAreasTematicas(List<string> pPersons)
         {
-            string filtroElemento = "";
+            string filtroElemento = $@"?documento bibo:authorList ?lista.
+                                        ?lista rdf:member ?person.
+                                        FILTER(?person in (<http://gnoss/{string.Join(">,<http://gnoss/", pPersons.Select(x => x.ToUpper()))}>))";
 
-            filtroElemento = $@"?documento bibo:authorList ?lista. ";
-            filtroElemento += $@"?lista rdf:member ?person.";
-            filtroElemento += $@"FILTER(?person in (<http://gnoss/{string.Join(">,<http://gnoss/", pPersons.Select(x => x.ToUpper()))}>))";
-
-            Dictionary<string, int> dicResultados = new Dictionary<string, int>();
-            int numDocumentos = 0;
-            {
-                //Nº de documentos por categoría
-                SparqlObject resultadoQuery = null;
-                string select = $"{mPrefijos} Select ?nombreCategoria count(distinct ?documento) as ?numCategorias";
-                string where = $@"  where
-                                {{
-                                    ?documento a 'document'. 
-                                    {filtroElemento}
-                                    ?documento roh:hasKnowledgeArea ?area.
-                                    ?area roh:categoryNode ?categoria.
-                                    ?documento <http://w3id.org/roh/isValidated> 'true'.
-                                    ?categoria skos:prefLabel ?nombreCategoria.
-                                    MINUS
-                                    {{
-                                        ?categoria skos:narrower ?hijos
-                                    }}
-                                }}
-                                Group by(?nombreCategoria)";
-
-                resultadoQuery = resourceApi.VirtuosoQuery(select, where, idComunidad);
-
-                if (resultadoQuery != null && resultadoQuery.results != null && resultadoQuery.results.bindings != null && resultadoQuery.results.bindings.Count > 0)
-                {
-                    foreach (Dictionary<string, SparqlObject.Data> fila in resultadoQuery.results.bindings)
-                    {
-                        string nombreCategoria = UtilidadesAPI.GetValorFilaSparqlObject(fila, "nombreCategoria");
-                        int numCategoria = int.Parse(UtilidadesAPI.GetValorFilaSparqlObject(fila, "numCategorias"));
-                        dicResultados.Add(nombreCategoria + " (" + numCategoria + ")", numCategoria);
-                    }
-                }
-            }
-            {
-                //Nº total de documentos
-                SparqlObject resultadoQuery = null;
-                string select = $"{mPrefijos} Select count(distinct ?documento) as ?numDocumentos";
-                string where = $@"  where
-                                {{
-                                    ?documento a 'document'. 
-                                    {filtroElemento}
-                                }}";
-
-                resultadoQuery = resourceApi.VirtuosoQuery(select, where, idComunidad);
-
-                if (resultadoQuery != null && resultadoQuery.results != null && resultadoQuery.results.bindings != null && resultadoQuery.results.bindings.Count > 0)
-                {
-                    foreach (Dictionary<string, SparqlObject.Data> fila in resultadoQuery.results.bindings)
-                    {
-                        numDocumentos = int.Parse(UtilidadesAPI.GetValorFilaSparqlObject(fila, "numDocumentos"));
-                    }
-                }
-            }
+            //Nº de documentos por categoría
+            Dictionary<string, int> dicResultados = NumMetodosCategoria(filtroElemento);
+            //Nº total de documentos
+            int numDocumentos = NumTotalDocumentos(filtroElemento);
 
             //Ordenar diccionario
             var dicionarioOrdenado = dicResultados.OrderByDescending(x => x.Value);
@@ -957,6 +906,61 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
             return dataGrafica;
         }
 
+        public Dictionary<string, int> NumMetodosCategoria(string filtroElemento)
+        {
+            Dictionary<string, int> dicResultados = new();
+            //Nº de documentos por categoría
+            string select = $"{mPrefijos} Select ?nombreCategoria count(distinct ?documento) as ?numCategorias";
+            string where = $@"  where
+                                {{
+                                    ?documento a 'document'. 
+                                    {filtroElemento}
+                                    ?documento roh:hasKnowledgeArea ?area.
+                                    ?area roh:categoryNode ?categoria.
+                                    ?documento <http://w3id.org/roh/isValidated> 'true'.
+                                    ?categoria skos:prefLabel ?nombreCategoria.
+                                    MINUS
+                                    {{
+                                        ?categoria skos:narrower ?hijos
+                                    }}
+                                }}
+                                Group by(?nombreCategoria)";
+
+            SparqlObject resultadoQuery = resourceApi.VirtuosoQuery(select, where, idComunidad);
+
+            if (resultadoQuery != null && resultadoQuery.results != null && resultadoQuery.results.bindings != null && resultadoQuery.results.bindings.Count > 0)
+            {
+                foreach (Dictionary<string, SparqlObject.Data> fila in resultadoQuery.results.bindings)
+                {
+                    string nombreCategoria = UtilidadesAPI.GetValorFilaSparqlObject(fila, "nombreCategoria");
+                    int numCategoria = int.Parse(UtilidadesAPI.GetValorFilaSparqlObject(fila, "numCategorias"));
+                    dicResultados.Add(nombreCategoria + " (" + numCategoria + ")", numCategoria);
+                }
+            }
+            return dicResultados;
+        }
+        public int NumTotalDocumentos(string filtroElemento)
+        {
+            int numDocumentos=0;
+            //Nº total de documentos
+            string select = $"{mPrefijos} Select count(distinct ?documento) as ?numDocumentos";
+            string where = $@"  where
+                                {{
+                                    ?documento a 'document'. 
+                                    {filtroElemento}
+                                }}";
+
+            SparqlObject resultadoQuery = resourceApi.VirtuosoQuery(select, where, idComunidad);
+
+            if (resultadoQuery != null && resultadoQuery.results != null && resultadoQuery.results.bindings != null && resultadoQuery.results.bindings.Count > 0)
+            {
+                foreach (Dictionary<string, SparqlObject.Data> fila in resultadoQuery.results.bindings)
+                {
+                    numDocumentos = int.Parse(UtilidadesAPI.GetValorFilaSparqlObject(fila, "numDocumentos"));
+                }
+            }
+            return numDocumentos;
+        }
 
         /// <summary>
         /// Método público que obtiene el objeto para crear la gráfica tipo araña de las relaciones entre los perfiles seleccionados en el cluster
@@ -1232,7 +1236,7 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
         /// Obtiene los datos de los investigadores de los perfiles indicados.
         /// </summary>
         /// <returns>Listado de los ids de los perfiles sobre los que se van a cargar los investigadores.</returns>
-        private List<Tuple<string, PerfilCluster.UserCluster>> loadUsersProfiles(List<string> listProfilesIds)
+        private static List<Tuple<string, PerfilCluster.UserCluster>> loadUsersProfiles(List<string> listProfilesIds)
         {
             // Creamos la variable para cargar los investigadores y el id del perfil al que pertenece 
             List<Tuple<string, PerfilCluster.UserCluster>> result = new();
