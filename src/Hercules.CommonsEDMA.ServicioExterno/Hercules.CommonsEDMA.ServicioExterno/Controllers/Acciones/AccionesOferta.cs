@@ -180,7 +180,7 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
                     try
                     {
                         // Guardo los tripletes
-                        var resultado = resourceApi.InsertPropertiesLoadedResources(triples);
+                        resourceApi.InsertPropertiesLoadedResources(triples);
                     }
                     catch (Exception ex)
                     {
@@ -1840,7 +1840,7 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
                     var item = idCutted[1].Split('.');
                     var lengthItem = item.Count();
 
-                    var lastItems = item.TakeLast(lengthItem - 1);
+                    item.TakeLast(lengthItem - 1);
 
                     for (int i = 0; i < lengthItem; i++)
                     {

@@ -15,9 +15,6 @@ using System.Globalization;
 using System.Collections;
 using Gnoss.ApiWrapper.Exceptions;
 using System.Diagnostics.CodeAnalysis;
-//using Document = DocumentOntology.Document;
-//using ResearchObject = ResearchobjectOntology.ResearchObject;
-//using Person = PersonOntology.Person;
 
 namespace AnnotationOntology
 {
@@ -29,12 +26,9 @@ namespace AnnotationOntology
 
 		public virtual string RdfType { get { return "http://w3id.org/roh/Annotation"; } }
 		public virtual string RdfsLabel { get { return "http://w3id.org/roh/Annotation"; } }
-		[RDFProperty("http://w3id.org/roh/document")]
-		//public List<Document> Roh_document { get; set; }
+
 		public List<string> IdsRoh_document { get; set; }
 
-		[RDFProperty("http://w3id.org/roh/researchobject")]
-		//public List<ResearchObject> Roh_researchobject { get; set; }
 		public List<string> IdsRoh_researchobject { get; set; }
 
 		[RDFProperty("http://w3id.org/roh/dateIssued")]

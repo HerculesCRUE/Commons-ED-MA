@@ -63,14 +63,5 @@ namespace MaturestateOntology
 			return $"{resourceAPI.GraphsUrl}items/MaturestateOntology_{ResourceID}_{ArticleID}";
 		}
 
-
-		internal void AddResourceTitle(ComplexOntologyResource resource)
-		{
-		}
-
-
-
-
-
 	}
 }
