@@ -272,7 +272,7 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
                 DataQueryRelaciones dataQueryRelaciones = (dicRelaciones[group].FirstOrDefault(x => x.nombreRelacion == nombreRelacion));
                 if (dataQueryRelaciones == null)
                 {
-                    dataQueryRelaciones = new DataQueryRelaciones(nombreRelacion, new List<Datos>() { { new Datos(person, numRelaciones) } });
+                    dataQueryRelaciones = new DataQueryRelaciones(nombreRelacion, new List<Datos>() { new Datos(person, numRelaciones) });
                     dicRelaciones[group].Add(dataQueryRelaciones);
                 }
             }
@@ -510,21 +510,12 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
                             dicRelaciones.Add(group, new List<DataQueryRelaciones>());
                         }
 
-                        DataQueryRelaciones dataQueryRelaciones = (dicRelaciones[group].FirstOrDefault(x => x.nombreRelacion == nombreRelacion));
+                        DataQueryRelaciones dataQueryRelaciones = dicRelaciones[group].FirstOrDefault(x => x.nombreRelacion == nombreRelacion);
                         if (dataQueryRelaciones == null)
                         {
-                            dataQueryRelaciones = new DataQueryRelaciones()
-                            {
-                                nombreRelacion = nombreRelacion,
-                                idRelacionados = new List<Datos>()
-                            };
+                            dataQueryRelaciones = new DataQueryRelaciones(nombreRelacion, new List<Datos>() { new Datos(colaborador, numRelacionesColaboradorDocumentoGrupo[colaborador]) });
                             dicRelaciones[group].Add(dataQueryRelaciones);
                         }
-                        dataQueryRelaciones.idRelacionados.Add(new Datos()
-                        {
-                            idRelacionado = colaborador,
-                            numVeces = numRelacionesColaboradorDocumentoGrupo[colaborador]
-                        });
                     }
                 }
 
