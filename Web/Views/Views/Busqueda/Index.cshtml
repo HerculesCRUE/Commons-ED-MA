@@ -29,7 +29,7 @@
 <div class="row">
 	
 	<input type="hidden" id="PUBLICACIONES_URL" value="@Html.Translate("BUSQUEDA_URL_PUBLICACIONES")"/>
-	<input type="hidden" id="PERSONAL_INVESTIGADOR_URL" value="@Html.Translate("BUSQUEDA_URL_PERSONAL_INVESTIGADOR")"/>
+	<input type="hidden" id="PERSONAL_INVESTIGADOR_URL" value="@Html.Translate("BUSQUEDA_URL_INVESTIGADORES")"/>
 	<input type="hidden" id="PROYECTOS_URL" value="@Html.Translate("BUSQUEDA_URL_PROYECTOS")"/>
 	<input type="hidden" id="GRUPOS_URL" value="@Html.Translate("BUSQUEDA_URL_GRUPOS")"/>
 	<input type="hidden" id="RESEARCH_OBJECTS_URL" value="@Html.Translate("BUSQUEDA_URL_RESEARCH_OBJECTS")"/>
@@ -190,7 +190,7 @@
 				{
 					search='searcherPublications';
 				}
-				else if(document.location.pathname.endsWith(GetText("BUSQUEDA_URL_PERSONAL_INVESTIGADOR")))
+				else if(document.location.pathname.endsWith(GetText("PERSONAL_INVESTIGADOR_URL")))
 				{
 					search='searcherPersons';
 				}
