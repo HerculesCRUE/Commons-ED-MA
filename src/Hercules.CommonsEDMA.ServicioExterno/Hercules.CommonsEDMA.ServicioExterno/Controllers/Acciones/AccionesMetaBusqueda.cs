@@ -52,7 +52,7 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
 
                         #region CargarInvestigadores
                         {
-                            int limit = 10000;
+                            int limit1 = 10000;
                             int offset = 0;
                             while (true)
                             {
@@ -63,13 +63,13 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
                                                 ?id a 'person'.
                                                 ?id foaf:name ?name.
                                                 OPTIONAL{{?id roh:isActive ?isActive.}}
-                                            }}ORDER BY asc(?name) asc(?id) }} LIMIT {limit} OFFSET {offset}";
+                                            }}ORDER BY asc(?name) asc(?id) }} LIMIT {limit1} OFFSET {offset}";
 
                                 SparqlObject resultadoQuery = resourceApi.VirtuosoQuery(select, where, idComunidad);
 
                                 if (resultadoQuery != null && resultadoQuery.results != null && resultadoQuery.results.bindings != null && resultadoQuery.results.bindings.Count > 0)
                                 {
-                                    offset += limit;
+                                    offset += limit1;
                                     foreach (Dictionary<string, SparqlObject.Data> fila in resultadoQuery.results.bindings)
                                     {
                                         Guid id = new Guid(fila["id"].value.Replace("http://gnoss/", ""));
@@ -97,7 +97,7 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
                                         person.properties.Add(new ObjectSearch.Property(new HashSet<string>(ObtenerTextoNormalizado(nombre).Split(' ', StringSplitOptions.RemoveEmptyEntries)), 1, person));
                                         personsTemp.Add(person);
                                     }
-                                    if (resultadoQuery.results.bindings.Count < limit)
+                                    if (resultadoQuery.results.bindings.Count < limit1)
                                     {
                                         break;
                                     }
@@ -1049,56 +1049,56 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
                 //Publicaciones
                 if (property.owner is Publication)
                 {
-                    Publication item = (Publication)property.owner;
-                    if (!publicacionesFilter.ContainsKey(item))
+                    Publication itemPublication = (Publication)property.owner;
+                    if (!publicacionesFilter.ContainsKey(itemPublication))
                     {
-                        publicacionesFilter.Add(item, 0);
+                        publicacionesFilter.Add(itemPublication, 0);
                     }
-                    publicacionesFilter[item] += property.score;
+                    publicacionesFilter[itemPublication] += property.score;
                 }
 
                 //ResearchObjects
                 if (property.owner is ResearchObject)
                 {
-                    ResearchObject item = (ResearchObject)property.owner;
-                    if (!researchObjectsFilter.ContainsKey(item))
+                    ResearchObject itemRo = (ResearchObject)property.owner;
+                    if (!researchObjectsFilter.ContainsKey(itemRo))
                     {
-                        researchObjectsFilter.Add(item, 0);
+                        researchObjectsFilter.Add(itemRo, 0);
                     }
-                    researchObjectsFilter[item] += property.score;
+                    researchObjectsFilter[itemRo] += property.score;
                 }
 
                 //Grupos                
                 if (property.owner is Group)
                 {
-                    Group item = (Group)property.owner;
-                    if (!groupsFilter.ContainsKey(item))
+                    Group itemGroup = (Group)property.owner;
+                    if (!groupsFilter.ContainsKey(itemGroup))
                     {
-                        groupsFilter.Add(item, 0);
+                        groupsFilter.Add(itemGroup, 0);
                     }
-                    groupsFilter[item] += property.score;
+                    groupsFilter[itemGroup] += property.score;
                 }
 
                 //Proyectos
                 if (property.owner is Project)
                 {
-                    Project item = (Project)property.owner;
-                    if (!projectsFilter.ContainsKey(item))
+                    Project itemProject = (Project)property.owner;
+                    if (!projectsFilter.ContainsKey(itemProject))
                     {
-                        projectsFilter.Add(item, 0);
+                        projectsFilter.Add(itemProject, 0);
                     }
-                    projectsFilter[item] += property.score;
+                    projectsFilter[itemProject] += property.score;
                 }
 
                 //Ofertas
                 if (property.owner is Offer)
                 {
-                    Offer item = (Offer)property.owner;
-                    if (!offersFilter.ContainsKey(item))
+                    Offer itemOffer = (Offer)property.owner;
+                    if (!offersFilter.ContainsKey(itemOffer))
                     {
-                        offersFilter.Add(item, 0);
+                        offersFilter.Add(itemOffer, 0);
                     }
-                    offersFilter[item] += property.score;
+                    offersFilter[itemOffer] += property.score;
                 }
             }
 
@@ -1111,23 +1111,23 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
                     {
                         personasSearch = true;
                     }
-                    if (((Person)property.owner).publications.Count > 0)
+                    if (((Person)property.owner).publications.Any())
                     {
                         publicacionesSearch = true;
                     }
-                    if (((Person)property.owner).researchObjects.Count > 0)
+                    if (((Person)property.owner).researchObjects.Any())
                     {
                         researchObjectsSearch = true;
                     }
-                    if (((Person)property.owner).groups.Count > 0)
+                    if (((Person)property.owner).groups.Any())
                     {
                         groupsSearch = true;
                     }
-                    if (((Person)property.owner).projects.Count > 0)
+                    if (((Person)property.owner).projects.Any())
                     {
                         projectsSearch = true;
                     }
-                    if (((Person)property.owner).offers.Count > 0)
+                    if (((Person)property.owner).offers.Any())
                     {
                         offersSearch = true;
                     }
@@ -1174,69 +1174,69 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
 
             //Personas
             {
-                int min = Math.Min(personasFilter.Count, maxItems);
-                List<ObjectSearch> lista = new List<ObjectSearch>();
-                foreach (Person item in personasFilter.Keys.ToList().GetRange(0, min))
+                int minPersonas = Math.Min(personasFilter.Count, maxItems);
+                List<ObjectSearch> listaPersonas = new List<ObjectSearch>();
+                foreach (Person item in personasFilter.Keys.ToList().GetRange(0, minPersonas))
                 {
-                    lista.Add(new Person() { title = item.title,id=item.id } );
+                    listaPersonas.Add(new Person() { title = item.title,id=item.id } );
                 }
-                respuesta["persona"] = new KeyValuePair<bool, List<ObjectSearch>>(personasSearch, lista);
+                respuesta["persona"] = new KeyValuePair<bool, List<ObjectSearch>>(personasSearch, listaPersonas);
             }
 
 
             //Publicaciones
             {
-                int min = Math.Min(publicacionesFilter.Count, maxItems);
-                List<ObjectSearch> lista = new List<ObjectSearch>();
-                foreach (Publication item in publicacionesFilter.Keys.ToList().GetRange(0, min))
+                int minPublicaciones = Math.Min(publicacionesFilter.Count, maxItems);
+                List<ObjectSearch> listaPublicaciones = new List<ObjectSearch>();
+                foreach (Publication item in publicacionesFilter.Keys.ToList().GetRange(0, minPublicaciones))
                 {
-                    lista.Add(new Publication() { title = item.title, id = item.id });
+                    listaPublicaciones.Add(new Publication() { title = item.title, id = item.id });
                 }
-                respuesta["publicacion"] = new KeyValuePair<bool, List<ObjectSearch>>(publicacionesSearch, lista);
+                respuesta["publicacion"] = new KeyValuePair<bool, List<ObjectSearch>>(publicacionesSearch, listaPublicaciones);
             }
 
             //ResearchObjects
             {
-                int min = Math.Min(researchObjectsFilter.Count, maxItems);
-                List<ObjectSearch> lista = new List<ObjectSearch>();
-                foreach (ResearchObject item in researchObjectsFilter.Keys.ToList().GetRange(0, min))
+                int minRO = Math.Min(researchObjectsFilter.Count, maxItems);
+                List<ObjectSearch> listaRO = new List<ObjectSearch>();
+                foreach (ResearchObject item in researchObjectsFilter.Keys.ToList().GetRange(0, minRO))
                 {
-                    lista.Add(new ResearchObject() { title = item.title, id = item.id });
+                    listaRO.Add(new ResearchObject() { title = item.title, id = item.id });
                 }
-                respuesta["researchObject"] = new KeyValuePair<bool, List<ObjectSearch>>(researchObjectsSearch, lista);
+                respuesta["researchObject"] = new KeyValuePair<bool, List<ObjectSearch>>(researchObjectsSearch, listaRO);
             }
 
             //Grupos
             {
-                int min = Math.Min(groupsFilter.Count, maxItems);
-                List<ObjectSearch> lista = new List<ObjectSearch>();
-                foreach (Group item in groupsFilter.Keys.ToList().GetRange(0, min))
+                int minGrupos = Math.Min(groupsFilter.Count, maxItems);
+                List<ObjectSearch> listaGrupos = new List<ObjectSearch>();
+                foreach (Group item in groupsFilter.Keys.ToList().GetRange(0, minGrupos))
                 {
-                    lista.Add(new Group() { title = item.title, id = item.id });
+                    listaGrupos.Add(new Group() { title = item.title, id = item.id });
                 }
-                respuesta["group"] = new KeyValuePair<bool, List<ObjectSearch>>(groupsSearch, lista);
+                respuesta["group"] = new KeyValuePair<bool, List<ObjectSearch>>(groupsSearch, listaGrupos);
             }
 
             //Proyectos
             {
-                int min = Math.Min(projectsFilter.Count, maxItems);
-                List<ObjectSearch> lista = new List<ObjectSearch>();
-                foreach (Project item in projectsFilter.Keys.ToList().GetRange(0, min))
+                int minProyectos = Math.Min(projectsFilter.Count, maxItems);
+                List<ObjectSearch> listaProyectos = new List<ObjectSearch>();
+                foreach (Project item in projectsFilter.Keys.ToList().GetRange(0, minProyectos))
                 {
-                    lista.Add(new Project() { title = item.title, id = item.id });
+                    listaProyectos.Add(new Project() { title = item.title, id = item.id });
                 }
-                respuesta["project"] = new KeyValuePair<bool, List<ObjectSearch>>(projectsSearch, lista);
+                respuesta["project"] = new KeyValuePair<bool, List<ObjectSearch>>(projectsSearch, listaProyectos);
             }
 
             //Ofertas
             {
-                int min = Math.Min(offersFilter.Count, maxItems);
-                List<ObjectSearch> lista = new List<ObjectSearch>();
-                foreach (Offer item in offersFilter.Keys.ToList().GetRange(0, min))
+                int minOfertas = Math.Min(offersFilter.Count, maxItems);
+                List<ObjectSearch> listaOfertas = new List<ObjectSearch>();
+                foreach (Offer item in offersFilter.Keys.ToList().GetRange(0, minOfertas))
                 {
-                    lista.Add(new Offer() { title = item.title, id = item.id });
+                    listaOfertas.Add(new Offer() { title = item.title, id = item.id });
                 }
-                respuesta["offer"] = new KeyValuePair<bool, List<ObjectSearch>>(offersSearch, lista);
+                respuesta["offer"] = new KeyValuePair<bool, List<ObjectSearch>>(offersSearch, listaOfertas);
             }
 
             List<Guid> ids = new List<Guid>();
