@@ -70,6 +70,7 @@ var cargarCVId = {
 		{
 			$('#menuLateralUsuario .hasCV').show();
 			$('#menuLateralUsuario li.liEditarCV a').attr('href',this.CVId);
+            $('#curriculumvitae li.liOtros a.editcv').attr('href',this.CVId);
 		}
 	},
 	printCVIdHomeEd: function(){
