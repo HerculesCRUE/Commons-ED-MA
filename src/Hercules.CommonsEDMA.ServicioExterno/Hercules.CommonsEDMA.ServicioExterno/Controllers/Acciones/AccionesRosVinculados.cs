@@ -388,7 +388,10 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
                         rosLinked.Find(ro => resourceApi.GetShortGuid(ro.entityID) == e.resource_id).url = e.url;
                     });
                 }
-                catch (Exception) { }
+                catch (Exception) 
+                {
+                    //
+                }
             }
 
             return rosLinked;

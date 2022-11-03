@@ -15,10 +15,6 @@ using System.Globalization;
 using System.Collections;
 using Gnoss.ApiWrapper.Exceptions;
 using System.Diagnostics.CodeAnalysis;
-//using Person = PersonOntology.Person;
-//using Document = DocumentOntology.Document;
-//using Project = ProjectOntology.Project;
-//using Patent = PatentOntology.Patent;
 using OfferState = OfferstateOntology.OfferState;
 using FramingSector = FramingsectorOntology.FramingSector;
 using MatureState = MaturestateOntology.MatureState;
@@ -33,28 +29,17 @@ namespace OfferOntology
 
 		public virtual string RdfType { get { return "http://www.schema.org/Offer"; } }
 		public virtual string RdfsLabel { get { return "http://www.schema.org/Offer"; } }
-		[RDFProperty("http://w3id.org/roh/researchers")]
-		//public  List<Person> Roh_researchers { get; set;}
 		public List<string> IdsRoh_researchers { get; set;}
-
-		[RDFProperty("http://w3id.org/roh/document")]
-		//public  List<Document> Roh_document { get; set;}
 		public List<string> IdsRoh_document { get; set;}
 
 		[RDFProperty("http://w3id.org/roh/groups")]
 		public List<Group> Roh_groups { get; set; }
 		public List<string> IdsRoh_groups { get; set; }
-
-		[RDFProperty("http://w3id.org/roh/project")]
-		//public  List<Project> Roh_project { get; set;}
 		public List<string> IdsRoh_project { get; set;}
 
 		[RDFProperty("http://w3id.org/roh/availabilityChangeEvent")]
 		[MinLength(1)]
 		public  List<AvailabilityChangeEvent> Roh_availabilityChangeEvent { get; set;}
-
-		[RDFProperty("http://w3id.org/roh/patents")]
-		//public  List<Patent> Roh_patents { get; set;}
 		public List<string> IdsRoh_patents { get; set;}
 
 		[RDFProperty("http://w3id.org/roh/search")]
@@ -96,9 +81,6 @@ namespace OfferOntology
 		[RDFProperty("http://purl.org/dc/terms/issued")]
 		public  DateTime Dct_issued { get; set;}
 
-		[RDFProperty("http://www.schema.org/offeredBy")]
-		[Required]
-		//public  Person Schema_offeredBy  { get; set;} 
 		public string IdSchema_offeredBy  { get; set;} 
 
 		[RDFProperty("http://w3id.org/roh/application")]
@@ -129,11 +111,6 @@ namespace OfferOntology
 		internal override void GetProperties()
 		{
 			base.GetProperties();
-
-
-
-			//cRsource.Roh_areaprocedencia = oferta.areaProcedencia.Keys.ToList();
-			//cRsource.Roh_sectoraplicacion = oferta.sectorAplicacion.Keys.ToList();
 
 			propList.Add(new ListStringOntologyProperty("roh:researchers", this.IdsRoh_researchers));
 			propList.Add(new ListStringOntologyProperty("roh:document", this.IdsRoh_document));

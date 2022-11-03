@@ -10,9 +10,6 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Utilidades
 {
     public class CleanHTML
     {
-
-        // static Regex _AttrStyleRegex = new Regex("[^style]+[ ]?=[ ]?\"[^\"]*\"", RegexOptions.Compiled);
-
         /// <summary>
         /// Método para limpiar un string de tags, a excepción de los permitidos
         /// El método también elimina los atributos menos el "style"
