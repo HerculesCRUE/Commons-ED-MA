@@ -187,10 +187,10 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
             HashSet<string> ip, Dictionary<string, List<DataQueryRelaciones>> dicRelaciones)
         {
             string group = "http://gnoss/" + pIdGroup.ToUpper();
-            string nombreRelacion = "Proyectos";
+            string relacionProy = "Proyectos";
 
-            string select = "SELECT ?person COUNT(distinct ?project) AS ?numRelacionesProyectos";
-            string where = $@"
+            string selectRGP = "SELECT ?person COUNT(distinct ?project) AS ?numRelacionesProyectos";
+            string whereRGP = $@"
                     WHERE {{ 
                             ?project a 'project'.
                             ?project <http://w3id.org/roh/isProducedBy> <http://gnoss/{pIdGroup}>.
@@ -200,7 +200,7 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
                             FILTER(?person in (<{string.Join(">,<", miembros.Union(ip))}>))
                         }}order by desc(?numRelacionesProyectos)";
 
-            SparqlObject resultadoQuery = resourceApi.VirtuosoQuery(select, where, idComunidad);
+            SparqlObject resultadoQuery = resourceApi.VirtuosoQuery(selectRGP, whereRGP, idComunidad);
             foreach (Dictionary<string, SparqlObject.Data> fila in resultadoQuery.results.bindings)
             {
                 string person = fila["person"].value;
@@ -211,10 +211,10 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
                     dicRelaciones.Add(group, new List<DataQueryRelaciones>());
                 }
 
-                DataQueryRelaciones dataQueryRelaciones = (dicRelaciones[group].FirstOrDefault(x => x.nombreRelacion == nombreRelacion));
+                DataQueryRelaciones dataQueryRelaciones = (dicRelaciones[group].FirstOrDefault(x => x.nombreRelacion == relacionProy));
                 if (dataQueryRelaciones == null)
                 {
-                    dataQueryRelaciones = new DataQueryRelaciones(nombreRelacion, new List<Datos>() { { new Datos(person, numRelaciones) } });
+                    dataQueryRelaciones = new DataQueryRelaciones(relacionProy, new List<Datos>() { { new Datos(person, numRelaciones) } });
                     dicRelaciones[group].Add(dataQueryRelaciones);
                 }
             }
@@ -247,10 +247,10 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
             HashSet<string> ip, Dictionary<string, List<DataQueryRelaciones>> dicRelaciones)
         {
             string group = "http://gnoss/" + pIdGroup.ToUpper();
-            string nombreRelacion = "Documentos";
+            string relacionDoc = "Documentos";
 
-            string select = "SELECT ?person COUNT(distinct ?document) AS ?numRelacionesDocumentos";
-            string where = $@"
+            string selectRGD = "SELECT ?person COUNT(distinct ?document) AS ?numRelacionesDocumentos";
+            string whereRGD = $@"
                     WHERE {{ 
                             ?document a 'document'.
                             ?document <http://w3id.org/roh/isProducedBy> <http://gnoss/{pIdGroup}>.
@@ -258,7 +258,7 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
                             ?lista <http://www.w3.org/1999/02/22-rdf-syntax-ns#member> ?person.
                             FILTER(?person in (<{string.Join(">,<", miembros.Union(ip))}>))
                         }}order by desc(?numRelacionesDocumentos)";
-            SparqlObject resultadoQuery = resourceApi.VirtuosoQuery(select, where, idComunidad);
+            SparqlObject resultadoQuery = resourceApi.VirtuosoQuery(selectRGD, whereRGD, idComunidad);
             foreach (Dictionary<string, SparqlObject.Data> fila in resultadoQuery.results.bindings)
             {
                 string person = fila["person"].value;
@@ -269,10 +269,10 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
                     dicRelaciones.Add(group, new List<DataQueryRelaciones>());
                 }
 
-                DataQueryRelaciones dataQueryRelaciones = (dicRelaciones[group].FirstOrDefault(x => x.nombreRelacion == nombreRelacion));
+                DataQueryRelaciones dataQueryRelaciones = (dicRelaciones[group].FirstOrDefault(x => x.nombreRelacion == relacionDoc));
                 if (dataQueryRelaciones == null)
-                {
-                    dataQueryRelaciones = new DataQueryRelaciones(nombreRelacion, new List<Datos>() { new Datos(person, numRelaciones) });
+                {                    
+                    dataQueryRelaciones = new DataQueryRelaciones(relacionDoc, new List<Datos>() { new Datos(person, numRelaciones) });
                     dicRelaciones[group].Add(dataQueryRelaciones);
                 }
             }
