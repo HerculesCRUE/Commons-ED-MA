@@ -1,5 +1,11 @@
 @*[security|||busqueda/index.cshtml|||hercules]*@
 @model SearchViewModel
+@{	
+	ViewBag.ED_DISPONIBLE = Html.GetBodyClassPestanya().Contains("ed_habilitado");
+	ViewBag.MA_DISPONIBLE = Html.GetBodyClassPestanya().Contains("ma_habilitado");
+	
+    @Html.PartialView("../Shared/_ComprobacionEDMA");
+}
 @{
     CommunityModel Comunidad = Html.GetComunidad();
     UserIdentityModel IdentidadActual = Html.GetIdentidadActual();
