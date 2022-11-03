@@ -20,12 +20,12 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
         {
             HashSet<string> miembros = new HashSet<string>();
             HashSet<string> ip = new HashSet<string>();
-            string grupo = "";
+            string grupo = "http://gnoss/" + pIdGroup;
 
             //Nodos            
             Dictionary<string, string> dicNodos = new Dictionary<string, string>();
             //Relaciones
-            Dictionary<string, List<DataQueryRelaciones>> dicRelaciones = new Dictionary<string, List<DataQueryRelaciones>>();
+            Dictionary<string, List<DataQueryRelaciones>> dicRelaciones = new();
             //Respuesta
             List<DataItemRelacion> items = new List<DataItemRelacion>();
 
@@ -87,22 +87,11 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
                 }
                 miembros.ExceptWith(ip);
             }
-            {
-                //Grupo
-                string select = $@"{mPrefijos}
-                                select distinct ?nombre";
-                string where = $@"
-                WHERE {{ 
-                        <http://gnoss/{pIdGroup}> roh:title ?nombre.                        
-                }}";
-                string nombreGrupo = resourceApi.VirtuosoQuery(select, where, idComunidad).results.bindings.First()["nombre"].value;
-                if (nombreGrupo.Length > 20)
-                {
-                    nombreGrupo = nombreGrupo.Substring(0, 20) + "...";
-                }
-                grupo = "http://gnoss/" + pIdGroup;
-                dicNodos.Add("http://gnoss/" + pIdGroup, nombreGrupo);
-            }
+
+
+            //Grupo
+            dicNodos = GetGrupos(pIdGroup);
+
             #endregion
 
             if (miembros.Union(ip).Any())
@@ -110,133 +99,21 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
                 #region Relaciones con el grupo
                 {
                     //Proyectos
-                    {
-                        string select = "SELECT ?person COUNT(distinct ?project) AS ?numRelacionesProyectos";
-                        string where = $@"
-                    WHERE {{ 
-                            ?project a 'project'.
-                            ?project <http://w3id.org/roh/isProducedBy> <http://gnoss/{pIdGroup}>.
-                            ?project ?propRol ?rolProy.
-                            FILTER(?propRol in (<http://w3id.org/roh/researchers>,<http://w3id.org/roh/mainResearchers>))
-                            ?rolProy <http://www.w3.org/1999/02/22-rdf-syntax-ns#member> ?person.
-                            FILTER(?person in (<{string.Join(">,<", miembros.Union(ip))}>))
-                        }}order by desc(?numRelacionesProyectos)";
-                        SparqlObject resultadoQuery = resourceApi.VirtuosoQuery(select, where, idComunidad);
-                        foreach (Dictionary<string, SparqlObject.Data> fila in resultadoQuery.results.bindings)
-                        {
-                            string person = fila["person"].value;
-                            string group = "http://gnoss/" + pIdGroup.ToUpper();
-                            int numRelaciones = int.Parse(fila["numRelacionesProyectos"].value);
-                            string nombreRelacion = "Proyectos";
-                            if (!dicRelaciones.ContainsKey(group))
-                            {
-                                dicRelaciones.Add(group, new List<DataQueryRelaciones>());
-                            }
+                    dicRelaciones = GetRelacionesGrupoProyectos(pIdGroup, miembros, ip, dicRelaciones);
 
-                            DataQueryRelaciones dataQueryRelaciones = (dicRelaciones[group].FirstOrDefault(x => x.nombreRelacion == nombreRelacion));
-                            if (dataQueryRelaciones == null)
-                            {
-                                dataQueryRelaciones = new DataQueryRelaciones()
-                                {
-                                    nombreRelacion = nombreRelacion,
-                                    idRelacionados = new List<Datos>()
-                                };
-                                dicRelaciones[group].Add(dataQueryRelaciones);
-                            }
-                            dataQueryRelaciones.idRelacionados.Add(new Datos()
-                            {
-                                idRelacionado = person,
-                                numVeces = numRelaciones
-                            });
-                        }
-                    }
-                    //DOCUMENTOS
-                    {
-                        string select = "SELECT ?person COUNT(distinct ?document) AS ?numRelacionesDocumentos";
-                        string where = $@"
-                    WHERE {{ 
-                            ?document a 'document'.
-                            ?document <http://w3id.org/roh/isProducedBy> <http://gnoss/{pIdGroup}>.
-                            ?document <http://purl.org/ontology/bibo/authorList> ?lista. 
-                            ?lista <http://www.w3.org/1999/02/22-rdf-syntax-ns#member> ?person.
-                            FILTER(?person in (<{string.Join(">,<", miembros.Union(ip))}>))
-                        }}order by desc(?numRelacionesDocumentos)";
-                        SparqlObject resultadoQuery = resourceApi.VirtuosoQuery(select, where, idComunidad);
-                        foreach (Dictionary<string, SparqlObject.Data> fila in resultadoQuery.results.bindings)
-                        {
-                            string person = fila["person"].value;
-                            string group = "http://gnoss/" + pIdGroup.ToUpper();
-                            int numRelaciones = int.Parse(fila["numRelacionesDocumentos"].value);
-                            string nombreRelacion = "Documentos";
-                            if (!dicRelaciones.ContainsKey(group))
-                            {
-                                dicRelaciones.Add(group, new List<DataQueryRelaciones>());
-                            }
-
-                            DataQueryRelaciones dataQueryRelaciones = (dicRelaciones[group].FirstOrDefault(x => x.nombreRelacion == nombreRelacion));
-                            if (dataQueryRelaciones == null)
-                            {
-                                dataQueryRelaciones = new DataQueryRelaciones()
-                                {
-                                    nombreRelacion = nombreRelacion,
-                                    idRelacionados = new List<Datos>()
-                                };
-                                dicRelaciones[group].Add(dataQueryRelaciones);
-                            }
-                            dataQueryRelaciones.idRelacionados.Add(new Datos()
-                            {
-                                idRelacionado = person,
-                                numVeces = numRelaciones
-                            });
-                        }
-                    }
+                    //Documentos
+                    dicRelaciones = GetRelacionesGrupoDocumentos(pIdGroup, miembros, ip, dicRelaciones);
                 }
                 #endregion
 
                 #region Relaciones entre miembros
-                {
-                    //Proyectos
-                    {
-                        string select = "SELECT ?person group_concat(distinct ?project;separator=\",\") as ?projects";
-                        string where = $@"
-                    WHERE {{ 
-                            ?project a 'project'.
-                            ?project ?propRol ?rol
-                            FILTER(?propRol in (<http://w3id.org/roh/researchers>,<http://w3id.org/roh/mainResearchers>))
-                            ?rol <http://www.w3.org/1999/02/22-rdf-syntax-ns#member> ?person.
-                            FILTER(?person in (<{string.Join(">,<", miembros.Union(ip))}>))
-                        }}";
-                        SparqlObject resultadoQuery = resourceApi.VirtuosoQuery(select, where, idComunidad);
-                        Dictionary<string, List<string>> personaProy = new Dictionary<string, List<string>>();
-                        foreach (Dictionary<string, SparqlObject.Data> fila in resultadoQuery.results.bindings)
-                        {
-                            string projects = fila["projects"].value;
-                            string person = fila["person"].value;
-                            personaProy.Add(person, new List<string>(projects.Split(',')));
-                        }
-                        UtilidadesAPI.ProcessRelations("Proyectos", personaProy, ref dicRelaciones);
-                    }
-                    //DOCUMENTOS
-                    {
-                        string select = "SELECT ?person group_concat(distinct ?document;separator=\",\") as ?documents";
-                        string where = $@"
-                    WHERE {{ 
-                            ?document a 'document'.
-                            ?document <http://purl.org/ontology/bibo/authorList> ?authorList.
-                            ?authorList <http://www.w3.org/1999/02/22-rdf-syntax-ns#member> ?person.
-                            FILTER(?person in (<{string.Join(">,<", miembros.Union(ip))}>))
-                        }}";
-                        SparqlObject resultadoQuery = resourceApi.VirtuosoQuery(select, where, idComunidad);
-                        Dictionary<string, List<string>> personaDoc = new Dictionary<string, List<string>>();
-                        foreach (Dictionary<string, SparqlObject.Data> fila in resultadoQuery.results.bindings)
-                        {
-                            string documents = fila["documents"].value;
-                            string person = fila["person"].value;
-                            personaDoc.Add(person, new List<string>(documents.Split(',')));
-                        }
-                        UtilidadesAPI.ProcessRelations("Documentos", personaDoc, ref dicRelaciones);
-                    }
-                }
+                //Proyectos
+                Dictionary<string, List<string>> personaProy = GetRelacionesMiembrosProyectos(miembros, ip);
+                UtilidadesAPI.ProcessRelations("Proyectos", personaProy, ref dicRelaciones);
+
+                //Documentos
+                Dictionary<string, List<string>> personaDoc = GetRelacionesMiembrosDocumentos(miembros, ip);
+                UtilidadesAPI.ProcessRelations("Documentos", personaDoc, ref dicRelaciones);
                 #endregion
 
                 int maximasRelaciones = 0;
@@ -306,6 +183,139 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
             return items;
         }
 
+        public Dictionary<string, List<DataQueryRelaciones>> GetRelacionesGrupoProyectos(string pIdGroup, HashSet<string> miembros,
+            HashSet<string> ip, Dictionary<string, List<DataQueryRelaciones>> dicRelaciones)
+        {
+            string group = "http://gnoss/" + pIdGroup.ToUpper();
+            string nombreRelacion = "Proyectos";
+
+            string select = "SELECT ?person COUNT(distinct ?project) AS ?numRelacionesProyectos";
+            string where = $@"
+                    WHERE {{ 
+                            ?project a 'project'.
+                            ?project <http://w3id.org/roh/isProducedBy> <http://gnoss/{pIdGroup}>.
+                            ?project ?propRol ?rolProy.
+                            FILTER(?propRol in (<http://w3id.org/roh/researchers>,<http://w3id.org/roh/mainResearchers>))
+                            ?rolProy <http://www.w3.org/1999/02/22-rdf-syntax-ns#member> ?person.
+                            FILTER(?person in (<{string.Join(">,<", miembros.Union(ip))}>))
+                        }}order by desc(?numRelacionesProyectos)";
+
+            SparqlObject resultadoQuery = resourceApi.VirtuosoQuery(select, where, idComunidad);
+            foreach (Dictionary<string, SparqlObject.Data> fila in resultadoQuery.results.bindings)
+            {
+                string person = fila["person"].value;
+                int numRelaciones = int.Parse(fila["numRelacionesDocumentos"].value);
+
+                if (!dicRelaciones.ContainsKey(group))
+                {
+                    dicRelaciones.Add(group, new List<DataQueryRelaciones>());
+                }
+
+                DataQueryRelaciones dataQueryRelaciones = (dicRelaciones[group].FirstOrDefault(x => x.nombreRelacion == nombreRelacion));
+                if (dataQueryRelaciones == null)
+                {
+                    dataQueryRelaciones = new DataQueryRelaciones(nombreRelacion, new List<Datos>() { { new Datos(person, numRelaciones) } });
+                    dicRelaciones[group].Add(dataQueryRelaciones);
+                }
+            }
+            return dicRelaciones;
+        }
+        public Dictionary<string, List<string>> GetRelacionesMiembrosProyectos(HashSet<string> miembros, HashSet<string> ip)
+        {
+            Dictionary<string, List<string>> personaProy = new();
+
+            string select = "SELECT ?person group_concat(distinct ?project;separator=\",\") as ?projects";
+            string where = $@"
+                    WHERE {{ 
+                            ?project a 'project'.
+                            ?project ?propRol ?rol
+                            FILTER(?propRol in (<http://w3id.org/roh/researchers>,<http://w3id.org/roh/mainResearchers>))
+                            ?rol <http://www.w3.org/1999/02/22-rdf-syntax-ns#member> ?person.
+                            FILTER(?person in (<{string.Join(">,<", miembros.Union(ip))}>))
+                        }}";
+
+            SparqlObject resultadoQuery = resourceApi.VirtuosoQuery(select, where, idComunidad);
+            foreach (Dictionary<string, SparqlObject.Data> fila in resultadoQuery.results.bindings)
+            {
+                string projects = fila["projects"].value;
+                string person = fila["person"].value;
+                personaProy.Add(person, new List<string>(projects.Split(',')));
+            }
+            return personaProy;
+        }
+        public Dictionary<string, List<DataQueryRelaciones>> GetRelacionesGrupoDocumentos(string pIdGroup, HashSet<string> miembros,
+            HashSet<string> ip, Dictionary<string, List<DataQueryRelaciones>> dicRelaciones)
+        {
+            string group = "http://gnoss/" + pIdGroup.ToUpper();
+            string nombreRelacion = "Documentos";
+
+            string select = "SELECT ?person COUNT(distinct ?document) AS ?numRelacionesDocumentos";
+            string where = $@"
+                    WHERE {{ 
+                            ?document a 'document'.
+                            ?document <http://w3id.org/roh/isProducedBy> <http://gnoss/{pIdGroup}>.
+                            ?document <http://purl.org/ontology/bibo/authorList> ?lista. 
+                            ?lista <http://www.w3.org/1999/02/22-rdf-syntax-ns#member> ?person.
+                            FILTER(?person in (<{string.Join(">,<", miembros.Union(ip))}>))
+                        }}order by desc(?numRelacionesDocumentos)";
+            SparqlObject resultadoQuery = resourceApi.VirtuosoQuery(select, where, idComunidad);
+            foreach (Dictionary<string, SparqlObject.Data> fila in resultadoQuery.results.bindings)
+            {
+                string person = fila["person"].value;
+                int numRelaciones = int.Parse(fila["numRelacionesDocumentos"].value);
+
+                if (!dicRelaciones.ContainsKey(group))
+                {
+                    dicRelaciones.Add(group, new List<DataQueryRelaciones>());
+                }
+
+                DataQueryRelaciones dataQueryRelaciones = (dicRelaciones[group].FirstOrDefault(x => x.nombreRelacion == nombreRelacion));
+                if (dataQueryRelaciones == null)
+                {
+                    dataQueryRelaciones = new DataQueryRelaciones(nombreRelacion, new List<Datos>() { { new Datos(person, numRelaciones) } });
+                    dicRelaciones[group].Add(dataQueryRelaciones);
+                }
+            }
+            return dicRelaciones;
+        }
+        public Dictionary<string, List<string>> GetRelacionesMiembrosDocumentos(HashSet<string> miembros, HashSet<string> ip)
+        {
+            Dictionary<string, List<string>> personaDoc = new();
+            string select = "SELECT ?person group_concat(distinct ?document;separator=\",\") as ?documents";
+            string where = $@"
+                    WHERE {{ 
+                            ?document a 'document'.
+                            ?document <http://purl.org/ontology/bibo/authorList> ?authorList.
+                            ?authorList <http://www.w3.org/1999/02/22-rdf-syntax-ns#member> ?person.
+                            FILTER(?person in (<{string.Join(">,<", miembros.Union(ip))}>))
+                        }}";
+            SparqlObject resultadoQuery = resourceApi.VirtuosoQuery(select, where, idComunidad);
+            foreach (Dictionary<string, SparqlObject.Data> fila in resultadoQuery.results.bindings)
+            {
+                string documents = fila["documents"].value;
+                string person = fila["person"].value;
+                personaDoc.Add(person, new List<string>(documents.Split(',')));
+            }
+            return personaDoc;
+        }
+
+        public Dictionary<string, string> GetGrupos(string pIdGroup)
+        {
+            Dictionary<string, string> dicNodos = new();
+            string select = $@"{mPrefijos}
+                                select distinct ?nombre";
+            string where = $@"
+                WHERE {{ 
+                        <http://gnoss/{pIdGroup}> roh:title ?nombre.                        
+                }}";
+            string nombreGrupo = resourceApi.VirtuosoQuery(select, where, idComunidad).results.bindings.First()["nombre"].value;
+            if (nombreGrupo.Length > 20)
+            {
+                nombreGrupo = nombreGrupo.Substring(0, 20) + "...";
+            }
+            dicNodos.Add("http://gnoss/" + pIdGroup, nombreGrupo);
+            return dicNodos;
+        }
 
         public List<DataItemRelacion> DatosGraficaColaboradoresGrupo(string pIdGroup, string pParametros, int pMax)
         {
