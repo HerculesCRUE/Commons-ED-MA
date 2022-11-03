@@ -39,7 +39,7 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
                 while (true)
                 {
                     try
-                    { 
+                    {
                         //Aquí se almacenan los objetos buscables
                         List<Publication> publicationsTemp = new List<Publication>();
                         List<ResearchObject> researchObjectsTemp = new List<ResearchObject>();
@@ -91,7 +91,7 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
                                             groups = new List<Group>(),
                                             projects = new List<Project>(),
                                             offers = new List<Offer>(),
-                                            order=nombre
+                                            order = nombre
                                         };
 
                                         person.properties.Add(new ObjectSearch.Property(new HashSet<string>(ObtenerTextoNormalizado(nombre).Split(' ', StringSplitOptions.RemoveEmptyEntries)), 1, person));
@@ -136,7 +136,7 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
                                     {
                                         Guid id = new Guid(fila["id"].value.Replace("http://gnoss/", ""));
                                         string fecha = "";
-                                        if(fila.ContainsKey("fecha"))
+                                        if (fila.ContainsKey("fecha"))
                                         {
                                             fecha = fila["fecha"].value;
                                         }
@@ -155,7 +155,7 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
                                                 id = id,
                                                 title = title,
                                                 properties = new List<ObjectSearch.Property>(),
-                                                order=fecha
+                                                order = fecha
                                             };
 
                                             publication.properties.Add(new ObjectSearch.Property(new HashSet<string>(ObtenerTextoNormalizado(title).Split(' ', StringSplitOptions.RemoveEmptyEntries)), 10000000, publication));
@@ -203,7 +203,7 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
                                         if (publication != null)
                                         {
                                             Person person = personsTemp.FirstOrDefault(x => x.id == author);
-                                            if (person!=null)
+                                            if (person != null)
                                             {
                                                 person.publications.Add(publication);
                                             }
@@ -308,7 +308,7 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
                                                 id = id,
                                                 title = title,
                                                 properties = new List<ObjectSearch.Property>(),
-                                                order=fecha,
+                                                order = fecha,
                                             };
                                             researchObject.properties.Add(new ObjectSearch.Property(new HashSet<string>(ObtenerTextoNormalizado(title).Split(' ', StringSplitOptions.RemoveEmptyEntries)), 10000000, researchObject));
                                             researchObject.properties.Add(new ObjectSearch.Property(new HashSet<string>(ObtenerTextoNormalizado(description).Split(' ', StringSplitOptions.RemoveEmptyEntries)), 1000, researchObject));
@@ -454,7 +454,7 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
                                                 id = id,
                                                 title = title,
                                                 properties = new List<ObjectSearch.Property>(),
-                                                order=title
+                                                order = title
                                             };
 
                                             group.properties.Add(new ObjectSearch.Property(new HashSet<string>(ObtenerTextoNormalizado(title).Split(' ', StringSplitOptions.RemoveEmptyEntries)), 10000, group));
@@ -571,7 +571,7 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
                                                 id = id,
                                                 title = title,
                                                 properties = new List<ObjectSearch.Property>(),
-                                                order=title
+                                                order = title
                                             };
 
                                             project.properties.Add(new ObjectSearch.Property(new HashSet<string>(ObtenerTextoNormalizado(title).Split(' ', StringSplitOptions.RemoveEmptyEntries)), 10000, project));
@@ -692,7 +692,7 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
                                                 id = id,
                                                 title = title,
                                                 properties = new List<ObjectSearch.Property>(),
-                                                order=fecha
+                                                order = fecha
                                             };
 
                                             offer.properties.Add(new ObjectSearch.Property(new HashSet<string>(ObtenerTextoNormalizado(title).Split(' ', StringSplitOptions.RemoveEmptyEntries)), 10000, offer));
@@ -761,92 +761,32 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
 
                         foreach (Person person in personsTemp)
                         {
-                            foreach (ObjectSearch.Property prop in person.properties)
-                            {
-                                foreach (string text in prop.texts)
-                                {
-                                    if (!textSearchTemp.ContainsKey(text))
-                                    {
-                                        textSearchTemp[text] = new List<ObjectSearch.Property>();
-                                    }
-                                    textSearchTemp[text].Add(prop);
-                                }
-                            }
+                            LeerPropiedades(ref textSearchTemp, person.properties);
                         }
 
                         foreach (Publication publication in publicationsTemp)
                         {
-                            foreach (ObjectSearch.Property prop in publication.properties)
-                            {
-                                foreach (string text in prop.texts)
-                                {
-                                    if (!textSearchTemp.ContainsKey(text))
-                                    {
-                                        textSearchTemp[text] = new List<ObjectSearch.Property>();
-                                    }
-                                    textSearchTemp[text].Add(prop);
-                                }
-                            }
+                            LeerPropiedades(ref textSearchTemp, publication.properties);
                         }
 
                         foreach (ResearchObject researchObject in researchObjectsTemp)
                         {
-                            foreach (ObjectSearch.Property prop in researchObject.properties)
-                            {
-                                foreach (string text in prop.texts)
-                                {
-                                    if (!textSearchTemp.ContainsKey(text))
-                                    {
-                                        textSearchTemp[text] = new List<ObjectSearch.Property>();
-                                    }
-                                    textSearchTemp[text].Add(prop);
-                                }
-                            }
+                            LeerPropiedades(ref textSearchTemp, researchObject.properties);
                         }
 
                         foreach (Group group in groupsTemp)
                         {
-                            foreach (ObjectSearch.Property prop in group.properties)
-                            {
-                                foreach (string text in prop.texts)
-                                {
-                                    if (!textSearchTemp.ContainsKey(text))
-                                    {
-                                        textSearchTemp[text] = new List<ObjectSearch.Property>();
-                                    }
-                                    textSearchTemp[text].Add(prop);
-                                }
-                            }
+                            LeerPropiedades(ref textSearchTemp, group.properties);
                         }
 
                         foreach (Project project in projectsTemp)
                         {
-                            foreach (ObjectSearch.Property prop in project.properties)
-                            {
-                                foreach (string text in prop.texts)
-                                {
-                                    if (!textSearchTemp.ContainsKey(text))
-                                    {
-                                        textSearchTemp[text] = new List<ObjectSearch.Property>();
-                                    }
-                                    textSearchTemp[text].Add(prop);
-                                }
-                            }
+                            LeerPropiedades(ref textSearchTemp, project.properties);
                         }
 
                         foreach (Offer offer in offersTemp)
                         {
-                            foreach (ObjectSearch.Property prop in offer.properties)
-                            {
-                                foreach (string text in prop.texts)
-                                {
-                                    if (!textSearchTemp.ContainsKey(text))
-                                    {
-                                        textSearchTemp[text] = new List<ObjectSearch.Property>();
-                                    }
-                                    textSearchTemp[text].Add(prop);
-                                }
-                            }
+                            LeerPropiedades(ref textSearchTemp, offer.properties);
                         }
 
                         textSearch = textSearchTemp;
@@ -861,6 +801,20 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
             }).Start();
         }
 
+        private void LeerPropiedades(ref Dictionary<string, List<ObjectSearch.Property>> textSearchTemp, List<ObjectSearch.Property> listadoPropiedades)
+        {
+            foreach (ObjectSearch.Property prop in listadoPropiedades)
+            {
+                foreach (string text in prop.texts)
+                {
+                    if (!textSearchTemp.ContainsKey(text))
+                    {
+                        textSearchTemp[text] = new List<ObjectSearch.Property>();
+                    }
+                    textSearchTemp[text].Add(prop);
+                }
+            }
+        }
 
         /// <summary>
         /// Busca los elementos necesarios y devuelve los resultados
@@ -941,7 +895,7 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
                     }
                 }
                 if ((inputs.Count > 0 && propertiesSearch.Count > 0) || inputs.Count == 0)
-                {                    
+                {
                     if (textSearch.ContainsKey(lastInput))
                     {
                         if (inputs.Count == 0)
@@ -989,9 +943,9 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
                         }
                         personasFilter[item] += property.score;
                     }
-                    if(item.publications.Count>0)
+                    if (item.publications.Count > 0)
                     {
-                        foreach(Publication publication in item.publications)
+                        foreach (Publication publication in item.publications)
                         {
                             if (!publicacionesFilter.ContainsKey(publication))
                             {
@@ -1164,7 +1118,7 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
                 }
             }
 
-            personasFilter = personasFilter.OrderByDescending(x => x.Value).ThenByDescending(x=>x.Key.order).ToDictionary(x => x.Key, x => x.Value);
+            personasFilter = personasFilter.OrderByDescending(x => x.Value).ThenByDescending(x => x.Key.order).ToDictionary(x => x.Key, x => x.Value);
             publicacionesFilter = publicacionesFilter.OrderByDescending(x => x.Value).ThenByDescending(x => x.Key.order).ToDictionary(x => x.Key, x => x.Value);
             researchObjectsFilter = researchObjectsFilter.OrderByDescending(x => x.Value).ThenByDescending(x => x.Key.order).ToDictionary(x => x.Key, x => x.Value);
             groupsFilter = groupsFilter.OrderByDescending(x => x.Value).ThenByDescending(x => x.Key.order).ToDictionary(x => x.Key, x => x.Value);
@@ -1178,7 +1132,7 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
                 List<ObjectSearch> listaPersonas = new List<ObjectSearch>();
                 foreach (Person item in personasFilter.Keys.ToList().GetRange(0, minPersonas))
                 {
-                    listaPersonas.Add(new Person() { title = item.title,id=item.id } );
+                    listaPersonas.Add(new Person() { title = item.title, id = item.id });
                 }
                 respuesta["persona"] = new KeyValuePair<bool, List<ObjectSearch>>(personasSearch, listaPersonas);
             }
