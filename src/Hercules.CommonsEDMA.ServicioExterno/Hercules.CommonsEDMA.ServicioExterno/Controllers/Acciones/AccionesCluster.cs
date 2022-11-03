@@ -1000,8 +1000,6 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
             //Respuesta
             List<DataItemRelacion> items = new List<DataItemRelacion>();
 
-            string select = "";
-            string where = "";
             if (colaboradores.Count > 0)
             {
                 CargarNodos(colaboradores);
@@ -1100,6 +1098,7 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
             }
             return personaProy;
         }
+
         public Dictionary<string, List<string>> CargarDocumentos(List<string> colaboradores)
         {
             Dictionary<string, List<string>> personaDoc = new();
