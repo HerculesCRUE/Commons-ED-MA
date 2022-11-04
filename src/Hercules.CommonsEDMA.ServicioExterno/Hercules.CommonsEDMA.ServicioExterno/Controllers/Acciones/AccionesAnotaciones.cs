@@ -201,9 +201,9 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
                     string[] recursoSplit = idAnnotation.Split('_');
 
                     // Modificación.
-                    ComplexOntologyResource resource = cRsource.ToGnossApiResource(resourceApi, null, new Guid(recursoSplit[recursoSplit.Length - 2]), new Guid(recursoSplit[recursoSplit.Length - 1]));
+                    ComplexOntologyResource resourceAnotaciones = cRsource.ToGnossApiResource(resourceApi, null, new Guid(recursoSplit[recursoSplit.Length - 2]), new Guid(recursoSplit[recursoSplit.Length - 1]));
                     int numIntentos = 0;
-                    while (!resource.Modified)
+                    while (!resourceAnotaciones.Modified)
                     {
                         numIntentos++;
                         if (numIntentos > MAX_INTENTOS)
@@ -211,25 +211,25 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
                             break;
                         }
 
-                        resourceApi.ModifyComplexOntologyResource(resource, false, false);
-                        uploadedR = resource.Modified;
+                        resourceApi.ModifyComplexOntologyResource(resourceAnotaciones, false, false);
+                        uploadedR = resourceAnotaciones.Modified;
                     }
 
                 }
                 else
                 {
                     // Creación.
-                    ComplexOntologyResource resource = cRsource.ToGnossApiResource(resourceApi, null);
+                    ComplexOntologyResource resourceAnotaciones = cRsource.ToGnossApiResource(resourceApi, null);
                     int numIntentos = 0;
-                    while (!resource.Uploaded)
+                    while (!resourceAnotaciones.Uploaded)
                     {
                         numIntentos++;
                         if (numIntentos > MAX_INTENTOS)
                         {
                             break;
                         }
-                        idAnnotation = resourceApi.LoadComplexSemanticResource(resource, false, true);
-                        uploadedR = resource.Uploaded;
+                        idAnnotation = resourceApi.LoadComplexSemanticResource(resourceAnotaciones, false, true);
+                        uploadedR = resourceAnotaciones.Uploaded;
                     }
                 }
             }
