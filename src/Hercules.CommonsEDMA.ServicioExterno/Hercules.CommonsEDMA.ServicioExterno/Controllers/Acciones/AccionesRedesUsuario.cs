@@ -68,68 +68,21 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
                 foreach (Dictionary<string, SparqlObject.Data> fila in resultadoQuery.results.bindings)
                 {
                     // Usuario FigShare
-                    if (fila.ContainsKey("usuarioFigShare"))
-                    {
-                        foreach (DataUser userData in listaData)
-                        {
-                            if (userData.id == "usuarioFigShare")
-                            {
-                                userData.valor = fila["usuarioFigShare"].value;
-                                break;
-                            }
-                        }
-                    }
+                    listaData = getDataSpqrl(fila, listaData, "usuarioFigShare");
 
                     // Token FigShare
-                    if (fila.ContainsKey("tokenFigShare"))
-                    {
-                        foreach (DataUser userData in listaData)
-                        {
-                            if (userData.id == "tokenFigShare")
-                            {
-                                userData.valor = fila["tokenFigShare"].value;
-                                break;
-                            }
-                        }
-                    }
+                    listaData = getDataSpqrl(fila, listaData, "tokenFigShare");
 
                     // Usuario GitHub
-                    if (fila.ContainsKey("usuarioGitHub"))
-                    {
-                        foreach (DataUser userData in listaData)
-                        {
-                            if (userData.id == "usuarioGitHub")
-                            {
-                                userData.valor = fila["usuarioGitHub"].value;
-                                break;
-                            }
-                        }
-                    }
+                    listaData = getDataSpqrl(fila, listaData, "usuarioGitHub");
 
                     // Token GitHub
-                    if (fila.ContainsKey("tokenGitHub"))
-                    {
-                        foreach (DataUser userData in listaData)
-                        {
-                            if (userData.id == "tokenGitHub")
-                            {
-                                userData.valor = fila["tokenGitHub"].value;
-                                break;
-                            }
-                        }
-                    }
+                    listaData = getDataSpqrl(fila, listaData, "tokenGitHub");
 
                     // ORCID
                     if (fila.ContainsKey("orcid"))
                     {
-                        foreach (DataUser userData in listaData)
-                        {
-                            if (userData.id == "orcid")
-                            {
-                                userData.valor = fila["orcid"].value;
-                                break;
-                            }
-                        }
+                        listaData = getDataSpqrl(fila, listaData, "orcid");
                     }
                     else if (fila.ContainsKey("orcidCV"))
                     {
@@ -146,14 +99,7 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
                     // Researcher ID
                     if (fila.ContainsKey("researcherId"))
                     {
-                        foreach (DataUser userData in listaData)
-                        {
-                            if (userData.id == "researcherId")
-                            {
-                                userData.valor = fila["researcherId"].value;
-                                break;
-                            }
-                        }
+                        listaData = getDataSpqrl(fila, listaData, "researcherId");
                     }
                     else if (fila.ContainsKey("researcherIdCV"))
                     {
@@ -170,14 +116,7 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
                     // Scopus ID
                     if (fila.ContainsKey("scopusId"))
                     {
-                        foreach (DataUser userData in listaData)
-                        {
-                            if (userData.id == "scopusId")
-                            {
-                                userData.valor = fila["scopusId"].value;
-                                break;
-                            }
-                        }
+                        listaData = getDataSpqrl(fila, listaData, "scopusId");
                     }
                     else if (fila.ContainsKey("scopusIdCV"))
                     {
@@ -190,37 +129,18 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
                             }
                         }
                     }
-                    
+
                     // Semantic Scholar ID
-                    if (fila.ContainsKey("semanticScholarId"))
-                    {
-                        foreach (DataUser userData in listaData)
-                        {
-                            if (userData.id == "semanticScholarId")
-                            {
-                                userData.valor = fila["semanticScholarId"].value;
-                                break;
-                            }
-                        }
-                    }
+                    listaData = getDataSpqrl(fila, listaData, "semanticScholarId");
 
                     // Matching
-                    if (fila.ContainsKey("useMatching"))
-                    {
-                        foreach (DataUser userData in listaData)
-                        {
-                            if (userData.id == "useMatching")
-                            {
-                                userData.valor = fila["useMatching"].value;
-                                break;
-                            }
-                        }
-                    }
+                    listaData = getDataSpqrl(fila, listaData, "useMatching");
                 }
             }
 
             return listaData;
         }
+
 
         /// <summary>
         /// Modifica los datos de la fuente de RO de una persona.
@@ -329,6 +249,30 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
             // Modificación.
             dicModificacion.Add(guid, listaTriplesModificacion);
             resourceApi.ModifyPropertiesLoadedResources(dicModificacion);
+        }
+
+
+        /// <summary>
+        /// Obtiene los datos de las fuentes de RO de una persona.
+        /// </summary>
+        /// <param name="fila">fila de resultados de la búsqueda.</param>
+        /// <param name="listaData">Listado de los usuario sobre el que buscar.</param>
+        /// <param name="fieldName">Nombre del campo a buscar y establecer.</param>
+        /// <returns>Diccionario con los datos resultantes.</returns>
+        private List<DataUser> getDataSpqrl(Dictionary<string, SparqlObject.Data> fila, List<DataUser> listaData, string fieldName)
+        {
+            if (fila.ContainsKey(fieldName))
+            {
+                foreach (DataUser userData in listaData)
+                {
+                    if (userData.id == fieldName)
+                    {
+                        userData.valor = fila[fieldName].value;
+                        break;
+                    }
+                }
+            }
+            return listaData;
         }
     }
 }
