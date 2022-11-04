@@ -99,21 +99,17 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
         /// <returns></returns>
         public static string GetLastUpdatedDate(string pUserId)
         {
-            SparqlObject resultadoQuery = null;
-            StringBuilder select = new(), where = new();
+            string selectLastUpd = mPrefijos;
+            selectLastUpd +="SELECT ?fecha ";
+            string whereLastUpd = $@"WHERE {{ 
+                                ?s roh:gnossUser <http://gnoss/{pUserId.ToUpper()}>. 
+                                OPTIONAL{{?s roh:lastUpdatedDate ?fecha. }}
+                            }} ";
 
-            // Consulta sparql.
-            select.Append(mPrefijos);
-            select.Append("SELECT ?fecha ");
-            where.Append("WHERE { ");
-            where.Append($@"?s roh:gnossUser <http://gnoss/{pUserId.ToUpper()}>. ");
-            where.Append("OPTIONAL{?s roh:lastUpdatedDate ?fecha. } ");
-            where.Append("} ");
-
-            resultadoQuery = resourceApi.VirtuosoQuery(select.ToString(), where.ToString(), idComunidad);
-            if (resultadoQuery != null && resultadoQuery.results != null && resultadoQuery.results.bindings != null && resultadoQuery.results.bindings.Count > 0)
+            SparqlObject resultadoQueryLastUpd = resourceApi.VirtuosoQuery(selectLastUpd, whereLastUpd, idComunidad);
+            if (resultadoQueryLastUpd != null && resultadoQueryLastUpd.results != null && resultadoQueryLastUpd.results.bindings != null && resultadoQueryLastUpd.results.bindings.Count > 0)
             {
-                foreach (Dictionary<string, SparqlObject.Data> fila in resultadoQuery.results.bindings)
+                foreach (Dictionary<string, SparqlObject.Data> fila in resultadoQueryLastUpd.results.bindings)
                 {
                     if (fila.ContainsKey("fecha"))
                     {
@@ -138,24 +134,21 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
         public static Dictionary<string, string> GetUsersIDs(string pUserId)
         {
             Dictionary<string, string> dicResultados = new();
-            SparqlObject resultadoQuery = null;
-            StringBuilder select = new(), where = new();
 
-            // Consulta sparql.
-            select.Append(mPrefijos);
-            select.Append("SELECT ?usuarioFigshare ?tokenFigshare ?usuarioGitHub ?tokenGitHub ");
-            where.Append("WHERE { ");
-            where.Append($@"?s roh:gnossUser <http://gnoss/{pUserId.ToUpper()}>. ");
-            where.Append("OPTIONAL{?s roh:usuarioFigShare ?usuarioFigshare. } ");
-            where.Append("OPTIONAL{?s roh:tokenFigShare ?tokenFigshare. } ");
-            where.Append("OPTIONAL{?s roh:usuarioGitHub ?usuarioGitHub. } ");
-            where.Append("OPTIONAL{?s roh:tokenGitHub ?tokenGitHub. } ");
-            where.Append("} ");
+            string selectUserId = mPrefijos;
+            selectUserId += "SELECT ?usuarioFigshare ?tokenFigshare ?usuarioGitHub ?tokenGitHub ";
+            string whereUserId = $@"WHERE {{ 
+                                ?s roh:gnossUser <http://gnoss/{pUserId.ToUpper()}>. 
+                                OPTIONAL{{?s roh:usuarioFigShare ?usuarioFigshare. }}
+                                OPTIONAL{{?s roh:tokenFigShare ?tokenFigshare. }}
+                                OPTIONAL{{?s roh:usuarioGitHub ?usuarioGitHub. }} 
+                                OPTIONAL{{?s roh:tokenGitHub ?tokenGitHub. }} 
+                            }} ";
 
-            resultadoQuery = resourceApi.VirtuosoQuery(select.ToString(), where.ToString(), idComunidad);
-            if (resultadoQuery != null && resultadoQuery.results != null && resultadoQuery.results.bindings != null && resultadoQuery.results.bindings.Count > 0)
+            SparqlObject resultadoQueryUserId = resourceApi.VirtuosoQuery(selectUserId, whereUserId, idComunidad);
+            if (resultadoQueryUserId != null && resultadoQueryUserId.results != null && resultadoQueryUserId.results.bindings != null && resultadoQueryUserId.results.bindings.Count > 0)
             {
-                foreach (Dictionary<string, SparqlObject.Data> fila in resultadoQuery.results.bindings)
+                foreach (Dictionary<string, SparqlObject.Data> fila in resultadoQueryUserId.results.bindings)
                 {
                     if (fila.ContainsKey("usuarioFigshare"))
                     {
