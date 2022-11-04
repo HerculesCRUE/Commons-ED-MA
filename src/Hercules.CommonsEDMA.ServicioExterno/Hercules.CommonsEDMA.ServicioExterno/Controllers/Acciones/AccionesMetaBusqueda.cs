@@ -387,7 +387,7 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
                             if (resultadoQuery4 != null && resultadoQuery4.results != null && resultadoQuery4.results.bindings != null && resultadoQuery4.results.bindings.Count > 0)
                             {
                                 offsetRO += limitRO;
-                                foreach (Dictionary<string, SparqlObject.Data> fila in resultadoQuery.results.bindings)
+                                foreach (Dictionary<string, SparqlObject.Data> fila in resultadoQuery4.results.bindings)
                                 {
                                     Guid id = new(fila["id"].value.Replace("http://gnoss/", ""));
 

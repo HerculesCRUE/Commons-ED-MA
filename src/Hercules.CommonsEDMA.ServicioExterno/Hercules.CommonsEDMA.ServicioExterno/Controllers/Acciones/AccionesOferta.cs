@@ -1193,9 +1193,9 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
                     string[] recursoSplit = idRecurso.Split('_');
 
                     // Modificación.
-                    ComplexOntologyResource resource = cRsource.ToGnossApiResource(resourceApi, null, new Guid(recursoSplit[recursoSplit.Length - 2]), new Guid(recursoSplit[recursoSplit.Length - 1]));
+                    ComplexOntologyResource resourceOfertas = cRsource.ToGnossApiResource(resourceApi, null, new Guid(recursoSplit[recursoSplit.Length - 2]), new Guid(recursoSplit[recursoSplit.Length - 1]));
                     int numIntentos = 0;
-                    while (!resource.Modified)
+                    while (!resourceOfertas.Modified)
                     {
                         numIntentos++;
                         if (numIntentos > MAX_INTENTOS)
@@ -1203,25 +1203,25 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
                             break;
                         }
 
-                        resourceApi.ModifyComplexOntologyResource(resource, false, false);
-                        uploadedR = resource.Modified;
+                        resourceApi.ModifyComplexOntologyResource(resourceOfertas, false, false);
+                        uploadedR = resourceOfertas.Modified;
                     }
 
                 }
                 else
                 {
                     // Inserción.
-                    ComplexOntologyResource resource = cRsource.ToGnossApiResource(resourceApi, null);
+                    ComplexOntologyResource resourceOfertas = cRsource.ToGnossApiResource(resourceApi, null);
                     int numIntentos = 0;
-                    while (!resource.Uploaded)
+                    while (!resourceOfertas.Uploaded)
                     {
                         numIntentos++;
                         if (numIntentos > MAX_INTENTOS)
                         {
                             break;
                         }
-                        idRecurso = resourceApi.LoadComplexSemanticResource(resource, false, true);
-                        uploadedR = resource.Uploaded;
+                        idRecurso = resourceApi.LoadComplexSemanticResource(resourceOfertas, false, true);
+                        uploadedR = resourceOfertas.Uploaded;
                     }
                 }
             }
