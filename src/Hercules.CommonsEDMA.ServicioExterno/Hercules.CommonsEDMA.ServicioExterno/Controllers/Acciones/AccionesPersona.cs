@@ -30,35 +30,35 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
         {
             string idGrafoBusqueda = UtilidadesAPI.ObtenerIdBusqueda(resourceApi, pPersona);
             Dictionary<string, int> dicResultados = new();
-            SparqlObject resultadoQuery = null;
-            StringBuilder select = new(), where = new();
 
-            // Consulta sparql.
-            select.Append(mPrefijos);
-            select.Append("SELECT COUNT(DISTINCT ?proyecto) AS ?NumProyectos COUNT(DISTINCT ?documento) AS ?NumPublicaciones COUNT(DISTINCT ?categoria) AS ?NumCategorias ");
-            where.Append("WHERE {{ "); // Total Proyectos.
-            where.Append("?proyecto vivo:relates ?relacion. ");
-            where.Append("?proyecto gnoss:hasprivacidadCom 'publico'. ");
-            where.Append("?relacion <http://www.w3.org/1999/02/22-rdf-syntax-ns#member> ?persona. ");
-            where.Append($@"FILTER(?persona = <{idGrafoBusqueda}>) ");
-            where.Append("} UNION { "); // Total Documentos.
-            where.Append("?documento bibo:authorList ?listaAutores. ");
-            where.Append("?listaAutores rdf:member ?persona. ");
-            where.Append($@"FILTER(?persona = <{idGrafoBusqueda}>) ");
-            where.Append("} UNION { "); // Total Categorías.
-            where.Append("?s ?p ?documentoC. ");
-            where.Append("?documentoC bibo:authorList ?listaAutoresC. ");
-            where.Append("?listaAutoresC rdf:member ?persona. ");
-            where.Append("?documentoC roh:hasKnowledgeArea ?area. ");
-            where.Append("?area roh:categoryNode ?categoria. ");
-            where.Append($@"FILTER(?persona = <{idGrafoBusqueda}>) ");
-            where.Append("}} ");
+            string selectNumProyPubCat = mPrefijos;
+            selectNumProyPubCat += "SELECT COUNT(DISTINCT ?proyecto) AS ?NumProyectos COUNT(DISTINCT ?documento) AS ?NumPublicaciones COUNT(DISTINCT ?categoria) AS ?NumCategorias ";
+            string whereNumProyPubCat = $@"WHERE {{
+                                                {{ 
+                                                    ?proyecto vivo:relates ?relacion. 
+                                                    ?proyecto gnoss:hasprivacidadCom 'publico'. 
+                                                    ?relacion <http://www.w3.org/1999/02/22-rdf-syntax-ns#member> ?persona. 
+                                                    FILTER(?persona = <{idGrafoBusqueda}>)
+                                                }} UNION {{ 
+                                                    ?documento bibo:authorList ?listaAutores. 
+                                                    ?listaAutores rdf:member ?persona. 
+                                                    FILTER(?persona = <{idGrafoBusqueda}>) 
+                                                }} UNION {{
+                                                    ?s ?p ?documentoC. 
+                                                    ?documentoC bibo:authorList ?listaAutoresC. 
+                                                    ?listaAutoresC rdf:member ?persona. 
+                                                    ?documentoC roh:hasKnowledgeArea ?area. 
+                                                    ?area roh:categoryNode ?categoria. 
+                                                    FILTER(?persona = <{idGrafoBusqueda}>) 
+                                                }}
+                                            }} ";
 
-            resultadoQuery = resourceApi.VirtuosoQuery(select.ToString(), where.ToString(), idComunidad);
+            SparqlObject resultadoQueryNumProyPubCat = resourceApi.VirtuosoQuery(selectNumProyPubCat, whereNumProyPubCat, idComunidad);
 
-            if (resultadoQuery != null && resultadoQuery.results != null && resultadoQuery.results.bindings != null && resultadoQuery.results.bindings.Count > 0)
+            if (resultadoQueryNumProyPubCat != null && resultadoQueryNumProyPubCat.results != null &&
+                resultadoQueryNumProyPubCat.results.bindings != null && resultadoQueryNumProyPubCat.results.bindings.Count > 0)
             {
-                foreach (Dictionary<string, SparqlObject.Data> fila in resultadoQuery.results.bindings)
+                foreach (Dictionary<string, SparqlObject.Data> fila in resultadoQueryNumProyPubCat.results.bindings)
                 {
                     int numProyectos = int.Parse(UtilidadesAPI.GetValorFilaSparqlObject(fila, "NumProyectos"));
                     int numDocumentos = int.Parse(UtilidadesAPI.GetValorFilaSparqlObject(fila, "NumPublicaciones"));
@@ -69,39 +69,42 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
                 }
             }
 
-            // Consulta sparql.
-            select = new StringBuilder();
-            where = new StringBuilder();
-            select.Append(mPrefijos);
-            select.Append("SELECT  COUNT(DISTINCT ?id) AS ?NumColaboradores ");
-            where.Append("WHERE {{ ");
-            where.Append("SELECT * WHERE { ");
-            where.Append("?proyecto vivo:relates ?relacion. ");
-            where.Append("?relacion <http://www.w3.org/1999/02/22-rdf-syntax-ns#member> ?persona. ");
-            where.Append($@"FILTER(?persona = <{idGrafoBusqueda}>) ");
-            where.Append("?proyecto vivo:relates ?relacion2. ");
-            where.Append("?relacion2 <http://www.w3.org/1999/02/22-rdf-syntax-ns#member> ?id. ");
-            where.Append($@"FILTER(?id != <{idGrafoBusqueda}>)}} ");
-            where.Append("} UNION { ");
-            where.Append("SELECT * WHERE { ");
-            where.Append("?documento bibo:authorList ?listaAutores. ");
-            where.Append("?listaAutores rdf:member ?persona2. ");
-            where.Append($@"FILTER(?persona2 = <{idGrafoBusqueda}>) ");
-            where.Append("?documento bibo:authorList ?listaAutores2. ");
-            where.Append("?listaAutores2 rdf:member ?id. ");
-            where.Append($@"FILTER(?id != <{idGrafoBusqueda}>) ");
-            where.Append("}}} ");
 
-            resultadoQuery = resourceApi.VirtuosoQuery(select.ToString(), where.ToString(), idComunidad);
+            string selectNumColab = mPrefijos;
+            selectNumColab += "SELECT  COUNT(DISTINCT ?id) AS ?NumColaboradores ";
+            string whereNumcolab = $@"WHERE {{ 
+                                            {{ 
+                                                   SELECT * WHERE {{
+                                                        ?proyecto vivo:relates ?relacion. 
+                                                        ?relacion <http://www.w3.org/1999/02/22-rdf-syntax-ns#member> ?persona. 
+                                                        FILTER(?persona = <{idGrafoBusqueda}>) 
+                                                        ?proyecto vivo:relates ?relacion2. 
+                                                        ?relacion2 <http://www.w3.org/1999/02/22-rdf-syntax-ns#member> ?id.
+                                                        FILTER(?id != <{idGrafoBusqueda}>)
+                                                    }}
+                                            }} UNION {{ 
+                                                    SELECT * WHERE {{ 
+                                                        ?documento bibo:authorList ?listaAutores. 
+                                                        ?listaAutores rdf:member ?persona2. 
+                                                        FILTER(?persona2 = <{idGrafoBusqueda}>) 
+                                                        ?documento bibo:authorList ?listaAutores2. 
+                                                        ?listaAutores2 rdf:member ?id. 
+                                                        FILTER(?id != <{idGrafoBusqueda}>)
+                                                    }}
+                                            }}
+                                     }} ";
 
-            if (resultadoQuery != null && resultadoQuery.results != null && resultadoQuery.results.bindings != null && resultadoQuery.results.bindings.Count > 0)
+            SparqlObject resultadoQueryNumColab = resourceApi.VirtuosoQuery(selectNumColab, whereNumcolab, idComunidad);
+
+            if (resultadoQueryNumColab != null && resultadoQueryNumColab.results != null && resultadoQueryNumColab.results.bindings != null && resultadoQueryNumColab.results.bindings.Count > 0)
             {
-                foreach (Dictionary<string, SparqlObject.Data> fila in resultadoQuery.results.bindings)
+                foreach (Dictionary<string, SparqlObject.Data> fila in resultadoQueryNumColab.results.bindings)
                 {
                     int numColaboradores = int.Parse(UtilidadesAPI.GetValorFilaSparqlObject(fila, "NumColaboradores"));
                     dicResultados.Add("Colaboradores", numColaboradores);
                 }
             }
+
 
             return dicResultados;
         }
