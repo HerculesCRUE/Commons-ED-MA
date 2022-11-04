@@ -82,8 +82,8 @@ var cargarCVId = {
 		if(this.CVId!=null && this.CVId!='')
 		{
 			$('#menuLateralUsuarioClonado #curriculumvitae a.editcv').attr('href',this.CVId);
-			$('#menuLateralUsuarioClonado #trabajo a.editcvPub').attr('href',this.CVId + '?tab=http://w3id.org/roh/teachingExperience');
-			$('#menuLateralUsuarioClonado #trabajo a.editcvPV').attr('href',this.CVId + '?tab=http://w3id.org/roh/teachingExperience');
+			$('#menuLateralUsuarioClonado #trabajo a.editcvPub').attr('href',this.CVId + '?tab=http://w3id.org/roh/scientificActivity');
+			$('#menuLateralUsuarioClonado #trabajo a.editcvPV').attr('href',this.CVId + '?tab=http://w3id.org/roh/scientificActivity');
 			$('#menuLateralUsuarioClonado #trabajo a.editcvOR').attr('href',this.CVId + '?tab=http://w3id.org/roh/researchObject');
 		}
 	}
