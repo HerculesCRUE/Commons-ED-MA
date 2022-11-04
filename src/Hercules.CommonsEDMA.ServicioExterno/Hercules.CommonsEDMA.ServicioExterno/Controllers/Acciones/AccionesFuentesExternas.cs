@@ -17,7 +17,7 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
         public static string GetORCID(string pUserId)
         {
             SparqlObject resultadoQuery = null;
-            StringBuilder select = new StringBuilder(), where = new StringBuilder();
+            StringBuilder select = new(), where = new();
 
             // Consulta sparql.
             select.Append(mPrefijos);
@@ -51,7 +51,7 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
         {
             string idBusqueda = string.Empty;
             SparqlObject resultadoQuery = null;
-            StringBuilder select = new StringBuilder(), where = new StringBuilder();
+            StringBuilder select = new(), where = new();
 
             // Consulta sparql.
             select.Append(mPrefijos);
@@ -110,7 +110,7 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
         public static string GetLastUpdatedDate(string pUserId)
         {
             SparqlObject resultadoQuery = null;
-            StringBuilder select = new StringBuilder(), where = new StringBuilder();
+            StringBuilder select = new(), where = new();
 
             // Consulta sparql.
             select.Append(mPrefijos);
@@ -147,9 +147,9 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
         /// <returns></returns>
         public static Dictionary<string, string> GetUsersIDs(string pUserId)
         {
-            Dictionary<string, string> dicResultados = new Dictionary<string, string>();
+            Dictionary<string, string> dicResultados = new();
             SparqlObject resultadoQuery = null;
-            StringBuilder select = new StringBuilder(), where = new StringBuilder();
+            StringBuilder select = new(), where = new();
 
             // Consulta sparql.
             select.Append(mPrefijos);

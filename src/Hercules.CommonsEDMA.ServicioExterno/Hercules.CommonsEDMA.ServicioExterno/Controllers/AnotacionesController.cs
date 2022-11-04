@@ -37,7 +37,7 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers
                 return StatusCode(StatusCodes.Status401Unauthorized);
             }
 
-            AccionesAnotaciones annotations = new AccionesAnotaciones();
+            AccionesAnotaciones annotations = new();
             List<Dictionary<string, string>> anotaciones = annotations.GetOwnAnnotationsInRO(idRO, idUser, rdfType, ontology);
 
             return Ok(anotaciones);
@@ -65,7 +65,7 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers
             {
                 return StatusCode(StatusCodes.Status401Unauthorized);
             }
-            AccionesAnotaciones annotations = new AccionesAnotaciones();
+            AccionesAnotaciones annotations = new();
             string anotacionesId = annotations.CreateNewAnnotation(idRO, idUser, rdfType, ontology, texto, idAnnotation);
 
             return Ok(anotacionesId);
@@ -79,7 +79,7 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers
         [HttpPost("DeleteAnnotation")]
         public IActionResult DeleteAnnotation([FromForm] string idAnnotation)
         {
-            AccionesAnotaciones annotations = new AccionesAnotaciones();
+            AccionesAnotaciones annotations = new();
             if (!Security.CheckUser(new Guid(annotations.getUserFromAnnotation(idAnnotation)), Request))
             {
                 return StatusCode(StatusCodes.Status401Unauthorized);

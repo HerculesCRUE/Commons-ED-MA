@@ -101,7 +101,7 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
                     }
 
                     // Creamos el diccionario
-                    Dictionary<string, string> longs = new Dictionary<string, string>();
+                    Dictionary<string, string> longs = new();
                     longs.Add("id", id);
                     longs.Add("fecha", fecha);
                     longs.Add("texto", texto);

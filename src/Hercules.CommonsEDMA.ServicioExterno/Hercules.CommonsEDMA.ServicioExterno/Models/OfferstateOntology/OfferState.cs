@@ -52,7 +52,7 @@ namespace OfferstateOntology
 
 		public override KeyValuePair<Guid, string> ToAcidData(ResourceApi resourceAPI)
 		{
-			KeyValuePair<Guid, string> valor = new KeyValuePair<Guid, string>();
+			KeyValuePair<Guid, string> valor = new();
 
 			return valor;
 		}

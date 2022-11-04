@@ -101,12 +101,12 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
                     // Elimino el triple
                     try
                     {
-                        Dictionary<Guid, List<RemoveTriples>> dicModificacion = new Dictionary<Guid, List<RemoveTriples>>();
-                        List<RemoveTriples> listaTriplesModificacion = new List<RemoveTriples>();
+                        Dictionary<Guid, List<RemoveTriples>> dicModificacion = new();
+                        List<RemoveTriples> listaTriplesModificacion = new();
 
 
                         // Eliminación (Triples).
-                        RemoveTriples triple = new RemoveTriples();
+                        RemoveTriples triple = new();
                         triple.Predicate = predicateLinkInRO;
                         triple.Value = idLinkedRo;
                         listaTriplesModificacion.Add(triple);
@@ -123,10 +123,10 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
 
             }
 
-            ReadRabbitService rabbitMQService = new ReadRabbitService(pConfig);
-            DenormalizerItemQueue itemPublication = new DenormalizerItemQueue(DenormalizerItemQueue.ItemType.document, new HashSet<string> { idRecurso, idLinkedRo });
+            ReadRabbitService rabbitMQService = new(pConfig);
+            DenormalizerItemQueue itemPublication = new(DenormalizerItemQueue.ItemType.document, new HashSet<string> { idRecurso, idLinkedRo });
             rabbitMQService.PublishMessage(itemPublication, pConfig.GetDenormalizerQueueRabbit());
-            DenormalizerItemQueue itemRo = new DenormalizerItemQueue(DenormalizerItemQueue.ItemType.researchobject, new HashSet<string> { idRecurso, idLinkedRo });
+            DenormalizerItemQueue itemRo = new(DenormalizerItemQueue.ItemType.researchobject, new HashSet<string> { idRecurso, idLinkedRo });
             rabbitMQService.PublishMessage(itemRo, pConfig.GetDenormalizerQueueRabbit());
 
             return result[guid];
@@ -317,7 +317,7 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
 
 
                 // Obtengo las areas de conocimiento de los ROs
-                List<string> rOTerms = new List<string>();
+                List<string> rOTerms = new();
                 if (e.ContainsKey("gckarea") && e["gckarea"].value != String.Empty)
                 {
                     rOTerms = e["gckarea"].value.Split(",").ToList();
@@ -325,7 +325,7 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
 
 
                 // Obtengo las ids de los usuarios gnoss de los creadores del RO
-                List<string> idsGnoss = new List<string>();
+                List<string> idsGnoss = new();
                 if (e.ContainsKey("idGnoss") && e["idGnoss"].value != String.Empty)
                 {
                     idsGnoss = e["idGnoss"].value.Split(",").ToList();
@@ -484,12 +484,12 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
                     // Añado el vículo
                     try
                     {
-                        Dictionary<Guid, List<TriplesToInclude>> dicInclusion = new Dictionary<Guid, List<TriplesToInclude>>();
-                        List<TriplesToInclude> listaTriplesInclusion = new List<TriplesToInclude>();
+                        Dictionary<Guid, List<TriplesToInclude>> dicInclusion = new();
+                        List<TriplesToInclude> listaTriplesInclusion = new();
 
 
                         // Modificación (Triples).
-                        TriplesToInclude triple = new TriplesToInclude();
+                        TriplesToInclude triple = new();
                         triple.Predicate = predicateLinkInRO;
                         triple.NewValue = idLinkedRo;
                         listaTriplesInclusion.Add(triple);
@@ -506,10 +506,10 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
 
             }
 
-            ReadRabbitService rabbitMQService = new ReadRabbitService(pConfig);
-            DenormalizerItemQueue itemPublication = new DenormalizerItemQueue(DenormalizerItemQueue.ItemType.document, new HashSet<string> { idRecurso, idLinkedRo });
+            ReadRabbitService rabbitMQService = new(pConfig);
+            DenormalizerItemQueue itemPublication = new(DenormalizerItemQueue.ItemType.document, new HashSet<string> { idRecurso, idLinkedRo });
             rabbitMQService.PublishMessage(itemPublication, pConfig.GetDenormalizerQueueRabbit());
-            DenormalizerItemQueue itemRo = new DenormalizerItemQueue(DenormalizerItemQueue.ItemType.researchobject, new HashSet<string> { idRecurso , idLinkedRo });
+            DenormalizerItemQueue itemRo = new(DenormalizerItemQueue.ItemType.researchobject, new HashSet<string> { idRecurso , idLinkedRo });
             rabbitMQService.PublishMessage(itemRo, pConfig.GetDenormalizerQueueRabbit());
 
             return result[guid];
@@ -670,7 +670,7 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
                 listIdslinked.Add(resourceApi.GetShortGuid(e["s"].value));
 
                 // Obtengo las ids de los usuarios gnoss de los creadores del RO
-                List<string> idsGnoss = new List<string>();
+                List<string> idsGnoss = new();
                 if (e.ContainsKey("idGnoss") && e["idGnoss"].value != String.Empty)
                 {
                     idsGnoss = e["idGnoss"].value.Split(",").ToList();

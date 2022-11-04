@@ -67,7 +67,7 @@ namespace AnnotationOntology
 
 		public virtual ComplexOntologyResource ToGnossApiResource(ResourceApi resourceAPI, List<string> listaDeCategorias, Guid idrecurso, Guid idarticulo)
 		{
-			ComplexOntologyResource resource = new ComplexOntologyResource();
+			ComplexOntologyResource resource = new();
 			Ontology ontology = null;
 			GetEntities();
 			GetProperties();
@@ -101,7 +101,7 @@ namespace AnnotationOntology
 			}
 			string titulo = $"{this.Roh_title.Replace("\r\n", "").Replace("\n", "").Replace("\r", "").Replace("\"", "\"\"").Replace("'", "''").Replace("|", "#PIPE#")}";
 			string tablaDoc = $"'{titulo}', '', '{resourceAPI.GraphsUrl}', '{tags}'";
-			KeyValuePair<Guid, string> valor = new KeyValuePair<Guid, string>(ResourceID, tablaDoc);
+			KeyValuePair<Guid, string> valor = new(ResourceID, tablaDoc);
 
 			return valor;
 		}

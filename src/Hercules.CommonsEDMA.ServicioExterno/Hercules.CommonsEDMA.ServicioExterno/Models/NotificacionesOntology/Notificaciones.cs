@@ -9,9 +9,9 @@ namespace NotificationOntology
 	[ExcludeFromCodeCoverage]
 	public class Notification
 	{
-		private List<OntologyEntity> entList = new List<OntologyEntity>();
-		private List<OntologyProperty> propList = new List<OntologyProperty>();
-		private List<string> prefList = new List<string>();
+		private List<OntologyEntity> entList = new();
+		private List<OntologyProperty> propList = new();
+		private List<string> prefList = new();
 
 		public Notification()
 		{
@@ -67,7 +67,7 @@ namespace NotificationOntology
 
 		public ComplexOntologyResource ToGnossApiResource(ResourceApi resourceAPI, Guid idrecurso, Guid idarticulo)
 		{
-			ComplexOntologyResource resource = new ComplexOntologyResource();
+			ComplexOntologyResource resource = new();
 			Ontology ontology = null;
 			GetProperties();
 			if (idrecurso.Equals(Guid.Empty) && idarticulo.Equals(Guid.Empty))

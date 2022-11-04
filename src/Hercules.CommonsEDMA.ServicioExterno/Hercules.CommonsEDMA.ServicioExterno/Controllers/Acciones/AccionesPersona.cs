@@ -29,9 +29,9 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
         public Dictionary<string, int> GetDatosCabeceraPersona(string pPersona)
         {
             string idGrafoBusqueda = UtilidadesAPI.ObtenerIdBusqueda(resourceApi, pPersona);
-            Dictionary<string, int> dicResultados = new Dictionary<string, int>();
+            Dictionary<string, int> dicResultados = new();
             SparqlObject resultadoQuery = null;
-            StringBuilder select = new StringBuilder(), where = new StringBuilder();
+            StringBuilder select = new(), where = new();
 
             // Consulta sparql.
             select.Append(mPrefijos);
@@ -115,9 +115,9 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
         public List<string> GetGrupoInvestigacion(string pIdPersona)
         {
             string idGrafoBusqueda = UtilidadesAPI.ObtenerIdBusqueda(resourceApi, pIdPersona);
-            List<string> grupos = new List<string>();
+            List<string> grupos = new();
             SparqlObject resultadoQuery = null;
-            StringBuilder select = new StringBuilder(), where = new StringBuilder();
+            StringBuilder select = new(), where = new();
 
             // Consulta sparql.
             select.Append(mPrefijos);
@@ -154,9 +154,9 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
         public List<Dictionary<string, string>> GetTopicsPersona(string pIdPersona)
         {
             string idGrafoBusqueda = UtilidadesAPI.ObtenerIdBusqueda(resourceApi, pIdPersona);
-            List<Dictionary<string, string>> categorias = new List<Dictionary<string, string>>();
+            List<Dictionary<string, string>> categorias = new();
             SparqlObject resultadoQuery = null;
-            StringBuilder select = new StringBuilder(), where = new StringBuilder();
+            StringBuilder select = new(), where = new();
 
             // Consulta sparql.
             select.Append(mPrefijos);
@@ -200,17 +200,17 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
         /// <returns>Listado de objetos de la gráfica.</returns>
         public List<DataItemRelacion> GetDatosGraficaRedColaboradoresPersonas(string pIdPersona, string pParametros, int pMax)
         {
-            HashSet<string> colaboradores = new HashSet<string>();
-            Dictionary<string, int> numRelacionesColaboradorPersona = new Dictionary<string, int>();
-            Dictionary<string, int> numRelacionesColaboradorDocumentoPersona = new Dictionary<string, int>();
-            Dictionary<string, int> numRelacionesColaboradorProyectoPersona = new Dictionary<string, int>();
+            HashSet<string> colaboradores = new();
+            Dictionary<string, int> numRelacionesColaboradorPersona = new();
+            Dictionary<string, int> numRelacionesColaboradorDocumentoPersona = new();
+            Dictionary<string, int> numRelacionesColaboradorProyectoPersona = new();
 
             //Nodos            
-            Dictionary<string, string> dicNodos = new Dictionary<string, string>();
+            Dictionary<string, string> dicNodos = new();
             //Relaciones
-            Dictionary<string, List<DataQueryRelaciones>> dicRelaciones = new Dictionary<string, List<DataQueryRelaciones>>();
+            Dictionary<string, List<DataQueryRelaciones>> dicRelaciones = new();
             //Respuesta
-            List<DataItemRelacion> items = new List<DataItemRelacion>();
+            List<DataItemRelacion> items = new();
 
             int aux = 0;
             Dictionary<string, List<string>> dicParametros = UtilidadesAPI.ObtenerParametros(pParametros);
@@ -429,7 +429,7 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
                             FILTER(?person in (<{string.Join(">,<", colaboradores)}>))
                         }}";
                         SparqlObject resultadoQuery = resourceApi.VirtuosoQuery(select, where, idComunidad);
-                        Dictionary<string, List<string>> personaProy = new Dictionary<string, List<string>>();
+                        Dictionary<string, List<string>> personaProy = new();
                         foreach (Dictionary<string, SparqlObject.Data> fila in resultadoQuery.results.bindings)
                         {
                             string projects = fila["projects"].value;
@@ -451,7 +451,7 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
                             FILTER(?person in (<{string.Join(">,<", colaboradores)}>))
                         }}";
                         SparqlObject resultadoQuery = resourceApi.VirtuosoQuery(select, where, idComunidad);
-                        Dictionary<string, List<string>> personaDoc = new Dictionary<string, List<string>>();
+                        Dictionary<string, List<string>> personaDoc = new();
                         foreach (Dictionary<string, SparqlObject.Data> fila in resultadoQuery.results.bindings)
                         {
                             string documents = fila["documents"].value;
@@ -492,8 +492,8 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
                         {
                             type = Models.Graficas.DataItemRelacion.Data.Type.icon_ip;
                         }
-                        Models.Graficas.DataItemRelacion.Data data = new Models.Graficas.DataItemRelacion.Data(clave, nodo.Value, null, null, null, "nodes", type);
-                        DataItemRelacion dataColabo = new DataItemRelacion(data, true, true);
+                        Models.Graficas.DataItemRelacion.Data data = new(clave, nodo.Value, null, null, null, "nodes", type);
+                        DataItemRelacion dataColabo = new(data, true, true);
                         items.Add(dataColabo);
                     }
                 }
@@ -517,8 +517,8 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
                                 {
                                     type = Models.Graficas.DataItemRelacion.Data.Type.relation_document;
                                 }
-                                Models.Graficas.DataItemRelacion.Data data = new Models.Graficas.DataItemRelacion.Data(id, relaciones.nombreRelacion, sujeto.Key, relaciones2.idRelacionado, UtilidadesAPI.CalcularGrosor(maximasRelaciones, relaciones2.numVeces), "edges", type);
-                                DataItemRelacion dataColabo = new DataItemRelacion(data, null, null);
+                                Models.Graficas.DataItemRelacion.Data data = new(id, relaciones.nombreRelacion, sujeto.Key, relaciones2.idRelacionado, UtilidadesAPI.CalcularGrosor(maximasRelaciones, relaciones2.numVeces), "edges", type);
+                                DataItemRelacion dataColabo = new(data, null, null);
                                 items.Add(dataColabo);
                             }
                         }
@@ -537,9 +537,9 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
         public DataGraficaAreasTags GetDatosGraficaProyectosPersonaHorizontal(string pIdPersona, string pParametros)
         {
             string idGrafoBusqueda = UtilidadesAPI.ObtenerIdBusqueda(resourceApi, pIdPersona);
-            Dictionary<string, int> dicResultados = new Dictionary<string, int>();
+            Dictionary<string, int> dicResultados = new();
             SparqlObject resultadoQuery = null;
-            StringBuilder select = new StringBuilder(), where = new StringBuilder();
+            StringBuilder select = new(), where = new();
 
             // Consulta sparql.
             select.Append(mPrefijos);
@@ -586,7 +586,7 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
             {
                 numTotalCategorias += item.Value;
             }
-            Dictionary<string, double> dicResultadosPorcentaje = new Dictionary<string, double>();
+            Dictionary<string, double> dicResultadosPorcentaje = new();
             foreach (KeyValuePair<string, int> item in dicionarioOrdenado)
             {
                 double porcentaje = Math.Round((double)(100 * item.Value) / numTotalCategorias, 2);
@@ -595,14 +595,14 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
 
             // Contruir el objeto de la gráfica.
             List<string> listaColores = UtilidadesAPI.CrearListaColores(dicionarioOrdenado.Count(), COLOR_GRAFICAS_HORIZONTAL);
-            Datasets datasets = new Datasets(dicResultadosPorcentaje.Values.ToList(), listaColores);
-            Models.Graficas.DataGraficaAreasTags.Data data = new Models.Graficas.DataGraficaAreasTags.Data(dicResultadosPorcentaje.Keys.ToList(), new List<Datasets> { datasets });
+            Datasets datasets = new(dicResultadosPorcentaje.Values.ToList(), listaColores);
+            Models.Graficas.DataGraficaAreasTags.Data data = new(dicResultadosPorcentaje.Keys.ToList(), new List<Datasets> { datasets });
 
             // Máximo.
-            x xAxes = new x(new Ticks(0, 100), new ScaleLabel(true, "Percentage"));
+            x xAxes = new(new Ticks(0, 100), new ScaleLabel(true, "Percentage"));
 
-            Options options = new Options("y", new Plugins(null, new Legend(false)), new Scales(xAxes));
-            DataGraficaAreasTags dataGrafica = new DataGraficaAreasTags("bar", data, options);
+            Options options = new("y", new Plugins(null, new Legend(false)), new Scales(xAxes));
+            DataGraficaAreasTags dataGrafica = new("bar", data, options);
 
             return dataGrafica;
         }

@@ -24,7 +24,7 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
         /// <returns>Diccionario con los datos resultantes.</returns>
         public List<DataUser> GetDataRedesUsuario(string pIdGnossUser)
         {
-            List<DataUser> listaData = new List<DataUser>();
+            List<DataUser> listaData = new();
             listaData.Add(new DataUser() { nombre = "Identificador de FigShare", id = "usuarioFigShare", valor = string.Empty });
             listaData.Add(new DataUser() { nombre = "Token de FigShare", id = "tokenFigShare", valor = string.Empty });
             listaData.Add(new DataUser() { nombre = "Usuario de GitHub", id = "usuarioGitHub", valor = string.Empty });
@@ -37,7 +37,7 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
 
             string idGnossUser = $@"http://gnoss/{pIdGnossUser.ToUpper()}";
             SparqlObject resultadoQuery = null;
-            StringBuilder select = new StringBuilder(), where = new StringBuilder();
+            StringBuilder select = new(), where = new();
 
             // Consulta sparql.
             select.Append(mPrefijos);
@@ -235,7 +235,7 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
             string idRecurso = string.Empty;
             string idGnossUser = $@"http://gnoss/{pIdGnossUser.ToUpper()}";
             SparqlObject resultadoQuery = null;
-            StringBuilder select = new StringBuilder(), where = new StringBuilder();
+            StringBuilder select = new(), where = new();
 
             // Consulta sparql.
             select.Append(mPrefijos);
@@ -260,12 +260,12 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
             // Inserción/Modificación de triples.
             resourceApi.ChangeOntoly("person");
             Guid guid = resourceApi.GetShortGuid(idRecurso);
-            Dictionary<Guid, List<TriplesToInclude>> dicInsercion = new Dictionary<Guid, List<TriplesToInclude>>();
-            List<TriplesToInclude> listaTriplesInsercion = new List<TriplesToInclude>();
-            Dictionary<Guid, List<TriplesToModify>> dicModificacion = new Dictionary<Guid, List<TriplesToModify>>();
-            List<TriplesToModify> listaTriplesModificacion = new List<TriplesToModify>();
-            Dictionary<Guid, List<RemoveTriples>> dicBorrado = new Dictionary<Guid, List<RemoveTriples>>();
-            List<RemoveTriples> listaTriplesBorrado = new List<RemoveTriples>();
+            Dictionary<Guid, List<TriplesToInclude>> dicInsercion = new();
+            List<TriplesToInclude> listaTriplesInsercion = new();
+            Dictionary<Guid, List<TriplesToModify>> dicModificacion = new();
+            List<TriplesToModify> listaTriplesModificacion = new();
+            Dictionary<Guid, List<RemoveTriples>> dicBorrado = new();
+            List<RemoveTriples> listaTriplesBorrado = new();
 
             foreach (DataUser item in datosAntiguos)
             {
@@ -291,7 +291,7 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
                     if (string.IsNullOrEmpty(dataViejo))
                     {
                         // Inserción (Triples).                 
-                        TriplesToInclude triple = new TriplesToInclude();
+                        TriplesToInclude triple = new();
                         triple.Predicate = $@"http://w3id.org/roh/{propiedad}";
                         triple.NewValue = dataNuevo;
                         listaTriplesInsercion.Add(triple);
@@ -299,7 +299,7 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
                     else if (string.IsNullOrEmpty(dataNuevo))
                     {
                         // Borrado (Triple).
-                        RemoveTriples triple = new RemoveTriples();
+                        RemoveTriples triple = new();
                         triple.Predicate = $@"http://w3id.org/roh/{propiedad}";
                         triple.Value = dataViejo;
                         triple.Title = false;
@@ -309,7 +309,7 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
                     else
                     {
                         // Modificación (Triples).
-                        TriplesToModify triple = new TriplesToModify();
+                        TriplesToModify triple = new();
                         triple.Predicate = $@"http://w3id.org/roh/{propiedad}";
                         triple.NewValue = dataNuevo;
                         triple.OldValue = dataViejo;

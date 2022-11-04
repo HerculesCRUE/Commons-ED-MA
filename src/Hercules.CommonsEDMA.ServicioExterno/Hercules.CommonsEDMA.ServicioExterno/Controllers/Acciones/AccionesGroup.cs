@@ -18,16 +18,16 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
 
         public List<DataItemRelacion> DatosGraficaMiembrosGrupo(string pIdGroup, string pParametros)
         {
-            HashSet<string> miembros = new HashSet<string>();
-            HashSet<string> ip = new HashSet<string>();
+            HashSet<string> miembros = new();
+            HashSet<string> ip = new();
             string grupo = "http://gnoss/" + pIdGroup;
 
             //Nodos            
-            Dictionary<string, string> dicNodos = new Dictionary<string, string>();
+            Dictionary<string, string> dicNodos = new();
             //Relaciones
             Dictionary<string, List<DataQueryRelaciones>> dicRelaciones = new();
             //Respuesta
-            List<DataItemRelacion> items = new List<DataItemRelacion>();
+            List<DataItemRelacion> items = new();
 
             int aux = 0;
             Dictionary<string, List<string>> dicParametros = UtilidadesAPI.ObtenerParametros(pParametros);
@@ -147,8 +147,8 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
                         {
                             type = Models.Graficas.DataItemRelacion.Data.Type.icon_project;
                         }
-                        Models.Graficas.DataItemRelacion.Data data = new Models.Graficas.DataItemRelacion.Data(clave, nodo.Value, null, null, null, "nodes", type);
-                        DataItemRelacion dataColabo = new DataItemRelacion(data, true, true);
+                        Models.Graficas.DataItemRelacion.Data data = new(clave, nodo.Value, null, null, null, "nodes", type);
+                        DataItemRelacion dataColabo = new(data, true, true);
                         items.Add(dataColabo);
                     }
                 }
@@ -172,8 +172,8 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
                                 {
                                     type = Models.Graficas.DataItemRelacion.Data.Type.relation_document;
                                 }
-                                Models.Graficas.DataItemRelacion.Data data = new Models.Graficas.DataItemRelacion.Data(id, relaciones.nombreRelacion, sujeto.Key, relaciones2.idRelacionado, UtilidadesAPI.CalcularGrosor(maximasRelaciones, relaciones2.numVeces), "edges", type);
-                                DataItemRelacion dataColabo = new DataItemRelacion(data, null, null);
+                                Models.Graficas.DataItemRelacion.Data data = new(id, relaciones.nombreRelacion, sujeto.Key, relaciones2.idRelacionado, UtilidadesAPI.CalcularGrosor(maximasRelaciones, relaciones2.numVeces), "edges", type);
+                                DataItemRelacion dataColabo = new(data, null, null);
                                 items.Add(dataColabo);
                             }
                         }
@@ -319,18 +319,18 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
 
         public List<DataItemRelacion> DatosGraficaColaboradoresGrupo(string pIdGroup, string pParametros, int pMax)
         {
-            HashSet<string> colaboradores = new HashSet<string>();
+            HashSet<string> colaboradores = new();
             string grupo = "http://gnoss/" + pIdGroup;
-            Dictionary<string, int> numRelacionesColaboradorGrupo = new Dictionary<string, int>();
-            Dictionary<string, int> numRelacionesColaboradorDocumentoGrupo = new Dictionary<string, int>();
-            Dictionary<string, int> numRelacionesColaboradorProyectoGrupo = new Dictionary<string, int>();
+            Dictionary<string, int> numRelacionesColaboradorGrupo = new();
+            Dictionary<string, int> numRelacionesColaboradorDocumentoGrupo = new();
+            Dictionary<string, int> numRelacionesColaboradorProyectoGrupo = new();
 
             //Nodos            
-            Dictionary<string, string> dicNodos = new Dictionary<string, string>();
+            Dictionary<string, string> dicNodos = new();
             //Relaciones
-            Dictionary<string, List<DataQueryRelaciones>> dicRelaciones = new Dictionary<string, List<DataQueryRelaciones>>();
+            Dictionary<string, List<DataQueryRelaciones>> dicRelaciones = new();
             //Respuesta
-            List<DataItemRelacion> items = new List<DataItemRelacion>();
+            List<DataItemRelacion> items = new();
 
             int aux = 0;
             Dictionary<string, List<string>> dicParametros = UtilidadesAPI.ObtenerParametros(pParametros);
@@ -488,7 +488,7 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
                             FILTER(?person in (<{string.Join(">,<", colaboradores)}>))
                         }}";
                         SparqlObject resultadoQuery = resourceApi.VirtuosoQuery(select, where, idComunidad);
-                        Dictionary<string, List<string>> personaProy = new Dictionary<string, List<string>>();
+                        Dictionary<string, List<string>> personaProy = new();
                         foreach (Dictionary<string, SparqlObject.Data> fila in resultadoQuery.results.bindings)
                         {
                             string projects = fila["projects"].value;
@@ -509,7 +509,7 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
                             FILTER(?person in (<{string.Join(">,<", colaboradores)}>))
                         }}";
                         SparqlObject resultadoQuery = resourceApi.VirtuosoQuery(select, where, idComunidad);
-                        Dictionary<string, List<string>> personaDoc = new Dictionary<string, List<string>>();
+                        Dictionary<string, List<string>> personaDoc = new();
                         foreach (Dictionary<string, SparqlObject.Data> fila in resultadoQuery.results.bindings)
                         {
                             string documents = fila["documents"].value;
@@ -554,8 +554,8 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
                         {
                             type = Models.Graficas.DataItemRelacion.Data.Type.icon_ip;
                         }
-                        Models.Graficas.DataItemRelacion.Data data = new Models.Graficas.DataItemRelacion.Data(clave, nodo.Value, null, null, null, "nodes", type);
-                        DataItemRelacion dataColabo = new DataItemRelacion(data, true, true);
+                        Models.Graficas.DataItemRelacion.Data data = new(clave, nodo.Value, null, null, null, "nodes", type);
+                        DataItemRelacion dataColabo = new(data, true, true);
                         items.Add(dataColabo);
                     }
                 }
@@ -579,8 +579,8 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
                                 {
                                     type = Models.Graficas.DataItemRelacion.Data.Type.relation_document;
                                 }
-                                Models.Graficas.DataItemRelacion.Data data = new Models.Graficas.DataItemRelacion.Data(id, relaciones.nombreRelacion, sujeto.Key, relaciones2.idRelacionado, UtilidadesAPI.CalcularGrosor(maximasRelaciones, relaciones2.numVeces), "edges", type);
-                                DataItemRelacion dataColabo = new DataItemRelacion(data, null, null);
+                                Models.Graficas.DataItemRelacion.Data data = new(id, relaciones.nombreRelacion, sujeto.Key, relaciones2.idRelacionado, UtilidadesAPI.CalcularGrosor(maximasRelaciones, relaciones2.numVeces), "edges", type);
+                                DataItemRelacion dataColabo = new(data, null, null);
                                 items.Add(dataColabo);
                             }
                         }

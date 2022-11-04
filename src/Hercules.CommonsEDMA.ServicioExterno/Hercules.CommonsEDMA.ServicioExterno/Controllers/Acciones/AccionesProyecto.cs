@@ -31,7 +31,7 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
         /// <param name="pParametros">Filtros aplicados en las facetas.</param>
         public GraficasProyectos GetDatosGraficaProyectos(string pParametros)
         {
-            GraficasProyectos graficasProyectos = new GraficasProyectos();
+            GraficasProyectos graficasProyectos = new();
 
 
             #region Gráfico de barras
@@ -177,7 +177,7 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
                 }
 
                 // Se construye el objeto con los datos.
-                List<DatosBarra> listaDatos = new List<DatosBarra>();
+                List<DatosBarra> listaDatos = new();
                 listaDatos.Add(new DatosBarra("Inicio competitivos", "#6cafd3", listaIniciosCompetitivos, 1, "inicio"));
                 listaDatos.Add(new DatosBarra("Inicio no competitivos", "#7cbfe3", listaIniciosNoCompetitivos, 1, "inicio"));
                 if (listaIniciosOtros.Exists(x => x > 0))
@@ -192,11 +192,11 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
 
             #region Gráfico de sectores
             {
-                Dictionary<string, KeyValuePair<string, int>> dicAmbitos = new Dictionary<string, KeyValuePair<string, int>>();
+                Dictionary<string, KeyValuePair<string, int>> dicAmbitos = new();
 
                 SparqlObject resultadoQuery = null;
                 // Lista a ordenar: Internacional, Unión Europea, Nacional, Autonómica/Regional, Otros/Propio
-                ArrayList ambitosOrdenados = new ArrayList() { "Internacional", "Unión Europea", "Nacional", "Regional", "Autonómica", "Autonómica/Regional", "Otros/Propio", "Otros", "Propio" };
+                ArrayList ambitosOrdenados = new() { "Internacional", "Unión Europea", "Nacional", "Regional", "Autonómica", "Autonómica/Regional", "Otros/Propio", "Otros", "Propio" };
 
                 // Consultas sparql.
 
@@ -226,8 +226,8 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
                 #endregion
 
                 // Se ordenan los datos
-                List<int> datosBarraItem3 = new List<int>();
-                List<string> datosBarraItem3Keys = new List<string>();
+                List<int> datosBarraItem3 = new();
+                List<string> datosBarraItem3Keys = new();
 
                 foreach (string ambito in ambitosOrdenados)
                 {
@@ -242,7 +242,7 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
                 }
 
                 // Se construye el objeto con los datos.
-                List<DatosBarra> listaDatos = new List<DatosBarra>();
+                List<DatosBarra> listaDatos = new();
                 listaDatos.Add(new DatosBarra("Proyectos", "#6cafd3", datosBarraItem3, 1, null));
                 // Se crea el objeto de la gráfica.
                 graficasProyectos.graficaSectoresAmbito = new GraficaBarras(new DataGraficaBarras(datosBarraItem3Keys, listaDatos));
@@ -252,7 +252,7 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
 
             #region Gráfico de barras miembros
             {
-                Dictionary<string, int> dicNumMiembrosProyecto = new Dictionary<string, int>();
+                Dictionary<string, int> dicNumMiembrosProyecto = new();
                 SparqlObject resultadoQuery = null;
                 // Consultas sparql.
 
@@ -282,7 +282,7 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
                 }
                 #endregion
 
-                Dictionary<string, int> numMiembros = new Dictionary<string, int>();
+                Dictionary<string, int> numMiembros = new();
                 numMiembros.Add("1-3", 0);
                 numMiembros.Add("4-10", 0);
                 numMiembros.Add("11-30", 0);
@@ -309,7 +309,7 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
                 }
 
                 // Se construye el objeto con los datos.
-                List<DatosBarra> listaDatos = new List<DatosBarra>();
+                List<DatosBarra> listaDatos = new();
                 listaDatos.Add(new DatosBarra("Proyectos", "#BF4858", numMiembros.Values.ToList(), 1, null));
                 // Se crea el objeto de la gráfica.
                 graficasProyectos.graficaBarrasMiembros = new GraficaBarras(new DataGraficaBarras(numMiembros.Keys.ToList(), listaDatos));
@@ -329,7 +329,7 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
         public Dictionary<string, int> GetDatosCabeceraProyecto(string pProyecto)
         {
             string idGrafoBusqueda = UtilidadesAPI.ObtenerIdBusqueda(resourceApi, pProyecto);
-            Dictionary<string, int> dicResultados = new Dictionary<string, int>();
+            Dictionary<string, int> dicResultados = new();
             
 
             // Consulta sparql.
@@ -374,16 +374,16 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
         public List<DataItemRelacion> DatosGraficaRedMiembros(string pIdProyecto, string pParametros)
         {
 
-            HashSet<string> miembros = new HashSet<string>();
-            HashSet<string> ip = new HashSet<string>();
+            HashSet<string> miembros = new();
+            HashSet<string> ip = new();
             string proyecto = "";
 
             //Nodos            
-            Dictionary<string, string> dicNodos = new Dictionary<string, string>();
+            Dictionary<string, string> dicNodos = new();
             //Relaciones
-            Dictionary<string, List<DataQueryRelaciones>> dicRelaciones = new Dictionary<string, List<DataQueryRelaciones>>();
+            Dictionary<string, List<DataQueryRelaciones>> dicRelaciones = new();
             //Respuesta
-            List<DataItemRelacion> items = new List<DataItemRelacion>();
+            List<DataItemRelacion> items = new();
 
             int aux = 0;
             Dictionary<string, List<string>> dicParametros = UtilidadesAPI.ObtenerParametros(pParametros);
@@ -503,7 +503,7 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
                             FILTER(?person in (<{string.Join(">,<", miembros.Union(ip))}>))
                         }}";
                         SparqlObject resultadoQuery = resourceApi.VirtuosoQuery(select, where, idComunidad);
-                        Dictionary<string, List<string>> personaProy = new Dictionary<string, List<string>>();
+                        Dictionary<string, List<string>> personaProy = new();
                         foreach (Dictionary<string, SparqlObject.Data> fila in resultadoQuery.results.bindings)
                         {
                             string projects = fila["projects"].value;
@@ -523,7 +523,7 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
                             FILTER(?person in (<{string.Join(">,<", miembros.Union(ip))}>))
                         }}";
                         SparqlObject resultadoQuery = resourceApi.VirtuosoQuery(select, where, idComunidad);
-                        Dictionary<string, List<string>> personaDoc = new Dictionary<string, List<string>>();
+                        Dictionary<string, List<string>> personaDoc = new();
                         foreach (Dictionary<string, SparqlObject.Data> fila in resultadoQuery.results.bindings)
                         {
                             string documents = fila["documents"].value;
@@ -566,8 +566,8 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
                         {
                             type = Models.Graficas.DataItemRelacion.Data.Type.icon_project;
                         }
-                        Models.Graficas.DataItemRelacion.Data data = new Models.Graficas.DataItemRelacion.Data(clave, nodo.Value, null, null, null, "nodes", type);
-                        DataItemRelacion dataColabo = new DataItemRelacion(data, true, true);
+                        Models.Graficas.DataItemRelacion.Data data = new(clave, nodo.Value, null, null, null, "nodes", type);
+                        DataItemRelacion dataColabo = new(data, true, true);
                         items.Add(dataColabo);
                     }
                 }
@@ -591,8 +591,8 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
                                 {
                                     type = Models.Graficas.DataItemRelacion.Data.Type.relation_document;
                                 }
-                                Models.Graficas.DataItemRelacion.Data data = new Models.Graficas.DataItemRelacion.Data(id, relaciones.nombreRelacion, sujeto.Key, relaciones2.idRelacionado, UtilidadesAPI.CalcularGrosor(maximasRelaciones, relaciones2.numVeces), "edges", type);
-                                DataItemRelacion dataColabo = new DataItemRelacion(data, null, null);
+                                Models.Graficas.DataItemRelacion.Data data = new(id, relaciones.nombreRelacion, sujeto.Key, relaciones2.idRelacionado, UtilidadesAPI.CalcularGrosor(maximasRelaciones, relaciones2.numVeces), "edges", type);
+                                DataItemRelacion dataColabo = new(data, null, null);
                                 items.Add(dataColabo);
                             }
                         }
@@ -614,20 +614,20 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
         /// <returns>Objeto con todos los datos necesarios para crear la gráfica en el JS.</returns>
         public List<DataItemRelacion> GetDatosGraficaRedColaboradores(string pIdProyecto, string pParametros, int pMax)
         {
-            HashSet<string> colaboradores = new HashSet<string>();
-            Dictionary<string, int> numRelacionesColaboradorProjecto = new Dictionary<string, int>();
-            Dictionary<string, int> numRelacionesColaboradorDocumentoProjecto = new Dictionary<string, int>();
-            Dictionary<string, int> numRelacionesColaboradorProyectoProjecto = new Dictionary<string, int>();
+            HashSet<string> colaboradores = new();
+            Dictionary<string, int> numRelacionesColaboradorProjecto = new();
+            Dictionary<string, int> numRelacionesColaboradorDocumentoProjecto = new();
+            Dictionary<string, int> numRelacionesColaboradorProyectoProjecto = new();
 
 
             string project = "http://gnoss/" + pIdProyecto.ToUpper();
 
             //Nodos            
-            Dictionary<string, string> dicNodos = new Dictionary<string, string>();
+            Dictionary<string, string> dicNodos = new();
             //Relaciones
-            Dictionary<string, List<DataQueryRelaciones>> dicRelaciones = new Dictionary<string, List<DataQueryRelaciones>>();
+            Dictionary<string, List<DataQueryRelaciones>> dicRelaciones = new();
             //Respuesta
-            List<DataItemRelacion> items = new List<DataItemRelacion>();
+            List<DataItemRelacion> items = new();
 
             int aux = 0;
             Dictionary<string, List<string>> dicParametros = UtilidadesAPI.ObtenerParametros(pParametros);
@@ -823,7 +823,7 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
                             FILTER(?person in (<{string.Join(">,<", colaboradores)}>))
                         }}";
                         SparqlObject resultadoQuery = resourceApi.VirtuosoQuery(select, where, idComunidad);
-                        Dictionary<string, List<string>> personaProy = new Dictionary<string, List<string>>();
+                        Dictionary<string, List<string>> personaProy = new();
                         foreach (Dictionary<string, SparqlObject.Data> fila in resultadoQuery.results.bindings)
                         {
                             string projects = fila["projects"].value;
@@ -843,7 +843,7 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
                             FILTER(?person in (<{string.Join(">,<", colaboradores)}>))
                         }}";
                         SparqlObject resultadoQuery = resourceApi.VirtuosoQuery(select, where, idComunidad);
-                        Dictionary<string, List<string>> personaDoc = new Dictionary<string, List<string>>();
+                        Dictionary<string, List<string>> personaDoc = new();
                         foreach (Dictionary<string, SparqlObject.Data> fila in resultadoQuery.results.bindings)
                         {
                             string documents = fila["documents"].value;
@@ -884,8 +884,8 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
                         {
                             type = Models.Graficas.DataItemRelacion.Data.Type.icon_project;
                         }
-                        Models.Graficas.DataItemRelacion.Data data = new Models.Graficas.DataItemRelacion.Data(clave, nodo.Value, null, null, null, "nodes", type);
-                        DataItemRelacion dataColabo = new DataItemRelacion(data, true, true);
+                        Models.Graficas.DataItemRelacion.Data data = new(clave, nodo.Value, null, null, null, "nodes", type);
+                        DataItemRelacion dataColabo = new(data, true, true);
                         items.Add(dataColabo);
                     }
                 }
@@ -909,8 +909,8 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
                                 {
                                     type = Models.Graficas.DataItemRelacion.Data.Type.relation_document;
                                 }
-                                Models.Graficas.DataItemRelacion.Data data = new Models.Graficas.DataItemRelacion.Data(id, relaciones.nombreRelacion, sujeto.Key, relaciones2.idRelacionado, UtilidadesAPI.CalcularGrosor(maximasRelaciones, relaciones2.numVeces), "edges", type);
-                                DataItemRelacion dataColabo = new DataItemRelacion(data, null, null);
+                                Models.Graficas.DataItemRelacion.Data data = new(id, relaciones.nombreRelacion, sujeto.Key, relaciones2.idRelacionado, UtilidadesAPI.CalcularGrosor(maximasRelaciones, relaciones2.numVeces), "edges", type);
+                                DataItemRelacion dataColabo = new(data, null, null);
                                 items.Add(dataColabo);
                             }
                         }
@@ -930,8 +930,8 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
         public DataGraficaAreasTags GetDatosGraficaPublicacionesHorizontal(string pIdProyecto, string pParametros)
         {
             string idGrafoBusqueda = UtilidadesAPI.ObtenerIdBusqueda(resourceApi, pIdProyecto);
-            Dictionary<string, int> dicResultados = new Dictionary<string, int>();
-            StringBuilder select = new StringBuilder(), where = new StringBuilder();
+            Dictionary<string, int> dicResultados = new();
+            StringBuilder select = new(), where = new();
 
             // Consulta sparql.
             select.Append(mPrefijos);
@@ -971,7 +971,7 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
             {
                 numTotalCategorias += item.Value;
             }
-            Dictionary<string, double> dicResultadosPorcentaje = new Dictionary<string, double>();
+            Dictionary<string, double> dicResultadosPorcentaje = new();
             foreach (KeyValuePair<string, int> item in dicResultados)
             {
                 double porcentaje = Math.Round((double)(100 * item.Value) / numTotalCategorias, 2);
@@ -980,14 +980,14 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
 
             // Contruir el objeto de la gráfica.
             List<string> listaColores = UtilidadesAPI.CrearListaColores(dicResultados.Count, COLOR_GRAFICAS_HORIZONTAL);
-            Datasets datasets = new Datasets(dicResultadosPorcentaje.Values.ToList(), listaColores);
-            Models.Graficas.DataGraficaAreasTags.Data data = new Models.Graficas.DataGraficaAreasTags.Data(dicResultadosPorcentaje.Keys.ToList(), new List<Datasets> { datasets });
+            Datasets datasets = new(dicResultadosPorcentaje.Values.ToList(), listaColores);
+            Models.Graficas.DataGraficaAreasTags.Data data = new(dicResultadosPorcentaje.Keys.ToList(), new List<Datasets> { datasets });
 
             // Máximo.
-            x xAxes = new x(new Ticks(0, 100), new ScaleLabel(true, "Percentage"));
+            x xAxes = new(new Ticks(0, 100), new ScaleLabel(true, "Percentage"));
 
-            Options options = new Options("y", new Plugins(null, new Legend(false)), new Scales(xAxes));
-            DataGraficaAreasTags dataGrafica = new DataGraficaAreasTags("bar", data, options);
+            Options options = new("y", new Plugins(null, new Legend(false)), new Scales(xAxes));
+            DataGraficaAreasTags dataGrafica = new("bar", data, options);
 
             return dataGrafica;
         }

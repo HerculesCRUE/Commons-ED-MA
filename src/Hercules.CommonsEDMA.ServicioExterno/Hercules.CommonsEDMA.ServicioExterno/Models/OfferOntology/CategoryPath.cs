@@ -41,7 +41,7 @@ namespace OfferOntology
 
 		protected List<object> ObtenerObjetosDePropiedad(object propiedad)
 		{
-			List<object> lista = new List<object>();
+			List<object> lista = new();
 			if (propiedad is IList)
 			{
 				foreach (object item in (IList)propiedad)
@@ -57,7 +57,7 @@ namespace OfferOntology
 		}
 		protected List<string> ObtenerStringDePropiedad(object propiedad)
 		{
-			List<string> lista = new List<string>();
+			List<string> lista = new();
 			if (propiedad is IList)
 			{
 				foreach (string item in (IList)propiedad)

@@ -11,7 +11,7 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers
 {
     public class ReadRabbitService
     {
-        protected Dictionary<string, string> headers = new Dictionary<string, string>();
+        protected Dictionary<string, string> headers = new();
 
         /// <summary>
         /// ReceivedDelegate
@@ -88,7 +88,7 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers
                                  autoDelete: false,
                                  arguments: null);
 
-            EventingBasicConsumer eventingBasicConsumer = new EventingBasicConsumer(channel);
+            EventingBasicConsumer eventingBasicConsumer = new(channel);
 
             eventingBasicConsumer.Received += (sender, basicDeliveryEventArgs) =>
             {

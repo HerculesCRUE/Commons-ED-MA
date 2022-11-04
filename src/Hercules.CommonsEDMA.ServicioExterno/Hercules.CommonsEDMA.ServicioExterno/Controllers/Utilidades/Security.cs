@@ -8,7 +8,7 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Utilidades
 {
     public static class Security
     {
-        static UserApi mUserApi = new UserApi($@"{AppDomain.CurrentDomain.SetupInformation.ApplicationBase}Config/ConfigOAuth/OAuthV3.config");
+        static UserApi mUserApi = new($@"{AppDomain.CurrentDomain.SetupInformation.ApplicationBase}Config/ConfigOAuth/OAuthV3.config");
 
         public static bool CheckUser(Guid pUserId, HttpRequest pHttpRequest)
         {

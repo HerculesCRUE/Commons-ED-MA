@@ -95,7 +95,7 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers
             {
                 return StatusCode(StatusCodes.Status401Unauthorized);
             }
-            AccionesRosVinculados accionesRosVinculados = new AccionesRosVinculados();
+            AccionesRosVinculados accionesRosVinculados = new();
             return Ok(accionesRosVinculados.AddLink(resourceRO, pIdROId, pIdGnossUser, _Configuracion));
         }
     }

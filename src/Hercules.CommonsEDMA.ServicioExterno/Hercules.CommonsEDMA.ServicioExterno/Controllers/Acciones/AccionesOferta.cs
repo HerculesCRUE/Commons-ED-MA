@@ -190,12 +190,12 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
                     // Modifico el estado
                     try
                     {
-                        Dictionary<Guid, List<TriplesToModify>> dicModificacion = new Dictionary<Guid, List<TriplesToModify>>();
-                        List<TriplesToModify> listaTriplesModificacion = new List<TriplesToModify>();
+                        Dictionary<Guid, List<TriplesToModify>> dicModificacion = new();
+                        List<TriplesToModify> listaTriplesModificacion = new();
 
 
                         // Modificación (Triples).
-                        TriplesToModify triple = new TriplesToModify();
+                        TriplesToModify triple = new();
                         triple.Predicate = "http://www.schema.org/availability";
                         triple.NewValue = nuevoEstado;
                         triple.OldValue = estadoActual;
@@ -314,7 +314,7 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
                 {
                     string person = fila["person"].value.Replace("http://gnoss/", "").ToLower();
 
-                    Guid guid = new Guid(person.Split('_')[1]);
+                    Guid guid = new(person.Split('_')[1]);
                     string name = fila["name"].value;
                     string groups = fila.ContainsKey("groups") ? fila["groups"].value : null;
                     string organization = fila.ContainsKey("tituloOrg") ? fila["tituloOrg"].value : null;
@@ -1035,7 +1035,7 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
                     // Obtenemos el listado de "padres" del teshauro
                     List<List<string>> resultsAP = GetParentTeshaurusParents(oferta.areaProcedencia.Keys.ToList());
                     // Añadimos los objetos de las taxonomías correctos
-                    List<OfferOntology.CategoryPath> areasprocedencia = new List<OfferOntology.CategoryPath>();
+                    List<OfferOntology.CategoryPath> areasprocedencia = new();
                     foreach (var res in resultsAP)
                     {
                         areasprocedencia.Add(new OfferOntology.CategoryPath() { IdsRoh_categoryNode = res });
@@ -1045,7 +1045,7 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
                     // Obtenemos el listado de "padres" del teshauro
                     List<List<string>> resultsSA = GetParentTeshaurusParents(oferta.sectorAplicacion.Keys.ToList());
                     // Añadimos los objetos de las taxonomías correctos
-                    List<OfferOntology.CategoryPath> sectoresaplicacion = new List<OfferOntology.CategoryPath>();
+                    List<OfferOntology.CategoryPath> sectoresaplicacion = new();
                     foreach (var res in resultsSA)
                     {
                         sectoresaplicacion.Add(new OfferOntology.CategoryPath() { IdsRoh_categoryNode = res });
@@ -1160,7 +1160,7 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
 
                             //Use of DateTime.ParseExact()
                             // Convert the date into DateTime object
-                            DateTime DateObject = new DateTime();
+                            DateTime DateObject = new();
                             try
                             {
                                 DateObject = DateTime.ParseExact(e["validFrom"].value, "yyyyMMddHHmmss", null);
@@ -1683,11 +1683,11 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
                 // Modifico el estado
                 try
                 {
-                    Dictionary<Guid, List<TriplesToModify>> dicModificacion = new Dictionary<Guid, List<TriplesToModify>>();
-                    List<TriplesToModify> listaTriplesModificacion = new List<TriplesToModify>();
+                    Dictionary<Guid, List<TriplesToModify>> dicModificacion = new();
+                    List<TriplesToModify> listaTriplesModificacion = new();
 
                     // Modificación (Triples).
-                    TriplesToModify triple = new TriplesToModify();
+                    TriplesToModify triple = new();
                     triple.Predicate = predicado;
                     triple.NewValue = nuevoEstado;
                     triple.OldValue = estadoActual;
@@ -1825,7 +1825,7 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
         private List<List<string>> GetParentTeshaurusParents(List<string> tesauro)
         {
 
-            List<List<string>> resultsAP = new List<List<string>>();
+            List<List<string>> resultsAP = new();
 
             var finalIds = tesauro;
             foreach (var finalId in finalIds)

@@ -55,7 +55,7 @@ namespace ClusterOntology
 				foreach(CategoryPath prop in Roh_hasKnowledgeArea){
 					prop.GetProperties();
 					prop.GetEntities();
-					OntologyEntity entityCategoryPath = new OntologyEntity("http://w3id.org/roh/CategoryPath", "http://w3id.org/roh/CategoryPath", "roh:hasKnowledgeArea", prop.propList, prop.entList);
+					OntologyEntity entityCategoryPath = new("http://w3id.org/roh/CategoryPath", "http://w3id.org/roh/CategoryPath", "roh:hasKnowledgeArea", prop.propList, prop.entList);
 				entList.Add(entityCategoryPath);
 				prop.Entity= entityCategoryPath;
 				}
@@ -67,7 +67,7 @@ namespace ClusterOntology
 
 		protected List<object> ObtenerObjetosDePropiedad(object propiedad)
 		{
-			List<object> lista = new List<object>();
+			List<object> lista = new();
 			if(propiedad is IList)
 			{
 				foreach (object item in (IList)propiedad)
@@ -83,7 +83,7 @@ namespace ClusterOntology
 		}
 		protected List<string> ObtenerStringDePropiedad(object propiedad)
 		{
-			List<string> lista = new List<string>();
+			List<string> lista = new();
 			if (propiedad is IList)
 			{
 				foreach (string item in (IList)propiedad)

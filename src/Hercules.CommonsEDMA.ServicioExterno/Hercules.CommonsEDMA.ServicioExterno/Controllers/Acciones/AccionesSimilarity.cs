@@ -41,7 +41,7 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
 
             if (!string.IsNullOrEmpty(pConfig.GetUrlSimilarity()))
             {
-                UtilsSimilarity utilsSimilarity = new UtilsSimilarity(pConfig.GetUrlSimilarity(), resourceApi, pType);
+                UtilsSimilarity utilsSimilarity = new(pConfig.GetUrlSimilarity(), resourceApi, pType);
                 return utilsSimilarity.GetSimilars(pId);
             }
             else

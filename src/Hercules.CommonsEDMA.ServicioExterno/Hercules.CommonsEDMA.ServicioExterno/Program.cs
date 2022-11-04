@@ -28,7 +28,7 @@ namespace Hercules.CommonsEDMA.ServicioExterno
 
         public static void GenerateMetaSearch()
         {
-            AccionesMetaBusqueda accmt = new AccionesMetaBusqueda();
+            AccionesMetaBusqueda accmt = new();
             accmt.GenerateMetaShearch();
         }
     }

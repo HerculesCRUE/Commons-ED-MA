@@ -34,7 +34,7 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers
                 return StatusCode(StatusCodes.Status401Unauthorized);
             }
                         
-                ReadRabbitService rabbitMQService = new ReadRabbitService(_Configuracion);
+                ReadRabbitService rabbitMQService = new(_Configuracion);
                 string orcid = Acciones.AccionesFuentesExternas.GetORCID(pUserId);
                 string idGnoss = Acciones.AccionesFuentesExternas.GetIdGnoss(pUserId);
 
@@ -43,7 +43,7 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers
                     string ultimaFechaMod = Acciones.AccionesFuentesExternas.GetLastUpdatedDate(pUserId);
 
                     DateTime currentDate = DateTime.Now;
-                    DateTime lastUpdate = new DateTime(Int32.Parse(ultimaFechaMod.Split('-')[0]), Int32.Parse(ultimaFechaMod.Split('-')[1]), Int32.Parse(ultimaFechaMod.Split('-')[2]));
+                    DateTime lastUpdate = new(Int32.Parse(ultimaFechaMod.Split('-')[0]), Int32.Parse(ultimaFechaMod.Split('-')[1]), Int32.Parse(ultimaFechaMod.Split('-')[2]));
 
                     if (lastUpdate.AddDays(1) > currentDate)
                     {
@@ -53,24 +53,24 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers
                     Dictionary<string, string> dicIDs = Acciones.AccionesFuentesExternas.GetUsersIDs(pUserId);
 
                     // Publicaciones.
-                    List<string> listaDatos = new List<string>() { "investigador", orcid, ultimaFechaMod, idGnoss };
+                    List<string> listaDatos = new() { "investigador", orcid, ultimaFechaMod, idGnoss };
                     rabbitMQService.PublishMessage(listaDatos, _Configuracion.GetFuentesExternasQueueRabbit());
 
                     // Zenodo
-                    List<string> listaDatosZenodo = new List<string>() { "zenodo", orcid };
+                    List<string> listaDatosZenodo = new() { "zenodo", orcid };
                     rabbitMQService.PublishMessage(listaDatosZenodo, _Configuracion.GetFuentesExternasQueueRabbit());
 
                     // FigShare
                     if (dicIDs.ContainsKey("usuarioFigshare") && dicIDs.ContainsKey("tokenFigshare"))
                     {
-                        List<string> listaDatosFigShare = new List<string>() { "figshare", dicIDs["tokenFigshare"] };
+                        List<string> listaDatosFigShare = new() { "figshare", dicIDs["tokenFigshare"] };
                         rabbitMQService.PublishMessage(listaDatosFigShare, _Configuracion.GetFuentesExternasQueueRabbit());
                     }
 
                     // GitHub
                     if (dicIDs.ContainsKey("usuarioGitHub") && dicIDs.ContainsKey("tokenGitHub"))
                     {
-                        List<string> listaDatosGitHub = new List<string>() { "github", dicIDs["usuarioGitHub"], dicIDs["tokenGitHub"] };
+                        List<string> listaDatosGitHub = new() { "github", dicIDs["usuarioGitHub"], dicIDs["tokenGitHub"] };
                         rabbitMQService.PublishMessage(listaDatosGitHub, _Configuracion.GetFuentesExternasQueueRabbit());
                     }
                 }
@@ -84,12 +84,12 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers
         {
             try
             {
-                ReadRabbitService rabbitMQService = new ReadRabbitService(_Configuracion);
+                ReadRabbitService rabbitMQService = new(_Configuracion);
                                 
                 if (!string.IsNullOrEmpty(pIdentificador) && !string.IsNullOrEmpty(pDoi) && !string.IsNullOrEmpty(pIdPersona) && !string.IsNullOrEmpty(pNombreCompletoAutor))
                 {
                     // Inserción a la cola.
-                    List<string> listaDatos = new List<string>() { pIdentificador, pDoi, pIdPersona, pNombreCompletoAutor };
+                    List<string> listaDatos = new() { pIdentificador, pDoi, pIdPersona, pNombreCompletoAutor };
                     rabbitMQService.PublishMessage(listaDatos, _Configuracion.GetDoiQueueRabbit());
 
                     return true;

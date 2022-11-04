@@ -146,7 +146,7 @@ namespace OfferOntology
 				{
 					prop.GetProperties();
 					prop.GetEntities();
-					OntologyEntity entityCategoryPath = new OntologyEntity("http://w3id.org/roh/CategoryPath", "http://w3id.org/roh/CategoryPath", "roh:sectoraplicacion", prop.propList, prop.entList);
+					OntologyEntity entityCategoryPath = new("http://w3id.org/roh/CategoryPath", "http://w3id.org/roh/CategoryPath", "roh:sectoraplicacion", prop.propList, prop.entList);
 					entList.Add(entityCategoryPath);
 					prop.Entity= entityCategoryPath;
 				}
@@ -157,7 +157,7 @@ namespace OfferOntology
 				{
 					prop.GetProperties();
 					prop.GetEntities();
-					OntologyEntity entityAvailabilityChangeEvent = new OntologyEntity("http://w3id.org/roh/AvailabilityChangeEvent", "http://w3id.org/roh/AvailabilityChangeEvent", "roh:availabilityChangeEvent", prop.propList, prop.entList);
+					OntologyEntity entityAvailabilityChangeEvent = new("http://w3id.org/roh/AvailabilityChangeEvent", "http://w3id.org/roh/AvailabilityChangeEvent", "roh:availabilityChangeEvent", prop.propList, prop.entList);
 					entList.Add(entityAvailabilityChangeEvent);
 					prop.Entity= entityAvailabilityChangeEvent;
 				}
@@ -168,7 +168,7 @@ namespace OfferOntology
 				{
 					prop.GetProperties();
 					prop.GetEntities();
-					OntologyEntity entityCategoryPath = new OntologyEntity("http://w3id.org/roh/CategoryPath", "http://w3id.org/roh/CategoryPath", "roh:areaprocedencia", prop.propList, prop.entList);
+					OntologyEntity entityCategoryPath = new("http://w3id.org/roh/CategoryPath", "http://w3id.org/roh/CategoryPath", "roh:areaprocedencia", prop.propList, prop.entList);
 					entList.Add(entityCategoryPath);
 					prop.Entity= entityCategoryPath;
 				}
@@ -191,7 +191,7 @@ namespace OfferOntology
 			string titulo = $"{this.Schema_name.Replace("\r\n", "").Replace("\n", "").Replace("\r", "").Replace("\"", "\"\"").Replace("'", "''").Replace("|", "#PIPE#")}";
 			string descripcion = $"{this.Schema_name.Replace("\r\n", "").Replace("\n", "").Replace("\r", "").Replace("\"", "\"\"").Replace("'", "''").Replace("|", "#PIPE#")}";
 			string tablaDoc = $"'{titulo}', '{descripcion}', '{resourceAPI.GraphsUrl}', '{tags}'";
-			KeyValuePair<Guid, string> valor = new KeyValuePair<Guid, string>(ResourceID, tablaDoc);
+			KeyValuePair<Guid, string> valor = new(ResourceID, tablaDoc);
 
 			return valor;
 		}
@@ -221,7 +221,7 @@ namespace OfferOntology
 
 		public virtual ComplexOntologyResource ToGnossApiResource(ResourceApi resourceAPI, List<string> listaDeCategorias, Guid idrecurso, Guid idarticulo)
 		{
-			ComplexOntologyResource resource = new ComplexOntologyResource();
+			ComplexOntologyResource resource = new();
 			Ontology ontology = null;
 			GetEntities();
 			GetProperties();

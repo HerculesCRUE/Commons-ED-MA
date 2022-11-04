@@ -60,7 +60,7 @@ namespace ClusterOntology
 				foreach(ClusterPerfil prop in Roh_clusterPerfil){
 					prop.GetProperties();
 					prop.GetEntities();
-					OntologyEntity entityClusterPerfil = new OntologyEntity("http://w3id.org/roh/ClusterPerfil", "http://w3id.org/roh/ClusterPerfil", "roh:clusterPerfil", prop.propList, prop.entList);
+					OntologyEntity entityClusterPerfil = new("http://w3id.org/roh/ClusterPerfil", "http://w3id.org/roh/ClusterPerfil", "roh:clusterPerfil", prop.propList, prop.entList);
 				entList.Add(entityClusterPerfil);
 				prop.Entity= entityClusterPerfil;
 				}
@@ -69,7 +69,7 @@ namespace ClusterOntology
 				foreach(CategoryPath prop in Roh_hasKnowledgeArea){
 					prop.GetProperties();
 					prop.GetEntities();
-					OntologyEntity entityCategoryPath = new OntologyEntity("http://w3id.org/roh/CategoryPath", "http://w3id.org/roh/CategoryPath", "roh:hasKnowledgeArea", prop.propList, prop.entList);
+					OntologyEntity entityCategoryPath = new("http://w3id.org/roh/CategoryPath", "http://w3id.org/roh/CategoryPath", "roh:hasKnowledgeArea", prop.propList, prop.entList);
 				entList.Add(entityCategoryPath);
 				prop.Entity= entityCategoryPath;
 				}
@@ -82,7 +82,7 @@ namespace ClusterOntology
 
 		public virtual ComplexOntologyResource ToGnossApiResource(ResourceApi resourceAPI, List<string> listaDeCategorias, Guid idrecurso, Guid idarticulo)
 		{
-			ComplexOntologyResource resource = new ComplexOntologyResource();
+			ComplexOntologyResource resource = new();
 			Ontology ontology=null;
 			GetEntities();
 			GetProperties();
@@ -103,7 +103,7 @@ namespace ClusterOntology
 
 		public override List<string> ToOntologyGnossTriples(ResourceApi resourceAPI)
 		{
-			List<string> list = new List<string>();
+			List<string> list = new();
 			AgregarTripleALista($"{resourceAPI.GraphsUrl}items/Cluster_{ResourceID}_{ArticleID}", "http://www.w3.org/1999/02/22-rdf-syntax-ns#type", $"<http://w3id.org/roh/Cluster>", list, " . ");
 			AgregarTripleALista($"{resourceAPI.GraphsUrl}items/Cluster_{ResourceID}_{ArticleID}", "http://www.w3.org/2000/01/rdf-schema#label", $"\"http://w3id.org/roh/Cluster\"", list, " . ");
 			AgregarTripleALista($"{resourceAPI.GraphsUrl}{ResourceID}", "http://gnoss/hasEntidad", $"<{resourceAPI.GraphsUrl}items/Cluster_{ResourceID}_{ArticleID}>", list, " . ");
@@ -190,8 +190,8 @@ namespace ClusterOntology
 
 		public override List<string> ToSearchGraphTriples(ResourceApi resourceAPI)
 		{
-			List<string> list = new List<string>();
-			List<string> listaSearch = new List<string>();
+			List<string> list = new();
+			List<string> listaSearch = new();
 			AgregarTags(list);
 			AgregarTripleALista($"http://gnoss/{ResourceID.ToString().ToUpper()}", "http://www.w3.org/1999/02/22-rdf-syntax-ns#type", $"\"cluster\"", list, " . ");
 			AgregarTripleALista($"http://gnoss/{ResourceID.ToString().ToUpper()}", "http://gnoss/type", $"\"http://w3id.org/roh/Cluster\"", list, " . ");
@@ -217,7 +217,7 @@ namespace ClusterOntology
 				{
 					foreach(var item2 in item1.IdsRoh_categoryNode)
 					{
-					Regex regex = new Regex(@"\/items\/.+_[0-9A-Fa-f]{8}[-]?(?:[0-9A-Fa-f]{4}[-]?){3}[0-9A-Fa-f]{12}_[0-9A-Fa-f]{8}[-]?(?:[0-9A-Fa-f]{4}[-]?){3}[0-9A-Fa-f]{12}");
+					Regex regex = new(@"\/items\/.+_[0-9A-Fa-f]{8}[-]?(?:[0-9A-Fa-f]{4}[-]?){3}[0-9A-Fa-f]{12}_[0-9A-Fa-f]{8}[-]?(?:[0-9A-Fa-f]{4}[-]?){3}[0-9A-Fa-f]{12}");
 					string itemRegex = item2;
 					if (regex.IsMatch(itemRegex))
 					{
@@ -236,7 +236,7 @@ namespace ClusterOntology
 				{
 					foreach(var item2 in item0.IdsRdf_member)
 					{
-					Regex regex = new Regex(@"\/items\/.+_[0-9A-Fa-f]{8}[-]?(?:[0-9A-Fa-f]{4}[-]?){3}[0-9A-Fa-f]{12}_[0-9A-Fa-f]{8}[-]?(?:[0-9A-Fa-f]{4}[-]?){3}[0-9A-Fa-f]{12}");
+					Regex regex = new(@"\/items\/.+_[0-9A-Fa-f]{8}[-]?(?:[0-9A-Fa-f]{4}[-]?){3}[0-9A-Fa-f]{12}_[0-9A-Fa-f]{8}[-]?(?:[0-9A-Fa-f]{4}[-]?){3}[0-9A-Fa-f]{12}");
 					string itemRegex = item2;
 					if (regex.IsMatch(itemRegex))
 					{
@@ -271,7 +271,7 @@ namespace ClusterOntology
 				{
 					foreach(var item2 in item0.IdsRoh_categoryNode)
 					{
-					Regex regex = new Regex(@"\/items\/.+_[0-9A-Fa-f]{8}[-]?(?:[0-9A-Fa-f]{4}[-]?){3}[0-9A-Fa-f]{12}_[0-9A-Fa-f]{8}[-]?(?:[0-9A-Fa-f]{4}[-]?){3}[0-9A-Fa-f]{12}");
+					Regex regex = new(@"\/items\/.+_[0-9A-Fa-f]{8}[-]?(?:[0-9A-Fa-f]{4}[-]?){3}[0-9A-Fa-f]{12}_[0-9A-Fa-f]{8}[-]?(?:[0-9A-Fa-f]{4}[-]?){3}[0-9A-Fa-f]{12}");
 					string itemRegex = item2;
 					if (regex.IsMatch(itemRegex))
 					{
@@ -288,7 +288,7 @@ namespace ClusterOntology
 			}
 				if(this.IdRdf_member != null)
 				{
-					Regex regex = new Regex(@"\/items\/.+_[0-9A-Fa-f]{8}[-]?(?:[0-9A-Fa-f]{4}[-]?){3}[0-9A-Fa-f]{12}_[0-9A-Fa-f]{8}[-]?(?:[0-9A-Fa-f]{4}[-]?){3}[0-9A-Fa-f]{12}");
+					Regex regex = new(@"\/items\/.+_[0-9A-Fa-f]{8}[-]?(?:[0-9A-Fa-f]{4}[-]?){3}[0-9A-Fa-f]{12}_[0-9A-Fa-f]{8}[-]?(?:[0-9A-Fa-f]{4}[-]?){3}[0-9A-Fa-f]{12}");
 					string itemRegex = this.IdRdf_member;
 					if (regex.IsMatch(itemRegex))
 					{
@@ -342,14 +342,14 @@ namespace ClusterOntology
 			string titulo = $"{this.Roh_title.Replace("\r\n", "").Replace("\n", "").Replace("\r", "").Replace("\"", "\"\"").Replace("'", "''").Replace("|", "#PIPE#")}";
 			string descripcion = $"{this.Roh_title.Replace("\r\n", "").Replace("\n", "").Replace("\r", "").Replace("\"", "\"\"").Replace("'", "''").Replace("|", "#PIPE#")}";
 			string tablaDoc = $"'{titulo}', '{descripcion}', '{resourceAPI.GraphsUrl}', '{tags}'";
-			KeyValuePair<Guid, string> valor = new KeyValuePair<Guid, string>(ResourceID, tablaDoc);
+			KeyValuePair<Guid, string> valor = new(ResourceID, tablaDoc);
 
 			return valor;
 		}
 
 		protected List<object> ObtenerObjetosDePropiedad(object propiedad)
 		{
-			List<object> lista = new List<object>();
+			List<object> lista = new();
 			if(propiedad is IList)
 			{
 				foreach (object item in (IList)propiedad)
@@ -365,7 +365,7 @@ namespace ClusterOntology
 		}
 		protected List<string> ObtenerStringDePropiedad(object propiedad)
 		{
-			List<string> lista = new List<string>();
+			List<string> lista = new();
 			if (propiedad is IList)
 			{
 				foreach (string item in (IList)propiedad)

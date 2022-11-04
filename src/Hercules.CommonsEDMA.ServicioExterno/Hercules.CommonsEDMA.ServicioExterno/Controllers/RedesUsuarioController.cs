@@ -27,7 +27,7 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers
                 return StatusCode(StatusCodes.Status401Unauthorized);
             }
 
-            AccionesRedesUsuario accionDocumento = new AccionesRedesUsuario();
+            AccionesRedesUsuario accionDocumento = new();
             List<DataUser> datosRedesUsuario = accionDocumento.GetDataRedesUsuario(pIdGnossUser);
 
             return Ok(datosRedesUsuario);
@@ -46,7 +46,7 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers
             {
                 return StatusCode(StatusCodes.Status401Unauthorized);
             }
-            AccionesRedesUsuario accionDocumento = new AccionesRedesUsuario();
+            AccionesRedesUsuario accionDocumento = new();
             accionDocumento.SetDataRedesUsuario(pIdGnossUser, pDataUser);
 
             return Ok();
