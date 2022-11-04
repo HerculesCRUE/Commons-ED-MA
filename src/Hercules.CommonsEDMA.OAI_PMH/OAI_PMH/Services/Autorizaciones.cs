@@ -23,15 +23,15 @@ namespace OAI_PMH.Services
         {
             string accessToken = Token.CheckToken(pConfig);
             Dictionary<string, DateTime> idDictionary = new();
-            List<string> idList = new();
-            RestClient client = new(pConfig.GetConfigSGI() + "/api/sgicsp/autorizaciones/modificadas-ids?q=fechaModificacion=ge=\"" + from + "\"");
-            client.AddDefaultHeader("Authorization", "Bearer " + accessToken);
+            List<string> idListAutorizaciones;
+            RestClient clientAutorizaciones = new(pConfig.GetConfigSGI() + "/api/sgicsp/autorizaciones/modificadas-ids?q=fechaModificacion=ge=\"" + from + "\"");
+            clientAutorizaciones.AddDefaultHeader("Authorization", "Bearer " + accessToken);
             var request = new RestRequest(Method.GET);
-            IRestResponse response = Token.httpCall(client, request);
-            if (!string.IsNullOrEmpty(response.Content))
+            IRestResponse responseAutorizaciones = Token.httpCall(clientAutorizaciones, request);
+            if (!string.IsNullOrEmpty(responseAutorizaciones.Content))
             {
-                idList = response.Content[1..^1].Split(',').ToList();
-                foreach (string id in idList)
+                idListAutorizaciones = responseAutorizaciones.Content[1..^1].Split(',').ToList();
+                foreach (string id in idListAutorizaciones)
                 {
                     idDictionary.Add("AutorizacionProyecto_" + id, DateTime.UtcNow);
                 }

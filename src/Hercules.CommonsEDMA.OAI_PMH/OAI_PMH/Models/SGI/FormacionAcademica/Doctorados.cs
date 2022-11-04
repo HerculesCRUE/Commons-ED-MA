@@ -1,6 +1,5 @@
 ﻿using OAI_PMH.Models.SGI.OrganicStructure;
 using System;
-using System.Collections.Generic;
 
 namespace OAI_PMH.Models.SGI.FormacionAcademica
 {

@@ -80,7 +80,7 @@ namespace OAI_PMH.Models.SGI.PersonalData
         /// <summary>
         /// Sexenios
         /// </summary>
-        public Sexenio Sexenios { get; set; }     
+        public Sexenio Sexenios { get; set; }
         /// <summary>
         /// Posgrado
         /// </summary>

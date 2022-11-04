@@ -23,16 +23,16 @@ namespace OAI_PMH.Services
         {
             string accessToken = Token.CheckToken(pConfig, pTokenGestor: false, pTokenPii: true);
             Dictionary<string, DateTime> idDictionary = new();
-            List<string> idList = new();
-            RestClient client = new(pConfig.GetConfigSGI() + "/api/sgipii/invenciones/modificados-ids?q=fechaModificacion=ge=\"" + from + "\"");
-            client.AddDefaultHeader("Authorization", "Bearer " + accessToken);
+            List<string> idListInvencion;
+            RestClient clientInvencion = new(pConfig.GetConfigSGI() + "/api/sgipii/invenciones/modificados-ids?q=fechaModificacion=ge=\"" + from + "\"");
+            clientInvencion.AddDefaultHeader("Authorization", "Bearer " + accessToken);
             var request = new RestRequest(Method.GET);
-            IRestResponse response = Token.httpCall(client, request);
+            IRestResponse responseInvencion = Token.httpCall(clientInvencion, request);
 
-            if (!string.IsNullOrEmpty(response.Content))
+            if (!string.IsNullOrEmpty(responseInvencion.Content))
             {
-                idList = response.Content[1..^1].Split(',').ToList();
-                foreach (string id in idList)
+                idListInvencion = responseInvencion.Content[1..^1].Split(',').ToList();
+                foreach (string id in idListInvencion)
                 {
                     string idMod = "Invencion_" + id.Replace("\"", "");
                     if (!idDictionary.ContainsKey(idMod))
@@ -55,7 +55,7 @@ namespace OAI_PMH.Services
             string accessToken = Token.CheckToken(pConfig, pTokenGestor: false, pTokenPii: true);
             string identifier = id.Replace("\"", "").Split('_')[1];
             RestClient client = new(pConfig.GetConfigSGI() + "/api/sgipii/invenciones/" + identifier);
-            client.AddDefaultHeader("Authorization", "Bearer " + accessToken);           
+            client.AddDefaultHeader("Authorization", "Bearer " + accessToken);
             var request = new RestRequest(Method.GET);
             IRestResponse response = Token.httpCall(client, request);
             if (string.IsNullOrEmpty(response.Content))
@@ -63,13 +63,13 @@ namespace OAI_PMH.Services
                 return null;
             }
             Invencion invencion = JsonConvert.DeserializeObject<Invencion>(response.Content);
-            List<SectorAplicacion> sectorAplicacion =  GetSectores(identifier, pConfig);
+            List<SectorAplicacion> sectorAplicacion = GetSectores(identifier, pConfig);
             List<InvencionDocumento> invencionDocumento = GetDocumentos(identifier, pConfig);
             List<InvencionGastos> gastos = GetGastos(identifier, pConfig);
             List<PalabraClave> palabrasClave = GetPalabrasClaves(identifier, pConfig);
             List<AreaConocimiento> areasConocimiento = GetAreasConocimiento(identifier, pConfig);
             List<PeriodoTitularidad> periodosTitularidad = GetPeriodosTitularidad(identifier, pConfig);
-            List<Titular> titulares = new List<Titular>();
+            List<Titular> titulares = new();
             if (periodosTitularidad != null && periodosTitularidad.Any())
             {
                 foreach (PeriodoTitularidad periodo in periodosTitularidad)

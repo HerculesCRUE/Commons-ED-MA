@@ -1,5 +1,4 @@
 ﻿using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 using OAI_PMH.Controllers;
 using OAI_PMH.Models.SGI.FormacionAcademica;
 using RestSharp;
@@ -15,16 +14,16 @@ namespace OAI_PMH.Services
         {
             string accessToken = Token.CheckToken(pConfig);
             Dictionary<string, DateTime> idDictionary = new();
-            List<string> idList = new();
-            RestClient client = new(pConfig.GetConfigSGI() + "/api/sgp/formacion/modificados-ids?q=fechaModificacion=ge=\"" + from + "\"" + ";tipoFormacion=\"020.010.010.000\"");
-            client.AddDefaultHeader("Authorization", "Bearer " + accessToken);
+            List<string> idListCiclos;
+            RestClient clientCiclos = new(pConfig.GetConfigSGI() + "/api/sgp/formacion/modificados-ids?q=fechaModificacion=ge=\"" + from + "\"" + ";tipoFormacion=\"020.010.010.000\"");
+            clientCiclos.AddDefaultHeader("Authorization", "Bearer " + accessToken);
             var request = new RestRequest(Method.GET);
-            IRestResponse response = Token.httpCall(client, request);
+            IRestResponse responseCiclos = Token.httpCall(clientCiclos, request);
 
-            if (!string.IsNullOrEmpty(response.Content))
+            if (!string.IsNullOrEmpty(responseCiclos.Content))
             {
-                idList = response.Content[1..^1].Split(',').ToList();
-                foreach (string id in idList)
+                idListCiclos = responseCiclos.Content[1..^1].Split(',').ToList();
+                foreach (string id in idListCiclos)
                 {
                     string idMod = "FormacionAcademica-Ciclos_" + id.Replace("\"", "");
                     if (!idDictionary.ContainsKey(idMod))
@@ -56,16 +55,16 @@ namespace OAI_PMH.Services
         {
             string accessToken = Token.CheckToken(pConfig);
             Dictionary<string, DateTime> idDictionary = new();
-            List<string> idList = new();
-            RestClient client = new(pConfig.GetConfigSGI() + "/api/sgp/formacion/modificados-ids?q=fechaModificacion=ge=\"" + from + "\"" + ";tipoFormacion=\"020.010.020.000\"");
-            client.AddDefaultHeader("Authorization", "Bearer " + accessToken);
+            List<string> idListDoctorados;
+            RestClient clientDoctorados = new(pConfig.GetConfigSGI() + "/api/sgp/formacion/modificados-ids?q=fechaModificacion=ge=\"" + from + "\"" + ";tipoFormacion=\"020.010.020.000\"");
+            clientDoctorados.AddDefaultHeader("Authorization", "Bearer " + accessToken);
             var request = new RestRequest(Method.GET);
-            IRestResponse response = Token.httpCall(client, request);
+            IRestResponse responseDoctorados = Token.httpCall(clientDoctorados, request);
 
-            if (!String.IsNullOrEmpty(response.Content))
+            if (!string.IsNullOrEmpty(responseDoctorados.Content))
             {
-                idList = response.Content[1..^1].Split(',').ToList();
-                foreach (string id in idList)
+                idListDoctorados = responseDoctorados.Content[1..^1].Split(',').ToList();
+                foreach (string id in idListDoctorados)
                 {
                     string idCompleto = "FormacionAcademica-Doctorados_" + id.Replace("\"", "");
                     if (!idDictionary.ContainsKey(idCompleto))
@@ -97,16 +96,16 @@ namespace OAI_PMH.Services
         {
             string accessToken = Token.CheckToken(pConfig);
             Dictionary<string, DateTime> idDictionary = new();
-            List<string> idList = new();
-            RestClient client = new(pConfig.GetConfigSGI() + "/api/sgp/formacion/modificados-ids?q=fechaModificacion=ge=\"" + from + "\"" + ";tipoFormacion=\"020.010.030.000\"");
-            client.AddDefaultHeader("Authorization", "Bearer " + accessToken);
+            List<string> idListPosgrado;
+            RestClient clientPosgrado = new(pConfig.GetConfigSGI() + "/api/sgp/formacion/modificados-ids?q=fechaModificacion=ge=\"" + from + "\"" + ";tipoFormacion=\"020.010.030.000\"");
+            clientPosgrado.AddDefaultHeader("Authorization", "Bearer " + accessToken);
             var request = new RestRequest(Method.GET);
-            IRestResponse response = Token.httpCall(client, request);
+            IRestResponse responsePosgrado = Token.httpCall(clientPosgrado, request);
 
-            if (!String.IsNullOrEmpty(response.Content))
+            if (!String.IsNullOrEmpty(responsePosgrado.Content))
             {
-                idList = response.Content[1..^1].Split(',').ToList();
-                foreach (string id in idList)
+                idListPosgrado = responsePosgrado.Content[1..^1].Split(',').ToList();
+                foreach (string id in idListPosgrado)
                 {
                     string idMod = "FormacionAcademica-Posgrado_" + id.Replace("\"", "");
                     if (!idDictionary.ContainsKey(idMod))
@@ -138,16 +137,16 @@ namespace OAI_PMH.Services
         {
             string accessToken = Token.CheckToken(pConfig);
             Dictionary<string, DateTime> idDictionary = new();
-            List<string> idList = new();
-            RestClient client = new(pConfig.GetConfigSGI() + "/api/sgp/formacion/modificados-ids?q=fechaModificacion=ge=\"" + from + "\"" + ";tipoFormacion=\"020.020.000.000\"");
-            client.AddDefaultHeader("Authorization", "Bearer " + accessToken);
+            List<string> idListEspecializada;
+            RestClient clientEspecializada = new(pConfig.GetConfigSGI() + "/api/sgp/formacion/modificados-ids?q=fechaModificacion=ge=\"" + from + "\"" + ";tipoFormacion=\"020.020.000.000\"");
+            clientEspecializada.AddDefaultHeader("Authorization", "Bearer " + accessToken);
             var request = new RestRequest(Method.GET);
-            IRestResponse response = Token.httpCall(client, request);
+            IRestResponse responseEspecializada = Token.httpCall(clientEspecializada, request);
 
-            if (!String.IsNullOrEmpty(response.Content))
+            if (!String.IsNullOrEmpty(responseEspecializada.Content))
             {
-                idList = response.Content[1..^1].Split(',').ToList();
-                foreach (string id in idList)
+                idListEspecializada = responseEspecializada.Content[1..^1].Split(',').ToList();
+                foreach (string id in idListEspecializada)
                 {
                     string idMod = "FormacionAcademica-Especializada_" + id.Replace("\"", "");
                     if (!idDictionary.ContainsKey(idMod))

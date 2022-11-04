@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using OAI_PMH.Models.OAIPMH;
-using OAI_PMH.Services;
 using OaiPmhNet;
 using OaiPmhNet.Models;
 using System;
@@ -60,7 +59,8 @@ namespace OAI_PMH.Controllers
                 xmlWriter.Flush();
                 byte[] array = memoryStream.ToArray();
                 return File(array, "application/xml");
-            }catch(Exception ex)
+            }
+            catch (Exception)
             {
                 throw;
             }
