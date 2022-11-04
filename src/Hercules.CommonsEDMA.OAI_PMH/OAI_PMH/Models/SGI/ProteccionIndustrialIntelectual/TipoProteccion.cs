@@ -24,7 +24,7 @@
         /// <summary>
         /// TipoPropiedad.
         /// </summary>
-        public string tipoPropiedad { get; set; }   
+        public string tipoPropiedad { get; set; }
         /// <summary>
         /// Activo.
         /// </summary>

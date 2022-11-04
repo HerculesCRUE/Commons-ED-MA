@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Reflection.Metadata;
 
 namespace OAI_PMH.Models.SGI.Project
 {

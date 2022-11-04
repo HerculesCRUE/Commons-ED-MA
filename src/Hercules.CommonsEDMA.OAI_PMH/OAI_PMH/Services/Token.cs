@@ -14,7 +14,6 @@ namespace OAI_PMH.Services
     {
         private static string accessToken;
         private static string refreshToken;
-        private static DateTime lastUpdate;
         private static ConfigService _ConfigService;
 
         // Logs.
@@ -30,13 +29,13 @@ namespace OAI_PMH.Services
 
         public static IRestResponse httpCall(RestClient pRestClient, RestRequest pRestRequest)
         {
-            IRestResponse response = null;
+            IRestResponse response;
             while (true)
             {
                 DateTime inicio = DateTime.Now;
 
                 try
-                {                    
+                {
                     response = pRestClient.Execute(pRestRequest);
                     DateTime fin = DateTime.Now;
                     _FileLogger.Log(inicio, fin, pRestClient.BaseUrl.ToString(), "DEBUG");
@@ -97,7 +96,7 @@ namespace OAI_PMH.Services
 
         private static string GetToken(ConfigService pConfig, bool pTokenGestor, bool pTokenPii)
         {
-            Uri url = new Uri(pConfig.GetConfigSGI() + "/auth/realms/sgi/protocol/openid-connect/token");
+            Uri url = new(pConfig.GetConfigSGI() + "/auth/realms/sgi/protocol/openid-connect/token");
             FormUrlEncodedContent content = null;
             if (pTokenGestor)
             {
@@ -125,24 +124,6 @@ namespace OAI_PMH.Services
             var json = JObject.Parse(result);
             accessToken = json["access_token"].ToString();
             refreshToken = json["refresh_token"].ToString();
-
-            return accessToken;
-        }
-
-        private static string RefreshToken(ConfigService pConfig)
-        {
-            Uri url = new Uri(pConfig.GetConfigSGI() + "/auth/realms/sgi/protocol/openid-connect/token");
-            var content = new FormUrlEncodedContent(new[]
-            {
-                new KeyValuePair<string, string>("client_id", "front"),
-                new KeyValuePair<string, string>("grant_type", "refresh_token"),
-                new KeyValuePair<string, string>("refresh_token", refreshToken)
-            });
-
-            string result = httpCall(url.ToString(), "POST", content).Result;
-
-            var json = JObject.Parse(result);
-            accessToken = json["access_token"].ToString();
 
             return accessToken;
         }

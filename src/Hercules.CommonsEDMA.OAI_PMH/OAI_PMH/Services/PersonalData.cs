@@ -27,7 +27,7 @@ namespace OAI_PMH.Services
             var requestCandidatos = new RestRequest(Method.GET);
             IRestResponse responseCandidatos = Token.httpCall(clientCandidatos, requestCandidatos);
 
-            if (!String.IsNullOrEmpty(responseCandidatos.Content))
+            if (!string.IsNullOrEmpty(responseCandidatos.Content))
             {
                 List<string> idListCandidatosAux = responseCandidatos.Content[1..^1].Split(',').Distinct().ToList();
                 foreach (string id in idListCandidatosAux)
@@ -39,16 +39,16 @@ namespace OAI_PMH.Services
             #endregion
 
             #region --- Personal Data
-            List<string> idList = new();
-            RestClient client = new(pConfig.GetConfigSGI() + "/api/sgp/personas/modificadas-ids?q=fechaModificacion=ge=\"" + from + "\"");
-            client.AddDefaultHeader("Authorization", "Bearer " + accessToken);
+            List<string> idListPersonalData = new();
+            RestClient clientPersonalData = new(pConfig.GetConfigSGI() + "/api/sgp/personas/modificadas-ids?q=fechaModificacion=ge=\"" + from + "\"");
+            clientPersonalData.AddDefaultHeader("Authorization", "Bearer " + accessToken);
             var request = new RestRequest(Method.GET);
-            IRestResponse response = Token.httpCall(client, request);
+            IRestResponse responsePersonalData = Token.httpCall(clientPersonalData, request);
 
-            if (!String.IsNullOrEmpty(response.Content))
+            if (!string.IsNullOrEmpty(responsePersonalData.Content))
             {
-                idList = response.Content[1..^1].Split(',').ToList();
-                foreach (string id in idList)
+                idListPersonalData = responsePersonalData.Content[1..^1].Split(',').ToList();
+                foreach (string id in idListPersonalData)
                 {
                     string idPersona = "Persona_" + id.Replace("\"", "").Substring(0, id.Replace("\"", "").Length - 1);
                     if (!idDictionary.ContainsKey(idPersona))
@@ -235,7 +235,7 @@ namespace OAI_PMH.Services
         private static DatosPersonales GetDatosPersonales(string id, ConfigService pConfig)
         {
             string accessToken = Token.CheckToken(pConfig);
-            DatosPersonales datosPersonales = new();
+            DatosPersonales datosPersonales;
             RestClient client = new(pConfig.GetConfigSGI() + "/api/sgp/datos-personales/persona/" + id);
             client.AddDefaultHeader("Authorization", "Bearer " + accessToken);
             var request = new RestRequest(Method.GET);
@@ -254,7 +254,7 @@ namespace OAI_PMH.Services
         private static DatosContacto GetDatosContacto(string id, ConfigService pConfig)
         {
             string accessToken = Token.CheckToken(pConfig);
-            DatosContacto datosContacto = new();
+            DatosContacto datosContacto;
             RestClient client = new(pConfig.GetConfigSGI() + "/api/sgp/datos-contacto/persona/" + id);
             client.AddDefaultHeader("Authorization", "Bearer " + accessToken);
             var request = new RestRequest(Method.GET);
@@ -273,7 +273,7 @@ namespace OAI_PMH.Services
         private static Vinculacion GetVinculacion(string id, ConfigService pConfig)
         {
             string accessToken = Token.CheckToken(pConfig);
-            Vinculacion vinculacion = new();
+            Vinculacion vinculacion;
             RestClient client = new(pConfig.GetConfigSGI() + "/api/sgp/vinculaciones/persona/" + id);
             client.AddDefaultHeader("Authorization", "Bearer " + accessToken);
             var request = new RestRequest(Method.GET);
@@ -292,7 +292,7 @@ namespace OAI_PMH.Services
         private static DatosAcademicos GetDatosAcademicos(string id, ConfigService pConfig)
         {
             string accessToken = Token.CheckToken(pConfig);
-            DatosAcademicos datosAcademicos = new();
+            DatosAcademicos datosAcademicos;
             RestClient client = new(pConfig.GetConfigSGI() + "/api/sgp/datos-academicos/persona/" + id);
             client.AddDefaultHeader("Authorization", "Bearer " + accessToken);
             var request = new RestRequest(Method.GET);
@@ -311,7 +311,7 @@ namespace OAI_PMH.Services
         private static Fotografia GetFotografia(string id, ConfigService pConfig)
         {
             string accessToken = Token.CheckToken(pConfig);
-            Fotografia fotografia = new();
+            Fotografia fotografia;
             RestClient client = new(pConfig.GetConfigSGI() + "/api/sgp/personas/" + id + "/fotografia");
             client.AddDefaultHeader("Authorization", "Bearer " + accessToken);
             var request = new RestRequest(Method.GET);
@@ -330,7 +330,7 @@ namespace OAI_PMH.Services
         private static Sexenio GetSexenios(string id, ConfigService pConfig)
         {
             string accessToken = Token.CheckToken(pConfig);
-            Sexenio sexenios = new();
+            Sexenio sexenios;
             RestClient client = new(pConfig.GetConfigSGI() + "/api/sgp/sexenios/persona/" + id);
             client.AddDefaultHeader("Authorization", "Bearer " + accessToken);
             var request = new RestRequest(Method.GET);

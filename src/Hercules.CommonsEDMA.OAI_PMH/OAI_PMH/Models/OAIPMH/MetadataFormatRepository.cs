@@ -11,7 +11,7 @@ namespace OAI_PMH.Models.OAIPMH
     public class MetadataFormatRepository : IMetadataFormatRepository
     {
         private readonly Dictionary<string, MetadataFormat> _dictionary;
-        
+
         /// <summary>
         /// Constructor
         /// </summary>

@@ -23,7 +23,7 @@ namespace OAI_PMH.Models.SGI.GruposInvestigacion
         /// <summary>
         /// Fecha de fin del grupo.
         /// </summary>
-        public DateTime? fechaFin { get;set; }
+        public DateTime? fechaFin { get; set; }
         /// <summary>
         /// Identificador en el SGE.
         /// </summary>

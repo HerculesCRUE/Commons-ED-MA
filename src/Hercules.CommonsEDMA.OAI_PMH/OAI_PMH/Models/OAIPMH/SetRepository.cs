@@ -14,7 +14,7 @@ namespace OAI_PMH.Models.OAIPMH
         {
             _configuration = configuration;
             _sets = new List<Set>();
-            List<string> setNameList = new List<string>
+            List<string> setNameList = new()
             {
                 "Persona",
                 "Organizacion",

@@ -16,7 +16,7 @@
         /// <summary>
         /// Referencia o Identificador de la entidad en el sistema externo de Empresas.
         /// </summary>
-        public TipoEntidadOrganizadoraEvento TipoEntidad{get;set;}
+        public TipoEntidadOrganizadoraEvento TipoEntidad { get; set; }
 
     }
 }
