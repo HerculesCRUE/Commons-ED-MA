@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
 {
-    public class AccionesFuentesExternas: GnossGetMainResourceApiDataBase
+    public class AccionesFuentesExternas : GnossGetMainResourceApiDataBase
     {
 
 
@@ -16,21 +16,17 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
         /// <returns></returns>
         public static string GetORCID(string pUserId)
         {
-            SparqlObject resultadoQuery = null;
-            StringBuilder select = new(), where = new();
+            string selectOrcid = mPrefijos;
+            selectOrcid += "SELECT ?orcid ";
+            string whereOrcid = $@"WHERE {{ 
+                            ?s roh:gnossUser <http://gnoss/{pUserId.ToUpper()}> . 
+                            OPTIONAL{{?s roh:ORCID ?orcid. }}
+                        }} ";
 
-            // Consulta sparql.
-            select.Append(mPrefijos);
-            select.Append("SELECT ?orcid ");
-            where.Append("WHERE { ");
-            where.Append($@"?s roh:gnossUser <http://gnoss/{pUserId.ToUpper()}>. ");
-            where.Append("OPTIONAL{?s roh:ORCID ?orcid. } ");
-            where.Append("} ");
-
-            resultadoQuery = resourceApi.VirtuosoQuery(select.ToString(), where.ToString(), idComunidad);
-            if (resultadoQuery != null && resultadoQuery.results != null && resultadoQuery.results.bindings != null && resultadoQuery.results.bindings.Count > 0)
+            SparqlObject resultadoQueryOrcid = resourceApi.VirtuosoQuery(selectOrcid.ToString(), whereOrcid.ToString(), idComunidad);
+            if (resultadoQueryOrcid != null && resultadoQueryOrcid.results != null && resultadoQueryOrcid.results.bindings != null && resultadoQueryOrcid.results.bindings.Count > 0)
             {
-                foreach (Dictionary<string, SparqlObject.Data> fila in resultadoQuery.results.bindings)
+                foreach (Dictionary<string, SparqlObject.Data> fila in resultadoQueryOrcid.results.bindings)
                 {
                     if (fila.ContainsKey("orcid"))
                     {
@@ -49,21 +45,19 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
         /// <returns></returns>
         public static string GetIdGnoss(string pUserId)
         {
-            string idBusqueda = string.Empty;
-            SparqlObject resultadoQuery = null;
-            StringBuilder select = new(), where = new();
+            string idBusqueda = "";
 
-            // Consulta sparql.
-            select.Append(mPrefijos);
-            select.Append("SELECT ?s ");
-            where.Append("WHERE { ");
-            where.Append($@"?s roh:gnossUser <http://gnoss/{pUserId.ToUpper()}>. ");
-            where.Append("} ");
+            string selectGnossUser = mPrefijos;
+            selectGnossUser += "SELECT ?s ";
+            string whereGnossUser = $@"WHERE {{
+                                ?s roh:gnossUser <http://gnoss/{pUserId.ToUpper()}>. 
+                            }} ";
 
-            resultadoQuery = resourceApi.VirtuosoQuery(select.ToString(), where.ToString(), idComunidad);
-            if (resultadoQuery != null && resultadoQuery.results != null && resultadoQuery.results.bindings != null && resultadoQuery.results.bindings.Count > 0)
+            SparqlObject resultadoQueryGnossUser = resourceApi.VirtuosoQuery(selectGnossUser, whereGnossUser, idComunidad);
+            if (resultadoQueryGnossUser != null && resultadoQueryGnossUser.results != null &&
+                resultadoQueryGnossUser.results.bindings != null && resultadoQueryGnossUser.results.bindings.Count > 0)
             {
-                foreach (Dictionary<string, SparqlObject.Data> fila in resultadoQuery.results.bindings)
+                foreach (Dictionary<string, SparqlObject.Data> fila in resultadoQueryGnossUser.results.bindings)
                 {
                     if (fila.ContainsKey("s"))
                     {
@@ -72,24 +66,20 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
                 }
             }
 
-            if(!string.IsNullOrEmpty(idBusqueda))
+            if (!string.IsNullOrEmpty(idBusqueda))
             {
-                resultadoQuery = null;
-                select = new StringBuilder();
-                where = new StringBuilder();
+                string selectPersona = mPrefijos;
+                selectPersona += "SELECT ?s ";
+                string wherePersona = $@"WHERE {{ 
+                                graph ?g{{ <{idBusqueda}> <http://gnoss/hasEntidad> ?s. }}
+                                ?s ?p <http://xmlns.com/foaf/0.1/Person>.
+                            }} ";
 
-                // Consulta sparql.
-                select.Append(mPrefijos);
-                select.Append("SELECT ?s ");
-                where.Append("WHERE { ");
-                where.Append($@"graph ?g{{ <{idBusqueda}> <http://gnoss/hasEntidad> ?s. }}");
-                where.Append($@"?s ?p <http://xmlns.com/foaf/0.1/Person>. ");
-                where.Append("} ");
-
-                resultadoQuery = resourceApi.VirtuosoQuery(select.ToString(), where.ToString(), "person");
-                if (resultadoQuery != null && resultadoQuery.results != null && resultadoQuery.results.bindings != null && resultadoQuery.results.bindings.Count > 0)
+                SparqlObject resultadoQueryPersona = resourceApi.VirtuosoQuery(selectPersona, wherePersona, "person");
+                if (resultadoQueryPersona != null && resultadoQueryPersona.results != null &&
+                    resultadoQueryPersona.results.bindings != null && resultadoQueryPersona.results.bindings.Count > 0)
                 {
-                    foreach (Dictionary<string, SparqlObject.Data> fila in resultadoQuery.results.bindings)
+                    foreach (Dictionary<string, SparqlObject.Data> fila in resultadoQueryPersona.results.bindings)
                     {
                         if (fila.ContainsKey("s"))
                         {
