@@ -44,6 +44,7 @@ var cargarCVId = {
 	init: function () {
 		this.loadCVId();
 		this.printCVId();
+		this.printCVIdHomeEd();
 	},
 	loadCVId: function(){
 		var that=this;
@@ -59,12 +60,7 @@ var cargarCVId = {
 					that.CVId=data;
 					cvUrl = data;
 					that.printCVId();
-                    var interval = setInterval(() => {
-                        if ($('#menuLateralUsuarioClonado #trabajo a.editcvPub').length > 0) { 
-                            that.printCVIdHomeEd();
-                            clearInterval(interval);
-                        }
-                    }, 100);
+					that.printCVIdHomeEd();
 					setCacheWithExpiry(keyCache,data,60000);
 				});
 			}
@@ -82,8 +78,8 @@ var cargarCVId = {
 		if(this.CVId!=null && this.CVId!='')
 		{
 			$('#menuLateralUsuarioClonado #curriculumvitae a.editcv').attr('href',this.CVId);
-			$('#menuLateralUsuarioClonado #trabajo a.editcvPub').attr('href',this.CVId + '?tab=http://w3id.org/roh/teachingExperience');
-			$('#menuLateralUsuarioClonado #trabajo a.editcvPV').attr('href',this.CVId + '?tab=http://w3id.org/roh/teachingExperience');
+			$('#menuLateralUsuarioClonado #trabajo a.editcvPub').attr('href',this.CVId + '?tab=http://w3id.org/roh/scientificActivity');
+			$('#menuLateralUsuarioClonado #trabajo a.editcvPV').attr('href',this.CVId + '?tab=http://w3id.org/roh/scientificActivity');
 			$('#menuLateralUsuarioClonado #trabajo a.editcvOR').attr('href',this.CVId + '?tab=http://w3id.org/roh/researchObject');
 		}
 	}

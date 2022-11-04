@@ -270,22 +270,5 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers
 
         }
 
-        /// <summary>
-        /// Controlador para obtener la información del usuario en la home de ED.
-        /// </summary>
-        /// <param name="pIdGnossUser">Usuario de gnoss.</param>
-        /// <returns>Diccionario con los datos.</returns>
-        [HttpGet("GetInfoHomeEdUser")]
-        public IActionResult GetInfoHomeEdUser(string pIdGnossUser)
-        {
-            if (!Security.CheckUser(new Guid(pIdGnossUser), Request))
-            {
-                return StatusCode(StatusCodes.Status401Unauthorized);
-            }
-            AccionesPersona accionP = new();
-            Dictionary<string, string> datosUsuario = accionP.GetInfoHomeEdUser(pIdGnossUser);
-
-            return Ok(datosUsuario);
-        }
     }
 }

@@ -2,6 +2,11 @@
 @{
 	bool ED_HABILITADO = Html.Translate("ED_HABILITADO") == "true";
 	bool MA_HABILITADO = Html.Translate("MA_HABILITADO") == "true";
+	if(!ED_HABILITADO && !MA_HABILITADO)
+	{
+		//Si no está habilitado ni ed ni ma redirigimos a 404
+		Context.Response.Redirect(Html.GetComunidad().Url+"/error404");
+	}
 	bool disponible = false;
 
 	if ((ViewBag.ED_DISPONIBLE && ED_HABILITADO)|| (ViewBag.MA_DISPONIBLE && MA_HABILITADO))
@@ -11,14 +16,17 @@
 
 	if (!disponible)
 	{		
-		if(Context.Request.Path==""|| Context.Request.Path=="/")
+		if((Context.Request.Path==""|| Context.Request.Path=="/"))
 		{
-			//Estamos intentando entrar a la home y no está MA habilotado
-			Context.Response.Redirect(Html.GetComunidad().Url + "/homeed");
+			if(!MA_HABILITADO)
+			{
+				//Estamos intentando entrar a la home y no está MA habilotado
+				Context.Response.Redirect(Html.GetComunidad().Url + "/homeed");
+			}
 		}else
 		{
-			// Si la página no está disponible, tiramos error 404.
-			Context.Response.Redirect(Html.GetComunidad().Url + "/error404");
+			// Si la página no está disponible, redirigimos a la home.
+			Context.Response.Redirect(Html.GetComunidad().Url);
 		}
 	}
 	else if (disponible && !ViewBag.MA_DISPONIBLE && Html.GetIdentidadActual().IsGuestUser)
