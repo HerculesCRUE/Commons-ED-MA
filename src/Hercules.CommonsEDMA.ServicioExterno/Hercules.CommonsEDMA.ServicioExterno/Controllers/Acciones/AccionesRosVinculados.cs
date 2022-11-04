@@ -137,16 +137,8 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
         /// <returns>Diccionario con los datos.</returns>
         public List<ROLinked> LoadRosLinked(string idRecurso, string lang = "es")
         {
-
             // Selecciono qué tipo de RO son los recursos pasados y obtengo las propiedades de la ontología
             ResTypeRo typeResource = GetTypeRo(idRecurso);
-            if (typeResource.typeRO == TypeRO.Document)
-            {
-            }
-            else
-            {
-            }
-
 
             // Obtengo el id del recurso si es un Guid
             Guid guid;
