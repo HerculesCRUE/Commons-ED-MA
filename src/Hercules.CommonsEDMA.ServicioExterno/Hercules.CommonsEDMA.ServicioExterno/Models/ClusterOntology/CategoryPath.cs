@@ -78,30 +78,5 @@ namespace ClusterOntology
             }
             return lista;
         }
-
-        private static string GenerarTextoSinSaltoDeLinea(string pTexto)
-        {
-            return pTexto.Replace("\r\n", " ").Replace("\n", " ").Replace("\r", " ").Replace("\"", "\\\"");
-        }
-
-
-
-        private static void AgregarTripleALista(string pSujeto, string pPredicado, string pObjeto, List<string> pLista, string pDatosExtra)
-        {
-            if (!string.IsNullOrEmpty(pObjeto) && !pObjeto.Equals("\"\"") && !pObjeto.Equals("<>"))
-            {
-                pLista.Add($"<{pSujeto}> <{pPredicado}> {pObjeto}{pDatosExtra}");
-            }
-        }
-
-        private void AgregarTags(List<string> pListaTriples)
-        {
-            foreach (string tag in tagList)
-            {
-                AgregarTripleALista($"http://gnoss/{ResourceID.ToString().ToUpper()}", "http://rdfs.org/sioc/types#Tag", tag.ToLower(), pListaTriples, " . ");
-            }
-        }
-
-
     }
 }

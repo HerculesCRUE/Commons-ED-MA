@@ -24,7 +24,7 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers
         /// ShutDownDelegate
         /// </summary>
         public delegate void ShutDownDelegate();
-        private ConfigService _configService;
+        private readonly ConfigService _configService;
         private readonly ConnectionFactory connectionFactory;
         private readonly IConnection connection;
 

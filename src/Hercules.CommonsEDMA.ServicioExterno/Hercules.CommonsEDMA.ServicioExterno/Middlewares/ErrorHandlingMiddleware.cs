@@ -68,7 +68,7 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Middlewares
             {
                 Directory.CreateDirectory(pathDirectory);
             }
-            Log.Logger = new LoggerConfiguration().Enrich.FromLogContext().WriteTo.File($"{pathDirectory}/log_{pTimestamp}.txt").CreateLogger();
+            Log.Logger = new LoggerConfiguration().Enrich.FromLogContext().WriteTo.File($"{pathDirectory}{Path.DirectorySeparatorChar}log_{pTimestamp}.txt").CreateLogger();
         }
 
         private static string CreateTimeStamp()
@@ -84,7 +84,7 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Middlewares
             {
                 day = $"0{day}";
             }
-            string timeStamp = $"{time.Year.ToString()}{month}{day}";
+            string timeStamp = $"{time.Year}{month}{day}";
             return timeStamp;
         }
 
@@ -93,7 +93,7 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Middlewares
             if (string.IsNullOrEmpty(_LogPath))
             {
                 IDictionary environmentVariables = Environment.GetEnvironmentVariables();
-                string logPath = string.Empty;
+                string logPath;
                 if (environmentVariables.Contains("LogPath"))
                 {
                     logPath = environmentVariables["LogPath"] as string;

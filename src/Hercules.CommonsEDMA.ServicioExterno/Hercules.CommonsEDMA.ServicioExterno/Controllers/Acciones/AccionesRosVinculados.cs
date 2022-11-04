@@ -32,7 +32,7 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
 
 
             // Establezco la propiedad que se va a usar dependiendo de si es un documento que estoy relacionando o es un RO
-            string predicateLinkInRO = string.Empty;
+            string predicateLinkInRO;
             if (typeLinked.typeRO == TypeRO.Document)
             {
                 predicateLinkInRO = "http://w3id.org/roh/linkedDocument";
@@ -44,8 +44,8 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
 
 
             // Obtengo el id del recurso si es un Guid
-            Guid guid = Guid.Empty;
-            Dictionary<Guid, string> longsId = new();
+            Guid guid;
+            Dictionary<Guid, string> longsId;
             if (Guid.TryParse(idRecurso, out guid))
             {
                 longsId = UtilidadesAPI.GetLongIds(new List<Guid>() { guid }, resourceApi, typeResource.longType, typeResource.type);
@@ -57,7 +57,7 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
             }
 
             // Obtengo el id del recurso vinculado si es un Guid
-            Guid guidLinked = Guid.Empty;
+            Guid guidLinked;
             longsId = new();
             if (Guid.TryParse(idLinkedRo, out guidLinked))
             {
@@ -140,23 +140,17 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
 
             // Selecciono qué tipo de RO son los recursos pasados y obtengo las propiedades de la ontología
             ResTypeRo typeResource = GetTypeRo(idRecurso);
-
-
-            // Establezco la propiedad que se va a usar dependiendo de si es un documento que estoy relacionando o es un RO
-            string predicateLinkInRO = string.Empty;
             if (typeResource.typeRO == TypeRO.Document)
             {
-                predicateLinkInRO = "http://w3id.org/roh/linkedDocument";
             }
             else
             {
-                predicateLinkInRO = "http://w3id.org/roh/linkedRO";
             }
 
 
             // Obtengo el id del recurso si es un Guid
-            Guid guid = Guid.Empty;
-            Dictionary<Guid, string> longsId = new();
+            Guid guid;
+            Dictionary<Guid, string> longsId;
             if (Guid.TryParse(idRecurso, out guid))
             {
                 longsId = UtilidadesAPI.GetLongIds(new List<Guid>() { guid }, resourceApi, typeResource.longType, typeResource.type);
@@ -331,7 +325,7 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
                 {
 
                     var fecha = e.ContainsKey("issued") ? e["issued"].value : string.Empty;
-                    DateTime fechaDate = DateTime.Now;
+                    DateTime fechaDate;
                     try
                     {
                         if (fecha != string.Empty)
@@ -413,7 +407,7 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
 
 
             // Establezco la propiedad que se va a usar dependiendo de si es un documento que estoy relacionando o es un RO
-            string predicateLinkInRO = string.Empty;
+            string predicateLinkInRO;
             if (typeLinked.typeRO == TypeRO.Document)
             {
                 predicateLinkInRO = "http://w3id.org/roh/linkedDocument";
@@ -425,8 +419,8 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
 
 
             // Obtengo el id del recurso si es un Guid
-            Guid guid = Guid.Empty;
-            Dictionary<Guid, string> longsId = new();
+            Guid guid;
+            Dictionary<Guid, string> longsId;
             if (Guid.TryParse(idRecurso, out guid))
             {
                 longsId = UtilidadesAPI.GetLongIds(new List<Guid>() { guid }, resourceApi, typeResource.longType, typeResource.type);
@@ -438,7 +432,7 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
             }
 
             // Obtengo el id del recurso vinculado si es un Guid
-            Guid guidLinked = Guid.Empty;
+            Guid guidLinked;
             longsId = new();
             if (Guid.TryParse(idLinkedRo, out guidLinked))
             {
@@ -549,8 +543,7 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
         {
             ResTypeRo resTypeRo = new();
 
-            Guid guid = Guid.Empty;
-            Dictionary<Guid, string> longsId = new();
+            Guid guid;
             if (!Guid.TryParse(idRecurso, out guid))
             {
                 guid = resourceApi.GetShortGuid(idRecurso);
@@ -565,8 +558,6 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
             }}";
 
             SparqlObject sparqlObject = resourceApi.VirtuosoQuery(select, where, idComunidad);
-            string type = string.Empty;
-            string longType = string.Empty;
             sparqlObject.results.bindings.ForEach(e =>
             {
                 try
@@ -664,7 +655,7 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
                 listIdslinked.Add(resourceApi.GetShortGuid(e["s"].value));
 
                 // Obtengo las ids de los usuarios gnoss de los creadores del RO
-                List<string> idsGnoss = new();
+                List<string> idsGnoss;
                 if (e.ContainsKey("idGnoss") && e["idGnoss"].value != string.Empty)
                 {
                     idsGnoss = e["idGnoss"].value.Split(",").ToList();
@@ -674,7 +665,7 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
                 if (e.ContainsKey("issued"))
                 {
                     fecha = e["issued"].value;
-                    DateTime fechaDate = DateTime.Now;
+                    DateTime fechaDate;
                     try
                     {
                         fechaDate = DateTime.ParseExact(fecha, "yyyyMMddHHmmss", null);
@@ -692,7 +683,7 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
                 {
 
                     bool isValidated = false;
-                    if (e.ContainsKey("isValidated")) { bool.TryParse(e["isValidated"].value, out isValidated); }
+                    if (e.ContainsKey("isValidated")) { _ = bool.TryParse(e["isValidated"].value, out isValidated); }
                     ROLinked ro = new()
                     {
                         title = e.ContainsKey("title") ? e["title"].value : string.Empty,

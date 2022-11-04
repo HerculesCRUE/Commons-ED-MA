@@ -189,14 +189,14 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
 
         public int CompareCuartil(string pCuartil)
         {
-            int cuartil = 0;
+            int cuartil;
             if (pCuartil == "")
             {
                 cuartil = 9999;
             }
             else
             {
-                int.TryParse(pCuartil, out cuartil);
+                _ = int.TryParse(pCuartil, out cuartil);
             }
             return cuartil;
         }
@@ -210,9 +210,9 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
         {
             string idGrafoBusqueda = UtilidadesAPI.ObtenerIdBusqueda(resourceApi, pDocumento);
             Dictionary<string, int> dicResultados = new();
-            SparqlObject resultadoQuery = null;
+            SparqlObject resultadoQuery;
             StringBuilder select = new();
-            string where = "";
+            string where;
 
             // Consulta sparql.
             select.Append(mPrefijos);

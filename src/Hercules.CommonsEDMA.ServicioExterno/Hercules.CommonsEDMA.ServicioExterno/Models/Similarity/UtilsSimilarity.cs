@@ -413,7 +413,7 @@ where{{
             else
             {
                 EnrichmentSimilarityItem p = (EnrichmentSimilarityItem)obj;
-                bool equals = true;
+                bool equals;
                 equals = ro_id == p.ro_id;
                 equals = equals && ro_type == p.ro_type;
                 equals = equals && text == p.text;

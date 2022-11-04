@@ -133,8 +133,8 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
         {
 
             // Obtengo el id del RO si es Guid
-            Guid guidRO = Guid.Empty;
-            Dictionary<Guid, string> longsIdRO = new();
+            Guid guidRO;
+            Dictionary<Guid, string> longsIdRO;
             if (Guid.TryParse(idRO, out guidRO))
             {
                 longsIdRO = UtilidadesAPI.GetLongIds(new List<Guid>() { guidRO }, resourceApi, rdfType, ontology);
@@ -147,7 +147,7 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
 
 
             // Obtengo el id del usuario si es Guid
-            Guid guidUser = Guid.Empty;
+            Guid guidUser;
             if (!Guid.TryParse(idUser, out guidUser))
             {
                 guidUser = resourceApi.GetShortGuid(idUser);
@@ -265,7 +265,7 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
         /// </summary>
         /// <param name="idAnnotation">Id de la anotación.</param>
         /// <returns>string GNOSS_USER del usuario.</returns>
-        public string getUserFromAnnotation(string idAnnotation)
+        public string GetUserFromAnnotation(string idAnnotation)
         {
             string select = "SELECT DISTINCT ?usuario ";
             string where = @$"WHERE 

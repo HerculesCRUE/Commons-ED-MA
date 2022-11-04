@@ -13,7 +13,7 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
     public class AccionesPersona : GnossGetMainResourceApiDataBase
     {
         #region --- Constantes  
-        private static string COLOR_GRAFICAS_HORIZONTAL = "#6cafe3";
+        private static readonly string COLOR_GRAFICAS_HORIZONTAL = "#6cafe3";
         #endregion
 
 
@@ -115,7 +115,7 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
         {
             string idGrafoBusqueda = UtilidadesAPI.ObtenerIdBusqueda(resourceApi, pIdPersona);
             List<string> grupos = new();
-            SparqlObject resultadoQuery = null;
+            SparqlObject resultadoQuery;
             StringBuilder select = new(), where = new();
 
             // Consulta sparql.

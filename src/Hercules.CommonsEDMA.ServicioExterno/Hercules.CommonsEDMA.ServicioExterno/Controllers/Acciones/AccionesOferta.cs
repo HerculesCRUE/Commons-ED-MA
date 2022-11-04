@@ -14,8 +14,8 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
     public class AccionesOferta : GnossGetMainResourceApiDataBase
     {
         #region --- Constantes   
-        private static string[] listTagsNotForvidden = new string[] { "<ol>", "<li>", "<b>", "<i>", "<u>", "<ul>", "<strike>", "<blockquote>", "<div>", "<hr>", "</ol>", "</li>", "</b>", "</i>", "</u>", "</ul>", "</strike>", "</blockquote>", "</div>", "<br/>" };
-        private static string[] listTagsAttrNotForvidden = new string[] { "style" };
+        private static readonly string[] listTagsNotForvidden = new string[] { "<ol>", "<li>", "<b>", "<i>", "<u>", "<ul>", "<strike>", "<blockquote>", "<div>", "<hr>", "</ol>", "</li>", "</b>", "</i>", "</u>", "</ul>", "</strike>", "</blockquote>", "</div>", "<br/>" };
+        private static readonly string[] listTagsAttrNotForvidden = new string[] { "style" };
 
         private enum TipoUser
         {
@@ -115,7 +115,7 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
                 userGnossId = e["s"].value;
                 try
                 {
-                    bool.TryParse(e["isOtriManager"].value, out isOtriManager);
+                    _ = bool.TryParse(e["isOtriManager"].value, out isOtriManager);
                 }
                 catch (Exception ex)
                 {
@@ -213,7 +213,7 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
                     // Enviamos las notifiaciones que implican texto al creador de la oferta
                     if (texto != "" && longsId != null && oferta != null)
                     {
-                        texto = (nuevoEstado != estadoActual) ? "Nuevo estado de la oferta " + getEstado(nuevoEstado).ToString() + " " + texto : "Tienes un mensaje: " + texto;
+                        texto = (nuevoEstado != estadoActual) ? "Nuevo estado de la oferta " + GetEstado(nuevoEstado).ToString() + " " + texto : "Tienes un mensaje: " + texto;
                         UtilidadesAPI.GenerarNotificacion(resourceApi, idRecurso, userGnossId, oferta.creatorId, "editOferta", texto);
                     }
 
@@ -319,7 +319,7 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
                     // Número de publicaciones totales, intenta convertirlo en entero
                     string numDoc = fila.ContainsKey("numDoc") ? fila["numDoc"].value : null;
                     int numPublicacionesTotal = 0;
-                    int.TryParse(fila["numDoc"].value, out numPublicacionesTotal);
+                    _ = int.TryParse(fila["numDoc"].value, out numPublicacionesTotal);
 
                     respuesta.Add(guid.ToString(), new UsersOffer()
                     {
@@ -662,7 +662,7 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
         /// <param name="pIdOfertaId">Identificador del cluster</param>
         /// <param name="obtenerTeaser">Booleano opcional que le indica si se obtienen datos extras para la oferta</param>
         /// <returns>Diccionario con las listas de thesaurus.</returns>
-        internal Models.Offer.Offer LoadOffer(string pIdOfertaId, bool obtenerTeaser = true)
+        internal Offer LoadOffer(string pIdOfertaId, bool obtenerTeaser = true)
         {
             // Obtengo el ID largo si el ID es un GUID
             Guid guid = Guid.Empty;
@@ -683,7 +683,7 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
             SparqlObject sparqlObject = resourceApi.VirtuosoQuery(select, where, "offer");
 
             // Inicizalizamos el modelo del Cluster para devolver
-            Models.Offer.Offer pDataOffer = new();
+            Offer pDataOffer = new();
             pDataOffer.lineResearchs = new();
             pDataOffer.tags = new();
             pDataOffer.areaProcedencia = new();
@@ -1659,7 +1659,7 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
                 userGnossId = e["s"].value;
                 try
                 {
-                    bool.TryParse(e["isOtriManager"].value, out isOtriManager);
+                    _ = bool.TryParse(e["isOtriManager"].value, out isOtriManager);
                 }
                 catch (Exception ex)
                 {
@@ -1728,7 +1728,7 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
             {
                 try
                 {
-                    bool.TryParse(e["isOtriManager"].value, out isOtriManager);
+                    _ = bool.TryParse(e["isOtriManager"].value, out isOtriManager);
                 }
                 catch (Exception ex)
                 {
@@ -1837,7 +1837,7 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
                 {
                     var idCutted = finalId.Split('_');
                     var item = idCutted[1].Split('.');
-                    var lengthItem = item.Count();
+                    var lengthItem = item.Length;
 
                     for (int i = 0; i < lengthItem; i++)
                     {
@@ -1872,7 +1872,7 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
         /// <param name="strOldState">Permiso antigüo</param>
         /// <param name="strNewState">Nuevo permiso</param>
         /// <returns>Retorna un booleano indicando si puede o no ser actualizado.</returns>
-        private bool CheckUpdateOffer(string longUserId, string ownUserId, Accion accion, string strOldState = "", string strNewState = "")
+        private static bool CheckUpdateOffer(string longUserId, string ownUserId, Accion accion, string strOldState = "", string strNewState = "")
         {
 
             bool isOwnUser = longUserId == ownUserId;
@@ -1886,8 +1886,8 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
 
             if (strOldState != "" && strNewState != "")
             {
-                estadoAct = getEstado(strOldState);
-                estadoNuevo = getEstado(strNewState);
+                estadoAct = GetEstado(strOldState);
+                estadoNuevo = GetEstado(strNewState);
             }
 
             // Comprueba los permisos dependiendo del tipo de usuario que es y de las acciones que se piden
@@ -2021,64 +2021,14 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
             });
 
             return users;
-
-
         }
-
-        private bool mostrar(string estadoStr, TipoUser tipoUser)
-        {
-            var estado = getEstado(estadoStr);
-
-            switch (tipoUser)
-            {
-                case TipoUser.ip:
-                    switch (estado)
-                    {
-                        case Estado.Archivada:
-                            return false;
-                        default:
-                            return true;
-                    }
-
-                case TipoUser.isOtriManager:
-
-                    switch (estado)
-                    {
-                        case Estado.Borrador:
-                            return false;
-                        case Estado.Archivada:
-                            return false;
-                        default:
-                            return true;
-                    }
-
-                case TipoUser.actUser:
-                    switch (estado)
-                    {
-                        case Estado.Archivada:
-                            return false;
-                        default:
-                            return true;
-                    }
-
-                default:
-                    switch (estado)
-                    {
-                        case Estado.Archivada:
-                            return false;
-                        default:
-                            return true;
-                    }
-            }
-        }
-
 
         /// <summary>
         /// Método que transforma un string en un objeto enum de estados.
         /// </summary>
         /// <param name="estado">String con el estado</param>
         /// <returns>Retorna un el estado.</returns>
-        private static Estado getEstado(string estado)
+        private static Estado GetEstado(string estado)
         {
             switch (estado)
             {
@@ -2133,7 +2083,7 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
             {
                 try
                 {
-                    bool.TryParse(e["isIp"].value, out isIp);
+                    _ = bool.TryParse(e["isIp"].value, out isIp);
                 }
                 catch (Exception ex)
                 {

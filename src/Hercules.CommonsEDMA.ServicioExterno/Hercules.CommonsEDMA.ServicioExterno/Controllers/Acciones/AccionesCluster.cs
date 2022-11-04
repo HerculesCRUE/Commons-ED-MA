@@ -719,7 +719,7 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
         /// <param name="userId">Id del usuario</param>
         /// <param name="loadResearchers">Booleano que determina si cargamos los investigadores de cada perfil</param>
         /// <returns>Diccionario con los datos necesarios para cada perfil.</returns>
-        public List<Models.Cluster.Cluster> loadSavedProfiles(Guid userId, bool loadResearchers = false)
+        public List<Models.Cluster.Cluster> LoadSavedProfiles(Guid userId, bool loadResearchers = false)
         {
             // Listado de clusters para rellenar.
             List<Models.Cluster.Cluster> clusterList = new();
@@ -846,7 +846,7 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
 
                 var listPerfiles = clusterList.SelectMany(e => e.profiles).ToList();
 
-                var listUserProfiles = loadUsersProfiles(listPerfiles.Select(e => e.entityID).ToList());
+                var listUserProfiles = LoadUsersProfiles(listPerfiles.Select(e => e.entityID).ToList());
 
                 listPerfiles.ForEach(e =>
                 {
@@ -1150,7 +1150,7 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
         /// </summary>
         /// <param name="pClusterId">Identificador del cluster.</param>
         /// <returns>Listado de etiquetas de resultado.</returns>
-        public List<string> memberListFromCluser(string pClusterId)
+        public List<string> MemberListFromCluser(string pClusterId)
         {
             string select = "SELECT DISTINCT ?user";
             string where = $@"WHERE{{
@@ -1171,7 +1171,7 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
             List<string> resultados = sparqlObjectAux.results.bindings.Select(x => x["user"].value).Distinct().ToList();
             return resultados;
         }
-        public string getOwnerFromCluser(string pClusterId)
+        public string GetOwnerFromCluser(string pClusterId)
         {
 
             string select = "SELECT DISTINCT ?user ";
@@ -1240,7 +1240,7 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
         /// Obtiene los datos de los investigadores de los perfiles indicados.
         /// </summary>
         /// <returns>Listado de los ids de los perfiles sobre los que se van a cargar los investigadores.</returns>
-        private static List<Tuple<string, PerfilCluster.UserCluster>> loadUsersProfiles(List<string> listProfilesIds)
+        private static List<Tuple<string, PerfilCluster.UserCluster>> LoadUsersProfiles(List<string> listProfilesIds)
         {
             // Creamos la variable para cargar los investigadores y el id del perfil al que pertenece 
             List<Tuple<string, PerfilCluster.UserCluster>> result = new();

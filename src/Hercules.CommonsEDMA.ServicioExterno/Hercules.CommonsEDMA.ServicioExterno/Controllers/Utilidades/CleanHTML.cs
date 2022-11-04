@@ -23,8 +23,8 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Utilidades
             bool inside = false;
             List<char> currentTag = new();
             List<char> attrs = new();
-            string tag = "";
-            string attrsTag = "";
+            string tag;
+            string attrsTag;
 
             for (int i = 0; i < source.Length; i++)
             {
@@ -111,8 +111,8 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Utilidades
             bool escaped = false;
             List<char> currentAttr = new();
             List<char> attrContent = new();
-            string attr = "";
-            string contentAttr = "";
+            string attr;
+            string contentAttr;
 
             for (int i = 0; i < source.Length; i++)
             {

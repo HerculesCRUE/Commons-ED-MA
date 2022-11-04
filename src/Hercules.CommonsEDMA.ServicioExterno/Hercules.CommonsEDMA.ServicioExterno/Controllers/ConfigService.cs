@@ -45,7 +45,7 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers
             if (string.IsNullOrEmpty(RabbitConnectionString))
             {
                 IDictionary environmentVariables = Environment.GetEnvironmentVariables();
-                string rabbitConnectionString = string.Empty;
+                string rabbitConnectionString;
                 if (environmentVariables.Contains("RabbitMQ"))
                 {
                     rabbitConnectionString = environmentVariables["RabbitMQ"] as string;
@@ -68,7 +68,7 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers
             if (string.IsNullOrEmpty(FuentesExternasQueueRabbit))
             {
                 IDictionary environmentVariables = Environment.GetEnvironmentVariables();
-                string queue = "";
+                string queue;
                 if (environmentVariables.Contains("FuentesExternasQueueRabbit"))
                 {
                     queue = environmentVariables["FuentesExternasQueueRabbit"] as string;
@@ -91,7 +91,7 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers
             if (string.IsNullOrEmpty(DenormalizerQueueRabbit))
             {
                 IDictionary environmentVariables = Environment.GetEnvironmentVariables();
-                string queue = string.Empty;
+                string queue;
                 if (environmentVariables.Contains("DenormalizerQueueRabbit"))
                 {
                     queue = environmentVariables["DenormalizerQueueRabbit"] as string;
@@ -114,7 +114,7 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers
             if (string.IsNullOrEmpty(DoiQueueRabbit))
             {
                 IDictionary environmentVariables = Environment.GetEnvironmentVariables();
-                string queue = "";
+                string queue;
                 if (environmentVariables.Contains("DoiQueueRabbit"))
                 {
                     queue = environmentVariables["DoiQueueRabbit"] as string;
@@ -137,7 +137,7 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers
             if (string.IsNullOrEmpty(UrlSimilarity))
             {
                 IDictionary environmentVariables = Environment.GetEnvironmentVariables();
-                string url = "";
+                string url;
                 if (environmentVariables.Contains("UrlSimilarity"))
                 {
                     url = environmentVariables["UrlSimilarity"] as string;
