@@ -192,7 +192,7 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers
         /// </summary>
         /// <param name="pIdRecurso">Id del recurso</param>
         /// <returns>Objeto Quote</returns>
-        private static Quote GetQuote (string pIdRecurso)
+        private static Quote GetQuote(string pIdRecurso)
         {
 
             string select = "SELECT DISTINCT ?titulo ?autores ?anio ?revista ?publisher ?issn ?volumen ?doi ?paginaInicio ?paginaFin";

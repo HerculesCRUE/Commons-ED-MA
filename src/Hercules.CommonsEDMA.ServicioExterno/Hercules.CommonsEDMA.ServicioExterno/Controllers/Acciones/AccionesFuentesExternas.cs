@@ -1,7 +1,6 @@
 ﻿using Gnoss.ApiWrapper.ApiModel;
 using Hercules.CommonsEDMA.ServicioExterno.Controllers.Utilidades;
 using System.Collections.Generic;
-using System.Text;
 
 namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
 {
@@ -100,7 +99,7 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
         public static string GetLastUpdatedDate(string pUserId)
         {
             string selectLastUpd = mPrefijos;
-            selectLastUpd +="SELECT ?fecha ";
+            selectLastUpd += "SELECT ?fecha ";
             string whereLastUpd = $@"WHERE {{ 
                                 ?s roh:gnossUser <http://gnoss/{pUserId.ToUpper()}>. 
                                 OPTIONAL{{?s roh:lastUpdatedDate ?fecha. }}

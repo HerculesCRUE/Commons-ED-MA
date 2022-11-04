@@ -1,16 +1,12 @@
-﻿using Gnoss.ApiWrapper;
-using Gnoss.ApiWrapper.ApiModel;
+﻿using Gnoss.ApiWrapper.ApiModel;
 using Gnoss.ApiWrapper.Model;
 using Hercules.CommonsEDMA.ServicioExterno.Models.Offer;
-using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using Hercules.CommonsEDMA.ServicioExterno.Controllers.Utilidades;
 using Microsoft.AspNetCore.Cors;
 using Hercules.CommonsEDMA.ServicioExterno.Models.Cluster;
-using System.Threading;
 
 namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
 {
@@ -303,7 +299,7 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
 
                 FILTER(?idGnoss = <http://gnoss/{userGUID.ToString().ToUpper()}>)
             }}";
-            SparqlObject sparqlObject = resourceApi.VirtuosoQueryMultipleGraph(select, where,new List<string> { "person","organization","group","department","document" });
+            SparqlObject sparqlObject = resourceApi.VirtuosoQueryMultipleGraph(select, where, new List<string> { "person", "organization", "group", "department", "document" });
 
 
             // Obtiene los datos de la consulta y rellena el diccionario de respuesta con los datos de cada investigador.
@@ -459,7 +455,7 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
                         }
 
                     }
-                    catch (Exception ex) 
+                    catch (Exception ex)
                     {
                         resourceApi.Log.Error("Excepcion: " + ex.Message);
                     }
@@ -714,7 +710,7 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
                         {
                             pDataOffer.researchers.Add(UtilidadesAPI.ObtenerIdCorto(resourceApi, e["o"].value), new UsersOffer() { id = e["o"].value, shortId = UtilidadesAPI.ObtenerIdCorto(resourceApi, e["o"].value) });
                         }
-                        catch (Exception ex) 
+                        catch (Exception ex)
                         {
                             resourceApi.Log.Error("Excepcion: " + ex.Message);
                         }
@@ -1153,7 +1149,7 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
 
                     try
                     {
-                        sparqlObject = resourceApi.VirtuosoQueryMultipleGraph(select, where, new List<string> { "offer" ," person", "offerstate" } );
+                        sparqlObject = resourceApi.VirtuosoQueryMultipleGraph(select, where, new List<string> { "offer", " person", "offerstate" });
 
                         sparqlObject.results.bindings.ForEach(e =>
                         {
@@ -1302,7 +1298,7 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
             }}";
 
 
-            SparqlObject sparqlObject = resourceApi.VirtuosoQueryMultipleGraph(select, where, new List<string> { "person" ,"document", "project", "organization" , "department" });
+            SparqlObject sparqlObject = resourceApi.VirtuosoQueryMultipleGraph(select, where, new List<string> { "person", "document", "project", "organization", "department" });
 
 
             // Carga los datos en el objeto
@@ -1324,7 +1320,8 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
 
                     });
                 }
-                catch (Exception ext) { 
+                catch (Exception ext)
+                {
                     throw new ArgumentException("Ha habido un error al procesar los datos de los usuarios: " + ext.Message);
 
                 }
@@ -1388,7 +1385,7 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
                 FILTER(?s in ({string.Join(",", longIds.Select(x => "<" + x + ">")) }))
             }}";
 
-            SparqlObject sparqlObject = resourceApi.VirtuosoQueryMultipleGraph(select, where, new List<string> { "document" ,"person", "organization" });
+            SparqlObject sparqlObject = resourceApi.VirtuosoQueryMultipleGraph(select, where, new List<string> { "document", "person", "organization" });
 
 
             // Carga los datos en el objeto
@@ -1409,7 +1406,8 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
 
                     });
                 }
-                catch (Exception ext) {
+                catch (Exception ext)
+                {
                     throw new ArgumentException("Ha habido un error al procesar los datos de los documentos: " + ext.Message);
                 }
 
@@ -1481,7 +1479,7 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
             }}";
 
 
-            SparqlObject sparqlObject = resourceApi.VirtuosoQueryMultipleGraph(select, where, new List<string> { "project" , "organization" });
+            SparqlObject sparqlObject = resourceApi.VirtuosoQueryMultipleGraph(select, where, new List<string> { "project", "organization" });
 
 
             // Carga los datos en el objeto
@@ -1506,7 +1504,8 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
 
                     });
                 }
-                catch (Exception ext) {
+                catch (Exception ext)
+                {
                     throw new ArgumentException("Ha habido un error al procesar los datos de los proyectos: " + ext.Message);
                 }
 
@@ -1580,7 +1579,7 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
             }}";
 
 
-            SparqlObject sparqlObject = resourceApi.VirtuosoQueryMultipleGraph(select, where,new List<string> { "project" , "organization" });
+            SparqlObject sparqlObject = resourceApi.VirtuosoQueryMultipleGraph(select, where, new List<string> { "project", "organization" });
 
             // Carga los datos en el objeto
             sparqlObject.results.bindings.ForEach(e =>
@@ -1618,7 +1617,8 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
                         researchersIds = e.ContainsKey("listaAutoresIds") ? e["listaAutoresIds"].value.Split(";").ToList() : new List<string>(),
                     });
                 }
-                catch (Exception ext) {
+                catch (Exception ext)
+                {
                     throw new ArgumentException("Ha habido un error al procesar los datos de las patentes: " + ext.Message);
                 }
             });
@@ -2004,7 +2004,7 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
                     FILTER (?creatorUser = <{longId}>)
                 }}";
 
-            SparqlObject sparqlObject = resourceApi.VirtuosoQueryMultipleGraph(select, where,new List<string> { "person" , "organization", "offer" });
+            SparqlObject sparqlObject = resourceApi.VirtuosoQueryMultipleGraph(select, where, new List<string> { "person", "organization", "offer" });
 
             List<string> users = new();
 

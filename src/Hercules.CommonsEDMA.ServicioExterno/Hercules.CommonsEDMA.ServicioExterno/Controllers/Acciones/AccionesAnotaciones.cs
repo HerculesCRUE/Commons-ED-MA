@@ -1,13 +1,10 @@
-﻿using Gnoss.ApiWrapper;
-using Gnoss.ApiWrapper.ApiModel;
+﻿using Gnoss.ApiWrapper.ApiModel;
 using Gnoss.ApiWrapper.Model;
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using Hercules.CommonsEDMA.ServicioExterno.Controllers.Utilidades;
 using AnnotationOntology;
-using System.Threading;
 
 namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
 {
@@ -76,7 +73,7 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
                 FILTER(?user = <{userGnossId}>)
             }} ORDER BY DESC(?date)";
 
-            SparqlObject sparqlObject = resourceApi.VirtuosoQueryMultipleGraph(select, where, new List<string>() { "person" , "annotation" });
+            SparqlObject sparqlObject = resourceApi.VirtuosoQueryMultipleGraph(select, where, new List<string>() { "person", "annotation" });
 
             // Carga los datos en el objeto
             sparqlObject.results.bindings.ForEach(e =>
@@ -110,7 +107,8 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
                     typesRO.Add(longs);
 
                 }
-                catch (Exception ext) {
+                catch (Exception ext)
+                {
                     throw new ArgumentException("Ha habido un error al procesar los datos de los usuarios: " + ext.Message);
                 }
 
@@ -276,7 +274,7 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
                 ?person <http://w3id.org/roh/gnossUser> ?usuario.
             }}";
 
-            SparqlObject sparqlObject = resourceApi.VirtuosoQueryMultipleGraph(select, where,new List<string>() { "annotation", "person" });
+            SparqlObject sparqlObject = resourceApi.VirtuosoQueryMultipleGraph(select, where, new List<string>() { "annotation", "person" });
 
             // Carga los datos en el objeto
             if (sparqlObject != null && sparqlObject.results != null && sparqlObject.results.bindings != null && sparqlObject.results.bindings.Count > 0)
@@ -294,7 +292,7 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
             else
             {
                 return "";
-            } 
+            }
         }
     }
 

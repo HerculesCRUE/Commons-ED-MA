@@ -1,11 +1,8 @@
-﻿using Gnoss.ApiWrapper;
-using Gnoss.ApiWrapper.ApiModel;
+﻿using Gnoss.ApiWrapper.ApiModel;
 using Hercules.CommonsEDMA.ServicioExterno.Controllers.Utilidades;
 using Hercules.CommonsEDMA.ServicioExterno.Models.Buscador;
-using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading;

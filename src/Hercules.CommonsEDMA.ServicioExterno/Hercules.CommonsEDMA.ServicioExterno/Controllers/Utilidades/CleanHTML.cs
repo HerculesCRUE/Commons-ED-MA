@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
-using System.Text.RegularExpressions;
 
 
 
@@ -48,8 +46,9 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Utilidades
                     currentTag.Add(let);
                     tag = string.Join("", currentTag);
                     attrsTag = string.Join("", attrs);
-                    if (tagsExceptions.Contains(tag) && !tag.Contains("script") && !attrsTag.Contains("script")) {
-                        for (int n = 0; n < currentTag.Count -1; n++)
+                    if (tagsExceptions.Contains(tag) && !tag.Contains("script") && !attrsTag.Contains("script"))
+                    {
+                        for (int n = 0; n < currentTag.Count - 1; n++)
                         {
                             array[arrayIndex] = currentTag[n];
                             arrayIndex++;
@@ -75,16 +74,19 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Utilidades
                 {
                     array[arrayIndex] = let;
                     arrayIndex++;
-                } else
+                }
+                else
                 {
                     // Estamos dentro de un tag, por lo que se guardará como tag o atributo
                     if (attrs != null && attrs.Count > 0)
                     {
                         attrs.Add(let);
-                    } else if (let == ' ')
+                    }
+                    else if (let == ' ')
                     {
                         attrs.Add(let);
-                    } else
+                    }
+                    else
                     {
                         currentTag.Add(let);
                     }
@@ -134,7 +136,7 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Utilidades
                     currentAttr.Add(let);
                     continue;
                 }
-                else if ((inside && !escaped && let == '"') || (inside && beforeSpace && let == ' ' && !insideContAttr) )
+                else if ((inside && !escaped && let == '"') || (inside && beforeSpace && let == ' ' && !insideContAttr))
                 {
                     // Vuelve a guardar el texto, no lo guarda como tag
                     inside = false;
@@ -148,7 +150,7 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Utilidades
                     contentAttr = string.Join("", attrContent);
                     if (AttrsExceptions.Contains(attr) && !attr.Contains("script") && !contentAttr.Contains("script"))
                     {
-                        for (int n = 0; n < currentAttr.Count -1; n++)
+                        for (int n = 0; n < currentAttr.Count - 1; n++)
                         {
                             array[arrayIndex] = currentAttr[n];
                             arrayIndex++;
@@ -168,11 +170,12 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Utilidades
                     }
                     continue;
                 }
-                
+
                 if (let == ' ')
                 {
                     beforeSpace = true;
-                } else
+                }
+                else
                 {
                     beforeSpace = false;
                 }
@@ -180,7 +183,8 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Utilidades
                 if (let == '\\')
                 {
                     escaped = !escaped;
-                } else
+                }
+                else
                 {
                     escaped = false;
                 }
@@ -198,7 +202,8 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Utilidades
                     if (insideContAttr && attrContent != null && attrContent.Count > 0)
                     {
                         attrContent.Add(let);
-                    } else if (insideContAttr && attrContent != null)
+                    }
+                    else if (insideContAttr && attrContent != null)
                     {
                         attrContent.Add(let);
                     }

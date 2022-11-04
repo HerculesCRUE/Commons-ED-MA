@@ -1,15 +1,11 @@
-﻿using Gnoss.ApiWrapper;
-using Gnoss.ApiWrapper.ApiModel;
+﻿using Gnoss.ApiWrapper.ApiModel;
 using Gnoss.ApiWrapper.Model;
 using Hercules.CommonsEDMA.ServicioExterno.Controllers.Utilidades;
 using Hercules.CommonsEDMA.ServicioExterno.Models.RedesUsuario;
-using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Text;
-using System.Threading;
 using User = Hercules.CommonsEDMA.ServicioExterno.Models.RedesUsuario.User;
 
 namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
@@ -60,7 +56,7 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
             where.Append($@"OPTIONAL{{?s roh:useMatching ?useMatching. }} ");
             where.Append("} ");
 
-            resultadoQuery = resourceApi.VirtuosoQueryMultipleGraph(select.ToString(), where.ToString(), new List<string> { "person" , "curriculumvitae" });
+            resultadoQuery = resourceApi.VirtuosoQueryMultipleGraph(select.ToString(), where.ToString(), new List<string> { "person", "curriculumvitae" });
 
 
             if (resultadoQuery != null && resultadoQuery.results != null && resultadoQuery.results.bindings != null && resultadoQuery.results.bindings.Count > 0)
@@ -95,7 +91,7 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
                             }
                         }
                     }
-                    
+
                     // Researcher ID
                     if (fila.ContainsKey("researcherId"))
                     {
@@ -112,7 +108,7 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
                             }
                         }
                     }
-                    
+
                     // Scopus ID
                     if (fila.ContainsKey("scopusId"))
                     {

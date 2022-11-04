@@ -1,13 +1,8 @@
 ﻿using Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones;
-using Hercules.CommonsEDMA.ServicioExterno.Models.Cluster;
-using Hercules.CommonsEDMA.ServicioExterno.Models.Graficas.DataGraficaAreasTags;
 using Microsoft.AspNetCore.Cors;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
 
 namespace Hercules.CommonsEDMA.ServicioExterno.Controllers
 {

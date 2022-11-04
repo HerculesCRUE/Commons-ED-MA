@@ -1,19 +1,9 @@
-﻿using Gnoss.ApiWrapper;
-using Gnoss.ApiWrapper.ApiModel;
+﻿using Gnoss.ApiWrapper.ApiModel;
 using Hercules.CommonsEDMA.ServicioExterno.Controllers.Utilidades;
-using Hercules.CommonsEDMA.ServicioExterno.Models;
 using Hercules.CommonsEDMA.ServicioExterno.Models.Graficas.DataGraficaPublicaciones;
-using Hercules.CommonsEDMA.ServicioExterno.Models.Graficas.DataItemRelacion;
-using Newtonsoft.Json;
-using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
-using System.Web;
-using System.Xml.Linq;
 
 namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
 {
@@ -53,7 +43,7 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
                         {
                             cuartil = "";
                         }
-                        if(cuartil != "1" && cuartil != "2" && cuartil != "3" && cuartil != "4")
+                        if (cuartil != "1" && cuartil != "2" && cuartil != "3" && cuartil != "4")
                         {
                             cuartil = "";
                         }
@@ -106,7 +96,7 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
             {
                 int anioIni = int.Parse(dicResultados.First().Key);
                 int anioFin = int.Parse(dicResultados.Last().Key);
-                if(int.Parse(dicResultadosCitasAnio.First().Key)< anioIni)
+                if (int.Parse(dicResultadosCitasAnio.First().Key) < anioIni)
                 {
                     anioIni = int.Parse(dicResultadosCitasAnio.First().Key);
                 }
@@ -189,7 +179,7 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
                 data.datasets.Add(dataset);
                 num++;
             }
-            
+
 
             Options options = new(new Scales(new Y(true)), new Plugins(new Title(true, "Evolución temporal publicaciones"), new Legend(new Labels(true), "top", "end")));
             DataGraficaPublicaciones dataGrafica = new("bar", data, options);

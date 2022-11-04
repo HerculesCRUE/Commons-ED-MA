@@ -3,17 +3,9 @@ using Hercules.CommonsEDMA.ServicioExterno.Models.Graficas.DataGraficaAreasTags;
 using Hercules.CommonsEDMA.ServicioExterno.Models.Graficas.DataGraficaProyectos;
 using Hercules.CommonsEDMA.ServicioExterno.Models.Graficas.DataGraficaPublicaciones;
 using Hercules.CommonsEDMA.ServicioExterno.Models.Graficas.DataItemRelacion;
-using Hercules.CommonsEDMA.ServicioExterno.Models.RedesUsuario;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Http;
-using Microsoft.Extensions.Logging;
-using System;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Threading.Tasks;
-using Hercules.CommonsEDMA.ServicioExterno.Controllers.Utilidades;
 
 namespace Hercules.CommonsEDMA.ServicioExterno.Controllers
 {

@@ -42,9 +42,9 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Middlewares
                 _timeStamp = CreateTimeStamp();
                 CreateLoggin(_timeStamp);
             }
-            
+
             var code = HttpStatusCode.InternalServerError;
-            
+
             var result = JsonConvert.SerializeObject(new { error = "Internal server error" });
             if (code != HttpStatusCode.InternalServerError)
             {

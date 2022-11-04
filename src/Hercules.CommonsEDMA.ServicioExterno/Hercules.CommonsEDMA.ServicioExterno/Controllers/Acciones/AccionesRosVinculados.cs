@@ -1,18 +1,11 @@
-﻿using Gnoss.ApiWrapper;
-using Gnoss.ApiWrapper.ApiModel;
+﻿using Gnoss.ApiWrapper.ApiModel;
 using Gnoss.ApiWrapper.Model;
-using Hercules.CommonsEDMA.ServicioExterno.Models.Offer;
-using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using Hercules.CommonsEDMA.ServicioExterno.Controllers.Utilidades;
-using Microsoft.AspNetCore.Cors;
-using Hercules.CommonsEDMA.ServicioExterno.Models.Cluster;
 using Hercules.CommonsEDMA.ServicioExterno.Models.ROsLinked;
 using Hercules.CommonsEDMA.ServicioExterno.Models;
-using System.Threading;
 
 namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
 {
@@ -305,7 +298,7 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
 
                     FILTER(?resource = <{idRecurso.ToString()}>)
                 }}";
-            SparqlObject sparqlObject = resourceApi.VirtuosoQueryMultipleGraph(select, where, new List<string> { typeResource.type , "document", "researchobject" });
+            SparqlObject sparqlObject = resourceApi.VirtuosoQueryMultipleGraph(select, where, new List<string> { typeResource.type, "document", "researchobject" });
 
 
             // Rellena el los clusters
@@ -389,7 +382,7 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
                         rosLinked.Find(ro => resourceApi.GetShortGuid(ro.entityID) == e.resource_id).url = e.url;
                     });
                 }
-                catch (Exception) 
+                catch (Exception)
                 {
                     //
                 }
@@ -511,7 +504,7 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
             ReadRabbitService rabbitMQService = new(pConfig);
             DenormalizerItemQueue itemPublication = new(DenormalizerItemQueue.ItemType.document, new HashSet<string> { idRecurso, idLinkedRo });
             rabbitMQService.PublishMessage(itemPublication, pConfig.GetDenormalizerQueueRabbit());
-            DenormalizerItemQueue itemRo = new(DenormalizerItemQueue.ItemType.researchobject, new HashSet<string> { idRecurso , idLinkedRo });
+            DenormalizerItemQueue itemRo = new(DenormalizerItemQueue.ItemType.researchobject, new HashSet<string> { idRecurso, idLinkedRo });
             rabbitMQService.PublishMessage(itemRo, pConfig.GetDenormalizerQueueRabbit());
 
             return result[guid];
@@ -661,7 +654,7 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
                     FILTER(?idGnoss = <http://gnoss/{pIdGnossUser.ToString().ToUpper()}>)
                     {minus}
                 }} ORDER BY DESC(?type) LIMIT 20";
-            SparqlObject sparqlObject = resourceApi.VirtuosoQueryMultipleGraph(select, where, new List<string> { "person" , "document", "researchobject" });
+            SparqlObject sparqlObject = resourceApi.VirtuosoQueryMultipleGraph(select, where, new List<string> { "person", "document", "researchobject" });
 
 
             // Rellena el los clusters

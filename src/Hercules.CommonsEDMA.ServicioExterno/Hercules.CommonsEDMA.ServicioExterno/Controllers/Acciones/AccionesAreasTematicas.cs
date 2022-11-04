@@ -1,5 +1,4 @@
-﻿using Gnoss.ApiWrapper;
-using Gnoss.ApiWrapper.ApiModel;
+﻿using Gnoss.ApiWrapper.ApiModel;
 using Hercules.CommonsEDMA.ServicioExterno.Controllers.Utilidades;
 using Hercules.CommonsEDMA.ServicioExterno.Models;
 using Hercules.CommonsEDMA.ServicioExterno.Models.Graficas.DataGraficaAreasTags;
@@ -7,7 +6,6 @@ using Hercules.CommonsEDMA.ServicioExterno.Models.Graficas.DataItemRelacion;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading;
 
 namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
 {

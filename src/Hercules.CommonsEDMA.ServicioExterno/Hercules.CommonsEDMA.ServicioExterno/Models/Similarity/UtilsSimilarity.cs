@@ -59,7 +59,7 @@ where{{
     ?doc a <{mRdfType}>.
     ?doc <http://w3id.org/roh/isValidated> 'true'.
 }}";
-            var response = mResourceApi.VirtuosoQueryMultipleGraph(select, where, new List<string> { mGraph , "curriculumvitae" });
+            var response = mResourceApi.VirtuosoQueryMultipleGraph(select, where, new List<string> { mGraph, "curriculumvitae" });
             return response.results.bindings.Select(x => x["doc"].value).ToList();
 
         }
@@ -130,7 +130,7 @@ where
     ?person <http://xmlns.com/foaf/0.1/name> ?authorName
 	BIND(xsd:int(?ordenAux) as ?orden)
 }}order by asc(?orden) ";
-                response = mResourceApi.VirtuosoQueryMultipleGraph(select, where, new List<string> { mGraph ,"person"});
+                response = mResourceApi.VirtuosoQueryMultipleGraph(select, where, new List<string> { mGraph, "person" });
                 foreach (Dictionary<string, SparqlObject.Data> fila in response.results.bindings)
                 {
                     string id = fila["doc"].value;
@@ -240,7 +240,7 @@ where
     }}
     FILTER(?doc in(<{string.Join(">,<", pIds)}>))
 }} ";
-                response = mResourceApi.VirtuosoQueryMultipleGraph(select, where, new List<string> { mGraph , "taxonomy" });
+                response = mResourceApi.VirtuosoQueryMultipleGraph(select, where, new List<string> { mGraph, "taxonomy" });
                 foreach (Dictionary<string, SparqlObject.Data> fila in response.results.bindings)
                 {
                     string id = fila["doc"].value;
@@ -252,7 +252,7 @@ where
                     }
                 }
                 #endregion
-        
+
             }
             return respuesta;
         }
@@ -347,7 +347,7 @@ where{{
     ?id a <{rdfType}>.
     ?id <http://w3id.org/roh/isValidated> 'true'.
 }}";
-                List<string> listID = mResourceApi.VirtuosoQueryMultipleGraph(select, where,new List<string> { graph , "curriculumvitae" }).results.bindings.Select(x => x["id"].value).ToList();
+                List<string> listID = mResourceApi.VirtuosoQueryMultipleGraph(select, where, new List<string> { graph, "curriculumvitae" }).results.bindings.Select(x => x["id"].value).ToList();
                 dicSimilarsAux = dicSimilarsAux.Where(x => listID.Contains(x.Key)).ToDictionary(x => x.Key, x => x.Value);
             }
             List<KeyValuePair<Guid, Dictionary<string, float>>> dicSimilars = dicSimilarsAux.ToDictionary(x => mResourceApi.GetShortGuid(x.Key), x => x.Value).ToList();
