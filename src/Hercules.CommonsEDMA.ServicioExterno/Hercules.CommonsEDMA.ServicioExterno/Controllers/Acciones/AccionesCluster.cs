@@ -785,11 +785,11 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
                 profile.users = new();
                 // Añade las areas temáticas y los descriptores específicos
 
-                if (e["knowledgeAreaGroup"].value != String.Empty)
+                if (e["knowledgeAreaGroup"].value != string.Empty)
                 {
                     profile.terms = e["knowledgeAreaGroup"].value.Split(",").ToList();
                 }
-                if (e["freeTextKeywordGroup"].value != String.Empty)
+                if (e["freeTextKeywordGroup"].value != string.Empty)
                 {
                     profile.tags = e["freeTextKeywordGroup"].value.Split(",").ToList();
                 }
@@ -810,7 +810,7 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
 
                     // Obtengo las areas de conocimiento del cluster
                     List<string> clusterTerms = new();
-                    if (e["clKnowledgeAreaGroup"].value != String.Empty)
+                    if (e["clKnowledgeAreaGroup"].value != string.Empty)
                     {
                         clusterTerms = e["clKnowledgeAreaGroup"].value.Split(",").ToList();
                     }
@@ -822,11 +822,11 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
                     {
                         Models.Cluster.Cluster cluster = new()
                         {
-                            name = e.ContainsKey("titleCluster") ? e["titleCluster"].value : String.Empty,
+                            name = e.ContainsKey("titleCluster") ? e["titleCluster"].value : string.Empty,
                             profiles = new(),
-                            entityID = e.ContainsKey("cluster") ? e["cluster"].value : String.Empty,
-                            description = e.ContainsKey("description") ? e["description"].value : String.Empty,
-                            fecha = e.ContainsKey("issued") ? e["issued"].value : String.Empty,
+                            entityID = e.ContainsKey("cluster") ? e["cluster"].value : string.Empty,
+                            description = e.ContainsKey("description") ? e["description"].value : string.Empty,
+                            fecha = e.ContainsKey("issued") ? e["issued"].value : string.Empty,
                             terms = clusterTerms
                         };
                         cluster.profiles.Add(profile);

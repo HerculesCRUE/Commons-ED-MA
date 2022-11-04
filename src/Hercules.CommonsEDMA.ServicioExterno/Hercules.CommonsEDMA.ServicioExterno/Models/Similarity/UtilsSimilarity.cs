@@ -414,7 +414,7 @@ where{{
             {
                 EnrichmentSimilarityItem p = (EnrichmentSimilarityItem)obj;
                 bool equals = true;
-                equals = equals && ro_id == p.ro_id;
+                equals = ro_id == p.ro_id;
                 equals = equals && ro_type == p.ro_type;
                 equals = equals && text == p.text;
                 equals = equals && string.Join(",", authors).Equals(string.Join(",", p.authors));

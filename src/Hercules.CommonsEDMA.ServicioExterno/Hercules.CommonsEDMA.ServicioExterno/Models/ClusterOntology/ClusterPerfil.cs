@@ -116,14 +116,14 @@ namespace ClusterOntology
 			return lista;
 		}
 
-		private string GenerarTextoSinSaltoDeLinea(string pTexto)
+		private static string GenerarTextoSinSaltoDeLinea(string pTexto)
 		{
 			return pTexto.Replace("\r\n", " ").Replace("\n", " ").Replace("\r", " ").Replace("\"", "\\\"");
 		}
 
 
 
-		private void AgregarTripleALista(string pSujeto, string pPredicado, string pObjeto, List<string> pLista, string pDatosExtra)
+		private static void AgregarTripleALista(string pSujeto, string pPredicado, string pObjeto, List<string> pLista, string pDatosExtra)
 		{
 			if(!string.IsNullOrEmpty(pObjeto) && !pObjeto.Equals("\"\"") && !pObjeto.Equals("<>"))
 			{
@@ -135,7 +135,7 @@ namespace ClusterOntology
 		{
 			foreach(string tag in tagList)
 			{
-				AgregarTripleALista($"http://gnoss/{ResourceID.ToString().ToUpper()}", "http://rdfs.org/sioc/types#Tag", tag.ToLower(), pListaTriples, " . ");
+                AgregarTripleALista($"http://gnoss/{ResourceID.ToString().ToUpper()}", "http://rdfs.org/sioc/types#Tag", tag.ToLower(), pListaTriples, " . ");
 			}
 		}
 

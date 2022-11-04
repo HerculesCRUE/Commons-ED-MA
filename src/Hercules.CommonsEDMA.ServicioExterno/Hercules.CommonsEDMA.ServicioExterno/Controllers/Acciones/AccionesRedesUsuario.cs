@@ -192,7 +192,7 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
                 string propiedad = item.id;
                 string dataViejo = item.valor;
                 var dataNuevoTmp = pDataUser.dataUser.FirstOrDefault(x => x.nombre == item.nombre);
-                string dataNuevo = String.Empty;
+                string dataNuevo = string.Empty;
                 if (dataNuevoTmp != null)
                 {
                     dataNuevo = dataNuevoTmp.valor;
@@ -259,7 +259,7 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
         /// <param name="listaData">Listado de los usuario sobre el que buscar.</param>
         /// <param name="fieldName">Nombre del campo a buscar y establecer.</param>
         /// <returns>Diccionario con los datos resultantes.</returns>
-        private List<DataUser> getDataSpqrl(Dictionary<string, SparqlObject.Data> fila, List<DataUser> listaData, string fieldName)
+        private static List<DataUser> getDataSpqrl(Dictionary<string, SparqlObject.Data> fila, List<DataUser> listaData, string fieldName)
         {
             if (fila.ContainsKey(fieldName))
             {

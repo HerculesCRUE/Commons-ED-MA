@@ -795,7 +795,7 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
 
                         Thread.Sleep(300000);
                     }
-                    catch (Exception ex)
+                    catch (Exception)
                     {
                         Thread.Sleep(300000);
                     }
@@ -803,7 +803,7 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
             }).Start();
         }
 
-        private void LeerPropiedades(ref Dictionary<string, List<ObjectSearch.Property>> textSearchTemp, List<ObjectSearch.Property> listadoPropiedades)
+        private static void LeerPropiedades(ref Dictionary<string, List<ObjectSearch.Property>> textSearchTemp, List<ObjectSearch.Property> listadoPropiedades)
         {
             foreach (ObjectSearch.Property prop in listadoPropiedades)
             {

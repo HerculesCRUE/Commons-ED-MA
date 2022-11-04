@@ -222,7 +222,7 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
             Dictionary<string, int> dicResultados = new();
             SparqlObject resultadoQuery = null;
             StringBuilder select = new();
-            String where = "";
+            string where = "";
 
             // Consulta sparql.
             select.Append(mPrefijos);

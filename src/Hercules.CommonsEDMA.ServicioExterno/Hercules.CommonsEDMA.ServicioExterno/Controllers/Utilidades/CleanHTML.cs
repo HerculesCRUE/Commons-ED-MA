@@ -46,8 +46,8 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Utilidades
                     // Vuelve a guardar el texto, no lo guarda como tag
                     inside = false;
                     currentTag.Add(let);
-                    tag = String.Join("", currentTag);
-                    attrsTag = String.Join("", attrs);
+                    tag = string.Join("", currentTag);
+                    attrsTag = string.Join("", attrs);
                     if (tagsExceptions.Contains(tag) && !tag.Contains("script") && !attrsTag.Contains("script")) {
                         for (int n = 0; n < currentTag.Count -1; n++)
                         {
@@ -142,10 +142,10 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Utilidades
                     insideContAttr = false;
                     currentAttr.Add(let);
 
-                    string fullAttr = String.Join("", currentAttr).Trim();
+                    string fullAttr = string.Join("", currentAttr).Trim();
                     fullAttr = fullAttr.Replace("\"\"", "").Trim();
                     attr = fullAttr.Replace("=", "").Trim();
-                    contentAttr = String.Join("", attrContent);
+                    contentAttr = string.Join("", attrContent);
                     if (AttrsExceptions.Contains(attr) && !attr.Contains("script") && !contentAttr.Contains("script"))
                     {
                         for (int n = 0; n < currentAttr.Count -1; n++)

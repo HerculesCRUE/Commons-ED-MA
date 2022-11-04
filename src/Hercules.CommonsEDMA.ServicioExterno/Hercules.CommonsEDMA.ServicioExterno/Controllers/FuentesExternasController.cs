@@ -43,7 +43,7 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers
                     string ultimaFechaMod = Acciones.AccionesFuentesExternas.GetLastUpdatedDate(pUserId);
 
                     DateTime currentDate = DateTime.Now;
-                    DateTime lastUpdate = new(Int32.Parse(ultimaFechaMod.Split('-')[0]), Int32.Parse(ultimaFechaMod.Split('-')[1]), Int32.Parse(ultimaFechaMod.Split('-')[2]));
+                    DateTime lastUpdate = new(int.Parse(ultimaFechaMod.Split('-')[0]), int.Parse(ultimaFechaMod.Split('-')[1]), int.Parse(ultimaFechaMod.Split('-')[2]));
 
                     if (lastUpdate.AddDays(1) > currentDate)
                     {

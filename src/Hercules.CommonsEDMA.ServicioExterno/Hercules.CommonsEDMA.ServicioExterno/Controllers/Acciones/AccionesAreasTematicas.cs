@@ -104,7 +104,7 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
             return dataGrafica;
         }
 
-        private string GetFiltroElemento(string pType, string idGrafoBusqueda, string pAnioInicio, string pAnioFin)
+        private static string GetFiltroElemento(string pType, string idGrafoBusqueda, string pAnioInicio, string pAnioFin)
         {
             string filtroElemento;
             switch (pType)

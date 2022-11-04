@@ -104,30 +104,30 @@ namespace ClusterOntology
 		public override List<string> ToOntologyGnossTriples(ResourceApi resourceAPI)
 		{
 			List<string> list = new();
-			AgregarTripleALista($"{resourceAPI.GraphsUrl}items/Cluster_{ResourceID}_{ArticleID}", "http://www.w3.org/1999/02/22-rdf-syntax-ns#type", $"<http://w3id.org/roh/Cluster>", list, " . ");
-			AgregarTripleALista($"{resourceAPI.GraphsUrl}items/Cluster_{ResourceID}_{ArticleID}", "http://www.w3.org/2000/01/rdf-schema#label", $"\"http://w3id.org/roh/Cluster\"", list, " . ");
-			AgregarTripleALista($"{resourceAPI.GraphsUrl}{ResourceID}", "http://gnoss/hasEntidad", $"<{resourceAPI.GraphsUrl}items/Cluster_{ResourceID}_{ArticleID}>", list, " . ");
+            AgregarTripleALista($"{resourceAPI.GraphsUrl}items/Cluster_{ResourceID}_{ArticleID}", "http://www.w3.org/1999/02/22-rdf-syntax-ns#type", $"<http://w3id.org/roh/Cluster>", list, " . ");
+            AgregarTripleALista($"{resourceAPI.GraphsUrl}items/Cluster_{ResourceID}_{ArticleID}", "http://www.w3.org/2000/01/rdf-schema#label", $"\"http://w3id.org/roh/Cluster\"", list, " . ");
+            AgregarTripleALista($"{resourceAPI.GraphsUrl}{ResourceID}", "http://gnoss/hasEntidad", $"<{resourceAPI.GraphsUrl}items/Cluster_{ResourceID}_{ArticleID}>", list, " . ");
 			if(this.Roh_clusterPerfil != null)
 			{
 			foreach(var item0 in this.Roh_clusterPerfil)
 			{
-				AgregarTripleALista($"{resourceAPI.GraphsUrl}items/ClusterPerfil_{ResourceID}_{item0.ArticleID}", "http://www.w3.org/1999/02/22-rdf-syntax-ns#type", $"<http://w3id.org/roh/ClusterPerfil>", list, " . ");
-				AgregarTripleALista($"{resourceAPI.GraphsUrl}items/ClusterPerfil_{ResourceID}_{item0.ArticleID}", "http://www.w3.org/2000/01/rdf-schema#label", $"\"http://w3id.org/roh/ClusterPerfil\"", list, " . ");
-				AgregarTripleALista($"{resourceAPI.GraphsUrl}{ResourceID}", "http://gnoss/hasEntidad", $"<{resourceAPI.GraphsUrl}items/ClusterPerfil_{ResourceID}_{item0.ArticleID}>", list, " . ");
-				AgregarTripleALista($"{resourceAPI.GraphsUrl}items/Cluster_{ResourceID}_{ArticleID}", "http://w3id.org/roh/clusterPerfil", $"<{resourceAPI.GraphsUrl}items/ClusterPerfil_{ResourceID}_{item0.ArticleID}>", list, " . ");
+                    AgregarTripleALista($"{resourceAPI.GraphsUrl}items/ClusterPerfil_{ResourceID}_{item0.ArticleID}", "http://www.w3.org/1999/02/22-rdf-syntax-ns#type", $"<http://w3id.org/roh/ClusterPerfil>", list, " . ");
+                    AgregarTripleALista($"{resourceAPI.GraphsUrl}items/ClusterPerfil_{ResourceID}_{item0.ArticleID}", "http://www.w3.org/2000/01/rdf-schema#label", $"\"http://w3id.org/roh/ClusterPerfil\"", list, " . ");
+                    AgregarTripleALista($"{resourceAPI.GraphsUrl}{ResourceID}", "http://gnoss/hasEntidad", $"<{resourceAPI.GraphsUrl}items/ClusterPerfil_{ResourceID}_{item0.ArticleID}>", list, " . ");
+                    AgregarTripleALista($"{resourceAPI.GraphsUrl}items/Cluster_{ResourceID}_{ArticleID}", "http://w3id.org/roh/clusterPerfil", $"<{resourceAPI.GraphsUrl}items/ClusterPerfil_{ResourceID}_{item0.ArticleID}>", list, " . ");
 			if(item0.Roh_hasKnowledgeArea != null)
 			{
 			foreach(var item1 in item0.Roh_hasKnowledgeArea)
 			{
-				AgregarTripleALista($"{resourceAPI.GraphsUrl}items/CategoryPath_{ResourceID}_{item1.ArticleID}", "http://www.w3.org/1999/02/22-rdf-syntax-ns#type", $"<http://w3id.org/roh/CategoryPath>", list, " . ");
-				AgregarTripleALista($"{resourceAPI.GraphsUrl}items/CategoryPath_{ResourceID}_{item1.ArticleID}", "http://www.w3.org/2000/01/rdf-schema#label", $"\"http://w3id.org/roh/CategoryPath\"", list, " . ");
-				AgregarTripleALista($"{resourceAPI.GraphsUrl}{ResourceID}", "http://gnoss/hasEntidad", $"<{resourceAPI.GraphsUrl}items/CategoryPath_{ResourceID}_{item1.ArticleID}>", list, " . ");
-				AgregarTripleALista($"{resourceAPI.GraphsUrl}items/ClusterPerfil_{ResourceID}_{item0.ArticleID}", "http://w3id.org/roh/hasKnowledgeArea", $"<{resourceAPI.GraphsUrl}items/CategoryPath_{ResourceID}_{item1.ArticleID}>", list, " . ");
+                            AgregarTripleALista($"{resourceAPI.GraphsUrl}items/CategoryPath_{ResourceID}_{item1.ArticleID}", "http://www.w3.org/1999/02/22-rdf-syntax-ns#type", $"<http://w3id.org/roh/CategoryPath>", list, " . ");
+                            AgregarTripleALista($"{resourceAPI.GraphsUrl}items/CategoryPath_{ResourceID}_{item1.ArticleID}", "http://www.w3.org/2000/01/rdf-schema#label", $"\"http://w3id.org/roh/CategoryPath\"", list, " . ");
+                            AgregarTripleALista($"{resourceAPI.GraphsUrl}{ResourceID}", "http://gnoss/hasEntidad", $"<{resourceAPI.GraphsUrl}items/CategoryPath_{ResourceID}_{item1.ArticleID}>", list, " . ");
+                            AgregarTripleALista($"{resourceAPI.GraphsUrl}items/ClusterPerfil_{ResourceID}_{item0.ArticleID}", "http://w3id.org/roh/hasKnowledgeArea", $"<{resourceAPI.GraphsUrl}items/CategoryPath_{ResourceID}_{item1.ArticleID}>", list, " . ");
 				if(item1.IdsRoh_categoryNode != null)
 				{
 					foreach(var item2 in item1.IdsRoh_categoryNode)
 					{
-						AgregarTripleALista($"{resourceAPI.GraphsUrl}items/CategoryPath_{ResourceID}_{item1.ArticleID}", "http://w3id.org/roh/categoryNode",  $"<{item2}>", list, " . ");
+                                    AgregarTripleALista($"{resourceAPI.GraphsUrl}items/CategoryPath_{ResourceID}_{item1.ArticleID}", "http://w3id.org/roh/categoryNode",  $"<{item2}>", list, " . ");
 					}
 				}
 			}
@@ -136,19 +136,19 @@ namespace ClusterOntology
 				{
 					foreach(var item2 in item0.IdsRdf_member)
 					{
-						AgregarTripleALista($"{resourceAPI.GraphsUrl}items/ClusterPerfil_{ResourceID}_{item0.ArticleID}", "http://www.w3.org/1999/02/22-rdf-syntax-ns#member", $"<{item2}>", list, " . ");
+                            AgregarTripleALista($"{resourceAPI.GraphsUrl}items/ClusterPerfil_{ResourceID}_{item0.ArticleID}", "http://www.w3.org/1999/02/22-rdf-syntax-ns#member", $"<{item2}>", list, " . ");
 					}
 				}
 				if(item0.Vivo_freeTextKeyword != null)
 				{
 					foreach(var item2 in item0.Vivo_freeTextKeyword)
 					{
-						AgregarTripleALista($"{resourceAPI.GraphsUrl}items/ClusterPerfil_{ResourceID}_{item0.ArticleID}", "http://vivoweb.org/ontology/core#freeTextKeyword", $"\"{GenerarTextoSinSaltoDeLinea(item2)}\"", list, " . ");
+                            AgregarTripleALista($"{resourceAPI.GraphsUrl}items/ClusterPerfil_{ResourceID}_{item0.ArticleID}", "http://vivoweb.org/ontology/core#freeTextKeyword", $"\"{GenerarTextoSinSaltoDeLinea(item2)}\"", list, " . ");
 					}
 				}
 				if(item0.Roh_title != null)
 				{
-					AgregarTripleALista($"{resourceAPI.GraphsUrl}items/ClusterPerfil_{ResourceID}_{item0.ArticleID}",  "http://w3id.org/roh/title", $"\"{GenerarTextoSinSaltoDeLinea(item0.Roh_title)}\"", list, " . ");
+                        AgregarTripleALista($"{resourceAPI.GraphsUrl}items/ClusterPerfil_{ResourceID}_{item0.ArticleID}",  "http://w3id.org/roh/title", $"\"{GenerarTextoSinSaltoDeLinea(item0.Roh_title)}\"", list, " . ");
 				}
 			}
 			}
@@ -156,34 +156,34 @@ namespace ClusterOntology
 			{
 			foreach(var item0 in this.Roh_hasKnowledgeArea)
 			{
-				AgregarTripleALista($"{resourceAPI.GraphsUrl}items/CategoryPath_{ResourceID}_{item0.ArticleID}", "http://www.w3.org/1999/02/22-rdf-syntax-ns#type", $"<http://w3id.org/roh/CategoryPath>", list, " . ");
-				AgregarTripleALista($"{resourceAPI.GraphsUrl}items/CategoryPath_{ResourceID}_{item0.ArticleID}", "http://www.w3.org/2000/01/rdf-schema#label", $"\"http://w3id.org/roh/CategoryPath\"", list, " . ");
-				AgregarTripleALista($"{resourceAPI.GraphsUrl}{ResourceID}", "http://gnoss/hasEntidad", $"<{resourceAPI.GraphsUrl}items/CategoryPath_{ResourceID}_{item0.ArticleID}>", list, " . ");
-				AgregarTripleALista($"{resourceAPI.GraphsUrl}items/Cluster_{ResourceID}_{ArticleID}", "http://w3id.org/roh/hasKnowledgeArea", $"<{resourceAPI.GraphsUrl}items/CategoryPath_{ResourceID}_{item0.ArticleID}>", list, " . ");
+                    AgregarTripleALista($"{resourceAPI.GraphsUrl}items/CategoryPath_{ResourceID}_{item0.ArticleID}", "http://www.w3.org/1999/02/22-rdf-syntax-ns#type", $"<http://w3id.org/roh/CategoryPath>", list, " . ");
+                    AgregarTripleALista($"{resourceAPI.GraphsUrl}items/CategoryPath_{ResourceID}_{item0.ArticleID}", "http://www.w3.org/2000/01/rdf-schema#label", $"\"http://w3id.org/roh/CategoryPath\"", list, " . ");
+                    AgregarTripleALista($"{resourceAPI.GraphsUrl}{ResourceID}", "http://gnoss/hasEntidad", $"<{resourceAPI.GraphsUrl}items/CategoryPath_{ResourceID}_{item0.ArticleID}>", list, " . ");
+                    AgregarTripleALista($"{resourceAPI.GraphsUrl}items/Cluster_{ResourceID}_{ArticleID}", "http://w3id.org/roh/hasKnowledgeArea", $"<{resourceAPI.GraphsUrl}items/CategoryPath_{ResourceID}_{item0.ArticleID}>", list, " . ");
 				if(item0.IdsRoh_categoryNode != null)
 				{
 					foreach(var item2 in item0.IdsRoh_categoryNode)
 					{
-						AgregarTripleALista($"{resourceAPI.GraphsUrl}items/CategoryPath_{ResourceID}_{item0.ArticleID}", "http://w3id.org/roh/categoryNode",  $"<{item2}>", list, " . ");
+                            AgregarTripleALista($"{resourceAPI.GraphsUrl}items/CategoryPath_{ResourceID}_{item0.ArticleID}", "http://w3id.org/roh/categoryNode",  $"<{item2}>", list, " . ");
 					}
 				}
 			}
 			}
 				if(this.IdRdf_member != null)
 				{
-					AgregarTripleALista($"{resourceAPI.GraphsUrl}items/Cluster_{ResourceID}_{ArticleID}", "http://www.w3.org/1999/02/22-rdf-syntax-ns#member",  $"<{this.IdRdf_member}>", list, " . ");
+                AgregarTripleALista($"{resourceAPI.GraphsUrl}items/Cluster_{ResourceID}_{ArticleID}", "http://www.w3.org/1999/02/22-rdf-syntax-ns#member",  $"<{this.IdRdf_member}>", list, " . ");
 				}
 				if(this.Vivo_description != null)
 				{
-					AgregarTripleALista($"{resourceAPI.GraphsUrl}items/Cluster_{ResourceID}_{ArticleID}",  "http://vivoweb.org/ontology/core#description", $"\"{GenerarTextoSinSaltoDeLinea(this.Vivo_description)}\"", list, " . ");
+                AgregarTripleALista($"{resourceAPI.GraphsUrl}items/Cluster_{ResourceID}_{ArticleID}",  "http://vivoweb.org/ontology/core#description", $"\"{GenerarTextoSinSaltoDeLinea(this.Vivo_description)}\"", list, " . ");
 				}
 				if(this.Dct_issued != null)
 				{
-					AgregarTripleALista($"{resourceAPI.GraphsUrl}items/Cluster_{ResourceID}_{ArticleID}",  "http://purl.org/dc/terms/issued", $"\"{this.Dct_issued.ToString("yyyyMMddHHmmss")}\"", list, " . ");
+                AgregarTripleALista($"{resourceAPI.GraphsUrl}items/Cluster_{ResourceID}_{ArticleID}",  "http://purl.org/dc/terms/issued", $"\"{this.Dct_issued.ToString("yyyyMMddHHmmss")}\"", list, " . ");
 				}
 				if(this.Roh_title != null)
 				{
-					AgregarTripleALista($"{resourceAPI.GraphsUrl}items/Cluster_{ResourceID}_{ArticleID}",  "http://w3id.org/roh/title", $"\"{GenerarTextoSinSaltoDeLinea(this.Roh_title)}\"", list, " . ");
+                AgregarTripleALista($"{resourceAPI.GraphsUrl}items/Cluster_{ResourceID}_{ArticleID}",  "http://w3id.org/roh/title", $"\"{GenerarTextoSinSaltoDeLinea(this.Roh_title)}\"", list, " . ");
 				}
 			return list;
 		}
@@ -193,26 +193,26 @@ namespace ClusterOntology
 			List<string> list = new();
 			List<string> listaSearch = new();
 			AgregarTags(list);
-			AgregarTripleALista($"http://gnoss/{ResourceID.ToString().ToUpper()}", "http://www.w3.org/1999/02/22-rdf-syntax-ns#type", $"\"cluster\"", list, " . ");
-			AgregarTripleALista($"http://gnoss/{ResourceID.ToString().ToUpper()}", "http://gnoss/type", $"\"http://w3id.org/roh/Cluster\"", list, " . ");
-			AgregarTripleALista($"http://gnoss/{ResourceID.ToString().ToUpper()}", "http://gnoss/hasfechapublicacion", $"{DateTime.Now.ToString("yyyyMMddHHmmss")}", list, " . ");
-			AgregarTripleALista($"http://gnoss/{ResourceID.ToString().ToUpper()}", "http://gnoss/hastipodoc", "\"5\"", list, " . ");
-			AgregarTripleALista($"http://gnoss/{ResourceID.ToString().ToUpper()}", "http://gnoss/hasfechamodificacion", $"{DateTime.Now.ToString("yyyyMMddHHmmss")}", list, " . ");
-			AgregarTripleALista($"http://gnoss/{ResourceID.ToString().ToUpper()}", "http://gnoss/hasnumeroVisitas", "0", list, " . ");
-			AgregarTripleALista($"http://gnoss/{ResourceID.ToString().ToUpper()}", "http://gnoss/hasprivacidadCom", "\"publico\"", list, " . ");
-			AgregarTripleALista($"http://gnoss/{ResourceID.ToString().ToUpper()}", "http://xmlns.com/foaf/0.1/firstName", $"\"{GenerarTextoSinSaltoDeLinea(this.Roh_title)}\"", list, " . ");
-			AgregarTripleALista($"http://gnoss/{ResourceID.ToString().ToUpper()}", "http://gnoss/hasnombrecompleto", $"\"{GenerarTextoSinSaltoDeLinea(this.Roh_title)}\"", list, " . ");
+            AgregarTripleALista($"http://gnoss/{ResourceID.ToString().ToUpper()}", "http://www.w3.org/1999/02/22-rdf-syntax-ns#type", $"\"cluster\"", list, " . ");
+            AgregarTripleALista($"http://gnoss/{ResourceID.ToString().ToUpper()}", "http://gnoss/type", $"\"http://w3id.org/roh/Cluster\"", list, " . ");
+            AgregarTripleALista($"http://gnoss/{ResourceID.ToString().ToUpper()}", "http://gnoss/hasfechapublicacion", $"{DateTime.Now.ToString("yyyyMMddHHmmss")}", list, " . ");
+            AgregarTripleALista($"http://gnoss/{ResourceID.ToString().ToUpper()}", "http://gnoss/hastipodoc", "\"5\"", list, " . ");
+            AgregarTripleALista($"http://gnoss/{ResourceID.ToString().ToUpper()}", "http://gnoss/hasfechamodificacion", $"{DateTime.Now.ToString("yyyyMMddHHmmss")}", list, " . ");
+            AgregarTripleALista($"http://gnoss/{ResourceID.ToString().ToUpper()}", "http://gnoss/hasnumeroVisitas", "0", list, " . ");
+            AgregarTripleALista($"http://gnoss/{ResourceID.ToString().ToUpper()}", "http://gnoss/hasprivacidadCom", "\"publico\"", list, " . ");
+            AgregarTripleALista($"http://gnoss/{ResourceID.ToString().ToUpper()}", "http://xmlns.com/foaf/0.1/firstName", $"\"{GenerarTextoSinSaltoDeLinea(this.Roh_title)}\"", list, " . ");
+            AgregarTripleALista($"http://gnoss/{ResourceID.ToString().ToUpper()}", "http://gnoss/hasnombrecompleto", $"\"{GenerarTextoSinSaltoDeLinea(this.Roh_title)}\"", list, " . ");
 			string search = string.Empty;
 			if(this.Roh_clusterPerfil != null)
 			{
 			foreach(var item0 in this.Roh_clusterPerfil)
 			{
-				AgregarTripleALista($"http://gnoss/{ResourceID.ToString().ToUpper()}", "http://w3id.org/roh/clusterPerfil", $"<{resourceAPI.GraphsUrl}items/clusterperfil_{ResourceID}_{item0.ArticleID}>", list, " . ");
+                    AgregarTripleALista($"http://gnoss/{ResourceID.ToString().ToUpper()}", "http://w3id.org/roh/clusterPerfil", $"<{resourceAPI.GraphsUrl}items/clusterperfil_{ResourceID}_{item0.ArticleID}>", list, " . ");
 			if(item0.Roh_hasKnowledgeArea != null)
 			{
 			foreach(var item1 in item0.Roh_hasKnowledgeArea)
 			{
-				AgregarTripleALista($"{resourceAPI.GraphsUrl}items/clusterperfil_{ResourceID}_{item0.ArticleID}", "http://w3id.org/roh/hasKnowledgeArea", $"<{resourceAPI.GraphsUrl}items/categorypath_{ResourceID}_{item1.ArticleID}>", list, " . ");
+                            AgregarTripleALista($"{resourceAPI.GraphsUrl}items/clusterperfil_{ResourceID}_{item0.ArticleID}", "http://w3id.org/roh/hasKnowledgeArea", $"<{resourceAPI.GraphsUrl}items/categorypath_{ResourceID}_{item1.ArticleID}>", list, " . ");
 				if(item1.IdsRoh_categoryNode != null)
 				{
 					foreach(var item2 in item1.IdsRoh_categoryNode)
@@ -227,7 +227,7 @@ namespace ClusterOntology
 					{
 						itemRegex = itemRegex.ToLower();
 					}
-						AgregarTripleALista($"{resourceAPI.GraphsUrl}items/categorypath_{ResourceID}_{item1.ArticleID}", "http://w3id.org/roh/categoryNode",  $"<{itemRegex}>", list, " . ");
+                                    AgregarTripleALista($"{resourceAPI.GraphsUrl}items/categorypath_{ResourceID}_{item1.ArticleID}", "http://w3id.org/roh/categoryNode",  $"<{itemRegex}>", list, " . ");
 					}
 				}
 			}
@@ -246,19 +246,19 @@ namespace ClusterOntology
 					{
 						itemRegex = itemRegex.ToLower();
 					}
-						AgregarTripleALista($"{resourceAPI.GraphsUrl}items/clusterperfil_{ResourceID}_{item0.ArticleID}", "http://www.w3.org/1999/02/22-rdf-syntax-ns#member", $"<{itemRegex}>", list, " . ");
+                            AgregarTripleALista($"{resourceAPI.GraphsUrl}items/clusterperfil_{ResourceID}_{item0.ArticleID}", "http://www.w3.org/1999/02/22-rdf-syntax-ns#member", $"<{itemRegex}>", list, " . ");
 					}
 				}
 				if(item0.Vivo_freeTextKeyword != null)
 				{
 					foreach(var item2 in item0.Vivo_freeTextKeyword)
 					{
-						AgregarTripleALista($"{resourceAPI.GraphsUrl}items/clusterperfil_{ResourceID}_{item0.ArticleID}", "http://vivoweb.org/ontology/core#freeTextKeyword", $"\"{GenerarTextoSinSaltoDeLinea(item2).ToLower()}\"", list, " . ");
+                            AgregarTripleALista($"{resourceAPI.GraphsUrl}items/clusterperfil_{ResourceID}_{item0.ArticleID}", "http://vivoweb.org/ontology/core#freeTextKeyword", $"\"{GenerarTextoSinSaltoDeLinea(item2).ToLower()}\"", list, " . ");
 					}
 				}
 				if(item0.Roh_title != null)
 				{
-					AgregarTripleALista($"{resourceAPI.GraphsUrl}items/clusterperfil_{ResourceID}_{item0.ArticleID}",  "http://w3id.org/roh/title", $"\"{GenerarTextoSinSaltoDeLinea(item0.Roh_title).ToLower()}\"", list, " . ");
+                        AgregarTripleALista($"{resourceAPI.GraphsUrl}items/clusterperfil_{ResourceID}_{item0.ArticleID}",  "http://w3id.org/roh/title", $"\"{GenerarTextoSinSaltoDeLinea(item0.Roh_title).ToLower()}\"", list, " . ");
 				}
 			}
 			}
@@ -266,7 +266,7 @@ namespace ClusterOntology
 			{
 			foreach(var item0 in this.Roh_hasKnowledgeArea)
 			{
-				AgregarTripleALista($"http://gnoss/{ResourceID.ToString().ToUpper()}", "http://w3id.org/roh/hasKnowledgeArea", $"<{resourceAPI.GraphsUrl}items/categorypath_{ResourceID}_{item0.ArticleID}>", list, " . ");
+                    AgregarTripleALista($"http://gnoss/{ResourceID.ToString().ToUpper()}", "http://w3id.org/roh/hasKnowledgeArea", $"<{resourceAPI.GraphsUrl}items/categorypath_{ResourceID}_{item0.ArticleID}>", list, " . ");
 				if(item0.IdsRoh_categoryNode != null)
 				{
 					foreach(var item2 in item0.IdsRoh_categoryNode)
@@ -281,7 +281,7 @@ namespace ClusterOntology
 					{
 						itemRegex = itemRegex.ToLower();
 					}
-						AgregarTripleALista($"{resourceAPI.GraphsUrl}items/categorypath_{ResourceID}_{item0.ArticleID}", "http://w3id.org/roh/categoryNode",  $"<{itemRegex}>", list, " . ");
+                            AgregarTripleALista($"{resourceAPI.GraphsUrl}items/categorypath_{ResourceID}_{item0.ArticleID}", "http://w3id.org/roh/categoryNode",  $"<{itemRegex}>", list, " . ");
 					}
 				}
 			}
@@ -298,19 +298,19 @@ namespace ClusterOntology
 					{
 						itemRegex = itemRegex.ToLower();
 					}
-					AgregarTripleALista($"http://gnoss/{ResourceID.ToString().ToUpper()}", "http://www.w3.org/1999/02/22-rdf-syntax-ns#member",  $"<{itemRegex}>", list, " . ");
+                AgregarTripleALista($"http://gnoss/{ResourceID.ToString().ToUpper()}", "http://www.w3.org/1999/02/22-rdf-syntax-ns#member",  $"<{itemRegex}>", list, " . ");
 				}
 				if(this.Vivo_description != null)
 				{
-					AgregarTripleALista($"http://gnoss/{ResourceID.ToString().ToUpper()}",  "http://vivoweb.org/ontology/core#description", $"\"{GenerarTextoSinSaltoDeLinea(this.Vivo_description).ToLower()}\"", list, " . ");
+                AgregarTripleALista($"http://gnoss/{ResourceID.ToString().ToUpper()}",  "http://vivoweb.org/ontology/core#description", $"\"{GenerarTextoSinSaltoDeLinea(this.Vivo_description).ToLower()}\"", list, " . ");
 				}
 				if(this.Dct_issued != null)
 				{
-					AgregarTripleALista($"http://gnoss/{ResourceID.ToString().ToUpper()}",  "http://purl.org/dc/terms/issued", $"{this.Dct_issued.ToString("yyyyMMddHHmmss")}", list, " . ");
+                AgregarTripleALista($"http://gnoss/{ResourceID.ToString().ToUpper()}",  "http://purl.org/dc/terms/issued", $"{this.Dct_issued.ToString("yyyyMMddHHmmss")}", list, " . ");
 				}
 				if(this.Roh_title != null)
 				{
-					AgregarTripleALista($"http://gnoss/{ResourceID.ToString().ToUpper()}",  "http://w3id.org/roh/title", $"\"{GenerarTextoSinSaltoDeLinea(this.Roh_title).ToLower()}\"", list, " . ");
+                AgregarTripleALista($"http://gnoss/{ResourceID.ToString().ToUpper()}",  "http://w3id.org/roh/title", $"\"{GenerarTextoSinSaltoDeLinea(this.Roh_title).ToLower()}\"", list, " . ");
 				}
 			if (listaSearch != null && listaSearch.Count > 0)
 			{
@@ -321,7 +321,7 @@ namespace ClusterOntology
 			}
 			if(!string.IsNullOrEmpty(search))
 			{
-				AgregarTripleALista($"http://gnoss/{ResourceID.ToString().ToUpper()}", "http://gnoss/search", $"\"{GenerarTextoSinSaltoDeLinea(search.ToLower())}\"", list, " . ");
+                AgregarTripleALista($"http://gnoss/{ResourceID.ToString().ToUpper()}", "http://gnoss/search", $"\"{GenerarTextoSinSaltoDeLinea(search.ToLower())}\"", list, " . ");
 			}
 			return list;
 		}
@@ -402,7 +402,7 @@ namespace ClusterOntology
 			return $"{resourceAPI.GraphsUrl}items/ClusterOntology_{ResourceID}_{ArticleID}";
 		}
 
-		private string GenerarTextoSinSaltoDeLinea(string pTexto)
+		private static string GenerarTextoSinSaltoDeLinea(string pTexto)
 		{
 			return pTexto.Replace("\r\n", " ").Replace("\n", " ").Replace("\r", " ").Replace("\"", "\\\"");
 		}
@@ -417,7 +417,7 @@ namespace ClusterOntology
 			resource.Description = this.Roh_title;
 		}
 
-		private void AgregarTripleALista(string pSujeto, string pPredicado, string pObjeto, List<string> pLista, string pDatosExtra)
+		private static void AgregarTripleALista(string pSujeto, string pPredicado, string pObjeto, List<string> pLista, string pDatosExtra)
 		{
 			if(!string.IsNullOrEmpty(pObjeto) && !pObjeto.Equals("\"\"") && !pObjeto.Equals("<>"))
 			{
@@ -429,7 +429,7 @@ namespace ClusterOntology
 		{
 			foreach(string tag in tagList)
 			{
-				AgregarTripleALista($"http://gnoss/{ResourceID.ToString().ToUpper()}", "http://rdfs.org/sioc/types#Tag", tag.ToLower(), pListaTriples, " . ");
+                AgregarTripleALista($"http://gnoss/{ResourceID.ToString().ToUpper()}", "http://rdfs.org/sioc/types#Tag", tag.ToLower(), pListaTriples, " . ");
 			}
 		}
 

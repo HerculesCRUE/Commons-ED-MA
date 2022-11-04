@@ -27,6 +27,7 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
         /// <param name="idRecurso">Id del RO sobre el que borrar el elemento</param>
         /// <param name="idLinkedRo">Id de RO a borrar</param>
         /// <param name="pIdGnossUser">Id del usuario que realiza la acción</param>
+        /// <param name="pConfig">ConfigService</param>
         /// <returns>Bool determinando si se ha borrado o no.</returns>
         internal bool DeleteLinked(string idRecurso, string idLinkedRo, Guid pIdGnossUser, ConfigService pConfig)
         {
@@ -318,7 +319,7 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
 
                 // Obtengo las areas de conocimiento de los ROs
                 List<string> rOTerms = new();
-                if (e.ContainsKey("gckarea") && e["gckarea"].value != String.Empty)
+                if (e.ContainsKey("gckarea") && e["gckarea"].value != string.Empty)
                 {
                     rOTerms = e["gckarea"].value.Split(",").ToList();
                 }
@@ -326,7 +327,7 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
 
                 // Obtengo las ids de los usuarios gnoss de los creadores del RO
                 List<string> idsGnoss = new();
-                if (e.ContainsKey("idGnoss") && e["idGnoss"].value != String.Empty)
+                if (e.ContainsKey("idGnoss") && e["idGnoss"].value != string.Empty)
                 {
                     idsGnoss = e["idGnoss"].value.Split(",").ToList();
                 }
@@ -336,11 +337,11 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
                 try
                 {
 
-                    var fecha = e.ContainsKey("issued") ? e["issued"].value : String.Empty;
+                    var fecha = e.ContainsKey("issued") ? e["issued"].value : string.Empty;
                     DateTime fechaDate = DateTime.Now;
                     try
                     {
-                        if (fecha != String.Empty)
+                        if (fecha != string.Empty)
                         {
                             fechaDate = DateTime.ParseExact(fecha, "yyyyMMddHHmmss", null);
                             fecha = fechaDate.ToString("dd/MM/yyyy");
@@ -354,14 +355,14 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
                     if (e.ContainsKey("isValidated")) { bool.TryParse(e["isValidated"].value, out isValidated); }
                     ROLinked ro = new()
                     {
-                        title = e.ContainsKey("title") ? e["title"].value : String.Empty,
-                        entityID = e.ContainsKey("s") ? e["s"].value : String.Empty,
-                        description = e.ContainsKey("abstract") ? e["abstract"].value : String.Empty,
-                        roType = e.ContainsKey("roType") ? e["roType"].value : String.Empty,
-                        roTypeTitle = e.ContainsKey("roTypeTitle") ? e["roTypeTitle"].value : String.Empty,
-                        origin = e.ContainsKey("origin") && e["origin"].value == "false" ? false : true,
+                        title = e.ContainsKey("title") ? e["title"].value : string.Empty,
+                        entityID = e.ContainsKey("s") ? e["s"].value : string.Empty,
+                        description = e.ContainsKey("abstract") ? e["abstract"].value : string.Empty,
+                        roType = e.ContainsKey("roType") ? e["roType"].value : string.Empty,
+                        roTypeTitle = e.ContainsKey("roTypeTitle") ? e["roTypeTitle"].value : string.Empty,
+                        origin = !(e.ContainsKey("origin") && e["origin"].value == "false"),
                         idsGnoss = idsGnoss,
-                        type = e.ContainsKey("type") ? e["type"].value : String.Empty,
+                        type = e.ContainsKey("type") ? e["type"].value : string.Empty,
                         isValidated = isValidated,
                         fecha = fecha,
                         terms = rOTerms
@@ -407,6 +408,7 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
         /// <param name="idRecurso">Id del RO en el que se va a hacer la vinculación</param>
         /// <param name="idLinkedRo">Id del RO a vincular</param>
         /// <param name="pIdGnossUser">Id del usuario que modifica el estado, necesario para actualizar el historial</param>
+        /// <param name="pConfig">ConfigService</param>
         /// <returns>String con el RO vinculado.</returns>
         internal bool AddLink(string idRecurso, string idLinkedRo, Guid pIdGnossUser, ConfigService pConfig)
         {
@@ -524,9 +526,8 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
         /// <param name="idCurrentResource">Tipo de acción</param>
         /// <param name="idOtherResource">Permiso antigüo</param>
         /// <returns>Retorna un booleano indicando si puede o no ser actualizado.</returns>
-        private bool CheckUpdateLink(string longUserId, string idCurrentResource, string idOtherResource)
+        private static bool CheckUpdateLink(string longUserId, string idCurrentResource, string idOtherResource)
         {
-            bool flag = false;
             string select = $@"select distinct ?person 
 <http://gnoss.com/researchobject.owl> ";
             string where = $@" where {{
@@ -551,7 +552,7 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
         /// </summary>
         /// <param name="idRecurso">Id del recurso</param>
         /// <returns>Retorna un enum TypeRO indicando el tipo de recurso.</returns>
-        private ResTypeRo GetTypeRo(string idRecurso)
+        private static ResTypeRo GetTypeRo(string idRecurso)
         {
             ResTypeRo resTypeRo = new();
 
@@ -671,7 +672,7 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
 
                 // Obtengo las ids de los usuarios gnoss de los creadores del RO
                 List<string> idsGnoss = new();
-                if (e.ContainsKey("idGnoss") && e["idGnoss"].value != String.Empty)
+                if (e.ContainsKey("idGnoss") && e["idGnoss"].value != string.Empty)
                 {
                     idsGnoss = e["idGnoss"].value.Split(",").ToList();
                 }
@@ -701,9 +702,9 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
                     if (e.ContainsKey("isValidated")) { bool.TryParse(e["isValidated"].value, out isValidated); }
                     ROLinked ro = new()
                     {
-                        title = e.ContainsKey("title") ? e["title"].value : String.Empty,
-                        entityID = e.ContainsKey("s") ? e["s"].value : String.Empty,
-                        description = e.ContainsKey("abstract") ? e["abstract"].value : String.Empty,
+                        title = e.ContainsKey("title") ? e["title"].value : string.Empty,
+                        entityID = e.ContainsKey("s") ? e["s"].value : string.Empty,
+                        description = e.ContainsKey("abstract") ? e["abstract"].value : string.Empty,
                         fecha = fecha,
                         isValidated = isValidated
                     };

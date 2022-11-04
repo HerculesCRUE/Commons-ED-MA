@@ -954,7 +954,7 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Utilidades
         internal static List<string> LoadCurrentTerms(ResourceApi mResourceApi, List<string> terms, string ontology)
         {
 
-            string termsTxt = String.Join(',', terms.Select(e => "<" + e + ">"));
+            string termsTxt = string.Join(',', terms.Select(e => "<" + e + ">"));
 
             string select = "select ?o";
             string where = @$"where {{

@@ -85,7 +85,7 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers
             AccionesOferta accionCluster = new();
             foreach (var pIdOfferId in pIdOfferIds)
             {
-                cambiado = cambiado && accionCluster.CambiarEstado(pIdOfferId.ToString(), estado, estadoActual, pIdGnossUser, texto) != String.Empty;
+                cambiado = cambiado && accionCluster.CambiarEstado(pIdOfferId.ToString(), estado, estadoActual, pIdGnossUser, texto) != string.Empty;
             }
 
             return Ok(cambiado);

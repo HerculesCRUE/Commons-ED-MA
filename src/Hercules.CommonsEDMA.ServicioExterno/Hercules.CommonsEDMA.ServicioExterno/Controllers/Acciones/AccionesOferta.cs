@@ -1247,7 +1247,7 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
         /// <param name="ids">Listado de investigadores.</param>
         /// <param name="isLongIds">Booleano que determina si los Ids son Ids largos o cortos.</param>
         /// <returns>relación entre el guid y un objeto de un usuario (resumido).</returns>
-        internal Dictionary<Guid, UsersOffer> GetUsersTeaser(List<string> ids, bool isLongIds = true)
+        internal static Dictionary<Guid, UsersOffer> GetUsersTeaser(List<string> ids, bool isLongIds = true)
         {
 
             Dictionary<Guid, UsersOffer> result = new();
@@ -1344,7 +1344,7 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
         /// <param name="ids">Listado (Ids) de los documentos.</param>
         /// <param name="isLongIds">Booleano que determina si los Ids son Ids largos o cortos.</param>
         /// <returns>relación entre el guid y el objeto de los documentos correspondientes (resumido).</returns>
-        internal Dictionary<Guid, DocumentsOffer> GetDocumentsTeaser(List<string> ids, bool isLongIds = true)
+        internal static Dictionary<Guid, DocumentsOffer> GetDocumentsTeaser(List<string> ids, bool isLongIds = true)
         {
 
             Dictionary<Guid, DocumentsOffer> result = new();
@@ -1428,7 +1428,7 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
         /// <param name="ids">Listado (Ids) de los proyectos.</param>
         /// <param name="isLongIds">Booleano que determina si los Ids son Ids largos o cortos.</param>
         /// <returns>relación entre el guid y el objeto de los proyectos correspondientes (resumido).</returns>
-        internal Dictionary<Guid, ProjectsOffer> GetProjectsTeaser(List<string> ids, bool isLongIds = true)
+        internal static Dictionary<Guid, ProjectsOffer> GetProjectsTeaser(List<string> ids, bool isLongIds = true)
         {
 
             Dictionary<Guid, ProjectsOffer> result = new();
@@ -1526,7 +1526,7 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
         /// <param name="ids">Listado (Ids) de los PII.</param>
         /// <param name="isLongIds">Booleano que determina si los Ids son Ids largos o cortos.</param>
         /// <returns>relación entre el guid y el objeto de los PII correspondientes (resumido).</returns>
-        internal Dictionary<Guid, PIIOffer> GetPIITeaserTODO(List<string> ids, bool isLongIds = true)
+        internal static Dictionary<Guid, PIIOffer> GetPIITeaserTODO(List<string> ids, bool isLongIds = true)
         {
 
             Dictionary<Guid, PIIOffer> result = new();
@@ -1588,11 +1588,11 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
                 try
                 {
 
-                    var fecha = e.ContainsKey("dateFiled") ? e["dateFiled"].value : String.Empty;
+                    var fecha = e.ContainsKey("dateFiled") ? e["dateFiled"].value : string.Empty;
                     DateTime fechaDate = DateTime.Now;
                     try
                     {
-                        if (fecha != String.Empty)
+                        if (fecha != string.Empty)
                         {
                             fechaDate = DateTime.ParseExact(fecha, "yyyyMMddHHmmss", null);
                             fecha = fechaDate.ToString("dd/MM/yyyy");
@@ -1640,7 +1640,7 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
         /// <param name="predicado">Predicado a modificar</param>
         /// <param name="pIdGnossUser">Id del usuario que modifica el estado, necesario para actualizar el historial</param>
         /// <returns>String con el id del nuevo estado.</returns>
-        internal string ModificarTripleteUsuario(string idRecurso, string nuevoEstado, string estadoActual, string predicado, Guid pIdGnossUser)
+        internal static string ModificarTripleteUsuario(string idRecurso, string nuevoEstado, string estadoActual, string predicado, Guid pIdGnossUser)
         {
 
             // Obtener el id del usuario usando el id de la cuenta
@@ -1822,7 +1822,7 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
         /// </summary>
         /// <param name="tesauro">Listado de los tesauros sobre los que se necesita obtener los padres</param>
         /// <returns>Listados con los ids de los tesauros agrupados por "padres" e "hijos".</returns>
-        private List<List<string>> GetParentTeshaurusParents(List<string> tesauro)
+        private static List<List<string>> GetParentTeshaurusParents(List<string> tesauro)
         {
 
             List<List<string>> resultsAP = new();
@@ -1990,7 +1990,7 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
         /// </summary>
         /// <param name="longId">Id del usuario actual</param>
         /// <returns>Retorna un listado de ids con los usuarios otri.</returns>
-        private List<string> GetOtriId(string longId)
+        private static List<string> GetOtriId(string longId)
         {
             string select = "SELECT DISTINCT ?otriUser ";
 
@@ -2078,7 +2078,7 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
         /// </summary>
         /// <param name="estado">String con el estado</param>
         /// <returns>Retorna un el estado.</returns>
-        private Estado getEstado(string estado)
+        private static Estado getEstado(string estado)
         {
             switch (estado)
             {
@@ -2108,7 +2108,7 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
         /// <param name="longIdCurrentUser">Id largo del usuario que debería ser IP</param>
         /// <param name="longIdOwnUser">Id largo del otro usuario (Propiamente el creador de la oferta)</param>
         /// <returns>Retorna un booleano si el primer usuario es IP.</returns>
-        private bool checkIsIp(string longIdCurrentUser, string longIdOwnUser)
+        private static bool checkIsIp(string longIdCurrentUser, string longIdOwnUser)
         {
             string select = @$" SELECT distinct ?isIp";
             string where = @$" 
