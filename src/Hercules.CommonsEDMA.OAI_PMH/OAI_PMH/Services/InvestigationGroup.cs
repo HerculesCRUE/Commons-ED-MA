@@ -181,20 +181,20 @@ namespace OAI_PMH.Services
         private static List<string> GetInvestigadoresPrincipalesMax(string id, ConfigService pConfig)
         {
             string accessToken = Token.CheckToken(pConfig);
-            List<string> investigadores;
-            RestClient client = new(pConfig.GetConfigSGI() + "/api/sgicsp/grupos/" + id + "/investigadoresprincipalesmaxparticipacion");
-            client.AddDefaultHeader("Authorization", "Bearer " + accessToken);
+            List<string> investigadoresPrincipalesMax;
+            RestClient clientPrincipalesMax = new(pConfig.GetConfigSGI() + "/api/sgicsp/grupos/" + id + "/investigadoresprincipalesmaxparticipacion");
+            clientPrincipalesMax.AddDefaultHeader("Authorization", "Bearer " + accessToken);
             var request = new RestRequest(Method.GET);
-            IRestResponse response = Token.httpCall(client, request);
+            IRestResponse response = Token.httpCall(clientPrincipalesMax, request);
             try
             {
-                investigadores = JsonConvert.DeserializeObject<List<string>>(response.Content);
+                investigadoresPrincipalesMax = JsonConvert.DeserializeObject<List<string>>(response.Content);
             }
             catch (Exception)
             {
                 return null;
             }
-            return investigadores;
+            return investigadoresPrincipalesMax;
         }
 
         /// <summary>
@@ -206,20 +206,20 @@ namespace OAI_PMH.Services
         private static List<string> GetInvestigadoresPrincipales(string id, ConfigService pConfig)
         {
             string accessToken = Token.CheckToken(pConfig);
-            List<string> investigadores;
-            RestClient client = new(pConfig.GetConfigSGI() + "/api/sgicsp/grupos/" + id + "/investigadoresprincipales");
-            client.AddDefaultHeader("Authorization", "Bearer " + accessToken);
+            List<string> investigadoresPrincipales;
+            RestClient clientPrincipales = new(pConfig.GetConfigSGI() + "/api/sgicsp/grupos/" + id + "/investigadoresprincipales");
+            clientPrincipales.AddDefaultHeader("Authorization", "Bearer " + accessToken);
             var request = new RestRequest(Method.GET);
-            IRestResponse response = Token.httpCall(client, request);
+            IRestResponse responsePrincipales = Token.httpCall(clientPrincipales, request);
             try
             {
-                investigadores = JsonConvert.DeserializeObject<List<string>>(response.Content);
+                investigadoresPrincipales = JsonConvert.DeserializeObject<List<string>>(responsePrincipales.Content);
             }
             catch (Exception)
             {
                 return null;
             }
-            return investigadores;
+            return investigadoresPrincipales;
         }
 
         /// <summary>
