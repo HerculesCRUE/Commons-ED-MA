@@ -44,6 +44,7 @@ var cargarCVId = {
 	init: function () {
 		this.loadCVId();
 		this.printCVId();
+		this.printCVIdHomeEd();
 	},
 	loadCVId: function(){
 		var that=this;
@@ -59,9 +60,9 @@ var cargarCVId = {
 					that.CVId=data;
 					cvUrl = data;
 					that.printCVId();
+					that.printCVIdHomeEd();
                     var interval = setInterval(() => {
-                        if ($('#menuLateralUsuarioClonado #trabajo a.editcvPub').length > 0) { 
-                            that.printCVIdHomeEd();
+                        if ($('#menuLateralUsuarioClonado #trabajo a.editcvPub').length > 0) {                             
                             clearInterval(interval);
                         }
                     }, 100);
