@@ -11,11 +11,28 @@
         Notification notificacion = new Notification(fila);
         listaNotificaciones.Add(notificacion);
     }
-
+    int leidosNovedades = listaNotificaciones.Count(x => (x.read == "true") && x.pestanaNotificacion.Equals("p1") && (!string.IsNullOrEmpty(x.titulo) || !string.IsNullOrEmpty(x.mensaje)));
+    int leidosOtros = listaNotificaciones.Count(x => (x.read == "true") && x.pestanaNotificacion.Equals("otros") && (!string.IsNullOrEmpty(x.titulo) || !string.IsNullOrEmpty(x.mensaje)));    
     int numAlertasT = listaNotificaciones.Count(x => !string.IsNullOrEmpty(x.titulo) || !string.IsNullOrEmpty(x.mensaje));
     int numAlertas = listaNotificaciones.Count(x => x.pestanaNotificacion.Equals("p1") && (!string.IsNullOrEmpty(x.titulo) || !string.IsNullOrEmpty(x.mensaje)));
     int numAlertasOtras = listaNotificaciones.Count(x => x.pestanaNotificacion.Equals("otros") && (!string.IsNullOrEmpty(x.titulo) || !string.IsNullOrEmpty(x.mensaje)));
+    string notificacionesNuevas = numAlertas - leidosNovedades != 0 ? "nuevos" : "";
+    string notificacionesNuevasOtros = numAlertasOtras - leidosOtros != 0 ? "nuevos" : "";
 
+
+    @if (listaNotificaciones.FindAll(x => (x.read != "true") && string.IsNullOrEmpty(x.desencadenante)).Count > 0)
+    {
+        <script>
+            var url = url_servicio_externo + "ReadNotifications";
+            var data = [];
+            @foreach(var id in listaNotificaciones.FindAll(x => (x.read != "true")&& x.pestanaNotificacion.Equals("p1")).Select(x => x.id))
+            {
+              @:data.push("@id");
+            }
+            console.log(data);
+            $.post(url,{notificacionesID:data});
+        </script>
+    }
     <div class="col col-12 col-xl-12 col-contenido izquierda">
         <div class="wrapCol">
             <div class="header-contenido">
@@ -28,20 +45,20 @@
             <div class="tab-paneles-alertas">
                 <ul class="nav nav-tabs" id="navegacion-alertas" role="tablist">
                     <li class="nav-item" role="presentation">
-                        <a class="nav-link active" id="externas-tab" data-toggle="tab"
+                        <a class="nav-link active @notificacionesNuevas" id="externas-tab" data-toggle="tab"
                            href="#externas-panel" role="tab" aria-controls="externas-panel" aria-selected="false">
                             @Html.Translate("NOVEDADES_PUBLICACIONES_RO")
                             <span class="badge">
-                                @numAlertas
+                                @(numAlertas-@leidosNovedades)/@numAlertas
                             </span>
                         </a>
                     </li>
                     <li class="nav-item" role="presentation">
-                        <a class="nav-link" id="otras-tab" data-toggle="tab"
+                        <a class="nav-link @notificacionesNuevasOtros" id="otras-tab" data-toggle="tab"
                            href="#otras-panel" role="tab" aria-controls="otras-panel" aria-selected="true">
                             @Html.Translate("OTRAS_NOTIFICACIONES")
                             <span class="badge">
-                                @numAlertasOtras
+                                @(numAlertasOtras-@leidosOtros)/@numAlertasOtras
                             </span>
                         </a>
                     </li>
@@ -101,7 +118,20 @@
                             </div>
                         </div>
                     </div>
-                    
+                        @if (listaNotificaciones.FindAll(x => (x.read != "true") && !string.IsNullOrEmpty(x.desencadenante)).Count > 0)
+                            {
+                            <script>
+                                $("#otras-tab").one("show.bs.tab",(e)=>{
+                                    var url = url_servicio_externo + "ReadNotifications";
+                                    var data = [];
+                                    @foreach(var id in listaNotificaciones.FindAll(x => (x.read != "true") && !string.IsNullOrEmpty(x.desencadenante)).Select(x => x.id))
+                                        {
+                                        @:data.push("@id");
+                                        }
+                                    $.post(url,{notificacionesID:data});
+                                })
+                            </script>
+                        }
                 </div>
             </div>
         </div>
@@ -168,7 +198,7 @@
             }
             else
             {
-				string textoNotificacionSexenios=Html.Translate("NOTIFICACION_SEXENIOS");
+                string textoNotificacionSexenios=Html.Translate("NOTIFICACION_SEXENIOS");
                 return GetNotification(notification, Html.Translate(textoNotificacionSexenios));
             }
         }
@@ -180,18 +210,18 @@
             }
             else
             {
-				string textoNotificacionAcreditacion=Html.Translate("NOTIFICACION_ACREDITACION");
+                string textoNotificacionAcreditacion=Html.Translate("NOTIFICACION_ACREDITACION");
                 return GetNotification(notification, Html.Translate(textoNotificacionAcreditacion));
             }
         }
-		else if(notification.tipoNotificacion == "notifySexenios")
-		{
-			return GetNotification(notification, Html.Translate("NOTIFICACION_SEXENIOS_NOTIFY") + " <a target=blank class=\"a-alertas\" href=" + notification.mensaje + ">" + notification.mensaje + "</a>");
-		}
-		else if(notification.tipoNotificacion == "notifyAcreditaciones")
-		{
-			return GetNotification(notification, Html.Translate("NOTIFICACION_ACREDITACIONES_NOTIFY") + " <a target=blank class=\"a-alertas\" href=" + notification.mensaje + ">" + notification.mensaje + "</a>");
-		}
+        else if(notification.tipoNotificacion == "notifySexenios")
+        {
+            return GetNotification(notification, Html.Translate("NOTIFICACION_SEXENIOS_NOTIFY") + " <a target=blank class=\"a-alertas\" href=" + notification.mensaje + ">" + notification.mensaje + "</a>");
+        }
+        else if(notification.tipoNotificacion == "notifyAcreditaciones")
+        {
+            return GetNotification(notification, Html.Translate("NOTIFICACION_ACREDITACIONES_NOTIFY") + " <a target=blank class=\"a-alertas\" href=" + notification.mensaje + ">" + notification.mensaje + "</a>");
+        }
         else
         {
             if (notification.entidad != null && notification.entidad.Split('_').Length > 2 && notification.cv.Split('_').Length > 2)
@@ -268,6 +298,7 @@
         public string cvnCode { get; set; }
         public string tipoPublicacion { get; set; }
         public string seccionCV { get; set; }
+        public string read { get; set; }
 
         public Notification()
         {
@@ -285,7 +316,8 @@
             cv = "";
             cvnCode = "";
             tipoPublicacion = "";
-			seccionCV = "";
+            seccionCV = "";
+            read = "";
         }
 
         public Notification(System.Data.DataRow fila)
@@ -305,6 +337,7 @@
             this.cvnCode = fila["cvnCode"].ToString();
             this.tipoPublicacion = TipoPublicacion(fila["propiedadCV"].ToString());
             this.seccionCV = GetSeccionNotificationCvnCode(fila["cvnCode"].ToString());
+            this.read = fila["read"].ToString();
         }
 
         private string GetFecha(string fecha)
@@ -374,8 +407,3 @@
         }
     }
 }
-
-
-
-
-

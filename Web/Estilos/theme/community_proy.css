@@ -900,3 +900,9 @@ body.operativaRegistro.login main .panel-centrado .login_cas {
 .menuLateral.usuario .cabeceraUsuario img.imagen-usuario {
     height: 100%;
 }
+.tab-paneles-alertas .nav-tabs .nav-item .nav-link.active .badge{
+    background-color: #777 !important;
+}
+.tab-paneles-alertas .nav-tabs .nav-item .nav-link.nuevos .badge{
+    background-color: var(--c-error) !important;
+}
