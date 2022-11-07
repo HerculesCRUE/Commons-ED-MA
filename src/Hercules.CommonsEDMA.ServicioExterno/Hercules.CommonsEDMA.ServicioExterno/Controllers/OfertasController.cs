@@ -1,8 +1,6 @@
 ﻿using Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones;
 using Hercules.CommonsEDMA.ServicioExterno.Models.Offer;
-using Hercules.CommonsEDMA.ServicioExterno.Models.Graficas.DataGraficaAreasTags;
 using Microsoft.AspNetCore.Cors;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -27,7 +25,7 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers
         [HttpPost("GetThesaurus")]
         public IActionResult GetThesaurus([FromForm] List<string> listThesaurus, [FromForm] string lang = "es")
         {
-            AccionesOferta cluster = new AccionesOferta();
+            AccionesOferta cluster = new();
             Dictionary<string, List<ThesaurusItem>> datosThesaurus = cluster.GetListThesaurus(listThesaurus, lang);
 
             return Ok(datosThesaurus);
@@ -43,7 +41,7 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers
         [HttpPost("BorrarOferta")]
         public IActionResult BorrarOferta([FromForm] string pIdOfferId, [FromForm] Guid pIdGnossUser)
         {
-            AccionesOferta accionCluster = new AccionesOferta();
+            AccionesOferta accionCluster = new();
             bool borrado = accionCluster.BorrarOferta(pIdOfferId, pIdGnossUser);
 
             return Ok(borrado);
@@ -62,7 +60,7 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers
         [HttpPost("CambiarEstado")]
         public IActionResult CambiarEstado([FromForm] string pIdOfferId, [FromForm] string estado, [FromForm] string estadoActual, [FromForm] Guid pIdGnossUser, [FromForm] string texto = "")
         {
-            AccionesOferta accionCluster = new AccionesOferta();
+            AccionesOferta accionCluster = new();
             string cambiado = accionCluster.CambiarEstado(pIdOfferId, estado, estadoActual, pIdGnossUser, texto);
 
             return Ok(cambiado);
@@ -82,10 +80,10 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers
         {
 
             bool cambiado = true;
-            AccionesOferta accionCluster = new AccionesOferta();
+            AccionesOferta accionCluster = new();
             foreach (var pIdOfferId in pIdOfferIds)
             {
-                cambiado = cambiado && accionCluster.CambiarEstado(pIdOfferId.ToString(), estado, estadoActual, pIdGnossUser, texto) != String.Empty;
+                cambiado = cambiado && accionCluster.CambiarEstado(pIdOfferId.ToString(), estado, estadoActual, pIdGnossUser, texto) != string.Empty;
             }
 
             return Ok(cambiado);
@@ -99,7 +97,7 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers
         [HttpGet("LoadOffer")]
         public IActionResult LoadOffer([Required] string pIdOfertaId)
         {
-            AccionesOferta accionCluster = new AccionesOferta();
+            AccionesOferta accionCluster = new();
             Offer Oferta = accionCluster.LoadOffer(pIdOfertaId);
 
             return Ok(Oferta);
@@ -113,7 +111,7 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers
         [HttpGet("LoadUsersGroup")]
         public IActionResult LoadUsers([Required] string pIdUserId)
         {
-            AccionesOferta accionOferta = new AccionesOferta();
+            AccionesOferta accionOferta = new();
             return Ok(accionOferta.LoadUsers(pIdUserId));
         }
 
@@ -125,7 +123,7 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers
         [HttpPost("LoadLineResearchs")]
         public IActionResult LoadLineResearchs([FromForm] string[] pIdUsersId)
         {
-            AccionesOferta accionOferta = new AccionesOferta();
+            AccionesOferta accionOferta = new();
             return Ok(accionOferta.LoadLineResearchs(pIdUsersId));
         }
 
@@ -137,7 +135,7 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers
         [HttpGet("LoadFramingSectors")]
         public IActionResult LoadFramingSectors(string lang)
         {
-            AccionesOferta accionOferta = new AccionesOferta();
+            AccionesOferta accionOferta = new();
             return Ok(accionOferta.LoadFramingSectors(lang));
         }
 
@@ -149,7 +147,7 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers
         [HttpGet("LoadMatureStates")]
         public IActionResult LoadMatureStates(string lang)
         {
-            AccionesOferta accionOferta = new AccionesOferta();
+            AccionesOferta accionOferta = new();
             return Ok(accionOferta.LoadMatureStates(lang));
         }
 
@@ -163,7 +161,7 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers
         [Produces("application/json")]
         public IActionResult SaveOffer([FromForm] Guid pIdGnossUser, [FromForm] Offer oferta)
         {
-            AccionesOferta accionOferta = new AccionesOferta();
+            AccionesOferta accionOferta = new();
             return Ok(accionOferta.SaveOffer(pIdGnossUser, oferta));
         }
 
@@ -176,7 +174,7 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers
         [HttpPost("GetUserProfileInOffer")]
         public IActionResult GetUserProfileInOffer([FromForm] string pIdOfertaId, [FromForm] Guid userId)
         {
-            AccionesOferta accionOferta = new AccionesOferta();
+            AccionesOferta accionOferta = new();
             return Ok(accionOferta.CheckUpdateActionsOffer(pIdOfertaId, userId));
         }
 
@@ -188,7 +186,7 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers
         [HttpGet("CheckIfIsOtri")]
         public IActionResult CheckIfIsOtri([Required] Guid pIdGnossUser)
         {
-            AccionesOferta accionOferta = new AccionesOferta();
+            AccionesOferta accionOferta = new();
             return Ok(accionOferta.CheckIfIsOtri(pIdGnossUser));
         }
     }

@@ -3,7 +3,6 @@ using Gnoss.ApiWrapper.ApiModel;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using Gnoss.ApiWrapper;
 using System.Text;
 using System.Web;
@@ -36,7 +35,7 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Utilidades
 
         public static bool ModificarTriplesRecurso(ResourceApi pResourceApi, Guid pRecursoID, List<TriplesToModify> pTriples)
         {
-            List<TriplesToModify> triplesInsertar = new List<TriplesToModify>();
+            List<TriplesToModify> triplesInsertar = new();
 
             foreach (TriplesToModify triple in pTriples)
             {
@@ -56,7 +55,7 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Utilidades
                 }
             }
 
-            Dictionary<Guid, List<TriplesToModify>> dicTriplesModificar = new Dictionary<Guid, List<TriplesToModify>>();
+            Dictionary<Guid, List<TriplesToModify>> dicTriplesModificar = new();
             dicTriplesModificar.Add(pRecursoID, triplesInsertar);
             Dictionary<Guid, bool> dicInsertado = pResourceApi.ModifyPropertiesLoadedResources(dicTriplesModificar);
 
@@ -123,13 +122,13 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Utilidades
             }
 
             // Filtros de fechas.
-            List<string> filtrosFecha = new List<string>();
+            List<string> filtrosFecha = new();
             filtrosFecha.Add("dct:issued");
             filtrosFecha.Add("vivo:start");
             filtrosFecha.Add("vivo:end");
 
             // Filtros de enteros.
-            List<string> filtrosEnteros = new List<string>();
+            List<string> filtrosEnteros = new();
             filtrosEnteros.Add("roh:publicationsNumber");
             filtrosEnteros.Add("roh:projectsNumber");
             filtrosEnteros.Add("roh:publicationsNumber");
@@ -137,12 +136,12 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Utilidades
             filtrosEnteros.Add("roh:quartile");
 
             // Filtros de inversas.
-            Dictionary<string, int> filtrosReciprocos = new Dictionary<string, int>();
+            Dictionary<string, int> filtrosReciprocos = new();
             filtrosReciprocos.Add("foaf:member@@@roh:roleOf@@@roh:title", 2);
             filtrosReciprocos.Add("roh:membersGroup@@@roh:title", 1);
 
             //Filtros personalizados
-            Dictionary<string, string> filtrosPersonalizados = new Dictionary<string, string>();
+            Dictionary<string, string> filtrosPersonalizados = new();
             filtrosPersonalizados.Add("searchColaboradoresPorGrupo",
                 @$"
                     {{
@@ -504,7 +503,7 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Utilidades
 
             if (pDicFiltros != null && pDicFiltros.Count > 0)
             {
-                StringBuilder filtro = new StringBuilder();
+                StringBuilder filtro = new();
 
                 foreach (KeyValuePair<string, List<string>> item in pDicFiltros)
                 {
@@ -661,7 +660,7 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Utilidades
                 pParametros = pParametros.Trim().Trim('#');
                 if (!string.IsNullOrEmpty(pParametros))
                 {
-                    Dictionary<string, List<string>> dicFiltros = new Dictionary<string, List<string>>();
+                    Dictionary<string, List<string>> dicFiltros = new();
 
                     // Agregamos al diccionario los filtros.
                     foreach (string filtro in pParametros.Split(new string[] { "&" }, StringSplitOptions.RemoveEmptyEntries))
@@ -694,7 +693,7 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Utilidades
         /// <returns>Ancho de la línea en formate double.</returns>
         public static double CalcularGrosor(int pMax, int pColabo)
         {
-            return Math.Round(((double)pColabo / (double)pMax) * 10, 2);
+            return Math.Round((pColabo / (double)pMax) * 10, 2);
         }
 
         /// <summary>
@@ -716,7 +715,7 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Utilidades
         /// <returns>Lista con los colores.</returns>
         public static List<string> CrearListaColores(int pSize, string pColorHex)
         {
-            List<string> listaColores = new List<string>();
+            List<string> listaColores = new();
             for (int i = 0; i < pSize; i++)
             {
                 listaColores.Add(pColorHex);
@@ -807,7 +806,7 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Utilidades
 
             // Definimos la variable que va a contener los IDs de los elementos en formato url
             List<string> idsURL = new();
-            List<string> graphs = new() {nameOntology};
+            List<string> graphs = new() { nameOntology };
             if (ids != null)
             {
                 // Obtenemos las urls de los iDs cortos
@@ -872,13 +871,13 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Utilidades
         /// <returns>Diccionario con las listas de thesaurus.</returns>
         internal static bool GenerarNotificacion(ResourceApi mResourceApi, string idDDBB, string idPersonaFrom, string idPersonaTo, string tipo = "editOferta", string texto = "")
         {
-            ComplexOntologyResource recursoCargar = new ComplexOntologyResource();
+            ComplexOntologyResource recursoCargar = new();
 
             // Notificación de fin de la carga
             if (!string.IsNullOrEmpty(idPersonaTo))
             {
                 mResourceApi.ChangeOntoly("notification");
-                NotificationOntology.Notification notificacion = new NotificationOntology.Notification();
+                NotificationOntology.Notification notificacion = new();
                 notificacion.IdRoh_owner = idPersonaTo;
                 notificacion.IdRoh_trigger = idPersonaFrom;
                 notificacion.Roh_text = texto;
@@ -910,7 +909,7 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Utilidades
         /// <returns>Diccionario con las listas de thesaurus.</returns>
         internal static Dictionary<string, List<ThesaurusItem>> GetTesauros(ResourceApi mResourceApi, List<string> pListaTesauros, string lang = null)
         {
-            Dictionary<string, List<ThesaurusItem>> elementosTesauros = new Dictionary<string, List<ThesaurusItem>>();
+            Dictionary<string, List<ThesaurusItem>> elementosTesauros = new();
 
             foreach (string tesauro in pListaTesauros)
             {
@@ -954,7 +953,7 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Utilidades
         internal static List<string> LoadCurrentTerms(ResourceApi mResourceApi, List<string> terms, string ontology)
         {
 
-            string termsTxt = String.Join(',', terms.Select(e => "<" + e + ">"));
+            string termsTxt = string.Join(',', terms.Select(e => "<" + e + ">"));
 
             string select = "select ?o";
             string where = @$"where {{
@@ -966,7 +965,7 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Utilidades
                 }}
                 FILTER(?s IN ({termsTxt}))
             }}";
-            SparqlObject sparqlObject = mResourceApi.VirtuosoQueryMultipleGraph(select, where, new List<string> { ontology , "taxonomy" });
+            SparqlObject sparqlObject = mResourceApi.VirtuosoQueryMultipleGraph(select, where, new List<string> { ontology, "taxonomy" });
 
             List<string> termsRes = new();
 

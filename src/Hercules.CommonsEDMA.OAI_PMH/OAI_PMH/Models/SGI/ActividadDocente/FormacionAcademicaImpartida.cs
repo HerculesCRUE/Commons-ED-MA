@@ -1,5 +1,4 @@
 ﻿using OAI_PMH.Models.SGI.OrganicStructure;
-using System;
 
 namespace OAI_PMH.Models.SGI.ActividadDocente
 {
@@ -91,6 +90,6 @@ namespace OAI_PMH.Models.SGI.ActividadDocente
         /// <summary>
         /// Categoria profesional
         /// </summary>
-        public string CategoriaProfesional { get; set; }        
+        public string CategoriaProfesional { get; set; }
     }
 }

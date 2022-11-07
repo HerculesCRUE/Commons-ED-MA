@@ -1,5 +1,4 @@
-﻿using Gnoss.ApiWrapper;
-using Gnoss.ApiWrapper.ApiModel;
+﻿using Gnoss.ApiWrapper.ApiModel;
 using Hercules.CommonsEDMA.ServicioExterno.Controllers.Utilidades;
 using Hercules.CommonsEDMA.ServicioExterno.Models;
 using Hercules.CommonsEDMA.ServicioExterno.Models.Graficas.DataGraficaAreasTags;
@@ -7,7 +6,6 @@ using Hercules.CommonsEDMA.ServicioExterno.Models.Graficas.DataItemRelacion;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading;
 
 namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
 {
@@ -24,33 +22,10 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
         public DataGraficaAreasTags DatosGraficaAreasTematicas(string pId, string pType, string pAnioInicio, string pAnioFin)
         {
             string idGrafoBusqueda = UtilidadesAPI.ObtenerIdBusqueda(resourceApi, pId);
-            string filtroElemento = "";
-            switch (pType)
-            {
-                case "group":
-                    filtroElemento = $@"?documento roh:isProducedBy <{idGrafoBusqueda}>.";
-                    break;
-                case "person":
-                    filtroElemento = $@"?documento bibo:authorList ?lista. ";
-                    filtroElemento += $@"?lista rdf:member <{idGrafoBusqueda}>.";
-                    break;
-                case "project":
-                    filtroElemento = $@"?documento roh:project <{idGrafoBusqueda}>.";
-                    break;
-                default:
-                    throw new ArgumentException("No hay configuración para el tipo '" + pType + "'");
-            }
-            if (!string.IsNullOrEmpty(pAnioInicio))
-            {
-                filtroElemento += $@"?documento dct:issued ?fecha.";
-                filtroElemento += $@"FILTER(?fecha>={pAnioInicio}0000000000)";
-                if (!string.IsNullOrEmpty(pAnioFin))
-                {
-                    filtroElemento += $@"FILTER(?fecha<={int.Parse(pAnioFin) + 1}0000000000)";
-                }
-            }
+            string filtroElemento = GetFiltroElemento(pType, idGrafoBusqueda, pAnioInicio, pAnioFin);
 
-            Dictionary<string, int> dicResultados = new Dictionary<string, int>();
+
+            Dictionary<string, int> dicResultados = new();
             int numDocumentos = 0;
             {
                 //Nº de documentos por categoría
@@ -78,7 +53,7 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
                     {
                         string nombreCategoria = UtilidadesAPI.GetValorFilaSparqlObject(fila, "nombreCategoria");
                         int numCategoria = int.Parse(UtilidadesAPI.GetValorFilaSparqlObject(fila, "numCategorias"));
-                        dicResultados.Add(nombreCategoria + " (" + numCategoria +")", numCategoria);
+                        dicResultados.Add(nombreCategoria + " (" + numCategoria + ")", numCategoria);
                     }
                 }
             }
@@ -106,7 +81,7 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
             //Ordenar diccionario
             var dicionarioOrdenado = dicResultados.OrderByDescending(x => x.Value);
 
-            Dictionary<string, double> dicResultadosPorcentaje = new Dictionary<string, double>();
+            Dictionary<string, double> dicResultadosPorcentaje = new();
             foreach (KeyValuePair<string, int> item in dicionarioOrdenado)
             {
                 double porcentaje = Math.Round((double)(100 * item.Value) / numDocumentos, 2);
@@ -115,16 +90,45 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
 
             // Contruir el objeto de la gráfica.
             List<string> listaColores = UtilidadesAPI.CrearListaColores(dicionarioOrdenado.Count(), "#6cafe3");
-            Datasets datasets = new Datasets(dicResultadosPorcentaje.Values.ToList(), listaColores);
-            Models.Graficas.DataGraficaAreasTags.Data data = new Models.Graficas.DataGraficaAreasTags.Data(dicResultadosPorcentaje.Keys.ToList(), new List<Datasets> { datasets });
+            Datasets datasets = new(dicResultadosPorcentaje.Values.ToList(), listaColores);
+            Models.Graficas.DataGraficaAreasTags.Data data = new(dicResultadosPorcentaje.Keys.ToList(), new List<Datasets> { datasets });
 
             // Máximo.
-            x xAxes = new x(new Ticks(0, 100), new ScaleLabel(true, "Percentage"));
+            x xAxes = new(new Ticks(0, 100), new ScaleLabel(true, "Percentage"));
 
-            Options options = new Options("y", new Plugins(null, new Legend(false)), new Scales(xAxes));
-            DataGraficaAreasTags dataGrafica = new DataGraficaAreasTags("bar", data, options);
+            Options options = new("y", new Plugins(null, new Legend(false)), new Scales(xAxes));
+            DataGraficaAreasTags dataGrafica = new("bar", data, options);
 
             return dataGrafica;
+        }
+
+        private static string GetFiltroElemento(string pType, string idGrafoBusqueda, string pAnioInicio, string pAnioFin)
+        {
+            string filtroElemento;
+            switch (pType)
+            {
+                case "group":
+                    filtroElemento = $@"?documento roh:isProducedBy <{idGrafoBusqueda}>.";
+                    break;
+                case "person":
+                    filtroElemento = $@"?documento bibo:authorList ?lista. ?lista rdf:member <{idGrafoBusqueda}>.";
+                    break;
+                case "project":
+                    filtroElemento = $@"?documento roh:project <{idGrafoBusqueda}>.";
+                    break;
+                default:
+                    throw new ArgumentException("No hay configuración para el tipo '" + pType + "'");
+            }
+
+            if (!string.IsNullOrEmpty(pAnioInicio))
+            {
+                filtroElemento += $@"?documento dct:issued ?fecha.  FILTER(?fecha>={pAnioInicio}0000000000)";
+                if (!string.IsNullOrEmpty(pAnioFin))
+                {
+                    filtroElemento += $@"FILTER(?fecha<={int.Parse(pAnioFin) + 1}0000000000)";
+                }
+            }
+            return filtroElemento;
         }
 
         /// <summary>
@@ -139,41 +143,17 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
         public List<DataItemRelacion> DatosGraficaAreasTematicasArania(string pId, string pType, string pAnioInicio, string pAnioFin, int pNumAreas)
         {
             string idGrafoBusqueda = UtilidadesAPI.ObtenerIdBusqueda(resourceApi, pId);
-            string filtroElemento = "";
-            switch (pType)
-            {
-                case "group":
-                    filtroElemento = $@"?documento roh:isProducedBy <{idGrafoBusqueda}>.";
-                    break;
-                case "person":
-                    filtroElemento = $@"?documento bibo:authorList ?lista. ";
-                    filtroElemento += $@"?lista rdf:member <{idGrafoBusqueda}>.";
-                    break;
-                case "project":
-                    filtroElemento = $@"?documento roh:project <{idGrafoBusqueda}>.";
-                    break;
-                default:
-                    throw new ArgumentException("No hay configuración para el tipo '" + pType + "'");
-            }
-            if (!string.IsNullOrEmpty(pAnioInicio))
-            {
-                filtroElemento += $@"?documento dct:issued ?fecha.";
-                filtroElemento += $@"FILTER(?fecha>={pAnioInicio}0000000000)";
-                if (!string.IsNullOrEmpty(pAnioFin))
-                {
-                    filtroElemento += $@"FILTER(?fecha<={int.Parse(pAnioFin) + 1}0000000000)";
-                }
-            }
+            string filtroElemento = GetFiltroElemento(pType, idGrafoBusqueda, pAnioInicio, pAnioFin);
 
             //Nodos            
-            Dictionary<string, string> dicNodos = new Dictionary<string, string>();
+            Dictionary<string, string> dicNodos = new();
             //Relaciones
-            Dictionary<string, List<DataQueryRelaciones>> dicRelaciones = new Dictionary<string, List<DataQueryRelaciones>>();
+            Dictionary<string, List<DataQueryRelaciones>> dicRelaciones = new();
             //Respuesta
-            List<DataItemRelacion> items = new List<DataItemRelacion>();
+            List<DataItemRelacion> items = new();
 
-            Dictionary<string, List<string>> dicResultadosAreaRelacionAreas = new Dictionary<string, List<string>>();
-            Dictionary<string, int> scoreNodes = new Dictionary<string, int>();
+            Dictionary<string, List<string>> dicResultadosAreaRelacionAreas = new();
+            Dictionary<string, int> scoreNodes = new();
             {
                 string select = $"{mPrefijos} Select ?documento group_concat(?categoria;separator=\",\") as ?idCategorias";
                 string where = $@"  where
@@ -195,7 +175,7 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
                     foreach (Dictionary<string, SparqlObject.Data> fila in resultadoQuery.results.bindings)
                     {
                         string idCategorias = UtilidadesAPI.GetValorFilaSparqlObject(fila, "idCategorias");
-                        HashSet<string> categorias = new HashSet<string>(idCategorias.Split(new string[] { "," }, StringSplitOptions.RemoveEmptyEntries));
+                        HashSet<string> categorias = new(idCategorias.Split(new string[] { "," }, StringSplitOptions.RemoveEmptyEntries));
 
                         foreach (string categoria in categorias)
                         {
@@ -229,10 +209,10 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
             }
 
             //Creamos los nodos y las relaciones en función de pNumAreas
-            Dictionary<string, int> numRelaciones = new Dictionary<string, int>();
+            Dictionary<string, int> numRelaciones = new();
             foreach (KeyValuePair<string, List<DataQueryRelaciones>> sujeto in dicRelaciones)
             {
-                if(!numRelaciones.ContainsKey(sujeto.Key))
+                if (!numRelaciones.ContainsKey(sujeto.Key))
                 {
                     numRelaciones.Add(sujeto.Key, 0);
                 }
@@ -244,13 +224,13 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
                         {
                             numRelaciones.Add(relaciones2.idRelacionado, 0);
                         }
-                        numRelaciones[sujeto.Key]+= relaciones2.numVeces;
+                        numRelaciones[sujeto.Key] += relaciones2.numVeces;
                         numRelaciones[relaciones2.idRelacionado] += relaciones2.numVeces;
                     }
                 }
             }
             List<string> itemsSeleccionados = numRelaciones.OrderByDescending(x => x.Value).ToDictionary(x => x.Key, x => x.Value).Keys.Distinct().ToList();
-            if(itemsSeleccionados.Count()> pNumAreas)
+            if (itemsSeleccionados.Count() > pNumAreas)
             {
                 itemsSeleccionados = itemsSeleccionados.GetRange(0, pNumAreas);
             }
@@ -286,13 +266,13 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
                     foreach (KeyValuePair<string, string> nodo in dicNodos)
                     {
                         string clave = nodo.Key;
-                        Models.Graficas.DataItemRelacion.Data data = new Models.Graficas.DataItemRelacion.Data(clave, nodo.Value, null, null, null, "nodes", Models.Graficas.DataItemRelacion.Data.Type.icon_area);
+                        Models.Graficas.DataItemRelacion.Data data = new(clave, nodo.Value, null, null, null, "nodes", Models.Graficas.DataItemRelacion.Data.Type.icon_area);
                         if (scoreNodes.ContainsKey(clave))
                         {
                             data.score = scoreNodes[clave];
                             data.name = data.name + " (" + data.score + ")";
                         }
-                        DataItemRelacion dataColabo = new DataItemRelacion(data, true, true);
+                        DataItemRelacion dataColabo = new(data, true, true);
                         items.Add(dataColabo);
                     }
                 }
@@ -311,8 +291,8 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
                                     if (itemsSeleccionados.Contains(relaciones2.idRelacionado))
                                     {
                                         string id = $@"{sujeto.Key}~{relaciones.nombreRelacion}~{relaciones2.idRelacionado}~{relaciones2.numVeces}";
-                                        Models.Graficas.DataItemRelacion.Data data = new Models.Graficas.DataItemRelacion.Data(id, relaciones.nombreRelacion, sujeto.Key, relaciones2.idRelacionado, UtilidadesAPI.CalcularGrosor(maximasRelaciones, relaciones2.numVeces), "edges", Models.Graficas.DataItemRelacion.Data.Type.relation_document);
-                                        DataItemRelacion dataColabo = new DataItemRelacion(data, null, null);
+                                        Models.Graficas.DataItemRelacion.Data data = new(id, relaciones.nombreRelacion, sujeto.Key, relaciones2.idRelacionado, UtilidadesAPI.CalcularGrosor(maximasRelaciones, relaciones2.numVeces), "edges", Models.Graficas.DataItemRelacion.Data.Type.relation_document);
+                                        DataItemRelacion dataColabo = new(data, null, null);
                                         items.Add(dataColabo);
                                     }
                                 }

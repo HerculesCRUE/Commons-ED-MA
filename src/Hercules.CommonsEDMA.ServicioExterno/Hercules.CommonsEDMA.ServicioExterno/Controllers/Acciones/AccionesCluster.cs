@@ -1,22 +1,17 @@
-﻿using Gnoss.ApiWrapper;
-using Gnoss.ApiWrapper.ApiModel;
+﻿using Gnoss.ApiWrapper.ApiModel;
 using Gnoss.ApiWrapper.Model;
 using Hercules.CommonsEDMA.ServicioExterno.Models.Cluster;
 using ClusterOntology;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using static Hercules.CommonsEDMA.ServicioExterno.Models.Cluster.Cluster;
 using Hercules.CommonsEDMA.ServicioExterno.Models;
 using Hercules.CommonsEDMA.ServicioExterno.Models.Graficas.DataItemRelacion;
 using Hercules.CommonsEDMA.ServicioExterno.Controllers.Utilidades;
 using Hercules.CommonsEDMA.ServicioExterno.Models.Graficas.DataGraficaAreasTags;
 using Microsoft.AspNetCore.Cors;
-using System.Threading;
 
 namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
 {
@@ -33,7 +28,7 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
         public Dictionary<string, List<ThesaurusItem>> GetListThesaurus(string listadoCluster)
         {
 
-            List<string> thesaurusTypes = new List<string>() { "researcharea" };
+            List<string> thesaurusTypes = new() { "researcharea" };
 
             try
             {
@@ -84,7 +79,7 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
             {
                 // Creando el objeto del cluster
                 // Creando las categorías
-                List<CategoryPath> categorias = new List<CategoryPath>();
+                List<CategoryPath> categorias = new();
                 categorias.Add(new CategoryPath() { IdsRoh_categoryNode = cluster.terms });
 
                 List<ClusterPerfil> listClusterPerfil = new();
@@ -138,7 +133,7 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
                         // Create the list of profiles
                         listClusterPerfil = cluster.profiles.Select(e =>
                         {
-                            List<string> theUsersP = new List<string>();
+                            List<string> theUsersP = new();
                             if (e.users != null)
                             {
                                 theUsersP = e.users.Select(x => relationIDs.ContainsKey(("http://gnoss.com/" + x.shortUserID)) ? relationIDs[("http://gnoss.com/" + x.shortUserID)] : "http://gnoss.com/" + x.shortUserID).ToList();
@@ -183,9 +178,9 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
                     string[] recursoSplit = idRecurso.Split('_');
 
                     // Modificación.
-                    ComplexOntologyResource resource = cRsource.ToGnossApiResource(resourceApi, null, new Guid(recursoSplit[recursoSplit.Length - 2]), new Guid(recursoSplit[recursoSplit.Length - 1]));
+                    ComplexOntologyResource resourceCluster = cRsource.ToGnossApiResource(resourceApi, null, new Guid(recursoSplit[recursoSplit.Length - 2]), new Guid(recursoSplit[recursoSplit.Length - 1]));
                     int numIntentos = 0;
-                    while (!resource.Modified)
+                    while (!resourceCluster.Modified)
                     {
                         numIntentos++;
                         if (numIntentos > MAX_INTENTOS)
@@ -193,25 +188,25 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
                             break;
                         }
 
-                        resourceApi.ModifyComplexOntologyResource(resource, false, false);
-                        uploadedR = resource.Modified;
+                        resourceApi.ModifyComplexOntologyResource(resourceCluster, false, false);
+                        uploadedR = resourceCluster.Modified;
                     }
 
                 }
                 else
                 {
                     // Inserción.
-                    ComplexOntologyResource resource = cRsource.ToGnossApiResource(resourceApi, null);
+                    ComplexOntologyResource resourceCluster = cRsource.ToGnossApiResource(resourceApi, null);
                     int numIntentos = 0;
-                    while (!resource.Uploaded)
+                    while (!resourceCluster.Uploaded)
                     {
                         numIntentos++;
                         if (numIntentos > MAX_INTENTOS)
                         {
                             break;
                         }
-                        idRecurso = resourceApi.LoadComplexSemanticResource(resource, false, true);
-                        uploadedR = resource.Uploaded;
+                        idRecurso = resourceApi.LoadComplexSemanticResource(resourceCluster, false, true);
+                        uploadedR = resourceCluster.Uploaded;
                     }
                 }
             }
@@ -429,7 +424,7 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
                     // Carga los datos en el objeto
                     sparqlObject.results.bindings.ForEach(e =>
                     {
-                        List<string> infoList = new List<string>();
+                        List<string> infoList = new();
                         if (e.ContainsKey("hasPosition"))
                         {
                             infoList.Add(e["hasPosition"].value);
@@ -474,11 +469,11 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
         public Dictionary<string, Dictionary<string, ScoreCluster>> LoadProfiles(Models.Cluster.Cluster pDataCluster, List<string> pPersons)
         {
             //ID persona/ID perfil/score
-            Dictionary<string, Dictionary<string, ScoreCluster>> respuesta = new Dictionary<string, Dictionary<string, ScoreCluster>>();
+            Dictionary<string, Dictionary<string, ScoreCluster>> respuesta = new();
 
-            List<string> filtrosPerfiles = new List<string>();
-            List<string> filtrosPerfilesTerms = new List<string>();
-            List<string> filtrosPerfilesTags = new List<string>();
+            List<string> filtrosPerfiles = new();
+            List<string> filtrosPerfilesTerms = new();
+            List<string> filtrosPerfilesTags = new();
 
             // Genera la consulta para cada perfil
             foreach (PerfilCluster perfilCluster in pDataCluster.profiles)
@@ -724,7 +719,7 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
         /// <param name="userId">Id del usuario</param>
         /// <param name="loadResearchers">Booleano que determina si cargamos los investigadores de cada perfil</param>
         /// <returns>Diccionario con los datos necesarios para cada perfil.</returns>
-        public List<Models.Cluster.Cluster> loadSavedProfiles(Guid userId, bool loadResearchers = false)
+        public List<Models.Cluster.Cluster> LoadSavedProfiles(Guid userId, bool loadResearchers = false)
         {
             // Listado de clusters para rellenar.
             List<Models.Cluster.Cluster> clusterList = new();
@@ -779,17 +774,17 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
             sparqlObject.results.bindings.ForEach(e =>
             {
                 // Obtiene un nuevo perfil
-                PerfilCluster profile = new PerfilCluster();
+                PerfilCluster profile = new();
                 profile.terms = new();
                 profile.tags = new();
                 profile.users = new();
                 // Añade las areas temáticas y los descriptores específicos
 
-                if (e["knowledgeAreaGroup"].value != String.Empty)
+                if (e["knowledgeAreaGroup"].value != string.Empty)
                 {
                     profile.terms = e["knowledgeAreaGroup"].value.Split(",").ToList();
                 }
-                if (e["freeTextKeywordGroup"].value != String.Empty)
+                if (e["freeTextKeywordGroup"].value != string.Empty)
                 {
                     profile.tags = e["freeTextKeywordGroup"].value.Split(",").ToList();
                 }
@@ -809,8 +804,8 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
                     listIdsClusters.Add(e["cluster"].value);
 
                     // Obtengo las areas de conocimiento del cluster
-                    List<string> clusterTerms = new List<string>();
-                    if (e["clKnowledgeAreaGroup"].value != String.Empty)
+                    List<string> clusterTerms = new();
+                    if (e["clKnowledgeAreaGroup"].value != string.Empty)
                     {
                         clusterTerms = e["clKnowledgeAreaGroup"].value.Split(",").ToList();
                     }
@@ -820,13 +815,13 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
                     // 3. Añade el cluster creado al listado de clusters
                     try
                     {
-                        Models.Cluster.Cluster cluster = new Models.Cluster.Cluster()
+                        Models.Cluster.Cluster cluster = new()
                         {
-                            name = e.ContainsKey("titleCluster") ? e["titleCluster"].value : String.Empty,
+                            name = e.ContainsKey("titleCluster") ? e["titleCluster"].value : string.Empty,
                             profiles = new(),
-                            entityID = e.ContainsKey("cluster") ? e["cluster"].value : String.Empty,
-                            description = e.ContainsKey("description") ? e["description"].value : String.Empty,
-                            fecha = e.ContainsKey("issued") ? e["issued"].value : String.Empty,
+                            entityID = e.ContainsKey("cluster") ? e["cluster"].value : string.Empty,
+                            description = e.ContainsKey("description") ? e["description"].value : string.Empty,
+                            fecha = e.ContainsKey("issued") ? e["issued"].value : string.Empty,
                             terms = clusterTerms
                         };
                         cluster.profiles.Add(profile);
@@ -851,7 +846,7 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
 
                 var listPerfiles = clusterList.SelectMany(e => e.profiles).ToList();
 
-                var listUserProfiles = loadUsersProfiles(listPerfiles.Select(e => e.entityID).ToList());
+                var listUserProfiles = LoadUsersProfiles(listPerfiles.Select(e => e.entityID).ToList());
 
                 listPerfiles.ForEach(e =>
                 {
@@ -885,7 +880,7 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
             //Ordenar diccionario
             var dicionarioOrdenado = dicResultados.OrderByDescending(x => x.Value);
 
-            Dictionary<string, double> dicResultadosPorcentaje = new Dictionary<string, double>();
+            Dictionary<string, double> dicResultadosPorcentaje = new();
             foreach (KeyValuePair<string, int> item in dicionarioOrdenado)
             {
                 double porcentaje = Math.Round((double)(100 * item.Value) / numDocumentos, 2);
@@ -894,14 +889,14 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
 
             // Contruir el objeto de la gráfica.
             List<string> listaColores = UtilidadesAPI.CrearListaColores(dicionarioOrdenado.Count(), "#6cafe3");
-            Datasets datasets = new Datasets(dicResultadosPorcentaje.Values.ToList(), listaColores);
-            Models.Graficas.DataGraficaAreasTags.Data data = new Models.Graficas.DataGraficaAreasTags.Data(dicResultadosPorcentaje.Keys.ToList(), new List<Datasets> { datasets });
+            Datasets datasets = new(dicResultadosPorcentaje.Values.ToList(), listaColores);
+            Models.Graficas.DataGraficaAreasTags.Data data = new(dicResultadosPorcentaje.Keys.ToList(), new List<Datasets> { datasets });
 
             // Máximo.
-            x xAxes = new x(new Ticks(0, 100), new ScaleLabel(true, "Percentage"));
+            x xAxes = new(new Ticks(0, 100), new ScaleLabel(true, "Percentage"));
 
-            Options options = new Options("y", new Plugins(null, new Legend(false)), new Scales(xAxes));
-            DataGraficaAreasTags dataGrafica = new DataGraficaAreasTags("bar", data, options);
+            Options options = new("y", new Plugins(null, new Legend(false)), new Scales(xAxes));
+            DataGraficaAreasTags dataGrafica = new("bar", data, options);
 
             return dataGrafica;
         }
@@ -976,7 +971,7 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
             {
                 colaboradores = new List<string>();
             }
-            List<string> listSeleccionados = new List<string>();
+            List<string> listSeleccionados = new();
             if (pCluster != null && pCluster.profiles != null)
             {
                 foreach (PerfilCluster perfilCluster in pCluster.profiles)
@@ -994,11 +989,11 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
             colaboradores = colaboradores.Distinct().ToList();
 
             //Nodos            
-            Dictionary<string, string> dicNodos = new Dictionary<string, string>();
+            Dictionary<string, string> dicNodos = new();
             //Relaciones
-            Dictionary<string, List<DataQueryRelaciones>> dicRelaciones = new Dictionary<string, List<DataQueryRelaciones>>();
+            Dictionary<string, List<DataQueryRelaciones>> dicRelaciones = new();
             //Respuesta
-            List<DataItemRelacion> items = new List<DataItemRelacion>();
+            List<DataItemRelacion> items = new();
 
             if (colaboradores.Count > 0)
             {
@@ -1039,8 +1034,8 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
                         {
                             type = Models.Graficas.DataItemRelacion.Data.Type.icon_ip;
                         }
-                        Models.Graficas.DataItemRelacion.Data data = new Models.Graficas.DataItemRelacion.Data(clave, nodo.Value, null, null, null, "nodes", type);
-                        DataItemRelacion dataColabo = new DataItemRelacion(data, true, true);
+                        Models.Graficas.DataItemRelacion.Data data = new(clave, nodo.Value, null, null, null, "nodes", type);
+                        DataItemRelacion dataColabo = new(data, true, true);
                         items.Add(dataColabo);
                     }
                 }
@@ -1064,8 +1059,8 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
                                 {
                                     type = Models.Graficas.DataItemRelacion.Data.Type.relation_document;
                                 }
-                                Models.Graficas.DataItemRelacion.Data data = new Models.Graficas.DataItemRelacion.Data(id, relaciones.nombreRelacion, sujeto.Key, relaciones2.idRelacionado, UtilidadesAPI.CalcularGrosor(maximasRelaciones, relaciones2.numVeces), "edges", type);
-                                DataItemRelacion dataColabo = new DataItemRelacion(data, null, null);
+                                Models.Graficas.DataItemRelacion.Data data = new(id, relaciones.nombreRelacion, sujeto.Key, relaciones2.idRelacionado, UtilidadesAPI.CalcularGrosor(maximasRelaciones, relaciones2.numVeces), "edges", type);
+                                DataItemRelacion dataColabo = new(data, null, null);
                                 items.Add(dataColabo);
                             }
                         }
@@ -1155,7 +1150,7 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
         /// </summary>
         /// <param name="pClusterId">Identificador del cluster.</param>
         /// <returns>Listado de etiquetas de resultado.</returns>
-        public List<string> memberListFromCluser(string pClusterId)
+        public List<string> MemberListFromCluser(string pClusterId)
         {
             string select = "SELECT DISTINCT ?user";
             string where = $@"WHERE{{
@@ -1176,7 +1171,7 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
             List<string> resultados = sparqlObjectAux.results.bindings.Select(x => x["user"].value).Distinct().ToList();
             return resultados;
         }
-        public string getOwnerFromCluser(string pClusterId)
+        public string GetOwnerFromCluser(string pClusterId)
         {
 
             string select = "SELECT DISTINCT ?user ";
@@ -1245,7 +1240,7 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
         /// Obtiene los datos de los investigadores de los perfiles indicados.
         /// </summary>
         /// <returns>Listado de los ids de los perfiles sobre los que se van a cargar los investigadores.</returns>
-        private static List<Tuple<string, PerfilCluster.UserCluster>> loadUsersProfiles(List<string> listProfilesIds)
+        private static List<Tuple<string, PerfilCluster.UserCluster>> LoadUsersProfiles(List<string> listProfilesIds)
         {
             // Creamos la variable para cargar los investigadores y el id del perfil al que pertenece 
             List<Tuple<string, PerfilCluster.UserCluster>> result = new();
@@ -1287,7 +1282,7 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
             // Carga los datos en el objeto
             sparqlObject.results.bindings.ForEach(e =>
             {
-                List<string> infoList = new List<string>();
+                List<string> infoList = new();
                 if (e.ContainsKey("hasPosition"))
                 {
                     infoList.Add(e["hasPosition"].value);

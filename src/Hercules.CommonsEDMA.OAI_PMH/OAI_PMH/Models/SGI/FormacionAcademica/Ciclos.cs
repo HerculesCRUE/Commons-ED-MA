@@ -47,7 +47,7 @@ namespace OAI_PMH.Models.SGI.FormacionAcademica
         /// <summary>
         /// Homologación del titulo
         /// </summary>
-        public bool? TituloHomologado { get;set; }
+        public bool? TituloHomologado { get; set; }
         /// <summary>
         ///  Fecha de la homologación
         /// </summary>

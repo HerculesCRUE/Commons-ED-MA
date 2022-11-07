@@ -1,16 +1,12 @@
-﻿using Gnoss.ApiWrapper;
-using Gnoss.ApiWrapper.ApiModel;
+﻿using Gnoss.ApiWrapper.ApiModel;
 using Gnoss.ApiWrapper.Model;
 using Hercules.CommonsEDMA.ServicioExterno.Models.Offer;
-using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using Hercules.CommonsEDMA.ServicioExterno.Controllers.Utilidades;
 using Microsoft.AspNetCore.Cors;
 using Hercules.CommonsEDMA.ServicioExterno.Models.Cluster;
-using System.Threading;
 
 namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
 {
@@ -18,8 +14,8 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
     public class AccionesOferta : GnossGetMainResourceApiDataBase
     {
         #region --- Constantes   
-        private static string[] listTagsNotForvidden = new string[] { "<ol>", "<li>", "<b>", "<i>", "<u>", "<ul>", "<strike>", "<blockquote>", "<div>", "<hr>", "</ol>", "</li>", "</b>", "</i>", "</u>", "</ul>", "</strike>", "</blockquote>", "</div>", "<br/>" };
-        private static string[] listTagsAttrNotForvidden = new string[] { "style" };
+        private static readonly string[] listTagsNotForvidden = new string[] { "<ol>", "<li>", "<b>", "<i>", "<u>", "<ul>", "<strike>", "<blockquote>", "<div>", "<hr>", "</ol>", "</li>", "</b>", "</i>", "</u>", "</ul>", "</strike>", "</blockquote>", "</div>", "<br/>" };
+        private static readonly string[] listTagsAttrNotForvidden = new string[] { "style" };
 
         private enum TipoUser
         {
@@ -119,7 +115,7 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
                 userGnossId = e["s"].value;
                 try
                 {
-                    bool.TryParse(e["isOtriManager"].value, out isOtriManager);
+                    _ = bool.TryParse(e["isOtriManager"].value, out isOtriManager);
                 }
                 catch (Exception ex)
                 {
@@ -190,12 +186,12 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
                     // Modifico el estado
                     try
                     {
-                        Dictionary<Guid, List<TriplesToModify>> dicModificacion = new Dictionary<Guid, List<TriplesToModify>>();
-                        List<TriplesToModify> listaTriplesModificacion = new List<TriplesToModify>();
+                        Dictionary<Guid, List<TriplesToModify>> dicModificacion = new();
+                        List<TriplesToModify> listaTriplesModificacion = new();
 
 
                         // Modificación (Triples).
-                        TriplesToModify triple = new TriplesToModify();
+                        TriplesToModify triple = new();
                         triple.Predicate = "http://www.schema.org/availability";
                         triple.NewValue = nuevoEstado;
                         triple.OldValue = estadoActual;
@@ -217,7 +213,7 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
                     // Enviamos las notifiaciones que implican texto al creador de la oferta
                     if (texto != "" && longsId != null && oferta != null)
                     {
-                        texto = (nuevoEstado != estadoActual) ? "Nuevo estado de la oferta " + getEstado(nuevoEstado).ToString() + " " + texto : "Tienes un mensaje: " + texto;
+                        texto = (nuevoEstado != estadoActual) ? "Nuevo estado de la oferta " + GetEstado(nuevoEstado).ToString() + " " + texto : "Tienes un mensaje: " + texto;
                         UtilidadesAPI.GenerarNotificacion(resourceApi, idRecurso, userGnossId, oferta.creatorId, "editOferta", texto);
                     }
 
@@ -303,7 +299,7 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
 
                 FILTER(?idGnoss = <http://gnoss/{userGUID.ToString().ToUpper()}>)
             }}";
-            SparqlObject sparqlObject = resourceApi.VirtuosoQueryMultipleGraph(select, where,new List<string> { "person","organization","group","department","document" });
+            SparqlObject sparqlObject = resourceApi.VirtuosoQueryMultipleGraph(select, where, new List<string> { "person", "organization", "group", "department", "document" });
 
 
             // Obtiene los datos de la consulta y rellena el diccionario de respuesta con los datos de cada investigador.
@@ -314,7 +310,7 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
                 {
                     string person = fila["person"].value.Replace("http://gnoss/", "").ToLower();
 
-                    Guid guid = new Guid(person.Split('_')[1]);
+                    Guid guid = new(person.Split('_')[1]);
                     string name = fila["name"].value;
                     string groups = fila.ContainsKey("groups") ? fila["groups"].value : null;
                     string organization = fila.ContainsKey("tituloOrg") ? fila["tituloOrg"].value : null;
@@ -323,7 +319,7 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
                     // Número de publicaciones totales, intenta convertirlo en entero
                     string numDoc = fila.ContainsKey("numDoc") ? fila["numDoc"].value : null;
                     int numPublicacionesTotal = 0;
-                    int.TryParse(fila["numDoc"].value, out numPublicacionesTotal);
+                    _ = int.TryParse(fila["numDoc"].value, out numPublicacionesTotal);
 
                     respuesta.Add(guid.ToString(), new UsersOffer()
                     {
@@ -459,7 +455,7 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
                         }
 
                     }
-                    catch (Exception ex) 
+                    catch (Exception ex)
                     {
                         resourceApi.Log.Error("Excepcion: " + ex.Message);
                     }
@@ -666,7 +662,7 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
         /// <param name="pIdOfertaId">Identificador del cluster</param>
         /// <param name="obtenerTeaser">Booleano opcional que le indica si se obtienen datos extras para la oferta</param>
         /// <returns>Diccionario con las listas de thesaurus.</returns>
-        internal Models.Offer.Offer LoadOffer(string pIdOfertaId, bool obtenerTeaser = true)
+        internal Offer LoadOffer(string pIdOfertaId, bool obtenerTeaser = true)
         {
             // Obtengo el ID largo si el ID es un GUID
             Guid guid = Guid.Empty;
@@ -687,7 +683,7 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
             SparqlObject sparqlObject = resourceApi.VirtuosoQuery(select, where, "offer");
 
             // Inicizalizamos el modelo del Cluster para devolver
-            Models.Offer.Offer pDataOffer = new();
+            Offer pDataOffer = new();
             pDataOffer.lineResearchs = new();
             pDataOffer.tags = new();
             pDataOffer.areaProcedencia = new();
@@ -714,7 +710,7 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
                         {
                             pDataOffer.researchers.Add(UtilidadesAPI.ObtenerIdCorto(resourceApi, e["o"].value), new UsersOffer() { id = e["o"].value, shortId = UtilidadesAPI.ObtenerIdCorto(resourceApi, e["o"].value) });
                         }
-                        catch (Exception ex) 
+                        catch (Exception ex)
                         {
                             resourceApi.Log.Error("Excepcion: " + ex.Message);
                         }
@@ -1035,7 +1031,7 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
                     // Obtenemos el listado de "padres" del teshauro
                     List<List<string>> resultsAP = GetParentTeshaurusParents(oferta.areaProcedencia.Keys.ToList());
                     // Añadimos los objetos de las taxonomías correctos
-                    List<OfferOntology.CategoryPath> areasprocedencia = new List<OfferOntology.CategoryPath>();
+                    List<OfferOntology.CategoryPath> areasprocedencia = new();
                     foreach (var res in resultsAP)
                     {
                         areasprocedencia.Add(new OfferOntology.CategoryPath() { IdsRoh_categoryNode = res });
@@ -1045,7 +1041,7 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
                     // Obtenemos el listado de "padres" del teshauro
                     List<List<string>> resultsSA = GetParentTeshaurusParents(oferta.sectorAplicacion.Keys.ToList());
                     // Añadimos los objetos de las taxonomías correctos
-                    List<OfferOntology.CategoryPath> sectoresaplicacion = new List<OfferOntology.CategoryPath>();
+                    List<OfferOntology.CategoryPath> sectoresaplicacion = new();
                     foreach (var res in resultsSA)
                     {
                         sectoresaplicacion.Add(new OfferOntology.CategoryPath() { IdsRoh_categoryNode = res });
@@ -1153,14 +1149,14 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
 
                     try
                     {
-                        sparqlObject = resourceApi.VirtuosoQueryMultipleGraph(select, where, new List<string> { "offer" ," person", "offerstate" } );
+                        sparqlObject = resourceApi.VirtuosoQueryMultipleGraph(select, where, new List<string> { "offer", " person", "offerstate" });
 
                         sparqlObject.results.bindings.ForEach(e =>
                         {
 
                             //Use of DateTime.ParseExact()
                             // Convert the date into DateTime object
-                            DateTime DateObject = new DateTime();
+                            DateTime DateObject = new();
                             try
                             {
                                 DateObject = DateTime.ParseExact(e["validFrom"].value, "yyyyMMddHHmmss", null);
@@ -1197,9 +1193,9 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
                     string[] recursoSplit = idRecurso.Split('_');
 
                     // Modificación.
-                    ComplexOntologyResource resource = cRsource.ToGnossApiResource(resourceApi, null, new Guid(recursoSplit[recursoSplit.Length - 2]), new Guid(recursoSplit[recursoSplit.Length - 1]));
+                    ComplexOntologyResource resourceOfertas = cRsource.ToGnossApiResource(resourceApi, null, new Guid(recursoSplit[recursoSplit.Length - 2]), new Guid(recursoSplit[recursoSplit.Length - 1]));
                     int numIntentos = 0;
-                    while (!resource.Modified)
+                    while (!resourceOfertas.Modified)
                     {
                         numIntentos++;
                         if (numIntentos > MAX_INTENTOS)
@@ -1207,25 +1203,25 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
                             break;
                         }
 
-                        resourceApi.ModifyComplexOntologyResource(resource, false, false);
-                        uploadedR = resource.Modified;
+                        resourceApi.ModifyComplexOntologyResource(resourceOfertas, false, false);
+                        uploadedR = resourceOfertas.Modified;
                     }
 
                 }
                 else
                 {
                     // Inserción.
-                    ComplexOntologyResource resource = cRsource.ToGnossApiResource(resourceApi, null);
+                    ComplexOntologyResource resourceOfertas = cRsource.ToGnossApiResource(resourceApi, null);
                     int numIntentos = 0;
-                    while (!resource.Uploaded)
+                    while (!resourceOfertas.Uploaded)
                     {
                         numIntentos++;
                         if (numIntentos > MAX_INTENTOS)
                         {
                             break;
                         }
-                        idRecurso = resourceApi.LoadComplexSemanticResource(resource, false, true);
-                        uploadedR = resource.Uploaded;
+                        idRecurso = resourceApi.LoadComplexSemanticResource(resourceOfertas, false, true);
+                        uploadedR = resourceOfertas.Uploaded;
                     }
                 }
             }
@@ -1247,7 +1243,7 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
         /// <param name="ids">Listado de investigadores.</param>
         /// <param name="isLongIds">Booleano que determina si los Ids son Ids largos o cortos.</param>
         /// <returns>relación entre el guid y un objeto de un usuario (resumido).</returns>
-        internal Dictionary<Guid, UsersOffer> GetUsersTeaser(List<string> ids, bool isLongIds = true)
+        internal static Dictionary<Guid, UsersOffer> GetUsersTeaser(List<string> ids, bool isLongIds = true)
         {
 
             Dictionary<Guid, UsersOffer> result = new();
@@ -1302,7 +1298,7 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
             }}";
 
 
-            SparqlObject sparqlObject = resourceApi.VirtuosoQueryMultipleGraph(select, where, new List<string> { "person" ,"document", "project", "organization" , "department" });
+            SparqlObject sparqlObject = resourceApi.VirtuosoQueryMultipleGraph(select, where, new List<string> { "person", "document", "project", "organization", "department" });
 
 
             // Carga los datos en el objeto
@@ -1324,7 +1320,8 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
 
                     });
                 }
-                catch (Exception ext) { 
+                catch (Exception ext)
+                {
                     throw new ArgumentException("Ha habido un error al procesar los datos de los usuarios: " + ext.Message);
 
                 }
@@ -1344,7 +1341,7 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
         /// <param name="ids">Listado (Ids) de los documentos.</param>
         /// <param name="isLongIds">Booleano que determina si los Ids son Ids largos o cortos.</param>
         /// <returns>relación entre el guid y el objeto de los documentos correspondientes (resumido).</returns>
-        internal Dictionary<Guid, DocumentsOffer> GetDocumentsTeaser(List<string> ids, bool isLongIds = true)
+        internal static Dictionary<Guid, DocumentsOffer> GetDocumentsTeaser(List<string> ids, bool isLongIds = true)
         {
 
             Dictionary<Guid, DocumentsOffer> result = new();
@@ -1388,7 +1385,7 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
                 FILTER(?s in ({string.Join(",", longIds.Select(x => "<" + x + ">")) }))
             }}";
 
-            SparqlObject sparqlObject = resourceApi.VirtuosoQueryMultipleGraph(select, where, new List<string> { "document" ,"person", "organization" });
+            SparqlObject sparqlObject = resourceApi.VirtuosoQueryMultipleGraph(select, where, new List<string> { "document", "person", "organization" });
 
 
             // Carga los datos en el objeto
@@ -1409,7 +1406,8 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
 
                     });
                 }
-                catch (Exception ext) {
+                catch (Exception ext)
+                {
                     throw new ArgumentException("Ha habido un error al procesar los datos de los documentos: " + ext.Message);
                 }
 
@@ -1428,7 +1426,7 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
         /// <param name="ids">Listado (Ids) de los proyectos.</param>
         /// <param name="isLongIds">Booleano que determina si los Ids son Ids largos o cortos.</param>
         /// <returns>relación entre el guid y el objeto de los proyectos correspondientes (resumido).</returns>
-        internal Dictionary<Guid, ProjectsOffer> GetProjectsTeaser(List<string> ids, bool isLongIds = true)
+        internal static Dictionary<Guid, ProjectsOffer> GetProjectsTeaser(List<string> ids, bool isLongIds = true)
         {
 
             Dictionary<Guid, ProjectsOffer> result = new();
@@ -1481,7 +1479,7 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
             }}";
 
 
-            SparqlObject sparqlObject = resourceApi.VirtuosoQueryMultipleGraph(select, where, new List<string> { "project" , "organization" });
+            SparqlObject sparqlObject = resourceApi.VirtuosoQueryMultipleGraph(select, where, new List<string> { "project", "organization" });
 
 
             // Carga los datos en el objeto
@@ -1506,7 +1504,8 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
 
                     });
                 }
-                catch (Exception ext) {
+                catch (Exception ext)
+                {
                     throw new ArgumentException("Ha habido un error al procesar los datos de los proyectos: " + ext.Message);
                 }
 
@@ -1526,7 +1525,7 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
         /// <param name="ids">Listado (Ids) de los PII.</param>
         /// <param name="isLongIds">Booleano que determina si los Ids son Ids largos o cortos.</param>
         /// <returns>relación entre el guid y el objeto de los PII correspondientes (resumido).</returns>
-        internal Dictionary<Guid, PIIOffer> GetPIITeaserTODO(List<string> ids, bool isLongIds = true)
+        internal static Dictionary<Guid, PIIOffer> GetPIITeaserTODO(List<string> ids, bool isLongIds = true)
         {
 
             Dictionary<Guid, PIIOffer> result = new();
@@ -1580,7 +1579,7 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
             }}";
 
 
-            SparqlObject sparqlObject = resourceApi.VirtuosoQueryMultipleGraph(select, where,new List<string> { "project" , "organization" });
+            SparqlObject sparqlObject = resourceApi.VirtuosoQueryMultipleGraph(select, where, new List<string> { "project", "organization" });
 
             // Carga los datos en el objeto
             sparqlObject.results.bindings.ForEach(e =>
@@ -1588,11 +1587,11 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
                 try
                 {
 
-                    var fecha = e.ContainsKey("dateFiled") ? e["dateFiled"].value : String.Empty;
+                    var fecha = e.ContainsKey("dateFiled") ? e["dateFiled"].value : string.Empty;
                     DateTime fechaDate = DateTime.Now;
                     try
                     {
-                        if (fecha != String.Empty)
+                        if (fecha != string.Empty)
                         {
                             fechaDate = DateTime.ParseExact(fecha, "yyyyMMddHHmmss", null);
                             fecha = fechaDate.ToString("dd/MM/yyyy");
@@ -1618,7 +1617,8 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
                         researchersIds = e.ContainsKey("listaAutoresIds") ? e["listaAutoresIds"].value.Split(";").ToList() : new List<string>(),
                     });
                 }
-                catch (Exception ext) {
+                catch (Exception ext)
+                {
                     throw new ArgumentException("Ha habido un error al procesar los datos de las patentes: " + ext.Message);
                 }
             });
@@ -1640,7 +1640,7 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
         /// <param name="predicado">Predicado a modificar</param>
         /// <param name="pIdGnossUser">Id del usuario que modifica el estado, necesario para actualizar el historial</param>
         /// <returns>String con el id del nuevo estado.</returns>
-        internal string ModificarTripleteUsuario(string idRecurso, string nuevoEstado, string estadoActual, string predicado, Guid pIdGnossUser)
+        internal static string ModificarTripleteUsuario(string idRecurso, string nuevoEstado, string estadoActual, string predicado, Guid pIdGnossUser)
         {
 
             // Obtener el id del usuario usando el id de la cuenta
@@ -1659,7 +1659,7 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
                 userGnossId = e["s"].value;
                 try
                 {
-                    bool.TryParse(e["isOtriManager"].value, out isOtriManager);
+                    _ = bool.TryParse(e["isOtriManager"].value, out isOtriManager);
                 }
                 catch (Exception ex)
                 {
@@ -1683,11 +1683,11 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
                 // Modifico el estado
                 try
                 {
-                    Dictionary<Guid, List<TriplesToModify>> dicModificacion = new Dictionary<Guid, List<TriplesToModify>>();
-                    List<TriplesToModify> listaTriplesModificacion = new List<TriplesToModify>();
+                    Dictionary<Guid, List<TriplesToModify>> dicModificacion = new();
+                    List<TriplesToModify> listaTriplesModificacion = new();
 
                     // Modificación (Triples).
-                    TriplesToModify triple = new TriplesToModify();
+                    TriplesToModify triple = new();
                     triple.Predicate = predicado;
                     triple.NewValue = nuevoEstado;
                     triple.OldValue = estadoActual;
@@ -1728,7 +1728,7 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
             {
                 try
                 {
-                    bool.TryParse(e["isOtriManager"].value, out isOtriManager);
+                    _ = bool.TryParse(e["isOtriManager"].value, out isOtriManager);
                 }
                 catch (Exception ex)
                 {
@@ -1822,10 +1822,10 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
         /// </summary>
         /// <param name="tesauro">Listado de los tesauros sobre los que se necesita obtener los padres</param>
         /// <returns>Listados con los ids de los tesauros agrupados por "padres" e "hijos".</returns>
-        private List<List<string>> GetParentTeshaurusParents(List<string> tesauro)
+        private static List<List<string>> GetParentTeshaurusParents(List<string> tesauro)
         {
 
-            List<List<string>> resultsAP = new List<List<string>>();
+            List<List<string>> resultsAP = new();
 
             var finalIds = tesauro;
             foreach (var finalId in finalIds)
@@ -1837,7 +1837,7 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
                 {
                     var idCutted = finalId.Split('_');
                     var item = idCutted[1].Split('.');
-                    var lengthItem = item.Count();
+                    var lengthItem = item.Length;
 
                     for (int i = 0; i < lengthItem; i++)
                     {
@@ -1872,7 +1872,7 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
         /// <param name="strOldState">Permiso antigüo</param>
         /// <param name="strNewState">Nuevo permiso</param>
         /// <returns>Retorna un booleano indicando si puede o no ser actualizado.</returns>
-        private bool CheckUpdateOffer(string longUserId, string ownUserId, Accion accion, string strOldState = "", string strNewState = "")
+        private static bool CheckUpdateOffer(string longUserId, string ownUserId, Accion accion, string strOldState = "", string strNewState = "")
         {
 
             bool isOwnUser = longUserId == ownUserId;
@@ -1886,8 +1886,8 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
 
             if (strOldState != "" && strNewState != "")
             {
-                estadoAct = getEstado(strOldState);
-                estadoNuevo = getEstado(strNewState);
+                estadoAct = GetEstado(strOldState);
+                estadoNuevo = GetEstado(strNewState);
             }
 
             // Comprueba los permisos dependiendo del tipo de usuario que es y de las acciones que se piden
@@ -1990,7 +1990,7 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
         /// </summary>
         /// <param name="longId">Id del usuario actual</param>
         /// <returns>Retorna un listado de ids con los usuarios otri.</returns>
-        private List<string> GetOtriId(string longId)
+        private static List<string> GetOtriId(string longId)
         {
             string select = "SELECT DISTINCT ?otriUser ";
 
@@ -2004,7 +2004,7 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
                     FILTER (?creatorUser = <{longId}>)
                 }}";
 
-            SparqlObject sparqlObject = resourceApi.VirtuosoQueryMultipleGraph(select, where,new List<string> { "person" , "organization", "offer" });
+            SparqlObject sparqlObject = resourceApi.VirtuosoQueryMultipleGraph(select, where, new List<string> { "person", "organization", "offer" });
 
             List<string> users = new();
 
@@ -2021,64 +2021,14 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
             });
 
             return users;
-
-
         }
-
-        private bool mostrar(string estadoStr, TipoUser tipoUser)
-        {
-            var estado = getEstado(estadoStr);
-
-            switch (tipoUser)
-            {
-                case TipoUser.ip:
-                    switch (estado)
-                    {
-                        case Estado.Archivada:
-                            return false;
-                        default:
-                            return true;
-                    }
-
-                case TipoUser.isOtriManager:
-
-                    switch (estado)
-                    {
-                        case Estado.Borrador:
-                            return false;
-                        case Estado.Archivada:
-                            return false;
-                        default:
-                            return true;
-                    }
-
-                case TipoUser.actUser:
-                    switch (estado)
-                    {
-                        case Estado.Archivada:
-                            return false;
-                        default:
-                            return true;
-                    }
-
-                default:
-                    switch (estado)
-                    {
-                        case Estado.Archivada:
-                            return false;
-                        default:
-                            return true;
-                    }
-            }
-        }
-
 
         /// <summary>
         /// Método que transforma un string en un objeto enum de estados.
         /// </summary>
         /// <param name="estado">String con el estado</param>
         /// <returns>Retorna un el estado.</returns>
-        private Estado getEstado(string estado)
+        private static Estado GetEstado(string estado)
         {
             switch (estado)
             {
@@ -2108,7 +2058,7 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
         /// <param name="longIdCurrentUser">Id largo del usuario que debería ser IP</param>
         /// <param name="longIdOwnUser">Id largo del otro usuario (Propiamente el creador de la oferta)</param>
         /// <returns>Retorna un booleano si el primer usuario es IP.</returns>
-        private bool checkIsIp(string longIdCurrentUser, string longIdOwnUser)
+        private static bool checkIsIp(string longIdCurrentUser, string longIdOwnUser)
         {
             string select = @$" SELECT distinct ?isIp";
             string where = @$" 
@@ -2133,7 +2083,7 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
             {
                 try
                 {
-                    bool.TryParse(e["isIp"].value, out isIp);
+                    _ = bool.TryParse(e["isIp"].value, out isIp);
                 }
                 catch (Exception ex)
                 {

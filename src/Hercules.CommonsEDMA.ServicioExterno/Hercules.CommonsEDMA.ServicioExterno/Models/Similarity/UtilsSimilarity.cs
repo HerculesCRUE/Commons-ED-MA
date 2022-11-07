@@ -38,8 +38,8 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Models.Similarity
         }
         public List<string> GetItemsLoaded()
         {
-            List<string> idsLoaded = new List<string>();
-            HttpClient client = new HttpClient();
+            List<string> idsLoaded = new();
+            HttpClient client = new();
             client.Timeout = TimeSpan.FromDays(1);
             var responseGet = client.GetAsync(mUrlSimilarity + "ro-collection?ro_type_target=" + mType).Result;
             if (responseGet.IsSuccessStatusCode)
@@ -51,7 +51,7 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Models.Similarity
 
         public List<string> GetItemsToLoad()
         {
-            List<string> idsToLoad = new List<string>();
+            List<string> idsToLoad = new();
 
             string select = "select distinct ?doc";
             string where = $@"
@@ -59,7 +59,7 @@ where{{
     ?doc a <{mRdfType}>.
     ?doc <http://w3id.org/roh/isValidated> 'true'.
 }}";
-            var response = mResourceApi.VirtuosoQueryMultipleGraph(select, where, new List<string> { mGraph , "curriculumvitae" });
+            var response = mResourceApi.VirtuosoQueryMultipleGraph(select, where, new List<string> { mGraph, "curriculumvitae" });
             return response.results.bindings.Select(x => x["doc"].value).ToList();
 
         }
@@ -72,7 +72,7 @@ where{{
         public Dictionary<string, EnrichmentSimilarityItem> GetItemsToLoad(List<string> pIds)
         {
             //TODO limit 10000
-            Dictionary<string, EnrichmentSimilarityItem> respuesta = new Dictionary<string, EnrichmentSimilarityItem>();
+            Dictionary<string, EnrichmentSimilarityItem> respuesta = new();
             foreach (string id in pIds)
             {
                 respuesta[id] = null;
@@ -130,7 +130,7 @@ where
     ?person <http://xmlns.com/foaf/0.1/name> ?authorName
 	BIND(xsd:int(?ordenAux) as ?orden)
 }}order by asc(?orden) ";
-                response = mResourceApi.VirtuosoQueryMultipleGraph(select, where, new List<string> { mGraph ,"person"});
+                response = mResourceApi.VirtuosoQueryMultipleGraph(select, where, new List<string> { mGraph, "person" });
                 foreach (Dictionary<string, SparqlObject.Data> fila in response.results.bindings)
                 {
                     string id = fila["doc"].value;
@@ -240,7 +240,7 @@ where
     }}
     FILTER(?doc in(<{string.Join(">,<", pIds)}>))
 }} ";
-                response = mResourceApi.VirtuosoQueryMultipleGraph(select, where, new List<string> { mGraph , "taxonomy" });
+                response = mResourceApi.VirtuosoQueryMultipleGraph(select, where, new List<string> { mGraph, "taxonomy" });
                 foreach (Dictionary<string, SparqlObject.Data> fila in response.results.bindings)
                 {
                     string id = fila["doc"].value;
@@ -252,7 +252,7 @@ where
                     }
                 }
                 #endregion
-        
+
             }
             return respuesta;
         }
@@ -261,7 +261,7 @@ where
         {
             EnrichmentSimilarityItem respuesta = null;
 
-            HttpClient client = new HttpClient();
+            HttpClient client = new();
             client.Timeout = TimeSpan.FromDays(1);
             var responseGet = client.GetAsync(mUrlSimilarity + "ro?ro_id=" + pId).Result;
             if (responseGet.IsSuccessStatusCode)
@@ -278,12 +278,12 @@ where
             {
 
                 // Cliente.
-                HttpClient client = new HttpClient();
+                HttpClient client = new();
                 client.Timeout = TimeSpan.FromDays(1);
 
                 // Conversión de los datos.
                 string informacion = JsonConvert.SerializeObject(pEnrichmentSimilarityItem, new DecimalFormatConverter());
-                StringContent contentData = new StringContent(informacion, Encoding.UTF8, "application/json");
+                StringContent contentData = new(informacion, Encoding.UTF8, "application/json");
 
                 var responsePut = client.PutAsync(mUrlSimilarity + "ro", contentData).Result;
                 if (!responsePut.IsSuccessStatusCode)
@@ -297,7 +297,7 @@ where
         public bool DeleteItem(string pId)
         {
             bool ok = true;
-            HttpClient client = new HttpClient();
+            HttpClient client = new();
             client.Timeout = TimeSpan.FromDays(1);
             var responseDelete = client.DeleteAsync(mUrlSimilarity + "ro?ro_id=" + pId).Result;
             if (!responseDelete.IsSuccessStatusCode)
@@ -323,10 +323,10 @@ where
                     break;
             }
 
-            Dictionary<string, Dictionary<string, float>> dicSimilarsAux = new Dictionary<string, Dictionary<string, float>>();
+            Dictionary<string, Dictionary<string, float>> dicSimilarsAux = new();
 
             // Cliente.
-            HttpClient client = new HttpClient();
+            HttpClient client = new();
             client.Timeout = TimeSpan.FromDays(1);
 
             var responseGet = client.GetAsync(mUrlSimilarity + "similar?ro_id=" + pId + "&ro_type_target=" + mType).Result;
@@ -347,7 +347,7 @@ where{{
     ?id a <{rdfType}>.
     ?id <http://w3id.org/roh/isValidated> 'true'.
 }}";
-                List<string> listID = mResourceApi.VirtuosoQueryMultipleGraph(select, where,new List<string> { graph , "curriculumvitae" }).results.bindings.Select(x => x["id"].value).ToList();
+                List<string> listID = mResourceApi.VirtuosoQueryMultipleGraph(select, where, new List<string> { graph, "curriculumvitae" }).results.bindings.Select(x => x["id"].value).ToList();
                 dicSimilarsAux = dicSimilarsAux.Where(x => listID.Contains(x.Key)).ToDictionary(x => x.Key, x => x.Value);
             }
             List<KeyValuePair<Guid, Dictionary<string, float>>> dicSimilars = dicSimilarsAux.ToDictionary(x => mResourceApi.GetShortGuid(x.Key), x => x.Value).ToList();
@@ -366,7 +366,7 @@ where{{
         public List<List<object>> specific_descriptors { get; set; }
         public Dictionary<string, double> GetThematic_descriptors_transform()
         {
-            Dictionary<string, double> thematics = new Dictionary<string, double>();
+            Dictionary<string, double> thematics = new();
             foreach (List<object> thematic in thematic_descriptors)
             {
                 string name = (string)thematic[0];
@@ -385,7 +385,7 @@ where{{
         }
         public Dictionary<string, double> GetSpecific_descriptors_transform()
         {
-            Dictionary<string, double> specifics = new Dictionary<string, double>();
+            Dictionary<string, double> specifics = new();
             foreach (List<object> specific in specific_descriptors)
             {
                 string name = (string)specific[0];
@@ -413,8 +413,8 @@ where{{
             else
             {
                 EnrichmentSimilarityItem p = (EnrichmentSimilarityItem)obj;
-                bool equals = true;
-                equals = equals && ro_id == p.ro_id;
+                bool equals;
+                equals = ro_id == p.ro_id;
                 equals = equals && ro_type == p.ro_type;
                 equals = equals && text == p.text;
                 equals = equals && string.Join(",", authors).Equals(string.Join(",", p.authors));
@@ -459,7 +459,7 @@ where{{
         {
             get
             {
-                Dictionary<string, Dictionary<string, float>> dic = new Dictionary<string, Dictionary<string, float>>();
+                Dictionary<string, Dictionary<string, float>> dic = new();
                 foreach (var item in similar_ros)
                 {
                     string id = (string)((Newtonsoft.Json.Linq.JArray)item)[0];

@@ -1,13 +1,8 @@
 ﻿using Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones;
-using Hercules.CommonsEDMA.ServicioExterno.Models.Cluster;
-using Hercules.CommonsEDMA.ServicioExterno.Models.Graficas.DataGraficaAreasTags;
 using Microsoft.AspNetCore.Cors;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
 
 namespace Hercules.CommonsEDMA.ServicioExterno.Controllers
 {
@@ -31,7 +26,7 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers
         [HttpGet("GetSimilaritiesDocument")]
         public IActionResult GetSimilaritiesDocument(string pIdDocument)
         {
-            AccionesSimilarity accionesSimilarity = new AccionesSimilarity();
+            AccionesSimilarity accionesSimilarity = new();
             List<KeyValuePair<Guid, Dictionary<string, float>>> listID = accionesSimilarity.GetSimilarities(pIdDocument, _Configuracion, "research_paper");
 
             return Ok(listID);
@@ -45,7 +40,7 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers
         [HttpGet("GetSimilaritiesResearchObject")]
         public IActionResult GetSimilaritiesResearchObject(string pIdRO)
         {
-            AccionesSimilarity accionesSimilarity = new AccionesSimilarity();
+            AccionesSimilarity accionesSimilarity = new();
             List<KeyValuePair<Guid, Dictionary<string, float>>> listID = accionesSimilarity.GetSimilarities(pIdRO, _Configuracion, "code_project");
 
             return Ok(listID);

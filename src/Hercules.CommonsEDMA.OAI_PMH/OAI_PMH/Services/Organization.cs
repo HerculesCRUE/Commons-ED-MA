@@ -14,7 +14,7 @@ namespace OAI_PMH.Services
         {
             string accessToken = Token.CheckToken(pConfig);
             Dictionary<string, DateTime> idDictionary = new();
-            List<string> idList = new();
+            List<string> idList;
             RestClient client = new(pConfig.GetConfigSGI() + "/api/sgemp/empresas/modificadas-ids?q=fechaModificacion=ge=\"" + from + "\"");
             client.AddDefaultHeader("Authorization", "Bearer " + accessToken);
             var request = new RestRequest(Method.GET);
@@ -52,7 +52,7 @@ namespace OAI_PMH.Services
         private static DatosContacto GetDatosContacto(string id, ConfigService pConfig)
         {
             string accessToken = Token.CheckToken(pConfig);
-            DatosContacto datosContacto = new();
+            DatosContacto datosContacto;
             RestClient client = new(pConfig.GetConfigSGI() + "/api/sgemp/datos-contacto/empresa/" + id);
             client.AddDefaultHeader("Authorization", "Bearer " + accessToken);
             var request = new RestRequest(Method.GET);
@@ -67,64 +67,6 @@ namespace OAI_PMH.Services
                 return null;
             }
             return datosContacto;
-        }
-
-        private static EmpresaClasificacion GetEmpresaClasificacion(string id, ConfigService pConfig)
-        {
-            string accessToken = Token.CheckToken(pConfig);
-            EmpresaClasificacion datos = new();
-            RestClient client = new(pConfig.GetConfigSGI() + "/api/sgemp/empresas-clasificaciones/empresa/" + id);
-            client.AddDefaultHeader("Authorization", "Bearer " + accessToken);
-            var request = new RestRequest(Method.GET);
-            IRestResponse response = Token.httpCall(client, request);
-            string datosLimpios = response.Content;
-            try
-            {
-                datos = JsonConvert.DeserializeObject<EmpresaClasificacion>(datosLimpios);
-            }
-            catch (Exception)
-            {
-                return null;
-            }
-            return datos;
-        }
-
-        private static List<TipoIdentificador> GetTiposIdentificadorFiscal(ConfigService pConfig)
-        {
-            string accessToken = Token.CheckToken(pConfig);
-            List<TipoIdentificador> tiposIdentificador = new();
-            RestClient client = new(pConfig.GetConfigSGI() + "/api/sgemp/tipos-identificador");
-            client.AddDefaultHeader("Authorization", "Bearer " + accessToken);
-            var request = new RestRequest(Method.GET);
-            IRestResponse response = Token.httpCall(client, request);
-            try
-            {
-                tiposIdentificador = JsonConvert.DeserializeObject<List<TipoIdentificador>>(response.Content);
-            }
-            catch (Exception)
-            {
-                return null;
-            }
-            return tiposIdentificador;
-        }
-
-        private static DatosTipoEmpresa GetDatosTipoEmpresa(string id, ConfigService pConfig)
-        {
-            string accessToken = Token.CheckToken(pConfig);
-            DatosTipoEmpresa datosTipoEmpresa = new();
-            RestClient client = new(pConfig.GetConfigSGI() + "/api/sgemp/datos-tipo-empresa/empresa/" + id);
-            client.AddDefaultHeader("Authorization", "Bearer " + accessToken);
-            var request = new RestRequest(Method.GET);
-            IRestResponse response = Token.httpCall(client, request);
-            try
-            {
-                datosTipoEmpresa = JsonConvert.DeserializeObject<DatosTipoEmpresa>(response.Content);
-            }
-            catch (Exception)
-            {
-                return null;
-            }
-            return datosTipoEmpresa;
         }
     }
 }

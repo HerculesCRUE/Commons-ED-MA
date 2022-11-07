@@ -34,11 +34,11 @@ namespace OAI_PMH.Models.OAIPMH
         }
 
         public Record GetRecord(string identifier, string metadataPrefix)
-        {            
+        {
             Record record = new();
             try
             {
-                List<Record> listaRecords = new List<Record>();
+                List<Record> listaRecords = new();
                 string set = identifier.Split('_')[0];
                 DateTime date = DateTime.UtcNow;
 
@@ -144,10 +144,10 @@ namespace OAI_PMH.Models.OAIPMH
 
         public RecordContainer GetRecords(ArgumentContainer arguments, IResumptionToken resumptionToken = null)
         {
-            RecordContainer container = new RecordContainer();
+            RecordContainer container = new();
 
             try
-            {                
+            {
                 DateTime startDate = DateTime.MinValue;
                 if (_dateConverter.TryDecode(arguments.From, out DateTime from))
                 {

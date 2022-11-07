@@ -1,19 +1,5 @@
-﻿using Hercules.CommonsEDMA.ConfigLoad.Models.Services;
-using Gnoss.ApiWrapper;
-using Gnoss.ApiWrapper.ApiModel;
-using Gnoss.ApiWrapper.Helpers;
-using Gnoss.ApiWrapper.OAuth;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Net.Http.Headers;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Net;
-using System.Net.Http;
-using System.Xml;
 
 namespace Hercules.CommonsEDMA.ConfigLoad
 {
@@ -39,9 +25,5 @@ namespace Hercules.CommonsEDMA.ConfigLoad
                 {
                     services.AddHostedService<Worker>();
                 });
-
-
-
-
     }
 }

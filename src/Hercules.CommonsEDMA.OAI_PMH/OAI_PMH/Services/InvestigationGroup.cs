@@ -23,16 +23,16 @@ namespace OAI_PMH.Services
         {
             string accessToken = Token.CheckToken(pConfig);
             Dictionary<string, DateTime> idDictionary = new();
-            List<string> idList = new();
-            RestClient client = new(pConfig.GetConfigSGI() + "/api/sgicsp/grupos/modificados-ids?q=fechaModificacion=ge=\"" + from + "\""); // TODO: Revisar url petición.
-            client.AddDefaultHeader("Authorization", "Bearer " + accessToken);
+            List<string> idListInvestigationGroup;
+            RestClient clientInvestigationGroup = new(pConfig.GetConfigSGI() + "/api/sgicsp/grupos/modificados-ids?q=fechaModificacion=ge=\"" + from + "\""); // TODO: Revisar url petición.
+            clientInvestigationGroup.AddDefaultHeader("Authorization", "Bearer " + accessToken);
             var request = new RestRequest(Method.GET);
-            IRestResponse response = Token.httpCall(client, request);
+            IRestResponse responseInvestigationGroup = Token.httpCall(clientInvestigationGroup, request);
 
-            if (!string.IsNullOrEmpty(response.Content))
+            if (!string.IsNullOrEmpty(responseInvestigationGroup.Content))
             {
-                idList = response.Content[1..^1].Split(',').ToList();
-                foreach (string id in idList)
+                idListInvestigationGroup = responseInvestigationGroup.Content[1..^1].Split(',').ToList();
+                foreach (string id in idListInvestigationGroup)
                 {
                     string idMod = "Grupo_" + id.Replace("\"", "");
                     if (!idDictionary.ContainsKey(idMod))
@@ -58,12 +58,12 @@ namespace OAI_PMH.Services
             client.AddDefaultHeader("Authorization", "Bearer " + accessToken);
             var request = new RestRequest(Method.GET);
             IRestResponse response = Token.httpCall(client, request);
-            Grupo grupo = new Grupo();
-            List<GrupoEquipo> equipo = null;
-            List<string> ingestigadoresPrincipales = null;
-            List<string> investigadoresPrincipalesMaxParticipacion = null;
-            List<GrupoPalabraClave> palabrasClave = null;
-            List<LineaClasificacion> lineasClasificacion = null;
+            Grupo grupo;
+            List<GrupoEquipo> equipo;
+            List<string> ingestigadoresPrincipales;
+            List<string> investigadoresPrincipalesMaxParticipacion;
+            List<GrupoPalabraClave> palabrasClave;
+            List<LineaClasificacion> lineasClasificacion;
             List<LineaInvestigacion> lineasInvestigacion = new();
 
             grupo = JsonConvert.DeserializeObject<Grupo>(response.Content);
@@ -80,12 +80,12 @@ namespace OAI_PMH.Services
 
             if (lineasClasificacion != null && lineasClasificacion.Any())
             {
-
                 foreach (LineaClasificacion linea in lineasClasificacion)
                 {
-                    lineasInvestigacion.AddRange(GetLineasInvestigacion(identifier, pConfig));
+                    lineasInvestigacion.AddRange(GetLineasInvestigacion(linea.id.ToString(), pConfig));
                 }
-            };
+            }
+
             grupo.equipo = equipo;
             grupo.investigadoresPrincipales = ingestigadoresPrincipales;
             grupo.investigadoresPrincipalesMaxParticipacion = investigadoresPrincipalesMaxParticipacion;
@@ -106,7 +106,7 @@ namespace OAI_PMH.Services
         private static List<LineaClasificacion> GetLineasClasificacion(string id, ConfigService pConfig)
         {
             string accessToken = Token.CheckToken(pConfig);
-            List<LineaClasificacion> lineas = new();
+            List<LineaClasificacion> lineas;
             RestClient client = new(pConfig.GetConfigSGI() + "/api/sgicsp/gruposlineasinvestigacion/" + id + "/clasificaciones");
             client.AddDefaultHeader("Authorization", "Bearer " + accessToken);
             var request = new RestRequest(Method.GET);
@@ -131,7 +131,7 @@ namespace OAI_PMH.Services
         private static List<LineaInvestigacion> GetLineasInvestigacion(string id, ConfigService pConfig)
         {
             string accessToken = Token.CheckToken(pConfig);
-            List<LineaInvestigacion> lineas = new();
+            List<LineaInvestigacion> lineas;
             RestClient client = new(pConfig.GetConfigSGI() + "/api/sgicsp/grupos/" + id + "/lineasinvestigacion");
             client.AddDefaultHeader("Authorization", "Bearer " + accessToken);
             var request = new RestRequest(Method.GET);
@@ -156,7 +156,7 @@ namespace OAI_PMH.Services
         private static List<GrupoPalabraClave> GetPalabrasClave(string id, ConfigService pConfig)
         {
             string accessToken = Token.CheckToken(pConfig);
-            List<GrupoPalabraClave> palabras = new();
+            List<GrupoPalabraClave> palabras;
             RestClient client = new(pConfig.GetConfigSGI() + "/api/sgicsp/grupos/" + id + "/palabrasclave");
             client.AddDefaultHeader("Authorization", "Bearer " + accessToken);
             var request = new RestRequest(Method.GET);
@@ -181,20 +181,20 @@ namespace OAI_PMH.Services
         private static List<string> GetInvestigadoresPrincipalesMax(string id, ConfigService pConfig)
         {
             string accessToken = Token.CheckToken(pConfig);
-            List<string> investigadores = new();
-            RestClient client = new(pConfig.GetConfigSGI() + "/api/sgicsp/grupos/" + id + "/investigadoresprincipalesmaxparticipacion");
-            client.AddDefaultHeader("Authorization", "Bearer " + accessToken);
+            List<string> investigadoresPrincipalesMax;
+            RestClient clientPrincipalesMax = new(pConfig.GetConfigSGI() + "/api/sgicsp/grupos/" + id + "/investigadoresprincipalesmaxparticipacion");
+            clientPrincipalesMax.AddDefaultHeader("Authorization", "Bearer " + accessToken);
             var request = new RestRequest(Method.GET);
-            IRestResponse response = Token.httpCall(client, request);
+            IRestResponse response = Token.httpCall(clientPrincipalesMax, request);
             try
             {
-                investigadores = JsonConvert.DeserializeObject<List<string>>(response.Content);
+                investigadoresPrincipalesMax = JsonConvert.DeserializeObject<List<string>>(response.Content);
             }
             catch (Exception)
             {
                 return null;
             }
-            return investigadores;
+            return investigadoresPrincipalesMax;
         }
 
         /// <summary>
@@ -206,20 +206,20 @@ namespace OAI_PMH.Services
         private static List<string> GetInvestigadoresPrincipales(string id, ConfigService pConfig)
         {
             string accessToken = Token.CheckToken(pConfig);
-            List<string> investigadores = new();
-            RestClient client = new(pConfig.GetConfigSGI() + "/api/sgicsp/grupos/" + id + "/investigadoresprincipales");
-            client.AddDefaultHeader("Authorization", "Bearer " + accessToken);
+            List<string> investigadoresPrincipales;
+            RestClient clientPrincipales = new(pConfig.GetConfigSGI() + "/api/sgicsp/grupos/" + id + "/investigadoresprincipales");
+            clientPrincipales.AddDefaultHeader("Authorization", "Bearer " + accessToken);
             var request = new RestRequest(Method.GET);
-            IRestResponse response = Token.httpCall(client, request);
+            IRestResponse responsePrincipales = Token.httpCall(clientPrincipales, request);
             try
             {
-                investigadores = JsonConvert.DeserializeObject<List<string>>(response.Content);
+                investigadoresPrincipales = JsonConvert.DeserializeObject<List<string>>(responsePrincipales.Content);
             }
             catch (Exception)
             {
                 return null;
             }
-            return investigadores;
+            return investigadoresPrincipales;
         }
 
         /// <summary>
@@ -231,7 +231,7 @@ namespace OAI_PMH.Services
         private static List<GrupoEquipo> GetGrupoEquipo(string id, ConfigService pConfig)
         {
             string accessToken = Token.CheckToken(pConfig);
-            List<GrupoEquipo> grupoEquipo = new();
+            List<GrupoEquipo> grupoEquipo;
             RestClient client = new(pConfig.GetConfigSGI() + "/api/sgicsp/grupos/" + id + "/miembrosequipo");
             client.AddDefaultHeader("Authorization", "Bearer " + accessToken);
             var request = new RestRequest(Method.GET);

@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Diagnostics.Contracts;
 
 namespace OAI_PMH.Models.SGI.Autorizacion
 {

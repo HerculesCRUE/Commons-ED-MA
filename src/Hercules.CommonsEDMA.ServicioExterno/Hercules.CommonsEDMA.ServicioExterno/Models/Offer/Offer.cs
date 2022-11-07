@@ -38,7 +38,7 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Models.Offer
     }
 
     public class ProjectsOffer
-{
+    {
         public string id { get; set; }
         public Guid shortId { get; set; }
         public string name { get; set; }

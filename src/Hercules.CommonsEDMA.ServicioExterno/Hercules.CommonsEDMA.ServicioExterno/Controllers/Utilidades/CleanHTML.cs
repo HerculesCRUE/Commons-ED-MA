@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
-using System.Text.RegularExpressions;
 
 
 
@@ -25,8 +23,8 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Utilidades
             bool inside = false;
             List<char> currentTag = new();
             List<char> attrs = new();
-            string tag = "";
-            string attrsTag = "";
+            string tag;
+            string attrsTag;
 
             for (int i = 0; i < source.Length; i++)
             {
@@ -46,10 +44,11 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Utilidades
                     // Vuelve a guardar el texto, no lo guarda como tag
                     inside = false;
                     currentTag.Add(let);
-                    tag = String.Join("", currentTag);
-                    attrsTag = String.Join("", attrs);
-                    if (tagsExceptions.Contains(tag) && !tag.Contains("script") && !attrsTag.Contains("script")) {
-                        for (int n = 0; n < currentTag.Count -1; n++)
+                    tag = string.Join("", currentTag);
+                    attrsTag = string.Join("", attrs);
+                    if (tagsExceptions.Contains(tag) && !tag.Contains("script") && !attrsTag.Contains("script"))
+                    {
+                        for (int n = 0; n < currentTag.Count - 1; n++)
                         {
                             array[arrayIndex] = currentTag[n];
                             arrayIndex++;
@@ -75,16 +74,19 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Utilidades
                 {
                     array[arrayIndex] = let;
                     arrayIndex++;
-                } else
+                }
+                else
                 {
                     // Estamos dentro de un tag, por lo que se guardará como tag o atributo
                     if (attrs != null && attrs.Count > 0)
                     {
                         attrs.Add(let);
-                    } else if (let == ' ')
+                    }
+                    else if (let == ' ')
                     {
                         attrs.Add(let);
-                    } else
+                    }
+                    else
                     {
                         currentTag.Add(let);
                     }
@@ -109,8 +111,8 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Utilidades
             bool escaped = false;
             List<char> currentAttr = new();
             List<char> attrContent = new();
-            string attr = "";
-            string contentAttr = "";
+            string attr;
+            string contentAttr;
 
             for (int i = 0; i < source.Length; i++)
             {
@@ -134,7 +136,7 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Utilidades
                     currentAttr.Add(let);
                     continue;
                 }
-                else if ((inside && !escaped && let == '"') || (inside && beforeSpace && let == ' ' && !insideContAttr) )
+                else if ((inside && !escaped && let == '"') || (inside && beforeSpace && let == ' ' && !insideContAttr))
                 {
                     // Vuelve a guardar el texto, no lo guarda como tag
                     inside = false;
@@ -142,13 +144,13 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Utilidades
                     insideContAttr = false;
                     currentAttr.Add(let);
 
-                    string fullAttr = String.Join("", currentAttr).Trim();
+                    string fullAttr = string.Join("", currentAttr).Trim();
                     fullAttr = fullAttr.Replace("\"\"", "").Trim();
                     attr = fullAttr.Replace("=", "").Trim();
-                    contentAttr = String.Join("", attrContent);
+                    contentAttr = string.Join("", attrContent);
                     if (AttrsExceptions.Contains(attr) && !attr.Contains("script") && !contentAttr.Contains("script"))
                     {
-                        for (int n = 0; n < currentAttr.Count -1; n++)
+                        for (int n = 0; n < currentAttr.Count - 1; n++)
                         {
                             array[arrayIndex] = currentAttr[n];
                             arrayIndex++;
@@ -168,11 +170,12 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Utilidades
                     }
                     continue;
                 }
-                
+
                 if (let == ' ')
                 {
                     beforeSpace = true;
-                } else
+                }
+                else
                 {
                     beforeSpace = false;
                 }
@@ -180,7 +183,8 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Utilidades
                 if (let == '\\')
                 {
                     escaped = !escaped;
-                } else
+                }
+                else
                 {
                     escaped = false;
                 }
@@ -198,7 +202,8 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Utilidades
                     if (insideContAttr && attrContent != null && attrContent.Count > 0)
                     {
                         attrContent.Add(let);
-                    } else if (insideContAttr && attrContent != null)
+                    }
+                    else if (insideContAttr && attrContent != null)
                     {
                         attrContent.Add(let);
                     }

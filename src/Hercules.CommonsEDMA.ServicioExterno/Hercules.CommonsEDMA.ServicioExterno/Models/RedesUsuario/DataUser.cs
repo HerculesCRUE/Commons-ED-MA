@@ -5,7 +5,7 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Models.RedesUsuario
     public class User
     {
         public List<DataUser> dataUser { get; set; }
-        
+
     }
     public class DataUser
     {

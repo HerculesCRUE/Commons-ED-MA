@@ -1,5 +1,3 @@
-using System;
-
 namespace Hercules.CommonsEDMA.ServicioExterno.Models
 {
     public class ErrorViewModel

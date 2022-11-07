@@ -1,18 +1,11 @@
-﻿using Gnoss.ApiWrapper;
-using Gnoss.ApiWrapper.ApiModel;
+﻿using Gnoss.ApiWrapper.ApiModel;
 using Gnoss.ApiWrapper.Model;
-using Hercules.CommonsEDMA.ServicioExterno.Models.Offer;
-using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using Hercules.CommonsEDMA.ServicioExterno.Controllers.Utilidades;
-using Microsoft.AspNetCore.Cors;
-using Hercules.CommonsEDMA.ServicioExterno.Models.Cluster;
 using Hercules.CommonsEDMA.ServicioExterno.Models.ROsLinked;
 using Hercules.CommonsEDMA.ServicioExterno.Models;
-using System.Threading;
 
 namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
 {
@@ -27,6 +20,7 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
         /// <param name="idRecurso">Id del RO sobre el que borrar el elemento</param>
         /// <param name="idLinkedRo">Id de RO a borrar</param>
         /// <param name="pIdGnossUser">Id del usuario que realiza la acción</param>
+        /// <param name="pConfig">ConfigService</param>
         /// <returns>Bool determinando si se ha borrado o no.</returns>
         internal bool DeleteLinked(string idRecurso, string idLinkedRo, Guid pIdGnossUser, ConfigService pConfig)
         {
@@ -38,7 +32,7 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
 
 
             // Establezco la propiedad que se va a usar dependiendo de si es un documento que estoy relacionando o es un RO
-            string predicateLinkInRO = string.Empty;
+            string predicateLinkInRO;
             if (typeLinked.typeRO == TypeRO.Document)
             {
                 predicateLinkInRO = "http://w3id.org/roh/linkedDocument";
@@ -50,8 +44,8 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
 
 
             // Obtengo el id del recurso si es un Guid
-            Guid guid = Guid.Empty;
-            Dictionary<Guid, string> longsId = new();
+            Guid guid;
+            Dictionary<Guid, string> longsId;
             if (Guid.TryParse(idRecurso, out guid))
             {
                 longsId = UtilidadesAPI.GetLongIds(new List<Guid>() { guid }, resourceApi, typeResource.longType, typeResource.type);
@@ -63,7 +57,7 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
             }
 
             // Obtengo el id del recurso vinculado si es un Guid
-            Guid guidLinked = Guid.Empty;
+            Guid guidLinked;
             longsId = new();
             if (Guid.TryParse(idLinkedRo, out guidLinked))
             {
@@ -101,12 +95,12 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
                     // Elimino el triple
                     try
                     {
-                        Dictionary<Guid, List<RemoveTriples>> dicModificacion = new Dictionary<Guid, List<RemoveTriples>>();
-                        List<RemoveTriples> listaTriplesModificacion = new List<RemoveTriples>();
+                        Dictionary<Guid, List<RemoveTriples>> dicModificacion = new();
+                        List<RemoveTriples> listaTriplesModificacion = new();
 
 
                         // Eliminación (Triples).
-                        RemoveTriples triple = new RemoveTriples();
+                        RemoveTriples triple = new();
                         triple.Predicate = predicateLinkInRO;
                         triple.Value = idLinkedRo;
                         listaTriplesModificacion.Add(triple);
@@ -123,10 +117,10 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
 
             }
 
-            ReadRabbitService rabbitMQService = new ReadRabbitService(pConfig);
-            DenormalizerItemQueue itemPublication = new DenormalizerItemQueue(DenormalizerItemQueue.ItemType.document, new HashSet<string> { idRecurso, idLinkedRo });
+            ReadRabbitService rabbitMQService = new(pConfig);
+            DenormalizerItemQueue itemPublication = new(DenormalizerItemQueue.ItemType.document, new HashSet<string> { idRecurso, idLinkedRo });
             rabbitMQService.PublishMessage(itemPublication, pConfig.GetDenormalizerQueueRabbit());
-            DenormalizerItemQueue itemRo = new DenormalizerItemQueue(DenormalizerItemQueue.ItemType.researchobject, new HashSet<string> { idRecurso, idLinkedRo });
+            DenormalizerItemQueue itemRo = new(DenormalizerItemQueue.ItemType.researchobject, new HashSet<string> { idRecurso, idLinkedRo });
             rabbitMQService.PublishMessage(itemRo, pConfig.GetDenormalizerQueueRabbit());
 
             return result[guid];
@@ -143,26 +137,12 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
         /// <returns>Diccionario con los datos.</returns>
         public List<ROLinked> LoadRosLinked(string idRecurso, string lang = "es")
         {
-
             // Selecciono qué tipo de RO son los recursos pasados y obtengo las propiedades de la ontología
             ResTypeRo typeResource = GetTypeRo(idRecurso);
 
-
-            // Establezco la propiedad que se va a usar dependiendo de si es un documento que estoy relacionando o es un RO
-            string predicateLinkInRO = string.Empty;
-            if (typeResource.typeRO == TypeRO.Document)
-            {
-                predicateLinkInRO = "http://w3id.org/roh/linkedDocument";
-            }
-            else
-            {
-                predicateLinkInRO = "http://w3id.org/roh/linkedRO";
-            }
-
-
             // Obtengo el id del recurso si es un Guid
-            Guid guid = Guid.Empty;
-            Dictionary<Guid, string> longsId = new();
+            Guid guid;
+            Dictionary<Guid, string> longsId;
             if (Guid.TryParse(idRecurso, out guid))
             {
                 longsId = UtilidadesAPI.GetLongIds(new List<Guid>() { guid }, resourceApi, typeResource.longType, typeResource.type);
@@ -304,7 +284,7 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
 
                     FILTER(?resource = <{idRecurso.ToString()}>)
                 }}";
-            SparqlObject sparqlObject = resourceApi.VirtuosoQueryMultipleGraph(select, where, new List<string> { typeResource.type , "document", "researchobject" });
+            SparqlObject sparqlObject = resourceApi.VirtuosoQueryMultipleGraph(select, where, new List<string> { typeResource.type, "document", "researchobject" });
 
 
             // Rellena el los clusters
@@ -317,16 +297,16 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
 
 
                 // Obtengo las areas de conocimiento de los ROs
-                List<string> rOTerms = new List<string>();
-                if (e.ContainsKey("gckarea") && e["gckarea"].value != String.Empty)
+                List<string> rOTerms = new();
+                if (e.ContainsKey("gckarea") && e["gckarea"].value != string.Empty)
                 {
                     rOTerms = e["gckarea"].value.Split(",").ToList();
                 }
 
 
                 // Obtengo las ids de los usuarios gnoss de los creadores del RO
-                List<string> idsGnoss = new List<string>();
-                if (e.ContainsKey("idGnoss") && e["idGnoss"].value != String.Empty)
+                List<string> idsGnoss = new();
+                if (e.ContainsKey("idGnoss") && e["idGnoss"].value != string.Empty)
                 {
                     idsGnoss = e["idGnoss"].value.Split(",").ToList();
                 }
@@ -336,11 +316,11 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
                 try
                 {
 
-                    var fecha = e.ContainsKey("issued") ? e["issued"].value : String.Empty;
-                    DateTime fechaDate = DateTime.Now;
+                    var fecha = e.ContainsKey("issued") ? e["issued"].value : string.Empty;
+                    DateTime fechaDate;
                     try
                     {
-                        if (fecha != String.Empty)
+                        if (fecha != string.Empty)
                         {
                             fechaDate = DateTime.ParseExact(fecha, "yyyyMMddHHmmss", null);
                             fecha = fechaDate.ToString("dd/MM/yyyy");
@@ -354,14 +334,14 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
                     if (e.ContainsKey("isValidated")) { bool.TryParse(e["isValidated"].value, out isValidated); }
                     ROLinked ro = new()
                     {
-                        title = e.ContainsKey("title") ? e["title"].value : String.Empty,
-                        entityID = e.ContainsKey("s") ? e["s"].value : String.Empty,
-                        description = e.ContainsKey("abstract") ? e["abstract"].value : String.Empty,
-                        roType = e.ContainsKey("roType") ? e["roType"].value : String.Empty,
-                        roTypeTitle = e.ContainsKey("roTypeTitle") ? e["roTypeTitle"].value : String.Empty,
-                        origin = e.ContainsKey("origin") && e["origin"].value == "false" ? false : true,
+                        title = e.ContainsKey("title") ? e["title"].value : string.Empty,
+                        entityID = e.ContainsKey("s") ? e["s"].value : string.Empty,
+                        description = e.ContainsKey("abstract") ? e["abstract"].value : string.Empty,
+                        roType = e.ContainsKey("roType") ? e["roType"].value : string.Empty,
+                        roTypeTitle = e.ContainsKey("roTypeTitle") ? e["roTypeTitle"].value : string.Empty,
+                        origin = !(e.ContainsKey("origin") && e["origin"].value == "false"),
                         idsGnoss = idsGnoss,
-                        type = e.ContainsKey("type") ? e["type"].value : String.Empty,
+                        type = e.ContainsKey("type") ? e["type"].value : string.Empty,
                         isValidated = isValidated,
                         fecha = fecha,
                         terms = rOTerms
@@ -388,7 +368,7 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
                         rosLinked.Find(ro => resourceApi.GetShortGuid(ro.entityID) == e.resource_id).url = e.url;
                     });
                 }
-                catch (Exception) 
+                catch (Exception)
                 {
                     //
                 }
@@ -407,6 +387,7 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
         /// <param name="idRecurso">Id del RO en el que se va a hacer la vinculación</param>
         /// <param name="idLinkedRo">Id del RO a vincular</param>
         /// <param name="pIdGnossUser">Id del usuario que modifica el estado, necesario para actualizar el historial</param>
+        /// <param name="pConfig">ConfigService</param>
         /// <returns>String con el RO vinculado.</returns>
         internal bool AddLink(string idRecurso, string idLinkedRo, Guid pIdGnossUser, ConfigService pConfig)
         {
@@ -418,7 +399,7 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
 
 
             // Establezco la propiedad que se va a usar dependiendo de si es un documento que estoy relacionando o es un RO
-            string predicateLinkInRO = string.Empty;
+            string predicateLinkInRO;
             if (typeLinked.typeRO == TypeRO.Document)
             {
                 predicateLinkInRO = "http://w3id.org/roh/linkedDocument";
@@ -430,8 +411,8 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
 
 
             // Obtengo el id del recurso si es un Guid
-            Guid guid = Guid.Empty;
-            Dictionary<Guid, string> longsId = new();
+            Guid guid;
+            Dictionary<Guid, string> longsId;
             if (Guid.TryParse(idRecurso, out guid))
             {
                 longsId = UtilidadesAPI.GetLongIds(new List<Guid>() { guid }, resourceApi, typeResource.longType, typeResource.type);
@@ -443,7 +424,7 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
             }
 
             // Obtengo el id del recurso vinculado si es un Guid
-            Guid guidLinked = Guid.Empty;
+            Guid guidLinked;
             longsId = new();
             if (Guid.TryParse(idLinkedRo, out guidLinked))
             {
@@ -484,12 +465,12 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
                     // Añado el vículo
                     try
                     {
-                        Dictionary<Guid, List<TriplesToInclude>> dicInclusion = new Dictionary<Guid, List<TriplesToInclude>>();
-                        List<TriplesToInclude> listaTriplesInclusion = new List<TriplesToInclude>();
+                        Dictionary<Guid, List<TriplesToInclude>> dicInclusion = new();
+                        List<TriplesToInclude> listaTriplesInclusion = new();
 
 
                         // Modificación (Triples).
-                        TriplesToInclude triple = new TriplesToInclude();
+                        TriplesToInclude triple = new();
                         triple.Predicate = predicateLinkInRO;
                         triple.NewValue = idLinkedRo;
                         listaTriplesInclusion.Add(triple);
@@ -506,10 +487,10 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
 
             }
 
-            ReadRabbitService rabbitMQService = new ReadRabbitService(pConfig);
-            DenormalizerItemQueue itemPublication = new DenormalizerItemQueue(DenormalizerItemQueue.ItemType.document, new HashSet<string> { idRecurso, idLinkedRo });
+            ReadRabbitService rabbitMQService = new(pConfig);
+            DenormalizerItemQueue itemPublication = new(DenormalizerItemQueue.ItemType.document, new HashSet<string> { idRecurso, idLinkedRo });
             rabbitMQService.PublishMessage(itemPublication, pConfig.GetDenormalizerQueueRabbit());
-            DenormalizerItemQueue itemRo = new DenormalizerItemQueue(DenormalizerItemQueue.ItemType.researchobject, new HashSet<string> { idRecurso , idLinkedRo });
+            DenormalizerItemQueue itemRo = new(DenormalizerItemQueue.ItemType.researchobject, new HashSet<string> { idRecurso, idLinkedRo });
             rabbitMQService.PublishMessage(itemRo, pConfig.GetDenormalizerQueueRabbit());
 
             return result[guid];
@@ -524,9 +505,8 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
         /// <param name="idCurrentResource">Tipo de acción</param>
         /// <param name="idOtherResource">Permiso antigüo</param>
         /// <returns>Retorna un booleano indicando si puede o no ser actualizado.</returns>
-        private bool CheckUpdateLink(string longUserId, string idCurrentResource, string idOtherResource)
+        private static bool CheckUpdateLink(string longUserId, string idCurrentResource, string idOtherResource)
         {
-            bool flag = false;
             string select = $@"select distinct ?person 
 <http://gnoss.com/researchobject.owl> ";
             string where = $@" where {{
@@ -551,12 +531,11 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
         /// </summary>
         /// <param name="idRecurso">Id del recurso</param>
         /// <returns>Retorna un enum TypeRO indicando el tipo de recurso.</returns>
-        private ResTypeRo GetTypeRo(string idRecurso)
+        private static ResTypeRo GetTypeRo(string idRecurso)
         {
             ResTypeRo resTypeRo = new();
 
-            Guid guid = Guid.Empty;
-            Dictionary<Guid, string> longsId = new();
+            Guid guid;
             if (!Guid.TryParse(idRecurso, out guid))
             {
                 guid = resourceApi.GetShortGuid(idRecurso);
@@ -571,8 +550,6 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
             }}";
 
             SparqlObject sparqlObject = resourceApi.VirtuosoQuery(select, where, idComunidad);
-            string type = string.Empty;
-            string longType = string.Empty;
             sparqlObject.results.bindings.ForEach(e =>
             {
                 try
@@ -660,7 +637,7 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
                     FILTER(?idGnoss = <http://gnoss/{pIdGnossUser.ToString().ToUpper()}>)
                     {minus}
                 }} ORDER BY DESC(?type) LIMIT 20";
-            SparqlObject sparqlObject = resourceApi.VirtuosoQueryMultipleGraph(select, where, new List<string> { "person" , "document", "researchobject" });
+            SparqlObject sparqlObject = resourceApi.VirtuosoQueryMultipleGraph(select, where, new List<string> { "person", "document", "researchobject" });
 
 
             // Rellena el los clusters
@@ -670,8 +647,8 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
                 listIdslinked.Add(resourceApi.GetShortGuid(e["s"].value));
 
                 // Obtengo las ids de los usuarios gnoss de los creadores del RO
-                List<string> idsGnoss = new List<string>();
-                if (e.ContainsKey("idGnoss") && e["idGnoss"].value != String.Empty)
+                List<string> idsGnoss;
+                if (e.ContainsKey("idGnoss") && e["idGnoss"].value != string.Empty)
                 {
                     idsGnoss = e["idGnoss"].value.Split(",").ToList();
                 }
@@ -680,7 +657,7 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
                 if (e.ContainsKey("issued"))
                 {
                     fecha = e["issued"].value;
-                    DateTime fechaDate = DateTime.Now;
+                    DateTime fechaDate;
                     try
                     {
                         fechaDate = DateTime.ParseExact(fecha, "yyyyMMddHHmmss", null);
@@ -698,12 +675,12 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
                 {
 
                     bool isValidated = false;
-                    if (e.ContainsKey("isValidated")) { bool.TryParse(e["isValidated"].value, out isValidated); }
+                    if (e.ContainsKey("isValidated")) { _ = bool.TryParse(e["isValidated"].value, out isValidated); }
                     ROLinked ro = new()
                     {
-                        title = e.ContainsKey("title") ? e["title"].value : String.Empty,
-                        entityID = e.ContainsKey("s") ? e["s"].value : String.Empty,
-                        description = e.ContainsKey("abstract") ? e["abstract"].value : String.Empty,
+                        title = e.ContainsKey("title") ? e["title"].value : string.Empty,
+                        entityID = e.ContainsKey("s") ? e["s"].value : string.Empty,
+                        description = e.ContainsKey("abstract") ? e["abstract"].value : string.Empty,
                         fecha = fecha,
                         isValidated = isValidated
                     };

@@ -89,8 +89,8 @@ namespace Hercules.CommonsEDMA.ConfigLoad.Models.Services
         }
 
         public string ObtenerNombreCortoComunidad()
-        {            
+        {
             return nombreCortoComunidad;
-        }                
+        }
     }
 }

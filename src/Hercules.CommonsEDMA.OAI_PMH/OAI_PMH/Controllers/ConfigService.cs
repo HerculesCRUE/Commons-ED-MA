@@ -12,7 +12,7 @@ namespace OAI_PMH.Controllers
         /// <summary>
         /// Archivo de configuración.
         /// </summary>
-        public static IConfigurationRoot configuracion;
+        public readonly static IConfigurationRoot configuracion = new ConfigurationBuilder().AddJsonFile($@"{AppDomain.CurrentDomain.SetupInformation.ApplicationBase}appsettings.json").Build();
 
         // Credenciales
         private string UsernameToken { get; set; }
@@ -24,16 +24,8 @@ namespace OAI_PMH.Controllers
         private string LogPath { get; set; }
 
         // URLs
-        private string url_sgi { get; set; }
+        private string UrlSgi { get; set; }
         private string ConfigUrl { get; set; }
-
-        /// <summary>
-        /// Constructor.
-        /// </summary>
-        public ConfigService()
-        {
-            configuracion = new ConfigurationBuilder().AddJsonFile($@"{System.AppDomain.CurrentDomain.SetupInformation.ApplicationBase}appsettings.json").Build();
-        }
 
         /// <summary>
         /// Obtiene la ruta de Logs.
@@ -43,8 +35,9 @@ namespace OAI_PMH.Controllers
         {
             if (string.IsNullOrEmpty(LogPath))
             {
-                string connectionString = string.Empty;
+                string connectionString;
                 IDictionary environmentVariables = Environment.GetEnvironmentVariables();
+
                 if (environmentVariables.Contains("LogPath"))
                 {
                     connectionString = environmentVariables["LogPath"] as string;
@@ -66,10 +59,11 @@ namespace OAI_PMH.Controllers
         /// <returns></returns>
         public string GetConfigSGI()
         {
-            if (string.IsNullOrEmpty(url_sgi))
+            if (string.IsNullOrEmpty(UrlSgi))
             {
-                string connectionString = string.Empty;
+                string connectionString;
                 IDictionary environmentVariables = Environment.GetEnvironmentVariables();
+
                 if (environmentVariables.Contains("url_sgi"))
                 {
                     connectionString = environmentVariables["url_sgi"] as string;
@@ -79,10 +73,10 @@ namespace OAI_PMH.Controllers
                     connectionString = configuracion["url_sgi"];
                 }
 
-                url_sgi = connectionString;
+                UrlSgi = connectionString;
             }
 
-            return url_sgi;
+            return UrlSgi;
         }
 
         /// <summary>
@@ -93,8 +87,9 @@ namespace OAI_PMH.Controllers
         {
             if (string.IsNullOrEmpty(ConfigUrl))
             {
-                string connectionString = string.Empty;
+                string connectionString;
                 IDictionary environmentVariables = Environment.GetEnvironmentVariables();
+
                 if (environmentVariables.Contains("ConfigUrl"))
                 {
                     connectionString = environmentVariables["ConfigUrl"] as string;
@@ -118,8 +113,9 @@ namespace OAI_PMH.Controllers
         {
             if (string.IsNullOrEmpty(UsernameToken))
             {
-                string connectionString = string.Empty;
+                string connectionString;
                 IDictionary environmentVariables = Environment.GetEnvironmentVariables();
+
                 if (environmentVariables.Contains("UsernameToken"))
                 {
                     connectionString = environmentVariables["UsernameToken"] as string;
@@ -143,8 +139,9 @@ namespace OAI_PMH.Controllers
         {
             if (string.IsNullOrEmpty(PasswordToken))
             {
-                string connectionString = string.Empty;
+                string connectionString;
                 IDictionary environmentVariables = Environment.GetEnvironmentVariables();
+
                 if (environmentVariables.Contains("PasswordToken"))
                 {
                     connectionString = environmentVariables["PasswordToken"] as string;
@@ -168,8 +165,9 @@ namespace OAI_PMH.Controllers
         {
             if (string.IsNullOrEmpty(UsernameTokenPII))
             {
-                string connectionString = string.Empty;
+                string connectionString;
                 IDictionary environmentVariables = Environment.GetEnvironmentVariables();
+
                 if (environmentVariables.Contains("UsernameTokenPII"))
                 {
                     connectionString = environmentVariables["UsernameTokenPII"] as string;
@@ -193,8 +191,9 @@ namespace OAI_PMH.Controllers
         {
             if (string.IsNullOrEmpty(PasswordTokenPII))
             {
-                string connectionString = string.Empty;
+                string connectionString;
                 IDictionary environmentVariables = Environment.GetEnvironmentVariables();
+
                 if (environmentVariables.Contains("PasswordTokenPII"))
                 {
                     connectionString = environmentVariables["PasswordTokenPII"] as string;

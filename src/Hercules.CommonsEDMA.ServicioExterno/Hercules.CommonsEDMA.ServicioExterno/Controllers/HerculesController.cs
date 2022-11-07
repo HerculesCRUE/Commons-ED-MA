@@ -3,17 +3,9 @@ using Hercules.CommonsEDMA.ServicioExterno.Models.Graficas.DataGraficaAreasTags;
 using Hercules.CommonsEDMA.ServicioExterno.Models.Graficas.DataGraficaProyectos;
 using Hercules.CommonsEDMA.ServicioExterno.Models.Graficas.DataGraficaPublicaciones;
 using Hercules.CommonsEDMA.ServicioExterno.Models.Graficas.DataItemRelacion;
-using Hercules.CommonsEDMA.ServicioExterno.Models.RedesUsuario;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Http;
-using Microsoft.Extensions.Logging;
-using System;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Threading.Tasks;
-using Hercules.CommonsEDMA.ServicioExterno.Controllers.Utilidades;
 
 namespace Hercules.CommonsEDMA.ServicioExterno.Controllers
 {
@@ -31,7 +23,7 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers
         [HttpGet("DatosGraficaPublicaciones")]
         public IActionResult DatosGraficaPublicaciones(string pParametros)
         {
-            AccionesPublicaciones accionesPublicaciones = new AccionesPublicaciones();
+            AccionesPublicaciones accionesPublicaciones = new();
             DataGraficaPublicaciones datosPublicaciones = accionesPublicaciones.GetDatosGraficaPublicaciones(pParametros);
 
             return Ok(datosPublicaciones);
@@ -45,7 +37,7 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers
         [HttpGet("DatosGraficaProyectos")]
         public IActionResult DatosGraficaProyectos(string pParametros)
         {
-            AccionesProyecto accionesProyecto = new AccionesProyecto();
+            AccionesProyecto accionesProyecto = new();
             GraficasProyectos datosProyectos = accionesProyecto.GetDatosGraficaProyectos(pParametros);
 
             return Ok(datosProyectos);
@@ -62,7 +54,7 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers
         [HttpGet("DatosGraficaAreasTematicas")]
         public IActionResult DatosGraficaAreasTematicas(string pId, string pType, string pAnioInicio, string pAnioFin)
         {
-            AccionesAreasTematicas accionesAreasTematicas = new AccionesAreasTematicas();
+            AccionesAreasTematicas accionesAreasTematicas = new();
             DataGraficaAreasTags datos = accionesAreasTematicas.DatosGraficaAreasTematicas(pId, pType, pAnioInicio, pAnioFin);
 
             return Ok(datos);
@@ -80,7 +72,7 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers
         [HttpGet("DatosGraficaAreasTematicasArania")]
         public IActionResult DatosGraficaAreasTematicasArania(string pId, string pType, string pAnioInicio, string pAnioFin, int pNumAreas)
         {
-            AccionesAreasTematicas accionesAreasTematicas = new AccionesAreasTematicas();
+            AccionesAreasTematicas accionesAreasTematicas = new();
             List<DataItemRelacion> datos = accionesAreasTematicas.DatosGraficaAreasTematicasArania(pId, pType, pAnioInicio, pAnioFin, pNumAreas);
 
             return Ok(datos);
@@ -98,7 +90,7 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers
         [HttpGet("DatosGraficaMiembrosGrupo")]
         public IActionResult DatosGraficaMiembrosGrupo(string pIdGrupo, string pParametros)
         {
-            AccionesGroup accionGrupo = new AccionesGroup();
+            AccionesGroup accionGrupo = new();
             List<DataItemRelacion> datosGrupo = accionGrupo.DatosGraficaMiembrosGrupo(pIdGrupo, pParametros);
 
             return Ok(datosGrupo);
@@ -114,7 +106,7 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers
         [HttpGet("DatosGraficaColaboradoresGrupo")]
         public IActionResult DatosGraficaColaboradoresGrupo(string pIdGrupo, string pParametros, int pMax)
         {
-            AccionesGroup accionGrupo = new AccionesGroup();
+            AccionesGroup accionGrupo = new();
             List<DataItemRelacion> datosGrupo = accionGrupo.DatosGraficaColaboradoresGrupo(pIdGrupo, pParametros, pMax);
 
             return Ok(datosGrupo);
@@ -130,7 +122,7 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers
         [HttpGet("DatosFichaProyecto")]
         public IActionResult DatosFichaProyecto(string pIdProyecto)
         {
-            AccionesProyecto accionProyecto = new AccionesProyecto();
+            AccionesProyecto accionProyecto = new();
             Dictionary<string, int> datosCabeceraFichas = accionProyecto.GetDatosCabeceraProyecto(pIdProyecto);
 
             return Ok(datosCabeceraFichas);
@@ -145,7 +137,7 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers
         [HttpGet("DatosGraficaRedMiembros")]
         public IActionResult DatosGraficaRedMiembros(string pIdProyecto, string pParametros)
         {
-            AccionesProyecto accionProyecto = new AccionesProyecto();
+            AccionesProyecto accionProyecto = new();
             List<DataItemRelacion> datosRedColaboradores = accionProyecto.DatosGraficaRedMiembros(pIdProyecto, pParametros);
 
             return Ok(datosRedColaboradores);
@@ -161,7 +153,7 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers
         [HttpGet("DatosGraficaRedColaboradores")]
         public IActionResult DatosGraficaRedColaboradores(string pIdProyecto, string pParametros, int pMax)
         {
-            AccionesProyecto accionProyecto = new AccionesProyecto();
+            AccionesProyecto accionProyecto = new();
             List<DataItemRelacion> datosRedColaboradores = accionProyecto.GetDatosGraficaRedColaboradores(pIdProyecto, pParametros, pMax);
 
             return Ok(datosRedColaboradores);
@@ -176,7 +168,7 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers
         [HttpGet("DatosGraficaPublicacionesHorizontal")]
         public IActionResult DatosGraficaPublicacionesHorizontal(string pIdProyecto, string pParametros)
         {
-            AccionesProyecto accionProyecto = new AccionesProyecto();
+            AccionesProyecto accionProyecto = new();
             DataGraficaAreasTags datosPublicaciones = accionProyecto.GetDatosGraficaPublicacionesHorizontal(pIdProyecto, pParametros);
 
             return Ok(datosPublicaciones);
@@ -190,7 +182,7 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers
         [HttpGet("DatosFichaPersona")]
         public IActionResult DatosFichaPersona(string pIdPersona)
         {
-            AccionesPersona accionPersona = new AccionesPersona();
+            AccionesPersona accionPersona = new();
             Dictionary<string, int> datosCabeceraFichas = accionPersona.GetDatosCabeceraPersona(pIdPersona);
 
             return Ok(datosCabeceraFichas);
@@ -204,7 +196,7 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers
         [HttpGet("DatosGruposPersona")]
         public IActionResult DatosGruposPersona(string pIdPersona)
         {
-            AccionesPersona accionPersona = new AccionesPersona();
+            AccionesPersona accionPersona = new();
             List<string> datosPublicacionesPersona = accionPersona.GetGrupoInvestigacion(pIdPersona);
 
             return Ok(datosPublicacionesPersona);
@@ -218,7 +210,7 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers
         [HttpGet("DatosCategoriasPersona")]
         public IActionResult DatosCategoriasPersona(string pIdPersona)
         {
-            AccionesPersona accionPersona = new AccionesPersona();
+            AccionesPersona accionPersona = new();
             List<Dictionary<string, string>> datosPublicacionesPersona = accionPersona.GetTopicsPersona(pIdPersona);
 
             return Ok(datosPublicacionesPersona);
@@ -233,7 +225,7 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers
         [HttpGet("DatosGraficaHorizontalPersonas")]
         public IActionResult DatosGraficaHorizontalPersonas(string pIdPersona, string pParametros)
         {
-            AccionesPersona accionPersona = new AccionesPersona();
+            AccionesPersona accionPersona = new();
             DataGraficaAreasTags datosPublicacionesPersona = accionPersona.GetDatosGraficaProyectosPersonaHorizontal(pIdPersona, pParametros);
 
             return Ok(datosPublicacionesPersona);
@@ -249,7 +241,7 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers
         [HttpGet("DatosGraficaColaboradoresPersonas")]
         public IActionResult DatosGraficaColaboradoresPersonas(string pIdPersona, string pParametros, int pMax)
         {
-            AccionesPersona accionPersona = new AccionesPersona();
+            AccionesPersona accionPersona = new();
             List<DataItemRelacion> datosPublicacionesPersona = accionPersona.GetDatosGraficaRedColaboradoresPersonas(pIdPersona, pParametros, pMax);
 
             return Ok(datosPublicacionesPersona);
@@ -263,11 +255,12 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers
         [HttpGet("GetDatosCabeceraDocumento")]
         public IActionResult GetDatosCabeceraDocumento(string pIdDocumento)
         {
-            AccionesPublicaciones accionDocumento = new AccionesPublicaciones();
+            AccionesPublicaciones accionDocumento = new();
             Dictionary<string, int> datosCabeceraFichas = accionDocumento.GetDatosCabeceraDocumento(pIdDocumento);
 
             return Ok(datosCabeceraFichas);
 
         }
+
     }
 }

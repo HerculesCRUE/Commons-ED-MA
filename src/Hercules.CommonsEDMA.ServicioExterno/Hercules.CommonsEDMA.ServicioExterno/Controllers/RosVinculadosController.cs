@@ -1,14 +1,9 @@
 ﻿using Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones;
-using Hercules.CommonsEDMA.ServicioExterno.Models.Offer;
-using Hercules.CommonsEDMA.ServicioExterno.Models.Graficas.DataGraficaAreasTags;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using Hercules.CommonsEDMA.ServicioExterno.Models.Cluster;
-using System.IO;
 using Hercules.CommonsEDMA.ServicioExterno.Controllers.Utilidades;
 
 namespace Hercules.CommonsEDMA.ServicioExterno.Controllers
@@ -95,7 +90,7 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers
             {
                 return StatusCode(StatusCodes.Status401Unauthorized);
             }
-            AccionesRosVinculados accionesRosVinculados = new AccionesRosVinculados();
+            AccionesRosVinculados accionesRosVinculados = new();
             return Ok(accionesRosVinculados.AddLink(resourceRO, pIdROId, pIdGnossUser, _Configuracion));
         }
     }

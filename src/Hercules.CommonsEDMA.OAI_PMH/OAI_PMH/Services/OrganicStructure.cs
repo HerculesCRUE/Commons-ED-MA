@@ -12,7 +12,7 @@ namespace OAI_PMH.Services
         {
             string accessToken = Token.CheckToken(pConfig);
             Dictionary<string, DateTime> idDictionary = new();
-            List<string> idList = new();
+            List<string> idList;
             RestClient client = new(pConfig.GetConfigSGI() + "/api/sgo/empresas/modificadas-ids?q=padreId=na=\"" + parentId + "\"");
             client.AddDefaultHeader("Authorization", "Bearer " + accessToken);
             var request = new RestRequest(Method.GET);

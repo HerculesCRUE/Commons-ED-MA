@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text.RegularExpressions;
 
 namespace Hercules.CommonsEDMA.ServicioExterno.Models.Buscador
 {
@@ -9,7 +7,7 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Models.Buscador
     {
         public class Property
         {
-            public Property(HashSet<string> pTexts,int pScore,ObjectSearch pOwner)
+            public Property(HashSet<string> pTexts, int pScore, ObjectSearch pOwner)
             {
                 texts = pTexts;
                 score = pScore;
@@ -18,7 +16,7 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Models.Buscador
 
             public HashSet<string> texts { get; set; }
             public int score { get; set; }
-            public ObjectSearch owner{ get; set; }
+            public ObjectSearch owner { get; set; }
         }
 
         public string title { get; set; }
@@ -28,6 +26,6 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Models.Buscador
         public string order { get; set; }
 
         public List<Property> properties { get; set; }
-                
+
     }
 }

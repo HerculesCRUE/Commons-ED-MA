@@ -1,12 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
-namespace Hercules.CommonsEDMA.ServicioExterno.Models.Graficas.DataItemRelacion
+﻿namespace Hercules.CommonsEDMA.ServicioExterno.Models.Graficas.DataItemRelacion
 {
     public class DataItemRelacion
-    {        
+    {
         public Data data { get; set; }
         public bool? selectable { get; set; }
         public bool? grabbable { get; set; }

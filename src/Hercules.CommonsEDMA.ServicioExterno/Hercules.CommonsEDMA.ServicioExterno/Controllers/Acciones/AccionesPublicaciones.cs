@@ -1,19 +1,9 @@
-﻿using Gnoss.ApiWrapper;
-using Gnoss.ApiWrapper.ApiModel;
+﻿using Gnoss.ApiWrapper.ApiModel;
 using Hercules.CommonsEDMA.ServicioExterno.Controllers.Utilidades;
-using Hercules.CommonsEDMA.ServicioExterno.Models;
 using Hercules.CommonsEDMA.ServicioExterno.Models.Graficas.DataGraficaPublicaciones;
-using Hercules.CommonsEDMA.ServicioExterno.Models.Graficas.DataItemRelacion;
-using Newtonsoft.Json;
-using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
-using System.Web;
-using System.Xml.Linq;
 
 namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
 {
@@ -27,8 +17,8 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
         /// <returns>Objeto con todos los datos necesarios para crear la gráfica en el JS.</returns>
         public DataGraficaPublicaciones GetDatosGraficaPublicaciones(string pParametros)
         {
-            Dictionary<string, Dictionary<string, int>> dicResultados = new Dictionary<string, Dictionary<string, int>>();
-            HashSet<string> listacuartiles = new HashSet<string>();
+            Dictionary<string, Dictionary<string, int>> dicResultados = new();
+            HashSet<string> listacuartiles = new();
             {
                 string select = $@"  {mPrefijos}
                                 SELECT ?fecha ?cuartil COUNT(DISTINCT(?documento)) AS ?NumPublicaciones ";
@@ -53,7 +43,7 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
                         {
                             cuartil = "";
                         }
-                        if(cuartil != "1" && cuartil != "2" && cuartil != "3" && cuartil != "4")
+                        if (cuartil != "1" && cuartil != "2" && cuartil != "3" && cuartil != "4")
                         {
                             cuartil = "";
                         }
@@ -75,7 +65,7 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
                 }
             }
 
-            Dictionary<string, int> dicResultadosCitasAnio = new Dictionary<string, int>();
+            Dictionary<string, int> dicResultadosCitasAnio = new();
             {
                 string select = $@"  {mPrefijos}
                                 SELECT ?fecha SUM(?numCitas) AS ?numCitas ";
@@ -106,7 +96,7 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
             {
                 int anioIni = int.Parse(dicResultados.First().Key);
                 int anioFin = int.Parse(dicResultados.Last().Key);
-                if(int.Parse(dicResultadosCitasAnio.First().Key)< anioIni)
+                if (int.Parse(dicResultadosCitasAnio.First().Key) < anioIni)
                 {
                     anioIni = int.Parse(dicResultadosCitasAnio.First().Key);
                 }
@@ -145,13 +135,13 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
             }
 
             // Contruir el objeto de la gráfica.
-            Models.Graficas.DataGraficaPublicaciones.Data data = new Models.Graficas.DataGraficaPublicaciones.Data(dicResultados.Keys.ToList(), new List<Datasets>());
+            Models.Graficas.DataGraficaPublicaciones.Data data = new(dicResultados.Keys.ToList(), new List<Datasets>());
             //Construimos un dataset para las citas
-            Datasets datasetCitas = new Datasets("Citas", dicResultadosCitasAnio.Values.ToList(), UtilidadesAPI.CrearListaColores(dicResultados.Count, "#333333"), UtilidadesAPI.CrearListaColores(dicResultados.Count, "#000000"), 1, null, "line", "y2");
+            Datasets datasetCitas = new("Citas", dicResultadosCitasAnio.Values.ToList(), UtilidadesAPI.CrearListaColores(dicResultados.Count, "#333333"), UtilidadesAPI.CrearListaColores(dicResultados.Count, "#000000"), 1, null, "line", "y2");
             data.datasets.Add(datasetCitas);
             //Construimos un dataset por cada cuartil
             int num = 0;
-            Dictionary<string, string> colores = new Dictionary<string, string>();
+            Dictionary<string, string> colores = new();
             colores.Add("1", "#45DCB4");
             colores.Add("2", "#EAF112");
             colores.Add("3", "#DE921E");
@@ -173,7 +163,7 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
                     color = "#6cafd3";
                 }
                 List<string> listaColores = UtilidadesAPI.CrearListaColores(dicResultados.Count, color);
-                List<int> valores = new List<int>();
+                List<int> valores = new();
                 foreach (string anio in dicResultados.Keys)
                 {
                     if (dicResultados[anio].ContainsKey(cuartil))
@@ -185,28 +175,28 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
                         valores.Add(0);
                     }
                 }
-                Datasets dataset = new Datasets(nombre, valores, listaColores, listaColores, 1, "cuartil", "bar", "y1");
+                Datasets dataset = new(nombre, valores, listaColores, listaColores, 1, "cuartil", "bar", "y1");
                 data.datasets.Add(dataset);
                 num++;
             }
-            
 
-            Options options = new Options(new Scales(new Y(true)), new Plugins(new Title(true, "Evolución temporal publicaciones"), new Legend(new Labels(true), "top", "end")));
-            DataGraficaPublicaciones dataGrafica = new DataGraficaPublicaciones("bar", data, options);
+
+            Options options = new(new Scales(new Y(true)), new Plugins(new Title(true, "Evolución temporal publicaciones"), new Legend(new Labels(true), "top", "end")));
+            DataGraficaPublicaciones dataGrafica = new("bar", data, options);
 
             return dataGrafica;
         }
 
         public int CompareCuartil(string pCuartil)
         {
-            int cuartil = 0;
+            int cuartil;
             if (pCuartil == "")
             {
                 cuartil = 9999;
             }
             else
             {
-                int.TryParse(pCuartil, out cuartil);
+                _ = int.TryParse(pCuartil, out cuartil);
             }
             return cuartil;
         }
@@ -219,10 +209,10 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
         public Dictionary<string, int> GetDatosCabeceraDocumento(string pDocumento)
         {
             string idGrafoBusqueda = UtilidadesAPI.ObtenerIdBusqueda(resourceApi, pDocumento);
-            Dictionary<string, int> dicResultados = new Dictionary<string, int>();
-            SparqlObject resultadoQuery = null;
-            StringBuilder select = new StringBuilder();
-            String where = "";
+            Dictionary<string, int> dicResultados = new();
+            SparqlObject resultadoQuery;
+            StringBuilder select = new();
+            string where;
 
             // Consulta sparql.
             select.Append(mPrefijos);
