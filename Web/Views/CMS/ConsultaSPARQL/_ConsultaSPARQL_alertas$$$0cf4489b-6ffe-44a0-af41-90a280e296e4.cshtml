@@ -169,7 +169,7 @@
             else
             {
 				string textoNotificacionSexenios=Html.Translate("NOTIFICACION_SEXENIOS");
-                return GetNotification(notification, Html.Translate(notification.mensaje));
+                return GetNotification(notification, Html.Translate(textoNotificacionSexenios));
             }
         }
         else if (notification.tipoNotificacion == "recuperarAcreditacion")
@@ -181,7 +181,7 @@
             else
             {
 				string textoNotificacionAcreditacion=Html.Translate("NOTIFICACION_ACREDITACION");
-                return GetNotification(notification, Html.Translate(notification.mensaje));
+                return GetNotification(notification, Html.Translate(textoNotificacionAcreditacion));
             }
         }
 		else if(notification.tipoNotificacion == "notifySexenios")
