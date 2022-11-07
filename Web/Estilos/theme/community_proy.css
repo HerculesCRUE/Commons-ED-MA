@@ -895,3 +895,8 @@ body.operativaRegistro.login main .panel-centrado .login_cas {
 .custom-css-scroll-proy::-webkit-scrollbar-track { background: rgba(0,0,0,0.08); border-radius: 0px;}
 .custom-css-scroll-proy::-webkit-scrollbar-thumb { background-color: var(--c-texto-claro) ; border-radius: 8px; }
 /* */
+
+
+.menuLateral.usuario .cabeceraUsuario img.imagen-usuario {
+    height: 100%;
+}
