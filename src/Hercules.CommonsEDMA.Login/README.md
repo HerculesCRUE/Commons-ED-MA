@@ -2,8 +2,8 @@
 
 | Fecha         | 21/06/2022                                                   |
 | ------------- | ------------------------------------------------------------ |
-|Título|Configuración del Servicio de Login con SAML| 
-|Descripción|Descripción de la configuración del Servicio de Login con SAML|
+|Título|Configuración del Servicio de Login| 
+|Descripción|Descripción de la configuración del Servicio de Login|
 |Versión|1.0|
 |Módulo|Documentación|
 |Tipo|Especificación|
@@ -19,7 +19,9 @@
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=Hercules.CommonsEDMA.Login&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=Hercules.CommonsEDMA.Login)
 [![Lines of Code](https://sonarcloud.io/api/project_badges/measure?project=Hercules.CommonsEDMA.Login&metric=ncloc)](https://sonarcloud.io/summary/new_code?id=Hercules.CommonsEDMA.Login)
 
+# Servicio de login
 
+Este servicio es el encargado de autenticar a los usuarios cuando acceden a la plataforma
 
 
 # Acerca de SAML
@@ -36,6 +38,11 @@ La función principal es de dar seguridad y permisos a los distintos usuarios qu
 		"CertificateValidationMode": "ChainTrust",
 		"RevocationMode": "NoCheck"
 	  }
+	  "claimMail": "",
+	  "claimGroups": "",
+	  "groupAdminIndicadores": "",
+	  "groupAdmin": "",
+	  "groupGestorOtri": ""
     }
   
 - Saml2.IdPMetadata: URL del metadata proporcionado por el Identity Provier.
@@ -43,3 +50,8 @@ La función principal es de dar seguridad y permisos a los distintos usuarios qu
 - Saml2.SignatureAlgorithm: Algoritmo de encriptación.
 - Saml2.CertificateValidationMode: Especifica el modo de validación del certificado.
 - Saml2.RevocationMode: Establece el modo de revocación que especifica si se produce una comprobación de revocación.
+- claimMail: Identificador del claim en el que está el correo
+- claimGroups: Identificador del claim en el que están los grupos
+- groupAdminIndicadores: Nombre del grupo en el que están los administradores de indicadores
+- groupAdmin: Nombre del grupo en el que están los administradores de la comunidad
+- groupGestorOtri: Nombre del grupo en el que están los gestores otri
