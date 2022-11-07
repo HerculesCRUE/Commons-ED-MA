@@ -2,8 +2,8 @@
 
 | Fecha         | 24/10/2022                                                  |
 | ------------- | ------------------------------------------------------------ |
-|Titulo|API Hercules.CommonsEDMA.ConfigLoad| 
-|Descripción|Manual del servicio API Hercules.CommonsEDMA.ConfigLoad|
+|Titulo|API Carga de configuración| 
+|Descripción|Manual del servicio Carga de configuración|
 |Versión|1.0|
 |Módulo|HerculesED|
 |Tipo|Manual|
@@ -20,25 +20,32 @@
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=Hercules.CommonsEDMA.ConfigLoad&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=Hercules.CommonsEDMA.ConfigLoad)
 [![Lines of Code](https://sonarcloud.io/api/project_badges/measure?project=Hercules.CommonsEDMA.ConfigLoad&metric=ncloc)](https://sonarcloud.io/summary/new_code?id=Hercules.CommonsEDMA.ConfigLoad)
 
+# Servicio de Carga de configuración
+
+Este servicio se encarga de la carga de configuración del proyecto (páginas del CMS, facetas...) enviando paquetes al API de despliegues.
+
+## Configuración en el appsettings.json
+```json
+{
+  "Logging": {
+    "LogLevel": {
+      "Default": "Information",
+      "Microsoft": "Warning",
+      "Microsoft.Hosting.Lifetime": "Information"
+    }
+  },
+  "loginAdmin": "",
+  "passAdmin": "",
+  "urlAPIDespliegues": "",
+}
+```
+- **LogLevel.Default**: Nivel de error por defecto.
+- **LogLevel.Microsoft**: Nivel de error para los errores propios de Microsoft.
+- **LogLevel.Microsoft.Hosting.Lifetime**: Nivel de error para los errores de host.
+- **loginAdmin**: Usuario administrador.
+- **passAdmin**: Password del administrador.
+- **urlAPIDespliegues**: Url del API de despliegues.
+
 ## Dependencias
-- **EnterpriseLibrary.Data.NetCore**: v6.3.2
-- **GnossApiWrapper.NetCore**: v6.0.6
-- **Microsoft.ApplicationInsights**: v2.16.0
-- **Microsoft.EntityFrameworkCore**: v6.0.9
-- **Microsoft.EntityFrameworkCore.Relational**: v6.0.9
-- **Microsoft.EntityFrameworkCore.SqlServer**: v6.0.9
-- **Microsoft.Extensions.Configuration**: v6.0.1
-- **Microsoft.Extensions.Configuration.Abstractions**: v6.0.0
-- **Microsoft.Extensions.Hosting**: v6.0.1
-- **Microsoft.Extensions.Hosting.Abstractions**: v6.0.1
-- **Newtonsoft.Json**: v13.0.1
-- **Npgsql.EntityFrameworkCore.PostgreSQL**: v6.0.6
-- **Oracle.EntityFrameworkCore**: v6.21.61
-- **Oracle.ManagerDataAccess.Core**: v3.21.70
-- **Serilog.AspNetCore**: v3.4.0
-- **Serilog.Sinks.File**: v4.1.0
-- **Serilog.Sinks.Http**: v7.2.0
-- **Serilog.Sinks.PeriodicBatching**: v2.3.0
-- **System.Data.SqlClient**: v4.8.3
-- **System.Drawing.Common**: v6.0.0
-- **System.ServiceModel.Primitives**: v4.9.0
+- **Serilog.AspNetCore**: v6.0.1
+- **Micrisoft.Extensions.Hosting.Abstractions**: 6.0.0
