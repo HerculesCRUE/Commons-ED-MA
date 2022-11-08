@@ -2245,6 +2245,7 @@ menusLateralesManagement.montarMenuLateralMetabuscador= function () {
 			});
 		},
 		hide: function () {
+            $('.home-ma .buscador-container').removeAttr('style');
 			that.body.removeClass('metabuscador-abierto');
 			clearInterval(that.timerId);
 		}
