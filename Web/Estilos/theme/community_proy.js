@@ -62,8 +62,18 @@ var cargarCVId = {
 					that.printCVId();
 					that.printCVIdHomeEd();
 					setCacheWithExpiry(keyCache,data,60000);
-				});
+				});				
 			}
+		}
+		if(usuarioID!='ffffffff-ffff-ffff-ffff-ffffffffffff')
+		{
+			var urlGetCVNotification = url_servicio_externo+'Notification/hasNotificationsUnRead?userID='+usuarioID;
+			$.get(urlGetCVNotification, null, function(data) {
+				if(data){
+					
+					$('.liNotificaciones').addClass('nuevos');
+				}
+			});
 		}
 	},
 	printCVId: function(){

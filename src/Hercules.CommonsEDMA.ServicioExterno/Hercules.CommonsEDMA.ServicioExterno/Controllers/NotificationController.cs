@@ -1,4 +1,5 @@
 ﻿using Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones;
+using Hercules.CommonsEDMA.ServicioExterno.Controllers.Utilidades;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -21,6 +22,15 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers
             }
 
             return Ok();
+        }
+        [HttpGet("hasNotificationsUnRead")]
+        public IActionResult HasNotificationsUnRead(string userID)
+        {
+            AccionesNotificaciones acciones = new AccionesNotificaciones();
+            
+
+
+            return Ok(acciones.hasNotificationsUnRead(userID));
         }
     }
 }
