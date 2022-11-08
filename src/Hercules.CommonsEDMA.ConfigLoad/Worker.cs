@@ -58,19 +58,22 @@ namespace Hercules.CommonsEDMA.ConfigLoad
             Console.WriteLine("Subimos configuraciones");
             string rutaBase = $@"{AppDomain.CurrentDomain.SetupInformation.ApplicationBase}Files{Path.DirectorySeparatorChar}";
 
+            Console.WriteLine("Escribe el login del usuario administrador:");
+            string loginAdmin = Console.ReadLine();
+            Console.WriteLine("Escribe el password del usuario administrador:");
+            string passAdmin = Console.ReadLine();
+
             foreach (Tuple<string, string, string> step in listaPasos)
             {
                 Console.WriteLine(step.Item1);
-                Despliegue(rutaBase + step.Item2, step.Item3);
+                Despliegue(rutaBase + step.Item2, step.Item3, loginAdmin, passAdmin);
             }
         }
 
-        private static void Despliegue(string pRutaFichero, string pMetodo)
+        private static void Despliegue(string pRutaFichero, string pMetodo, string pLoginAdmin, string pPassAdmin)
         {
             string nombreProy = configService.ObtenerNombreCortoComunidad();
-            string loginAdmin = configService.ObtenerLoginAdmin();
-            string passAdmin = configService.ObtenerPassAdmin();
-            string sWebAddress = $"{configService.ObtenerUrlAPIDespliegues()}Upload?tipoPeticion={pMetodo}&usuario={loginAdmin}&password={passAdmin}&nombreProy={nombreProy}";
+            string sWebAddress = $"{configService.ObtenerUrlAPIDespliegues()}Upload?tipoPeticion={pMetodo}&usuario={pLoginAdmin}&password={pPassAdmin}&nombreProy={nombreProy}";
 
             HttpContent contentData;
 
