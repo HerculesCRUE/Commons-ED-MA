@@ -25,15 +25,16 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
         }
         public bool hasNotificationsUnRead(string pGnossID)
         {
-            string select = "SELECT ?a";
+            string select = "SELECT ?notification";
 
             string where = @$"
                 WHERE
                 {{
-                        ?s <http://w3id.org/roh/gnossUser> <http://gnoss/{pGnossID.ToUpper()}>.
-                    ?a <http://w3id.org/roh/owner> ?s.   
-                    FILTER NOT EXISTS{{
-                        ?a  <http://w3id.org/roh/read> ?read
+                    ?person a <http://xmlns.com/foaf/0.1/Person>.
+                    ?person <http://w3id.org/roh/gnossUser> <http://gnoss/{pGnossID.ToUpper()}>.
+                    ?notification <http://w3id.org/roh/owner> ?person.   
+                    MINUS{{
+                        ?notification  <http://w3id.org/roh/read> 'true'.
                     }}
                 }}
                 LIMIT 1
