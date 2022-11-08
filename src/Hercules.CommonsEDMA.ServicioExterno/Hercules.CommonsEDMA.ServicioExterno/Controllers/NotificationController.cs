@@ -27,9 +27,6 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers
         public IActionResult HasNotificationsUnRead(string userID)
         {
             AccionesNotificaciones acciones = new AccionesNotificaciones();
-            
-
-
             return Ok(acciones.hasNotificationsUnRead(userID));
         }
     }
