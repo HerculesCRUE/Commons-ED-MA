@@ -9,14 +9,15 @@
   <ItemGroup>
     <PackageReference Include="dotNetRDF" Version="2.7.5" />
     <PackageReference Include="GnossApiWrapper.NetCore" Version="6.0.7" />
+    <PackageReference Include="Microsoft.AspNet.WebApi.Client" Version="5.2.9" />
     <PackageReference Include="RabbitMQ.Client" Version="6.4.0" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0" />
     <PackageReference Include="System.Net.Http" Version="4.3.4" />
-    <PackageReference Include="System.Net.Http.Formatting.Extension" Version="5.2.3" />
   </ItemGroup>
 
   <ItemGroup>
     <Folder Include="Models\JSON\" />
+    <Folder Include="wwwroot\" />
   </ItemGroup>
 
   <ItemGroup>
