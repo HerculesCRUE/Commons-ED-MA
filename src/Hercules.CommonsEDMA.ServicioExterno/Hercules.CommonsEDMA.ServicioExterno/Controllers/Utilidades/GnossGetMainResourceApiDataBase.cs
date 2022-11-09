@@ -27,6 +27,13 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Utilidades
                     try
                     {
                         mResourceAPI = new ResourceApi(RUTA_OAUTH);
+                        if (string.IsNullOrEmpty(mResourceAPI.GraphsUrl))
+                        {
+                            mResourceAPI = null;
+                            Console.WriteLine("No se ha podido iniciar ResourceApi");
+                            Console.WriteLine($"Contenido OAuth: {System.IO.File.ReadAllText(RUTA_OAUTH)}");
+                            Thread.Sleep(10000);
+                        }
                     }
                     catch (Exception)
                     {
@@ -48,6 +55,7 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Utilidades
                     try
                     {
                         mCommunityAPI = new CommunityApi(RUTA_OAUTH);
+                        mCommunityAPI.GetCommunityId();
                     }
                     catch (Exception)
                     {
