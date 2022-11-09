@@ -32,14 +32,15 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models
                         if (string.IsNullOrEmpty(mResourceApi.GraphsUrl))
                         {
                             mResourceApi = null;
-                            Console.WriteLine("No se ha podido iniciar ResourceApi");
+                            Console.WriteLine("No se ha podido iniciar ResourceApi mResourceApi.GraphsUrl es nulo o vacío");
                             Console.WriteLine($"Contenido OAuth: {System.IO.File.ReadAllText(rutaOauth)}");
                             Thread.Sleep(10000);
                         }
                     }
-                    catch (Exception)
+                    catch (Exception ex)
                     {
                         Console.WriteLine("No se ha podido iniciar ResourceApi");
+                        Console.WriteLine("Error: "+ex.Message);
                         Console.WriteLine($"Contenido OAuth: {System.IO.File.ReadAllText(rutaOauth)}");
                         Thread.Sleep(10000);
                     }
@@ -59,8 +60,9 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models
                         mCommunityApi = new CommunityApi(rutaOauth);
                         mCommunityApi.GetCommunityId();
                     }
-                    catch (Exception) {
+                    catch (Exception ex) {
                         Console.WriteLine("No se ha podido iniciar CommunityApi");
+                        Console.WriteLine("Error: " + ex.Message);
                         Console.WriteLine($"Contenido OAuth: {System.IO.File.ReadAllText(rutaOauth)}");
                         Thread.Sleep(10000);
                     }
