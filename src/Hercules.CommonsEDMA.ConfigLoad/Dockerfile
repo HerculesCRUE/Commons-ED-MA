@@ -20,5 +20,4 @@ RUN dotnet publish "Hercules.CommonsEDMA.ConfigLoad.csproj" -c Release -o /app/p
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
-ENTRYPOINT ["ping","-i","60"]
-CMD ["localhost"]
+ENTRYPOINT ["tail","-f","/dev/null"]
