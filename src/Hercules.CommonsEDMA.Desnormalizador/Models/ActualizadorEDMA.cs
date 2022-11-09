@@ -8,6 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Threading;
 
 namespace Hercules.CommonsEDMA.Desnormalizador.Models
 {
@@ -28,8 +29,20 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models
                     try
                     {
                         mResourceApi = new ResourceApi(rutaOauth);
+                        if (string.IsNullOrEmpty(mResourceApi.GraphsUrl))
+                        {
+                            mResourceApi = null;
+                            Console.WriteLine("No se ha podido iniciar ResourceApi");
+                            Console.WriteLine($"Contenido OAuth: {System.IO.File.ReadAllText(rutaOauth)}");
+                            Thread.Sleep(10000);
+                        }
                     }
-                    catch (Exception) { }
+                    catch (Exception)
+                    {
+                        Console.WriteLine("No se ha podido iniciar ResourceApi");
+                        Console.WriteLine($"Contenido OAuth: {System.IO.File.ReadAllText(rutaOauth)}");
+                        Thread.Sleep(10000);
+                    }
                 }
                 return mResourceApi;
             }
@@ -44,8 +57,13 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models
                     try
                     {
                         mCommunityApi = new CommunityApi(rutaOauth);
+                        mCommunityApi.GetCommunityId();
                     }
-                    catch (Exception) { }
+                    catch (Exception) {
+                        Console.WriteLine("No se ha podido iniciar CommunityApi");
+                        Console.WriteLine($"Contenido OAuth: {System.IO.File.ReadAllText(rutaOauth)}");
+                        Thread.Sleep(10000);
+                    }
                 }
                 return mCommunityApi;
             }
