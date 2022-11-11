@@ -1277,7 +1277,7 @@ async function getGrafica2(pIdPagina, pIdGrafica, pFiltroFacetas, barSize = 50, 
     var arg = {};
     arg.pIdPagina = pIdPagina;
     arg.pIdGrafica = pIdGrafica;
-    arg.pFiltroFacetas = pFiltroFacetas;
+    arg.pFiltroFacetas = pFiltroFacetas.includes("_filter") ? pFiltroFacetas.replace("_filter", "") : pFiltroFacetas;
     arg.pLang = lang; //"es";
     var data = await $.get(url, arg, function (data) { });
 

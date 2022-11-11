@@ -27,10 +27,18 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Utilidades
                     try
                     {
                         mResourceAPI = new ResourceApi(RUTA_OAUTH);
+                        if (string.IsNullOrEmpty(mResourceAPI.GraphsUrl))
+                        {
+                            mResourceAPI = null;
+                            Console.WriteLine("No se ha podido iniciar ResourceApi mResourceApi.GraphsUrl es nulo o vacío");
+                            Console.WriteLine($"Contenido OAuth: {System.IO.File.ReadAllText(RUTA_OAUTH)}");
+                            Thread.Sleep(10000);
+                        }
                     }
-                    catch (Exception)
+                    catch (Exception ex)
                     {
                         Console.WriteLine("No se ha podido iniciar ResourceApi");
+                        Console.WriteLine("Error: " + ex.Message);
                         Console.WriteLine($"Contenido OAuth: {System.IO.File.ReadAllText(RUTA_OAUTH)}");
                         Thread.Sleep(10000);
                     }
@@ -48,10 +56,12 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Utilidades
                     try
                     {
                         mCommunityAPI = new CommunityApi(RUTA_OAUTH);
+                        mCommunityAPI.GetCommunityId();
                     }
-                    catch (Exception)
+                    catch (Exception ex)
                     {
                         Console.WriteLine("No se ha podido iniciar CommunityApi");
+                        Console.WriteLine("Error: " + ex.Message);
                         Console.WriteLine($"Contenido OAuth: {System.IO.File.ReadAllText(RUTA_OAUTH)}");
                         Thread.Sleep(10000);
                     }
