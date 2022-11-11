@@ -34,16 +34,12 @@ Este servicio se encarga de la carga de configuración del proyecto (páginas de
       "Microsoft.Hosting.Lifetime": "Information"
     }
   },
-  "loginAdmin": "",
-  "passAdmin": "",
   "urlAPIDespliegues": "",
 }
 ```
 - **LogLevel.Default**: Nivel de error por defecto.
 - **LogLevel.Microsoft**: Nivel de error para los errores propios de Microsoft.
 - **LogLevel.Microsoft.Hosting.Lifetime**: Nivel de error para los errores de host.
-- **loginAdmin**: Usuario administrador.
-- **passAdmin**: Password del administrador.
 - **urlAPIDespliegues**: Url del API de despliegues.
 
 ## Dependencias

@@ -23,6 +23,26 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
             }
 
         }
+        public bool hasNotificationsUnRead(string pGnossID)
+        {
+            string select = "SELECT ?notification";
+
+            string where = @$"
+                WHERE
+                {{
+                    ?person a <http://xmlns.com/foaf/0.1/Person>.
+                    ?person <http://w3id.org/roh/gnossUser> <http://gnoss/{pGnossID.ToUpper()}>.
+                    ?notification <http://w3id.org/roh/owner> ?person.   
+                    MINUS{{
+                        ?notification  <http://w3id.org/roh/read> 'true'.
+                    }}
+                }}
+                LIMIT 1
+            ";
+
+            SparqlObject sparqlObject = resourceApi.VirtuosoQueryMultipleGraph(select, where, new(){ "notification" , "person" });
+            return (sparqlObject != null && sparqlObject.results != null && sparqlObject.results.bindings != null && sparqlObject.results.bindings.Count > 0);
+        }
         public bool isNotificationRead(string pNotificationID) {
 
 
@@ -37,5 +57,6 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
             return (sparqlObject != null && sparqlObject.results != null && sparqlObject.results.bindings != null && sparqlObject.results.bindings.Count > 0);
            
         }
+
     }
 }

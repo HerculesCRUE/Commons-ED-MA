@@ -50,9 +50,10 @@ var cargarCVId = {
 		var that=this;
 		var keyCache='cv_'+lang+'_'+$('#inpt_usuarioID').val();
 		this.CVId=getCacheWithExpiry(keyCache);
+        var usuarioID=$('#inpt_usuarioID').val();
 		if(this.CVId==null)
 		{
-			var usuarioID=$('#inpt_usuarioID').val();
+	
 			if(usuarioID!='ffffffff-ffff-ffff-ffff-ffffffffffff')
 			{
 				var urlGetCVUrl = url_servicio_editorcv+'EdicionCV/GetCVUrl?userID='+usuarioID+ "&lang=" + lang;
@@ -62,8 +63,18 @@ var cargarCVId = {
 					that.printCVId();
 					that.printCVIdHomeEd();
 					setCacheWithExpiry(keyCache,data,60000);
-				});
+				});				
 			}
+		}
+		if(usuarioID!='ffffffff-ffff-ffff-ffff-ffffffffffff')
+		{
+			var urlGetCVNotification = url_servicio_externo+'Notification/hasNotificationsUnRead?userID='+usuarioID;
+			$.get(urlGetCVNotification, null, function(data) {
+				if(data){
+					
+					$('.liNotificaciones').addClass('nuevos');
+				}
+			});
 		}
 	},
 	printCVId: function(){
