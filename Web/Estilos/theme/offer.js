@@ -30,16 +30,15 @@ var urlLoadMatureStates ="";
  * Crea las urls para las llamadas ajax
  */
 $(document).ready(function () {
-	servicioExternoBaseUrl=$('#inpt_baseURLContent').val()+'/servicioexterno/';
 	urlLT = new URL(url_servicio_externo +  uriLoadTaxonomiesOffer);
-	urlSOff = new URL(servicioExternoBaseUrl +  uriSaveOffer);
-	urlSTAGSOffer = new URL(servicioExternoBaseUrl +  uriSearchTags);
-	urlLoadOffer = new URL(servicioExternoBaseUrl +  uriLoadOffer);
-	urlLoadUsersGroup = new URL(servicioExternoBaseUrl +  uriLoadUsersGroup);
+	urlSOff = new URL(url_servicio_externo +  uriSaveOffer);
+	urlSTAGSOffer = new URL(url_servicio_externo +  uriSearchTags);
+	urlLoadOffer = new URL(url_servicio_externo +  uriLoadOffer);
+	urlLoadUsersGroup = new URL(url_servicio_externo +  uriLoadUsersGroup);
 
-	urlLoadLineResearchs = new URL(servicioExternoBaseUrl +  uriLoadLineResearchs);
-	urlLoadFramingSectors = new URL(servicioExternoBaseUrl +  uriLoadFramingSectors);
-	urlLoadMatureStates = new URL(servicioExternoBaseUrl +  uriLoadMatureStates);
+	urlLoadLineResearchs = new URL(url_servicio_externo +  uriLoadLineResearchs);
+	urlLoadFramingSectors = new URL(url_servicio_externo +  uriLoadFramingSectors);
+	urlLoadMatureStates = new URL(url_servicio_externo +  uriLoadMatureStates);
 });
 
 
@@ -3849,7 +3848,7 @@ class ModalSearchTagsOffer {
 		this.inputSearchEnter()
 
 		/* if (window.location.hostname == 'depuracion.net' || window.location.hostname.includes("localhost")) {
-			var urlSTAGSOffer = new URL(servicioExternoBaseUrl + 'servicioexterno/' + uriSearchTags)
+			var urlSTAGSOffer = new URL(url_servicio_externo + 'servicioexterno/' + uriSearchTags)
 		} */
 	}
 
