@@ -30,16 +30,15 @@ var urlLoadMatureStates ="";
  * Crea las urls para las llamadas ajax
  */
 $(document).ready(function () {
-	servicioExternoBaseUrl=$('#inpt_baseURLContent').val()+'/servicioexterno/';
 	urlLT = new URL(url_servicio_externo +  uriLoadTaxonomiesOffer);
-	urlSOff = new URL(servicioExternoBaseUrl +  uriSaveOffer);
-	urlSTAGSOffer = new URL(servicioExternoBaseUrl +  uriSearchTags);
-	urlLoadOffer = new URL(servicioExternoBaseUrl +  uriLoadOffer);
-	urlLoadUsersGroup = new URL(servicioExternoBaseUrl +  uriLoadUsersGroup);
+	urlSOff = new URL(url_servicio_externo +  uriSaveOffer);
+	urlSTAGSOffer = new URL(url_servicio_externo +  uriSearchTags);
+	urlLoadOffer = new URL(url_servicio_externo +  uriLoadOffer);
+	urlLoadUsersGroup = new URL(url_servicio_externo +  uriLoadUsersGroup);
 
-	urlLoadLineResearchs = new URL(servicioExternoBaseUrl +  uriLoadLineResearchs);
-	urlLoadFramingSectors = new URL(servicioExternoBaseUrl +  uriLoadFramingSectors);
-	urlLoadMatureStates = new URL(servicioExternoBaseUrl +  uriLoadMatureStates);
+	urlLoadLineResearchs = new URL(url_servicio_externo +  uriLoadLineResearchs);
+	urlLoadFramingSectors = new URL(url_servicio_externo +  uriLoadFramingSectors);
+	urlLoadMatureStates = new URL(url_servicio_externo +  uriLoadMatureStates);
 });
 
 
@@ -358,6 +357,9 @@ class StepsOffer {
 							</div>`
 						}
 
+						let nameUrlPersona = cleanStringUrlLikeGnoss(datospersona.name)
+            			let urlResource = document.getElementById("inpt_baseURL").value + "/recurso/" + nameUrlPersona + "/" + idperson
+
 
 						resHtml += `
 							<article class="resource ${selectedClass}" id="stp1-res-${idperson}" data-id="${idperson}">
@@ -366,7 +368,7 @@ class StepsOffer {
 					                <div class="usuario-wrap">
 					                    <div class="user-miniatura">
 					                        <div class="imagen-usuario-wrap">
-					                            <a href="#">
+					                            <a href="${urlResource}" target="_blank">
 					                                <div class="imagen con-material-icons">
 					                                    <!-- <span style="background-image: url(${imgUser})"></span> -->
     													<span class="material-icons">person</span>
@@ -374,7 +376,7 @@ class StepsOffer {
 					                            </a>
 					                        </div>
 					                        <div class="nombre-usuario-wrap">
-					                            <a href="#" target="_blank">
+					                            <a href="${urlResource}" target="_blank">
 					                                <p class="nombre">${datospersona.name}</p>
 					                                <p class="nombre-completo">${datospersona.organization ? datospersona.organization + ',': ''} ${datospersona.hasPosition ? datospersona.hasPosition : ''} ${datospersona.departamento ? datospersona.departamento: ''}</p>
 					                            </a>
@@ -3849,7 +3851,7 @@ class ModalSearchTagsOffer {
 		this.inputSearchEnter()
 
 		/* if (window.location.hostname == 'depuracion.net' || window.location.hostname.includes("localhost")) {
-			var urlSTAGSOffer = new URL(servicioExternoBaseUrl + 'servicioexterno/' + uriSearchTags)
+			var urlSTAGSOffer = new URL(url_servicio_externo + 'servicioexterno/' + uriSearchTags)
 		} */
 	}
 
