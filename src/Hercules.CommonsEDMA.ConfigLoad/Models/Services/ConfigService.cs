@@ -11,6 +11,8 @@ namespace Hercules.CommonsEDMA.ConfigLoad.Models.Services
         private string nombreCortoComunidad = "hercules";
         private string urlAPIDespliegues { get; set; }
 
+        private string urlDominioServicios { get; set; }
+
         /// <summary>
         /// Constructor.
         /// </summary>
@@ -48,6 +50,23 @@ namespace Hercules.CommonsEDMA.ConfigLoad.Models.Services
                 }
             }
             return urlAPIDespliegues;
+        }
+
+        public string ObtenerUrlDominioServicios()
+        {
+            if (string.IsNullOrEmpty(urlDominioServicios))
+            {
+                IDictionary environmentVariables = Environment.GetEnvironmentVariables();
+                if (environmentVariables.Contains("urlDominioServicios"))
+                {
+                    urlDominioServicios = environmentVariables["urlDominioServicios"] as string;
+                }
+                else
+                {
+                    urlDominioServicios = _configuration["urlDominioServicios"];
+                }
+            }
+            return urlDominioServicios;
         }
 
         public string ObtenerNombreCortoComunidad()
