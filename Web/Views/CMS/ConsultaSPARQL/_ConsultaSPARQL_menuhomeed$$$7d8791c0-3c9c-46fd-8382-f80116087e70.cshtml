@@ -35,8 +35,8 @@
                     @{
                         if (!string.IsNullOrEmpty(@cvUser.foto)) 
                         {
-                            <div class="imagen-usuario" style="background-image: url('@cvUser.foto')">
-                            </div>
+                            <img class="imagen-usuario" src="@cvUser.foto">
+                            </img>
                         } else
                         {
                             <div class="imagen-usuario default" style="background-image: url('@Html.GetBaseUrlContent()/imagenes/proyectos/personalizacion/@Comunidad.Key.ToString()/theme/resources/imagenes-pre/user-male-icon.png')">

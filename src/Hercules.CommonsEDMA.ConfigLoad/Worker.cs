@@ -1,36 +1,22 @@
 using Hercules.CommonsEDMA.ConfigLoad.Models.Services;
-using Gnoss.ApiWrapper;
-using Gnoss.ApiWrapper.ApiModel;
-using Gnoss.ApiWrapper.Helpers;
-using Gnoss.ApiWrapper.OAuth;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
-using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Net;
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
-using System.Xml;
 
 namespace Hercules.CommonsEDMA.ConfigLoad
 {
     public class Worker : BackgroundService
     {
         private static ConfigService configService;
-        private static string bdType;
 
         /// <summary>
         /// Contructor.
         /// </summary>
-        public Worker()
-        {
-        }
+        public Worker() { }
 
         /// <summary>
         /// Tarea asincrona.
@@ -54,66 +40,55 @@ namespace Hercules.CommonsEDMA.ConfigLoad
             }
         }
 
-
-        /// <summary>
-        /// Permite lanzar la escucha después de leer. 
-        /// Contiene un sleep de 30 segundos.
-        /// </summary>
-        private void OnShutDown()
+        private static void SubirConfiguraciones()
         {
-            Thread.Sleep(30000);
+            List<Tuple<string, string, string>> listaPasos = new();
+            listaPasos.Add(Tuple.Create("1- Subimos ontologías", "Ontologias.zip", "Ontologias"));
+            listaPasos.Add(Tuple.Create("2- Subimos Objetos de conocimiento", "ObjetosConocimiento.zip", "ObjetosConocimiento"));
+            listaPasos.Add(Tuple.Create("3- Subimos Facetas", "Facetas.zip", "Facetas"));
+            listaPasos.Add(Tuple.Create("4- Subimos Componentes del CMS", "ComponentesCMS.zip", "ComponentesCMS"));
+            listaPasos.Add(Tuple.Create("5- Subimos Pestañas", "Pestanyas.zip", "Pestanyas"));
+            listaPasos.Add(Tuple.Create("6- Subimos Paginas del CMS", "PaginasCMS.zip", "PaginasCMS"));
+            listaPasos.Add(Tuple.Create("7- Subimos Utilidades", "Utilidades.zip", "Utilidades"));
+            listaPasos.Add(Tuple.Create("8- Subimos Opciones avanzadas", "OpcionesAvanzadas.zip", "OpcionesAvanzadas"));
+            listaPasos.Add(Tuple.Create("9- Subimos Estilos", "Estilos.zip", "Estilos"));
+            listaPasos.Add(Tuple.Create("10- Subimos Parámetros de búsqueda personalizados", "SearchPersonalizado.zip", "SearchPersonalizado"));
+            listaPasos.Add(Tuple.Create("11- Subimos Vistas", "Vistas.zip", "Vistas"));
+
+            Console.WriteLine("Subimos configuraciones");
+            string rutaBase = $@"{AppDomain.CurrentDomain.SetupInformation.ApplicationBase}Files{Path.DirectorySeparatorChar}";
+
+            Console.WriteLine("Escribe el login del usuario administrador:");
+            string loginAdmin = Console.ReadLine();
+            Console.WriteLine("Escribe el password del usuario administrador:");
+            string passAdmin = Console.ReadLine();
+
+            foreach (Tuple<string, string, string> step in listaPasos)
+            {
+                Console.WriteLine(step.Item1);
+                Despliegue(rutaBase + step.Item2, step.Item3, loginAdmin, passAdmin);
+            }
         }
 
-        private void SubirConfiguraciones()
-        {
-            Console.WriteLine("Subimos configuraciones");
-            string rutaBase = $@"{System.AppDomain.CurrentDomain.SetupInformation.ApplicationBase}Files{Path.DirectorySeparatorChar}";
-            Console.WriteLine("1- Subimos ontologías");
-            Despliegue(rutaBase + "Ontologias.zip", "Ontologias");
-            Console.WriteLine("2- Subimos Objetos de conocimiento");
-            Despliegue(rutaBase + "ObjetosConocimiento.zip", "ObjetosConocimiento");
-            Console.WriteLine("3- Subimos Facetas");
-            Despliegue(rutaBase + "Facetas.zip", "Facetas");
-            Console.WriteLine("4- Subimos Componentes del CMS");
-            Despliegue(rutaBase + "ComponentesCMS.zip", "ComponentesCMS");
-            Console.WriteLine("5- Subimos Pestañas");
-            Despliegue(rutaBase + "Pestanyas.zip", "Pestanyas");
-            Console.WriteLine("6- Subimos Paginas del CMS");
-            Despliegue(rutaBase + "PaginasCMS.zip", "PaginasCMS");
-            Console.WriteLine("7- Subimos Utilidades");
-            Despliegue(rutaBase + "Utilidades.zip", "Utilidades");
-            Console.WriteLine("8- Subimos Opciones avanzadas");
-            Despliegue(rutaBase + "OpcionesAvanzadas.zip", "OpcionesAvanzadas");
-            Console.WriteLine("9- Subimos Estilos");
-            Despliegue(rutaBase + "Estilos.zip", "Estilos");
-            Console.WriteLine("10- Subimos Parámetros de búsqueda personalizados");
-            Despliegue(rutaBase + "SearchPersonalizado.zip", "SearchPersonalizado");
-            Console.WriteLine("11- Subimos Vistas");
-            Despliegue(rutaBase + "Vistas.zip", "Vistas");
-        }        
-
-
-        private void Despliegue(string pRutaFichero, string pMetodo)
+        private static void Despliegue(string pRutaFichero, string pMetodo, string pLoginAdmin, string pPassAdmin)
         {
             string nombreProy = configService.ObtenerNombreCortoComunidad();
-            string loginAdmin = configService.ObtenerLoginAdmin();
-            string passAdmin = configService.ObtenerPassAdmin();
-            string sWebAddress = $"{configService.ObtenerUrlAPIDespliegues()}Upload?tipoPeticion={pMetodo}&usuario={loginAdmin}&password={passAdmin}&nombreProy={nombreProy}";
+            string sWebAddress = $"{configService.ObtenerUrlAPIDespliegues()}Upload?tipoPeticion={pMetodo}&usuario={pLoginAdmin}&password={pPassAdmin}&nombreProy={nombreProy}";
 
-            HttpContent contentData = null;
+            HttpContent contentData;
 
             byte[] data = File.ReadAllBytes(pRutaFichero);
-            ByteArrayContent bytes = new ByteArrayContent(data);
+            ByteArrayContent bytes = new(data);
             bytes.Headers.Add("Content-Type", "application/zip");
             contentData = new MultipartFormDataContent();
             ((MultipartFormDataContent)contentData).Add(bytes, "ficheroZip", ".zip");
 
-            string result = "";
-            HttpResponseMessage response = null;
+            string result;
+            HttpResponseMessage response;
 
             try
             {
-                HttpClient client = new HttpClient();
+                HttpClient client = new();
                 response = client.PostAsync($"{sWebAddress}", contentData).Result;
                 response.EnsureSuccessStatusCode();
                 result = response.Content.ReadAsStringAsync().Result;

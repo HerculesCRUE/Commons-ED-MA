@@ -1,15 +1,11 @@
-﻿using Gnoss.ApiWrapper;
-using Gnoss.ApiWrapper.ApiModel;
+﻿using Gnoss.ApiWrapper.ApiModel;
 using Gnoss.ApiWrapper.Model;
 using Hercules.CommonsEDMA.ServicioExterno.Controllers.Utilidades;
 using Hercules.CommonsEDMA.ServicioExterno.Models.RedesUsuario;
-using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Text;
-using System.Threading;
 using User = Hercules.CommonsEDMA.ServicioExterno.Models.RedesUsuario.User;
 
 namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
@@ -36,7 +32,7 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
             listaData.Add(new DataUser() { nombre = "Matching", id = "useMatching", valor = string.Empty });
 
             string idGnossUser = $@"http://gnoss/{pIdGnossUser.ToUpper()}";
-            SparqlObject resultadoQuery = null;
+            SparqlObject resultadoQuery;
             StringBuilder select = new(), where = new();
 
             // Consulta sparql.
@@ -60,7 +56,7 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
             where.Append($@"OPTIONAL{{?s roh:useMatching ?useMatching. }} ");
             where.Append("} ");
 
-            resultadoQuery = resourceApi.VirtuosoQueryMultipleGraph(select.ToString(), where.ToString(), new List<string> { "person" , "curriculumvitae" });
+            resultadoQuery = resourceApi.VirtuosoQueryMultipleGraph(select.ToString(), where.ToString(), new List<string> { "person", "curriculumvitae" });
 
 
             if (resultadoQuery != null && resultadoQuery.results != null && resultadoQuery.results.bindings != null && resultadoQuery.results.bindings.Count > 0)
@@ -68,21 +64,21 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
                 foreach (Dictionary<string, SparqlObject.Data> fila in resultadoQuery.results.bindings)
                 {
                     // Usuario FigShare
-                    listaData = getDataSpqrl(fila, listaData, "usuarioFigShare");
+                    listaData = GetDataSpqrl(fila, listaData, "usuarioFigShare");
 
                     // Token FigShare
-                    listaData = getDataSpqrl(fila, listaData, "tokenFigShare");
+                    listaData = GetDataSpqrl(fila, listaData, "tokenFigShare");
 
                     // Usuario GitHub
-                    listaData = getDataSpqrl(fila, listaData, "usuarioGitHub");
+                    listaData = GetDataSpqrl(fila, listaData, "usuarioGitHub");
 
                     // Token GitHub
-                    listaData = getDataSpqrl(fila, listaData, "tokenGitHub");
+                    listaData = GetDataSpqrl(fila, listaData, "tokenGitHub");
 
                     // ORCID
                     if (fila.ContainsKey("orcid"))
                     {
-                        listaData = getDataSpqrl(fila, listaData, "orcid");
+                        listaData = GetDataSpqrl(fila, listaData, "orcid");
                     }
                     else if (fila.ContainsKey("orcidCV"))
                     {
@@ -95,11 +91,11 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
                             }
                         }
                     }
-                    
+
                     // Researcher ID
                     if (fila.ContainsKey("researcherId"))
                     {
-                        listaData = getDataSpqrl(fila, listaData, "researcherId");
+                        listaData = GetDataSpqrl(fila, listaData, "researcherId");
                     }
                     else if (fila.ContainsKey("researcherIdCV"))
                     {
@@ -112,11 +108,11 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
                             }
                         }
                     }
-                    
+
                     // Scopus ID
                     if (fila.ContainsKey("scopusId"))
                     {
-                        listaData = getDataSpqrl(fila, listaData, "scopusId");
+                        listaData = GetDataSpqrl(fila, listaData, "scopusId");
                     }
                     else if (fila.ContainsKey("scopusIdCV"))
                     {
@@ -131,10 +127,10 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
                     }
 
                     // Semantic Scholar ID
-                    listaData = getDataSpqrl(fila, listaData, "semanticScholarId");
+                    listaData = GetDataSpqrl(fila, listaData, "semanticScholarId");
 
                     // Matching
-                    listaData = getDataSpqrl(fila, listaData, "useMatching");
+                    listaData = GetDataSpqrl(fila, listaData, "useMatching");
                 }
             }
 
@@ -192,7 +188,7 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
                 string propiedad = item.id;
                 string dataViejo = item.valor;
                 var dataNuevoTmp = pDataUser.dataUser.FirstOrDefault(x => x.nombre == item.nombre);
-                string dataNuevo = String.Empty;
+                string dataNuevo = string.Empty;
                 if (dataNuevoTmp != null)
                 {
                     dataNuevo = dataNuevoTmp.valor;
@@ -259,7 +255,7 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
         /// <param name="listaData">Listado de los usuario sobre el que buscar.</param>
         /// <param name="fieldName">Nombre del campo a buscar y establecer.</param>
         /// <returns>Diccionario con los datos resultantes.</returns>
-        private List<DataUser> getDataSpqrl(Dictionary<string, SparqlObject.Data> fila, List<DataUser> listaData, string fieldName)
+        private static List<DataUser> GetDataSpqrl(Dictionary<string, SparqlObject.Data> fila, List<DataUser> listaData, string fieldName)
         {
             if (fila.ContainsKey(fieldName))
             {

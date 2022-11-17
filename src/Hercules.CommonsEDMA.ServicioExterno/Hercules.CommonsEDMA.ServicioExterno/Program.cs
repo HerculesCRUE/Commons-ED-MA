@@ -1,12 +1,6 @@
 using Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace Hercules.CommonsEDMA.ServicioExterno
 {
@@ -24,7 +18,7 @@ namespace Hercules.CommonsEDMA.ServicioExterno
                     webBuilder.UseStartup<Startup>();
                     GenerateMetaSearch();
                 });
-            
+
 
         public static void GenerateMetaSearch()
         {

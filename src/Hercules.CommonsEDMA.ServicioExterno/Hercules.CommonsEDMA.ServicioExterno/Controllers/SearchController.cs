@@ -2,7 +2,6 @@
 using Hercules.CommonsEDMA.ServicioExterno.Models.Buscador;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
-using System;
 using System.Collections.Generic;
 
 namespace Hercules.CommonsEDMA.ServicioExterno.Controllers

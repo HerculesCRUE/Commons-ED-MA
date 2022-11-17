@@ -61,7 +61,7 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers
         {
             AccionesCluster accionCluster = new();
             bool flag = false;
-            foreach (string pIdGnossUser in accionCluster.memberListFromCluser(pIdClusterId))
+            foreach (string pIdGnossUser in accionCluster.MemberListFromCluser(pIdClusterId))
             {
                 string a = pIdGnossUser.Split("/")[pIdGnossUser.Split("/").Length - 1];
                 if (Security.CheckUser(new Guid(pIdGnossUser.Split("/")[pIdGnossUser.Split("/").Length - 1]), Request))
@@ -106,7 +106,7 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers
                 return StatusCode(StatusCodes.Status401Unauthorized);
             }
             AccionesCluster accionCluster = new();
-            return Ok(accionCluster.loadSavedProfiles(pIdUser, loadSavedProfiles));
+            return Ok(accionCluster.LoadSavedProfiles(pIdUser, loadSavedProfiles));
         }
 
 
@@ -148,7 +148,7 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers
         public IActionResult BorrarCluster([FromForm] string pIdClusterId)
         {
             AccionesCluster accionCluster = new();
-            string pUserId = accionCluster.getOwnerFromCluser(pIdClusterId);
+            string pUserId = accionCluster.GetOwnerFromCluser(pIdClusterId);
             if (!Security.CheckUser(new Guid(pUserId.Split("/")[pUserId.Split("/").Length - 1]), Request))
             {
                 return StatusCode(StatusCodes.Status401Unauthorized);

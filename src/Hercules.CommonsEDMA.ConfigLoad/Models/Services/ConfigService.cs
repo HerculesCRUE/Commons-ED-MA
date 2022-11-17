@@ -8,9 +8,6 @@ namespace Hercules.CommonsEDMA.ConfigLoad.Models.Services
     public class ConfigService
     {
         private IConfiguration _configuration { get; set; }
-
-        private string loginAdmin { get; set; }
-        private string passAdmin { get; set; }
         private string nombreCortoComunidad = "hercules";
         private string urlAPIDespliegues { get; set; }
 
@@ -53,44 +50,9 @@ namespace Hercules.CommonsEDMA.ConfigLoad.Models.Services
             return urlAPIDespliegues;
         }
 
-
-        public string ObtenerLoginAdmin()
-        {
-            if (string.IsNullOrEmpty(loginAdmin))
-            {
-                IDictionary environmentVariables = Environment.GetEnvironmentVariables();
-                if (environmentVariables.Contains("loginAdmin"))
-                {
-                    loginAdmin = environmentVariables["loginAdmin"] as string;
-                }
-                else
-                {
-                    loginAdmin = _configuration["loginAdmin"];
-                }
-            }
-            return loginAdmin;
-        }
-
-        public string ObtenerPassAdmin()
-        {
-            if (string.IsNullOrEmpty(passAdmin))
-            {
-                IDictionary environmentVariables = Environment.GetEnvironmentVariables();
-                if (environmentVariables.Contains("passAdmin"))
-                {
-                    passAdmin = environmentVariables["passAdmin"] as string;
-                }
-                else
-                {
-                    passAdmin = _configuration["passAdmin"];
-                }
-            }
-            return passAdmin;
-        }
-
         public string ObtenerNombreCortoComunidad()
-        {            
+        {
             return nombreCortoComunidad;
-        }                
+        }
     }
 }

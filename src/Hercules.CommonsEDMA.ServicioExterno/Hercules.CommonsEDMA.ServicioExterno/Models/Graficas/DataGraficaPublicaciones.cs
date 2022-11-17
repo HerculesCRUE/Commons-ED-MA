@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
 namespace Hercules.CommonsEDMA.ServicioExterno.Models.Graficas.DataGraficaPublicaciones
 {
@@ -38,7 +35,7 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Models.Graficas.DataGraficaPublic
         public List<string> borderColor { get; set; }
         public int borderWidth { get; set; }
         public string yAxisID { get; set; }
-        public Datasets(string pLabel, List<int> pData, List<string> pBackgroundColor, List<string> pBorderColor, int pBorderWidth,string pStack=null,string pType="bar",string pYAxisID=null)
+        public Datasets(string pLabel, List<int> pData, List<string> pBackgroundColor, List<string> pBorderColor, int pBorderWidth, string pStack = null, string pType = "bar", string pYAxisID = null)
         {
             this.label = pLabel;
             this.data = pData;

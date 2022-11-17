@@ -3,7 +3,7 @@
 | Fecha         | 28/06/2022                                                   |
 | ------------- | ------------------------------------------------------------ |
 |Título|Proceso de carga inicial| 
-|Descripción|Desarrollo del proceso de carga de los datos iniciales XML.|
+|Descripción|Desarrollo del proceso de carga de los datos iniciales.|
 |Versión|1.0|
 |Módulo|Documentación|
 |Tipo|Especificación|

@@ -895,3 +895,14 @@ body.operativaRegistro.login main .panel-centrado .login_cas {
 .custom-css-scroll-proy::-webkit-scrollbar-track { background: rgba(0,0,0,0.08); border-radius: 0px;}
 .custom-css-scroll-proy::-webkit-scrollbar-thumb { background-color: var(--c-texto-claro) ; border-radius: 8px; }
 /* */
+
+
+.menuLateral.usuario .cabeceraUsuario img.imagen-usuario {
+    height: 100%;
+}
+.tab-paneles-alertas .nav-tabs .nav-item .nav-link.active .badge{
+    background-color: #777 !important;
+}
+.tab-paneles-alertas .nav-tabs .nav-item .nav-link.nuevos .badge{
+    background-color: var(--c-error) !important;
+}

@@ -1,11 +1,8 @@
-﻿using Gnoss.ApiWrapper;
-using Gnoss.ApiWrapper.ApiModel;
+﻿using Gnoss.ApiWrapper.ApiModel;
 using Hercules.CommonsEDMA.ServicioExterno.Controllers.Utilidades;
 using Hercules.CommonsEDMA.ServicioExterno.Models.Buscador;
-using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -179,8 +176,8 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
                         offsetDocumentos = 0;
                         while (true)
                         {
-                            string select = mPrefijos + "SELECT * WHERE { SELECT DISTINCT ?id ?author ";
-                            string where = $@"  where
+                            string selectQuery1 = mPrefijos + "SELECT * WHERE { SELECT DISTINCT ?id ?author ";
+                            string whereQuery1 = $@"  where
                                             {{
                                                 ?id a 'document'.
                                                 ?id roh:title ?title.
@@ -189,12 +186,12 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
                                                 ?lista rdf:member ?author.
                                             }}ORDER BY DESC(?id) DESC(?author) }} LIMIT {limitDocumentos} OFFSET {offsetDocumentos}";
 
-                            SparqlObject resultadoQuery = resourceApi.VirtuosoQuery(select, where, idComunidad);
+                            SparqlObject resultadoQuery1 = resourceApi.VirtuosoQuery(selectQuery1, whereQuery1, idComunidad);
 
-                            if (resultadoQuery != null && resultadoQuery.results != null && resultadoQuery.results.bindings != null && resultadoQuery.results.bindings.Count > 0)
+                            if (resultadoQuery1 != null && resultadoQuery1.results != null && resultadoQuery1.results.bindings != null && resultadoQuery1.results.bindings.Count > 0)
                             {
                                 offsetDocumentos += limitDocumentos;
-                                foreach (Dictionary<string, SparqlObject.Data> fila in resultadoQuery.results.bindings)
+                                foreach (Dictionary<string, SparqlObject.Data> fila in resultadoQuery1.results.bindings)
                                 {
                                     Guid id = new(fila["id"].value.Replace("http://gnoss/", ""));
                                     Guid author = new(fila["author"].value.Replace("http://gnoss/", ""));
@@ -209,7 +206,7 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
                                         }
                                     }
                                 }
-                                if (resultadoQuery.results.bindings.Count < limitDocumentos)
+                                if (resultadoQuery1.results.bindings.Count < limitDocumentos)
                                 {
                                     break;
                                 }
@@ -225,20 +222,20 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
                         offsetDocumentos = 0;
                         while (true)
                         {
-                            string select = mPrefijos + "SELECT * WHERE { SELECT DISTINCT ?id ?tag ";
-                            string where = $@"  where
+                            string selectQuery2 = mPrefijos + "SELECT * WHERE { SELECT DISTINCT ?id ?tag ";
+                            string whereQuery2 = $@"  where
                                             {{
                                                 ?id a 'document'.
                                                 ?id roh:isValidated 'true'.
                                                 ?id vivo:freeTextKeyword ?tagAux. ?tagAux roh:title ?tag
                                             }}ORDER BY DESC(?id) DESC(?tag) }} LIMIT {limitDocumentos} OFFSET {offsetDocumentos}";
 
-                            SparqlObject resultadoQuery = resourceApi.VirtuosoQuery(select, where, idComunidad);
+                            SparqlObject resultadoQuery2 = resourceApi.VirtuosoQuery(selectQuery2, whereQuery2, idComunidad);
 
-                            if (resultadoQuery != null && resultadoQuery.results != null && resultadoQuery.results.bindings != null && resultadoQuery.results.bindings.Count > 0)
+                            if (resultadoQuery2 != null && resultadoQuery2.results != null && resultadoQuery2.results.bindings != null && resultadoQuery2.results.bindings.Count > 0)
                             {
                                 offsetDocumentos += limitDocumentos;
-                                foreach (Dictionary<string, SparqlObject.Data> fila in resultadoQuery.results.bindings)
+                                foreach (Dictionary<string, SparqlObject.Data> fila in resultadoQuery2.results.bindings)
                                 {
                                     Guid id = new(fila["id"].value.Replace("http://gnoss/", ""));
 
@@ -249,7 +246,7 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
                                         publication.properties.Add(new ObjectSearch.Property(new HashSet<string>(ObtenerTextoNormalizado(tag).Split(' ', StringSplitOptions.RemoveEmptyEntries)), 10000, publication));
                                     }
                                 }
-                                if (resultadoQuery.results.bindings.Count < limitDocumentos)
+                                if (resultadoQuery2.results.bindings.Count < limitDocumentos)
                                 {
                                     break;
                                 }
@@ -331,8 +328,8 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
                         offsetRO = 0;
                         while (true)
                         {
-                            string select = mPrefijos + "SELECT * WHERE { SELECT DISTINCT ?id ?author ";
-                            string where = $@"  where
+                            string selectQuery3 = mPrefijos + "SELECT * WHERE { SELECT DISTINCT ?id ?author ";
+                            string whereQuery3 = $@"  where
                                             {{
                                                 ?id a 'researchobject'.
                                                 ?id roh:title ?title.
@@ -341,12 +338,12 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
                                                 ?lista rdf:member ?author.
                                             }}ORDER BY DESC(?id) DESC(?author) }} LIMIT {limitRO} OFFSET {offsetRO}";
 
-                            SparqlObject resultadoQuery = resourceApi.VirtuosoQuery(select, where, idComunidad);
+                            SparqlObject resultadoQuery3 = resourceApi.VirtuosoQuery(selectQuery3, whereQuery3, idComunidad);
 
-                            if (resultadoQuery != null && resultadoQuery.results != null && resultadoQuery.results.bindings != null && resultadoQuery.results.bindings.Count > 0)
+                            if (resultadoQuery3 != null && resultadoQuery3.results != null && resultadoQuery3.results.bindings != null && resultadoQuery3.results.bindings.Count > 0)
                             {
                                 offsetRO += limitRO;
-                                foreach (Dictionary<string, SparqlObject.Data> fila in resultadoQuery.results.bindings)
+                                foreach (Dictionary<string, SparqlObject.Data> fila in resultadoQuery3.results.bindings)
                                 {
                                     Guid id = new(fila["id"].value.Replace("http://gnoss/", ""));
                                     Guid author = new(fila["author"].value.Replace("http://gnoss/", ""));
@@ -361,7 +358,7 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
                                         }
                                     }
                                 }
-                                if (resultadoQuery.results.bindings.Count < limitRO)
+                                if (resultadoQuery3.results.bindings.Count < limitRO)
                                 {
                                     break;
                                 }
@@ -376,8 +373,8 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
                         offsetRO = 0;
                         while (true)
                         {
-                            string select = mPrefijos + "SELECT * WHERE { SELECT DISTINCT ?id ?tag ";
-                            string where = $@"  where
+                            string selectQuery4 = mPrefijos + "SELECT * WHERE { SELECT DISTINCT ?id ?tag ";
+                            string whereQuery4 = $@"  where
                                             {{
                                                 ?id a 'researchobject'.
                                                 ?id roh:title ?title.
@@ -385,12 +382,12 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
                                                 ?id vivo:freeTextKeyword ?tag
                                             }}ORDER BY DESC(?id) DESC(?tag) }} LIMIT {limitRO} OFFSET {offsetRO}";
 
-                            SparqlObject resultadoQuery = resourceApi.VirtuosoQuery(select, where, idComunidad);
+                            SparqlObject resultadoQuery4 = resourceApi.VirtuosoQuery(selectQuery4, whereQuery4, idComunidad);
 
-                            if (resultadoQuery != null && resultadoQuery.results != null && resultadoQuery.results.bindings != null && resultadoQuery.results.bindings.Count > 0)
+                            if (resultadoQuery4 != null && resultadoQuery4.results != null && resultadoQuery4.results.bindings != null && resultadoQuery4.results.bindings.Count > 0)
                             {
                                 offsetRO += limitRO;
-                                foreach (Dictionary<string, SparqlObject.Data> fila in resultadoQuery.results.bindings)
+                                foreach (Dictionary<string, SparqlObject.Data> fila in resultadoQuery4.results.bindings)
                                 {
                                     Guid id = new(fila["id"].value.Replace("http://gnoss/", ""));
 
@@ -401,7 +398,7 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
                                         researchObject.properties.Add(new ObjectSearch.Property(new HashSet<string>(ObtenerTextoNormalizado(tag).Split(' ', StringSplitOptions.RemoveEmptyEntries)), 10000, researchObject));
                                     }
                                 }
-                                if (resultadoQuery.results.bindings.Count < limitRO)
+                                if (resultadoQuery4.results.bindings.Count < limitRO)
                                 {
                                     break;
                                 }
@@ -478,8 +475,8 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
                         offsetGrupo = 0;
                         while (true)
                         {
-                            string select = mPrefijos + "SELECT * WHERE { SELECT DISTINCT ?id ?author ";
-                            string where = $@"  where
+                            string selectQuery5 = mPrefijos + "SELECT * WHERE { SELECT DISTINCT ?id ?author ";
+                            string whereQuery5 = $@"  where
                                             {{
                                                 ?id a 'group'.
                                                 ?id roh:title ?title.
@@ -488,12 +485,12 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
                                                 ?id roh:membersGroup ?author.
                                             }}ORDER BY DESC(?id) DESC(?author) }} LIMIT {limitGrupo} OFFSET {offsetGrupo}";
 
-                            SparqlObject resultadoQuery = resourceApi.VirtuosoQuery(select, where, idComunidad);
+                            SparqlObject resultadoQuery5 = resourceApi.VirtuosoQuery(selectQuery5, whereQuery5, idComunidad);
 
-                            if (resultadoQuery != null && resultadoQuery.results != null && resultadoQuery.results.bindings != null && resultadoQuery.results.bindings.Count > 0)
+                            if (resultadoQuery5 != null && resultadoQuery5.results != null && resultadoQuery5.results.bindings != null && resultadoQuery5.results.bindings.Count > 0)
                             {
                                 offsetGrupo += limitGrupo;
-                                foreach (Dictionary<string, SparqlObject.Data> fila in resultadoQuery.results.bindings)
+                                foreach (Dictionary<string, SparqlObject.Data> fila in resultadoQuery5.results.bindings)
                                 {
                                     Guid id = new(fila["id"].value.Replace("http://gnoss/", ""));
 
@@ -518,7 +515,7 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
                                         }
                                     }
                                 }
-                                if (resultadoQuery.results.bindings.Count < limitGrupo)
+                                if (resultadoQuery5.results.bindings.Count < limitGrupo)
                                 {
                                     break;
                                 }
@@ -596,8 +593,8 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
                         offsetProyectos = 0;
                         while (true)
                         {
-                            string select = mPrefijos + "SELECT * WHERE { SELECT DISTINCT ?id ?author ";
-                            string where = $@"  where
+                            string selectQuery6 = mPrefijos + "SELECT * WHERE { SELECT DISTINCT ?id ?author ";
+                            string whereQuery6 = $@"  where
                                             {{
                                                 ?id a 'project'.
                                                 ?id roh:title ?title.
@@ -606,12 +603,12 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
                                                 ?id roh:membersProject  ?author.
                                             }}ORDER BY DESC(?id) DESC(?author) }} LIMIT {limitProyectos} OFFSET {offsetProyectos}";
 
-                            SparqlObject resultadoQuery = resourceApi.VirtuosoQuery(select, where, idComunidad);
+                            SparqlObject resultadoQuery6 = resourceApi.VirtuosoQuery(selectQuery6, whereQuery6, idComunidad);
 
-                            if (resultadoQuery != null && resultadoQuery.results != null && resultadoQuery.results.bindings != null && resultadoQuery.results.bindings.Count > 0)
+                            if (resultadoQuery6 != null && resultadoQuery6.results != null && resultadoQuery6.results.bindings != null && resultadoQuery6.results.bindings.Count > 0)
                             {
                                 offsetProyectos += limitProyectos;
-                                foreach (Dictionary<string, SparqlObject.Data> fila in resultadoQuery.results.bindings)
+                                foreach (Dictionary<string, SparqlObject.Data> fila in resultadoQuery6.results.bindings)
                                 {
                                     Guid id = new(fila["id"].value.Replace("http://gnoss/", ""));
 
@@ -636,7 +633,7 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
                                         }
                                     }
                                 }
-                                if (resultadoQuery.results.bindings.Count < limitProyectos)
+                                if (resultadoQuery6.results.bindings.Count < limitProyectos)
                                 {
                                     break;
                                 }
@@ -719,20 +716,20 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
                         offsetOfertas = 0;
                         while (true)
                         {
-                            string select = mPrefijos + "SELECT * WHERE { SELECT DISTINCT ?id ?author ";
-                            string where = $@"  where
+                            string selectQuery7 = mPrefijos + "SELECT * WHERE { SELECT DISTINCT ?id ?author ";
+                            string whereQuery7 = $@"  where
                                             {{
                                                 ?id a 'offer'.
                                                 ?id schema:availability <http://gnoss.com/items/offerstate_003>.
                                                 ?id roh:researchers ?author.
                                             }}ORDER BY DESC(?id) DESC(?author) }} LIMIT {limitOfertas} OFFSET {offsetOfertas}";
 
-                            SparqlObject resultadoQuery = resourceApi.VirtuosoQuery(select, where, idComunidad);
+                            SparqlObject resultadoQuery7 = resourceApi.VirtuosoQuery(selectQuery7, whereQuery7, idComunidad);
 
-                            if (resultadoQuery != null && resultadoQuery.results != null && resultadoQuery.results.bindings != null && resultadoQuery.results.bindings.Count > 0)
+                            if (resultadoQuery7 != null && resultadoQuery7.results != null && resultadoQuery7.results.bindings != null && resultadoQuery7.results.bindings.Count > 0)
                             {
                                 offsetOfertas += limitOfertas;
-                                foreach (Dictionary<string, SparqlObject.Data> fila in resultadoQuery.results.bindings)
+                                foreach (Dictionary<string, SparqlObject.Data> fila in resultadoQuery7.results.bindings)
                                 {
                                     Guid id = new(fila["id"].value.Replace("http://gnoss/", ""));
                                     Guid author = new(fila["author"].value.Replace("http://gnoss/", ""));
@@ -747,7 +744,7 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
                                         }
                                     }
                                 }
-                                if (resultadoQuery.results.bindings.Count < limitOfertas)
+                                if (resultadoQuery7.results.bindings.Count < limitOfertas)
                                 {
                                     break;
                                 }
@@ -795,7 +792,7 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
 
                         Thread.Sleep(300000);
                     }
-                    catch (Exception ex)
+                    catch (Exception)
                     {
                         Thread.Sleep(300000);
                     }
@@ -803,7 +800,7 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
             }).Start();
         }
 
-        private void LeerPropiedades(ref Dictionary<string, List<ObjectSearch.Property>> textSearchTemp, List<ObjectSearch.Property> listadoPropiedades)
+        private static void LeerPropiedades(ref Dictionary<string, List<ObjectSearch.Property>> textSearchTemp, List<ObjectSearch.Property> listadoPropiedades)
         {
             foreach (ObjectSearch.Property prop in listadoPropiedades)
             {

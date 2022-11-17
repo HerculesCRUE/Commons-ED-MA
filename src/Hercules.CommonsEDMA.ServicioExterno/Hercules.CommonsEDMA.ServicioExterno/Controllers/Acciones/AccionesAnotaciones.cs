@@ -1,13 +1,10 @@
-﻿using Gnoss.ApiWrapper;
-using Gnoss.ApiWrapper.ApiModel;
+﻿using Gnoss.ApiWrapper.ApiModel;
 using Gnoss.ApiWrapper.Model;
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using Hercules.CommonsEDMA.ServicioExterno.Controllers.Utilidades;
 using AnnotationOntology;
-using System.Threading;
 
 namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
 {
@@ -76,7 +73,7 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
                 FILTER(?user = <{userGnossId}>)
             }} ORDER BY DESC(?date)";
 
-            SparqlObject sparqlObject = resourceApi.VirtuosoQueryMultipleGraph(select, where, new List<string>() { "person" , "annotation" });
+            SparqlObject sparqlObject = resourceApi.VirtuosoQueryMultipleGraph(select, where, new List<string>() { "person", "annotation" });
 
             // Carga los datos en el objeto
             sparqlObject.results.bindings.ForEach(e =>
@@ -110,7 +107,8 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
                     typesRO.Add(longs);
 
                 }
-                catch (Exception ext) {
+                catch (Exception ext)
+                {
                     throw new ArgumentException("Ha habido un error al procesar los datos de los usuarios: " + ext.Message);
                 }
 
@@ -135,8 +133,8 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
         {
 
             // Obtengo el id del RO si es Guid
-            Guid guidRO = Guid.Empty;
-            Dictionary<Guid, string> longsIdRO = new();
+            Guid guidRO;
+            Dictionary<Guid, string> longsIdRO;
             if (Guid.TryParse(idRO, out guidRO))
             {
                 longsIdRO = UtilidadesAPI.GetLongIds(new List<Guid>() { guidRO }, resourceApi, rdfType, ontology);
@@ -149,7 +147,7 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
 
 
             // Obtengo el id del usuario si es Guid
-            Guid guidUser = Guid.Empty;
+            Guid guidUser;
             if (!Guid.TryParse(idUser, out guidUser))
             {
                 guidUser = resourceApi.GetShortGuid(idUser);
@@ -203,9 +201,9 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
                     string[] recursoSplit = idAnnotation.Split('_');
 
                     // Modificación.
-                    ComplexOntologyResource resource = cRsource.ToGnossApiResource(resourceApi, null, new Guid(recursoSplit[recursoSplit.Length - 2]), new Guid(recursoSplit[recursoSplit.Length - 1]));
+                    ComplexOntologyResource resourceAnotaciones = cRsource.ToGnossApiResource(resourceApi, null, new Guid(recursoSplit[recursoSplit.Length - 2]), new Guid(recursoSplit[recursoSplit.Length - 1]));
                     int numIntentos = 0;
-                    while (!resource.Modified)
+                    while (!resourceAnotaciones.Modified)
                     {
                         numIntentos++;
                         if (numIntentos > MAX_INTENTOS)
@@ -213,25 +211,25 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
                             break;
                         }
 
-                        resourceApi.ModifyComplexOntologyResource(resource, false, false);
-                        uploadedR = resource.Modified;
+                        resourceApi.ModifyComplexOntologyResource(resourceAnotaciones, false, false);
+                        uploadedR = resourceAnotaciones.Modified;
                     }
 
                 }
                 else
                 {
                     // Creación.
-                    ComplexOntologyResource resource = cRsource.ToGnossApiResource(resourceApi, null);
+                    ComplexOntologyResource resourceAnotaciones = cRsource.ToGnossApiResource(resourceApi, null);
                     int numIntentos = 0;
-                    while (!resource.Uploaded)
+                    while (!resourceAnotaciones.Uploaded)
                     {
                         numIntentos++;
                         if (numIntentos > MAX_INTENTOS)
                         {
                             break;
                         }
-                        idAnnotation = resourceApi.LoadComplexSemanticResource(resource, false, true);
-                        uploadedR = resource.Uploaded;
+                        idAnnotation = resourceApi.LoadComplexSemanticResource(resourceAnotaciones, false, true);
+                        uploadedR = resourceAnotaciones.Uploaded;
                     }
                 }
             }
@@ -267,7 +265,7 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
         /// </summary>
         /// <param name="idAnnotation">Id de la anotación.</param>
         /// <returns>string GNOSS_USER del usuario.</returns>
-        public string getUserFromAnnotation(string idAnnotation)
+        public string GetUserFromAnnotation(string idAnnotation)
         {
             string select = "SELECT DISTINCT ?usuario ";
             string where = @$"WHERE 
@@ -276,7 +274,7 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
                 ?person <http://w3id.org/roh/gnossUser> ?usuario.
             }}";
 
-            SparqlObject sparqlObject = resourceApi.VirtuosoQueryMultipleGraph(select, where,new List<string>() { "annotation", "person" });
+            SparqlObject sparqlObject = resourceApi.VirtuosoQueryMultipleGraph(select, where, new List<string>() { "annotation", "person" });
 
             // Carga los datos en el objeto
             if (sparqlObject != null && sparqlObject.results != null && sparqlObject.results.bindings != null && sparqlObject.results.bindings.Count > 0)
@@ -294,7 +292,7 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
             else
             {
                 return "";
-            } 
+            }
         }
     }
 

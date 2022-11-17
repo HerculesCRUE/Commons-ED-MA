@@ -1,23 +1,19 @@
-﻿using Gnoss.ApiWrapper;
-using Gnoss.ApiWrapper.ApiModel;
+﻿using Gnoss.ApiWrapper.ApiModel;
 using Hercules.CommonsEDMA.ServicioExterno.Controllers.Utilidades;
 using Hercules.CommonsEDMA.ServicioExterno.Models;
 using Hercules.CommonsEDMA.ServicioExterno.Models.Graficas.DataGraficaAreasTags;
 using Hercules.CommonsEDMA.ServicioExterno.Models.Graficas.DataItemRelacion;
-using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Text;
-using System.Threading;
 
 namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
 {
     public class AccionesPersona : GnossGetMainResourceApiDataBase
     {
         #region --- Constantes  
-        private static string COLOR_GRAFICAS_HORIZONTAL = "#6cafe3";
+        private static readonly string COLOR_GRAFICAS_HORIZONTAL = "#6cafe3";
         #endregion
 
 
@@ -30,35 +26,35 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
         {
             string idGrafoBusqueda = UtilidadesAPI.ObtenerIdBusqueda(resourceApi, pPersona);
             Dictionary<string, int> dicResultados = new();
-            SparqlObject resultadoQuery = null;
-            StringBuilder select = new(), where = new();
 
-            // Consulta sparql.
-            select.Append(mPrefijos);
-            select.Append("SELECT COUNT(DISTINCT ?proyecto) AS ?NumProyectos COUNT(DISTINCT ?documento) AS ?NumPublicaciones COUNT(DISTINCT ?categoria) AS ?NumCategorias ");
-            where.Append("WHERE {{ "); // Total Proyectos.
-            where.Append("?proyecto vivo:relates ?relacion. ");
-            where.Append("?proyecto gnoss:hasprivacidadCom 'publico'. ");
-            where.Append("?relacion <http://www.w3.org/1999/02/22-rdf-syntax-ns#member> ?persona. ");
-            where.Append($@"FILTER(?persona = <{idGrafoBusqueda}>) ");
-            where.Append("} UNION { "); // Total Documentos.
-            where.Append("?documento bibo:authorList ?listaAutores. ");
-            where.Append("?listaAutores rdf:member ?persona. ");
-            where.Append($@"FILTER(?persona = <{idGrafoBusqueda}>) ");
-            where.Append("} UNION { "); // Total Categorías.
-            where.Append("?s ?p ?documentoC. ");
-            where.Append("?documentoC bibo:authorList ?listaAutoresC. ");
-            where.Append("?listaAutoresC rdf:member ?persona. ");
-            where.Append("?documentoC roh:hasKnowledgeArea ?area. ");
-            where.Append("?area roh:categoryNode ?categoria. ");
-            where.Append($@"FILTER(?persona = <{idGrafoBusqueda}>) ");
-            where.Append("}} ");
+            string selectNumProyPubCat = mPrefijos;
+            selectNumProyPubCat += "SELECT COUNT(DISTINCT ?proyecto) AS ?NumProyectos COUNT(DISTINCT ?documento) AS ?NumPublicaciones COUNT(DISTINCT ?categoria) AS ?NumCategorias ";
+            string whereNumProyPubCat = $@"WHERE {{
+                                                {{ 
+                                                    ?proyecto vivo:relates ?relacion. 
+                                                    ?proyecto gnoss:hasprivacidadCom 'publico'. 
+                                                    ?relacion <http://www.w3.org/1999/02/22-rdf-syntax-ns#member> ?persona. 
+                                                    FILTER(?persona = <{idGrafoBusqueda}>)
+                                                }} UNION {{ 
+                                                    ?documento bibo:authorList ?listaAutores. 
+                                                    ?listaAutores rdf:member ?persona. 
+                                                    FILTER(?persona = <{idGrafoBusqueda}>) 
+                                                }} UNION {{
+                                                    ?s ?p ?documentoC. 
+                                                    ?documentoC bibo:authorList ?listaAutoresC. 
+                                                    ?listaAutoresC rdf:member ?persona. 
+                                                    ?documentoC roh:hasKnowledgeArea ?area. 
+                                                    ?area roh:categoryNode ?categoria. 
+                                                    FILTER(?persona = <{idGrafoBusqueda}>) 
+                                                }}
+                                            }} ";
 
-            resultadoQuery = resourceApi.VirtuosoQuery(select.ToString(), where.ToString(), idComunidad);
+            SparqlObject resultadoQueryNumProyPubCat = resourceApi.VirtuosoQuery(selectNumProyPubCat, whereNumProyPubCat, idComunidad);
 
-            if (resultadoQuery != null && resultadoQuery.results != null && resultadoQuery.results.bindings != null && resultadoQuery.results.bindings.Count > 0)
+            if (resultadoQueryNumProyPubCat != null && resultadoQueryNumProyPubCat.results != null &&
+                resultadoQueryNumProyPubCat.results.bindings != null && resultadoQueryNumProyPubCat.results.bindings.Count > 0)
             {
-                foreach (Dictionary<string, SparqlObject.Data> fila in resultadoQuery.results.bindings)
+                foreach (Dictionary<string, SparqlObject.Data> fila in resultadoQueryNumProyPubCat.results.bindings)
                 {
                     int numProyectos = int.Parse(UtilidadesAPI.GetValorFilaSparqlObject(fila, "NumProyectos"));
                     int numDocumentos = int.Parse(UtilidadesAPI.GetValorFilaSparqlObject(fila, "NumPublicaciones"));
@@ -69,39 +65,42 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
                 }
             }
 
-            // Consulta sparql.
-            select = new StringBuilder();
-            where = new StringBuilder();
-            select.Append(mPrefijos);
-            select.Append("SELECT  COUNT(DISTINCT ?id) AS ?NumColaboradores ");
-            where.Append("WHERE {{ ");
-            where.Append("SELECT * WHERE { ");
-            where.Append("?proyecto vivo:relates ?relacion. ");
-            where.Append("?relacion <http://www.w3.org/1999/02/22-rdf-syntax-ns#member> ?persona. ");
-            where.Append($@"FILTER(?persona = <{idGrafoBusqueda}>) ");
-            where.Append("?proyecto vivo:relates ?relacion2. ");
-            where.Append("?relacion2 <http://www.w3.org/1999/02/22-rdf-syntax-ns#member> ?id. ");
-            where.Append($@"FILTER(?id != <{idGrafoBusqueda}>)}} ");
-            where.Append("} UNION { ");
-            where.Append("SELECT * WHERE { ");
-            where.Append("?documento bibo:authorList ?listaAutores. ");
-            where.Append("?listaAutores rdf:member ?persona2. ");
-            where.Append($@"FILTER(?persona2 = <{idGrafoBusqueda}>) ");
-            where.Append("?documento bibo:authorList ?listaAutores2. ");
-            where.Append("?listaAutores2 rdf:member ?id. ");
-            where.Append($@"FILTER(?id != <{idGrafoBusqueda}>) ");
-            where.Append("}}} ");
 
-            resultadoQuery = resourceApi.VirtuosoQuery(select.ToString(), where.ToString(), idComunidad);
+            string selectNumColab = mPrefijos;
+            selectNumColab += "SELECT  COUNT(DISTINCT ?id) AS ?NumColaboradores ";
+            string whereNumcolab = $@"WHERE {{ 
+                                            {{ 
+                                                   SELECT * WHERE {{
+                                                        ?proyecto vivo:relates ?relacion. 
+                                                        ?relacion <http://www.w3.org/1999/02/22-rdf-syntax-ns#member> ?persona. 
+                                                        FILTER(?persona = <{idGrafoBusqueda}>) 
+                                                        ?proyecto vivo:relates ?relacion2. 
+                                                        ?relacion2 <http://www.w3.org/1999/02/22-rdf-syntax-ns#member> ?id.
+                                                        FILTER(?id != <{idGrafoBusqueda}>)
+                                                    }}
+                                            }} UNION {{ 
+                                                    SELECT * WHERE {{ 
+                                                        ?documento bibo:authorList ?listaAutores. 
+                                                        ?listaAutores rdf:member ?persona2. 
+                                                        FILTER(?persona2 = <{idGrafoBusqueda}>) 
+                                                        ?documento bibo:authorList ?listaAutores2. 
+                                                        ?listaAutores2 rdf:member ?id. 
+                                                        FILTER(?id != <{idGrafoBusqueda}>)
+                                                    }}
+                                            }}
+                                     }} ";
 
-            if (resultadoQuery != null && resultadoQuery.results != null && resultadoQuery.results.bindings != null && resultadoQuery.results.bindings.Count > 0)
+            SparqlObject resultadoQueryNumColab = resourceApi.VirtuosoQuery(selectNumColab, whereNumcolab, idComunidad);
+
+            if (resultadoQueryNumColab != null && resultadoQueryNumColab.results != null && resultadoQueryNumColab.results.bindings != null && resultadoQueryNumColab.results.bindings.Count > 0)
             {
-                foreach (Dictionary<string, SparqlObject.Data> fila in resultadoQuery.results.bindings)
+                foreach (Dictionary<string, SparqlObject.Data> fila in resultadoQueryNumColab.results.bindings)
                 {
                     int numColaboradores = int.Parse(UtilidadesAPI.GetValorFilaSparqlObject(fila, "NumColaboradores"));
                     dicResultados.Add("Colaboradores", numColaboradores);
                 }
             }
+
 
             return dicResultados;
         }
@@ -116,7 +115,7 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
         {
             string idGrafoBusqueda = UtilidadesAPI.ObtenerIdBusqueda(resourceApi, pIdPersona);
             List<string> grupos = new();
-            SparqlObject resultadoQuery = null;
+            SparqlObject resultadoQuery;
             StringBuilder select = new(), where = new();
 
             // Consulta sparql.
@@ -155,7 +154,6 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
         {
             string idGrafoBusqueda = UtilidadesAPI.ObtenerIdBusqueda(resourceApi, pIdPersona);
             List<Dictionary<string, string>> categorias = new();
-            SparqlObject resultadoQuery = null;
             StringBuilder select = new(), where = new();
 
             // Consulta sparql.
@@ -174,7 +172,7 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
             where.Append($@"FILTER(?persona = <{idGrafoBusqueda}>)");
             where.Append("} ");
 
-            resultadoQuery = resourceApi.VirtuosoQuery(select.ToString(), where.ToString(), idComunidad);
+            SparqlObject resultadoQuery = resourceApi.VirtuosoQuery(select.ToString(), where.ToString(), idComunidad);
 
             if (resultadoQuery != null && resultadoQuery.results != null && resultadoQuery.results.bindings != null && resultadoQuery.results.bindings.Count > 0)
             {
@@ -220,19 +218,19 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
             #region Cargamos nodos
             {
                 //Miembros
-                string select = $@"{mPrefijos}
+                string selectMiembros = $@"{mPrefijos}
                                 select distinct ?person ?nombre";
-                string where = $@"
+                string whereMiembros = $@"
                 WHERE {{ 
                         {filtrosPersonas}
                         ?person a 'person'.
                         ?person foaf:name ?nombre.
                 }}";
 
-                SparqlObject resultadoQuery = resourceApi.VirtuosoQuery(select, where, idComunidad);
-                if (resultadoQuery != null && resultadoQuery.results != null && resultadoQuery.results.bindings != null && resultadoQuery.results.bindings.Count > 0)
+                SparqlObject resultadoQueryMiembros = resourceApi.VirtuosoQuery(selectMiembros, whereMiembros, idComunidad);
+                if (resultadoQueryMiembros != null && resultadoQueryMiembros.results != null && resultadoQueryMiembros.results.bindings != null && resultadoQueryMiembros.results.bindings.Count > 0)
                 {
-                    foreach (Dictionary<string, SparqlObject.Data> fila in resultadoQuery.results.bindings)
+                    foreach (Dictionary<string, SparqlObject.Data> fila in resultadoQueryMiembros.results.bindings)
                     {
                         if (!dicNodos.ContainsKey(fila["person"].value))
                         {
@@ -244,9 +242,9 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
             }
             {
                 //Persona
-                string select = $@"{mPrefijos}
+                string selectPersona = $@"{mPrefijos}
                                 select distinct ?nombre ?firstName";
-                string where = $@"
+                string wherePersona = $@"
                 WHERE {{ 
                       OPTIONAL{{<http://gnoss/{pIdPersona}> foaf:firstName ?firstName.}}
                       OPTIONAL{{<http://gnoss/{pIdPersona}> foaf:name ?nombre.}}
@@ -255,14 +253,14 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
                 string nombreGrupo = "";
                 try
                 {
-                    var bindingRes = resourceApi.VirtuosoQuery(select, where, idComunidad).results.bindings;
-                    if (bindingRes.First().ContainsKey("nombre") && bindingRes.First()["nombre"].value != "")
+                    var bindingResPersona = resourceApi.VirtuosoQuery(selectPersona, wherePersona, idComunidad).results.bindings;
+                    if (bindingResPersona.First().ContainsKey("nombre") && bindingResPersona.First()["nombre"].value != "")
                     {
-                        nombreGrupo = bindingRes.First()["nombre"].value;
+                        nombreGrupo = bindingResPersona.First()["nombre"].value;
                     }
-                    else if (bindingRes.First().ContainsKey("firstName"))
+                    else if (bindingResPersona.First().ContainsKey("firstName"))
                     {
-                        nombreGrupo = bindingRes.First()["firstName"].value;
+                        nombreGrupo = bindingResPersona.First()["firstName"].value;
                     }
                 }
                 catch (Exception ex)
@@ -279,9 +277,9 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
                 {
                     //Proyectos
                     {
-                        string select = "SELECT ?person COUNT(distinct ?project) AS ?numRelacionesProyectos";
-                        string where = $@"
-                    WHERE {{ 
+                        string selectProyectos = "SELECT ?person COUNT(distinct ?project) AS ?numRelacionesProyectos";
+                        string whereProyectos = $@"
+                        WHERE {{ 
                             ?project a 'project'.
 					        ?project ?propRolA ?roleA.
                             FILTER(?propRolA in (<http://w3id.org/roh/researchers>,<http://w3id.org/roh/mainResearchers>))
@@ -291,8 +289,9 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
                             ?rolProy <http://www.w3.org/1999/02/22-rdf-syntax-ns#member> ?person.
                             FILTER(?person in (<{string.Join(">,<", colaboradores)}>))
                         }}order by desc(?numRelacionesProyectos)";
-                        SparqlObject resultadoQuery = resourceApi.VirtuosoQuery(select, where, idComunidad);
-                        foreach (Dictionary<string, SparqlObject.Data> fila in resultadoQuery.results.bindings)
+
+                        SparqlObject resultadoQueryProyectos = resourceApi.VirtuosoQuery(selectProyectos, whereProyectos, idComunidad);
+                        foreach (Dictionary<string, SparqlObject.Data> fila in resultadoQueryProyectos.results.bindings)
                         {
                             string person = fila["person"].value;
                             int numRelaciones = int.Parse(fila["numRelacionesProyectos"].value);
@@ -310,8 +309,8 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
                     }
                     //DOCUMENTOS
                     {
-                        string select = "SELECT ?person COUNT(distinct ?documento) AS ?numRelacionesDocumentos";
-                        string where = $@"
+                        string selectDocumentos = "SELECT ?person COUNT(distinct ?documento) AS ?numRelacionesDocumentos";
+                        string whereDocumentos = $@"
                     WHERE {{ 
                             ?documento a 'document'.
                             ?documento <http://purl.org/ontology/bibo/authorList> ?listaAutoresA.
@@ -320,8 +319,8 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
 					        ?listaAutoresB <http://www.w3.org/1999/02/22-rdf-syntax-ns#member> ?person.
                             FILTER(?person in (<{string.Join(">,<", colaboradores)}>))
                         }}order by desc(?numRelacionesDocumentos)";
-                        SparqlObject resultadoQuery = resourceApi.VirtuosoQuery(select, where, idComunidad);
-                        foreach (Dictionary<string, SparqlObject.Data> fila in resultadoQuery.results.bindings)
+                        SparqlObject resultadoQueryDocumentos = resourceApi.VirtuosoQuery(selectDocumentos, whereDocumentos, idComunidad);
+                        foreach (Dictionary<string, SparqlObject.Data> fila in resultadoQueryDocumentos.results.bindings)
                         {
                             string person = fila["person"].value;
                             int numRelaciones = int.Parse(fila["numRelacionesDocumentos"].value);
@@ -359,22 +358,22 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
                 {
                     if (colaboradores.Contains(colaborador))
                     {
-                        string person = "http://gnoss/" + pIdPersona.ToUpper();
-                        string nombreRelacion = "Proyectos";
-                        if (!dicRelaciones.ContainsKey(person))
+                        string personProy = "http://gnoss/" + pIdPersona.ToUpper();
+                        string relacionProyectos = "Proyectos";
+                        if (!dicRelaciones.ContainsKey(personProy))
                         {
-                            dicRelaciones.Add(person, new List<DataQueryRelaciones>());
+                            dicRelaciones.Add(personProy, new List<DataQueryRelaciones>());
                         }
 
-                        DataQueryRelaciones dataQueryRelaciones = (dicRelaciones[person].FirstOrDefault(x => x.nombreRelacion == nombreRelacion));
+                        DataQueryRelaciones dataQueryRelaciones = (dicRelaciones[personProy].FirstOrDefault(x => x.nombreRelacion == relacionProyectos));
                         if (dataQueryRelaciones == null)
                         {
                             dataQueryRelaciones = new DataQueryRelaciones()
                             {
-                                nombreRelacion = nombreRelacion,
+                                nombreRelacion = relacionProyectos,
                                 idRelacionados = new List<Datos>()
                             };
-                            dicRelaciones[person].Add(dataQueryRelaciones);
+                            dicRelaciones[personProy].Add(dataQueryRelaciones);
                         }
                         dataQueryRelaciones.idRelacionados.Add(new Datos()
                         {
@@ -387,22 +386,22 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
                 {
                     if (colaboradores.Contains(colaborador))
                     {
-                        string person = "http://gnoss/" + pIdPersona.ToUpper();
-                        string nombreRelacion = "Documentos";
-                        if (!dicRelaciones.ContainsKey(person))
+                        string personDoc = "http://gnoss/" + pIdPersona.ToUpper();
+                        string relacionDocumentos = "Documentos";
+                        if (!dicRelaciones.ContainsKey(personDoc))
                         {
-                            dicRelaciones.Add(person, new List<DataQueryRelaciones>());
+                            dicRelaciones.Add(personDoc, new List<DataQueryRelaciones>());
                         }
 
-                        DataQueryRelaciones dataQueryRelaciones = (dicRelaciones[person].FirstOrDefault(x => x.nombreRelacion == nombreRelacion));
+                        DataQueryRelaciones dataQueryRelaciones = (dicRelaciones[personDoc].FirstOrDefault(x => x.nombreRelacion == relacionDocumentos));
                         if (dataQueryRelaciones == null)
                         {
                             dataQueryRelaciones = new DataQueryRelaciones()
                             {
-                                nombreRelacion = nombreRelacion,
+                                nombreRelacion = relacionDocumentos,
                                 idRelacionados = new List<Datos>()
                             };
-                            dicRelaciones[person].Add(dataQueryRelaciones);
+                            dicRelaciones[personDoc].Add(dataQueryRelaciones);
                         }
                         dataQueryRelaciones.idRelacionados.Add(new Datos()
                         {
@@ -416,8 +415,8 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
                 {
                     //Proyectos
                     {
-                        string select = "SELECT ?person group_concat(distinct ?project;separator=\",\") as ?projects";
-                        string where = $@"
+                        string selectProy = "SELECT ?person group_concat(distinct ?project;separator=\",\") as ?projects";
+                        string whereProy = $@"
                     WHERE {{ 
                             ?project a 'project'.
                             ?project ?propRol ?rol.
@@ -428,9 +427,9 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
                             ?rolProyB <http://www.w3.org/1999/02/22-rdf-syntax-ns#member> <http://gnoss/{pIdPersona}>.
                             FILTER(?person in (<{string.Join(">,<", colaboradores)}>))
                         }}";
-                        SparqlObject resultadoQuery = resourceApi.VirtuosoQuery(select, where, idComunidad);
+                        SparqlObject resultadoQueryProy = resourceApi.VirtuosoQuery(selectProy, whereProy, idComunidad);
                         Dictionary<string, List<string>> personaProy = new();
-                        foreach (Dictionary<string, SparqlObject.Data> fila in resultadoQuery.results.bindings)
+                        foreach (Dictionary<string, SparqlObject.Data> fila in resultadoQueryProy.results.bindings)
                         {
                             string projects = fila["projects"].value;
                             string person = fila["person"].value;
@@ -440,8 +439,8 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
                     }
                     //DOCUMENTOS
                     {
-                        string select = "SELECT ?person group_concat(?document;separator=\",\") as ?documents";
-                        string where = $@"
+                        string selectDoc = "SELECT ?person group_concat(?document;separator=\",\") as ?documents";
+                        string whereDoc = $@"
                     WHERE {{ 
                             ?document a 'document'.
                             ?document <http://purl.org/ontology/bibo/authorList> ?authorList.
@@ -450,9 +449,9 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
                             ?authorListB <http://www.w3.org/1999/02/22-rdf-syntax-ns#member> <http://gnoss/{pIdPersona}>.
                             FILTER(?person in (<{string.Join(">,<", colaboradores)}>))
                         }}";
-                        SparqlObject resultadoQuery = resourceApi.VirtuosoQuery(select, where, idComunidad);
+                        SparqlObject resultadoQueryDoc = resourceApi.VirtuosoQuery(selectDoc, whereDoc, idComunidad);
                         Dictionary<string, List<string>> personaDoc = new();
-                        foreach (Dictionary<string, SparqlObject.Data> fila in resultadoQuery.results.bindings)
+                        foreach (Dictionary<string, SparqlObject.Data> fila in resultadoQueryDoc.results.bindings)
                         {
                             string documents = fila["documents"].value;
                             string person = fila["person"].value;

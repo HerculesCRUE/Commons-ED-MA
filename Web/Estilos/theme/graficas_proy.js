@@ -818,8 +818,8 @@ class GraficaHorizontal extends GraficaBarras {
         if (this.escalas) {
             //console.log(this.escalas);
             if (this.escalas.indexOf(",") > -1) {
-                this.data.options.scales.x1['max'] = parseInt(this.escalas.split(",")[0]);
-                this.data.options.scales.x2['max'] = parseInt(this.escalas.split(",")[1]);
+                this.data.options.scales.x1['max'] = parseInt(this.escalas.split(",")[1]);
+                this.data.options.scales.x2['max'] = parseInt(this.escalas.split(",")[0]);
             } else {
                 this.data.options.scales.x1['max'] = parseInt(this.escalas);
             }
@@ -947,8 +947,8 @@ class GraficaVertical extends GraficaBarras {
             //if contains ","
             if (this.escalas.indexOf(",") > -1) {
 
-                this.data.options.scales.y1['max'] = parseInt(this.escalas.split(",")[0]);
-                this.data.options.scales.y2['max'] = parseInt(this.escalas.split(",")[1]);
+                this.data.options.scales.y1['max'] = parseInt(this.escalas.split(",")[1]);
+                this.data.options.scales.y2['max'] = parseInt(this.escalas.split(",")[0]);
             } else {
                 this.data.options.scales.y1['max'] = parseInt(this.escalas);
             }
@@ -1277,7 +1277,7 @@ async function getGrafica2(pIdPagina, pIdGrafica, pFiltroFacetas, barSize = 50, 
     var arg = {};
     arg.pIdPagina = pIdPagina;
     arg.pIdGrafica = pIdGrafica;
-    arg.pFiltroFacetas = pFiltroFacetas;
+    arg.pFiltroFacetas = pFiltroFacetas.includes("_filter") ? pFiltroFacetas.replace("_filter", "") : pFiltroFacetas;
     arg.pLang = lang; //"es";
     var data = await $.get(url, arg, function (data) { });
 

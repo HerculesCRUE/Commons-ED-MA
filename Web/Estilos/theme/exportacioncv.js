@@ -144,29 +144,31 @@ var exportacionCV = {
 									</article>`;
 				$('.listadoCV').append(articleHTML);
 			}
-			if ($('.panNavegador div.items.dropdown').length == 0) {
-				$('.panNavegador').append(`
-				<div class="items dropdown">
-					<a class="dropdown-toggle" data-toggle="dropdown" aria-expanded="true">
-						<span class="texto" items="5">Ver 5 items</span>
-					</a>
-					<div class="dropdown-menu basic-dropdown dropdown-menu-right" x-placement="bottom-end">
-						<a href="javascript: void(0)" class="item-dropdown" items="5">Ver 5 items</a>
-						<a href="javascript: void(0)" class="item-dropdown" items="10">Ver 10 items</a>
-						<a href="javascript: void(0)" class="item-dropdown" items="20">Ver 20 items</a>
-						<a href="javascript: void(0)" class="item-dropdown" items="50">Ver 50 items</a>
-						<a href="javascript: void(0)" class="item-dropdown" items="100">Ver 100 items</a>
+			if ($('.resource-list-wrap.listadoCV article').length > 5) {
+				if ($('.panNavegador div.items.dropdown').length == 0) {
+					$('.panNavegador').append(`
+					<div class="items dropdown">
+						<a class="dropdown-toggle" data-toggle="dropdown" aria-expanded="true">
+							<span class="texto" items="5">Ver 5 items</span>
+						</a>
+						<div class="dropdown-menu basic-dropdown dropdown-menu-right" x-placement="bottom-end">
+							<a href="javascript: void(0)" class="item-dropdown" items="5">Ver 5 items</a>
+							<a href="javascript: void(0)" class="item-dropdown" items="10">Ver 10 items</a>
+							<a href="javascript: void(0)" class="item-dropdown" items="20">Ver 20 items</a>
+							<a href="javascript: void(0)" class="item-dropdown" items="50">Ver 50 items</a>
+							<a href="javascript: void(0)" class="item-dropdown" items="100">Ver 100 items</a>
+						</div>
 					</div>
-				</div>
-				<nav>
-					<ul class="pagination arrows">
-					</ul>
-					<ul class="pagination numbers">
-						<li class="actual"><a href="javascript: void(0)" page="1">1</a></li>
-					</ul>
-				</nav>`);
+					<nav>
+						<ul class="pagination arrows">
+						</ul>
+						<ul class="pagination numbers">
+							<li class="actual"><a href="javascript: void(0)" page="1">1</a></li>
+						</ul>
+					</nav>`);
+				}
+				that.pintarPaginacion();
 			}
-			that.pintarPaginacion();
 			OcultarUpdateProgress();
 		});
 	},

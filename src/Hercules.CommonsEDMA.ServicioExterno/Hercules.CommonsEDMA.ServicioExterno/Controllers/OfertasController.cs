@@ -1,8 +1,6 @@
 ﻿using Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones;
 using Hercules.CommonsEDMA.ServicioExterno.Models.Offer;
-using Hercules.CommonsEDMA.ServicioExterno.Models.Graficas.DataGraficaAreasTags;
 using Microsoft.AspNetCore.Cors;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -85,7 +83,7 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers
             AccionesOferta accionCluster = new();
             foreach (var pIdOfferId in pIdOfferIds)
             {
-                cambiado = cambiado && accionCluster.CambiarEstado(pIdOfferId.ToString(), estado, estadoActual, pIdGnossUser, texto) != String.Empty;
+                cambiado = cambiado && accionCluster.CambiarEstado(pIdOfferId.ToString(), estado, estadoActual, pIdGnossUser, texto) != string.Empty;
             }
 
             return Ok(cambiado);

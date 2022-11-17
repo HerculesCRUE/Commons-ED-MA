@@ -3,7 +3,6 @@ using Gnoss.ApiWrapper.ApiModel;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using Gnoss.ApiWrapper;
 using System.Text;
 using System.Web;
@@ -694,7 +693,7 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Utilidades
         /// <returns>Ancho de la línea en formate double.</returns>
         public static double CalcularGrosor(int pMax, int pColabo)
         {
-            return Math.Round(((double)pColabo / (double)pMax) * 10, 2);
+            return Math.Round((pColabo / (double)pMax) * 10, 2);
         }
 
         /// <summary>
@@ -807,7 +806,7 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Utilidades
 
             // Definimos la variable que va a contener los IDs de los elementos en formato url
             List<string> idsURL = new();
-            List<string> graphs = new() {nameOntology};
+            List<string> graphs = new() { nameOntology };
             if (ids != null)
             {
                 // Obtenemos las urls de los iDs cortos
@@ -954,7 +953,7 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Utilidades
         internal static List<string> LoadCurrentTerms(ResourceApi mResourceApi, List<string> terms, string ontology)
         {
 
-            string termsTxt = String.Join(',', terms.Select(e => "<" + e + ">"));
+            string termsTxt = string.Join(',', terms.Select(e => "<" + e + ">"));
 
             string select = "select ?o";
             string where = @$"where {{
@@ -966,7 +965,7 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Utilidades
                 }}
                 FILTER(?s IN ({termsTxt}))
             }}";
-            SparqlObject sparqlObject = mResourceApi.VirtuosoQueryMultipleGraph(select, where, new List<string> { ontology , "taxonomy" });
+            SparqlObject sparqlObject = mResourceApi.VirtuosoQueryMultipleGraph(select, where, new List<string> { ontology, "taxonomy" });
 
             List<string> termsRes = new();
 
