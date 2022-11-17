@@ -66,16 +66,45 @@ namespace Hercules.CommonsEDMA.ConfigLoad
             foreach (Tuple<string, string, string> step in listaPasos)
             {
                 Console.WriteLine(step.Item1);
-                Despliegue(rutaBase + step.Item2, step.Item3, loginAdmin, passAdmin);
+                Despliegue(rutaBase + step.Item2, step.Item3, loginAdmin,passAdmin, configService.ObtenerUrlDominioServicios());
             }
         }
 
-        private static void Despliegue(string pRutaFichero, string pMetodo, string pLoginAdmin, string pPassAdmin)
+        private static void Despliegue(string pRutaFichero, string pMetodo, string pLoginAdmin, string pPassAdmin,string pUrlDomainServices)
         {
             string nombreProy = configService.ObtenerNombreCortoComunidad();
             string sWebAddress = $"{configService.ObtenerUrlAPIDespliegues()}Upload?tipoPeticion={pMetodo}&usuario={pLoginAdmin}&password={pPassAdmin}&nombreProy={nombreProy}";
 
             HttpContent contentData;
+
+            if (pMetodo == "Vistas")
+            {
+                string rutaCarpeta = pRutaFichero.Substring(0, pRutaFichero.Length - 4);
+                if (Directory.Exists(rutaCarpeta))
+                {
+                    Directory.Delete(rutaCarpeta, true);
+                }
+                System.IO.Compression.ZipFile.ExtractToDirectory(pRutaFichero, rutaCarpeta);
+
+                
+                string contenidoOriginal = File.ReadAllText(rutaCarpeta+Path.DirectorySeparatorChar+ "TextosPersonalizadosPersonalizacion.json");
+                string contenidoModificado = contenidoOriginal;
+                contenidoModificado = contenidoModificado.Replace("[%%%_URL_CONTENT_%%%]", pUrlDomainServices);                    
+                if (contenidoOriginal != contenidoModificado)
+                {
+                    System.IO.File.WriteAllText(rutaCarpeta + Path.DirectorySeparatorChar + "TextosPersonalizadosPersonalizacion.json", contenidoModificado);
+                }
+
+                if (File.Exists(pRutaFichero))
+                {
+                    File.Delete(pRutaFichero);
+                }
+                System.IO.Compression.ZipFile.CreateFromDirectory(rutaCarpeta, pRutaFichero);
+                if (Directory.Exists(rutaCarpeta))
+                {
+                    System.IO.Directory.Delete(rutaCarpeta, true);
+                }
+            }
 
             byte[] data = File.ReadAllBytes(pRutaFichero);
             ByteArrayContent bytes = new(data);
