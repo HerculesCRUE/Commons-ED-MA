@@ -545,7 +545,10 @@ function PintarGraficaArania(data,idContenedor) {
 		OcultarUpdateProgress();
 		let element = document.getElementById(idContenedor)
 		element.classList.add("d-none")
-		element.closest(".chart-wrap").classList.add("d-none")
+		chartWrapEl = element.closest(".chart-wrap")
+		if (chartWrapEl) {
+			chartWrapEl.classList.add("d-none")
+		}
 		
 	}
 

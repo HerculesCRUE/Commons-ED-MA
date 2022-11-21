@@ -997,7 +997,7 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
 
             if (colaboradores.Count > 0)
             {
-                CargarNodos(colaboradores);
+                dicNodos = CargarNodos(colaboradores);
 
                 //Relaciones entre miembros DENTRO DEl CLUSTER
                 //Proyectos
@@ -1023,22 +1023,25 @@ namespace Hercules.CommonsEDMA.ServicioExterno.Controllers.Acciones
                 }
 
                 // Nodos. 
-                if (dicNodos != null && dicNodos.Count > 0)
+                try
                 {
-                    foreach (KeyValuePair<string, string> nodo in dicNodos)
+                    if (dicNodos != null && dicNodos.Count > 0)
                     {
-                        string clave = nodo.Key;
-                        Models.Graficas.DataItemRelacion.Data.Type type = Models.Graficas.DataItemRelacion.Data.Type.none;
-                        type = Models.Graficas.DataItemRelacion.Data.Type.icon_member;
-                        if (listSeleccionados.Contains(nodo.Key))
+                        foreach (KeyValuePair<string, string> nodo in dicNodos)
                         {
-                            type = Models.Graficas.DataItemRelacion.Data.Type.icon_ip;
+                            string clave = nodo.Key;
+                            Models.Graficas.DataItemRelacion.Data.Type type = Models.Graficas.DataItemRelacion.Data.Type.none;
+                            type = Models.Graficas.DataItemRelacion.Data.Type.icon_member;
+                            if (listSeleccionados.Contains(nodo.Key))
+                            {
+                                type = Models.Graficas.DataItemRelacion.Data.Type.icon_ip;
+                            }
+                            Models.Graficas.DataItemRelacion.Data data = new(clave, nodo.Value, null, null, null, "nodes", type);
+                            DataItemRelacion dataColabo = new(data, true, true);
+                            items.Add(dataColabo);
                         }
-                        Models.Graficas.DataItemRelacion.Data data = new(clave, nodo.Value, null, null, null, "nodes", type);
-                        DataItemRelacion dataColabo = new(data, true, true);
-                        items.Add(dataColabo);
                     }
-                }
+                } catch (Exception) {}
 
                 // Relaciones.
                 if (dicRelaciones != null && dicRelaciones.Count > 0)
