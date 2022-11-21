@@ -2453,7 +2453,7 @@ function CheckIsOtri(idUser) {
 function EnhableIfIsOtri() {
 
 
-    let isOtriVal = localStorage.getItem("ISOTRI"); // Obtengo del localStorage si el usuario es otri
+    let isOtriVal = localStorage.getItem("ISOTRI")=="true"; // Obtengo del localStorage si el usuario es otri
 	let idUser = $('#inpt_usuarioID').val() // Obtego el id del usuario
 	// Comprueba si hacer la llamada ajax
 	if (CheckIfCallIsOtri(idUser)) {
@@ -2486,7 +2486,7 @@ function EnhableIfIsOtri() {
 // Comprobar si llamar al servicio para comprobar si el usuario es un gestor Otri
 function CheckIfCallIsOtri(idUser) {
 
-	let currentSavedIdUser = localStorage.getItem("IDUSER")
+	let currentSavedIdUser = localStorage.getItem("IDUSER");
 
 	// Compruebo si el valor en localSotorage está vacío
 	if (currentSavedIdUser == "") {
