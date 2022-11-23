@@ -53,7 +53,6 @@ namespace Hercules.CommonsEDMA.ConfigLoad
                 if (proyecto == null)
                 {
                     Console.WriteLine("Se ha producido un error no se puede continuar");
-                    Finalizar();
                 }
 
                 //Creamos el OAuth
@@ -62,13 +61,11 @@ namespace Hercules.CommonsEDMA.ConfigLoad
                 //Subimos las configuraciones
                 SubirConfiguraciones();
                 Console.WriteLine("Ha finalizado la carga de configuraciones");
-                Finalizar();
             }
             catch (Exception ex)
             {
                 Console.WriteLine("Se ha producido un error no controlado: " + ex.Message);
                 Console.WriteLine("Pila de llamadas: " + ex.StackTrace);
-                Finalizar();
             }
         }
 
@@ -273,12 +270,6 @@ namespace Hercules.CommonsEDMA.ConfigLoad
             {
                 Console.WriteLine($"{pMetodo} Error:{ex.Message}");
             }
-        }
-
-        private static void Finalizar()
-        {
-            Console.WriteLine("Pulsa intro para finalizar");
-            Console.ReadLine();
         }
     }
 }
