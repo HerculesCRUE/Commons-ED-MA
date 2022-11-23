@@ -12,6 +12,7 @@ using System.Security.Authentication;
 using System;
 using ApiWrapper::Gnoss.ApiWrapper;
 using Gnoss.Web.Login.Open;
+using System.IO;
 
 namespace Gnoss.Web.Login.SAML
 {
@@ -19,7 +20,7 @@ namespace Gnoss.Web.Login.SAML
     [Route("Auth")]
     public class AuthController : Controller
     {
-        private static readonly ResourceApi mResourceApi = new ResourceApi($@"{System.AppDomain.CurrentDomain.SetupInformation.ApplicationBase}Config/ConfigOAuth/OAuthV3.config");
+        private static readonly ResourceApi mResourceApi = new ResourceApi($@"{System.AppDomain.CurrentDomain.SetupInformation.ApplicationBase}Config{Path.DirectorySeparatorChar}ConfigOAuth{Path.DirectorySeparatorChar}OAuthV3.config");
         const string relayStateReturnUrl = "ReturnUrl";
         private Saml2Configuration config;
         readonly ConfigServiceLogin mConfigServiceSAML;
