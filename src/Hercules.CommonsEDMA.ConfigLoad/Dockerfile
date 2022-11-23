@@ -20,4 +20,5 @@ RUN dotnet publish "Hercules.CommonsEDMA.ConfigLoad.csproj" -c Release -o /app/p
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
-ENTRYPOINT ["tail","-f","/dev/null"]
+#ENTRYPOINT ["tail","-f","/dev/null"]
+ENTRYPOINT ["dotnet", "Hercules.CommonsEDMA.ConfigLoad.dll"]
