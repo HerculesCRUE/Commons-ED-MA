@@ -19,19 +19,7 @@
 	int numMaxAlertas = 15;
     string notificacionesNuevas = numAlertas - leidosNovedades != 0 ? "nuevos" : "";
     string notificacionesNuevasOtros = numAlertasOtras - leidosOtros != 0 ? "nuevos" : "";
-    @if (listaNotificaciones.FindAll(x => (x.read != "true") && string.IsNullOrEmpty(x.desencadenante)).Count > 0)
-    {
-        <script>
-            var url = url_servicio_externo + "ReadNotifications";
-            var data = [];
-            @foreach(var id in listaNotificaciones.FindAll(x => (x.read != "true")&& x.pestanaNotificacion.Equals("p1")).Select(x => x.id))
-            {
-              @:data.push("@id");
-            }
-            console.log(data);
-            $.post(url,{notificacionesID:data});
-        </script>
-    }
+
     <div class="col col-12 col-xl-12 col-contenido izquierda">
         <div class="wrapCol">
             <div class="header-contenido">
@@ -124,20 +112,6 @@
                             </div>
                         </div>
                     </div>
-                    @if (listaNotificaciones.FindAll(x => (x.read != "true") && !string.IsNullOrEmpty(x.desencadenante)).Count > 0)
-                    {
-                        <script>
-                            $("#otras-tab").one("show.bs.tab",(e)=>{
-                                var url = url_servicio_externo + "ReadNotifications";
-                                var data = [];
-                                @foreach(var id in listaNotificaciones.FindAll(x => (x.read != "true") && !string.IsNullOrEmpty(x.desencadenante)).Select(x => x.id))
-                                    {
-                                    @:data.push("@id");
-                                    }
-                                $.post(url,{notificacionesID:data});
-                            })
-                        </script>
-                     }
                     <div class="moreResults">
                     	@{
                             string urlAlertas = Comunidad.Url + "/" + Html.Translate("CMS_URL_ALERTAS");
@@ -179,7 +153,7 @@
                 url = Html.GetComunidad().Url + "/" + Html.Translate("NOTIFICACION_RECURSO_URL") + "/oferta/" + notification.entidad.Split('_')[1];
             }
             bool ponerUrl = true;
-            if (string.IsNullOrEmpty(notification.entidad.Split('_')[1]))
+            if (!string.IsNullOrEmpty(notification.entidad) && notification.entidad.Split('_').Length > 0 && string.IsNullOrEmpty(notification.entidad.Split('_')[1]))
             {
                 ponerUrl = false;
             }
