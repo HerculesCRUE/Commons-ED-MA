@@ -906,3 +906,16 @@ body.operativaRegistro.login main .panel-centrado .login_cas {
 .tab-paneles-alertas .nav-tabs .nav-item .nav-link.nuevos .badge{
     background-color: var(--c-error) !important;
 }
+
+body.fichaRecurso-publicacion .material-icons.open-access:after {
+    content: '' !important;
+    background-image: url(./resources/iconos/logo-open-access.svg);
+    background-repeat: no-repeat;
+    display: inline-block;
+    width: 10px;
+    height: 20px;
+    background-size: 10px 20px;
+    position: absolute;
+    top: -10px;
+    left: 17px;
+}
