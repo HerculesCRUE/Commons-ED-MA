@@ -821,21 +821,18 @@
                                     </div>
                                 </div>
 
-                                @if (!IdentidadActual.IsGuestUser)
-                                {
-                                    <div class="col-auto pb-4">
-                                        <div class="acciones-ficha-wrap">
-                                            <ul class="no-list-style d-flex">
-                                                <li>
-                                                    <a class="btn btn-outline-grey d-none d-xl-flex" href="javascript:void(0)" data-toggle="modal" data-target="#modal-nueva-anotacion">
-                                                        <span class="material-icons">edit_note</span>
-                                                        <span class="texto">@Html.Translate("NUEVA_ANOTACION")</span>
-                                                    </a>
-                                                </li>
-                                            </ul>
-                                        </div>
+                                <div class="col-auto pb-4">
+                                    <div class="acciones-ficha-wrap">
+                                        <ul class="no-list-style d-flex">
+                                            <li>
+                                                <a class="btn btn-outline-grey d-xl-flex" href="javascript:void(0)" data-toggle="modal" data-target="#modal-nueva-anotacion">
+                                                    <span class="material-icons">edit_note</span>
+                                                    <span class="texto">@Html.Translate("NUEVA_ANOTACION")</span>
+                                                </a>
+                                            </li>
+                                        </ul>
                                     </div>
-                                }
+                                </div>
 
                                 <div class="col col-12 col-contenido">
                                     <div class="wrapCol">
