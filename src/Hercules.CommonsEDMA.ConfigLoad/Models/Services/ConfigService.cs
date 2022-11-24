@@ -21,6 +21,7 @@ namespace Hercules.CommonsEDMA.ConfigLoad.Models.Services
         private string APIConsumerSecret { get; set; }
         private string APITokenKey { get; set; }
         private string APITokenSecret { get; set; }
+        private string urlPropia { get; set; }
 
 
 
@@ -225,6 +226,23 @@ namespace Hercules.CommonsEDMA.ConfigLoad.Models.Services
                 }
             }
             return passAdmin;
+        }
+
+        public string ObtenerUrlPropia()
+        {
+            if (string.IsNullOrEmpty(urlPropia))
+            {
+                IDictionary environmentVariables = Environment.GetEnvironmentVariables();
+                if (environmentVariables.Contains("urlPropia"))
+                {
+                    urlPropia = environmentVariables["urlPropia"] as string;
+                }
+                else
+                {
+                    urlPropia = _configuration["urlPropia"];
+                }
+            }
+            return urlPropia;
         }
     }
 }
