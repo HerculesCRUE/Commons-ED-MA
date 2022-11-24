@@ -1,12 +1,5 @@
 @*[security|||document|||hercules]*@
 @using System.Reflection;
-@{
-	bool ED_HABILITADO = Html.Translate("ED_HABILITADO") == "true";
-	bool MA_HABILITADO = Html.Translate("MA_HABILITADO") == "true";
-    ViewBag.MA_DISPONIBLE = true;
-    ViewBag.ED_DISPONIBLE = true;
-    @Html.PartialView("../Shared/_ComprobacionEDMA");
-}
 @model ResourceViewModel
 @{
     ResourceModel FichaDocumento = Model.Resource;
@@ -14,9 +7,14 @@
     UserIdentityModel IdentidadActual = Html.GetIdentidadActual();
     Html.AddBodyClass(" fichaRecurso ");
     Html.AddBodyClass(" fichaRecurso-publicacion ");
-    string urlPersonalizacion = Html.GetBaseUrlContent() + "/imagenes/proyectos/personalizacion/" + Comunidad.Key.ToString();
-    string urlJS = $"{urlPersonalizacion}/theme/ficharecurso.js?v={Html.Translate("VERSION_CSS_JS")}";
-    string urlJSAnnotation = $"{urlPersonalizacion}/theme/annotations.js?v={Html.Translate("VERSION_CSS_JS")}";
+    if (FichaDocumento.ItemLinkedFotoVersion != 0 && !string.IsNullOrEmpty(FichaDocumento.ItemLinked.ToString()) && FichaDocumento.ItemLinked != Guid.Empty)
+    {
+        string urlPersonalizacion = $"{Html.GetBaseUrlContent()}/{Es.Riam.Util.UtilArchivos.ContentOntologias}/Archivos/{FichaDocumento.ItemLinked.ToString().Substring(0, 3)}";
+        Html.GetListaJS().Add($"{urlPersonalizacion}/{FichaDocumento.ItemLinked.ToString()}.js?v= {FichaDocumento.ItemLinkedFotoVersion}");
+        Html.GetListaCSS().Add($"{urlPersonalizacion}/{FichaDocumento.ItemLinked.ToString()}.css?v= {FichaDocumento.ItemLinkedFotoVersion}");
+    }
+    string urlJS = $"{Html.GetBaseUrlContent()}/imagenes/proyectos/personalizacion/{Comunidad.Key.ToString()}/theme/ficharecurso.js";
+    string urlJSAnnotation = $"{Html.GetBaseUrlContent()}/imagenes/proyectos/personalizacion/{Comunidad.Key.ToString()}/theme/annotations.js";
     Html.GetListaJS().Add(urlJS);
     Html.GetListaJS().Add(urlJSAnnotation);
     SemanticResourceModel semCmsModel = Model.SemanticFrom;
@@ -33,7 +31,7 @@
         </li>
         <li>
             @{
-                string urlArticulos = Comunidad.Url + "/" + Html.Translate("BUSQUEDA_URL_PUBLICACIONES");
+                string urlArticulos = Comunidad.Url + "/" + Html.Translate("PUBLICACIONES_URL");
             }
             <a href="@urlArticulos">Publicaciones</a>
         </li>
@@ -50,15 +48,21 @@
     </ul>
 </div>
 
-
 @*TODO:*@
 <div class="col col-12 col-xl-12 col-contenido">
-        <input type="hidden" id="NO_HAY_NOTAS_PRIVADAS" value="@Html.Translate("NO_HAY_NOTAS_PRIVADAS")"/>
+    <input type="hidden" id="NO_HAY_NOTAS_PRIVADAS" value="@Html.Translate("NO_HAY_NOTAS_PRIVADAS")" />
     <div class="wrapCol">
         <div class="cabecera-ficha enCurso">
             <div class="ficha-upper-row">
                 <div class="ficha-icon-wrap">
-                    <span class="material-icons">article</span>
+                    @{
+                        string isOpenAccess = "";
+                        if (pDocument.isOpenAccess)
+                        {
+                            isOpenAccess = "open-access";
+                        }
+                    }
+                    <span class="material-icons @isOpenAccess">article</span>
                 </div>
                 <div class="ficha-title-wrap">
                     @{
@@ -66,23 +70,12 @@
                         {
                             <h1 about="@pDocument.GNOSSID" property="@pDocument.GetPropertyURI(nameof(pDocument.Roh_title))" class="ficha-title">
                                 @pDocument.Roh_title
-                                @{
-                                    if (pDocument.Roh_isValidated)
-                                    {
-                                        <span class="material-icons candado-activo"></span>
-                                    }
-                                    else
-                                    {
-                                        <span class="material-icons candado"></span>
-                                    }
-                                }
                             </h1>
                         }
                         else
                         {
                             <p class="ficha-title">
                                 ---
-                                <span class="material-icons candado-activo"></span>
                             </p>
                         }
                     }
@@ -196,82 +189,83 @@
                 <div class="d-flex quotes" data-scopus="@pDocument.Roh_scopusCitationCount" data-wos="@pDocument.Roh_wosCitationCount" data-inrecs="@pDocument.Roh_inrecsCitationCount" data-otros="@valorOtros">
                     <p><span id="citas_number">@pDocument.Roh_citationCount</span> @Html.Translate("CITAS")</p>
                 </div>
-				
-				@{
-					string urlCV = "";
-					if (pDocument.Bibo_authorList != null)
-					{
-						
-						foreach (BFO_0000023 bfo_0000023 in pDocument.Bibo_authorList)
-						{
-							if (bfo_0000023.Rdf_member != null && bfo_0000023.Rdf_member.Roh_cvOf != null && bfo_0000023.Rdf_member.Roh_gnossUser.Replace("http://gnoss/", "").ToLower() == IdentidadActual.KeyUser.ToString().ToLower())
-							{
-								urlCV = bfo_0000023.Rdf_member.Roh_cvOf.URL;
-								
-								string section="http://w3id.org/roh/scientificPublications";
-								if(pDocument.Roh_scientificActivityDocument?.Dc_identifier=="SAD2")
-								{
-									section="http://w3id.org/roh/worksSubmittedConferences";
-								}else if(pDocument.Roh_scientificActivityDocument?.Dc_identifier=="SAD3")
-								{
-									section="http://w3id.org/roh/worksSubmittedSeminars";
-								}
-								
-								urlCV += "?tab=http://w3id.org/roh/scientificActivity&id=" + FichaDocumento.Key.ToString().ToLower()+"&section="+section;
-							}
-						}
-					}
-				}
-				
-				
-				<div class="acciones-ficha-wrap">
-					<ul class="no-list-style d-flex">
-						<li>
-							<div class="acciones-recurso-listado">
-								<div class="dropdown">
-									<a href="#" class="dropdown-toggle btn btn-outline-grey no-flecha" role="button" id="dropdownMasOpciones" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-										<span class="material-icons">more_vert</span>
-									</a>
-									<div class="dropdown-menu basic-dropdown dropdown-icons dropdown-menu-right" aria-labelledby="dropdownMasOpciones">
-										<p class="dropdown-title">@Html.Translate("ACCIONES")</p>
-										<ul class="no-list-style">
-											@if (!string.IsNullOrEmpty(urlCV) && ED_HABILITADO)
-											{
-												<li>
-													<a href="@urlCV" target="_blank" class="item-dropdown">
-														<span class="material-icons">edit</span>
-														<span class="texto">@Html.GetText("COMMON", "EDITAR")</span>
-													</a>
-												</li>
-												<li>
-													<a href="javascript:startVincularRo()" class="item-dropdown">
-														<span class="material-icons">link</span>
-														<span class="texto">@Html.Translate("VINCULAR_RO")</span>
-													</a>
-												</li>
-											}
-											@if (!IdentidadActual.IsGuestUser)
-											{
-												<li>
-													<a href="javascript:void(0)" data-toggle="modal" data-target="#modal-nueva-anotacion" class="item-dropdown">
-														<span class="material-icons">edit_note</span>
-														<span class="texto">@Html.Translate("NUEVA_ANOTACION")</span>
-													</a>
-												</li>
-											}
-											<li>
-												<a href="javascript:void(0)" data-toggle="modal" data-target="#modal-citar-publicacion" class="item-dropdown">
-													<span class="material-icons">format_quote</span>
-													<span class="texto">@Html.Translate("CITAR_PUBLICACION")</span>
-												</a>
-											</li>
-										</ul>
-									</div>
-								</div>
-							</div>
-						</li>
-					</ul>
-				</div>
+
+                @{
+                    string urlCV = "";
+                    if (pDocument.Bibo_authorList != null)
+                    {
+
+                        foreach (BFO_0000023 bfo_0000023 in pDocument.Bibo_authorList)
+                        {
+                            if (bfo_0000023.Rdf_member != null && bfo_0000023.Rdf_member.Roh_cvOf != null && bfo_0000023.Rdf_member.Roh_gnossUser.Replace("http://gnoss/", "").ToLower() == IdentidadActual.KeyUser.ToString().ToLower())
+                            {
+                                urlCV = bfo_0000023.Rdf_member.Roh_cvOf.URL;
+
+                                string section = "http://w3id.org/roh/scientificPublications";
+                                if (pDocument.Roh_scientificActivityDocument?.Dc_identifier == "SAD2")
+                                {
+                                    section = "http://w3id.org/roh/worksSubmittedConferences";
+                                }
+                                else if (pDocument.Roh_scientificActivityDocument?.Dc_identifier == "SAD3")
+                                {
+                                    section = "http://w3id.org/roh/worksSubmittedSeminars";
+                                }
+
+                                urlCV += "?tab=http://w3id.org/roh/scientificActivity&id=" + FichaDocumento.Key.ToString().ToLower() + "&section=" + section;
+                            }
+                        }
+                    }
+                }
+
+                @if (!IdentidadActual.IsGuestUser)
+                {
+                    <div class="acciones-ficha-wrap">
+                        <ul class="no-list-style d-flex">
+                            <li>
+                                <div class="acciones-recurso-listado">
+                                    <div class="dropdown">
+                                        <a href="#" class="dropdown-toggle btn btn-outline-grey no-flecha" role="button" id="dropdownMasOpciones" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                            <span class="material-icons">more_vert</span>
+                                        </a>
+                                        <div class="dropdown-menu basic-dropdown dropdown-icons dropdown-menu-right" aria-labelledby="dropdownMasOpciones">
+                                            <p class="dropdown-title">@Html.Translate("ACCIONES")</p>
+                                            <ul class="no-list-style">
+
+                                                @if (!string.IsNullOrEmpty(urlCV))
+                                                {
+                                                    <li>
+                                                        <a href="@urlCV" target="_blank" class="item-dropdown">
+                                                            <span class="material-icons">edit</span>
+                                                            <span class="texto">@Html.GetText("COMMON", "EDITAR")</span>
+                                                        </a>
+                                                    </li>
+                                                    <li>
+                                                        <a href="javascript:startVincularRo()" class="item-dropdown">
+                                                            <span class="material-icons">link</span>
+                                                            <span class="texto">@Html.Translate("VINCULAR_RO")</span>
+                                                        </a>
+                                                    </li>
+                                                }
+                                                <li>
+                                                    <a href="javascript:void(0)" data-toggle="modal" data-target="#modal-nueva-anotacion" class="item-dropdown">
+                                                        <span class="material-icons">edit_note</span>
+                                                        <span class="texto">@Html.Translate("NUEVA_ANOTACION")</span>
+                                                    </a>
+                                                </li>
+                                                <li>
+                                                    <a href="javascript:void(0)" data-toggle="modal" data-target="#modal-citar-publicacion" class="item-dropdown">
+                                                        <span class="material-icons">format_quote</span>
+                                                        <span class="texto">@Html.Translate("CITAR_PUBLICACION")</span>
+                                                    </a>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                }
             </div>
             <h3>
                 @{
@@ -291,7 +285,9 @@
                         <span about="@pDocument.Vivo_hasPublicationVenue.GNOSSID" property="@pDocument.GetPropertyURI(nameof(pDocument.Roh_hasPublicationVenueJournalText))">
                             @pDocument.Roh_hasPublicationVenueJournalText
                         </span>
-                    } else if (!string.IsNullOrEmpty(pDocument.Roh_hasPublicationVenueJournalText)) {
+                    }
+                    else if (!string.IsNullOrEmpty(pDocument.Roh_hasPublicationVenueJournalText))
+                    {
                         <span property="@pDocument.GetPropertyURI(nameof(pDocument.Roh_hasPublicationVenueJournalText))">
                             @pDocument.Roh_hasPublicationVenueJournalText
                         </span>
@@ -378,13 +374,7 @@
                             }
 
                             <li>
-								@if(MA_HABILITADO)
-								{
-									<a href="@userUrl" name="@filtroPersona">@nombreFirma</a>
-								}else
-								{
-									@nombreFirma
-								}
+                                <a href="@userUrl" name="@filtroPersona">@nombreFirma</a>
                                 <sup>@numOrganizacion</sup>
                             </li>
 
@@ -437,7 +427,7 @@
                                     {
                                         contadorAreaConocimiento++;
                                         <li>
-                                            <a href="@Comunidad.Url/@Html.Translate("BUSQUEDA_URL_PUBLICACIONES")?roh:hasKnowledgeArea@("@@@")roh:categoryNode=@concept.GNOSSID">
+                                            <a href="@Comunidad.Url/@Html.Translate("PUBLICACIONES_URL")?roh:hasKnowledgeArea@("@@@")roh:categoryNode=@concept.GNOSSID">
                                                 <span about="@concept.GNOSSID" property="@concept.GetPropertyURI(nameof(concept.Skos_prefLabel))" class="texto">@concept.Skos_prefLabel</span>
                                             </a>
                                         </li>
@@ -446,7 +436,7 @@
                                     {
                                         contadorAreaConocimiento++;
                                         <li class="ocultar" style="display: none;">
-                                            <a href="@Comunidad.Url/@Html.Translate("BUSQUEDA_URL_PUBLICACIONES")?roh:hasKnowledgeArea@("@@@")roh:categoryNode=@concept.GNOSSID">
+                                            <a href="@Comunidad.Url/@Html.Translate("PUBLICACIONES_URL")?roh:hasKnowledgeArea@("@@@")roh:categoryNode=@concept.GNOSSID">
                                                 <span about="@concept.GNOSSID" property="@concept.GetPropertyURI(nameof(concept.Skos_prefLabel))" class="texto">@concept.Skos_prefLabel</span>
                                             </a>
                                         </li>
@@ -482,7 +472,7 @@
                                 {
                                     contadorCategorias++;
                                     <li>
-                                        <a href="@Comunidad.Url/@Html.Translate("BUSQUEDA_URL_PUBLICACIONES")?vivo:freeTextKeyword@@@@@@roh:title=@etiquetas.Roh_title">
+                                        <a href="@Comunidad.Url/@Html.Translate("PUBLICACIONES_URL")?vivo:freeTextKeyword@@@@@@roh:title=@etiquetas.Roh_title">
                                             <span about="@pDocument.GNOSSID" property="@pDocument.GetPropertyURI(nameof(pDocument.Vivo_freeTextKeyword))" class="texto">@etiquetas.Roh_title</span>
                                         </a>
 
@@ -496,14 +486,14 @@
                                             {
                                                 tituloMesh = etiquetas.Roh_keyWordConcept.Roh_title;
                                             }
-                                            if(!string.IsNullOrEmpty(etiquetas.Roh_keyWordConcept.Roh_url))
+                                            if (!string.IsNullOrEmpty(etiquetas.Roh_keyWordConcept.Roh_url))
                                             {
                                                 urlMesh = etiquetas.Roh_keyWordConcept.Roh_url;
                                             }
 
                                             if (etiquetas.Roh_keyWordConcept.Roh_match != null && etiquetas.Roh_keyWordConcept.Roh_match.Any())
                                             {
-                                                foreach(KeyWordConcept match in etiquetas.Roh_keyWordConcept.Roh_match)
+                                                foreach (KeyWordConcept match in etiquetas.Roh_keyWordConcept.Roh_match)
                                                 {
                                                     if (!string.IsNullOrEmpty(match.Roh_url) && !string.IsNullOrEmpty(match.Roh_title))
                                                     {
@@ -520,7 +510,7 @@
                                 {
                                     contadorCategorias++;
                                     <li class="ocultar" style="display: none;">
-                                        <a href="@Comunidad.Url/@Html.Translate("BUSQUEDA_URL_PUBLICACIONES")?vivo:freeTextKeyword@@@@@@roh:title=@etiquetas.Roh_title">
+                                        <a href="@Comunidad.Url/@Html.Translate("PUBLICACIONES_URL")?vivo:freeTextKeyword@@@@@@roh:title=@etiquetas.Roh_title">
                                             <span about="@pDocument.GNOSSID" property="@pDocument.GetPropertyURI(nameof(pDocument.Vivo_freeTextKeyword))" class="texto">@etiquetas.Roh_title</span>
                                         </a>
 
@@ -534,14 +524,14 @@
                                             {
                                                 tituloMesh = etiquetas.Roh_keyWordConcept.Roh_title;
                                             }
-                                            if(!string.IsNullOrEmpty(etiquetas.Roh_keyWordConcept.Roh_url))
+                                            if (!string.IsNullOrEmpty(etiquetas.Roh_keyWordConcept.Roh_url))
                                             {
                                                 urlMesh = etiquetas.Roh_keyWordConcept.Roh_url;
                                             }
 
                                             if (etiquetas.Roh_keyWordConcept.Roh_match != null && etiquetas.Roh_keyWordConcept.Roh_match.Any())
                                             {
-                                                foreach(KeyWordConcept match in etiquetas.Roh_keyWordConcept.Roh_match)
+                                                foreach (KeyWordConcept match in etiquetas.Roh_keyWordConcept.Roh_match)
                                                 {
                                                     if (!string.IsNullOrEmpty(match.Roh_url) && !string.IsNullOrEmpty(match.Roh_title))
                                                     {
@@ -647,9 +637,9 @@
                     }
                 </ul>
                 @*<p class="moreResults">
-                    <a href="javascript: void(0);" class="ver-mas" style="display: flex;">@Html.Translate("VER_MAS")</a>
-                    <a href="javascript: void(0);" class="ver-menos" style="display: none;">@Html.Translate("VER_MENOS")</a>
-                    </p>*@
+                <a href="javascript: void(0);" class="ver-mas" style="display: flex;">@Html.Translate("VER_MAS")</a>
+                <a href="javascript: void(0);" class="ver-menos" style="display: none;">@Html.Translate("VER_MENOS")</a>
+                </p>*@
             </div>
         </div>
         <div class="contenido-ficha contenido-publicacion">
@@ -687,7 +677,7 @@
                                 </div>
                             </a>
                         </li>
-                        @if (!IdentidadActual.IsGuestUser) 
+                        @if (!IdentidadActual.IsGuestUser)
                         {
                             <li class="nav-item" role="presentation">
                                 <!-- Referencias -->
@@ -699,15 +689,15 @@
                                 </a>
                             </li>
                         }
-						<li class="nav-item" role="presentation" id="linked-panel-li">
-							<!-- Referencias -->
-							<a class="nav-link" id="linked-tab" data-toggle="tab" href="#linked-panel" role="tab" aria-controls="linked-panel">
-								<div class="bloque">
-									<div class="label">@Html.Translate("ROS_VINCULADOS")</div>
-									<div class="data">@pDocument.Roh_linkedCount</div>
-								</div>
-							</a>
-						</li>
+                        <li class="nav-item d-none" role="presentation" id="linked-panel-li">
+                            <!-- Referencias -->
+                            <a class="nav-link" id="linked-tab" data-toggle="tab" href="#linked-panel" role="tab" aria-controls="linked-panel">
+                                <div class="bloque">
+                                    <div class="label">@Html.Translate("ROS_VINCULADOS")</div>
+                                    <div class="data">0</div>
+                                </div>
+                            </a>
+                        </li>
                     </ul>
                 </div>
                 <div class="tab-content" id="paneles-recurso">
@@ -809,37 +799,22 @@
                         </div>
                     </div>
 
-                    @if (!IdentidadActual.IsGuestUser) 
+                    @if (!IdentidadActual.IsGuestUser)
                     {
                         <div class="tab-pane fade" id="annotations-panel" role="tabpanel" aria-labelledby="annotations-tab">
                             <div class="row">
-                                <div class="col header-listado">
+                                <div class="col col-12 header-listado">
                                     <div class="h1-container">
-                                        <h2>@Html.Translate("MIS_NOTAS_PRIVADAS")
+                                        <h2>
+                                            @Html.Translate("MIS_NOTAS_PRIVADAS")
                                             <span class="numResultados">0</span>
                                         </h2>
                                     </div>
                                 </div>
-
-                                <div class="col-auto pb-4">
-                                    <div class="acciones-ficha-wrap">
-                                        <ul class="no-list-style d-flex">
-                                            <li>
-                                                <a class="btn btn-outline-grey d-xl-flex" href="javascript:void(0)" data-toggle="modal" data-target="#modal-nueva-anotacion">
-                                                    <span class="material-icons">edit_note</span>
-                                                    <span class="texto">@Html.Translate("NUEVA_ANOTACION")</span>
-                                                </a>
-                                            </li>
-                                        </ul>
-                                    </div>
-                                </div>
-
                                 <div class="col col-12 col-contenido">
                                     <div class="wrapCol">
                                         <div class="resource-list listView resource-list-buscador">
                                             <div class="resource-list-wrap">
-                                         
-
                                             </div>
                                         </div>
                                     </div>
@@ -849,28 +824,27 @@
                     }
 
                     <div class="tab-pane fade" id="linked-panel" role="tabpanel" aria-labelledby="linked-tab">
-                        @if (!string.IsNullOrEmpty(urlCV) && ED_HABILITADO)
-                        {
-                            <div class="row">
-                                <div class="col"></div>
-                                <div class="col-auto header-listado">
-                                
-                                    <div class="col-auto pb-4">
-                                        <div class="acciones-ficha-wrap">
-                                            <ul class="no-list-style d-flex">
-                                                <li>
-                                                    <a href="javascript:startVincularRo()" class="btn btn-outline-grey d-none d-xl-flex">
-                                                        <span class="material-icons">link</span>
-                                                        <span class="texto">@Html.Translate("VINCULAR_RO")</span>
-                                                    </a>
-                                                </li>
-                                            </ul>
+                        <div class="row">
+                            <div class="col col-12 header-listado">
+                                <div class="h1-container">
+                                    <h2>
+                                        @Html.Translate("ROS_VINCULADOS")
+                                        <span class="numResultados">0</span>
+                                    </h2>
+                                </div>
+                            </div>
+                            <div class="col col-12 col-contenido">
+                                <div class="wrapCol">
+                                    <div class="resource-list listView resource-list-buscador">
+                                        <div class="resource-list-wrap">
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                        }
-                        <div class="row" id="contenedorBuscadorResearchObjectsLinked">
+
+
+
+
                         </div>
                     </div>
                 </div>
@@ -879,9 +853,9 @@
     </div>
 </div>
 
-@if (!IdentidadActual.IsGuestUser) 
+@if (!IdentidadActual.IsGuestUser)
 {
-    
+
 
 
     <div id="modal-eliminar-anotacion-confirmacion" class="modal modal-top fade modal-edicion" tabindex="-1" role="dialog">
@@ -999,7 +973,7 @@
         </div>
     </div>
 
-    <div id="modal-vinvular-ro-old" class="modal modal-top modal-wide fade" tabindex="-1" role="dialog">
+    <div id="modal-vinvular-ro" class="modal modal-top modal-wide fade" tabindex="-1" role="dialog">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -1030,53 +1004,6 @@
             </div>
         </div>
     </div>
-
-    <div id="modal-vinvular-ro" data-backdrop="static"  class="modal modal-top fade modal-vinvular-ro" tabindex="-1" role="dialog">
-            <div class="modal-dialog" role="document">
-                <div class="modal-content modal-content-height">
-                    <div class="modal-header">
-                        <p class="modal-title"><span class="material-icons">label</span>@Html.Translate("VILCULAR_ROS")</p>
-                        <span class="material-icons cerrar" data-dismiss="modal" aria-label="Close">close</span>
-                    </div>
-                    <div class="modal-body">
-                        <div class="formulario-edicion">
-                            <div class="custom-form-row mb-0">
-                                <div class="form-group full-group">
-                                    <label class="control-label d-block">@Html.Translate("VILCULAR_ROS")</label>
-                                    <small class="pb-2 d-inline-block">@Html.Translate("TEXTO_EXPLICATIVO_VINCULAR_ROS")</small>
-                                    <input placeholder="@Html.Translate("TECLEA_E_INTRODUCE_AUTOCOMPLETADO")" type="text" name="" id="tagsSearchModalCluster" class="form-control not-outline">
-                                    <div class="ac_results" style="position: absolute;width: 100%;display: none;">
-                                        <ul>
-                                        </ul>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="list-wrap tags">
-                                <ul>
-                                </ul>
-                            </div>
-                            <!-- <div class="form-actions">
-                                <a href="javascript: void(0);" class="btn btn-primary uppercase btnclosemodal" data-dismiss="modal">@Html.Translate("GUARDAR")</a>
-                            </div> -->
-                        </div>
-                        <div class="row px-3">
-                            <div class="col col-12 col-contenido">
-                                <div class="wrapCol">
-                                    <div class="title_list">
-                                        <h2>@Html.Translate("ROS_VINCULADOS")</h2>
-                                    </div>
-                                    <div class="resource-list listView resource-list-buscador">
-                                        <div class="resource-list-wrap">
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                    </div>
-                </div>
-            </div>
-        </div>
 }
 
 
@@ -1097,7 +1024,7 @@
         var anotaciones = new CargarAnotaciones(annIdRO, annIdUser, annRdfType, annOntology);
 
         /**
-         * Función que crea la notificación 
+         * Función que crea la notificación
          * param idEle, string con el id del textArea para obtener el texto introducido
          */
         function nuevaAnotacion(idEle) {
@@ -1111,13 +1038,13 @@
                 anotaciones.newUpdateAnnotation(texto).then((data) => {
                     document.getElementById(idEle).value = ""
                     anotaciones.loadInRo().then((data) => {
-           
-                            // Ahora pintamos los datos si hay elementos
-                            anotaciones.printItems("annotations-tab", "annotations-panel", null, () => {
-                                // Comportamiento Ver Más / Ver Menos
-                                comportamientoVerMasVerMenos.init();
-                            })
-                        
+
+                        // Ahora pintamos los datos si hay elementos
+                        anotaciones.printItems("annotations-tab", "annotations-panel", null, () => {
+                            // Comportamiento Ver Más / Ver Menos
+                            comportamientoVerMasVerMenos.init();
+                        })
+
                     })
                 })
             }
@@ -1128,11 +1055,11 @@
          * param id, id de la anotacion
          * param text, texto de la anotacion
          */
-        function readMoreAnotacion(idAnnotation,text){
-            $(document.getElementById(idAnnotation)).find("div.desc p").html(text);  
+        function readMoreAnotacion(idAnnotation, text) {
+            $(document.getElementById(idAnnotation)).find("div.desc p").html(text);
         }
         /**
-         * Función que modifica la notificación 
+         * Función que modifica la notificación
          * param idEle, string con el id del textArea para obtener el texto introducido
          * param idCurrentAnnotation, string con el id de la anotación para modificar la misma
          */
@@ -1140,12 +1067,12 @@
 
             let modal = document.getElementById("modal-editar-anotacion")
             let modalTextArea = modal.getElementsByClassName("textareaInput")
-            modalTextArea[0].value = oldText.replaceAll("<br />", "\n").replaceAll("&gt",">").replaceAll("&lt","<").replaceAll("&quot","\"").replaceAll("&apos","\'").replaceAll("&amp","&");
+            modalTextArea[0].value = oldText.replaceAll("<br />", "\n").replaceAll("&gt", ">").replaceAll("&lt", "<").replaceAll("&quot", "\"").replaceAll("&apos", "\'").replaceAll("&amp", "&");
 
             $(modal).modal("show")
 
             // Evento para el botón de guardado
-            $(modal).find("#btn-modal-editar-anotacion").off("click").on("click", function () {
+            $(modal).find("#btn-modal-editar-anotacion").off("click").on("click", function() {
 
                 // modal.getElementsByClassName("textareaInput")
                 $(modal).modal("hide")
@@ -1169,42 +1096,41 @@
             });
 
         }
-
         function borrarAnotacion(idCurrentAnnotation) {
             anotaciones.deleteAnnotation(idCurrentAnnotation).then((data) => {
                 anotaciones.loadInRo().then((data) => {
-                
+
                     // Ahora pintamos los datos si hay elementos
                     anotaciones.printItems("annotations-tab", "annotations-panel", null, () => {
                         // Comportamiento Ver Más / Ver Menos
                         comportamientoVerMasVerMenos.init();
                     })
-                
+
                 })
             })
         }
 
 
-        $(function () {
+        $(function() {
             // Obtiene las notas y las pinta
             anotaciones.loadInRo().then((data) => {
-                    // Para que se selecione la pestaña de anotaciones si esta seleccionada
-                    var hash = location.hash.replace(/^#/, '');  // ^ means starting, meaning only match the first hash
-                    if (hash) {
-                        $('.nav-tabs a[href="#' + hash + '"]').tab('show');
+                // Para que se selecione la pestaña de anotaciones si esta seleccionada
+                var hash = location.hash.replace(/^#/, '');  // ^ means starting, meaning only match the first hash
+                if (hash) {
+                    $('.nav-tabs a[href="#' + hash + '"]').tab('show');
 
-                    } 
+                }
 
-                    // Change hash for page-reload
-                    $('.nav-tabs a').on('shown.bs.tab', function (e) {
-                        window.location.hash = e.target.hash;
-                    })           
-                    // Ahora pintamos los datos si hay elementos
-                    anotaciones.printItems("annotations-tab", "annotations-panel", null, () => {
-                        // Comportamiento Ver Más / Ver Menos
-                        comportamientoVerMasVerMenos.init();
-                    })
-                
+                // Change hash for page-reload
+                $('.nav-tabs a').on('shown.bs.tab', function(e) {
+                    window.location.hash = e.target.hash;
+                })
+                // Ahora pintamos los datos si hay elementos
+                anotaciones.printItems("annotations-tab", "annotations-panel", null, () => {
+                    // Comportamiento Ver Más / Ver Menos
+                    comportamientoVerMasVerMenos.init();
+                })
+
             })
         });
 
@@ -1219,472 +1145,43 @@
 <script type="text/javascript">
 
     var depuracion = false;
-    const localUrlBase = "https://localhost:44321/"
-    const currentId = "@currentId"
-    const docId = "@pDocument.GNOSSID"
+    const localUrlBase = "https://localhost:44321/";
 
 
     ///////////////////////////////////
     //// Funciones para vincular ROs
     ///////////////////////////////////
 
-    const urlSearchLinked = new URL(url_servicio_externo + "RosVinculados/SearchROs")
-    const urlLoadLinked = new URL(url_servicio_externo + "RosVinculados/LoadRosLinked")
-    const urlDel = new URL(url_servicio_externo+"RosVinculados/DeleteLinked")
-    const urlAddRo = new URL(url_servicio_externo+"RosVinculados/AddLink")
-
-
-
     /**
-    * Clase que contiene la funcionalidad del modal de los TAGS para el Cluster
-    */
-    class ModalSearchTagsVinculados {
-        constructor() {
-            this.body = $('body')
-            this.modal = this.body.find('#modal-vinvular-ro')
-            this.inputSearch = this.modal.find('#tagsSearchModalCluster')
-            this.results = this.modal.find('.ac_results')
-            this.resultsUl = this.results.find('ul')
-            this.addedROs = []
-            this.excludedItems = []
-            this.loadedResources = []
-            this.timeWaitingForUserToType = 750; // Esperar 0.75 segundos a si el usuario ha dejado de escribir para iniciar búsqueda
-            this.tagsWrappper = this.modal.find('.resource-list-wrap')
-            // this.ignoreKeysToBuscador = [37, 38, 39, 40, 46, 8, 32, 91, 17, 18, 20, 36, 18, 27]
-            this.ignoreKeysToBuscador = [37, 38, 39, 40, 8, 32, 91, 17, 18, 20, 36, 18, 27]
-
-            // Inicializa la funcionalidad del buscador de TAGS
-            this.inputSearchEnter()
-
-
-            this.excludedItems.push(docId)
-
-            /* if (window.location.hostname == 'depuracion.net' || window.location.hostname.includes("localhost")) {
-                var urlSTAGS = new URL(url_servicio_externo + 'servicioexterno/' + uriSearchTags)
-            } */
-        }
-
-        /**
-         * Inicia la funcionalidad del modal
-         */
-        init() {
-
-            let _self = this
-
-            this.modal.modal('show')
-            this.cargarROsVinculados()
-
-            // Se ejecuta cuando el modal se cierra
-            $("#modal-vinvular-ro").on("hidden.bs.modal", function () {
-                _self.cerrarVincularRO()
-            })
-        }
-
-        /**
-         * Método para terminar de vincular los ROs
-         */
-        cerrarVincularRO() {
-            $("#modal-vinvular-ro").modal("hide")
-            MontarResultadosScroll.destroyScroll()
-            $(document.querySelector("#navegacion-recurso .active")).click()
-            // $(document.querySelector('#navegacion-recurso .active')).tab('show')
-        }
-
-
-        /**
-         * Método que carga los ROs vinculados
-         */
-        cargarROsVinculados() {
-
-            let _self = this
-
-            let arg = {};
-            arg.pIdROId = docId;
-            arg.lang = "@idiomaUsuario";
-
-            MostrarUpdateProgress();
-            $.get(urlLoadLinked.toString(), arg, function (data) {
-                if (data.length > 0) 
-                {
-                    _self.printAllLinkedROs(data)
-                    _self.addedROs = data.map(e => e.entityID)
-                    _self.loadedResources = data
-                    _self.excludedItems = data.map(e => e.entityID)
-                }
-                OcultarUpdateProgress()
-            });
-        }
-
-        /**
-         * Método que carga los ROs vinculados
-         */
-        printAllLinkedROs(data) {
-
-            let _self = this
-
-            // var currentSec = "none!!!";
-
-            data = data.sort((a, b) => {
-                if (a.roType < b.roType) {
-                    return -1
-                }
-                if (a.roType > b.roType) {
-                    return 1
-                }
-                return 0
-            })
-
-
-            let ros = data.map(ro => {
-                var $ro = $(_self.generateHtmlItem(ro))
-                _self.deleteEvent($ro, ro)
-                return $ro
-            })
-
-            // Pinta el resultado
-            // $("#linked-panel .col-contenido .resource-list-wrap").html(ros)
-            this.tagsWrappper.html(ros)
-
-            comportamientoVerMasVerMenos.init()
-
-        }
-
-        /**
-         * Método que obtiene el html a pintar de un RO
-         */
-        generateHtmlItem(ro) {
-            let htmlRes = ""
-            // if (currentSec != ro.roType) 
-            // {
-            //     currentSec = ro.roType
-            // }
-
-            if (ro.roType == "") 
-            {
-                ro.roTypeTitle = "@Html.Translate("PUBLICACION")"
-            }
-
-            let htmlMenu = ""
-
-            // Creamos el método de borrado dependiendo de si el vínculo es desde el RO o está relacionado desde otro RO
-            // let link = ""
-            // if (ro.origin) 
-            // {
-            //     link = "javascript:modalSearchTagsVinculados.deleteLink('"+ ro.entityID +"', docId)"
-            // } else {
-            //     link = "javascript:modalSearchTagsVinculados.deleteLink(docId, '"+ ro.entityID +"')"
-            // }
-            
-
-            // Generamos la url
-            let nameUrlRo = cleanStringUrlLikeGnoss(ro.title)
-            let urlResource = "@Comunidad.Url/@Html.GetText("URLSEM", "RECURSO")/" + nameUrlRo + "/" + ro.entityID.split("_")[1]
-
-
-            // Pinto "mostrar más" si la descripción contiene un texto largo
-            let showMore = ""
-            if (ro.description.trim() != "" && ro.description.length > 60) {
-                showMore = `<p class="moreResults showMore">
-                                <a href="javascript: void(0);" class="ver-mas" style="display: flex;">@Html.Translate("VER_MAS")</a>
-                                <a href="javascript: void(0);" class="ver-menos" style="display: none;">@Html.Translate("VER_MENOS")</a>
-                            </p>`
-            }
-
-            let classIcon = "visibility_off"
-            if (ro.isValidated) {
-                classIcon = "visibility"
-            }
-
-            // Genero el HTML final
-            htmlRes += `<article class="resource rolinked">
-                <div class="wrap">
-                    <div class="row pb-0">
-
-                        <div class="col">
-                            <div class="middle-wrap">
-                                <div class="title-wrap">
-                                    <h4 class="resource-title ${classIcon}">
-                                        <a href="${urlResource}" target="_blank" about="${ro.entityID}" property="http://w3id.org/roh/title">${ro.title}</a>
-                                    </h4>
-                                </div>
-                                <div class="content-wrap">
-                                    <div class="description-wrap counted">
-                                        <!-- <div><b about="${ro.entityID}" property="http://purl.org/dc/terms/issued">${ro.fecha}</b></div> -->
-                                        <h3>
-                                            <span about="${ro.entityID}" property="http://purl.org/dc/terms/issued">${ro.fecha}</span> 
-                                            <!-- ${ro.roTypeTitle} -->
-                                        </h3>
-                                        <!-- <div class="description-wrap">
-                                            <div class="desc" style="display: -webkit-box;">
-                                                <p about="${ro.entityID}" property="http://purl.org/ontology/bibo/abstract">${ro.description}</p>
-                                            </div>
-                                            ${showMore}
-                                        </div> -->
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="acciones-wrap">
-                            <ul class="no-list-style">
-                                <li>
-                                    <a href="#" class="texto-gris-claro link-delete">
-                                        <span style="width:1px; height:1px; opacity: .01; display:inline-block">Eliminar</span>
-                                        <span class="material-icons-outlined">delete</span>
-                                    </a>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-            </article>`
-
-            return htmlRes
-        }
-
-
-        /**
-         * Funcionalidad para cuando se introduce un valor en el buscador
-         */
-        inputSearchEnter() {
-            let _self = this
-            this.inputSearch.off('keyup').on('keyup', function(e) {
-                let inputVal = this.value
-
-                if (inputVal.length <= 1) 
-                {
-                    _self.hiddenResults()
-                }
-                else {
-                    // Valida si el valor introducirdo en el input es 'válido'
-                    if (_self.validarKeyPulsada(e) == true) {
-                        // Limpia el 'time' para reinicializar la espera para iniciar la búsqueda de TAGS
-                        clearTimeout(_self.timer)
-                        // Espera 0.5s para realizar la búsqueda de TAGS
-                        _self.timer = setTimeout(function () {
-                            _self.hiddenResults()
-
-                            _self.searchCall(inputVal).then((data) => {
-                                // Muestra el selector 
-                                _self.results.show()
-                                if (data.length > 0) {
-                                    // Pinta los resultados
-                                    let resultHTML = data.map(e => {
-                                        return '<li class="ac_even" data-id="'+ e.entityID +'">' + e.title + '</li>'
-                                    })
-                                    _self.resultsUl.html(resultHTML.join(''))
-                                    _self.addTagClick()
-
-                                } else {
-                                    _self.mostrarPanelSinResultados()
-                                }
-                                
-                            })
-
-                        }, _self.timeWaitingForUserToType);
-                    }               
-                }
-            })
-        }
-
-        /**
-         * Oculta y borra los resultados del API
-         */
-        hiddenResults() {
-            this.resultsUl.html('')
-            this.results.hide()
-        }
-
-        /**
-         * Muestra un texto "sin resultados" cuando no hay resultados del API
-         */
-        mostrarPanelSinResultados() {
-            this.resultsUl.html('<li>Sin resultados</li>')
-        }
-
-        /**
-         * Método que genera un inicia el evento de añadir el tag (al hacer 'click') cuando se 
-         * ha seleccionado un elemento de la lista de opciones disponibles 
-         */
-        addTagClick() {
-            let _self = this
-            // Evento para el click
-            this.resultsUl.off('click').on('click', 'li', function(e) {
-                let texto = $(this).text()
-                let idItem = $(this).data('id')
-
-
-                if (texto != "Sin resultados") {
-
-                    // Añadir nuevo RO
-                    _self.addROVinculado(idItem).then(saved => {
-
-                        if (saved) {
-
-                            // Añadir el RO a las listas
-                            // Seleccionamos el objeto del RO
-                            let cro = _self.loadedResources.find(ro => {
-                                return ro.entityID == idItem
-                            })
-
-                            // Pinta el RO
-                            var item = $(_self.generateHtmlItem(cro))
-                            _self.tagsWrappper.append(item)
-                            _self.deleteEvent(item, cro)
-                        }
-                        _self.hiddenResults() // Vacía los resultados de la búsqueda
-                        _self.inputSearch.val('') // Vacía el campo de búsqueda
-                    })
-
-                }
-
-            })
-            // Delete list item  
-        }
-
-
-        /**
-         * Función para añadir los ROs vinculados y realizar la llamada ajax
-         */
-        addROVinculado(id) {
-
-            let arg = {};
-            arg.resourceRO = docId;
-            arg.pIdROId = id;
-            arg.pIdGnossUser = currentId;
-            MostrarUpdateProgress();
-            return new Promise((resolve, reject) => {
-                $.post(urlAddRo.toString(), arg, function (data) {
-                    OcultarUpdateProgress()
-                    resolve(data)
-                    // cargarROsVinculados()
-                });
-            })
-
-            // cerrarVincularRO()
-        }
-
-        /**
-         * Añade un tag al modal
-         * @@param texto, texto del tag a añadir
-         */
-        deleteEvent(item, ro) {
-            var _self = this
-
-            
-            this.addedROs.push(ro.entityID)
-            this.excludedItems.push(ro.entityID)
-
-            item.off('click').on('click', '.link-delete', function(e) {
-
-                if (ro.origin) 
-                {
-                    _self.deleteLink(ro.entityID, docId)
-                } else {
-                    _self.deleteLink(docId, ro.entityID)
-                }
-
-                let cid = ro.entityID
-                item.remove()
-                _self.addedROs = _self.addedROs.filter(id => id != cid)
-                _self.excludedItems = _self.excludedItems.filter(id => id != cid)
-            })
-        }
-
-        /**
-         * Remove all tags html
-         */
-        removeTags() {
-            this.tagsWrappper.html('')
-        }
-
-        /**
-         * Método que genera un evento para el botón "guardar" y devuelve el número de TAGS añadidas
-         * @@return promise (array) con la lista de resultados 
-         */
-        closeBtnClick() {
-            let _self = this
-            return new Promise((resolve, reject) => {
-
-                this.modal.find('.btnclosemodal').off('click').on('click', function(e) {
-                
-                    let result = new Array()
-                    _self.tagsWrappper.find('li .texto').each((i, item) => {
-                        result.push(item.innerText)
-                    })
-                    resolve(result)
-                })
-            })
-        }
-
-
-        /**
-         * Comprobará la tecla pulsada, y si no se encuentra entre las excluidas, dará lo introducido por válido devolviendo true
-         * Si se pulsa una tecla de las excluidas, devolverá false y por lo tanto el metabuscador no debería iniciarse
-         * @@param {any} event: Evento o tecla pulsada en el teclado
-         * @@return bool, devuelve si la tecla pulsada es válida o no
-         */
-        validarKeyPulsada (event) {
-            const keyPressed = this.ignoreKeysToBuscador.find(key => key == event.keyCode);
-            if (keyPressed) {
-                return false
-            }
-            return true;
-        }
-
-        /**
-         * Realiza la petición ajax (GET) para buscar los ROs sugeridos en el input
-         * @@param {string} inputVal: Texto para la búsqueda
-         * @@return promise (array) con la lista de resultados 
-         */
-        searchCall (inputVal) {
-            var _self = this
-            // Set the url parameters
-            // this.url.searchParams.set('tagInput', inputVal)
-            let args = {
-                text: inputVal,
-                pIdGnossUser: currentId,
-                listItemsRelated: _self.excludedItems
-            }
-
-            return new Promise((resolve) => {
-                $.post(urlSearchLinked.toString(), args , function (data) {
-                    _self.loadedResources = data;
-                    resolve(data.filter(itm => !_self.addedROs.includes(itm.entityID)))
-                });
-            })
-        }
-
-
-        /**
-         * Método que borra un RO vinculado
-         * @@param {string} idResource: Id del recurso sobre el que borrar
-         * @@param {string} idLink: Id del recurso a borrar 
-         */
-        deleteLink(idResource, idLink) {
-
-            var _self = this
-
-            let arg = {};
-            arg.resourceRO = idResource;
-            arg.pIdROId = idLink;
-            arg.pIdGnossUser = currentId;
-            $.post(urlDel.toString(), arg, function (data) {
-                // _self.cargarROsVinculados()
-            });
-        }
-    }
-
-    var modalSearchTagsVinculados = new ModalSearchTagsVinculados()
-
-
-    /**
-     * Función para iniciar la vinculación de ROs 
+     * Función para iniciar la vinculación de ROs
      */
     function startVincularRo() {
-        
-        modalSearchTagsVinculados.init()
-        return;
+
+        $("#modal-vinvular-ro").modal("show")
+
+        buscadorPersonalizado.orders = null;
+        // Realmente no funciona correctamente, he tenido que crear un botón para cargar más.
+        buscadorPersonalizado.setScrollVars("#modal-vinvular-ro .footer", "article")
+        // Inicia
+        buscadorPersonalizado.init("@Html.Translate("LISTADO_RESEARCHOBJECTS_DOCUMENTOS")", "#contenedorBuscadorResearchObjectsModal", "selectRODocument", "dct:issued", "rdf:type=researchobject|rdf:type=document|bibo:authorList@@@@@@rdf:member@@@@@@roh:gnossUser=http://gnoss/@currentId.ToString().ToUpper()", "@Comunidad.Url", "@Comunidad.Key.ToString()");
+        buscadorPersonalizado.resetScrollVars()
+
+        $("#modal-vinvular-ro").on("hidden.bs.modal", function() {
+            cerrarVincularRO()
+        })
     }
+
+
+    /**
+     * Función para terminar de vincular los ROs
+     */
+    function cerrarVincularRO() {
+        $("#modal-vinvular-ro").modal("hide")
+        MontarResultadosScroll.destroyScroll()
+        $(document.querySelector("#navegacion-recurso .active")).click()
+        // $(document.querySelector('#navegacion-recurso .active')).tab('show')
+    }
+
 
     /**
      * Función que cargar más ROs
@@ -1697,9 +1194,230 @@
     }
 
 
+    /**
+     * Función para añadir los ROs vinculados y realizar la llamada ajax
+     */
+    function addROVinculado(id) {
+
+        // Datos cabeceras de las fichas.
+        let url = url_servicio_externo + "RosVinculados/AddLink"
+        if (depuracion) {
+            url = localUrlBase + "RosVinculados/AddLink"
+        }
+
+        let arg = {};
+        arg.resourceRO = "@pDocument.GNOSSID";
+        arg.pIdROId = id;
+        arg.pIdGnossUser = "@currentId";
+        $.post(url, arg, function(data) {
+            cargarROsVinculados()
+        });
+
+        cerrarVincularRO()
+    }
+
+    /**
+     * Función que carga los ROs vinculados
+     */
+    function cargarROsVinculados() {
+        // Datos cabeceras de las fichas.
+        let url = url_servicio_externo + "RosVinculados/LoadRosLinked"
+        if (depuracion) {
+            url = localUrlBase + "RosVinculados/LoadRosLinked"
+        }
+
+        let arg = {};
+        arg.pIdROId = "@pDocument.GNOSSID";
+        arg.lang = "@idiomaUsuario";
+
+        MostrarUpdateProgress();
+        $.get(url, arg, function(data) {
+            if (data.length > 0) {
+                printAllLinkedROs(data)
+                $("#linked-panel-li").removeClass("d-none")
+                let numItems = data.length
+                document.querySelector("#linked-panel .h1-container .numResultados").innerText = numItems
+                document.querySelector("#linked-tab .bloque .data").innerText = numItems
+            }
+            OcultarUpdateProgress()
+        });
+    }
+
     function short(a, b) {
         return a - b
     }
+
+    /**
+     * Función que carga los ROs vinculados
+     */
+    function printAllLinkedROs(data) {
+
+        var currentSec = "none!!!";
+
+        data = data.sort((a, b) => {
+            if (a.roType < b.roType) {
+                return -1
+            }
+            if (a.roType > b.roType) {
+                return 1
+            }
+            return 0
+        })
+
+
+        let ros = data.map(ro => {
+
+            let htmlRes = ""
+            if (currentSec != ro.roType) {
+                currentSec = ro.roType
+                // if (ro.roType == "")
+                // {
+                //     htmlRes = `<h3>@Html.Translate("PUBLICACIONES")</h3><hr />`
+                // } else {
+                //     htmlRes = `<h3>${ro.roTypeTitle}</h3><hr />`
+                // }
+
+            }
+            if (ro.roType == "") {
+                ro.roTypeTitle = "@Html.Translate("PUBLICACION")"
+            }
+
+            let htmlMenu = ""
+            let ownUser = false;
+    @if (!string.IsNullOrEmpty(urlCV))
+    {
+        Html.Raw("ownUser = true");
+    }
+
+                if (ro.idsGnoss && ro.idsGnoss.includes("http://gnoss/@currentId.ToString().ToUpper()") || ownUser) {
+
+                // Creamos el método de borrado dependiendo de si el vínculo es desde el RO o está relacionado desde otro RO
+                let link = ""
+                if (ro.origin) {
+                    link = "javascript:deleteLink('" + ro.entityID + "', '@pDocument.GNOSSID')"
+                } else {
+                    link = "javascript:deleteLink('@pDocument.GNOSSID', '" + ro.entityID + "')"
+                }
+
+
+                htmlMenu = `
+                        <div class="col-auto">
+                            <div class="acciones-recurso-listado">
+                                <div class="dropdown">
+                                    <a href="#" class="dropdown-toggle btn btn-outline-grey no-flecha px-1" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        <span class="material-icons px-0">more_vert</span>
+                                    </a>
+                                    <div class="dropdown-menu basic-dropdown dropdown-icons dropdown-menu-right">
+                                        <p class="dropdown-title">@Html.Translate("ACCIONES")</p>
+                                        <ul class="no-list-style">
+                                            <li>
+                                                <a href="`+ link + `" class="item-dropdown">
+                                                    <span class="material-icons">delete</span>
+                                                    <span class="texto">@Html.Translate("BORRAR")</span>
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    `
+            }
+
+            // Generamos la url
+            let nameUrlRo = cleanStringUrlLikeGnoss(ro.title)
+            let urlResource = "@Comunidad.Url/@Html.GetText("URLSEM", "RECURSO")/" + nameUrlRo + "/" + ro.entityID.split("_")[1]
+
+
+            // Pinto "mostrar más" si la descripción contiene un texto largo
+            let showMore = ""
+            if (ro.description.trim() != "" && ro.description.length > 60) {
+                showMore = `<p class="moreResults showMore">
+                                                    <a href="javascript: void(0);" class="ver-mas" style="display: flex;">@Html.Translate("VER_MAS")</a>
+                                                    <a href="javascript: void(0);" class="ver-menos" style="display: none;">@Html.Translate("VER_MENOS")</a>
+                                                </p>`
+            }
+
+            // Genero el HTML final
+            htmlRes += `<article class="resource rolinked">
+                    <div class="wrap">
+                        <div class="row">
+
+                            <div class="col">
+                                <div class="middle-wrap">
+                                    <div class="title-wrap">
+                                        <h4 class="resource-title">
+                                            <a href="${urlResource}" target="_blank" about="${ro.entityID}" property="http://w3id.org/roh/title">${ro.title}</a>
+                                        </h4>
+                                    </div>
+                                    <div class="content-wrap">
+                                        <div class="description-wrap counted">
+                                            <!-- <div><b about="${ro.entityID}" property="http://purl.org/dc/terms/issued">${ro.fecha}</b></div> -->
+                                            <h3>
+                                                <span about="${ro.entityID}" property="http://purl.org/dc/terms/issued">${ro.fecha}</span>
+                                                ${ro.roTypeTitle}
+                                            </h3>
+                                            <div class="description-wrap">
+                                                <div class="desc" style="display: -webkit-box;">
+                                                    <p about="${ro.entityID}" property="http://purl.org/ontology/bibo/abstract">${ro.description}</p>
+                                                </div>
+                                                ${showMore}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            `+ htmlMenu + `
+
+                        </div>
+
+                    </div>
+                </article>`
+
+            return htmlRes
+
+
+        })
+
+        // Pinta el resultado
+        $("#linked-panel .col-contenido .resource-list-wrap").html(ros)
+
+        comportamientoVerMasVerMenos.init()
+
+    }
+
+    function deleteLink(idResource, idLink) {
+
+        // Datos cabeceras de las fichas.
+        let urlDel = url_servicio_externo + "RosVinculados/DeleteLinked"
+        if (depuracion) {
+            urlDel = localUrlBase + "RosVinculados/DeleteLinked"
+        }
+
+        let arg = {};
+        arg.resourceRO = idResource;
+        arg.pIdROId = idLink;
+        arg.pIdGnossUser = "@currentId";
+        $.post(urlDel, arg, function(data) {
+            cargarROsVinculados()
+        });
+    }
+
+
+
+    /**
+     * Función que se llama cuando se cargan los ROs
+     */
+    function CompletadaCargaRecursosDocumentosROsVincular() {
+        $("#contenedorBuscadorResearchObjectsModal article.resource").each((i, e) => {
+            let id = e.id.split('_')[1]
+            $(e).find("h2.resource-title").attr("onclick", "addROVinculado('" + id + "')")
+            $(e).find("h2.resource-title a").attr("href", "javascript:addROVinculado('" + id + "')")
+        })
+    }
+
+
+
 
 
 
@@ -1712,20 +1430,20 @@
 
 
     // Datos cabeceras de las fichas.
-    var url = url_servicio_externo+"Hercules/GetDatosCabeceraDocumento"
+    var url = url_servicio_externo + "Hercules/GetDatosCabeceraDocumento"
     if (depuracion) {
         url = localUrlBase + "Hercules/GetDatosCabeceraDocumento"
     }
     var arg = {};
     arg.pIdDocumento = "@pDocument.GNOSSID";
-    $.get(url, arg, function (data) {
+    $.get(url, arg, function(data) {
         $("#relacionados-tab div div.data").text(data["numRelacionados"]);
     });
 
 
     // Datos gráfica referencias.
     function CargarGraficaReferencias(pIdDocumento, parametros) {
-        var url = url_servicio_externo+"Hercules/DatosGraficaReferencias"
+        var url = url_servicio_externo + "Hercules/DatosGraficaReferencias"
         if (depuracion) {
             url = localUrlBase + "Hercules/DatosGraficaReferencias"
         }
@@ -1733,7 +1451,7 @@
         arg.pIdDocumento = pIdDocumento;
         arg.pParametros = parametros;
         $('#graficaBuscadorReferencias').empty();
-        $.get(url, arg, function (data) {
+        $.get(url, arg, function(data) {
             $('#graficaBuscadorReferencias').empty();
 
             var cy = window.cy = cytoscape({
@@ -1822,11 +1540,11 @@
                 })
             };
 
-            cy.on('mouseover', 'edges', function (event) {
+            cy.on('mouseover', 'edges', function(event) {
                 $('#numRelaciones').text('(' + event.target.id().split("~")[2] + ')');
             });
 
-            cy.on('click', 'node', function (e) {
+            cy.on('click', 'node', function(e) {
                 e = e.target;
                 var indice = cy.nodes().indexOf(e)
                 if (e._private.data.name === "") {
@@ -1849,54 +1567,164 @@
     }
 
 
+    // Datos gráfica citas.
+    //function CargarGraficaCitas(pIdDocumento, parametros) {
+    //    var url = url_servicio_externo+"Hercules/DatosGraficaCitas"
+    //    if (depuracion) {
+    //        url = localUrlBase + "Hercules/DatosGraficaCitas"
+    //    }
+    //    var arg = {};
+    //    arg.pIdDocumento = pIdDocumento;
+    //    arg.pParametros = parametros;
+    //    $('#graficaBuscadorCitas').empty();
+    //    $.get(url, arg, function (data) {
+    //        $('#graficaBuscadorCitas').empty();
+
+    //        var cy = window.cy = cytoscape({
+    //            // Contenedor
+    //            container: document.getElementById('graficaBuscadorCitas'),
+    //            // Layout
+    //            layout: {
+    //                name: 'cose',
+    //                idealEdgeLength: 100,
+    //                nodeOverlap: 20,
+    //                refresh: 20,
+    //                padding: 30,
+    //                randomize: false,
+    //                componentSpacing: 100,
+    //                nodeRepulsion: 400000,
+    //                edgeElasticity: 100,
+    //                nestingFactor: 5,
+    //                gravity: 80,
+    //                numIter: 1000,
+    //                initialTemp: 200,
+    //                coolingFactor: 0.95,
+    //                minTemp: 1.0
+
+    //            }, pan: { x: 350, y: 50 },
+    //            // Estilos
+    //            style: [{
+    //                "selector": "node",
+    //                "style": {
+
+    //                    "width": "mapData(score, 0, 25, 30, 70)",
+    //                    "height": "mapData(score, 0, 25, 30, 70)",
+    //                    "content": "data(name)",
+    //                    "font-size": "12px",
+    //                    "font-family": 'Roboto',
+    //                    "font-color": "#999999",
+    //                    "background-color": "#c2c2c2",
+
+    //                    "text-outline-width": "0px",
+
+    //                    "overlay-padding": "6px",
+    //                    "z-index": "10"
+    //                }
+    //            }, {
+    //                "selector": "edge",
+    //                "style": {
+    //                    "curve-style": "haystack",
+    //                    "haystack-radius": "0.5",
+    //                    "opacity": "0.4",
+    //                    "line-color": "#E1E1E1",
+    //                    "width": "mapData(weight, 0, 10, 0, 10)",
+    //                    "overlay-padding": "1px",
+    //                    "font-family": 'Arial Black',
+    //                    "font-color": 'black'
+    //                }
+    //            }],
+    //            // Datos
+    //            elements: data
+    //        });
+    //        cy.zoomingEnabled(false);
+
+    //        var array = []
+    //        var nodos = cy.nodes()
+
+    //        //Quita el nombre de la publicación.
+    //        array.push(nodos[0]._private.data.name);
+    //        cy.nodes()[0]._private.data.name = "";
+
+    //        cy.nodes()[0].style({
+    //            'border-width': '2px',
+    //            'border-color': 'black',
+    //            'shape': 'circle'
+    //        });
+
+    //        var f = cy.nodes().length
+
+    //        for (i = 1; i < cy.nodes().length; i++) { //starts loop
+    //            array.push(nodos[i]._private.data.name);
+    //            //cy.nodes()[i]._private.data.name="";
+    //            cy.nodes()[i].style({
+    //                'background-color': 'white',
+    //                'background-image': 'https://cdn.iconscout.com/icon/free/png-256/user-1648810-1401302.png',
+    //                'background-fit': 'cover',
+    //                'border-width': '2px',
+    //                'border-color': 'rgb(4,184,209)',
+    //                'shape': 'circle'
+    //            })
+    //        };
+
+    //        cy.on('mouseover', 'edges', function (event) {
+    //            $('#numRelaciones').text('(' + event.target.id().split("~")[2] + ')');
+    //        });
+
+    //        cy.on('click', 'node', function (e) {
+    //            e = e.target;
+    //            var indice = cy.nodes().indexOf(e)
+    //            if (e._private.data.name === "") {
+    //                e._private.data.name = array[indice]
+    //                //nodo proyect.
+    //                if (indice === 0) {
+    //                    e.style('border-color', 'rgb(12,121,212)')
+    //                }
+    //                else {
+    //                    e.style('border-color', 'rgb(4,184,209)')
+    //                }
+    //            }
+    //            else {
+    //                e._private.data.name = ""
+    //                if (indice == 0) e.style('border-color', 'black');
+    //                else e.style('border-color', 'grey');
+    //            }
+    //        })
+    //    });
+    //}
+
+
     // Comportamiento página proyecto
-    var similitaryDocs=null;
+    var similitaryDocs = null;
     var comportamientoPaginaDocumento = {
         tabActive: null,
-        init: function () {
+        init: function() {
             this.config();
             $('#relacionados-tab').click();
             return;
         },
-        config: function () {
+        config: function() {
             var that = this;
 
             // $('#relacionados-tab').unbind().click(function (e) {
-            $('#relacionados-tab').unbind().on('click', function (e) {
+            $('#relacionados-tab').unbind().on('click', function(e) {
                 e.preventDefault();
                 that.tabActive = "relacionados";
 
-                var urlGetSimilarity = url_servicio_externo+'Similarity/GetSimilaritiesDocument?pIdDocument='+$('h1').attr('about');
+                var urlGetSimilarity = url_servicio_externo + 'Similarity/GetSimilaritiesDocument?pIdDocument=' + $('h1').attr('about');
                 $.get(urlGetSimilarity, null, function(data) {
-                    similitaryDocs=data;
-                    var filterSearch="searchRelacionadosDocumentoIn=<x>@@@@@@1000";
-                    var num=1000;
+                    similitaryDocs = data;
+                    var filterSearch = "searchRelacionadosDocumentoIn=<x>@@@@@@1000";
+                    var num = 1000;
                     for (let i = 0; i < data.length; i++) {
-                        filterSearch+="@@@@@@@@<http://gnoss/"+data[i].key.toUpperCase()+">@@@@@@"+num;
+                        filterSearch += "@@@@@@@@<http://gnoss/" + data[i].key.toUpperCase() + ">@@@@@@" + num;
                         num--;
                     }
 
 
-                    buscadorPersonalizado.init("@Html.Translate("RELACIONADOS")", "#contenedorBuscadorRelacionados", filterSearch, null, "rdf:type=document", "@Comunidad.Url", "@Comunidad.Key.ToString()",null, function() {
+                    buscadorPersonalizado.init("@Html.Translate("RELACIONADOS")", "#contenedorBuscadorRelacionados", filterSearch, null, "rdf:type=document", "@Comunidad.Url", "@Comunidad.Key.ToString()", null, function() {
                         $('#panNumResultados').hide();
-                        filtrarMovil.init()
                     });
 
-                });
-
-
-            });
-
-            // $('#relacionados-tab').unbind().click(function (e) {
-            $('#linked-tab').unbind().on('click', function (e) {
-                e.preventDefault();
-                that.tabActive = "linked";
-
-                buscadorPersonalizado.orders=null;
-                // Realmente no funciona correctamente, he tenido que crear un botón para cargar más.
-                // Inicia
-                buscadorPersonalizado.init("@Html.Translate("LISTADO_RESEARCHOBJECTS_DOCUMENTOS_VINCULADOS")", "#contenedorBuscadorResearchObjectsLinked", "linkedROs=http://gnoss/@pDocument.GNOSSID.Split('_')[1].ToUpper()", "dct:issued", "rdf:type=researchobject|rdf:type=document", "@Comunidad.Url", "@Comunidad.Key.ToString()", null, function() {
-                    filtrarMovil.init()
                 });
 
 
@@ -1906,18 +1734,15 @@
     };
 
     function CompletadaCargaRecursosSimilitud() {
-        if(similitaryDocs!=null)
-        {
+        if (similitaryDocs != null) {
             for (let i = 0; i < similitaryDocs.length; i++) {
-                var article=$('#resource_'+similitaryDocs[i].key.toLowerCase());
-                if(article.length)
-                {
+                var article = $('#resource_' + similitaryDocs[i].key.toLowerCase());
+                if (article.length) {
                     article.find('div.list-wrap.tags ul li a span').each(function() {
                         var item = $(this);
                         var itemText = item.text();
-                        if(similitaryDocs[i].value[itemText]!=undefined)
-                        {
-                            $(this).attr('style','color:var(--c-primario');
+                        if (similitaryDocs[i].value[itemText] != undefined) {
+                            $(this).attr('style', 'color:var(--c-primario');
                         }
                     });
                 }
@@ -1927,18 +1752,16 @@
     }
 
 
-    $(function () {
+    $(function() {
         comportamientoPaginaDocumento.init();
     });
 
     // Acciones a llevar a cabo en el filtrado.
     function accionFiltrado() {
-        if(comportamientoPaginaDocumento.tabActive == "referencias")
-        {
+        if (comportamientoPaginaDocumento.tabActive == "referencias") {
             //var parametros = ObtenerHash2();
             //CargarGraficaReferencias("@pDocument.GNOSSID.Split('_')[1].ToUpper()", parametros);
-        } else if (comportamientoPaginaDocumento.tabActive == "citas")
-        {
+        } else if (comportamientoPaginaDocumento.tabActive == "citas") {
             //var parametros = ObtenerHash2();
             //CargarGraficaCitas("@pDocument.GNOSSID.Split('_')[1].ToUpper()", parametros);
         }
@@ -1946,10 +1769,9 @@
 
 
     // Ejecuta cuando la página está cargada
-    $( document ).ready(function() {
+    $(document).ready(function() {
 
-        // cargarROsVinculados()
-        // showLinkedROsSearch()
+        cargarROsVinculados()
 
     });
 
@@ -2242,11 +2064,13 @@
 
     public class Document : GnossOCBase
     {
-
+        public bool isOpenAccess { get; set; }
         public Document() : base() { }
 
         public Document(SemanticResourceModel pSemCmsModel, LanguageEnum idiomaUsuario) : base()
         {
+            this.isOpenAccess = GetBooleanPropertyValueSemCms(pSemCmsModel.GetPropertyByPath("http://w3id.org/roh/openAccess"));
+
             this.mGNOSSID = pSemCmsModel.RootEntities[0].Entity.Uri;
             //this.Roh_suggestedKnowledgeArea = new List<CategoryPath>();
             //SemanticPropertyModel propRoh_suggestedKnowledgeArea = pSemCmsModel.GetPropertyByPath("http://w3id.org/roh/suggestedKnowledgeArea");
@@ -2495,7 +2319,6 @@
             this.Dct_issued = GetDateValuePropertySemCms(pSemCmsModel.GetPropertyByPath("http://purl.org/dc/terms/issued"));
             this.Roh_typeOthers = GetPropertyValueSemCms(pSemCmsModel.GetPropertyByPath("http://w3id.org/roh/typeOthers"));
             this.Roh_crisIdentifier = GetPropertyValueSemCms(pSemCmsModel.GetPropertyByPath("http://w3id.org/roh/crisIdentifier"));
-            this.Roh_linkedCount = GetNumberIntPropertyValueSemCms(pSemCmsModel.GetPropertyByPath("http://w3id.org/roh/linkedCount"));
             this.Vcard_url = GetPropertyValueSemCms(pSemCmsModel.GetPropertyByPath("https://www.w3.org/2006/vcard/ns#url"));
             SemanticPropertyModel propRoh_userKeywords = pSemCmsModel.GetPropertyByPath("http://w3id.org/roh/userKeywords");
             this.Roh_userKeywords = new List<string>();
@@ -2751,9 +2574,6 @@
         [RDFProperty("http://w3id.org/roh/crisIdentifier")]
         public string Roh_crisIdentifier { get; set; }
 
-        [RDFProperty("http://w3id.org/roh/linkedCount")]
-        public int? Roh_linkedCount { get; set; }
-
         [RDFProperty("https://www.w3.org/2006/vcard/ns#url")]
         public string Vcard_url { get; set; }
 
@@ -2858,41 +2678,41 @@
         [RDFProperty("http://w3id.org/roh/impactIndex")]
         public List<ImpactIndex> Roh_impactIndex { get; set; }
     }
-	
-	public class ScientificActivityDocument  : GnossOCBase
+
+    public class ScientificActivityDocument : GnossOCBase
     {
 
-        public ScientificActivityDocument () : base() { }
+        public ScientificActivityDocument() : base() { }
 
-        public ScientificActivityDocument (SemanticEntityModel pSemCmsModel, LanguageEnum idiomaUsuario) : base()
+        public ScientificActivityDocument(SemanticEntityModel pSemCmsModel, LanguageEnum idiomaUsuario) : base()
         {
             this.mGNOSSID = pSemCmsModel.Entity.Uri;
-			this.mURL = pSemCmsModel.Properties.FirstOrDefault(p => p.PropertyValues.Any(prop => prop.DownloadUrl != null))?.FirstPropertyValue.DownloadUrl;
-			this.Dc_title = new Dictionary<LanguageEnum,string>();
-			this.Dc_title.Add(idiomaUsuario , GetPropertyValueSemCms(pSemCmsModel.GetPropertyByPath("http://purl.org/dc/elements/1.1/title")));
-			
-			this.Dc_identifier = GetPropertyValueSemCms(pSemCmsModel.GetPropertyByPath("http://purl.org/dc/elements/1.1/identifier"));
-			this.Bibo_abstract = new Dictionary<LanguageEnum,string>();
-			this.Bibo_abstract.Add(idiomaUsuario , GetPropertyValueSemCms(pSemCmsModel.GetPropertyByPath("http://purl.org/ontology/bibo/abstract")));
+            this.mURL = pSemCmsModel.Properties.FirstOrDefault(p => p.PropertyValues.Any(prop => prop.DownloadUrl != null))?.FirstPropertyValue.DownloadUrl;
+            this.Dc_title = new Dictionary<LanguageEnum, string>();
+            this.Dc_title.Add(idiomaUsuario, GetPropertyValueSemCms(pSemCmsModel.GetPropertyByPath("http://purl.org/dc/elements/1.1/title")));
+
+            this.Dc_identifier = GetPropertyValueSemCms(pSemCmsModel.GetPropertyByPath("http://purl.org/dc/elements/1.1/identifier"));
+            this.Bibo_abstract = new Dictionary<LanguageEnum, string>();
+            this.Bibo_abstract.Add(idiomaUsuario, GetPropertyValueSemCms(pSemCmsModel.GetPropertyByPath("http://purl.org/ontology/bibo/abstract")));
 
         }
 
         public virtual string RdfType { get { return "http://w3id.org/roh/ScientificActivityDocument"; } }
-		public virtual string RdfsLabel { get { return "http://w3id.org/roh/ScientificActivityDocument"; } }
-		[LABEL(LanguageEnum.es,"http://purl.org/dc/elements/1.1/title")]
-		[RDFProperty("http://purl.org/dc/elements/1.1/title")]
-		public  Dictionary<LanguageEnum,string> Dc_title { get; set;}
+        public virtual string RdfsLabel { get { return "http://w3id.org/roh/ScientificActivityDocument"; } }
+        [LABEL(LanguageEnum.es, "http://purl.org/dc/elements/1.1/title")]
+        [RDFProperty("http://purl.org/dc/elements/1.1/title")]
+        public Dictionary<LanguageEnum, string> Dc_title { get; set; }
 
-		[LABEL(LanguageEnum.es,"http://purl.org/dc/elements/1.1/identifier")]
-		[RDFProperty("http://purl.org/dc/elements/1.1/identifier")]
-		public  string Dc_identifier { get; set;}
+        [LABEL(LanguageEnum.es, "http://purl.org/dc/elements/1.1/identifier")]
+        [RDFProperty("http://purl.org/dc/elements/1.1/identifier")]
+        public string Dc_identifier { get; set; }
 
-		[LABEL(LanguageEnum.es,"http://purl.org/ontology/bibo/abstract")]
-		[RDFProperty("http://purl.org/ontology/bibo/abstract")]
-		public  Dictionary<LanguageEnum,string> Bibo_abstract { get; set;}
+        [LABEL(LanguageEnum.es, "http://purl.org/ontology/bibo/abstract")]
+        [RDFProperty("http://purl.org/ontology/bibo/abstract")]
+        public Dictionary<LanguageEnum, string> Bibo_abstract { get; set; }
 
     }
-	
+
 
     public class PublicationMetric : GnossOCBase
     {
@@ -3103,7 +2923,8 @@
 
         [LABEL(LanguageEnum.es, "Identificador de la publicación principal")]
         [RDFProperty("http://w3id.org/roh/crisIdentifier")]
-        public string Roh_crisIdentifier { get; set; }    }
+        public string Roh_crisIdentifier { get; set; }
+    }
 
 
     public class ReferenceSource : GnossOCBase
