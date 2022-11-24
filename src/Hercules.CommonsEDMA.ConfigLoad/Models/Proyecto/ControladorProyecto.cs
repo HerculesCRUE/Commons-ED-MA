@@ -80,10 +80,12 @@ namespace Hercules.CommonsEDMA.ConfigLoad.Models.Proyecto
             DB.Acid.ParametroProyecto filaParametroProyectoAdministracionPaginasPermitido = new DB.Acid.ParametroProyecto() { OrganizacionID = filaProyecto.OrganizacionID, ProyectoID = filaProyecto.ProyectoID, Parametro = "AdministracionPaginasPermitido", Valor = "1" };
             DB.Acid.ParametroProyecto filaParametroProyectoAdministracionVistasPermitido = new DB.Acid.ParametroProyecto() { OrganizacionID = filaProyecto.OrganizacionID, ProyectoID = filaProyecto.ProyectoID, Parametro = "AdministracionVistasPermitido", Valor = "1" };
             DB.Acid.ParametroProyecto filaParametroProyectoAdministracionDesarrolladoresPermitido = new DB.Acid.ParametroProyecto() { OrganizacionID = filaProyecto.OrganizacionID, ProyectoID = filaProyecto.ProyectoID, Parametro = "AdministracionDesarrolladoresPermitido", Valor = "1" };
+            DB.Acid.ParametroProyecto filaParametroProyectoSinNombreCortoEnURL = new DB.Acid.ParametroProyecto() { OrganizacionID = filaProyecto.OrganizacionID, ProyectoID = filaProyecto.ProyectoID, Parametro = "ProyectoSinNombreCortoEnURL", Valor = "1" };
             entityContextAcid.ParametroProyecto.Add(filaParametroProyectoAdministracionSemanticaPermitido);
             entityContextAcid.ParametroProyecto.Add(filaParametroProyectoAdministracionPaginasPermitido);
             entityContextAcid.ParametroProyecto.Add(filaParametroProyectoAdministracionVistasPermitido);
             entityContextAcid.ParametroProyecto.Add(filaParametroProyectoAdministracionDesarrolladoresPermitido);
+            entityContextAcid.ParametroProyecto.Add(filaParametroProyectoSinNombreCortoEnURL);
 
             //Cramos la fila VistaVirtualPersonalizacion
             DB.Acid.VistaVirtualPersonalizacion filaVistaVirtualPersonalizacion = new DB.Acid.VistaVirtualPersonalizacion() { PersonalizacionID=Guid.NewGuid()};
@@ -106,7 +108,7 @@ namespace Hercules.CommonsEDMA.ConfigLoad.Models.Proyecto
         private static DB.Acid.Proyecto AnyadirProyecto(EntityContextAcid entityContextAcid, ConfigService configService)
         {
             DB.Acid.Proyecto filaProyecto = new DB.Acid.Proyecto();
-            filaProyecto.ProyectoID = Guid.NewGuid();
+            filaProyecto.ProyectoID = new Guid("b836078b-78a0-4939-b809-3f2ccf4e5c01");
             filaProyecto.OrganizacionID = new Guid("11111111-1111-1111-1111-111111111111");
             filaProyecto.Nombre = configService.ObtenerNombreCortoComunidad();
             filaProyecto.NombreCorto = configService.ObtenerNombreCortoComunidad();
@@ -133,6 +135,7 @@ namespace Hercules.CommonsEDMA.ConfigLoad.Models.Proyecto
             filaProyecto.EnviarTwitterNuevoTipoDoc = false;
             filaProyecto.TagTwitterGnoss = true;
             filaProyecto.Tags = "hercules";
+            filaProyecto.URLPropia = configService.ObtenerUrlPropia();
             entityContextAcid.Proyecto.Add(filaProyecto);
             return filaProyecto;
 
