@@ -813,13 +813,27 @@
                     {
                         <div class="tab-pane fade" id="annotations-panel" role="tabpanel" aria-labelledby="annotations-tab">
                             <div class="row">
-                                <div class="col col-12 header-listado">
+                                <div class="col header-listado">
                                     <div class="h1-container">
                                         <h2>@Html.Translate("MIS_NOTAS_PRIVADAS")
                                             <span class="numResultados">0</span>
                                         </h2>
                                     </div>
                                 </div>
+
+                                <div class="col-auto pb-4">
+                                    <div class="acciones-ficha-wrap">
+                                        <ul class="no-list-style d-flex">
+                                            <li>
+                                                <a class="btn btn-outline-grey d-xl-flex" href="javascript:void(0)" data-toggle="modal" data-target="#modal-nueva-anotacion">
+                                                    <span class="material-icons">edit_note</span>
+                                                    <span class="texto">@Html.Translate("NUEVA_ANOTACION")</span>
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+
                                 <div class="col col-12 col-contenido">
                                     <div class="wrapCol">
                                         <div class="resource-list listView resource-list-buscador">
@@ -835,15 +849,27 @@
                     }
 
                     <div class="tab-pane fade" id="linked-panel" role="tabpanel" aria-labelledby="linked-tab">
-                        <!-- <div class="row">
-                            <div class="col col-12 header-listado">
-                                <div class="h1-container">
-                                    <h2>@Html.Translate("ROS_VINCULADOS")
-                                        <span class="numResultados">0</span>
-                                    </h2>
+                        @if (!string.IsNullOrEmpty(urlCV) && ED_HABILITADO)
+                        {
+                            <div class="row">
+                                <div class="col"></div>
+                                <div class="col-auto header-listado">
+                                
+                                    <div class="col-auto pb-4">
+                                        <div class="acciones-ficha-wrap">
+                                            <ul class="no-list-style d-flex">
+                                                <li>
+                                                    <a href="javascript:startVincularRo()" class="btn btn-outline-grey d-none d-xl-flex">
+                                                        <span class="material-icons">link</span>
+                                                        <span class="texto">@Html.Translate("VINCULAR_RO")</span>
+                                                    </a>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
-                        </div> -->
+                        }
                         <div class="row" id="contenedorBuscadorResearchObjectsLinked">
                         </div>
                     </div>

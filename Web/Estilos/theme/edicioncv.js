@@ -3153,6 +3153,8 @@ var edicionCV = {
 			if ($(this).closest('.entityauxauthorlist').length > 0) {
 				if (!edit) {
 					//Creación
+					$('#modal-anadir-autor .formulario-edicion .resultados').hide();
+					$('#modal-anadir-autor .formulario-edicion .form-actions').hide();
 					$('#modal-anadir-autor').modal('show');
 					$('#modal-anadir-autor .ko').hide();
 					$('#modal-anadir-autor .resultados .form-group.full-group').remove();
@@ -4424,6 +4426,7 @@ var edicionCV = {
 	},
 	validarFirmas: function () {
 		$('#modal-anadir-autor .formulario-edicion .resultados').hide();
+		$('#modal-anadir-autor .formulario-edicion .form-actions').hide();
 		$('#modal-anadir-autor .formulario-edicion .resultados .form-group.full-group').remove();
 		$('#modal-anadir-autor .formulario-edicion .form-actions .ko').hide();
 		$('#modal-anadir-autor .formulario-edicion .form-actions .ko').html("");
@@ -4525,6 +4528,7 @@ var edicionCV = {
 				$('#modal-anadir-autor .formulario-edicion .resultados').append(autor);
 			};
 			$('#modal-anadir-autor .formulario-edicion .resultados').show();
+			$('#modal-anadir-autor .formulario-edicion .form-actions').show();
 
 
 			that.engancharComportamientosCV();
