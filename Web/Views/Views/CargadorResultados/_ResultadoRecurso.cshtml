@@ -26,7 +26,16 @@
     // Publicaciones
     if (Model.RdfTypeName == "Document")
     {
-        <article class="resource publicacion" id="resource_@Model.Key" typeof="sioc_t:Item" xmlns:owl="http://www.w3.org/2002/07/owl#" xmlns:sioc_t="http://rdfs.org/sioc/types#" xmlns:foaf="http://xmlns.com/foaf/0.1/" xmlns:dcterms="http://purl.org/dc/terms/" xmlns:sioc="http://rdfs.org/sioc/ns#">
+		string isOpenAccess = "";
+        if (Model.ViewSettings != null && Model.ViewSettings.CustomSemanticProperties != null
+        && Model.ViewSettings.CustomSemanticProperties.Count > 0 && Model.ViewSettings.CustomSemanticProperties.Any(x=>x.Id.Equals("IsOpenAccess"))
+        && Model.ViewSettings.CustomSemanticProperties.Where(x=>x.Id.Equals("IsOpenAccess")).First().Rows.First().Any(x=>x.Key.Equals("isOpenAccess") && x.Value.Equals("true"))
+        )
+        {
+            isOpenAccess = "open-access";
+        }
+		
+        <article class="resource publicacion @isOpenAccess" id="resource_@Model.Key" typeof="sioc_t:Item" xmlns:owl="http://www.w3.org/2002/07/owl#" xmlns:sioc_t="http://rdfs.org/sioc/types#" xmlns:foaf="http://xmlns.com/foaf/0.1/" xmlns:dcterms="http://purl.org/dc/terms/" xmlns:sioc="http://rdfs.org/sioc/ns#">
             <div class="wrap">
                 <div class="middle-wrap">
                     <div class="title-wrap">
