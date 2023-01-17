@@ -29,6 +29,7 @@ namespace OAI_PMH.Services
 
         public static IRestResponse httpCall(RestClient pRestClient, RestRequest pRestRequest)
         {
+            pRestClient.Timeout = 3600000;
             IRestResponse response;
             while (true)
             {
@@ -39,12 +40,16 @@ namespace OAI_PMH.Services
                     response = pRestClient.Execute(pRestRequest);
                     DateTime fin = DateTime.Now;
                     _FileLogger.Log(inicio, fin, pRestClient.BaseUrl.ToString(), "DEBUG");
+                    if (response.ResponseStatus != ResponseStatus.Completed)
+                    {
+                        throw new Exception("La respuesta ha sido: " + response.ResponseStatus);
+                    }
                     break;
                 }
-                catch
+                catch(Exception ex)
                 {
                     DateTime fin = DateTime.Now;
-                    _FileLogger.Log(inicio, fin, pRestClient.BaseUrl.ToString(), "ERROR");
+                    _FileLogger.Log(inicio, fin, pRestClient.BaseUrl.ToString(), "ERROR "+ex.Message);
                     return null;
                 }
             }
