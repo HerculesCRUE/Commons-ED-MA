@@ -90,8 +90,9 @@ namespace Harvester
                         Thread.Sleep((time.Value.UtcDateTime - DateTimeOffset.UtcNow));
                     }
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
+                    //Duerme un minuto si hay alguna excepción
                     Thread.Sleep(60000);
                 }
             }
@@ -193,9 +194,9 @@ namespace Harvester
             {
                 Directory.CreateDirectory(directorioProcesados);
             }
-            if (!Directory.Exists(pConfig.GetLastUpdateDate()))
+            if (!Directory.Exists(pConfig.GetLastUpdateDateFolder()))
             {
-                Directory.CreateDirectory(pConfig.GetLastUpdateDate());
+                Directory.CreateDirectory(pConfig.GetLastUpdateDateFolder());
             }
 
             foreach (string fichero in Directory.EnumerateFiles(directorioPendientes))
@@ -470,14 +471,14 @@ namespace Harvester
         /// <returns></returns>
         public string LeerFicheroFecha(ReadConfig pConfig, string pSet)
         {
-            string ficheroFecha = pConfig.GetLastUpdateDate() + $@"\\lastUpdateDate_{pSet}.txt";
+            string ficheroFecha = pConfig.GetLastUpdateDateFolder() + $@"\\lastUpdateDate_{pSet}.txt";
 
             if (!File.Exists(ficheroFecha))
             {
                 string fecha = "1500-01-01T00:00:00Z";
                 FileStream fichero = File.Create(ficheroFecha);
                 fichero.Close();
-                File.WriteAllText(pConfig.GetLastUpdateDate() + $@"\\lastUpdateDate_{pSet}.txt", fecha);
+                File.WriteAllText(pConfig.GetLastUpdateDateFolder() + $@"\\lastUpdateDate_{pSet}.txt", fecha);
                 return fecha;
             }
             else
