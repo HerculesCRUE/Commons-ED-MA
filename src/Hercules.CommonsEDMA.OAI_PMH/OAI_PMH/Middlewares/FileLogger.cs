@@ -29,7 +29,10 @@ namespace OAI_PMH.Middlewares
         {
             string fecha = DateTime.Now.ToString().Split(" ")[0].Replace("/", "-");
             string ruta = $@"{_Configuracion.GetLogPath()}OAI-PMH_{fecha}.log";
-
+            if (!Directory.Exists(_Configuracion.GetLogPath()))
+            {
+                Directory.CreateDirectory(_Configuracion.GetLogPath());
+            }
             string fechaInicio = pFechaInicio.ToString("HH':'mm':'ss");
             string fechaFin = pFechaFin.ToString("HH':'mm':'ss");
             string tiempoSegundos = (pFechaFin - pFechaInicio).TotalSeconds.ToString("0.00");
