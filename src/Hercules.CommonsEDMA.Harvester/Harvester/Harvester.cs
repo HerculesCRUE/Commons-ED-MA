@@ -64,12 +64,12 @@ namespace Harvester
         /// <param name="pConfig"></param>
         public void UpdateLastDate(ReadConfig pConfig, string pSet, string pFecha)
         {
-            if (!Directory.Exists(pConfig.GetLastUpdateDate()))
+            if (!Directory.Exists(pConfig.GetLastUpdateDateFolder()))
             {
-                Directory.CreateDirectory(pConfig.GetLastUpdateDate());
+                Directory.CreateDirectory(pConfig.GetLastUpdateDateFolder());
             }
 
-            File.WriteAllText(pConfig.GetLastUpdateDate() + $@"\\lastUpdateDate_{pSet}.txt", pFecha);
+            File.WriteAllText(pConfig.GetLastUpdateDateFolder() + $@"\\lastUpdateDate_{pSet}.txt", pFecha);
         }
 
         public void HarvestPRC(ReadConfig pConfig, string pSet, string pFecha)
