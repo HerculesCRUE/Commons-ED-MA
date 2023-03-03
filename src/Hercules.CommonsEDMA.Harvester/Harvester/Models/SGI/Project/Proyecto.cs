@@ -4,6 +4,7 @@ using Gnoss.ApiWrapper.Model;
 using Harvester;
 using Harvester.Models.ModelsBBDD;
 using Harvester.Models.RabbitMQ;
+using OAI_PMH.Models.SGI.Autorizacion;
 using OAI_PMH.Models.SGI.Organization;
 using OAI_PMH.Models.SGI.PersonalData;
 using System;
@@ -148,9 +149,12 @@ namespace OAI_PMH.Models.SGI.Project
                 if (string.IsNullOrEmpty(item.Value))
                 {
                     Empresa organizacionAux = Empresa.GetOrganizacionSGI(pHarvesterServices, pConfig, "Organizacion_" + item.Key, pDicRutas);
-                    string idGnoss = organizacionAux.Cargar(pHarvesterServices, pConfig, pResourceApi, "organization", pDicIdentificadores, pDicRutas, pRabbitConf);
-                    pDicIdentificadores["organization"].Add(idGnoss);
-                    dicOrganizacionesCargadas[item.Key] = idGnoss;
+                    if (organizacionAux != null)
+                    {
+                        string idGnoss = organizacionAux.Cargar(pHarvesterServices, pConfig, pResourceApi, "organization", pDicIdentificadores, pDicRutas, pRabbitConf);
+                        pDicIdentificadores["organization"].Add(idGnoss);
+                        dicOrganizacionesCargadas[item.Key] = idGnoss;
+                    }
                 }
                 else
                 {
@@ -246,7 +250,10 @@ namespace OAI_PMH.Models.SGI.Project
 
                 foreach (ProyectoEntidadFinanciadora entidadFinanciadora in this.EntidadesFinanciadoras)
                 {
-                    project.Roh_grantedBy.Add(CrearEntidadOrganizationAux(dicOrganizacionesCargadas[entidadFinanciadora.EntidadRef], pResourceApi));
+                    if (dicOrganizacionesCargadas.ContainsKey(entidadFinanciadora.EntidadRef))
+                    {
+                        project.Roh_grantedBy.Add(CrearEntidadOrganizationAux(dicOrganizacionesCargadas[entidadFinanciadora.EntidadRef], pResourceApi));
+                    }
                 }
             }
 
@@ -257,7 +264,10 @@ namespace OAI_PMH.Models.SGI.Project
 
                 foreach (ProyectoEntidadGestora entidadGestora in this.EntidadesGestoras)
                 {
-                    project.Roh_participates.Add(CrearEntidadOrganizationAux(dicOrganizacionesCargadas[entidadGestora.EntidadRef], pResourceApi));
+                    if (dicOrganizacionesCargadas.ContainsKey(entidadGestora.EntidadRef))
+                    {
+                        project.Roh_participates.Add(CrearEntidadOrganizationAux(dicOrganizacionesCargadas[entidadGestora.EntidadRef], pResourceApi));
+                    }
                 }
             }
 
@@ -517,7 +527,7 @@ namespace OAI_PMH.Models.SGI.Project
                     organizacion.title = resultadoQuery.results.bindings.First()["titulo"].value;
                 }
 
-                if (!string.IsNullOrEmpty(resultadoQuery.results.bindings.First()["localidad"].value))
+                if (resultadoQuery.results.bindings.First().ContainsKey("localidad") && !string.IsNullOrEmpty(resultadoQuery.results.bindings.First()["localidad"].value))
                 {
                     organizacion.locality = resultadoQuery.results.bindings.First()["localidad"].value;
                 }
