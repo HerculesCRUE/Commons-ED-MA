@@ -38,19 +38,19 @@ namespace OAI_PMH.Services
                 try
                 {
                     response = pRestClient.Execute(pRestRequest);
-                    DateTime fin = DateTime.Now;
-                    _FileLogger.Log(inicio, fin, pRestClient.BaseUrl.ToString(), "DEBUG");
-                    if (response.ResponseStatus != ResponseStatus.Completed)
+                    DateTime fin = DateTime.Now;                    
+                    if (response.StatusCode !=System.Net.HttpStatusCode.OK && response.StatusCode != System.Net.HttpStatusCode.NoContent && response.StatusCode != System.Net.HttpStatusCode.NotFound)
                     {
-                        throw new Exception("La respuesta ha sido: " + response.ResponseStatus);
+                        throw new Exception("La respuesta ha sido: " + response.StatusCode);
                     }
+                    _FileLogger.Log(inicio, fin, pRestClient.BaseUrl.ToString(), "DEBUG");
                     break;
                 }
                 catch(Exception ex)
                 {
                     DateTime fin = DateTime.Now;
                     _FileLogger.Log(inicio, fin, pRestClient.BaseUrl.ToString(), "ERROR "+ex.Message);
-                    return null;
+                    throw;
                 }
             }
 
