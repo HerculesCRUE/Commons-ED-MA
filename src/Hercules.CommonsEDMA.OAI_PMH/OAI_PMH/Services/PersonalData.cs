@@ -1,12 +1,12 @@
-﻿using Newtonsoft.Json;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using Newtonsoft.Json;
 using OAI_PMH.Controllers;
 using OAI_PMH.Models.SGI.ActividadDocente;
 using OAI_PMH.Models.SGI.FormacionAcademica;
 using OAI_PMH.Models.SGI.PersonalData;
 using RestSharp;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace OAI_PMH.Services
 {
@@ -218,7 +218,7 @@ namespace OAI_PMH.Services
             client.AddDefaultHeader("Authorization", "Bearer " + accessToken);
             var request = new RestRequest(Method.GET);
             IRestResponse response = Token.httpCall(client, request);
-            if (string.IsNullOrEmpty(response.Content))
+            if (response==null || string.IsNullOrEmpty(response.Content))
             {
                 return null;
             }
