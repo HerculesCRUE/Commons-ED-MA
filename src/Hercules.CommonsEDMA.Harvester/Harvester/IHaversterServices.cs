@@ -3,6 +3,7 @@ using Newtonsoft.Json;
 using OAI_PMH.Models.SGI.Organization;
 using OAI_PMH.Models.SGI.PersonalData;
 using OAI_PMH.Models.SGI.Project;
+using RestSharp;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -138,9 +139,16 @@ namespace Harvester
             Stream stream = wrGETURL.GetResponse().GetResponseStream();
             XDocument XMLresponse = XDocument.Load(stream);
             XNamespace nameSpace = XMLresponse.Root.GetDefaultNamespace();
-            string record = XMLresponse.Root.Element(nameSpace + "GetRecord").Descendants(nameSpace + "metadata").First().FirstNode.ToString();
-            record = record.Replace("xmlns=\"" + nameSpace + "\"", "");
-            return record;
+            if (XMLresponse.Root.Element(nameSpace + "GetRecord") != null)
+            {
+                string record = XMLresponse.Root.Element(nameSpace + "GetRecord").Descendants(nameSpace + "metadata").First().FirstNode.ToString();
+                record = record.Replace("xmlns=\"" + nameSpace + "\"", "");
+                return record;
+            }
+            else
+            {
+                return null;
+            }
         }
     }
 
