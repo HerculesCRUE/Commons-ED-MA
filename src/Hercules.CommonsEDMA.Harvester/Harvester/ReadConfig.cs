@@ -18,7 +18,7 @@ namespace Harvester
 
         // Rutas.
         private string dirLogCargas { get; set; }
-        private string lastUpdateDateFile { get; set; }
+        private string lastUpdateDateFolder { get; set; }
         private string cronExpression { get; set; }
 
         // Configuración Rabbit para el desnormalizador
@@ -84,28 +84,28 @@ namespace Harvester
         }
 
         /// <summary>
-        /// Obtiene la ruta del fichero de la última fecha de modificación.
+        /// Obtiene la ruta de la carpeta de los ficheros con la última fecha de modificación.
         /// </summary>
         /// <returns>Ruta.</returns>
-        public string GetLastUpdateDate()
+        public string GetLastUpdateDateFolder()
         {
-            if (string.IsNullOrEmpty(lastUpdateDateFile))
+            if (string.IsNullOrEmpty(lastUpdateDateFolder))
             {
                 string connectionString = string.Empty;
                 IDictionary environmentVariables = Environment.GetEnvironmentVariables();
-                if (environmentVariables.Contains("LastUpdateDateFile"))
+                if (environmentVariables.Contains("LastUpdateDateFolder"))
                 {
-                    connectionString = environmentVariables["LastUpdateDateFile"] as string;
+                    connectionString = environmentVariables["LastUpdateDateFolder"] as string;
                 }
                 else
                 {
-                    connectionString = configuracion["LastUpdateDateFile"];
+                    connectionString = configuracion["LastUpdateDateFolder"];
                 }
 
-                lastUpdateDateFile = connectionString;
+                lastUpdateDateFolder = connectionString;
             }
 
-            return lastUpdateDateFile;
+            return lastUpdateDateFolder;
         }
 
         /// <summary>
