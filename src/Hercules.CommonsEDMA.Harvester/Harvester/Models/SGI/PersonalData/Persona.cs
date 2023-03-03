@@ -370,25 +370,27 @@ namespace OAI_PMH.Models.SGI.PersonalData
         {
             List<string> listaTesis = new();
 
-            string select = string.Empty;
-            string where = string.Empty;
+            if (pListaCrisIdentifiers != null && pListaCrisIdentifiers.Count > 0)
+            {
+                string select = string.Empty;
+                string where = string.Empty;
 
-            select = $@"SELECT * ";
-            where = $@"WHERE {{                        
+                select = $@"SELECT * ";
+                where = $@"WHERE {{                        
                         ?s <http://w3id.org/roh/crisIdentifier> ?crisIdentifier. 
                         ?s <http://w3id.org/roh/cvnCode> '{pCvnCode}'.
                         FILTER(?crisIdentifier in ('{string.Join("', '", pListaCrisIdentifiers.Select(x => x))}'))
                     }}";
 
-            SparqlObject resultadoQueryPerson = pResourceApi.VirtuosoQuery(select, where, pOntology);
-            if (resultadoQueryPerson != null && resultadoQueryPerson.results != null && resultadoQueryPerson.results.bindings != null && resultadoQueryPerson.results.bindings.Count > 0)
-            {
-                foreach (Dictionary<string, SparqlObject.Data> fila in resultadoQueryPerson.results.bindings)
+                SparqlObject resultadoQueryPerson = pResourceApi.VirtuosoQuery(select, where, pOntology);
+                if (resultadoQueryPerson != null && resultadoQueryPerson.results != null && resultadoQueryPerson.results.bindings != null && resultadoQueryPerson.results.bindings.Count > 0)
                 {
-                    listaTesis.Add(fila["s"].value);
+                    foreach (Dictionary<string, SparqlObject.Data> fila in resultadoQueryPerson.results.bindings)
+                    {
+                        listaTesis.Add(fila["s"].value);
+                    }
                 }
             }
-
             return listaTesis;
         }
 
@@ -649,7 +651,7 @@ namespace OAI_PMH.Models.SGI.PersonalData
                 {
                     numIntentos++;
 
-                    if (numIntentos > 6)
+                    if (numIntentos > 100)
                     {
                         throw new AggregateException($"Se ha producido un error al cargar el recurso '{recursoCargar.Title}'");
                     }
@@ -693,7 +695,14 @@ namespace OAI_PMH.Models.SGI.PersonalData
                 tesisDevolver.Roh_cvnCode = "030.040.000.000";
                 tesisDevolver.IdRoh_projectCharacterType = tesis.projectCharacterType;
                 tesisDevolver.Roh_projectCharacterTypeOther = tesis.projectCharacterTypeOther;
-                tesisDevolver.Roh_title = tesis.title;
+                if (!string.IsNullOrEmpty(tesis.title))
+                {
+                    tesisDevolver.Roh_title = tesis.title;
+                }
+                else
+                {
+                    continue;
+                }
                 tesisDevolver.IdVcard_hasCountryName = tesis.hasCountryName;
                 tesisDevolver.IdVcard_hasRegion = tesis.hasRegion;
                 tesisDevolver.Vcard_locality = tesis.locality;
@@ -986,8 +995,6 @@ namespace OAI_PMH.Models.SGI.PersonalData
             {
                 ImpartedcoursesseminarsOntology.ImpartedCoursesSeminars courseDevolver = new();
 
-                string crisIdentifier = string.Empty;
-
                 courseDevolver.IdRoh_owner = pIdGnoss;
                 courseDevolver.Roh_cvnCode = "030.060.000.000";
                 courseDevolver.Roh_title = curso.title;
@@ -1016,7 +1023,7 @@ namespace OAI_PMH.Models.SGI.PersonalData
                 courseDevolver.Roh_participationTypeOther = curso.participationTypeOther;
 
                 // CrisIdentifier
-                courseDevolver.Roh_crisIdentifier = crisIdentifier;
+                courseDevolver.Roh_crisIdentifier = curso.crisIdentifiers;
 
                 listacursoDevolver.Add(courseDevolver.ToGnossApiResource(pResourceApi, null));
             }
@@ -1955,13 +1962,16 @@ namespace OAI_PMH.Models.SGI.PersonalData
                     doctorado.calificacionObtenida = item.CalificacionObtenida;
                     crisIdentifier += $@"{RemoveDiacritics(doctorado.calificacionObtenida)}___";
 
-                    Persona director = GetPersonaSGI(pHarvesterServices, pConfig, "Persona_" + item.DirectorTesis, pDicRutas);
-                    if (director != null)
+                    if (item.DirectorTesis != null)
                     {
-                        doctorado.nombreDirector = director.Nombre;
-                        doctorado.primApeDirector = director.Apellidos;
-                        doctorado.firmaDirector = (director.Nombre + " " + director.Apellidos).Trim();
-                        crisIdentifier += $@"{RemoveDiacritics(doctorado.firmaDirector)}___";
+                        Persona director = GetPersonaSGI(pHarvesterServices, pConfig, "Persona_" + item.DirectorTesis, pDicRutas);
+                        if (director != null)
+                        {
+                            doctorado.nombreDirector = director.Nombre;
+                            doctorado.primApeDirector = director.Apellidos;
+                            doctorado.firmaDirector = (director.Nombre + " " + director.Apellidos).Trim();
+                            crisIdentifier += $@"{RemoveDiacritics(doctorado.firmaDirector)}___";
+                        }
                     }
 
                     if (item.CoDirectorTesis != null && item.CoDirectorTesis.Count > 0)
@@ -2226,6 +2236,7 @@ namespace OAI_PMH.Models.SGI.PersonalData
 
             text = sb.ToString();
             text = text.Replace(" ", "-");
+            text = text.Replace("\n", "-");
 
             var normalizedString = text.Normalize(NormalizationForm.FormD);
             var stringBuilder = new StringBuilder(capacity: normalizedString.Length);
@@ -2239,6 +2250,8 @@ namespace OAI_PMH.Models.SGI.PersonalData
                     stringBuilder.Append(c);
                 }
             }
+
+
 
             return stringBuilder
                 .ToString()
