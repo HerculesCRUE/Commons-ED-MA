@@ -15,7 +15,7 @@ namespace OAI_PMH.Services
             string accessToken = Token.CheckToken(pConfig);
             Dictionary<string, DateTime> idDictionary = new();
             List<string> idListCiclos;
-            RestClient clientCiclos = new(pConfig.GetConfigSGI() + "/api/sgp/formacion/modificados-ids?q=fechaModificacion=ge=\"" + from + "\"" + ";tipoFormacion=\"020.010.010.000\"");
+            RestClient clientCiclos = new(pConfig.GetConfigSGI() + "/api/sgp/formacion/modificados-ids?q=fechaModificacion=ge=\"" + from + "\"" + ";tipoFormacion=\"020.010.010.000\"");            
             clientCiclos.AddDefaultHeader("Authorization", "Bearer " + accessToken);
             var request = new RestRequest(Method.GET);
             IRestResponse responseCiclos = Token.httpCall(clientCiclos, request);
