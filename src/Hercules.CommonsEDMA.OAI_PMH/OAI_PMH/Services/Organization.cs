@@ -26,7 +26,10 @@ namespace OAI_PMH.Services
                 idList = sinComillas.Split(',').ToList();
                 foreach (string id in idList)
                 {
-                    idDictionary.Add($"Organizacion_{id}", DateTime.UtcNow);
+                    if (!string.IsNullOrEmpty(id))
+                    {
+                        idDictionary.Add($"Organizacion_{id}", DateTime.UtcNow);
+                    }
                 }
             }
             return idDictionary;
