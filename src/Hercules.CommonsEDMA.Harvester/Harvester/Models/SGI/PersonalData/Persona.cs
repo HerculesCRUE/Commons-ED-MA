@@ -628,9 +628,6 @@ namespace OAI_PMH.Models.SGI.PersonalData
             {
                 persona.Roh_hasPosition = this.Vinculacion?.CategoriaProfesional?.nombre;
             }
-
-            // Fecha de actualización.
-            persona.Roh_lastUpdatedDate = DateTime.UtcNow;
             #endregion
             return persona;
         }
