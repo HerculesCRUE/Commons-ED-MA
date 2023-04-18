@@ -46,6 +46,7 @@ using Es.Riam.Gnoss.AD.ServiciosGenerales;
 using Microsoft.EntityFrameworkCore;
 using System.Security.Cryptography;
 using System.IO;
+using System.Xml;
 
 namespace Gnoss.Web.Login.SAML
 {
@@ -505,9 +506,9 @@ namespace Gnoss.Web.Login.SAML
                         mEntityContext.AdministradorProyecto.Add(new Es.Riam.Gnoss.AD.EntityModel.Models.ProyectoDS.AdministradorProyecto()
                         {
                             OrganizacionID = dataWrapperProyecto.ListaProyecto.First().OrganizacionID,
-                            ProyectoID=proyectoID,
+                            ProyectoID = proyectoID,
                             Tipo = (short)TipoRolUsuario.Administrador,
-                            UsuarioID=user_id
+                            UsuarioID = user_id
                         });
                     }
                     mEntityContext.SaveChanges();
@@ -579,11 +580,134 @@ namespace Gnoss.Web.Login.SAML
                 }
                 proyCN.Dispose();
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 mCommunityApi.Log.Info(ex.ToString());
-            }            
+            }
         }
 
+        [Route("/metadataedma.xml")]
+        public void SitemapXml()
+        {
+            string entityID = mConfigServiceSAML.GetSamlEntityID();
+            string assertionConsumerService = mConfigServiceSAML.GetSamlAssertionConsumerService();
+            string contactPersonMail = mConfigServiceSAML.GetSamlContactPersonMail();
+            string organizationName = mConfigServiceSAML.GetSamlOrganizationName();
+            string organizationDisplayName = mConfigServiceSAML.GetSamlOrganizationDisplayName();
+            string organizationURL = mConfigServiceSAML.GetSamlOrganizationURL();
+
+            Response.ContentType = "application/xml";
+
+            using (var xml = XmlWriter.Create(Response.Body, new XmlWriterSettings { Indent = true }))
+            {
+                //0
+                xml.WriteStartDocument();
+                xml.WriteStartElement("EntityDescriptor", "urn:oasis:names:tc:SAML:2.0:metadata");
+                xml.WriteAttributeString("cacheDuration", "PT1H");
+                xml.WriteAttributeString("entityID", entityID);
+                xml.WriteAttributeString("xmlns", "saml2", "", "urn:oasis:names:tc:SAML:2.0:assertion");
+
+                //1
+                xml.WriteStartElement("SPSSODescriptor");
+                xml.WriteAttributeString("AuthnRequestsSigned", "false");
+                xml.WriteAttributeString("WantAssertionsSigned", "true");
+                xml.WriteAttributeString("protocolSupportEnumeration", "urn:oasis:names:tc:SAML:2.0:protocol");
+
+                //2
+                xml.WriteStartElement("AssertionConsumerService");
+                xml.WriteAttributeString("Binding", "urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST");
+                xml.WriteAttributeString("Location", assertionConsumerService);
+                xml.WriteAttributeString("isDefault", "true");
+                xml.WriteAttributeString("index", "0");
+                xml.WriteEndElement();
+
+                //2
+                xml.WriteStartElement("AssertionConsumerService");
+                xml.WriteAttributeString("Binding", "urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Artifact");
+                xml.WriteAttributeString("Location", assertionConsumerService);
+                xml.WriteAttributeString("isDefault", "false");
+                xml.WriteAttributeString("index", "1");
+                xml.WriteEndElement();
+
+                //2 
+                xml.WriteStartElement("AttributeConsumingService");
+                xml.WriteAttributeString("index", "0");
+                xml.WriteAttributeString("isDefault", "true");
+
+                //3
+                xml.WriteStartElement("ServiceName");
+                xml.WriteAttributeString("xml","lang","", "en");
+                xml.WriteString("SP");
+                xml.WriteEndElement();
+
+                //3
+                xml.WriteStartElement("RequestedAttribute");
+                xml.WriteAttributeString("isRequired", "true");
+                xml.WriteAttributeString("Name", "urn:rol");
+                xml.WriteAttributeString("NameFormat", "urn:oasis:names:tc:SAML:2.0:attrname-format:unspecified");
+                xml.WriteAttributeString("FriendlyName", "Roles");
+                xml.WriteEndElement();
+
+                xml.WriteEndElement();
+
+                //2 
+                xml.WriteStartElement("NameIDFormat");
+                xml.WriteString("urn:oasis:names:tc:SAML:2.0:nameid-format:emailAddress");
+                xml.WriteEndElement();
+
+                xml.WriteEndElement();
+
+                if (!string.IsNullOrEmpty(organizationName) || !string.IsNullOrEmpty(organizationDisplayName) || !string.IsNullOrEmpty(organizationURL))
+                {
+                    //1
+                    xml.WriteStartElement("Organization");
+
+                    if (!string.IsNullOrEmpty(organizationName))
+                    {
+                        //2 
+                        xml.WriteStartElement("OrganizationName");
+                        xml.WriteAttributeString("xml", "lang", "", "es");
+                        xml.WriteString(organizationName);
+                        xml.WriteEndElement();
+                    }
+
+                    if (!string.IsNullOrEmpty(organizationDisplayName))
+                    {
+                        //2 
+                        xml.WriteStartElement("OrganizationDisplayName");
+                        xml.WriteAttributeString("xml", "lang", "", "es");
+                        xml.WriteString(organizationDisplayName);
+                        xml.WriteEndElement();
+                    }
+
+                    if (!string.IsNullOrEmpty(organizationURL))
+                    {
+                        //2 
+                        xml.WriteStartElement("OrganizationURL");
+                        xml.WriteAttributeString("xml", "lang", "", "es");
+                        xml.WriteString(organizationURL);
+                        xml.WriteEndElement();
+                    }
+
+                    xml.WriteEndElement();
+                }
+
+                if (!string.IsNullOrEmpty(contactPersonMail))
+                {
+                    //1
+                    xml.WriteStartElement("ContactPerson");
+                    xml.WriteAttributeString("contactType", "other");
+
+                    //2 
+                    xml.WriteStartElement("EmailAddress");
+                    xml.WriteString(contactPersonMail);
+                    xml.WriteEndElement();
+
+                    xml.WriteEndElement();
+                }
+
+                xml.WriteEndElement();
+            }
+        }
     }
 }
