@@ -586,6 +586,23 @@ namespace Gnoss.Web.Login.SAML
             }
         }
 
+        public sealed class StringWriterWithEncoding : StringWriter
+        {
+            private readonly Encoding encoding;
+
+            public StringWriterWithEncoding() { }
+
+            public StringWriterWithEncoding(Encoding encoding)
+            {
+                this.encoding = encoding;
+            }
+
+            public override Encoding Encoding
+            {
+                get { return encoding; }
+            }
+        }
+
         [Route("/metadataedma.xml")]
         public ActionResult SitemapXml()
         {
@@ -601,10 +618,12 @@ namespace Gnoss.Web.Login.SAML
 
                 Response.ContentType = "application/xml";
 
+                XmlWriterSettings settings = new XmlWriterSettings();
+                settings.Encoding = Encoding.UTF8;
 
-                using (var sw = new StringWriter())
+                using (var sw = new StringWriterWithEncoding(Encoding.UTF8))
                 {
-                    using (var xml = XmlWriter.Create(sw))
+                    using (var xml = XmlWriter.Create(sw, settings))
                     {
                         //0
                         xml.WriteStartDocument();
