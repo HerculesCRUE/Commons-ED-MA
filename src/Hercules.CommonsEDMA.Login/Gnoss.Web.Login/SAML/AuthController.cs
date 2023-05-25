@@ -46,26 +46,32 @@ namespace Gnoss.Web.Login.SAML
         [Route("AssertionConsumerService")]
         public async Task<IActionResult> AssertionConsumerService()
         {
-
-            mResourceApi.Log.Info($"10.-AuthController AssertionConsumerService");
-            var binding = new Saml2PostBinding();
-            var saml2AuthnResponse = new Saml2AuthnResponse(config);
-
-            binding.ReadSamlResponse(Request.ToGenericHttpRequest(), saml2AuthnResponse);
-            if (saml2AuthnResponse.Status != Saml2StatusCodes.Success)
+            try
             {
-                throw new AuthenticationException($"SAML Response status: {saml2AuthnResponse.Status}");
+                mResourceApi.Log.Info($"10.-AuthController AssertionConsumerService");
+                var binding = new Saml2PostBinding();
+                var saml2AuthnResponse = new Saml2AuthnResponse(config);
+
+                binding.ReadSamlResponse(Request.ToGenericHttpRequest(), saml2AuthnResponse);
+                if (saml2AuthnResponse.Status != Saml2StatusCodes.Success)
+                {
+                    throw new AuthenticationException($"SAML Response status: {saml2AuthnResponse.Status}");
+                }
+
+
+                //binding.Unbind(Request.ToGenericHttpRequest(), saml2AuthnResponse);            
+                await saml2AuthnResponse.CreateSession(HttpContext, lifetime: new TimeSpan(0, 0, 5), claimsTransform: (claimsPrincipal) => ClaimsTransform.Transform(claimsPrincipal));
+
+                var relayStateQuery = binding.GetRelayStateQuery();
+
+                string token = relayStateQuery["token"];
+                string returnUrl = relayStateQuery["ReturnUrl"];
+                return Redirect(Url.Content(@$"~/{mConfigServiceSAML.GetUrlServiceInDomain()}LoginSAML") + "?returnUrl=" + returnUrl + "&token=" + token);
             }
-
-
-            //binding.Unbind(Request.ToGenericHttpRequest(), saml2AuthnResponse);            
-            await saml2AuthnResponse.CreateSession(HttpContext, lifetime: new TimeSpan(0, 0, 5), claimsTransform: (claimsPrincipal) => ClaimsTransform.Transform(claimsPrincipal));
-
-            var relayStateQuery = binding.GetRelayStateQuery();
-
-            string token = relayStateQuery["token"];
-            string returnUrl = relayStateQuery["ReturnUrl"];
-            return Redirect(Url.Content(@$"~/{mConfigServiceSAML.GetUrlServiceInDomain()}LoginSAML") + "?returnUrl=" + returnUrl + "&token=" + token);
+            catch (Exception ex)
+            {
+                return new ObjectResult("hola, el error es "+ex.ToString());
+            }
         }
 
         [HttpGet, HttpPost]
