@@ -69,7 +69,7 @@ namespace Gnoss.Web.Login.SAML
                 string token = relayStateQuery["token"];
                 string returnUrl = relayStateQuery["ReturnUrl"];
                 mResourceApi.Log.Info($"10.6");
-                return new ObjectResult(Url.Content(@$"~/{mConfigServiceSAML.GetUrlServiceInDomain()}LoginSAML") + "?returnUrl=" + returnUrl + "&token=" + token);
+                return new ObjectResult("hola");
                 return Redirect(Url.Content(@$"~/{mConfigServiceSAML.GetUrlServiceInDomain()}LoginSAML") + "?returnUrl=" + returnUrl + "&token=" + token);
             }
             catch (Exception ex)
