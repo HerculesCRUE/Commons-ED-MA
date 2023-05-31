@@ -46,50 +46,26 @@ namespace Gnoss.Web.Login.SAML
         [Route("AssertionConsumerService")]
         public async Task<IActionResult> AssertionConsumerService()
         {
-            try
+
+            mResourceApi.Log.Info($"10.-AuthController AssertionConsumerService");
+            var binding = new Saml2PostBinding();
+            var saml2AuthnResponse = new Saml2AuthnResponse(config);
+
+            binding.ReadSamlResponse(Request.ToGenericHttpRequest(), saml2AuthnResponse);
+            if (saml2AuthnResponse.Status != Saml2StatusCodes.Success)
             {
-                mResourceApi.Log.Info($"10.-AuthController AssertionConsumerService");
-                var binding = new Saml2PostBinding();
-                var saml2AuthnResponse = new Saml2AuthnResponse(config);
-
-                mResourceApi.Log.Info("saml status0: " + saml2AuthnResponse.Status);
-
-                //ITfoxtec.Identity.Saml2.Http.HttpRequest request = Request.ToGenericHttpRequest();
-                //request.Method = "POST";
-                //request.QueryString = Request.HttpContext.Request.QueryString.Value;
-                Request.Method = "POST";
-
-                binding.ReadSamlResponse(Request.ToGenericHttpRequest(), saml2AuthnResponse);
-                mResourceApi.Log.Info("saml status1: " + saml2AuthnResponse.Status);
-                if (saml2AuthnResponse.Status != Saml2StatusCodes.Success)
-                {
-                    throw new AuthenticationException($"SAML Response status: {saml2AuthnResponse.Status}");
-                }
-
-
-                //binding.Unbind(Request.ToGenericHttpRequest(), saml2AuthnResponse);
-                await saml2AuthnResponse.CreateSession(HttpContext, lifetime: new TimeSpan(0, 5, 0), claimsTransform: (claimsPrincipal) => ClaimsTransform.Transform(claimsPrincipal));
-
-                mResourceApi.Log.Info("saml status2 postsession: " + saml2AuthnResponse.Status);
-
-
-                var relayStateQuery = binding.GetRelayStateQuery();
-                mResourceApi.Log.Info("saml status3 postrealystatequery: " + saml2AuthnResponse.Status);
-
-                string token = relayStateQuery["token"];
-                string returnUrl = relayStateQuery["ReturnUrl"];
-
-
-                mResourceApi.Log.Info("content: " + mConfigServiceSAML.GetUrlServiceInDomain() + "?returnUrl=" + returnUrl + "&token=" + token);
-
-                return Redirect(Url.Content(@$"~/{mConfigServiceSAML.GetUrlServiceInDomain()}LoginSAML") + "?returnUrl=" + returnUrl + "&token=" + token);
+                throw new AuthenticationException($"SAML Response status: {saml2AuthnResponse.Status}");
             }
-            catch (Exception ex)
-            {
-                mResourceApi.Log.Error("Excepcion en AssertionConsumerService: " + ex.Message);
-                mResourceApi.Log.Error("Traza en AssertionConsumerService: " + ex.StackTrace);
-                return null;
-            }
+
+
+            //binding.Unbind(Request.ToGenericHttpRequest(), saml2AuthnResponse);            
+            await saml2AuthnResponse.CreateSession(HttpContext, lifetime: new TimeSpan(0, 0, 5), claimsTransform: (claimsPrincipal) => ClaimsTransform.Transform(claimsPrincipal));
+
+            var relayStateQuery = binding.GetRelayStateQuery();
+
+            string token = relayStateQuery["token"];
+            string returnUrl = relayStateQuery["ReturnUrl"];
+            return Redirect(Url.Content(@$"~/{mConfigServiceSAML.GetUrlServiceInDomain()}LoginSAML") + "?returnUrl=" + returnUrl + "&token=" + token);
         }
 
         [HttpGet, HttpPost]
