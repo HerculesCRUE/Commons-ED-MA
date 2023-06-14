@@ -6,7 +6,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="GnossApiWrapper.NetCore" Version="6.0.6" />
+    <PackageReference Include="GnossApiWrapper.NetCore" Version="6.0.33" />
   </ItemGroup>
 
 </Project>
