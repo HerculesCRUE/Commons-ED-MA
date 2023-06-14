@@ -10,7 +10,7 @@
 
   <ItemGroup>
     <PackageReference Include="EnterpriseLibrary.Data.NetCore" Version="6.3.2" />
-    <PackageReference Include="GnossApiWrapper.NetCore" Version="6.0.5">
+    <PackageReference Include="GnossApiWrapper.NetCore" Version="6.0.33">
       <Aliases>ApiWrapper</Aliases>
     </PackageReference>
     <PackageReference Include="ITfoxtec.Identity.Saml2.MvcCore" Version="4.8.2" />
@@ -20,6 +20,7 @@
     <PackageReference Include="Npgsql" Version="5.0.7" />
     <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="5.0.7" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="5.6.3" />
+    <PackageReference Include="System.Text.RegularExpressions" Version="4.3.1" />
   </ItemGroup>
 
   <ItemGroup>
