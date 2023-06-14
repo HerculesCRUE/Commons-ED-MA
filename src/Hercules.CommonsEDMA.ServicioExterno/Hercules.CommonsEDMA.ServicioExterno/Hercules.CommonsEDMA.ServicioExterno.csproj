@@ -8,11 +8,12 @@
 
   <ItemGroup>
     <PackageReference Include="dotNetRDF" Version="2.7.5" />
-    <PackageReference Include="GnossApiWrapper.NetCore" Version="6.0.7" />
+    <PackageReference Include="GnossApiWrapper.NetCore" Version="6.0.33" />
     <PackageReference Include="Microsoft.AspNet.WebApi.Client" Version="5.2.9" />
     <PackageReference Include="RabbitMQ.Client" Version="6.4.0" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0" />
     <PackageReference Include="System.Net.Http" Version="4.3.4" />
+    <PackageReference Include="System.Text.RegularExpressions" Version="4.3.1" />
   </ItemGroup>
 
   <ItemGroup>
