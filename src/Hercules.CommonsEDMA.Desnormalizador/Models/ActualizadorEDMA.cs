@@ -153,7 +153,6 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models
             actualizadorPatent.ActualizarPatentesValidadas();
             actualizadorPatent.ActualizarMiembros();
 
-
             //CV con dependencias 
             actualizadorCV.ModificarDocumentos();
             //actualizadorCV.CambiarPrivacidadDocumentos();
@@ -184,6 +183,7 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models
             actualizadorPersonas.ActualizarNumeroResearchObjectsPublicos();
             actualizadorPersonas.ActualizarNumeroAreasTematicas();
             actualizadorPersonas.ActualizarHIndex();
+            //actualizadorPersonas.EliminarAutoresNoSGISinAutorias();
 
             //Grupo con dependencias
             actualizadorGrupos.ActualizarMiembrosUnificados();
@@ -205,8 +205,6 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models
                 UtilsSimilarity utilsSimilarityRos = new UtilsSimilarity(pConfigService.GetUrlSimilarity(), resourceApi, "code_project");
                 utilsSimilarityRos.SincroComplete();
             }
-
-            //TODO eliminar personas externas sin publicaciones
         }
 
         /// <summary>
