@@ -1322,7 +1322,7 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
 
             foreach (string filter in filtersActualizarHIndex)
             {
-                //Eliminamos HIndex
+                //Eliminamos todos los http://w3id.org/roh/hIndex que no tengan un source apropiado
                 while (true)
                 {
                     int limitEliminarHIndex = 500;
@@ -1342,7 +1342,7 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
                     }
                 }
 
-                //Eliminamos HIndexCitationCount
+                //Eliminamos todos los http://w3id.org/roh/hIndexCitationCount que no tengan un source apropiado
                 while (true)
                 {
                     int limitEliminarHIndexCitationCount = 500;
@@ -1362,11 +1362,12 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
                     }
                 }
 
+                //Creamos/eliminamos los http://w3id.org/roh/HIndexCitationCount
                 foreach (string source in listSources.Keys)
                 {
+                    //Insertamos http://w3id.org/roh/HIndexCitationCount con el nº de citas por nº de docs y fuente
                     while (true)
                     {
-                        //Añadimos nº citas
                         int limitAniadirCitas = 500;
                         String selectAniadirCitas = @"select *  ";
                         String whereAniadirCitas = @$"where{{
@@ -1404,9 +1405,9 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
                         }
                     }
 
+                    //Eliminamos http://w3id.org/roh/HIndexCitationCount
                     while (true)
                     {
-                        //Eliminamos nº citas
                         int limitEliminarCitas = 500;
                         String selectEliminarCitas = @"select *  ";
                         String whereEliminarCitas = @$"where{{
@@ -1447,11 +1448,9 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
                     }
                 }
 
-
-
+                //Actualizamos http://w3id.org/roh/acumulatedPublicationNumber en los http://w3id.org/roh/HIndexCitationCount
                 while (true)
                 {
-                    //Actualizamos AcumulatedPublicationNumber
                     int limitAcumulatedPublicationNumber = 500;
                     String selectAcumulatedPublicationNumber = @"select ?person ?hIndexCitationCount ?numAcumuladoCargadas ?numAcumuladoACargar";
                     String whereAcumulatedPublicationNumber = @$"where{{
@@ -1501,9 +1500,9 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
                     }
                 }
 
+                //Actualizamos http://w3id.org/roh/hIndexMax en los http://w3id.org/roh/HIndexCitationCount (el menor entre http://w3id.org/roh/citationCount y http://w3id.org/roh/acumulatedPublicationNumber)
                 while (true)
                 {
-                    //Actualizamos hIndexMax
                     int limitHIndexMax = 500;
                     String selectHIndexMax = @"select ?person ?hIndexCitationCount ?numMaxCargado ?numMaxACargar";
                     String whereHIndexMax = @$"where{{
@@ -1534,69 +1533,39 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
                     }
                 }
 
+                //Creamos/actualizamos/eliminamos los H-Index
                 while (true)
                 {
-                    //Añadimos auxiliar H-Index
                     int limitHIndex = 500;
-                    String selectHIndex = @"select ?person ?source ?hIndexCalculado ";
+                    String selectHIndex = @"select ?person ?source ?hIndexCalculado ?hIndexEntity ?hIndexCargado  ";
                     String whereHIndex = @$"where{{
-                                    {filter}                                    
-                                    {{
-                                        select ?person ?source MAX(?hIndexMax) as ?hIndexCalculado
-                                        Where
-                                        {{
-                                            ?person a <http://xmlns.com/foaf/0.1/Person>.     
-					                        ?person <http://w3id.org/roh/hIndexCitationCount> ?hIndexCitationCount.
-                                            ?hIndexCitationCount <http://w3id.org/roh/citationSource> ?source.    
-                                            ?hIndexCitationCount <http://w3id.org/roh/hIndexMax> ?hIndexMaxAux.                                    
-                                            BIND(xsd:int(?hIndexMaxAux) as ?hIndexMax).
-                                        }}                                        
-                                    }}
-                                    MINUS{{
-                                        ?person a <http://xmlns.com/foaf/0.1/Person>.     
-                                        ?person <http://w3id.org/roh/hIndex> ?hIndexEntity.
-                                        ?hIndexEntity <http://w3id.org/roh/h-index> ?hIndexAux.
-                                        ?hIndexEntity <http://w3id.org/roh/citationSource> ?source.    
-                                        BIND(xsd:int(?hIndexAux) as ?hIndex)
-                                    }}
+                                    {filter} 
+                                    ?person a <http://xmlns.com/foaf/0.1/Person>.   
+                                    FILTER(?hIndexCargado!= ?hIndexCalculado OR (!BOUND(?hIndexCargado) AND BOUND(?hIndexCalculado )) OR (BOUND(?hIndexCargado) AND !BOUND(?hIndexCalculado )) )
+                                    OPTIONAL{{
+		                                select ?person ?source MAX(?hIndexMax) as ?hIndexCalculado 
+		                                Where
+		                                {{ 
+			                                ?person <http://w3id.org/roh/hIndexCitationCount> ?hIndexCitationCount.
+			                                ?hIndexCitationCount <http://w3id.org/roh/citationSource> ?source.    
+			                                ?hIndexCitationCount <http://w3id.org/roh/hIndexMax> ?hIndexMaxAux.                                    
+			                                BIND(xsd:int(?hIndexMaxAux) as ?hIndexMax).			
+		                                }}                                        
+	                                }}
+	                                OPTIONAL{{
+		                                select ?person ?source ?hIndexEntity ?hIndexCargado 
+		                                Where
+		                                {{   
+			                                ?person <http://w3id.org/roh/hIndex> ?hIndexEntity.
+			                                ?hIndexEntity <http://w3id.org/roh/h-index> ?hIndexAux.
+			                                ?hIndexEntity <http://w3id.org/roh/citationSource> ?source.    
+			                                BIND(xsd:int(?hIndexAux) as ?hIndexCargado)
+		                                }}
+	                                }}
                                 }}order by desc(?person) limit {limitHIndex}";
                     SparqlObject resultadoHIndex = mResourceApi.VirtuosoQuery(selectHIndex, whereHIndex, "person");
-                    InsercionHIndex(resultadoHIndex.results.bindings);
+                    ActualizarHIndex(resultadoHIndex.results.bindings);
                     if (resultadoHIndex.results.bindings.Count != limitHIndex)
-                    {
-                        break;
-                    }
-                }
-
-                while (true)
-                {
-                    //Eliminamos auxiliar H-Index
-                    int limitEliminarHIndex = 500;
-                    String selectEliminarHIndex = @"select distinct ?person ?hIndexEntity ";
-                    String whereEliminarHIndex = @$"where{{
-                                    {filter}                                    
-                                    ?person a <http://xmlns.com/foaf/0.1/Person>.     
-                                    {{                                        
-                                        ?person <http://w3id.org/roh/hIndex> ?hIndexEntity.
-                                        ?hIndexEntity <http://w3id.org/roh/h-index> ?hIndexAux.
-                                        ?hIndexEntity <http://w3id.org/roh/citationSource> ?source.    
-                                        BIND(xsd:int(?hIndexAux) as ?hIndex)                                        
-                                    }}
-                                    MINUS{{
-                                        select ?person ?source MAX(?hIndexMax) as ?hIndexCalculado
-                                        Where
-                                        {{
-                                            ?person a <http://xmlns.com/foaf/0.1/Person>.     
-					                        ?person <http://w3id.org/roh/hIndexCitationCount> ?hIndexCitationCount.
-                                            ?hIndexCitationCount <http://w3id.org/roh/citationSource> ?source.    
-                                            ?hIndexCitationCount <http://w3id.org/roh/hIndexMax> ?hIndexMaxAux.                                    
-                                            BIND(xsd:int(?hIndexMaxAux) as ?hIndexMax).
-                                        }}                                        
-                                    }}
-                                }}order by desc(?person) limit {limitEliminarHIndex}";
-                    SparqlObject resultadoEliminarHIndex = mResourceApi.VirtuosoQuery(selectEliminarHIndex, whereEliminarHIndex, "person");
-                    EliminacionMultiple(resultadoEliminarHIndex.results.bindings, $"{GetUrlPrefix("roh")}hIndex", "person", "hIndexEntity");
-                    if (resultadoEliminarHIndex.results.bindings.Count != limitEliminarHIndex)
                     {
                         break;
                     }
@@ -1626,7 +1595,11 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
                     Parallel.ForEach(resultadoActualizarHIndex.results.bindings, new ParallelOptions { MaxDegreeOfParallelism = ActualizadorBase.numParallel }, fila =>
                     {
                         string person = fila["person"].value;
-                        string hIndexACargar = fila["hIndexACargar"].value;
+                        string hIndexACargar = "";
+                        if (fila.ContainsKey("hIndexACargar"))
+                        {
+                            hIndexACargar = fila["hIndexACargar"].value;
+                        }
                         string hIndexCargado = "";
                         if (fila.ContainsKey("hIndexCargado"))
                         {
@@ -1743,7 +1716,7 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
             }
         }
 
-        private void InsercionHIndex(List<Dictionary<string, SparqlObject.Data>> pFilas)
+        private void ActualizarHIndex(List<Dictionary<string, SparqlObject.Data>> pFilas)
         {
             List<string> idsInsercionHIndex = pFilas.Select(x => x["person"].value).Distinct().ToList();
             if (idsInsercionHIndex.Count > 0)
@@ -1752,27 +1725,130 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
                 {
                     Guid guid = mResourceApi.GetShortGuid(idInsercionHIndex);
 
-                    Dictionary<Guid, List<TriplesToInclude>> triples = new() { { guid, new List<TriplesToInclude>() } };
+                    Dictionary<Guid, List<TriplesToInclude>> triplesInsertar = new() { { guid, new List<TriplesToInclude>() } };
+                    Dictionary<Guid, List<RemoveTriples>> triplesEliminar = new() { { guid, new List<RemoveTriples>() } };
+                    Dictionary<Guid, List<TriplesToModify>> triplesModificar = new() { { guid, new List<TriplesToModify>() } };
+
+
                     foreach (Dictionary<string, SparqlObject.Data> fila in pFilas.Where(x => x["person"].value == idInsercionHIndex))
                     {
-                        string idAux = mResourceApi.GraphsUrl + "items/HIndex_" + guid.ToString().ToLower() + "_" + Guid.NewGuid().ToString().ToLower();
                         string person = fila["person"].value;
+                        string source = fila["source"].value;
+                        string hIndexCalculado = "";
+                        string hIndexEntity = "";
+                        string hIndexCargado = "";
+                        if (fila.ContainsKey("hIndexCalculado"))
+                        {
+                            hIndexCalculado = fila["hIndexCalculado"].value;
+                        }
+                        if (fila.ContainsKey("hIndexEntity"))
+                        {
+                            hIndexEntity = fila["hIndexEntity"].value;
+                        }
+                        if (fila.ContainsKey("hIndexCargado"))
+                        {
+                            hIndexCargado = fila["hIndexCargado"].value;
+                        }
 
-                        TriplesToInclude thIndexCalculado = new();
-                        thIndexCalculado.Predicate = $"{GetUrlPrefix("roh")}hIndex|http://w3id.org/roh/h-index";
-                        thIndexCalculado.NewValue = idAux + "|" + fila["hIndexCalculado"].value;
-                        triples[guid].Add(thIndexCalculado);
+                        if (!string.IsNullOrEmpty(hIndexCargado) && !string.IsNullOrEmpty(hIndexCalculado) && hIndexCargado != hIndexCalculado && !string.IsNullOrEmpty(hIndexEntity))
+                        {
+                            //Modificamos
+                            TriplesToModify thIndex = new();
+                            thIndex.Predicate = $"{GetUrlPrefix("roh")}hIndex|http://w3id.org/roh/h-index";
+                            thIndex.NewValue = hIndexEntity + "|" + fila["hIndexCalculado"].value;
+                            thIndex.OldValue = hIndexEntity + "|" + fila["hIndexCargado"].value;
+                            triplesModificar[guid].Add(thIndex);
+                        }
+                        else if (!string.IsNullOrEmpty(hIndexCargado) && !string.IsNullOrEmpty(hIndexEntity) && string.IsNullOrEmpty(hIndexCalculado))
+                        {
+                            //Eliminamos
+                            RemoveTriples thIndex = new();
+                            thIndex.Predicate = $"{GetUrlPrefix("roh")}hIndex";
+                            thIndex.Value = hIndexEntity;
+                            triplesEliminar[guid].Add(thIndex);
+                        }
+                        else if (!string.IsNullOrEmpty(hIndexCalculado) && string.IsNullOrEmpty(hIndexEntity) && string.IsNullOrEmpty(hIndexCargado))
+                        {
+                            //Insertamos
+                            string idAux = mResourceApi.GraphsUrl + "items/HIndex_" + guid.ToString().ToLower() + "_" + Guid.NewGuid().ToString().ToLower();
+                           
+                            TriplesToInclude thIndexCalculado = new();
+                            thIndexCalculado.Predicate = $"{GetUrlPrefix("roh")}hIndex|http://w3id.org/roh/h-index";
+                            thIndexCalculado.NewValue = idAux + "|" + fila["hIndexCalculado"].value;
+                            triplesInsertar[guid].Add(thIndexCalculado);
 
-                        TriplesToInclude tsource = new();
-                        tsource.Predicate = $"{GetUrlPrefix("roh")}hIndex|http://w3id.org/roh/citationSource";
-                        tsource.NewValue = idAux + "|" + fila["source"].value;
-                        triples[guid].Add(tsource);
+                            TriplesToInclude tsource = new();
+                            tsource.Predicate = $"{GetUrlPrefix("roh")}hIndex|http://w3id.org/roh/citationSource";
+                            tsource.NewValue = idAux + "|" + fila["source"].value;
+                            triplesInsertar[guid].Add(tsource);
+                        }                        
                     }
-                    if (triples[guid].Count > 0)
+                    if (triplesModificar[guid].Count > 0)
                     {
-                        var resultado = mResourceApi.InsertPropertiesLoadedResources(triples);
+                        var resultado = mResourceApi.ModifyPropertiesLoadedResources(triplesModificar);
+                    }
+                    if (triplesEliminar[guid].Count > 0)
+                    {
+                        var resultado = mResourceApi.DeletePropertiesLoadedResources(triplesEliminar);
+                    }
+                    if (triplesInsertar[guid].Count > 0)
+                    {
+                        var resultado = mResourceApi.InsertPropertiesLoadedResources(triplesInsertar);
                     }
                 });
+            }
+        }
+
+        /// <summary>
+        /// Eliminamos los http://xmlns.com/foaf/0.1/Person que no provengan del SGI que no tengan autorías
+        /// </summary>
+        /// <param name="pPersons">ID de documentos</param>
+        public void EliminarAutoresNoSGISinAutorias(List<string> pPersons = null)
+        {
+            HashSet<string> filtersAutoresNoSGISinAutorias = new HashSet<string>();
+            if (pPersons != null && pPersons.Count > 0)
+            {
+                filtersAutoresNoSGISinAutorias.Add($" FILTER(?person in (<{string.Join(">,<", pPersons)}>))");
+            }
+            if (filtersAutoresNoSGISinAutorias.Count == 0)
+            {
+                filtersAutoresNoSGISinAutorias.Add("");
+            }
+            foreach (string filter in filtersAutoresNoSGISinAutorias)
+            {
+                while (true)
+                {
+                    int limitDocumentosSinAutoresSGI = 500;
+                    String selectDocumentosSinAutoresSGI = @"select distinct ?person  ";
+                    String whereDocumentosSinAutoresSGI = @$"where{{
+                                ?person a <http://xmlns.com/foaf/0.1/Person>.
+                                {filter}
+                                MINUS
+                                {{
+                                    ?document <http://purl.org/ontology/bibo/authorList> ?autores.
+                                    ?autores <http://www.w3.org/1999/02/22-rdf-syntax-ns#member> ?person.                                    
+                                }}
+                                MINUS
+                                {{
+                                    ?person <http://w3id.org/roh/crisIdentifier> ?crisIdentifier.
+                                }}
+                            }} limit {limitDocumentosSinAutoresSGI}";
+                    SparqlObject resultadoDocumentosSinAutoresSGI = mResourceApi.VirtuosoQueryMultipleGraph(selectDocumentosSinAutoresSGI, whereDocumentosSinAutoresSGI, new List<string>() { "document", "person", "researchobject" });
+
+                    Parallel.ForEach(resultadoDocumentosSinAutoresSGI.results.bindings, new ParallelOptions { MaxDegreeOfParallelism = ActualizadorBase.numParallel }, fila =>
+                    {
+                        try
+                        {
+                            mResourceApi.PersistentDelete(mResourceApi.GetShortGuid(fila["person"].value));
+                        }
+                        catch (Exception) { }
+                    });
+
+                    if (resultadoDocumentosSinAutoresSGI.results.bindings.Count != limitDocumentosSinAutoresSGI)
+                    {
+                        break;
+                    }
+                }
             }
         }
 
