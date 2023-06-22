@@ -2073,6 +2073,47 @@ namespace Hercules.CommonsEDMA.DisambiguationEngine.Models
             return textoSinAcentos.Trim();
         }
 
+        public static string ObtenerTextosNombresNormalizadosConGuion(string pText, Dictionary<string, string> pDicNomAutoresDesnormalizados = null)
+        {
+            // Comprobación si tenemos guardado el nombre.
+            string textoAux = pText;
+            if (pDicNomAutoresDesnormalizados != null && pDicNomAutoresDesnormalizados.ContainsKey(textoAux))
+            {
+                return pDicNomAutoresDesnormalizados[textoAux];
+            }
+
+            pText = pText.Replace(".", " ").ToLower();
+            pText = pText.Trim();
+            if (pText.Contains(","))
+            {
+                pText = pText.Substring(pText.IndexOf(",") + 1).Trim() + " " + (pText.Substring(0, pText.IndexOf(","))).Trim();
+            }
+            string textoNormalizado = pText.Normalize(NormalizationForm.FormD);
+            System.Text.RegularExpressions.Regex reg = new System.Text.RegularExpressions.Regex("[^a-zA-Z -]");
+            string textoSinAcentos = reg.Replace(textoNormalizado, "");
+            List<string> stringReplaces = new List<string>();
+            stringReplaces.Add(" del ");
+            stringReplaces.Add(" de ");
+            stringReplaces.Add(" la ");
+            stringReplaces.Add(" von ");
+            stringReplaces.Add(" al ");
+            stringReplaces.Add("  ");
+            foreach (string replace in stringReplaces)
+            {
+                while (textoSinAcentos.Contains(replace))
+                {
+                    textoSinAcentos = textoSinAcentos.Replace(replace, " ");
+                }
+            }
+
+            if (pDicNomAutoresDesnormalizados != null)
+            {
+                pDicNomAutoresDesnormalizados.Add(textoAux, textoSinAcentos.Trim());
+            }
+
+            return textoSinAcentos.Trim();
+        }
+
         private static string ObtenerTextosTitulosNormalizados(string pText, Dictionary<string, string> pDicTitulosDesnormalizados)
         {
             // Comprobación si tenemos guardado el nombre.
