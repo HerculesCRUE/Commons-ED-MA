@@ -16,8 +16,6 @@ namespace Hercules.CommonsEDMA.Desnormalizador
 {
     class Program
     {
-        private string _LogPath;
-
         /// <summary>
         /// Contructor.
         /// </summary>
@@ -40,38 +38,5 @@ namespace Hercules.CommonsEDMA.Desnormalizador
                     services.AddScoped(typeof(RabbitServiceReaderDenormalizer));
                     services.AddHostedService<Worker>();
                 });
-
-        /// <summary>
-        /// Clase FileLogger.
-        /// </summary>
-        public static class FileLogger
-        {
-            private const string FilePath = "/app/logs/"; // --- TODO: Sacarlo a archivo de configuración.
-
-            /// <summary>
-            /// Sobreescribe el método Log para pintar el mensaje de error en un fichero.
-            /// </summary>
-            /// <param name="messsage"></param>
-            public static void Log(Exception ex)
-            {
-                string filePath = FilePath + "error_" + DateTime.Now.ToString("yyyy-MM-dd") + ".txt";
-                using var fileStream = new FileStream(filePath, FileMode.Append);
-                using var writer = new StreamWriter(fileStream);
-                writer.WriteLine(ex.Message);
-                writer.WriteLine(ex.StackTrace);
-            }
-
-            /// <summary>
-            /// Sobreescribe el método Log para pintar el mensaje de error en un fichero.
-            /// </summary>
-            /// <param name="messsage"></param>
-            public static void Log(string messsage)
-            {
-                string filePath = FilePath + "error_"+ DateTime.Now.ToString("yyyy-MM-dd")+".txt";
-                using var fileStream = new FileStream(filePath, FileMode.Append);
-                using var writer = new StreamWriter(fileStream);
-                writer.WriteLine(messsage);
-            }
-        }
     }
 }
