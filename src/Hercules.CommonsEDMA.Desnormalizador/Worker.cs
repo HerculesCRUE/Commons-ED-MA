@@ -19,6 +19,37 @@ namespace Hercules.CommonsEDMA.Desnormalizador
 {
     public class Worker : BackgroundService
     {
+        private readonly static string rutaOauth = $@"{System.AppDomain.CurrentDomain.SetupInformation.ApplicationBase}Config{Path.DirectorySeparatorChar}ConfigOAuth{Path.DirectorySeparatorChar}OAuthV3.config";
+        private static ResourceApi mResourceApi = null;
+        private static ResourceApi resourceApi
+        {
+            get
+            {
+                while (mResourceApi == null)
+                {
+                    try
+                    {
+                        mResourceApi = new ResourceApi(rutaOauth);
+                        if (string.IsNullOrEmpty(mResourceApi.GraphsUrl))
+                        {
+                            mResourceApi = null;
+                            Console.WriteLine("No se ha podido iniciar ResourceApi mResourceApi.GraphsUrl es nulo o vacío");
+                            Console.WriteLine($"Contenido OAuth: {System.IO.File.ReadAllText(rutaOauth)}");
+                            Thread.Sleep(10000);
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine("No se ha podido iniciar ResourceApi");
+                        Console.WriteLine("Error: " + ex.Message);
+                        Console.WriteLine($"Contenido OAuth: {System.IO.File.ReadAllText(rutaOauth)}");
+                        Thread.Sleep(10000);
+                    }
+                }
+                return mResourceApi;
+            }
+        }
+
         private readonly ConfigService _configService;
         private readonly RabbitServiceReaderDenormalizer _rabbitServiceReaderDenormalizer;
         private readonly string _directoryPendingCV;
@@ -56,7 +87,7 @@ namespace Hercules.CommonsEDMA.Desnormalizador
         /// <param name="stoppingToken"></param>
         /// <returns></returns>
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
-        {
+        {    
             ListenToQueue();
 
             ProcessItemsPendingCV();
@@ -116,7 +147,7 @@ namespace Hercules.CommonsEDMA.Desnormalizador
                     }
                     catch (Exception ex)
                     {
-                        FileLogger.Log(ex);
+                        resourceApi.Log.Error($@"{ex.Message} {ex.StackTrace}");
                         Thread.Sleep(60000);
                     }
                 }
@@ -194,7 +225,7 @@ namespace Hercules.CommonsEDMA.Desnormalizador
                     }
                     catch (Exception ex)
                     {
-                        FileLogger.Log(ex);
+                        resourceApi.Log.Error($@"{ex.Message} {ex.StackTrace}");
                     }
                     finally
                     {
@@ -267,7 +298,7 @@ namespace Hercules.CommonsEDMA.Desnormalizador
                         {
                             File.Move(file, file.Replace(_directoryPending, _directoryError));
                         }
-                        FileLogger.Log(ex);
+                        resourceApi.Log.Error($@"{ex.Message} {ex.StackTrace}");
                     }
 
                 }
@@ -334,14 +365,14 @@ namespace Hercules.CommonsEDMA.Desnormalizador
                                 }
                                 catch (Exception ex)
                                 {
-                                    FileLogger.Log(ex);
+                                    resourceApi.Log.Error($@"{ex.Message} {ex.StackTrace}");
                                 }
                             }
                         }
                     }
                     catch (Exception ex)
                     {
-                        FileLogger.Log(ex);
+                        resourceApi.Log.Error($@"{ex.Message} {ex.StackTrace}");
                     }
 
                 }
