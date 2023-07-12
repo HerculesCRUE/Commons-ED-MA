@@ -31,7 +31,8 @@ namespace Hercules.CommonsEDMA.Journals
             string nombreHoja = "revistas";
 
             // Diccionario de revistas.
-            List<Journal> listaRevistas = new();
+            List<string> idRecursosRevistas = ObtenerIDsRevistas();
+            List<Journal> listaRevistas = ObtenerRevistaPorID(idRecursosRevistas).Values.ToList();
 
             Console.WriteLine("1/7.- Leemos las revistas del Excel.");
             DataSet dataSet = LecturaExcel($@"{AppDomain.CurrentDomain.SetupInformation.ApplicationBase}Dataset{Path.DirectorySeparatorChar}{nombreExcel}.xlsx");
@@ -103,9 +104,10 @@ namespace Hercules.CommonsEDMA.Journals
                 {
                     if (!journalBBDD.Equals(journalCargar))
                     {
+                        journalCargar.indicesImpacto.RemoveWhere(x => string.IsNullOrEmpty(x.fuente));
                         List<ComplexOntologyResource> listaRecursosModificar = new();
                         ObtenerRevistas(new() { journalCargar }, listaRecursosModificar);
-                        ModificarDatos(listaRecursosCargar);
+                        ModificarDatos(listaRecursosModificar);
                     }
                 }
             }
@@ -142,25 +144,39 @@ namespace Hercules.CommonsEDMA.Journals
                 numRevista++;
                 Console.Write($"\r3/7.- Procesando fila del excel {numRevista}/{numRevistas}.");
 
+
+                string campoTITLE = fila["TITLE"].ToString();
+                string campoPUBLISHER_NAME = fila["PUBLISHER_NAME"].ToString();
+                string campoISSN = fila["ISSN"].ToString();
+                string campoEISSN = fila["EISSN"].ToString();
+                string campoCATEGORY_DESCRIPTION = fila["CATEGORY_DESCRIPTION"].ToString();
+                string campoIMPACT_FACTOR = fila["IMPACT_FACTOR"].ToString();
+                string campoYEAR = fila["YEAR"].ToString();
+                string campoSOURCE = fila["SOURCE"].ToString().ToUpper();
+                string campoRANK = fila["RANK"].ToString();
+                string campoRANK_OUT_OF = fila["RANK_OUT_OF"].ToString();
+                string campoQUARTILE_RANK = fila["QUARTILE_RANK"].ToString();
+
+
                 // Si la revista no tiene título, no es válida.
-                if (string.IsNullOrEmpty(fila["TITLE"].ToString()))
+                if (string.IsNullOrEmpty(campoTITLE))
                 {
                     revistasSinTitulo++;
                     continue;
                 }
 
                 // Si la revista no tiene ISSN ni EISSN, no es válida.
-                if (string.IsNullOrEmpty(fila["ISSN"].ToString()) && string.IsNullOrEmpty(fila["EISSN"].ToString()))
+                if (string.IsNullOrEmpty(campoISSN) && string.IsNullOrEmpty(campoEISSN))
                 {
                     revistasSinIdentificadores++;
                     continue;
                 }
 
                 // Datos.
-                string titleAux = fila["TITLE"].ToString();
-                string editorialAux = fila["PUBLISHER_NAME"].ToString();
-                string issnAux = LimpiarIdentificador(fila["ISSN"].ToString());
-                string eissnAux = LimpiarIdentificador(fila["EISSN"].ToString());
+                string titleAux = campoTITLE;
+                string editorialAux = campoPUBLISHER_NAME;
+                string issnAux = LimpiarIdentificador(campoISSN);
+                string eissnAux = LimpiarIdentificador(campoEISSN);
 
                 // Si tienen el mismo ISSN e EISSN, únicamente tienen EISSN.
                 if (!string.IsNullOrEmpty(issnAux) && !string.IsNullOrEmpty(eissnAux) && issnAux == eissnAux)
@@ -178,7 +194,7 @@ namespace Hercules.CommonsEDMA.Journals
                 }
 
                 // Año.
-                int anyo = Int32.Parse(fila["YEAR"].ToString());
+                int anyo = Int32.Parse(campoYEAR);
 
                 // Título.
                 revista.titulo = titleAux;
@@ -205,27 +221,27 @@ namespace Hercules.CommonsEDMA.Journals
                 bool encontrado = false;
                 foreach (IndiceImpacto item in revista.indicesImpacto)
                 {
-                    if (item.fuente == fila["SOURCE"].ToString() && item.anyo == anyo)
+                    if (item.fuente == campoSOURCE && item.anyo == anyo)
                     {
                         encontrado = true;
                         break;
                     }
                 }
 
-                if (!encontrado && !string.IsNullOrEmpty(fila["IMPACT_FACTOR"].ToString()))
+                if (!encontrado && !string.IsNullOrEmpty(campoIMPACT_FACTOR))
                 {
-                    revista.indicesImpacto.Add(CrearIndiceImpacto(fila, anyo));
+                    revista.indicesImpacto.Add(CrearIndiceImpacto(campoSOURCE,campoIMPACT_FACTOR, anyo));
                 }
 
                 // Categorías.
-                if (!string.IsNullOrEmpty(fila["CATEGORY_DESCRIPTION"].ToString()) && !string.IsNullOrEmpty(fila["IMPACT_FACTOR"].ToString()))
+                if (!string.IsNullOrEmpty(campoCATEGORY_DESCRIPTION) && !string.IsNullOrEmpty(campoIMPACT_FACTOR))
                 {
-                    HashSet<Categoria> categorias = revista.indicesImpacto.First(x => x.anyo == anyo && x.fuente == fila["SOURCE"].ToString()).categorias;
-                    Categoria categoria = CrearCategoria(fila, anyo);
+                    HashSet<Categoria> categorias = revista.indicesImpacto.First(x => x.anyo == anyo && x.fuente == campoSOURCE).categorias;
+                    Categoria categoria = CrearCategoria(campoSOURCE,campoCATEGORY_DESCRIPTION,campoRANK,campoRANK_OUT_OF,campoQUARTILE_RANK, anyo);
 
                     if (!categorias.Any(x => x.nomCategoria == categoria.nomCategoria))
                     {
-                        revista.indicesImpacto.First(x => x.anyo == anyo && x.fuente == fila["SOURCE"].ToString()).categorias.Add(categoria);
+                        revista.indicesImpacto.First(x => x.anyo == anyo && x.fuente == campoSOURCE).categorias.Add(categoria);
                     }
                     else
                     {
@@ -237,7 +253,7 @@ namespace Hercules.CommonsEDMA.Journals
                         {
                             categorias.Remove(categoriaCargada);
                             categorias.Add(categoria);
-                            revista.indicesImpacto.First(x => x.anyo == anyo && x.fuente == fila["SOURCE"].ToString()).categorias = categorias;
+                            revista.indicesImpacto.First(x => x.anyo == anyo && x.fuente == campoSOURCE).categorias = categorias;
                         }
                     }
                 }
@@ -250,24 +266,25 @@ namespace Hercules.CommonsEDMA.Journals
         /// <summary>
         /// Permite crear un índice de impacto con los datos de Scopus.
         /// </summary>
-        /// <param name="pFila">Fila con los datos pertenecientes al excel.</param>
+        /// <param name="source">Fuente</param>
+        /// <param name="impactfactor">Factor de impacto</param>
         /// <param name="pAnyo">Año.</param>
         /// <returns>Índice de impacto.</returns>
-        private static IndiceImpacto CrearIndiceImpacto(DataRow pFila, int pAnyo)
+        private static IndiceImpacto CrearIndiceImpacto(string source, string impactfactor, int pAnyo)
         {
             IndiceImpacto indiceImpacto = new();
             indiceImpacto.categorias = new();
 
             // Fuente.
-            indiceImpacto.fuente = pFila["SOURCE"].ToString();
+            indiceImpacto.fuente = source;
 
             // Año.
             indiceImpacto.anyo = pAnyo;
 
             // Índice de impacto.
-            if (!string.IsNullOrEmpty(pFila["IMPACT_FACTOR"].ToString()))
+            if (!string.IsNullOrEmpty(impactfactor))
             {
-                indiceImpacto.indiceImpacto = float.Parse(pFila["IMPACT_FACTOR"].ToString().Replace(",", "."), CultureInfo.InvariantCulture);
+                indiceImpacto.indiceImpacto = float.Parse(impactfactor.Replace(",", "."), CultureInfo.InvariantCulture);
             }
 
             return indiceImpacto;
@@ -276,36 +293,40 @@ namespace Hercules.CommonsEDMA.Journals
         /// <summary>
         /// Permite crear una categoría con los datos de WoS.
         /// </summary>
-        /// <param name="pFila">Fila con los datos pertenecientes al excel.</param>
+        /// <param name="source">Fuente</param>
+        /// <param name="category_description">Categoría</param>
+        /// <param name="rank">Ranking</param>
+        /// <param name="rank_out_of">Total ranking</param>
+        /// <param name="quartile_rank">Quartil</param>
         /// <param name="pAnyo">Año.</param>
         /// <returns>Categoría.</returns>
-        private static Categoria CrearCategoria(DataRow pFila, int pAnyo)
+        private static Categoria CrearCategoria(string source,string category_description,string rank,string rank_out_of,string quartile_rank, int pAnyo)
         {
             Categoria categoria = new();
 
             // Fuente.
-            categoria.fuente = pFila["SOURCE"].ToString();
+            categoria.fuente = source;
 
             // Año.
             categoria.anyo = pAnyo;
 
             // Nombre categoría.
-            if (!string.IsNullOrEmpty(pFila["CATEGORY_DESCRIPTION"].ToString()))
+            if (!string.IsNullOrEmpty(category_description))
             {
-                categoria.nomCategoria = pFila["CATEGORY_DESCRIPTION"].ToString();
+                categoria.nomCategoria = category_description;
             }
 
             // Ranking y posición en ranking.
-            if (!string.IsNullOrEmpty(pFila["RANK"].ToString()) && !string.IsNullOrEmpty(pFila["RANK_OUT_OF"].ToString()) && pFila["RANK"].ToString() != "--" && pFila["RANK_OUT_OF"].ToString() != "--")
+            if (!string.IsNullOrEmpty(rank) && !string.IsNullOrEmpty(rank_out_of) && rank != "--" && rank_out_of != "--")
             {
-                categoria.posicionPublicacion = Int32.Parse(pFila["RANK"].ToString());
-                categoria.numCategoria = Int32.Parse(pFila["RANK_OUT_OF"].ToString());
+                categoria.posicionPublicacion = Int32.Parse(rank);
+                categoria.numCategoria = Int32.Parse(rank_out_of);
             }
 
             // Cuartil.
-            if (!string.IsNullOrEmpty(pFila["QUARTILE_RANK"].ToString()))
+            if (!string.IsNullOrEmpty(quartile_rank))
             {
-                switch (pFila["QUARTILE_RANK"].ToString().ToLower())
+                switch (quartile_rank.ToLower())
                 {
                     case "q1":
                         categoria.cuartil = 1;
@@ -657,13 +678,13 @@ namespace Hercules.CommonsEDMA.Journals
                                 switch (fila["fuente"].value)
                                 {
                                     case "http://gnoss.com/items/referencesource_000":
-                                        fuente = "wos";
+                                        fuente = "WOS";
                                         break;
                                     case "http://gnoss.com/items/referencesource_010":
-                                        fuente = "scopus";
+                                        fuente = "SCOPUS";
                                         break;
                                     case "http://gnoss.com/items/referencesource_020":
-                                        fuente = "inrecs";
+                                        fuente = "INRECS";
                                         break;
                                 }
                             }
@@ -881,15 +902,15 @@ namespace Hercules.CommonsEDMA.Journals
                 foreach (IndiceImpacto indice in revista.indicesImpacto)
                 {
                     MaindocumentOntology.ImpactIndex indiceCargar = new();
-                    switch (indice.fuente)
+                    switch (indice.fuente.ToUpper().Trim())
                     {
-                        case "wos":
+                        case "WOS":
                             indiceCargar.IdRoh_impactSource = $@"{mResourceApi.GraphsUrl}items/referencesource_000";
                             break;
-                        case "scopus":
+                        case "SCOPUS":
                             indiceCargar.IdRoh_impactSource = $@"{mResourceApi.GraphsUrl}items/referencesource_010";
                             break;
-                        case "inrecs":
+                        case "INRECS":
                             indiceCargar.IdRoh_impactSource = $@"{mResourceApi.GraphsUrl}items/referencesource_020";
                             break;
                     }
