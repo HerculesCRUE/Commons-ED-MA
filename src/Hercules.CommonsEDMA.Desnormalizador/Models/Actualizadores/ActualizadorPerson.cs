@@ -1413,19 +1413,23 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models.Actualizadores
                         String whereEliminarCitas = @$"where{{
                                     {filter}
                                     ?person a <http://xmlns.com/foaf/0.1/Person>.
+                                    FILTER( !BOUND(?citationCountCalculado ) OR ?citationCountCargado != ?citationCountCalculado )
                                     {{
                                         #Los que hay
-                                        ?person <http://w3id.org/roh/hIndexCitationCount> ?hIndexCitationCount.
-                                        ?hIndexCitationCount <http://w3id.org/roh/citationCount> ?citationCount.
-                                        ?hIndexCitationCount <http://w3id.org/roh/publicationNumber> ?publicationNumberAux.
-                                        BIND(xsd:int(?publicationNumberAux) as ?publicationNumber)
-                                        ?hIndexCitationCount <http://w3id.org/roh/citationSource> ?citationSource.    
-                                        FILTER(?citationSource='{source}')
+                                        select ?person ?hIndexCitationCount ?publicationNumber ?citationCountCargado 
+                                        Where{{
+                                            ?person <http://w3id.org/roh/hIndexCitationCount> ?hIndexCitationCount.
+                                            ?hIndexCitationCount <http://w3id.org/roh/citationCount> ?citationCountCargado .
+                                            ?hIndexCitationCount <http://w3id.org/roh/publicationNumber> ?publicationNumberAux.
+                                            BIND(xsd:int(?publicationNumberAux) as ?publicationNumber )
+                                            ?hIndexCitationCount <http://w3id.org/roh/citationSource> ?citationSource.    
+                                            FILTER(?citationSource='Hércules')
+                                        }}
                                     }}
-                                    MINUS
+                                    OPTIONAL
                                     {{
                                         #Los que debe de haber
-                                        select distinct ?person count(distinct(?document)) as ?publicationNumber ?citationCount ?citationSource
+                                        select distinct ?person count(distinct(?document)) as ?publicationNumber ?citationCountCalculado 
                                         Where{{
                                             ?person <http://w3id.org/roh/crisIdentifier> ?crisIdentifier. 
 	                                        ?document a <http://purl.org/ontology/bibo/Document>.                               
