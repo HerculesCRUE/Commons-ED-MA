@@ -9,6 +9,8 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading;
+using System.Threading.Tasks;
+using VDS.RDF.Query.Algebra;
 
 namespace Hercules.CommonsEDMA.Desnormalizador.Models
 {
@@ -40,7 +42,7 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models
                     catch (Exception ex)
                     {
                         Console.WriteLine("No se ha podido iniciar ResourceApi");
-                        Console.WriteLine("Error: "+ex.Message);
+                        Console.WriteLine("Error: " + ex.Message);
                         Console.WriteLine($"Contenido OAuth: {System.IO.File.ReadAllText(rutaOauth)}");
                         Thread.Sleep(10000);
                     }
@@ -60,7 +62,8 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models
                         mCommunityApi = new CommunityApi(rutaOauth);
                         mCommunityApi.GetCommunityId();
                     }
-                    catch (Exception ex) {
+                    catch (Exception ex)
+                    {
                         Console.WriteLine("No se ha podido iniciar CommunityApi");
                         Console.WriteLine("Error: " + ex.Message);
                         Console.WriteLine($"Contenido OAuth: {System.IO.File.ReadAllText(rutaOauth)}");
@@ -166,7 +169,7 @@ namespace Hercules.CommonsEDMA.Desnormalizador.Models
             actualizadorCV.EliminarDuplicados();
             actualizadorCV.EliminarItemsEliminados();
 
-            //Proyectos con dependencias
+            //Proyectos con dependencias            
             actualizadorProject.ActualizarNumeroAreasTematicas();
             actualizadorProject.ActualizarMiembrosUnificados();
             actualizadorProject.ActualizarNumeroMiembros();
