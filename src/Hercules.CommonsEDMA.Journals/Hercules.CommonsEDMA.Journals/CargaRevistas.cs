@@ -328,16 +328,16 @@ namespace Hercules.CommonsEDMA.Journals
             {
                 switch (quartile_rank.ToLower())
                 {
-                    case "q1":
+                    case "1":
                         categoria.cuartil = 1;
                         break;
-                    case "q2":
+                    case "2":
                         categoria.cuartil = 2;
                         break;
-                    case "q3":
+                    case "3":
                         categoria.cuartil = 3;
                         break;
-                    case "q4":
+                    case "4":
                         categoria.cuartil = 4;
                         break;
                 }
