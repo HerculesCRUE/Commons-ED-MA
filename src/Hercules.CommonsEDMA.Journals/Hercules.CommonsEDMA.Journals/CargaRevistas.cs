@@ -230,14 +230,14 @@ namespace Hercules.CommonsEDMA.Journals
 
                 if (!encontrado && !string.IsNullOrEmpty(campoIMPACT_FACTOR))
                 {
-                    revista.indicesImpacto.Add(CrearIndiceImpacto(campoSOURCE,campoIMPACT_FACTOR, anyo));
+                    revista.indicesImpacto.Add(CrearIndiceImpacto(campoSOURCE, campoIMPACT_FACTOR, anyo));
                 }
 
                 // Categorías.
                 if (!string.IsNullOrEmpty(campoCATEGORY_DESCRIPTION) && !string.IsNullOrEmpty(campoIMPACT_FACTOR))
                 {
                     HashSet<Categoria> categorias = revista.indicesImpacto.First(x => x.anyo == anyo && x.fuente == campoSOURCE).categorias;
-                    Categoria categoria = CrearCategoria(campoSOURCE,campoCATEGORY_DESCRIPTION,campoRANK,campoRANK_OUT_OF,campoQUARTILE_RANK, anyo);
+                    Categoria categoria = CrearCategoria(campoSOURCE, campoCATEGORY_DESCRIPTION, campoRANK, campoRANK_OUT_OF, campoQUARTILE_RANK, anyo);
 
                     if (!categorias.Any(x => x.nomCategoria == categoria.nomCategoria))
                     {
@@ -300,7 +300,7 @@ namespace Hercules.CommonsEDMA.Journals
         /// <param name="quartile_rank">Quartil</param>
         /// <param name="pAnyo">Año.</param>
         /// <returns>Categoría.</returns>
-        private static Categoria CrearCategoria(string source,string category_description,string rank,string rank_out_of,string quartile_rank, int pAnyo)
+        private static Categoria CrearCategoria(string source, string category_description, string rank, string rank_out_of, string quartile_rank, int pAnyo)
         {
             Categoria categoria = new();
 
@@ -932,8 +932,19 @@ namespace Hercules.CommonsEDMA.Journals
                 }
 
                 // Se crea el recurso.
-                ComplexOntologyResource resource = revistaCargar.ToGnossApiResource(mResourceApi, null);
-                pListaRecursos.Add(resource);
+                if (string.IsNullOrEmpty(revista.idJournal))
+                {
+                    ComplexOntologyResource resource = revistaCargar.ToGnossApiResource(mResourceApi, null);
+                    pListaRecursos.Add(resource);
+                }
+                else
+                {
+                    string[] idSpplit = revista.idJournal.Split("_");
+                    Guid idRecurso = new Guid(idSpplit[idSpplit.Length - 2]);
+                    Guid idArticulo = new Guid(idSpplit[idSpplit.Length - 1]);
+                    ComplexOntologyResource resource = revistaCargar.ToGnossApiResource(mResourceApi, null, idRecurso, idArticulo);
+                    pListaRecursos.Add(resource);
+                }
             }
             Console.WriteLine($"\r4/7.- Creando objetos de carga {numRevista}/{numRevistas}.");
         }
