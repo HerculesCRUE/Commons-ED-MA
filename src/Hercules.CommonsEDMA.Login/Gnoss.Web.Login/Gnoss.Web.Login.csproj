@@ -13,7 +13,7 @@
     <PackageReference Include="GnossApiWrapper.NetCore" Version="6.0.33">
       <Aliases>ApiWrapper</Aliases>
     </PackageReference>
-    <PackageReference Include="ITfoxtec.Identity.Saml2.MvcCore" Version="4.8.2" />
+    <PackageReference Include="ITfoxtec.Identity.Saml2.MvcCore" Version="4.8.4" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="5.0.10" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="5.0.2" />
     <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.10.9" />
